@@ -41,6 +41,7 @@
 	
 // TIME
 	// @codekit-prepend "time/VCO.TimeUtil.js";
+	// @codekit-prepend "time/VCO.Date.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";

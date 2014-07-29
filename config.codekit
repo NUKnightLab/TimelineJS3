@@ -1948,6 +1948,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/source\/js\/time\/VCO.Date.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/time\/VCO.Date.js",
+		"outputAbbreviatedPath": "\/source\/js\/time\/min\/VCO.Date-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/source\/js\/time\/VCO.TimeUtil.js": {
 		"fileType": 64,
 		"ignore": 1,
