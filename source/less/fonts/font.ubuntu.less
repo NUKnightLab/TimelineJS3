@@ -1,0 +1,75 @@
+/*	Font Ubuntu
+
+----------------------------------------------------- */
+@import "../Variables.less"; 
+
+// Font Import
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,500,300italic);
+
+@font-main:						'Ubuntu', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-secondary:				'Ubuntu', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+
+.vco-storymap {
+	font-family: @font-main;
+	font-weight:300;
+	font-size: 17px;
+	line-height: 25px;
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @font-secondary;
+		text-transform: uppercase;
+		font-weight:500;
+		font-size: @base-font-size-xlarge;
+		line-height: @base-font-size-xlarge;
+	}
+	
+	h2.vco-headline-title {
+		font-size: @base-font-size-xlarge + 4;
+		line-height: @base-font-size-xlarge + 4;
+	}
+	
+	p {
+		font-family: @font-main;
+		font-size: 17px;
+		line-height: 25px;
+	}
+	
+	ul {
+		font-family: @font-secondary;
+	}
+	
+	.vco-media .vco-media-wikipedia h4 a {
+		font-family: @font-main;
+		font-weight:500;
+		font-size:28px;
+		line-height:28px;
+	}
+	.vco-caption, .vco-credit {
+		font-family: @font-main;
+	}
+	
+	.vcard {
+		font-family: @font-secondary;
+		font-weight:300;
+	}
+	
+	.vco-menubar, .vco-slidenav-next, .vco-slidenav-previous {
+		font-family: @font-secondary;
+		font-weight:300;
+		text-transform: uppercase;
+	}
+	
+	.vco-menubar {
+		.vco-menubar-button {
+			font-weight:300;
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-main;
+		font-style: italic;
+	}
+	
+	
+}
+

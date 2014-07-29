@@ -1,0 +1,60 @@
+/* MenuBar Button
+================================================== */
+
+.vco-menubar-button {
+	border-left: 1px solid darken(@color-background,10);
+	font-size: 14px;
+	padding: 6px 12px 6px 12px;
+	//position:relative;
+	//top:-24px;
+	background-color:#FFF;
+	cursor:pointer;
+	font-weight: bold;
+	.vco-icon-arrow-up, .vco-icon-arrow-down {
+		display:inline-block;
+		height:14px;
+		overflow:hidden;
+		font-size: 20px;
+		position:relative;
+		top:-2px;
+	}
+}
+.vco-menubar-button:hover {
+	background:@color-theme;
+	color:@color-background;
+}
+.vco-mobile {
+	.vco-menubar-button:hover {
+		//background:transparent;
+		background-color:#FFF;
+		color:inherit;
+	}
+	.vco-menubar-button:active {
+		background:@color-theme;
+		color:@color-background;
+	}
+}
+
+
+@keyframes invertToBlack {
+	from {
+		background-color:#FFF;
+	}
+	to {
+		background-color:#000;
+	}
+}
+@-webkit-keyframes invertToBlack {
+	from {background:#FFF;}
+	to {background:#000;}
+}
+@keyframes invertToWhite {
+	from {background-color:#000;}
+	to {background-color:#FFF;}
+}
+@-webkit-keyframes invertToWhite{
+	from {background:#000;}
+	to {background:#FFF;}
+}
+
+

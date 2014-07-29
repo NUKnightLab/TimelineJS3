@@ -1,0 +1,89 @@
+/*	Font Lustria & Lato
+
+http://www.google.com/fonts/specimen/Lustria
+http://www.google.com/fonts/specimen/Lato
+----------------------------------------------------- */
+@import "../Variables.less"; 
+
+// Font Import
+@import url(http://fonts.googleapis.com/css?family=Lustria|Lato:400,400italic);
+
+
+
+@font-main:						'Lato', sans-serif;
+@font-secondary:				'Lustria', serif;
+
+.vco-storymap {
+	font-family: @font-main;
+	font-weight:400;
+	font-size: 17px;
+	line-height: 25px;
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @font-secondary;
+		text-transform: none;
+		font-weight:400;
+		font-size:46px;
+		line-height:46px;
+	}
+	
+	h2.vco-headline-title {
+		font-size: 58px;
+		line-height: 62px;
+	}
+	
+	p {
+		font-family: @font-main;
+		font-size: 17px;
+		line-height: 25px;
+	}
+	
+	ul {
+		font-family: @font-main;
+	}
+	.vco-media .vco-media-wikipedia h4 a {
+		font-family: @font-main;
+		font-weight:400;
+		font-size:24px;
+		line-height:24px;
+	}
+	.vco-caption, .vco-credit {
+		font-family: @font-main;
+	}
+	
+	.vcard {
+		font-family: @font-main;
+		font-weight:400;
+	}
+	
+	.vco-slidenav-next, .vco-slidenav-previous {
+		font-family: @font-main;
+		font-weight:400;
+		text-transform: none;
+		.vco-slidenav-title {
+			line-height:1.3em !important;
+		}
+	}
+	
+	.vco-menubar {
+		font-family: @font-main;
+		.vco-menubar-button {
+			
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-main;
+		font-style: italic;
+	}
+	
+	
+}
+
+input[type="text"].editor-headline {
+    font-family: @font-secondary;
+    text-transform: none;
+    font-weight:400;
+    font-size:46px;
+    line-height:46px;
+}

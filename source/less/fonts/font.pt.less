@@ -1,0 +1,89 @@
+/*	Font PT Sans & PT Serif & PT Sans Narrow
+
+http://www.google.com/webfonts/specimen/PT+Sans+Narrow
+http://www.google.com/webfonts/specimen/PT+Sans
+http://www.google.com/webfonts/specimen/PT+Serif
+----------------------------------------------------- */
+@import "../Variables.less"; 
+
+// Font Import
+@import url(http://fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow:700|PT+Serif:400,400italic);
+
+
+
+@font-main:						'PT Serif', serif;
+@font-secondary:				'PT Sans Narrow', sans-serif;
+@font-third: 					'PT Sans', sans-serif;
+
+.vco-storymap {
+	font-family: @font-main;
+	font-weight:400;
+	font-size: 16px;
+	line-height: 24px;
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @font-secondary;
+		text-transform: uppercase;
+		font-weight:700;
+		font-size: @base-font-size-xlarge + 4;
+		line-height: @base-font-size-xlarge + 4;
+		margin-bottom:0;
+	}
+	
+	h2.vco-headline-title {
+		font-size: @base-font-size-xlarge + 10;
+		line-height: @base-font-size-xlarge + 10;
+	}
+	
+	p {
+		font-family: @font-main;
+		font-size: 16px;
+		line-height: 24px;
+		margin-top:0;
+	}
+	ul {
+		font-family: @font-third;
+	}
+	.vco-media .vco-media-wikipedia h4 a {
+		font-family: @font-main;
+		font-weight:normal;
+		font-size:28px;
+		line-height:28px;
+	}
+	.vco-caption, .vco-credit {
+		font-family: @font-main;
+	}
+	
+	.vcard {
+		font-family: @font-third;
+		font-weight:400;
+	}
+	
+	.vco-menubar, .vco-slidenav-next, .vco-slidenav-previous {
+		font-family: @font-third;
+		font-weight:400;
+		text-transform: uppercase;
+	}
+	
+	.vco-menubar {
+		.vco-menubar-button {
+			font-weight:400;
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-main;
+		font-style: italic;
+	}
+	
+	
+}
+
+input[type="text"].editor-headline {
+    font-family: @font-secondary;
+    text-transform: uppercase;
+    font-weight:700;
+    font-size: @base-font-size-xlarge + 4;
+    line-height: @base-font-size-xlarge + 4;
+}
+

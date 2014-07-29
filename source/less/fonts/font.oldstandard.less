@@ -1,0 +1,60 @@
+/*	Font Old Standard
+http://www.google.com/fonts/specimen/Old+Standard+TT
+----------------------------------------------------- */
+@import "../Variables.less"; 
+
+// Font Import
+@import url(http://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic);
+
+
+
+@font-main:						'Old Standard TT', serif;
+@font-secondary:				'Old Standard TT', serif;
+
+.vco-storymap {
+	font-family: @font-main;
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @font-main;
+		text-transform: uppercase;
+		font-weight:400;
+	}
+	
+	h2.vco-headline-title {
+		font-size: 48px;
+		line-height: 48px;
+	}
+	
+	p {
+		font-family: @font-main;
+	}
+	
+	.vco-caption, .vco-credit, .vcard {
+		font-family: @font-main;
+	}
+	
+	.vco-menubar, .vco-slidenav-next, .vco-slidenav-previous {
+		font-family: @font-main;
+		text-transform: uppercase;
+		font-weight:400;
+	}
+	
+	.vco-menubar {
+		.vco-menubar-button {
+			font-weight:400;
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-main;
+		font-style: italic;
+	}
+	
+	
+}
+
+input[type="text"].editor-headline {
+    font-family: @font-main;
+    text-transform: uppercase;
+    font-weight:400;
+}

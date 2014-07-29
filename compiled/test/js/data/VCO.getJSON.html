@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>Test getJSON methods</title>
+        <style type="text/css" media="screen">
+          .test_data {
+            font-weight: bold;
+          }
+        </style>
+    </head>
+    <body>
+        <strong>This page tests AJAX behavior.</strong>
+        <h2>Date and Time</h2>
+        <p id="date_explainer">Using the http://date.jsontest.com/ endpoint, you should see the current date and time (in UTC) below.</p>
+        <ul>
+          <li>Date: <span class='test_data' id="json_test_date"></span></li>
+          <li>Time (UTC): <span class='test_data' id="json_test_time"></span></li>
+          <li>Milliseconds since epoch: <span class='test_data' id="json_test_millis"></span></li>
+        </ul>
+        <script type="text/javascript" src="../../../js/storyslider.js"></script>
+        <script type="text/javascript" charset="utf-8">
+          function test_date() {
+            VCO.getJSON('http://date.jsontest.com/?callback=?', function(data, status, xhr){
+              document.getElementById("json_test_date").innerText = data['date'];
+              document.getElementById("json_test_time").innerText = data['time'];
+              document.getElementById("json_test_millis").innerText = data['milliseconds_since_epoch'];
+            });
+          }
+          
+          // execute tests
+          test_date();
+          
+        </script>
+    </body>
+</html>

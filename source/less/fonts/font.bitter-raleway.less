@@ -1,0 +1,94 @@
+/*	Font Bitter & Raleway
+
+http://www.google.com/fonts/specimen/Bitter
+http://www.google.com/fonts/specimen/Raleway
+----------------------------------------------------- */
+@import "../Variables.less"; 
+
+// Font Import
+@import url(http://fonts.googleapis.com/css?family=Bitter:700|Raleway:200,300,700);
+
+
+
+@font-main:						'Raleway', sans-serif;
+@font-secondary:				'Bitter', serif;
+
+.vco-storymap {
+	font-family: @font-main;
+	font-weight:300;
+	font-size: 16px;
+	line-height: 24px;
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @font-secondary;
+		text-transform: none;
+		font-weight:700;
+		font-size:46px;
+		line-height:46px;
+	}
+	
+	h2.vco-headline-title {
+		font-size: 58px;
+		line-height: 58px;
+	}
+	
+	p {
+		font-family: @font-main;
+		font-size: 16px;
+		line-height: 24px;
+	}
+	strong {
+		font-weight:700;
+	}
+	ul {
+		font-family: @font-main;
+	}
+	.vco-media .vco-media-wikipedia h4 a {
+		font-family: @font-main;
+		font-weight:700;
+		font-size:28px;
+		line-height:28px;
+	}
+	.vco-caption, .vco-credit {
+		font-family: @font-main;
+	}
+	
+	.vcard {
+		font-family: @font-main;
+		font-weight:300;
+	}
+	
+	.vco-slidenav-next, .vco-slidenav-previous {
+		font-family: @font-main;
+		font-weight:300;
+		text-transform: none;
+		.vco-slidenav-title {
+			line-height:1.3em !important;
+		}
+	}
+	
+	.vco-menubar {
+		font-family: @font-main;
+		
+		.vco-menubar-button {
+			font-weight:300 !important;
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-main;
+		font-style: normal;
+		font-weight:200;
+	}
+	
+	
+}
+
+input[type="text"].editor-headline {
+    font-family: @font-secondary;
+    text-transform: none;
+    font-weight:700;
+    font-size:46px;
+    line-height:46px;
+}
+

@@ -1,0 +1,58 @@
+/* Requires Variables.less
+================================================== */
+
+.vco-text {
+	width:50%;
+	max-width:50%;
+	min-width:120px;
+	padding: 0 20px 0 20px;
+	display:table-cell;
+	vertical-align:middle;
+	text-align: left;
+	//float:left;
+	text-shadow: none;
+	.vco-text-content-container {
+		.vco-text-content{
+		
+		}
+	}
+	.vco-text-date {
+		display:inline-block;
+		font-family:@font-main;
+		font-weight:normal;
+		margin-top:10px;
+		font-size:12px;
+		color: lighten(@color-dark, 40%);
+		&:after {
+			//margin-left:3px;
+			//color:#999;
+			//font-weight:normal;
+		}
+	}
+
+}
+
+// When the background is an image
+.vco-full-image-background {
+	.vco-text, .vco-text p {
+		color: #FFF;
+		text-shadow: 1px 1px 2px #000;
+	}
+}
+
+// Mobile, iPhone and skinny
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	.vco-text {
+		width:100%;
+		max-width:100%;
+		min-width:auto;
+		float:none;
+		
+		.vco-text-content-container {
+			.vco-text-content{
+		
+			}
+		}
+	}
+}
+

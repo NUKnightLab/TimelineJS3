@@ -1,0 +1,215 @@
+.vco-storymap {
+	font-family: @font-main;
+	
+	h1, h2, h3 {
+		font-size: @base-font-size-xlarge;
+		line-height:@base-font-size-xlarge;
+		small {
+			font-size: 		@base-font-size-large;
+			line-height:	@base-font-size-large;
+		}
+	}
+	h4, h5, h6 {
+		font-size: @base-font-size-large;
+		line-height:@base-font-size-large;
+		margin-bottom:0px;
+		small {
+			font-size: @base-font-size;
+			line-height:@base-font-size;
+		}
+	}
+	h2.vco-headline-title {
+		font-size: @base-font-size-xlarge + 10;
+		line-height: @base-font-size-xlarge + 10;
+		small {
+			display:block;
+			margin-top:5px;
+			font-size: @base-font-size-large;
+			line-height:@base-font-size-large;
+		}
+	}
+	
+	h2 {
+		margin-top:20px;
+		margin-bottom:5px;
+	}
+	
+	p {
+		margin-top:5px;
+		margin-bottom:10px;
+		font-size: @base-font-size;
+		//font-family: @font-secondary;
+		color: lighten(@color-dark, 40%);
+		a {
+
+			color: lighten(@color-dark, 40%);
+			text-decoration: none;
+			background-image: -moz-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: -webkit-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: -o-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: linear-gradient(to bottom, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-repeat: repeat-x;
+			background-size: 2px 2px;
+			background-position: 0 @base-font-size+2;
+			text-shadow: -2px -1px 0 white, 2px -1px 0 white, -2px 1px 0 white, 2px 1px 0 white;
+			&:hover,
+			&:focus {
+				color:@color-theme;
+				text-decoration: none;
+			}
+		}
+		
+		
+		@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+			a {
+				text-decoration: underline;
+				background-image:none;
+				text-shadow: none;
+				&:hover,
+				&:focus {
+					color:@color-theme;
+					text-decoration: underline;
+				}
+			}
+		}
+
+		
+		
+	}
+	b, strong {
+		font-weight: bold;
+		//color: @color-dark;
+	}
+	i, em {
+		font-style: italic;
+	}
+	a {
+		text-decoration:none;
+		color:@color-theme;
+	}
+	a:hover {
+		text-decoration:underline;
+		color: darken(@color-theme, 20%);
+	}
+	.vco-caption, .vco-credit, .vco-slidenav-next, .vco-slidenav-previous {
+		//font-family: @font-sanserif;
+		font-size:@base-font-size-small;
+		line-height:@base-font-size-small;
+		a {
+			color: @color-dark;
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-serif;
+		color: lighten(@color-dark, 60%);
+		font-size: @base-font-size-large;
+		line-height:@base-font-size-large;
+		text-align:left;
+		background:transparent;
+		border:0px;
+		padding:0px;
+		cite {
+			font-family: @font-sanserif;
+			font-size: @base-font-size-small;
+			color: lighten(@color-dark, 40%);
+			display:block;
+			text-align:right;
+			font-style: normal;
+			
+		}
+		cite:before {
+			content: "\2014";
+		}
+	}
+	blockquote p:before {
+		content: open-quote;
+		display:inline-block;
+		font-size: @base-font-size-xlarge;
+		position: relative;  
+		top: 8px;
+		margin-right:5px;
+		
+	}
+	blockquote p:after {
+		content: close-quote;
+		display:inline-block;
+		font-size: @base-font-size-xlarge;
+		position: relative;  
+		top: 8px;
+		margin-left:3px;
+		
+	}
+	blockquote {
+		margin:10px;
+		p {
+			margin:0;
+		}
+		//margin-left:18px;
+	}
+	
+	.vcard {
+		font-family: @font-main;
+		font-size: @base-font-size;
+		line-height:@base-font-size;
+	}
+	
+	.vco-text {
+		ul {
+			padding:0px;
+			padding-left:30px;
+			margin:0;
+			li {
+				margin-bottom:5px;
+			}
+		}
+		
+	}
+
+
+	.vco-note {
+		display:block;
+		font-family: @font-main;
+		font-style: italic;
+		background-color:lighten(@color-dark, 90%);
+		font-size:@base-font-size;
+		line-height:@base-font-size+2;
+		padding:10px;
+		.border-radius(7px); 
+		color: #8a6d3b;
+		background-color: #fcf8e3;
+		border: 1px solid #faebcc;
+	}
+}
+
+
+// Skinnier
+@media only screen and (max-width: 800px), only screen and (max-device-width: 800px) {
+	.vco-storymap {
+		h1, h2, h3 {
+			font-size: @base-font-size-xlarge;
+			line-height: @base-font-size-xlarge;
+		}
+		h2.vco-headline-title {
+		}
+	}
+	
+}
+// Mobile, iPhone and skinny
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	.vco-storymap {
+		h1, h2, h3 {
+			font-size: @base-font-size-xlarge - 4;
+			line-height: @base-font-size-xlarge - 4;
+		}
+		h2.vco-headline-title {
+
+		}
+	}
+}
+.vco-skinny {
+	h2 {
+		margin-top:0px;
+		padding-top:20px;
+	}
+}

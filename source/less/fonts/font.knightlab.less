@@ -1,0 +1,74 @@
+/*	Font Default
+
+Knight Lab Specific
+----------------------------------------------------- */
+
+@import "../Variables.less"; 
+
+// Font Import
+@import url(http://cloud.webtype.com/css/d4767ecb-457a-4677-8761-72f890add836.css);
+
+
+
+
+@font-main:						"Turnip RE",Georgia,"Times New Roman",Times,serif;
+@font-secondary:				"Salvo Serif Cond",Georgia,"Times New Roman",Times,serif;
+@font-third: 					"Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+.vco-storymap {
+	font-family: @font-main;
+	font-weight:400;
+	font-size: 16px;
+	line-height: 24px;
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @font-secondary;
+		text-transform: none;
+		font-weight:normal;
+		font-size: @base-font-size-xlarge + 4;
+		line-height: @base-font-size-xlarge + 4;
+	}
+	
+	h2.vco-headline-title {
+		font-size: @base-font-size-xlarge + 14;
+		line-height: @base-font-size-xlarge + 14;
+	}
+	
+	p {
+		font-family: @font-main;
+	}
+	
+	.vco-caption, .vco-credit {
+		font-family: @font-main;
+	}
+	
+	.vcard {
+		font-family: @font-third;
+		font-weight:normal;
+	}
+	
+	.vco-menubar, .vco-slidenav-next, .vco-slidenav-previous {
+		font-family: @font-third;
+		font-weight:400;
+		text-transform: uppercase;
+	}
+	
+	.vco-menubar {
+		.vco-menubar-button {
+			font-weight:400;
+		}
+	}
+	
+	blockquote, blockquote p {
+		font-family: @font-third;
+		font-style: italic;
+	}
+	
+	.vco-note {
+		font-family: @font-third;
+	}
+
+	
+	
+}
+

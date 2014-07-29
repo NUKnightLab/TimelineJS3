@@ -1,0 +1,41 @@
+/* Requires Variables.less
+================================================== */
+@leaflet-offset: 6px;
+@map-icon-size: 44px; //52
+@map-icon-width: 32px; //38
+@map-icon-size: 52px;
+@map-icon-width: 38px;
+.vco-map {
+	.vco-mapimage-display:hover {
+		.vco-mapmarker, .vco-mapmarker-active {
+			display:block;
+		
+		} 
+	}
+	.vco-mapimage-display {
+		.vco-mapmarker, .vco-mapmarker-active {
+			display:none;
+		
+		} 
+		
+	}
+
+}
+
+.vco-map:hover {
+	.vco-mapimage-display {
+		
+	}
+}
+
+
+/* Mobile, iPhone and skinny
+================================================== */
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	.vco-map {
+		.vco-mapmarker {
+	
+		}
+	}
+}
+
