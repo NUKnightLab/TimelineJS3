@@ -290,9 +290,9 @@ VCO.Slide = VCO.Class.extend({
 			this._el.content.style.paddingRight = 0 + "px";
 			this._el.content.style.width		= this.options.width - 0 + "px";
 		} else if (layout == "landscape") {
-			this._el.content.style.paddingLeft 	= 40 + "px";
-			this._el.content.style.paddingRight = 75 + "px";
-			this._el.content.style.width		= this.options.width - (75 + 40) + "px";
+			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
+			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
+			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
 		
 		} else if (this.options.width <= this.options.skinny_size) {
 			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";

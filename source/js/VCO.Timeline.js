@@ -38,13 +38,21 @@
 	// @codekit-prepend "dom/VCO.Dom.js";
 	// @codekit-prepend "dom/VCO.DomUtil.js";
 	// @codekit-prepend "dom/VCO.DomEvent.js";
+	
+// TIME
+	// @codekit-prepend "time/VCO.TimeUtil.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";
 	// @codekit-prepend "ui/VCO.Swipable.js";
 	// @codekit-prepend "ui/VCO.MenuBar.js";
 	// @codekit-prepend "ui/VCO.Message.js";
-	// @codekit-prepend "ui/VCO.TimeNav.js";
+	
+	// TIMENAV
+		// @codekit-prepend "ui/timenav/VCO.TimeNav.js";
+		
+		
+		
 
 // MEDIA
 	// @codekit-prepend "media/VCO.MediaType.js";
@@ -76,7 +84,7 @@
 	// @codekit-prepend "slider/VCO.SlideNav.js";
 	// @codekit-prepend "slider/VCO.StorySlider.js";
 
-// TIME
+
 	
 
 
@@ -90,7 +98,7 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		
 		// Version
-		this.version = "0.1.16";
+		this.version = "0.0.16";
 		
 		// Ready
 		this.ready = false;
@@ -100,6 +108,7 @@ VCO.Timeline = VCO.Class.extend({
 			container: {},
 			storyslider: {},
 			map: {},
+			timenav: {},
 			menubar: {}
 		};
 		
@@ -116,6 +125,9 @@ VCO.Timeline = VCO.Class.extend({
 		// Map
 		this._map = {};
 		this.map = {}; // For direct access to Leaflet Map
+		
+		// TimeNav
+		this._timenav = {};
 		
 		// Menu Bar
 		this._menubar = {};
@@ -172,7 +184,9 @@ VCO.Timeline = VCO.Class.extend({
 			height: 				this._el.container.offsetHeight,
 			width: 					this._el.container.offsetWidth,
 			layout: 				"landscape", 	// portrait or landscape
+			timenav_position: 		"bottom", 		// timeline on top or bottom
 			base_class: 			"",
+			timenav_height: 		300,
 			start_at_slide: 		0,
 			menubar_height: 		0,
 			skinny_size: 			650,
@@ -184,7 +198,7 @@ VCO.Timeline = VCO.Class.extend({
 			dragging: 				true,
 			trackResize: 			true,
 			map_type: 				"stamen:toner-lite",
-			slide_padding_lr: 		45, 			// padding on slide of slide
+			slide_padding_lr: 		100, 			// padding on slide of slide
 			slide_default_fade: 	"0%", 			// landscape fade
 			menubar_default_y: 		0,
 			map_popup: 				false,
@@ -204,7 +218,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.current_slide = this.options.start_at_slide;
 		
 		// Animation Objects
-		this.animator_map = null;
+		this.animator_timenav = null;
 		this.animator_storyslider = null;
 		
 		// Merge Options
@@ -317,18 +331,23 @@ VCO.Timeline = VCO.Class.extend({
 	_initLayout: function () {
 		var self = this;
 		
-		this._el.container.className += ' vco-storymap';
+		this._el.container.className += ' vco-timeline';
 		this.options.base_class = this._el.container.className;
 		
 		// Create Layout
-		this._el.menubar		= VCO.Dom.create('div', 'vco-menubar', this._el.container);
-		this._el.map 			= VCO.Dom.create('div', 'vco-map', this._el.container);
-		this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+		if (this.options.timenav_position == "top") {
+			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+		} else {
+			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+		}
+		
+
 		
 		// Initial Default Layout
 		this.options.width 				= this._el.container.offsetWidth;
 		this.options.height 			= this._el.container.offsetHeight;
-		this._el.map.style.height 		= "1px";
 		this._el.storyslider.style.top 	= "1px";
 		
 		// Create Map using preferred Map API
@@ -337,10 +356,10 @@ VCO.Timeline = VCO.Class.extend({
 		//this._map.on('loaded', this._onMapLoaded, this);
 		
 		// Map Background Color
-		this._el.map.style.backgroundColor = this.options.map_background_color;
+		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
-		// Create Menu Bar
-		this._menubar = new VCO.MenuBar(this._el.menubar, this._el.container, this.options);
+		// Create TimeNav
+		this._timenav = new VCO.TimeNav(this._el.timenav, this._el.container);
 		
 		// Create StorySlider
 		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
@@ -349,40 +368,26 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-			// Set Default Component Sizes
-			this.options.map_height 		= (this.options.height / this.options.map_size_sticky);
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.map_height - 1);
-			this._menubar.setSticky(0);
+			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.timenav_height - 1);
 		} else {
 			this.options.menubar_height = this._el.menubar.offsetHeight;
-			// Set Default Component Sizes
-			this.options.map_height 		= this.options.height;
 			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - 1);
-			this._menubar.setSticky(this.options.menubar_height);
 		}
 		
 		
 		// Update Display
-		this._updateDisplay(this.options.map_height, true, 2000);
-		
-		// Animate Menu Bar to Default Location
-		this._menubar.show(2000);
+		this._updateDisplay(this.options.timenav_height, true, 2000);
 		
 	},
 	
 	_initEvents: function () {
 		
-		// Sidebar Events
-		this._menubar.on('collapse', this._onMenuBarCollapse, this);
-		this._menubar.on('back_to_start', this._onBackToStart, this);
-		this._menubar.on('overview', this._onOverview, this);
+		// TimeNav Events
+		this._timenav.on('collapse', this._onMenuBarCollapse, this);
 		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
-		
-		// Map Events
-		//this._map.on('change', this._onMapChange, this);
 	},
 	
 	// Update View
@@ -402,7 +407,6 @@ VCO.Timeline = VCO.Class.extend({
 		// Check if skinny
 		if (this.options.width <= this.options.skinny_size) {
 			this.options.layout = "portrait";
-			//display_class += " vco-skinny";
 		} else {
 			this.options.layout = "landscape";
 		}
@@ -424,11 +428,10 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.options.layout == "portrait") {
 			display_class += " vco-skinny";
 			// Map Offset
-			this._map.setMapOffset(0, 0);
+			//this._map.setMapOffset(0, 0);
 			
-			this.options.map_height 		= (this.options.height / this.options.map_size_sticky);
-			this.options.storyslider_height = (this.options.height - this.options.map_height - 1);
-			this._menubar.setSticky(0);
+			//this.options.timenav_height 		= 0;//(this.options.height / this.options.map_size_sticky);
+			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
 			
 			// Portrait
 			display_class += " vco-layout-portrait";
@@ -438,16 +441,16 @@ VCO.Timeline = VCO.Class.extend({
 			if (animate) {
 			
 				// Animate Map
-				if (this.animator_map) {
-					this.animator_map.stop();
+				if (this.animator_timenav) {
+					this.animator_timenav.stop();
 				}
 			
-				this.animator_map = VCO.Animate(this._el.map, {
-					height: 	(this.options.map_height) + "px",
+				this.animator_timenav = VCO.Animate(this._el.map, {
+					height: 	(this.options.timenav_height) + "px",
 					duration: 	duration,
 					easing: 	VCO.Ease.easeOutStrong,
 					complete: function () {
-						//self._map.updateDisplay(self.options.width, self.options.map_height, animate, d, self.options.menubar_height);
+						//self._map.updateDisplay(self.options.width, self.options.timenav_height, animate, d, self.options.menubar_height);
 					}
 				});
 			
@@ -463,15 +466,14 @@ VCO.Timeline = VCO.Class.extend({
 			
 			} else {
 				// Map
-				this._el.map.style.height = Math.ceil(this.options.map_height) + "px";
+				this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
 			
 				// StorySlider
 				this._el.storyslider.style.height = this.options.storyslider_height + "px";
 			}
 			
 			// Update Component Displays
-			this._menubar.updateDisplay(this.options.width, this.options.height, animate);
-			//this._map.updateDisplay(this.options.width, this.options.height, false);
+			this._timenav.updateDisplay(this.options.width, this.options.height, animate);
 			this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 			
 		} else {
@@ -479,34 +481,19 @@ VCO.Timeline = VCO.Class.extend({
 			// Landscape
 			display_class += " vco-layout-landscape";
 			
-			this.options.menubar_height = this._el.menubar.offsetHeight;
-			// Set Default Component Sizes
-			this.options.map_height 		= this.options.height;
-			this.options.storyslider_height = this.options.height;
-			this._menubar.setSticky(this.options.menubar_height);
+			this.options.storyslider_height = this.options.height - this.options.timenav_height;
 			
 			// Map Padding
 			//this._map.padding = [0,this.options.width/2];
 			
-			// Set Sticky state of MenuBar
-			this._menubar.setSticky(this.options.menubar_height);
-			
-			this._el.map.style.height = this.options.height + "px";
-			//this._el.menubar.style.top =  this.options.menubar_height + "px";
-			
-			// Update Component Displays
-			//this._map.options.map_center_offset.left = -(this.options.width/4);
-			//this._map.options.map_center_offset.top = 0;
-			//this._map.setMapOffset(-(this.options.width/4), 0);
-			//this._map.options.map_center_offset.top = this.options.menubar_height;
+			this._el.timenav.style.height = this.options.timenav_height + "px";
 			
 			// StorySlider
 			this._el.storyslider.style.top = 0;
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
 			
-			this._menubar.updateDisplay(this.options.width, this.options.height, animate);
-			//this._map.updateDisplay(this.options.width, this.options.height, animate, d);
-			this._storyslider.updateDisplay(this.options.width/2, this.options.storyslider_height, animate, this.options.layout);
+			this._timenav.updateDisplay(this.options.width, this.options.height, animate);
+			this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 		}
 		
 		
@@ -532,9 +519,9 @@ VCO.Timeline = VCO.Class.extend({
 	
 	_onColorChange: function(e) {
 		if (e.color || e.image) {
-			this._menubar.setColor(true);
+			
 		} else {
-			this._menubar.setColor(false);
+			
 		}
 	},
 	
@@ -546,7 +533,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 	},
 	
-	_onMapChange: function(e) {
+	_onTimeNavChange: function(e) {
 		if (this.current_slide != e.current_marker) {
 			this.current_slide = e.current_marker;
 			this._storyslider.goTo(this.current_slide);
@@ -555,12 +542,12 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_onOverview: function(e) {
-		this._map.markerOverview();
+		this._timenav.goToOverview();
 	},
 	
 	_onBackToStart: function(e) {
 		this.current_slide = 0;
-		this._map.goTo(this.current_slide);
+		this._timenav.goTo(this.current_slide);
 		this._storyslider.goTo(this.current_slide);
 		this.fire("change", {current_slide: this.current_slide}, this);
 	},

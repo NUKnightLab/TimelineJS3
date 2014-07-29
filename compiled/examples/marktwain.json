@@ -1,0 +1,344 @@
+
+{
+	"storymap":{
+		"test": "test",
+		"slides": [
+			{
+				"type": 					"overview", 
+
+				"date": 					"1835",
+				"location": {
+					"lat": 				39.491711,
+					"lon": 				-91.793260,
+					"name": 				"Florida, Missouri",
+					"zoom": 				12,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Mark Twain JSON",
+					"text": 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the later often called \"the Great American Novel.\""
+				},
+				"media": {
+					"url": 				"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg",
+					"credit":				"Vanity Fair",
+					"caption":			"Twain caricatured by Spy for Vanity Fair, 1908"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					"1835",
+				"location": {
+					"lat": 				39.491711,
+					"lon": 				-91.793260,
+					"name": 				"Florida, Missouri",
+					"zoom": 				12,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Florida, Missouri",
+					"text": 				"Born in Florida, Missouri. Halley’s comet visible from earth."
+				},
+				"media": {
+					"url": 				"https://twitter.com/MarkTwainQuote/status/441928360583643136",
+					"credit":				"",
+					"caption":			"Mark Twain's birthplace, Florida, Missouri"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					"1839",
+				"location": {
+					"lat": 				39.501711,
+					"lon": 				-91.943260,
+					"name": 				"Florida, Missouri",
+					"zoom": 				12,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Hannibal, Missouri",
+					"text": 				"Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
+				},
+				"media": {
+					"url": 				"http://instagram.com/p/lEPdm4J20m/",
+					"credit":				"",
+					"caption":			"Mark Twain's boyhood home in Hannibal, Missouri."
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					"1851",
+				"location": {
+					"lat": 				39.710083,
+					"lon": 				-91.357441,
+					"zoom": 				12,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"",
+					"text": 				""
+				},
+				"media": {
+					"url": 				"http://www.youtube.com/watch?v=C-nTpGMMVjY",
+					"credit":				null,
+					"caption":			"Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches."
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					null,
+				"location": {
+					"lat": 				40.714353,
+					"lon": 				-74.005973,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Itinerant Printer",
+					"text": 				"Visits St. Louis, New York, and Philadelphia as an itinerant printer."
+				},
+				"media": {
+					"url": 				"https://vine.co/v/bjHh0zHdgZT",
+					"credit":				null,
+					"caption":			null
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					"1862",
+				"location": {
+					"lat": 				39.309514,
+					"lon": 				-119.649979,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Virginia City Territorial Enterprise",
+					"text": 				"Travels around Nevada and California. Takes job as reporter for the Virginia City Territorial Enterprise."
+				},
+				"media": {
+					"url": 				"http://en.wikipedia.org/wiki/Mark_Twain",
+					"credit":				"",
+					"caption":			"Mark Twain's desk when he was editor of the Territorial Enterprise. Mark Twain Territorial Enterprise Museum, Virginia City, NV."
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				"#000000",
+					"opacity": 			50
+				},
+				"date": 					"1865",
+				"location": {
+					"lat": 				37.774929,
+					"lon": 				-122.419416,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"San Francisco",
+					"text": 				"Forced to leave Nevada for breaking dueling laws. Prospects in Calaveras County, settles in San Francisco. Writes for magazines and newspapers."
+				},
+				"media": {
+					"url": 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"credit":				"ETC",
+					"caption":			"something"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					"1866",
+				"location": {
+					"lat": 				19.896766,
+					"lon": 				-155.582782,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Hawaii",
+					"text": 				"Takes trip to Hawaii as correspondent of the Sacramento Alta Californian. Reports on shipwreck of the Hornet. Gives first public lecture."
+				},
+				"media": {
+					"url": 				"http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg",
+					"credit":				"",
+					"caption":			"Wreck of USS Hornet."
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"date": 					"1867",
+				"location": {
+					"lat": 				54.525961,
+					"lon": 				15.255119,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Travels",
+					"text": 				"Travels as correspondent to Europe and the Holy Land on the Quaker City. Sees a picture of Olivia Langdon (Livy). Publishes The Celebrated Jumping Frog of Calaveras County, and Other Sketches. Sales are light."
+				},
+				"media": {
+					"url": 				"http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu/page1-395px-1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu.jpg",
+					"credit":				"",
+					"caption":			""
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				"#000000",
+					"opacity": 			50
+				},
+				"date": 					"1868",
+				"location": {
+					"lat": 				42.089796,
+					"lon": 				-76.807734,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Livy",
+					"text": 				"Lectures across the United States. Meets and falls in love with Livy in Elmira, New York."
+				},
+				"media": {
+					"url": 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"credit":				"ETC",
+					"caption":			"something"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				"#000000",
+					"opacity": 			50
+				},
+				"date": 					"1870",
+				"location": {
+					"lat": 				42.886447,
+					"lon": 				-78.878369,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
+				},
+				"text": {
+					"headline": 			"Married",
+					"text": 				"Marries Livy in Elmira. Her father buys them a house in Buffalo, New York. Son Langdon is born."
+				},
+				"media": {
+					"url": 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"credit":				"ETC",
+					"caption":			"something"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				"#000000",
+					"opacity": 			50
+				},
+				"date": 					"1872",
+				"location": {
+					"lat": 				41.763711,
+					"lon": 				-72.685093,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Roughing It",
+					"text": 				"Moves with Livy to Hartford. Publishes Roughing It. Daughter is born. Son Langdon dies."
+				},
+				"media": {
+					"url": 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"credit":				"ETC",
+					"caption":			"something"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				"#000000",
+					"opacity": 			50
+				},
+				"date": 					"1891",
+				"location": {
+					"lat": 				54.525961,
+					"lon": 				15.255119,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
+				},
+				"text": {
+					"headline": 			"Financial",
+					"text": 				"Leaves Hartford to live in Europe because of financial difficulties."
+				},
+				"media": {
+					"url": 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"credit":				"ETC",
+					"caption":			"something"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				"#000000",
+					"opacity": 			50
+				},
+				"date": 					"1891",
+				"location": {
+					"lat": 				40.714353,
+					"lon": 				-74.005973,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
+				},
+				"text": {
+					"headline": 			"Livy dies",
+					"text": 				"Livy dies. Begins dictating autobiography. Moves to New York City."
+				},
+				"media": {
+					"url": 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"credit":				"ETC",
+					"caption":			"something"
+				}
+			},
+			{
+				"uniqueid": 				"",
+				"background": {			
+					"url": 				null,
+					"color": 				null,
+					"opacity": 			50
+				},
+				"date": 					"1891",
+				"location": {
+					"lat": 				41.304540,
+					"lon": 				-73.392898,
+					"zoom": 				11,
+					"icon": 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+					"line": 				true
+				},
+				"text": {
+					"headline": 			"Stormfield",
+					"text": 				"Moves into Stormfield in Redding, CT. Forms the Angelfish Club for young girls."
+				},
+				"media": {
+					"url": 				"http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif/lossy-page1-800px-Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif.jpg",
+					"credit":				"",
+					"caption":			"Twains house, \"Stormfield\", in Redding, Connecticut (front view)"
+				}
+			}
+		]
+	}
+}

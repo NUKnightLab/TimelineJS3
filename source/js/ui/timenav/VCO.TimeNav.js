@@ -1,5 +1,5 @@
-/*	VCO.MenuBar
-	Draggable component to control size
+/*	VCO.TimeNav
+	
 ================================================== */
  
 VCO.TimeNav = VCO.Class.extend({
@@ -41,8 +41,7 @@ VCO.TimeNav = VCO.Class.extend({
 			width: 					600,
 			height: 				600,
 			duration: 				1000,
-			ease: 					VCO.Ease.easeInOutQuint,
-			menubar_default_y: 		0
+			ease: 					VCO.Ease.easeInOutQuint
 		};
 		
 		// Animation
@@ -104,35 +103,18 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Layout
 		
 		// Buttons
-		this._el.button_overview 						= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
 		
-		this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
 		
-		this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
 		
-		if (this.options.map_as_image) {
-			this._el.button_overview.innerHTML			= VCO.Language.buttons.overview;
-		} else {
-			this._el.button_overview.innerHTML			= VCO.Language.buttons.map_overview;
-		}
 		
 		if (VCO.Browser.mobile) {
-			
-			this._el.button_backtostart.innerHTML		= "<span class='vco-icon-goback'></span>";
-			this._el.button_collapse_toggle.innerHTML	= "<span class='vco-icon-arrow-up'></span>";
-			this._el.container.setAttribute("ontouchstart"," ");
-		} else {
-			
-			this._el.button_backtostart.innerHTML		= VCO.Language.buttons.backtostart + " <span class='vco-icon-goback'></span>";
-			this._el.button_collapse_toggle.innerHTML	= VCO.Language.buttons.collapse_toggle + "<span class='vco-icon-arrow-up'></span>";
-		}
-		
-		if (this.options.layout == "landscape") {
-			this._el.button_collapse_toggle.style.display = "none";
-		}
+		} 
 		
 	},
 	

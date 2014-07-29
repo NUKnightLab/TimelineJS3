@@ -439,44 +439,18 @@ VCO.StorySlider = VCO.Class.extend({
 		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;
 		this._el.background.style.backgroundImage = "none";
 		
-		if (this.options.layout == "landscape") {
-			
+		if (bg.color_value) {
+			this._el.background.style.backgroundColor = bg.color_value;
+		} else {
+			this._el.background.style.backgroundColor = "#FFF";
+		}
+		
+		if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255 || bg.image) {
+			this._nav.next.setColor(true);
+			this._nav.previous.setColor(true);
+		} else {
 			this._nav.next.setColor(false);
 			this._nav.previous.setColor(false);
-			
-			// If background is not white, less fade is better
-			if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255) {
-				bg_percent_start = "0%";
-			}
-			
-			if (bg.image) {
-				//bg_alpha_end = "0.85";
-				//bg_percent_start = "0%";
-				//bg_percent_end = "0%";
-				
-			} 
-			
-			bg_css 	+= "background-image: -webkit-linear-gradient(left, color-stop(rgba(" + bg_color_rgb + ",0.0001 ) " + bg_percent_start + "), color-stop(rgba(" + bg_color_rgb + "," + bg_alpha_end + ") " + bg_percent_end + "));";
-			bg_css 	+= "background-image: linear-gradient(to right, rgba(" + bg_color_rgb + ",0.0001 ) "+ bg_percent_start + ", rgba(" + bg_color_rgb + "," + bg_alpha_end + ") " + bg_percent_end + ");";
-			bg_css 	+= "background-repeat: repeat-x;";
-			bg_css 	+= "filter: e(%('progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)',argb(" + bg_color_rgb + ", 0.0001),argb(" + bg_color_rgb + ",0.80)));";
-			
-			this._el.background.setAttribute("style", bg_css);
-			
-		} else {
-			if (bg.color_value) {
-				this._el.background.style.backgroundColor = bg.color_value;
-			} else {
-				this._el.background.style.backgroundColor = "#FFF";
-			}
-			
-			if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255 || bg.image) {
-				this._nav.next.setColor(true);
-				this._nav.previous.setColor(true);
-			} else {
-				this._nav.next.setColor(false);
-				this._nav.previous.setColor(false);
-			}
 		}
 	},
 	

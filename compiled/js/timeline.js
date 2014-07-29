@@ -3862,6 +3862,192 @@ VCO.DomEvent = {
 
 
 /* **********************************************
+     Begin VCO.TimeUtil.js
+********************************************** */
+
+/*	VCO.TimeUtil
+	Utilities for parsing time
+================================================== */
+
+
+VCO.TimeUtil = {
+	get: function (id) {
+		return (typeof id === 'string' ? document.getElementById(id) : id);
+	},
+
+	getDateFractions: function(the_date, is_utc) {
+		
+		var _time = {};
+		_time.days			= the_date		/	dateFractionBrowser.day;
+		_time.weeks 		= _time.days	/	dateFractionBrowser.week;
+		_time.months 		= _time.days	/	dateFractionBrowser.month;
+		_time.years 		= _time.months 	/	dateFractionBrowser.year;
+		_time.hours 		= _time.days	*	dateFractionBrowser.hour;
+		_time.minutes 		= _time.days	*	dateFractionBrowser.minute;
+		_time.seconds 		= _time.days	*	dateFractionBrowser.second;
+		_time.decades 		= _time.years	/	dateFractionBrowser.decade;
+		_time.centuries 	= _time.years	/	dateFractionBrowser.century;
+		_time.milleniums 	= _time.years	/	dateFractionBrowser.millenium;
+		_time.ages			= _time.years	/	dateFractionBrowser.age;
+		_time.epochs		= _time.years	/	dateFractionBrowser.epoch;
+		_time.eras			= _time.years	/	dateFractionBrowser.era;
+		_time.eons			= _time.years	/	dateFractionBrowser.eon;
+		
+		/*
+		trace("AGES "		 + 		_time.ages);
+		trace("EPOCHS "		 + 		_time.epochs);
+		trace("MILLENIUMS "  + 		_time.milleniums);
+		trace("CENTURIES "	 + 		_time.centuries);
+		trace("DECADES "	 + 		_time.decades);
+		trace("YEARS "		 + 		_time.years);
+		trace("MONTHS "		 + 		_time.months);
+		trace("WEEKS "		 + 		_time.weeks);
+		trace("DAYS "		 + 		_time.days);
+		trace("HOURS "		 + 		_time.hours);
+		trace("MINUTES "	 + 		_time.minutes);
+		trace("SECONDS "	 + 		_time.seconds);
+		*/
+		return _time;
+	},
+	
+	calculateInterval: function(time) {
+		var interval_calc = {},
+			_first								= VCO.TimeUtil.getDateFractions(time[0].startdate),
+			_last								= VCO.TimeUtil.getDateFractions(time[data.length - 1].enddate);
+		
+		// EON
+		interval_calc.eon.type					=	"eon";
+		interval_calc.eon.first					=	_first.eons;
+		interval_calc.eon.base					=	Math.floor(_first.eons);
+		interval_calc.eon.last					=	_last.eons;
+		interval_calc.eon.number				=	timespan.eons;
+		interval_calc.eon.multiplier		 	=	timelookup.eons;
+		interval_calc.eon.minor					=	timelookup.eons;
+		
+		// ERA
+		interval_calc.era.type					=	"era";
+		interval_calc.era.first					=	_first.eras;
+		interval_calc.era.base					=	Math.floor(_first.eras);
+		interval_calc.era.last					=	_last.eras;
+		interval_calc.era.number				=	timespan.eras;
+		interval_calc.era.multiplier		 	=	timelookup.eras;
+		interval_calc.era.minor					=	timelookup.eras;
+		
+		// EPOCH
+		interval_calc.epoch.type				=	"epoch";
+		interval_calc.epoch.first				=	_first.epochs;
+		interval_calc.epoch.base				=	Math.floor(_first.epochs);
+		interval_calc.epoch.last				=	_last.epochs;
+		interval_calc.epoch.number				=	timespan.epochs;
+		interval_calc.epoch.multiplier		 	=	timelookup.epochs;
+		interval_calc.epoch.minor				=	timelookup.epochs;
+		
+		// AGE
+		interval_calc.age.type					=	"age";
+		interval_calc.age.first					=	_first.ages;
+		interval_calc.age.base					=	Math.floor(_first.ages);
+		interval_calc.age.last					=	_last.ages;
+		interval_calc.age.number				=	timespan.ages;
+		interval_calc.age.multiplier		 	=	timelookup.ages;
+		interval_calc.age.minor					=	timelookup.ages;
+		
+		// MILLENIUM
+		interval_calc.millenium.type 			=	"millenium";
+		interval_calc.millenium.first			=	_first.milleniums;
+		interval_calc.millenium.base			=	Math.floor(_first.milleniums);
+		interval_calc.millenium.last			=	_last.milleniums;
+		interval_calc.millenium.number			=	timespan.milleniums;
+		interval_calc.millenium.multiplier	 	=	timelookup.millenium;
+		interval_calc.millenium.minor			=	timelookup.millenium;
+		
+		// CENTURY
+		interval_calc.century.type 				= "century";
+		interval_calc.century.first 			= _first.centuries;
+		interval_calc.century.base 				= Math.floor(_first.centuries);
+		interval_calc.century.last 				= _last.centuries;
+		interval_calc.century.number 			= timespan.centuries;
+		interval_calc.century.multiplier	 	= timelookup.century;
+		interval_calc.century.minor 			= timelookup.century;
+		
+		// DECADE
+		interval_calc.decade.type 				= "decade";
+		interval_calc.decade.first 				= _first.decades;
+		interval_calc.decade.base 				= Math.floor(_first.decades);
+		interval_calc.decade.last 				= _last.decades;
+		interval_calc.decade.number 			= timespan.decades;
+		interval_calc.decade.multiplier 		= timelookup.decade;
+		interval_calc.decade.minor 				= timelookup.decade;
+		
+		// YEAR
+		interval_calc.year.type					= "year";
+		interval_calc.year.first 				= _first.years;
+		interval_calc.year.base 				= Math.floor(_first.years);
+		interval_calc.year.last					= _last.years;
+		interval_calc.year.number 				= timespan.years;
+		interval_calc.year.multiplier 			= 1;
+		interval_calc.year.minor 				= timelookup.month;
+		
+		// MONTH
+		interval_calc.month.type 				= "month";
+		interval_calc.month.first 				= _first.months;
+		interval_calc.month.base 				= Math.floor(_first.months);
+		interval_calc.month.last 				= _last.months;
+		interval_calc.month.number 				= timespan.months;
+		interval_calc.month.multiplier 			= 1;
+		interval_calc.month.minor 				= Math.round(timelookup.week);
+		
+		// WEEK
+		// NOT DONE
+		interval_calc.week.type 				= "week";
+		interval_calc.week.first 				= _first.weeks;
+		interval_calc.week.base 				= Math.floor(_first.weeks);
+		interval_calc.week.last 				= _last.weeks;
+		interval_calc.week.number 				= timespan.weeks;
+		interval_calc.week.multiplier 			= 1;
+		interval_calc.week.minor 				= 7;
+		
+		// DAY
+		interval_calc.day.type 					= "day";
+		interval_calc.day.first 				= _first.days;
+		interval_calc.day.base	 				= Math.floor(_first.days);
+		interval_calc.day.last 					= _last.days;
+		interval_calc.day.number 				= timespan.days;
+		interval_calc.day.multiplier 			= 1;
+		interval_calc.day.minor 				= 24;
+		
+		// HOUR
+		interval_calc.hour.type 				= "hour";
+		interval_calc.hour.first 				= _first.hours;
+		interval_calc.hour.base 				= Math.floor(_first.hours);
+		interval_calc.hour.last 				= _last.hours;
+		interval_calc.hour.number 				= timespan.hours;
+		interval_calc.hour.multiplier 			= 1;
+		interval_calc.hour.minor 				= 60;
+		
+		// MINUTE
+		interval_calc.minute.type 				= "minute";
+		interval_calc.minute.first 				= _first.minutes;
+		interval_calc.minute.base 				= Math.floor(_first.minutes);
+		interval_calc.minute.last 				= _last.minutes;
+		interval_calc.minute.number 			= timespan.minutes;
+		interval_calc.minute.multiplier 		= 1;
+		interval_calc.minute.minor 				= 60;
+		
+		// SECOND
+		interval_calc.second.type 				= "decade";
+		interval_calc.second.first 				= _first.seconds;
+		interval_calc.second.base 				= Math.floor(_first.seconds);
+		interval_calc.second.last 				= _last.seconds;
+		interval_calc.second.number 			= timespan.seconds;
+		interval_calc.second.multiplier 		= 1;
+		interval_calc.second.minor 				= 10;
+		
+		return interval_calc;
+	}
+	
+};
+
+/* **********************************************
      Begin VCO.Draggable.js
 ********************************************** */
 
@@ -4906,8 +5092,8 @@ VCO.Message = VCO.Class.extend({
      Begin VCO.TimeNav.js
 ********************************************** */
 
-/*	VCO.MenuBar
-	Draggable component to control size
+/*	VCO.TimeNav
+	
 ================================================== */
  
 VCO.TimeNav = VCO.Class.extend({
@@ -4949,8 +5135,7 @@ VCO.TimeNav = VCO.Class.extend({
 			width: 					600,
 			height: 				600,
 			duration: 				1000,
-			ease: 					VCO.Ease.easeInOutQuint,
-			menubar_default_y: 		0
+			ease: 					VCO.Ease.easeInOutQuint
 		};
 		
 		// Animation
@@ -5012,35 +5197,18 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Layout
 		
 		// Buttons
-		this._el.button_overview 						= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
 		
-		this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
 		
-		this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
 		
-		if (this.options.map_as_image) {
-			this._el.button_overview.innerHTML			= VCO.Language.buttons.overview;
-		} else {
-			this._el.button_overview.innerHTML			= VCO.Language.buttons.map_overview;
-		}
 		
 		if (VCO.Browser.mobile) {
-			
-			this._el.button_backtostart.innerHTML		= "<span class='vco-icon-goback'></span>";
-			this._el.button_collapse_toggle.innerHTML	= "<span class='vco-icon-arrow-up'></span>";
-			this._el.container.setAttribute("ontouchstart"," ");
-		} else {
-			
-			this._el.button_backtostart.innerHTML		= VCO.Language.buttons.backtostart + " <span class='vco-icon-goback'></span>";
-			this._el.button_collapse_toggle.innerHTML	= VCO.Language.buttons.collapse_toggle + "<span class='vco-icon-arrow-up'></span>";
-		}
-		
-		if (this.options.layout == "landscape") {
-			this._el.button_collapse_toggle.style.display = "none";
-		}
+		} 
 		
 	},
 	
@@ -6961,9 +7129,9 @@ VCO.Slide = VCO.Class.extend({
 			this._el.content.style.paddingRight = 0 + "px";
 			this._el.content.style.width		= this.options.width - 0 + "px";
 		} else if (layout == "landscape") {
-			this._el.content.style.paddingLeft 	= 40 + "px";
-			this._el.content.style.paddingRight = 75 + "px";
-			this._el.content.style.width		= this.options.width - (75 + 40) + "px";
+			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
+			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
+			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
 		
 		} else if (this.options.width <= this.options.skinny_size) {
 			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
@@ -7564,44 +7732,18 @@ VCO.StorySlider = VCO.Class.extend({
 		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;
 		this._el.background.style.backgroundImage = "none";
 		
-		if (this.options.layout == "landscape") {
-			
+		if (bg.color_value) {
+			this._el.background.style.backgroundColor = bg.color_value;
+		} else {
+			this._el.background.style.backgroundColor = "#FFF";
+		}
+		
+		if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255 || bg.image) {
+			this._nav.next.setColor(true);
+			this._nav.previous.setColor(true);
+		} else {
 			this._nav.next.setColor(false);
 			this._nav.previous.setColor(false);
-			
-			// If background is not white, less fade is better
-			if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255) {
-				bg_percent_start = "0%";
-			}
-			
-			if (bg.image) {
-				//bg_alpha_end = "0.85";
-				//bg_percent_start = "0%";
-				//bg_percent_end = "0%";
-				
-			} 
-			
-			bg_css 	+= "background-image: -webkit-linear-gradient(left, color-stop(rgba(" + bg_color_rgb + ",0.0001 ) " + bg_percent_start + "), color-stop(rgba(" + bg_color_rgb + "," + bg_alpha_end + ") " + bg_percent_end + "));";
-			bg_css 	+= "background-image: linear-gradient(to right, rgba(" + bg_color_rgb + ",0.0001 ) "+ bg_percent_start + ", rgba(" + bg_color_rgb + "," + bg_alpha_end + ") " + bg_percent_end + ");";
-			bg_css 	+= "background-repeat: repeat-x;";
-			bg_css 	+= "filter: e(%('progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)',argb(" + bg_color_rgb + ", 0.0001),argb(" + bg_color_rgb + ",0.80)));";
-			
-			this._el.background.setAttribute("style", bg_css);
-			
-		} else {
-			if (bg.color_value) {
-				this._el.background.style.backgroundColor = bg.color_value;
-			} else {
-				this._el.background.style.backgroundColor = "#FFF";
-			}
-			
-			if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255 || bg.image) {
-				this._nav.next.setColor(true);
-				this._nav.previous.setColor(true);
-			} else {
-				this._nav.next.setColor(false);
-				this._nav.previous.setColor(false);
-			}
 		}
 	},
 	
@@ -7861,13 +8003,21 @@ VCO.StorySlider = VCO.Class.extend({
 	// @codekit-prepend "dom/VCO.Dom.js";
 	// @codekit-prepend "dom/VCO.DomUtil.js";
 	// @codekit-prepend "dom/VCO.DomEvent.js";
+	
+// TIME
+	// @codekit-prepend "time/VCO.TimeUtil.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";
 	// @codekit-prepend "ui/VCO.Swipable.js";
 	// @codekit-prepend "ui/VCO.MenuBar.js";
 	// @codekit-prepend "ui/VCO.Message.js";
-	// @codekit-prepend "ui/VCO.TimeNav.js";
+	
+	// TIMENAV
+		// @codekit-prepend "ui/timenav/VCO.TimeNav.js";
+		
+		
+		
 
 // MEDIA
 	// @codekit-prepend "media/VCO.MediaType.js";
@@ -7899,7 +8049,7 @@ VCO.StorySlider = VCO.Class.extend({
 	// @codekit-prepend "slider/VCO.SlideNav.js";
 	// @codekit-prepend "slider/VCO.StorySlider.js";
 
-// TIME
+
 	
 
 
@@ -7913,7 +8063,7 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		
 		// Version
-		this.version = "0.1.16";
+		this.version = "0.0.16";
 		
 		// Ready
 		this.ready = false;
@@ -7923,6 +8073,7 @@ VCO.Timeline = VCO.Class.extend({
 			container: {},
 			storyslider: {},
 			map: {},
+			timenav: {},
 			menubar: {}
 		};
 		
@@ -7939,6 +8090,9 @@ VCO.Timeline = VCO.Class.extend({
 		// Map
 		this._map = {};
 		this.map = {}; // For direct access to Leaflet Map
+		
+		// TimeNav
+		this._timenav = {};
 		
 		// Menu Bar
 		this._menubar = {};
@@ -7995,7 +8149,9 @@ VCO.Timeline = VCO.Class.extend({
 			height: 				this._el.container.offsetHeight,
 			width: 					this._el.container.offsetWidth,
 			layout: 				"landscape", 	// portrait or landscape
+			timenav_position: 		"bottom", 		// timeline on top or bottom
 			base_class: 			"",
+			timenav_height: 		300,
 			start_at_slide: 		0,
 			menubar_height: 		0,
 			skinny_size: 			650,
@@ -8007,7 +8163,7 @@ VCO.Timeline = VCO.Class.extend({
 			dragging: 				true,
 			trackResize: 			true,
 			map_type: 				"stamen:toner-lite",
-			slide_padding_lr: 		45, 			// padding on slide of slide
+			slide_padding_lr: 		100, 			// padding on slide of slide
 			slide_default_fade: 	"0%", 			// landscape fade
 			menubar_default_y: 		0,
 			map_popup: 				false,
@@ -8027,7 +8183,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.current_slide = this.options.start_at_slide;
 		
 		// Animation Objects
-		this.animator_map = null;
+		this.animator_timenav = null;
 		this.animator_storyslider = null;
 		
 		// Merge Options
@@ -8140,18 +8296,23 @@ VCO.Timeline = VCO.Class.extend({
 	_initLayout: function () {
 		var self = this;
 		
-		this._el.container.className += ' vco-storymap';
+		this._el.container.className += ' vco-timeline';
 		this.options.base_class = this._el.container.className;
 		
 		// Create Layout
-		this._el.menubar		= VCO.Dom.create('div', 'vco-menubar', this._el.container);
-		this._el.map 			= VCO.Dom.create('div', 'vco-map', this._el.container);
-		this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+		if (this.options.timenav_position == "top") {
+			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+		} else {
+			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+		}
+		
+
 		
 		// Initial Default Layout
 		this.options.width 				= this._el.container.offsetWidth;
 		this.options.height 			= this._el.container.offsetHeight;
-		this._el.map.style.height 		= "1px";
 		this._el.storyslider.style.top 	= "1px";
 		
 		// Create Map using preferred Map API
@@ -8160,10 +8321,10 @@ VCO.Timeline = VCO.Class.extend({
 		//this._map.on('loaded', this._onMapLoaded, this);
 		
 		// Map Background Color
-		this._el.map.style.backgroundColor = this.options.map_background_color;
+		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
-		// Create Menu Bar
-		this._menubar = new VCO.MenuBar(this._el.menubar, this._el.container, this.options);
+		// Create TimeNav
+		this._timenav = new VCO.TimeNav(this._el.timenav, this._el.container);
 		
 		// Create StorySlider
 		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
@@ -8172,40 +8333,26 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-			// Set Default Component Sizes
-			this.options.map_height 		= (this.options.height / this.options.map_size_sticky);
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.map_height - 1);
-			this._menubar.setSticky(0);
+			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.timenav_height - 1);
 		} else {
 			this.options.menubar_height = this._el.menubar.offsetHeight;
-			// Set Default Component Sizes
-			this.options.map_height 		= this.options.height;
 			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - 1);
-			this._menubar.setSticky(this.options.menubar_height);
 		}
 		
 		
 		// Update Display
-		this._updateDisplay(this.options.map_height, true, 2000);
-		
-		// Animate Menu Bar to Default Location
-		this._menubar.show(2000);
+		this._updateDisplay(this.options.timenav_height, true, 2000);
 		
 	},
 	
 	_initEvents: function () {
 		
-		// Sidebar Events
-		this._menubar.on('collapse', this._onMenuBarCollapse, this);
-		this._menubar.on('back_to_start', this._onBackToStart, this);
-		this._menubar.on('overview', this._onOverview, this);
+		// TimeNav Events
+		this._timenav.on('collapse', this._onMenuBarCollapse, this);
 		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
-		
-		// Map Events
-		//this._map.on('change', this._onMapChange, this);
 	},
 	
 	// Update View
@@ -8225,7 +8372,6 @@ VCO.Timeline = VCO.Class.extend({
 		// Check if skinny
 		if (this.options.width <= this.options.skinny_size) {
 			this.options.layout = "portrait";
-			//display_class += " vco-skinny";
 		} else {
 			this.options.layout = "landscape";
 		}
@@ -8247,11 +8393,10 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.options.layout == "portrait") {
 			display_class += " vco-skinny";
 			// Map Offset
-			this._map.setMapOffset(0, 0);
+			//this._map.setMapOffset(0, 0);
 			
-			this.options.map_height 		= (this.options.height / this.options.map_size_sticky);
-			this.options.storyslider_height = (this.options.height - this.options.map_height - 1);
-			this._menubar.setSticky(0);
+			//this.options.timenav_height 		= 0;//(this.options.height / this.options.map_size_sticky);
+			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
 			
 			// Portrait
 			display_class += " vco-layout-portrait";
@@ -8261,16 +8406,16 @@ VCO.Timeline = VCO.Class.extend({
 			if (animate) {
 			
 				// Animate Map
-				if (this.animator_map) {
-					this.animator_map.stop();
+				if (this.animator_timenav) {
+					this.animator_timenav.stop();
 				}
 			
-				this.animator_map = VCO.Animate(this._el.map, {
-					height: 	(this.options.map_height) + "px",
+				this.animator_timenav = VCO.Animate(this._el.map, {
+					height: 	(this.options.timenav_height) + "px",
 					duration: 	duration,
 					easing: 	VCO.Ease.easeOutStrong,
 					complete: function () {
-						//self._map.updateDisplay(self.options.width, self.options.map_height, animate, d, self.options.menubar_height);
+						//self._map.updateDisplay(self.options.width, self.options.timenav_height, animate, d, self.options.menubar_height);
 					}
 				});
 			
@@ -8286,15 +8431,14 @@ VCO.Timeline = VCO.Class.extend({
 			
 			} else {
 				// Map
-				this._el.map.style.height = Math.ceil(this.options.map_height) + "px";
+				this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
 			
 				// StorySlider
 				this._el.storyslider.style.height = this.options.storyslider_height + "px";
 			}
 			
 			// Update Component Displays
-			this._menubar.updateDisplay(this.options.width, this.options.height, animate);
-			//this._map.updateDisplay(this.options.width, this.options.height, false);
+			this._timenav.updateDisplay(this.options.width, this.options.height, animate);
 			this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 			
 		} else {
@@ -8302,34 +8446,19 @@ VCO.Timeline = VCO.Class.extend({
 			// Landscape
 			display_class += " vco-layout-landscape";
 			
-			this.options.menubar_height = this._el.menubar.offsetHeight;
-			// Set Default Component Sizes
-			this.options.map_height 		= this.options.height;
-			this.options.storyslider_height = this.options.height;
-			this._menubar.setSticky(this.options.menubar_height);
+			this.options.storyslider_height = this.options.height - this.options.timenav_height;
 			
 			// Map Padding
 			//this._map.padding = [0,this.options.width/2];
 			
-			// Set Sticky state of MenuBar
-			this._menubar.setSticky(this.options.menubar_height);
-			
-			this._el.map.style.height = this.options.height + "px";
-			//this._el.menubar.style.top =  this.options.menubar_height + "px";
-			
-			// Update Component Displays
-			//this._map.options.map_center_offset.left = -(this.options.width/4);
-			//this._map.options.map_center_offset.top = 0;
-			//this._map.setMapOffset(-(this.options.width/4), 0);
-			//this._map.options.map_center_offset.top = this.options.menubar_height;
+			this._el.timenav.style.height = this.options.timenav_height + "px";
 			
 			// StorySlider
 			this._el.storyslider.style.top = 0;
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
 			
-			this._menubar.updateDisplay(this.options.width, this.options.height, animate);
-			//this._map.updateDisplay(this.options.width, this.options.height, animate, d);
-			this._storyslider.updateDisplay(this.options.width/2, this.options.storyslider_height, animate, this.options.layout);
+			this._timenav.updateDisplay(this.options.width, this.options.height, animate);
+			this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 		}
 		
 		
@@ -8355,9 +8484,9 @@ VCO.Timeline = VCO.Class.extend({
 	
 	_onColorChange: function(e) {
 		if (e.color || e.image) {
-			this._menubar.setColor(true);
+			
 		} else {
-			this._menubar.setColor(false);
+			
 		}
 	},
 	
@@ -8369,7 +8498,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 	},
 	
-	_onMapChange: function(e) {
+	_onTimeNavChange: function(e) {
 		if (this.current_slide != e.current_marker) {
 			this.current_slide = e.current_marker;
 			this._storyslider.goTo(this.current_slide);
@@ -8378,12 +8507,12 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_onOverview: function(e) {
-		this._map.markerOverview();
+		this._timenav.goToOverview();
 	},
 	
 	_onBackToStart: function(e) {
 		this.current_slide = 0;
-		this._map.goTo(this.current_slide);
+		this._timenav.goTo(this.current_slide);
 		this._storyslider.goTo(this.current_slide);
 		this.fire("change", {current_slide: this.current_slide}, this);
 	},
