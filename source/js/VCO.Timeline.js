@@ -83,6 +83,7 @@
 // TIMENAV
 	// @codekit-prepend "timenav/VCO.TimeNav.js";
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
+	// @codekit-prepend "timenav/VCO.TimeScale.js";
 
 
 VCO.Timeline = VCO.Class.extend({
