@@ -15,17 +15,21 @@
 		.vco-media-content{
 			position: relative;
 			.clearfix();
-			
 			.vco-media-loaderror {
-				border: 1px solid @color-foreground;
-				//min-height:200px;
-				//min-width:200px;
-				padding:20px;
-				padding-top:50px;
-				padding-bottom:50px;
-				color: darken(@color-background,50);
+				p {
+					color:@ui-background-color;
+					span {
+						color:@ui-background-color;
+					}
+					text-align:center;
+					em {
+		
+					}
+				}
 				[class^="vco-icon-"], [class*=" vco-icon-"] {
 					font-size:@base-font-size-xlarge;
+					color:@ui-background-color;
+					text-align:center;
 				}
 			}
 			
@@ -177,9 +181,10 @@
 		height:auto;
 		float: none;
 		display:block;
+		
 		.vco-media-content-container {
 			.vco-media-content{
-		
+				
 			}
 			.vco-credit {
 		
@@ -187,6 +192,7 @@
 			.vco-caption {
 		
 			}
+			
 		}
 	}
 }

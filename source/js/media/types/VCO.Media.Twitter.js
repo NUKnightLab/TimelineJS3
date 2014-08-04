@@ -31,13 +31,24 @@ VCO.Media.Twitter = VCO.Media.extend({
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
 		
 		// API Call
-		VCO.getJSON(api_url, function(d) {
-			self.createMedia(d);
+		VCO.ajax({
+			type: 'GET',
+			url: api_url,
+			dataType: 'json', //json data type
+			success: function(d){
+				self.createMedia(d);
+			},
+			error:function(xhr, type){
+				var error_text = "";
+				error_text += "Unable to load Tweet. <br/>" + self.media_id + "<br/>" + type;
+				self.loadErrorDisplay(error_text);
+			}
 		});
 		 
 	},
 	
-	createMedia: function(d) {		
+	createMedia: function(d) {	
+		trace("create_media")	
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",

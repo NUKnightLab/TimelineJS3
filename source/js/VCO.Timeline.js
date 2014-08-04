@@ -39,9 +39,9 @@
 	// @codekit-prepend "dom/VCO.DomUtil.js";
 	// @codekit-prepend "dom/VCO.DomEvent.js";
 	
-// TIME
-	// @codekit-prepend "time/VCO.TimeUtil.js";
-	// @codekit-prepend "time/VCO.Date.js";
+// Date
+	// @codekit-prepend "date/VCO.DateFormat.js";
+	// @codekit-prepend "date/VCO.Date.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";
@@ -49,9 +49,7 @@
 	// @codekit-prepend "ui/VCO.MenuBar.js";
 	// @codekit-prepend "ui/VCO.Message.js";
 	
-	// TIMENAV
-		// @codekit-prepend "ui/timenav/VCO.TimeNav.js";
-		
+	
 		
 		
 
@@ -85,8 +83,10 @@
 	// @codekit-prepend "slider/VCO.SlideNav.js";
 	// @codekit-prepend "slider/VCO.StorySlider.js";
 
-
-	
+// TIMENAV
+	// @codekit-prepend "timenav/VCO.TimeNav.js";
+	// @codekit-prepend "timenav/VCO.TimeUtil.js";
+	// @codekit-prepend "timenav/VCO.TimeMarker.js";
 
 
 VCO.Timeline = VCO.Class.extend({
@@ -134,7 +134,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar = {};
 		
 		// Loaded State
-		this._loaded = {storyslider:false, map:false};
+		this._loaded = {storyslider:false, timenav:false};
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
@@ -149,7 +149,16 @@ VCO.Timeline = VCO.Class.extend({
 						color: 				"",
 						opacity: 			50
 					},
-					date: 					"1835",
+					date: {
+						year:			1978,
+						month:			01,
+						day: 			05,
+						hour: 			6,
+						minute: 		45,
+						second: 		56,
+						millisecond: 	98,
+						format: 		""
+					},
 					text: {
 						headline: 			"Mark Twain",
 						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
@@ -158,7 +167,16 @@ VCO.Timeline = VCO.Class.extend({
 				},
 				{
 					uniqueid: 				"",
-					date: 					"1835",
+					date: {
+						year:			1978,
+						month:			01,
+						day: 			05,
+						hour: 			6,
+						minute: 		45,
+						second: 		56,
+						millisecond: 	98,
+						format: 		""
+					},
 					location: {
 						lat: 				39.491711,
 						lon: 				-91.793260,
@@ -187,7 +205,7 @@ VCO.Timeline = VCO.Class.extend({
 			layout: 				"landscape", 	// portrait or landscape
 			timenav_position: 		"bottom", 		// timeline on top or bottom
 			base_class: 			"",
-			timenav_height: 		300,
+			timenav_height: 		200,
 			start_at_slide: 		0,
 			menubar_height: 		0,
 			skinny_size: 			650,
@@ -255,20 +273,8 @@ VCO.Timeline = VCO.Class.extend({
 			self._loadLanguage(data);
 		}
 		
-		// Load language
-		/*
-		if(this.options.language == 'en') {
-		    this.options.language = VCO.Language;
-		    this._initData(data);
-		} else {
-			VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
-				self._initData(data);
-			});
-		}
-		*/
 		
-		
-		return this;
+
 	},
 	
 	/*	Load Language
@@ -306,21 +312,33 @@ VCO.Timeline = VCO.Class.extend({
 	
 	// Initialize the data
 	_initData: function(data) {
+		trace("_initData")
 		var self = this;
 		
 		if (typeof data === 'string') {
+			trace("string");
 			
-			VCO.getJSON(data, function(d) {
-				if (d && d.storymap) {
-					VCO.Util.mergeData(self.data, d.storymap);
+			VCO.ajax({
+				type: 'GET',
+				url: data,
+				dataType: 'json', //json data type
+				success: function(d){
+					if (d && d.timeline) {
+						VCO.Util.mergeData(self.data, d.timeline);
+					}
+					self._onDataLoaded();
+				},
+				error:function(xhr, type){
+					trace("ERROR LOADING");
+					trace(xhr);
+					trace(type);
 				}
-				self._onDataLoaded();
 			});
 		} else if (typeof data === 'object') {
-			if (data.storymap) {
-				self.data = data.storymap;
+			if (data.timeline) {
+				self.data = data.timeline;
 			} else {
-				trace("data must have a storymap property")
+				trace("data must have a timeline property")
 			}
 			self._onDataLoaded();
 		} else {
@@ -360,7 +378,9 @@ VCO.Timeline = VCO.Class.extend({
 		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
 		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this._el.container);
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
+		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.init();
 		
 		// Create StorySlider
 		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
@@ -583,8 +603,8 @@ VCO.Timeline = VCO.Class.extend({
 		});
 	},
 	
-	_onMapLoaded: function() {
-		this._loaded.map = true;
+	_onTimeNavLoaded: function() {
+		this._loaded.timenav = true;
 		this._onLoaded();
 	},
 	
@@ -594,7 +614,7 @@ VCO.Timeline = VCO.Class.extend({
 	},
 		
 	_onLoaded: function() {
-		if (this._loaded.storyslider && this._loaded.map) {
+		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.data);
 		}
 	}

@@ -27,11 +27,24 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 		api_url = "http://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
 		
 		// API Call
-		VCO.getJSON(api_url, function(d) {
-			self.createMedia(d);
+		
+		VCO.ajax({
+			type: 'GET',
+			url: api_url,
+			dataType: 'json', //json data type
+			
+			success: function(d){
+				self.createMedia(d);
+			},
+			error:function(xhr, type){
+				var error_text = "";
+				error_text += "Unable to load Wikipedia entry. <br/>" + self.media_id + "<br/>" + type;
+				self.loadErrorDisplay(error_text);
+			}
 		});
 		
 	},
+	
 	createMedia: function(d) {
 		var wiki = "";
 		

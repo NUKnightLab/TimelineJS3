@@ -1,5 +1,5 @@
-/*	VCO.SizeBar
-	Draggable component to control size
+/*	VCO.Message
+	
 ================================================== */
  
 VCO.Message = VCO.Class.extend({

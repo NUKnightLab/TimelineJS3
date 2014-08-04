@@ -3862,189 +3862,243 @@ VCO.DomEvent = {
 
 
 /* **********************************************
-     Begin VCO.TimeUtil.js
+     Begin VCO.DateFormat.js
 ********************************************** */
 
-/*	VCO.TimeUtil
-	Utilities for parsing time
+/*	VCO.DateFormat
+	Format Display type for dates
 ================================================== */
-
-
-VCO.TimeUtil = {
-	get: function (id) {
-		return (typeof id === 'string' ? document.getElementById(id) : id);
-	},
-
-	getDateFractions: function(the_date, is_utc) {
-		
-		var _time = {};
-		_time.days			= the_date		/	dateFractionBrowser.day;
-		_time.weeks 		= _time.days	/	dateFractionBrowser.week;
-		_time.months 		= _time.days	/	dateFractionBrowser.month;
-		_time.years 		= _time.months 	/	dateFractionBrowser.year;
-		_time.hours 		= _time.days	*	dateFractionBrowser.hour;
-		_time.minutes 		= _time.days	*	dateFractionBrowser.minute;
-		_time.seconds 		= _time.days	*	dateFractionBrowser.second;
-		_time.decades 		= _time.years	/	dateFractionBrowser.decade;
-		_time.centuries 	= _time.years	/	dateFractionBrowser.century;
-		_time.milleniums 	= _time.years	/	dateFractionBrowser.millenium;
-		_time.ages			= _time.years	/	dateFractionBrowser.age;
-		_time.epochs		= _time.years	/	dateFractionBrowser.epoch;
-		_time.eras			= _time.years	/	dateFractionBrowser.era;
-		_time.eons			= _time.years	/	dateFractionBrowser.eon;
-		
+VCO.DateFormat = {
+	formats: {
 		/*
-		trace("AGES "		 + 		_time.ages);
-		trace("EPOCHS "		 + 		_time.epochs);
-		trace("MILLENIUMS "  + 		_time.milleniums);
-		trace("CENTURIES "	 + 		_time.centuries);
-		trace("DECADES "	 + 		_time.decades);
-		trace("YEARS "		 + 		_time.years);
-		trace("MONTHS "		 + 		_time.months);
-		trace("WEEKS "		 + 		_time.weeks);
-		trace("DAYS "		 + 		_time.days);
-		trace("HOURS "		 + 		_time.hours);
-		trace("MINUTES "	 + 		_time.minutes);
-		trace("SECONDS "	 + 		_time.seconds);
+		year: "yyyy",
+		month_short: "mmm",
+		month: "mmmm yyyy",
+		full_short: "mmm d",
+		full: "mmmm d',' yyyy",
+		time_short: "h:MM:ss TT",
+		time_no_seconds_short: "h:MM TT",
+		time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+		full_long: "mmm d',' yyyy 'at' hh:MM TT",
+		full_long_small_date: "hh:MM TT'<br/><small>mmm d',' yyyy'</small>'",
+		
+		// Dictionary
+		dictionary: {
+			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			day_abbr: ["Sun.", "Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
+			hour: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			hour_suffix: ["am"]
+		},
 		*/
-		return _time;
+		masks: {
+			"default":      "ddd mmm dd yyyy HH:MM:ss",
+			shortDate:      "m/d/yy",
+			mediumDate:     "mmm d, yyyy",
+			longDate:       "mmmm d, yyyy",
+			fullDate:       "dddd, mmmm d, yyyy",
+			shortTime:      "h:MM TT",
+			mediumTime:     "h:MM:ss TT",
+			longTime:       "h:MM:ss TT Z",
+			isoDate:        "yyyy-mm-dd",
+			isoTime:        "HH:MM:ss",
+			isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
+			isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+		},
+		
+		// Internationalization strings
+		i18n: {
+			dayNames: [
+				"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+				"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+			],
+			monthNames: [
+				"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+				"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+			]
+		}
 	},
 	
-	calculateInterval: function(time) {
-		var interval_calc = {},
-			_first								= VCO.TimeUtil.getDateFractions(time[0].startdate),
-			_last								= VCO.TimeUtil.getDateFractions(time[data.length - 1].enddate);
-		
-		// EON
-		interval_calc.eon.type					=	"eon";
-		interval_calc.eon.first					=	_first.eons;
-		interval_calc.eon.base					=	Math.floor(_first.eons);
-		interval_calc.eon.last					=	_last.eons;
-		interval_calc.eon.number				=	timespan.eons;
-		interval_calc.eon.multiplier		 	=	timelookup.eons;
-		interval_calc.eon.minor					=	timelookup.eons;
-		
-		// ERA
-		interval_calc.era.type					=	"era";
-		interval_calc.era.first					=	_first.eras;
-		interval_calc.era.base					=	Math.floor(_first.eras);
-		interval_calc.era.last					=	_last.eras;
-		interval_calc.era.number				=	timespan.eras;
-		interval_calc.era.multiplier		 	=	timelookup.eras;
-		interval_calc.era.minor					=	timelookup.eras;
-		
-		// EPOCH
-		interval_calc.epoch.type				=	"epoch";
-		interval_calc.epoch.first				=	_first.epochs;
-		interval_calc.epoch.base				=	Math.floor(_first.epochs);
-		interval_calc.epoch.last				=	_last.epochs;
-		interval_calc.epoch.number				=	timespan.epochs;
-		interval_calc.epoch.multiplier		 	=	timelookup.epochs;
-		interval_calc.epoch.minor				=	timelookup.epochs;
-		
-		// AGE
-		interval_calc.age.type					=	"age";
-		interval_calc.age.first					=	_first.ages;
-		interval_calc.age.base					=	Math.floor(_first.ages);
-		interval_calc.age.last					=	_last.ages;
-		interval_calc.age.number				=	timespan.ages;
-		interval_calc.age.multiplier		 	=	timelookup.ages;
-		interval_calc.age.minor					=	timelookup.ages;
-		
-		// MILLENIUM
-		interval_calc.millenium.type 			=	"millenium";
-		interval_calc.millenium.first			=	_first.milleniums;
-		interval_calc.millenium.base			=	Math.floor(_first.milleniums);
-		interval_calc.millenium.last			=	_last.milleniums;
-		interval_calc.millenium.number			=	timespan.milleniums;
-		interval_calc.millenium.multiplier	 	=	timelookup.millenium;
-		interval_calc.millenium.minor			=	timelookup.millenium;
-		
-		// CENTURY
-		interval_calc.century.type 				= "century";
-		interval_calc.century.first 			= _first.centuries;
-		interval_calc.century.base 				= Math.floor(_first.centuries);
-		interval_calc.century.last 				= _last.centuries;
-		interval_calc.century.number 			= timespan.centuries;
-		interval_calc.century.multiplier	 	= timelookup.century;
-		interval_calc.century.minor 			= timelookup.century;
-		
-		// DECADE
-		interval_calc.decade.type 				= "decade";
-		interval_calc.decade.first 				= _first.decades;
-		interval_calc.decade.base 				= Math.floor(_first.decades);
-		interval_calc.decade.last 				= _last.decades;
-		interval_calc.decade.number 			= timespan.decades;
-		interval_calc.decade.multiplier 		= timelookup.decade;
-		interval_calc.decade.minor 				= timelookup.decade;
-		
-		// YEAR
-		interval_calc.year.type					= "year";
-		interval_calc.year.first 				= _first.years;
-		interval_calc.year.base 				= Math.floor(_first.years);
-		interval_calc.year.last					= _last.years;
-		interval_calc.year.number 				= timespan.years;
-		interval_calc.year.multiplier 			= 1;
-		interval_calc.year.minor 				= timelookup.month;
-		
-		// MONTH
-		interval_calc.month.type 				= "month";
-		interval_calc.month.first 				= _first.months;
-		interval_calc.month.base 				= Math.floor(_first.months);
-		interval_calc.month.last 				= _last.months;
-		interval_calc.month.number 				= timespan.months;
-		interval_calc.month.multiplier 			= 1;
-		interval_calc.month.minor 				= Math.round(timelookup.week);
-		
-		// WEEK
-		// NOT DONE
-		interval_calc.week.type 				= "week";
-		interval_calc.week.first 				= _first.weeks;
-		interval_calc.week.base 				= Math.floor(_first.weeks);
-		interval_calc.week.last 				= _last.weeks;
-		interval_calc.week.number 				= timespan.weeks;
-		interval_calc.week.multiplier 			= 1;
-		interval_calc.week.minor 				= 7;
-		
-		// DAY
-		interval_calc.day.type 					= "day";
-		interval_calc.day.first 				= _first.days;
-		interval_calc.day.base	 				= Math.floor(_first.days);
-		interval_calc.day.last 					= _last.days;
-		interval_calc.day.number 				= timespan.days;
-		interval_calc.day.multiplier 			= 1;
-		interval_calc.day.minor 				= 24;
-		
-		// HOUR
-		interval_calc.hour.type 				= "hour";
-		interval_calc.hour.first 				= _first.hours;
-		interval_calc.hour.base 				= Math.floor(_first.hours);
-		interval_calc.hour.last 				= _last.hours;
-		interval_calc.hour.number 				= timespan.hours;
-		interval_calc.hour.multiplier 			= 1;
-		interval_calc.hour.minor 				= 60;
-		
-		// MINUTE
-		interval_calc.minute.type 				= "minute";
-		interval_calc.minute.first 				= _first.minutes;
-		interval_calc.minute.base 				= Math.floor(_first.minutes);
-		interval_calc.minute.last 				= _last.minutes;
-		interval_calc.minute.number 			= timespan.minutes;
-		interval_calc.minute.multiplier 		= 1;
-		interval_calc.minute.minor 				= 60;
-		
-		// SECOND
-		interval_calc.second.type 				= "decade";
-		interval_calc.second.first 				= _first.seconds;
-		interval_calc.second.base 				= Math.floor(_first.seconds);
-		interval_calc.second.last 				= _last.seconds;
-		interval_calc.second.number 			= timespan.seconds;
-		interval_calc.second.multiplier 		= 1;
-		interval_calc.second.minor 				= 10;
-		
-		return interval_calc;
+	create: function() {
+		/*
+		 * Date Format 1.2.3
+		 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+		 * MIT license
+		 *
+		 * Includes enhancements by Scott Trenda <scott.trenda.net>
+		 * and Kris Kowal <cixar.com/~kris.kowal/>
+		 *
+		 * Accepts a date, a mask, or a date and a mask.
+		 * Returns a formatted version of the given date.
+		 * The date defaults to the current date/time.
+		 * The mask defaults to dateFormat.masks.default.
+		 */
+		var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+			timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+			timezoneClip = /[^-+\dA-Z]/g,
+			pad = function (val, len) {
+				val = String(val);
+				len = len || 2;
+				while (val.length < len) val = "0" + val;
+				return val;
+			};
+			
+		// Regexes and supporting functions are cached through closure
+		return function (date, mask, utc) {
+			var dF = VCO.DateFormat.formats;
+
+			// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+			if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+				mask = date;
+				date = undefined;
+			}
+
+			// Passing date through Date applies Date.parse, if necessary
+			// Caused problems in IE
+			// date = date ? new Date(date) : new Date;
+			if (isNaN(date)) {
+				trace("invalid date " + date);
+				//return "";
+			} 
+
+			mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+
+			// Allow setting the utc argument via the mask
+			if (mask.slice(0, 4) == "UTC:") {
+				mask = mask.slice(4);
+				utc = true;
+			}
+
+			var	_ = utc ? "getUTC" : "get",
+				d = date[_ + "Date"](),
+				D = date[_ + "Day"](),
+				m = date[_ + "Month"](),
+				y = date[_ + "FullYear"](),
+				H = date[_ + "Hours"](),
+				M = date[_ + "Minutes"](),
+				s = date[_ + "Seconds"](),
+				L = date[_ + "Milliseconds"](),
+				o = utc ? 0 : date.getTimezoneOffset(),
+				flags = {
+					d:    d,
+					dd:   pad(d),
+					ddd:  dF.i18n.dayNames[D],
+					dddd: dF.i18n.dayNames[D + 7],
+					m:    m + 1,
+					mm:   pad(m + 1),
+					mmm:  dF.i18n.monthNames[m],
+					mmmm: dF.i18n.monthNames[m + 12],
+					yy:   String(y).slice(2),
+					yyyy: y,
+					h:    H % 12 || 12,
+					hh:   pad(H % 12 || 12),
+					H:    H,
+					HH:   pad(H),
+					M:    M,
+					MM:   pad(M),
+					s:    s,
+					ss:   pad(s),
+					l:    pad(L, 3),
+					L:    pad(L > 99 ? Math.round(L / 10) : L),
+					t:    H < 12 ? "a"  : "p",
+					tt:   H < 12 ? "am" : "pm",
+					T:    H < 12 ? "A"  : "P",
+					TT:   H < 12 ? "AM" : "PM",
+					Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+					o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+					S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+				};
+
+			return mask.replace(token, function ($0) {
+				return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+			});
+		};
 	}
 	
+};
+
+VCO.DateFormat = function() {
+	var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+		timezoneClip = /[^-+\dA-Z]/g,
+		pad = function (val, len) {
+			val = String(val);
+			len = len || 2;
+			while (val.length < len) val = "0" + val;
+			return val;
+		};
+
+	// Regexes and supporting functions are cached through closure
+	return function (date, mask, utc) {
+		var dF = dateFormat;
+
+		// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+			mask = date;
+			date = undefined;
+		}
+
+		// Passing date through Date applies Date.parse, if necessary
+		// Caused problems in IE
+		// date = date ? new Date(date) : new Date;
+		if (isNaN(date)) {
+			trace("invalid date " + date);
+			//return "";
+		} 
+
+		mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+
+		// Allow setting the utc argument via the mask
+		if (mask.slice(0, 4) == "UTC:") {
+			mask = mask.slice(4);
+			utc = true;
+		}
+
+		var	_ = utc ? "getUTC" : "get",
+			d = date[_ + "Date"](),
+			D = date[_ + "Day"](),
+			m = date[_ + "Month"](),
+			y = date[_ + "FullYear"](),
+			H = date[_ + "Hours"](),
+			M = date[_ + "Minutes"](),
+			s = date[_ + "Seconds"](),
+			L = date[_ + "Milliseconds"](),
+			o = utc ? 0 : date.getTimezoneOffset(),
+			flags = {
+				d:    d,
+				dd:   pad(d),
+				ddd:  dF.i18n.dayNames[D],
+				dddd: dF.i18n.dayNames[D + 7],
+				m:    m + 1,
+				mm:   pad(m + 1),
+				mmm:  dF.i18n.monthNames[m],
+				mmmm: dF.i18n.monthNames[m + 12],
+				yy:   String(y).slice(2),
+				yyyy: y,
+				h:    H % 12 || 12,
+				hh:   pad(H % 12 || 12),
+				H:    H,
+				HH:   pad(H),
+				M:    M,
+				MM:   pad(M),
+				s:    s,
+				ss:   pad(s),
+				l:    pad(L, 3),
+				L:    pad(L > 99 ? Math.round(L / 10) : L),
+				t:    H < 12 ? "a"  : "p",
+				tt:   H < 12 ? "am" : "pm",
+				T:    H < 12 ? "A"  : "P",
+				TT:   H < 12 ? "AM" : "PM",
+				Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+				o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+				S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+			};
+
+		return mask.replace(token, function ($0) {
+			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+		});
+	};
 };
 
 /* **********************************************
@@ -4054,68 +4108,94 @@ VCO.TimeUtil = {
 /*	VCO.Date
 	Date object
 ================================================== */
+VCO.Date = VCO.Class.extend({
+	
+	initialize: function (data) {
+		this.data = {
+			year: 			"",
+			month: 			"",
+			day: 			"",
+			hour: 			"",
+			minute: 		"",
+			second: 		"",
+			millisecond: 	"",
+			format: 		"YYYY MM DD",
+			display_type: 	"April 30th, 1995",
+			date_obj: 		{}
+		};
 
-VCO.Date = function (date) {
-	this.date = date;
-};
+		// Merge Data
+		VCO.Util.mergeData(this.data, data);
 
-VCO.Date.prototype = {
-	add: function (point) {
-		return this.clone()._add(point);
+		// Create Date Object
+		this._createDateObj();
+		
+		// Creat Display Type
+		if (this.data.date_obj.getMonth) {
+			this._createDisplayType();
+		}
+		
 	},
-
-	_add: function (point) {
-		this.x += point.x;
-		this.y += point.y;
-		return this;
+	
+	/*	Private Methods
+	================================================== */
+	_setLanguage: function(lang) {
+		VCO.Util.mergeData(this.dateformats, lang);
+		/*
+		this.dateformats					=	lang.dateformats;	
+		this.date_dict.month				=	lang.date.month;
+		this.date_dict.month_abbr			=	lang.date.month_abbr;
+		this.date_dict.day					=	lang.date.day;
+		this.date_dict.day_abbr				=	lang.date.day_abbr;
+		this.dateformats.i18n.dayNames		=	lang.date.day_abbr.concat(lang.date.day);
+		this.dateformats.i18n.monthNames	=	lang.date.month_abbr.concat(lang.date.month);
+		*/
 	},
-
-	subtract: function (point) {
-		return this.clone()._subtract(point);
+	
+	/*	Create Display Type
+	================================================== */
+	_setDateFormat: function() {
+		// Set display Type
+		this.data.format = "YYYY MM DD";
 	},
-
-	// destructive subtract (faster)
-	_subtract: function (point) {
-		this.x -= point.x;
-		this.y -= point.y;
-		return this;
+	
+	/*	Create Display Type
+	================================================== */
+	_createDisplayType: function() {
+		// Set display Type
+		//this.data.display_type = VCO.DateFormat.create(this.data.date_obj, this.data.format);
 	},
-
-	divideBy: function (num, round) {
-		return new VCO.Point(this.x / num, this.y / num, round);
-	},
-
-	multiplyBy: function (num) {
-		return new VCO.Point(this.x * num, this.y * num);
-	},
-
-	distanceTo: function (point) {
-		var x = point.x - this.x,
-			y = point.y - this.y;
-		return Math.sqrt(x * x + y * y);
-	},
-
-	round: function () {
-		return this.clone()._round();
-	},
-
-	// destructive round
-	_round: function () {
-		this.x = Math.round(this.x);
-		this.y = Math.round(this.y);
-		return this;
-	},
-
-	clone: function () {
-		return new VCO.Point(this.x, this.y);
-	},
-
-	toString: function () {
-		return 'Point(' +
-				VCO.Util.formatNum(this.x) + ', ' +
-				VCO.Util.formatNum(this.y) + ')';
+	
+	/*	Create JavaScript date object
+	================================================== */
+	_createDateObj: function() {
+		var _date = {
+			year: 			0,
+			month: 			0,
+			day: 			0,
+			hour: 			0,
+			minute: 		0,
+			second: 		0,
+			millisecond: 	0
+		};
+		
+		// Merge dates
+		VCO.Util.mergeData(_date, this.data);
+		
+		// Make strings into numbers
+		for (var key in _date) {
+			_date[key] = parseInt(_date[key])
+		}
+		
+		// Create Javascript date object
+		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+		trace(this.data.date_obj);
 	}
-};
+	
+});
+
+
+
 
 /* **********************************************
      Begin VCO.Draggable.js
@@ -5049,8 +5129,8 @@ VCO.MenuBar = VCO.Class.extend({
      Begin VCO.Message.js
 ********************************************** */
 
-/*	VCO.SizeBar
-	Draggable component to control size
+/*	VCO.Message
+	
 ================================================== */
  
 VCO.Message = VCO.Class.extend({
@@ -5154,147 +5234,6 @@ VCO.Message = VCO.Class.extend({
 	// Update Display
 	_updateDisplay: function(width, height, animate) {
 		
-	}
-	
-});
-
-/* **********************************************
-     Begin VCO.TimeNav.js
-********************************************** */
-
-/*	VCO.TimeNav
-	
-================================================== */
- 
-VCO.TimeNav = VCO.Class.extend({
-	
-	includes: [VCO.Events, VCO.DomMixins],
-	
-	_el: {},
-	
-	/*	Constructor
-	================================================== */
-	initialize: function(elem, parent_elem, options) {
-		// DOM ELEMENTS
-		this._el = {
-			parent: {},
-			container: {},
-			button_overview: {},
-			button_backtostart: {},
-			button_collapse_toggle: {},
-			arrow: {},
-			line: {},
-			coverbar: {},
-			grip: {}
-		};
-		
-		this.collapsed = false;
-		
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-		} else {
-			this._el.container = VCO.Dom.get(elem);
-		}
-		
-		if (parent_elem) {
-			this._el.parent = parent_elem;
-		}
-	
-		//Options
-		this.options = {
-			width: 					600,
-			height: 				600,
-			duration: 				1000,
-			ease: 					VCO.Ease.easeInOutQuint
-		};
-		
-		// Animation
-		this.animator = {};
-		
-		// Merge Data and Options
-		VCO.Util.mergeData(this.options, options);
-		
-		this._initLayout();
-		this._initEvents();
-	},
-	
-	/*	Public
-	================================================== */
-	show: function(d) {
-		
-		var duration = this.options.duration;
-		if (d) {
-			duration = d;
-		}
-		/*
-		this.animator = VCO.Animate(this._el.container, {
-			top: 		this.options.menubar_default_y + "px",
-			duration: 	duration,
-			easing: 	VCO.Ease.easeOutStrong
-		});
-		*/
-	},
-	
-	hide: function(top) {
-		/*
-		this.animator = VCO.Animate(this._el.container, {
-			top: 		top,
-			duration: 	this.options.duration,
-			easing: 	VCO.Ease.easeOutStrong
-		});
-		*/
-	},
-	
-	/*	Update Display
-	================================================== */
-	updateDisplay: function(w, h, a, l) {
-		this._updateDisplay(w, h, a, l);
-	},
-	
-
-	/*	Events
-	================================================== */
-
-	
-	_onButtonOverview: function(e) {
-		this.fire("overview", e);
-	},
-
-	
-	/*	Private Methods
-	================================================== */
-	_initLayout: function () {
-		// Create Layout
-		
-		// Buttons
-		this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
-		
-		this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		
-		this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
-		
-		
-		if (VCO.Browser.mobile) {
-		} 
-		
-	},
-	
-	_initEvents: function () {
-		
-	},
-	
-	// Update Display
-	_updateDisplay: function(width, height, animate) {
-		
-		if (width) {
-			this.options.width = width;
-		}
-		if (height) {
-			this.options.height = height;
-		}
 	}
 	
 });
@@ -5619,21 +5558,23 @@ VCO.Media = VCO.Class.extend({
 	loadErrorDisplay: function(message) {
 		this._el.content.removeChild(this._el.content_item);
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-loaderror", this._el.content);
-		this._el.content_item.innerHTML = message + "<br/><span class='vco-icon-" + this.options.media_type + "'></span>";
-		if (this.message) {
-			this.message.hide();
-		}
+		this._el.content_item.innerHTML = "<div class='vco-icon-" + this.options.media_type + "'></div><p>" + message + "</p>";
+		
+		// After Loaded
+		this.onLoaded(true);
 	},
 
 	/*	Events
 	================================================== */
-	onLoaded: function() {
+	onLoaded: function(error) {
 		this._state.loaded = true;
 		this.fire("loaded", this.data);
 		if (this.message) {
 			this.message.hide();
 		}
-		this.showMeta();
+		if (!error) {
+			this.showMeta();
+		}
 		this.updateDisplay();
 	},
 	
@@ -6385,13 +6326,24 @@ VCO.Media.Twitter = VCO.Media.extend({
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
 		
 		// API Call
-		VCO.getJSON(api_url, function(d) {
-			self.createMedia(d);
+		VCO.ajax({
+			type: 'GET',
+			url: api_url,
+			dataType: 'json', //json data type
+			success: function(d){
+				self.createMedia(d);
+			},
+			error:function(xhr, type){
+				var error_text = "";
+				error_text += "Unable to load Tweet. <br/>" + self.media_id + "<br/>" + type;
+				self.loadErrorDisplay(error_text);
+			}
 		});
 		 
 	},
 	
-	createMedia: function(d) {		
+	createMedia: function(d) {	
+		trace("create_media")	
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
@@ -6660,11 +6612,24 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 		api_url = "http://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
 		
 		// API Call
-		VCO.getJSON(api_url, function(d) {
-			self.createMedia(d);
+		
+		VCO.ajax({
+			type: 'GET',
+			url: api_url,
+			dataType: 'json', //json data type
+			
+			success: function(d){
+				self.createMedia(d);
+			},
+			error:function(xhr, type){
+				var error_text = "";
+				error_text += "Unable to load Wikipedia entry. <br/>" + self.media_id + "<br/>" + type;
+				self.loadErrorDisplay(error_text);
+			}
 		});
 		
 	},
+	
 	createMedia: function(d) {
 		var wiki = "";
 		
@@ -8030,6 +7995,765 @@ VCO.StorySlider = VCO.Class.extend({
 
 
 /* **********************************************
+     Begin VCO.TimeNav.js
+********************************************** */
+
+/*	VCO.TimeNav
+	
+================================================== */
+ 
+VCO.TimeNav = VCO.Class.extend({
+	
+	includes: [VCO.Events, VCO.DomMixins],
+	
+	_el: {},
+	
+	/*	Constructor
+	================================================== */
+	initialize: function (elem, data, options, init) {
+		// DOM ELEMENTS
+		this._el = {
+			parent: {},
+			container: {},
+			marker_container_mask: {},
+			marker_container: {},
+			marker_item_container: {}
+		};
+		
+		this.collapsed = false;
+		
+		if (typeof elem === 'object') {
+			this._el.container = elem;
+		} else {
+			this._el.container = VCO.Dom.get(elem);
+		}
+		
+		// Data Object
+		this.data = {
+			uniqueid: 				"",
+			slides: 				[
+				{
+					uniqueid: 				"",
+					background: {			// OPTIONAL
+						url: 				null,
+						color: 				null,
+						opacity: 			50
+					},
+					date: 					null,
+					location: {
+						lat: 				-9.143962,
+						lon: 				38.731094,
+						zoom: 				13,
+						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
+					},
+					text: {
+						headline: 			"Slideshow Example",
+						text: 				"Example slideshow slide "
+					},
+					media: [
+						{
+							uniqueid: 				"",
+							text: {
+								headline: 			"Slideshow Example",
+								text: 				""
+							},
+							media: {
+								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+								credit:				"",
+								caption:			"",
+								link: 				null,
+								link_target: 		null
+							}
+						},
+						{
+							uniqueid: 				"",
+							text: {
+								headline: 			"Slideshow Example",
+								text: 				""
+							},
+							media: {
+								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+								credit:				"",
+								caption:			"",
+								link: 				null,
+								link_target: 		null
+							}
+						},
+						{
+							uniqueid: 				"",
+							text: {
+								headline: 			"Slideshow Example",
+								text: 				""
+							},
+							media: {
+								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+								credit:				"",
+								caption:			"",
+								link: 				null,
+								link_target: 		null
+							}
+						},
+						{
+							uniqueid: 				"",
+							text: {
+								headline: 			"Slideshow Example",
+								text: 				""
+							},
+							media: {
+								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+								credit:				"",
+								caption:			"",
+								link: 				null,
+								link_target: 		null
+							}
+						}
+					]
+				},
+				{
+					uniqueid: 				"",
+					background: {			// OPTIONAL
+						url: 				null,
+						color: 				null,
+						opacity: 			50
+					},
+					date: 					null,
+					location: {
+						lat: 				-9.143962,
+						lon: 				38.731094,
+						zoom: 				13,
+						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
+					},
+					text: {
+						headline: 			"YouTube",
+						text: 				"Just add a link to the video in the media field."
+					},
+					media: {
+						url: 				"http://www.youtube.com/watch?v=lIvftGgps24",
+						credit:				"",
+						caption:			"",
+						link: 				null,
+						link_target: 		null
+					}
+				}
+			]
+		};
+		
+		//Options
+		this.options = {
+			width: 					600,
+			height: 				600,
+			duration: 				1000,
+			ease: 					VCO.Ease.easeInOutQuint
+		};
+		
+		// Animation
+		this.animator = {};
+		
+		// Markers Array
+		this._markers = [];
+		
+		// Swipe Object
+		this._swipable;
+		
+		// Merge Data and Options
+		VCO.Util.mergeData(this.options, options);
+		VCO.Util.mergeData(this.data, data);
+		
+		if (init) {
+			this.init();
+		}
+	},
+	
+	init: function() {
+		this._initLayout();
+		this._initEvents();
+		this._initData();
+		this._updateDisplay();
+		
+		// Go to initial slide
+		//this.goTo(this.options.start_at_slide);
+		
+		this._onLoaded();
+	},
+	
+	/*	Public
+	================================================== */
+	show: function(d) {
+		
+		var duration = this.options.duration;
+		if (d) {
+			duration = d;
+		}
+		/*
+		this.animator = VCO.Animate(this._el.container, {
+			top: 		this.options.menubar_default_y + "px",
+			duration: 	duration,
+			easing: 	VCO.Ease.easeOutStrong
+		});
+		*/
+	},
+	
+	hide: function(top) {
+		/*
+		this.animator = VCO.Animate(this._el.container, {
+			top: 		top,
+			duration: 	this.options.duration,
+			easing: 	VCO.Ease.easeOutStrong
+		});
+		*/
+	},
+	
+	// Create Dates
+	createDates: function(array) {
+		this._createDates(array);
+	},
+	
+	// Create a date
+	createDate: function(d) {
+		this._createDate(d);
+	},
+	
+	/*	Update Display
+	================================================== */
+	updateDisplay: function(w, h, a, l) {
+		this._updateDisplay(w, h, a, l);
+	},
+	
+	/*	Dates
+	================================================== */
+	_createDates: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			this._createDate(array[i]);
+		};
+	},
+	
+	_createDate: function(d) {
+		var date = new VCO.Date(d.date);
+		trace("date");
+		//this._addDate(date);
+		this._markers.push(date);
+	},
+	
+	
+	/*	Markers
+	================================================== */
+	_createMarkers: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			this._createMarker(array[i]);
+		};
+	},
+	
+	_createMarker: function(data) {
+		var marker = new VCO.TimeMarker(data);
+		this._addMarker(marker);
+		this._markers.push(marker);
+	},
+	
+	_addMarker:function(marker) {
+		marker.addTo(this._el.marker_item_container);
+		//marker.on('added', this._onMarkerAdded, this);
+	},
+	
+	_removeMarker: function(marker) {
+		marker.removeFrom(this._el.marker_item_container);
+		//marker.off('added', this._onMarkerRemoved, this);
+	},
+	
+	/*	Navigation
+	================================================== */
+	
+	goTo: function(n, fast, displayupdate) {
+		
+		var self = this;
+
+	},
+	
+	/*	Events
+	================================================== */
+	
+	_onLoaded: function() {
+		this.fire("loaded", this.data);
+	},
+	
+	_onMarkerAdded: function(e) {
+		trace("dateAdded")
+		this.fire("dateAdded", this.data);
+	},
+	
+	_onMarkerRemoved: function(e) {
+		this.fire("dateRemoved", this.data);
+	},
+	
+	/*	Private Methods
+	================================================== */
+	
+	// Update Display
+	_updateDisplay: function(width, height, animate) {
+		
+		if (width) {
+			this.options.width = width;
+		}
+		if (height) {
+			this.options.height = height;
+		}
+	},
+	
+	/*	Init
+	================================================== */
+	_initLayout: function () {
+		// Create Layout
+
+		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
+		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vcoanimate', this._el.marker_container_mask);
+		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
+		
+		// Update Size
+		this.options.width = this._el.container.offsetWidth;
+		this.options.height = this._el.container.offsetHeight;
+		// Buttons
+		//this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
+		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
+		
+		//this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
+		//VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
+		
+		//this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
+		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
+		
+		
+		if (VCO.Browser.mobile) {
+		}
+		
+		
+	},
+	
+	_initEvents: function () {
+		
+	},
+	
+	_initData: function() {
+		// Create Markers and then add them
+		this._createMarkers(this.data.slides);
+	}
+	
+	
+});
+
+/* **********************************************
+     Begin VCO.TimeUtil.js
+********************************************** */
+
+/*	VCO.TimeUtil
+	Utilities for parsing time
+================================================== */
+
+
+VCO.TimeUtil = {
+	get: function (id) {
+		return (typeof id === 'string' ? document.getElementById(id) : id);
+	},
+
+	getDateFractions: function(the_date, is_utc) {
+		
+		var _time = {};
+		_time.days			= the_date		/	dateFractionBrowser.day;
+		_time.weeks 		= _time.days	/	dateFractionBrowser.week;
+		_time.months 		= _time.days	/	dateFractionBrowser.month;
+		_time.years 		= _time.months 	/	dateFractionBrowser.year;
+		_time.hours 		= _time.days	*	dateFractionBrowser.hour;
+		_time.minutes 		= _time.days	*	dateFractionBrowser.minute;
+		_time.seconds 		= _time.days	*	dateFractionBrowser.second;
+		_time.decades 		= _time.years	/	dateFractionBrowser.decade;
+		_time.centuries 	= _time.years	/	dateFractionBrowser.century;
+		_time.milleniums 	= _time.years	/	dateFractionBrowser.millenium;
+		_time.ages			= _time.years	/	dateFractionBrowser.age;
+		_time.epochs		= _time.years	/	dateFractionBrowser.epoch;
+		_time.eras			= _time.years	/	dateFractionBrowser.era;
+		_time.eons			= _time.years	/	dateFractionBrowser.eon;
+		
+		/*
+		trace("AGES "		 + 		_time.ages);
+		trace("EPOCHS "		 + 		_time.epochs);
+		trace("MILLENIUMS "  + 		_time.milleniums);
+		trace("CENTURIES "	 + 		_time.centuries);
+		trace("DECADES "	 + 		_time.decades);
+		trace("YEARS "		 + 		_time.years);
+		trace("MONTHS "		 + 		_time.months);
+		trace("WEEKS "		 + 		_time.weeks);
+		trace("DAYS "		 + 		_time.days);
+		trace("HOURS "		 + 		_time.hours);
+		trace("MINUTES "	 + 		_time.minutes);
+		trace("SECONDS "	 + 		_time.seconds);
+		*/
+		return _time;
+	},
+	
+	calculateInterval: function(time) {
+		var interval_calc = {},
+			_first								= VCO.TimeUtil.getDateFractions(time[0].startdate),
+			_last								= VCO.TimeUtil.getDateFractions(time[data.length - 1].enddate);
+		
+		// EON
+		interval_calc.eon.type					=	"eon";
+		interval_calc.eon.first					=	_first.eons;
+		interval_calc.eon.base					=	Math.floor(_first.eons);
+		interval_calc.eon.last					=	_last.eons;
+		interval_calc.eon.number				=	timespan.eons;
+		interval_calc.eon.multiplier		 	=	timelookup.eons;
+		interval_calc.eon.minor					=	timelookup.eons;
+		
+		// ERA
+		interval_calc.era.type					=	"era";
+		interval_calc.era.first					=	_first.eras;
+		interval_calc.era.base					=	Math.floor(_first.eras);
+		interval_calc.era.last					=	_last.eras;
+		interval_calc.era.number				=	timespan.eras;
+		interval_calc.era.multiplier		 	=	timelookup.eras;
+		interval_calc.era.minor					=	timelookup.eras;
+		
+		// EPOCH
+		interval_calc.epoch.type				=	"epoch";
+		interval_calc.epoch.first				=	_first.epochs;
+		interval_calc.epoch.base				=	Math.floor(_first.epochs);
+		interval_calc.epoch.last				=	_last.epochs;
+		interval_calc.epoch.number				=	timespan.epochs;
+		interval_calc.epoch.multiplier		 	=	timelookup.epochs;
+		interval_calc.epoch.minor				=	timelookup.epochs;
+		
+		// AGE
+		interval_calc.age.type					=	"age";
+		interval_calc.age.first					=	_first.ages;
+		interval_calc.age.base					=	Math.floor(_first.ages);
+		interval_calc.age.last					=	_last.ages;
+		interval_calc.age.number				=	timespan.ages;
+		interval_calc.age.multiplier		 	=	timelookup.ages;
+		interval_calc.age.minor					=	timelookup.ages;
+		
+		// MILLENIUM
+		interval_calc.millenium.type 			=	"millenium";
+		interval_calc.millenium.first			=	_first.milleniums;
+		interval_calc.millenium.base			=	Math.floor(_first.milleniums);
+		interval_calc.millenium.last			=	_last.milleniums;
+		interval_calc.millenium.number			=	timespan.milleniums;
+		interval_calc.millenium.multiplier	 	=	timelookup.millenium;
+		interval_calc.millenium.minor			=	timelookup.millenium;
+		
+		// CENTURY
+		interval_calc.century.type 				= "century";
+		interval_calc.century.first 			= _first.centuries;
+		interval_calc.century.base 				= Math.floor(_first.centuries);
+		interval_calc.century.last 				= _last.centuries;
+		interval_calc.century.number 			= timespan.centuries;
+		interval_calc.century.multiplier	 	= timelookup.century;
+		interval_calc.century.minor 			= timelookup.century;
+		
+		// DECADE
+		interval_calc.decade.type 				= "decade";
+		interval_calc.decade.first 				= _first.decades;
+		interval_calc.decade.base 				= Math.floor(_first.decades);
+		interval_calc.decade.last 				= _last.decades;
+		interval_calc.decade.number 			= timespan.decades;
+		interval_calc.decade.multiplier 		= timelookup.decade;
+		interval_calc.decade.minor 				= timelookup.decade;
+		
+		// YEAR
+		interval_calc.year.type					= "year";
+		interval_calc.year.first 				= _first.years;
+		interval_calc.year.base 				= Math.floor(_first.years);
+		interval_calc.year.last					= _last.years;
+		interval_calc.year.number 				= timespan.years;
+		interval_calc.year.multiplier 			= 1;
+		interval_calc.year.minor 				= timelookup.month;
+		
+		// MONTH
+		interval_calc.month.type 				= "month";
+		interval_calc.month.first 				= _first.months;
+		interval_calc.month.base 				= Math.floor(_first.months);
+		interval_calc.month.last 				= _last.months;
+		interval_calc.month.number 				= timespan.months;
+		interval_calc.month.multiplier 			= 1;
+		interval_calc.month.minor 				= Math.round(timelookup.week);
+		
+		// WEEK
+		// NOT DONE
+		interval_calc.week.type 				= "week";
+		interval_calc.week.first 				= _first.weeks;
+		interval_calc.week.base 				= Math.floor(_first.weeks);
+		interval_calc.week.last 				= _last.weeks;
+		interval_calc.week.number 				= timespan.weeks;
+		interval_calc.week.multiplier 			= 1;
+		interval_calc.week.minor 				= 7;
+		
+		// DAY
+		interval_calc.day.type 					= "day";
+		interval_calc.day.first 				= _first.days;
+		interval_calc.day.base	 				= Math.floor(_first.days);
+		interval_calc.day.last 					= _last.days;
+		interval_calc.day.number 				= timespan.days;
+		interval_calc.day.multiplier 			= 1;
+		interval_calc.day.minor 				= 24;
+		
+		// HOUR
+		interval_calc.hour.type 				= "hour";
+		interval_calc.hour.first 				= _first.hours;
+		interval_calc.hour.base 				= Math.floor(_first.hours);
+		interval_calc.hour.last 				= _last.hours;
+		interval_calc.hour.number 				= timespan.hours;
+		interval_calc.hour.multiplier 			= 1;
+		interval_calc.hour.minor 				= 60;
+		
+		// MINUTE
+		interval_calc.minute.type 				= "minute";
+		interval_calc.minute.first 				= _first.minutes;
+		interval_calc.minute.base 				= Math.floor(_first.minutes);
+		interval_calc.minute.last 				= _last.minutes;
+		interval_calc.minute.number 			= timespan.minutes;
+		interval_calc.minute.multiplier 		= 1;
+		interval_calc.minute.minor 				= 60;
+		
+		// SECOND
+		interval_calc.second.type 				= "decade";
+		interval_calc.second.first 				= _first.seconds;
+		interval_calc.second.base 				= Math.floor(_first.seconds);
+		interval_calc.second.last 				= _last.seconds;
+		interval_calc.second.number 			= timespan.seconds;
+		interval_calc.second.multiplier 		= 1;
+		interval_calc.second.minor 				= 10;
+		
+		return interval_calc;
+	}
+	
+};
+
+/* **********************************************
+     Begin VCO.TimeMarker.js
+********************************************** */
+
+/*	VCO.TimeMarker
+	
+================================================== */
+
+VCO.TimeMarker = VCO.Class.extend({
+	
+	includes: [VCO.Events, VCO.DomMixins],
+	
+	_el: {},
+	
+	/*	Constructor
+	================================================== */
+	initialize: function(data, options, title_slide) {
+		
+		// DOM Elements
+		this._el = {
+			container: {},
+			content_container: {},
+			content: {}
+		};
+	
+		// Components
+		this._media 		= null;
+		this._mediaclass	= {};
+		this._text			= {};
+	
+		// State
+		this._state = {
+			loaded: 		false
+		};
+		
+		
+		// Data
+		this.data = {
+			uniqueid: 			"",
+			background: 		null,
+			date: {
+				year:			0,
+				month:			0,
+				day: 			0,
+				hour: 			0,
+				minute: 		0,
+				second: 		0,
+				millisecond: 	0,
+				format: 		""
+			},
+			text: {
+				headline: 		"",
+				text: 			""
+			},
+			media: 				null
+		};
+	
+		// Options
+		this.options = {
+			duration: 			1000,
+			ease: 				VCO.Ease.easeInSpline,
+			width: 				600,
+			height: 			600
+		};
+		
+		// Actively Displaying
+		this.active = false;
+		
+		// Animation Object
+		this.animator = {};
+		
+		// Merge Data and Options
+		VCO.Util.mergeData(this.options, options);
+		VCO.Util.mergeData(this.data, data);
+		
+		this._initLayout();
+		this._initEvents();
+		
+		
+	},
+	
+	/*	Adding, Hiding, Showing etc
+	================================================== */
+	show: function() {
+		trace("show");
+		/*
+		this.animator = VCO.Animate(this._el.slider_container, {
+			left: 		-(this._el.container.offsetWidth * n) + "px",
+			duration: 	this.options.duration,
+			easing: 	this.options.ease
+		});
+		*/
+	},
+	
+	hide: function() {
+		
+	},
+	
+	setActive: function(is_active) {
+		this.active = is_active;
+		
+		if (this.active) {
+			this.loadMedia();
+		} else {
+			this.stopMedia();
+		}
+	},
+	
+	addTo: function(container) {
+		container.appendChild(this._el.container);
+	},
+	
+	removeFrom: function(container) {
+		container.removeChild(this._el.container);
+	},
+	
+	updateDisplay: function(w, h) {
+		this._updateDisplay(w, h);
+	},
+	
+	loadMedia: function() {
+		
+		if (this._media && !this._state.loaded) {
+			this._media.loadMedia();
+			this._state.loaded = true;
+		}
+	},
+	
+	stopMedia: function() {
+		if (this._media && this._state.loaded) {
+			this._media.stopMedia();
+		}
+	},
+	
+	/*	Events
+	================================================== */
+
+	
+	/*	Private Methods
+	================================================== */
+	_initLayout: function () {
+		
+		// Create Layout
+		this._el.container 				= VCO.Dom.create("div", "vco-timemarker");
+		if (this.data.uniqueid) {
+			this._el.container.id 		= this.data.uniqueid;
+		}
+		
+		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
+		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		
+		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.content);
+		this._text.innerHTML			= this.data.text.headline;
+		
+		//this._text.addTo(this._el.content);
+		
+		/*
+		
+		// Determine Assets for layout and loading
+		if (this.data.media && this.data.media.url && this.data.media.url != "") {
+			this.has.media = true;
+		}
+		if (this.data.text && this.data.text.text) {
+			this.has.text = true;
+		}
+		if (this.data.text && this.data.text.headline) {
+			this.has.headline = true;
+		}
+		
+		// Create Media
+		if (this.has.media) {
+			
+			// Determine the media type
+			this.data.media.mediatype 	= VCO.MediaType(this.data.media);
+			this.options.media_name 	= this.data.media.mediatype.name;
+			this.options.media_type 	= this.data.media.mediatype.type;
+			
+			// Create a media object using the matched class name
+			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
+			
+		}
+		
+		// Create Text
+		if (this.has.text || this.has.headline) {
+			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
+		}
+		
+		// Add to DOM
+		if (!this.has.text && !this.has.headline && this.has.media) {
+			this._el.container.className += ' vco-slide-media-only';
+			this._media.addTo(this._el.content);
+		} else if (this.has.headline && this.has.media && !this.has.text) {
+			this._el.container.className += ' vco-slide-media-only';
+			this._text.addTo(this._el.content);
+			this._media.addTo(this._el.content);
+		} else if (this.has.text && this.has.media) {
+			this._media.addTo(this._el.content);
+			this._text.addTo(this._el.content);
+		} else if (this.has.text || this.has.headline) {
+			this._el.container.className += ' vco-slide-text-only';
+			this._text.addTo(this._el.content);
+		}
+		*/
+		// Fire event that the slide is loaded
+		this.onLoaded();
+		
+	},
+	
+	_initEvents: function() {
+		
+	},
+	
+	// Update Display
+	_updateDisplay: function(width, height, layout) {
+		
+		if (width) {
+			this.options.width 					= width;
+		} 
+
+		if (height) {
+			this.options.height = height;
+		}
+		
+	}
+	
+});
+
+
+/* **********************************************
      Begin VCO.Timeline.js
 ********************************************** */
 
@@ -8074,9 +8798,9 @@ VCO.StorySlider = VCO.Class.extend({
 	// @codekit-prepend "dom/VCO.DomUtil.js";
 	// @codekit-prepend "dom/VCO.DomEvent.js";
 	
-// TIME
-	// @codekit-prepend "time/VCO.TimeUtil.js";
-	// @codekit-prepend "time/VCO.Date.js";
+// Date
+	// @codekit-prepend "date/VCO.DateFormat.js";
+	// @codekit-prepend "date/VCO.Date.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";
@@ -8084,9 +8808,7 @@ VCO.StorySlider = VCO.Class.extend({
 	// @codekit-prepend "ui/VCO.MenuBar.js";
 	// @codekit-prepend "ui/VCO.Message.js";
 	
-	// TIMENAV
-		// @codekit-prepend "ui/timenav/VCO.TimeNav.js";
-		
+	
 		
 		
 
@@ -8120,8 +8842,10 @@ VCO.StorySlider = VCO.Class.extend({
 	// @codekit-prepend "slider/VCO.SlideNav.js";
 	// @codekit-prepend "slider/VCO.StorySlider.js";
 
-
-	
+// TIMENAV
+	// @codekit-prepend "timenav/VCO.TimeNav.js";
+	// @codekit-prepend "timenav/VCO.TimeUtil.js";
+	// @codekit-prepend "timenav/VCO.TimeMarker.js";
 
 
 VCO.Timeline = VCO.Class.extend({
@@ -8169,7 +8893,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar = {};
 		
 		// Loaded State
-		this._loaded = {storyslider:false, map:false};
+		this._loaded = {storyslider:false, timenav:false};
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
@@ -8184,7 +8908,16 @@ VCO.Timeline = VCO.Class.extend({
 						color: 				"",
 						opacity: 			50
 					},
-					date: 					"1835",
+					date: {
+						year:			1978,
+						month:			01,
+						day: 			05,
+						hour: 			6,
+						minute: 		45,
+						second: 		56,
+						millisecond: 	98,
+						format: 		""
+					},
 					text: {
 						headline: 			"Mark Twain",
 						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
@@ -8193,7 +8926,16 @@ VCO.Timeline = VCO.Class.extend({
 				},
 				{
 					uniqueid: 				"",
-					date: 					"1835",
+					date: {
+						year:			1978,
+						month:			01,
+						day: 			05,
+						hour: 			6,
+						minute: 		45,
+						second: 		56,
+						millisecond: 	98,
+						format: 		""
+					},
 					location: {
 						lat: 				39.491711,
 						lon: 				-91.793260,
@@ -8222,7 +8964,7 @@ VCO.Timeline = VCO.Class.extend({
 			layout: 				"landscape", 	// portrait or landscape
 			timenav_position: 		"bottom", 		// timeline on top or bottom
 			base_class: 			"",
-			timenav_height: 		300,
+			timenav_height: 		200,
 			start_at_slide: 		0,
 			menubar_height: 		0,
 			skinny_size: 			650,
@@ -8290,20 +9032,8 @@ VCO.Timeline = VCO.Class.extend({
 			self._loadLanguage(data);
 		}
 		
-		// Load language
-		/*
-		if(this.options.language == 'en') {
-		    this.options.language = VCO.Language;
-		    this._initData(data);
-		} else {
-			VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
-				self._initData(data);
-			});
-		}
-		*/
 		
-		
-		return this;
+
 	},
 	
 	/*	Load Language
@@ -8341,21 +9071,33 @@ VCO.Timeline = VCO.Class.extend({
 	
 	// Initialize the data
 	_initData: function(data) {
+		trace("_initData")
 		var self = this;
 		
 		if (typeof data === 'string') {
+			trace("string");
 			
-			VCO.getJSON(data, function(d) {
-				if (d && d.storymap) {
-					VCO.Util.mergeData(self.data, d.storymap);
+			VCO.ajax({
+				type: 'GET',
+				url: data,
+				dataType: 'json', //json data type
+				success: function(d){
+					if (d && d.timeline) {
+						VCO.Util.mergeData(self.data, d.timeline);
+					}
+					self._onDataLoaded();
+				},
+				error:function(xhr, type){
+					trace("ERROR LOADING");
+					trace(xhr);
+					trace(type);
 				}
-				self._onDataLoaded();
 			});
 		} else if (typeof data === 'object') {
-			if (data.storymap) {
-				self.data = data.storymap;
+			if (data.timeline) {
+				self.data = data.timeline;
 			} else {
-				trace("data must have a storymap property")
+				trace("data must have a timeline property")
 			}
 			self._onDataLoaded();
 		} else {
@@ -8395,7 +9137,9 @@ VCO.Timeline = VCO.Class.extend({
 		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
 		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this._el.container);
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
+		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.init();
 		
 		// Create StorySlider
 		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
@@ -8618,8 +9362,8 @@ VCO.Timeline = VCO.Class.extend({
 		});
 	},
 	
-	_onMapLoaded: function() {
-		this._loaded.map = true;
+	_onTimeNavLoaded: function() {
+		this._loaded.timenav = true;
 		this._onLoaded();
 	},
 	
@@ -8629,7 +9373,7 @@ VCO.Timeline = VCO.Class.extend({
 	},
 		
 	_onLoaded: function() {
-		if (this._loaded.storyslider && this._loaded.map) {
+		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.data);
 		}
 	}

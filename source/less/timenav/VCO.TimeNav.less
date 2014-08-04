@@ -2,11 +2,29 @@
 ================================================== */
 
 .vco-timenav {
-	height:400px;
+	height:200px;
 	background-color:@ui-background-color;
+	position:relative;
 	.vco-timenav-button {
-	
+		width:50px;
+		height:50px;
+		background-color:#333;
+		display:inline-block;
+		border: 1px solid #999;
 	}
+	
+	.vco-timenav-container-mask {
+		position:absolute;
+		.vco-timenav-container {
+			position:absolute;
+			.vco-timenav-item-container {
+				position:absolute;
+			}
+			
+		}
+		
+	}
+	
 }
 
 /* Skinny

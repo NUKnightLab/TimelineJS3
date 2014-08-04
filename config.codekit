@@ -1,6 +1,6 @@
 {
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
-"creatorBuild": "17670",
+"creatorBuild": "17682",
 "files": {
 	"\/compiled\/css\/fonts\/font.abril-droidsans.css": {
 		"fileType": 16,
@@ -557,6 +557,28 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/js\/data\/VCO.Data.js",
 		"outputAbbreviatedPath": "\/source\/js\/data\/min\/VCO.Data-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/date\/VCO.Date.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.Date.js",
+		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.Date-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/date\/VCO.DateFormat.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.DateFormat.js",
+		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.DateFormat-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -1948,34 +1970,34 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/time\/VCO.Date.js": {
+	"\/source\/js\/timenav\/VCO.TimeMarker.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/time\/VCO.Date.js",
-		"outputAbbreviatedPath": "\/source\/js\/time\/min\/VCO.Date-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeMarker.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeMarker-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/time\/VCO.TimeUtil.js": {
+	"\/source\/js\/timenav\/VCO.TimeNav.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/time\/VCO.TimeUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/time\/min\/VCO.TimeUtil-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeNav.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeNav-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/ui\/timenav\/VCO.TimeNav.js": {
+	"\/source\/js\/timenav\/VCO.TimeUtil.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/ui\/timenav\/VCO.TimeNav.js",
-		"outputAbbreviatedPath": "\/source\/js\/ui\/timenav\/min\/VCO.TimeNav-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeUtil.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeUtil-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -2927,7 +2949,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/Typography.less": {
+	"\/source\/less\/timenav\/VCO.TimeMarker.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -2935,8 +2957,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/Typography.less",
-		"outputAbbreviatedPath": "\/source\/css\/Typography.css",
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeMarker.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeMarker.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -2947,7 +2969,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/ui\/timenav\/VCO.TimeNav.less": {
+	"\/source\/less\/timenav\/VCO.TimeNav.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -2955,8 +2977,28 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/ui\/timenav\/VCO.TimeNav.less",
-		"outputAbbreviatedPath": "\/source\/less\/ui\/css\/VCO.TimeNav.css",
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeNav.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeNav.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/Typography.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/Typography.less",
+		"outputAbbreviatedPath": "\/source\/css\/Typography.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,

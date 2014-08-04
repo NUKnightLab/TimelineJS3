@@ -162,21 +162,23 @@ VCO.Media = VCO.Class.extend({
 	loadErrorDisplay: function(message) {
 		this._el.content.removeChild(this._el.content_item);
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-loaderror", this._el.content);
-		this._el.content_item.innerHTML = message + "<br/><span class='vco-icon-" + this.options.media_type + "'></span>";
-		if (this.message) {
-			this.message.hide();
-		}
+		this._el.content_item.innerHTML = "<div class='vco-icon-" + this.options.media_type + "'></div><p>" + message + "</p>";
+		
+		// After Loaded
+		this.onLoaded(true);
 	},
 
 	/*	Events
 	================================================== */
-	onLoaded: function() {
+	onLoaded: function(error) {
 		this._state.loaded = true;
 		this.fire("loaded", this.data);
 		if (this.message) {
 			this.message.hide();
 		}
-		this.showMeta();
+		if (!error) {
+			this.showMeta();
+		}
 		this.updateDisplay();
 	},
 	
