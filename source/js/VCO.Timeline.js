@@ -469,7 +469,11 @@ VCO.Timeline = VCO.Class.extend({
 			}
 		}
 	},
-	
+	_processDates: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			array[i].date = new VCO.Date(array[i].date);
+		}
+	},
 	/*	Init
 	================================================== */
 	// Initialize the data
@@ -488,7 +492,9 @@ VCO.Timeline = VCO.Class.extend({
 					if (d && d.timeline) {
 						VCO.Util.mergeData(self.data, d.timeline);
 					}
-					self._makeUniqueIdentifiers(self.data.slides);
+					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
+					self._processDates(self.data.slides);          // into '_cleanData'
+					// self.data.slides = // sort it somehow
 					self._onDataLoaded();
 				},
 				error:function(xhr, type){

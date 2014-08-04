@@ -74,12 +74,12 @@ VCO.Date = VCO.Class.extend({
 		
 		// Merge dates
 		VCO.Util.mergeData(_date, this.data);
-		
+		DATE_PARTS = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'];
 		// Make strings into numbers
-		for (var key in _date) {
-			var parsed = parseInt(_date[key]);
+		for (var ix in DATE_PARTS) {	
+			var parsed = parseInt(_date[DATE_PARTS[ix]]);
 			if (isNaN(parsed)) parsed = 0;
-			_date[key] = parsed;
+			_date[DATE_PARTS[ix]] = parsed;
 		}
 		
 		// Create Javascript date object
