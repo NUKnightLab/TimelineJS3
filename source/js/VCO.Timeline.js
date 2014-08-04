@@ -442,11 +442,32 @@ VCO.Timeline = VCO.Class.extend({
 	/*	Data Prep
 	================================================== */
 	_makeUniqueIdentifiers: function(array) {
+		var used = []
 		for (var i = 0; i < array.length; i++) {
-			if (!array[i].uniqueid || array[i].uniqueid == "") {
-				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
+			if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
+				array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
+				if (used.indexOf(array[i].uniqueid) != -1) {
+					array[i].uniqueid = '';
+				} else {
+					used.push(array[i].uniqueid);
+				}
 			}
 		};
+		if (used.length != array.length) {
+			for (var i = 0; i < array.length; i++) {
+				if (!array[i].uniqueid) {
+					var slug = VCO.Util.slugify(array[i].text.headline);
+					if (!slug) {
+						slug = VCO.Util.unique_ID(6);
+					}
+					if (used.indexOf(slug) != -1) {
+						slug = slug + '-' + i;
+					}
+					used.push(slug);
+					array[i].uniqueid = slug;
+				}
+			}
+		}
 	},
 	
 	/*	Init
