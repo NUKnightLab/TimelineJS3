@@ -163,7 +163,12 @@ VCO.Timeline = VCO.Class.extend({
 						headline: 			"Mark Twain",
 						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
 					},
-					media: null
+					media: {
+						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						thumb: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						credit:				"",
+						caption:			"Mark Twain's birthplace, Florida, Missouri"
+					}
 				},
 				{
 					uniqueid: 				"",
@@ -175,6 +180,7 @@ VCO.Timeline = VCO.Class.extend({
 						minute: 		45,
 						second: 		56,
 						millisecond: 	98,
+						thumbnail: 		"",
 						format: 		""
 					},
 					location: {
@@ -405,6 +411,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// TimeNav Events
 		this._timenav.on('collapse', this._onMenuBarCollapse, this);
+		this._timenav.on('change', this._onTimeNavChange, this);
 		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
@@ -549,7 +556,7 @@ VCO.Timeline = VCO.Class.extend({
 	_onSlideChange: function(e) {
 		if (this.current_slide != e.current_slide) {
 			this.current_slide = e.current_slide;
-			//this._map.goTo(this.current_slide);
+			this._timenav.goTo(this.current_slide);
 			this.fire("change", {current_slide: this.current_slide}, this);
 		}
 	},

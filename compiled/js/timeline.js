@@ -8152,6 +8152,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// Markers Array
 		this._markers = [];
 		
+		// Current Marker
+		this.current_marker = 0;
+		
 		// Swipe Object
 		this._swipable;
 		
@@ -8213,6 +8216,10 @@ VCO.TimeNav = VCO.Class.extend({
 		this._createDate(d);
 	},
 	
+	positionMarkers: function() {
+		this._positionMarkers();
+	},
+	
 	/*	Update Display
 	================================================== */
 	updateDisplay: function(w, h, a, l) {
@@ -8239,8 +8246,10 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_createMarkers: function(array) {
 		for (var i = 0; i < array.length; i++) {
+			array[i].marker_number = i;
 			this._createMarker(array[i]);
 		};
+		
 	},
 	
 	_createMarker: function(data) {
@@ -8251,12 +8260,26 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_addMarker:function(marker) {
 		marker.addTo(this._el.marker_item_container);
-		//marker.on('added', this._onMarkerAdded, this);
+		marker.on('markerclick', this._onMarkerClick, this);
+		marker.on('added', this._onMarkerAdded, this);
 	},
 	
 	_removeMarker: function(marker) {
 		marker.removeFrom(this._el.marker_item_container);
 		//marker.off('added', this._onMarkerRemoved, this);
+	},
+	
+	_positionMarkers: function() {
+		// Temporary Position Markers
+		for (var i = 0; i < this._markers.length; i++) {
+			this._markers[i].setPosition({left:(100 * i), top:0});
+		};
+	},
+	
+	_resetMarkersActive: function() {
+		for (var i = 0; i < this._markers.length; i++) {
+			this._markers[i].setActive(false);
+		};
 	},
 	
 	/*	Navigation
@@ -8265,7 +8288,13 @@ VCO.TimeNav = VCO.Class.extend({
 	goTo: function(n, fast, displayupdate) {
 		
 		var self = this;
-
+		
+		// Set Marker active state
+		this._resetMarkersActive();
+		this._markers[n].setActive(true);
+		
+		this.current_marker = n;
+		
 	},
 	
 	/*	Events
@@ -8284,6 +8313,13 @@ VCO.TimeNav = VCO.Class.extend({
 		this.fire("dateRemoved", this.data);
 	},
 	
+	_onMarkerClick: function(e) {
+		// Go to the current marker
+		this.goTo(e.marker_number);
+		this.fire("change", {current_marker: e.marker_number});
+	},
+	
+	
 	/*	Private Methods
 	================================================== */
 	
@@ -8296,6 +8332,9 @@ VCO.TimeNav = VCO.Class.extend({
 		if (height) {
 			this.options.height = height;
 		}
+		
+		// Go to the current slide
+		this.goTo(this.current_marker, true, true);
 	},
 	
 	/*	Init
@@ -8334,6 +8373,7 @@ VCO.TimeNav = VCO.Class.extend({
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.slides);
+		this._positionMarkers();
 	}
 	
 	
@@ -8541,18 +8581,18 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	/*	Constructor
 	================================================== */
-	initialize: function(data, options, title_slide) {
+	initialize: function(data, options) {
 		
 		// DOM Elements
 		this._el = {
 			container: {},
 			content_container: {},
-			content: {}
+			content: {},
+			text: {},
+			media: {},
 		};
 	
 		// Components
-		this._media 		= null;
-		this._mediaclass	= {};
 		this._text			= {};
 	
 		// State
@@ -8564,6 +8604,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Data
 		this.data = {
 			uniqueid: 			"",
+			marker_number: 		0,
 			background: 		null,
 			date: {
 				year:			0,
@@ -8573,6 +8614,7 @@ VCO.TimeMarker = VCO.Class.extend({
 				minute: 		0,
 				second: 		0,
 				millisecond: 	0,
+				thumbnail: 		"",
 				format: 		""
 			},
 			text: {
@@ -8627,9 +8669,9 @@ VCO.TimeMarker = VCO.Class.extend({
 		this.active = is_active;
 		
 		if (this.active) {
-			this.loadMedia();
+			this._el.container.className = 'vco-timemarker vco-timemarker-active';
 		} else {
-			this.stopMedia();
+			this._el.container.className = 'vco-timemarker';
 		}
 	},
 	
@@ -8661,7 +8703,9 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	/*	Events
 	================================================== */
-
+	_onMarkerClick: function(e) {
+		this.fire("markerclick", {marker_number: this.data.marker_number});
+	},
 	
 	/*	Private Methods
 	================================================== */
@@ -8675,66 +8719,33 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
 		
-		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.content);
-		this._text.innerHTML			= this.data.text.headline;
-		
-		//this._text.addTo(this._el.content);
-		
-		/*
-		
-		// Determine Assets for layout and loading
-		if (this.data.media && this.data.media.url && this.data.media.url != "") {
-			this.has.media = true;
-		}
-		if (this.data.text && this.data.text.text) {
-			this.has.text = true;
-		}
-		if (this.data.text && this.data.text.headline) {
-			this.has.headline = true;
+		// Thumbnail
+		if (this.data.media.thumb && this.data.media.thumb != "") {
+			this._el.media				= VCO.Dom.create("img", "vco-timemarker-media", this._el.content);
+			this._el.media.src			= this.data.media.thumb;
 		}
 		
-		// Create Media
-		if (this.has.media) {
-			
-			// Determine the media type
-			this.data.media.mediatype 	= VCO.MediaType(this.data.media);
-			this.options.media_name 	= this.data.media.mediatype.name;
-			this.options.media_type 	= this.data.media.mediatype.type;
-			
-			// Create a media object using the matched class name
-			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
-			
+		// Text
+		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.text);
+		if (this.data.text.headline && this.data.text.headline != "") {
+			this._text.innerHTML			= this.data.text.headline;
+		} else if (this.data.text.text && this.data.text.text != "") {
+			this._text.innerHTML			= this.data.text.text;
+		} else if (this.data.media.caption && this.data.media.caption != "") {
+			this._text.innerHTML			= this.data.media.caption;
 		}
+
 		
-		// Create Text
-		if (this.has.text || this.has.headline) {
-			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
-		}
 		
-		// Add to DOM
-		if (!this.has.text && !this.has.headline && this.has.media) {
-			this._el.container.className += ' vco-slide-media-only';
-			this._media.addTo(this._el.content);
-		} else if (this.has.headline && this.has.media && !this.has.text) {
-			this._el.container.className += ' vco-slide-media-only';
-			this._text.addTo(this._el.content);
-			this._media.addTo(this._el.content);
-		} else if (this.has.text && this.has.media) {
-			this._media.addTo(this._el.content);
-			this._text.addTo(this._el.content);
-		} else if (this.has.text || this.has.headline) {
-			this._el.container.className += ' vco-slide-text-only';
-			this._text.addTo(this._el.content);
-		}
-		*/
 		// Fire event that the slide is loaded
 		this.onLoaded();
 		
 	},
 	
 	_initEvents: function() {
-		
+		VCO.DomEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
 	},
 	
 	// Update Display
@@ -8922,7 +8933,12 @@ VCO.Timeline = VCO.Class.extend({
 						headline: 			"Mark Twain",
 						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
 					},
-					media: null
+					media: {
+						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						thumb: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						credit:				"",
+						caption:			"Mark Twain's birthplace, Florida, Missouri"
+					}
 				},
 				{
 					uniqueid: 				"",
@@ -8934,6 +8950,7 @@ VCO.Timeline = VCO.Class.extend({
 						minute: 		45,
 						second: 		56,
 						millisecond: 	98,
+						thumbnail: 		"",
 						format: 		""
 					},
 					location: {
@@ -9164,6 +9181,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// TimeNav Events
 		this._timenav.on('collapse', this._onMenuBarCollapse, this);
+		this._timenav.on('change', this._onTimeNavChange, this);
 		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
@@ -9308,7 +9326,7 @@ VCO.Timeline = VCO.Class.extend({
 	_onSlideChange: function(e) {
 		if (this.current_slide != e.current_slide) {
 			this.current_slide = e.current_slide;
-			//this._map.goTo(this.current_slide);
+			this._timenav.goTo(this.current_slide);
 			this.fire("change", {current_slide: this.current_slide}, this);
 		}
 	},

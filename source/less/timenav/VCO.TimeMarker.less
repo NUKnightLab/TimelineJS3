@@ -2,22 +2,39 @@
 ================================================== */
 
 .vco-timemarker {
-	background-color:darken(@ui-background-color, 25%);
-	width:50px;
+	background-color:darken(@ui-background-color, 15%);
+	width:100px;
 	height:50px;
 	position:absolute;
 	top:0;
 	left:0;
-	
+	cursor:pointer;
+	overflow:hidden;
 	.vco-timemarker-content-container {
 		
 		.vco-timemarker-content {
-			h2.vco-headline {
-				margin:0;
-				font-size:12px;
+			.vco-timemarker-text {
+				h2.vco-headline {
+					font-size:12px;
+					line-height:12px;
+					font-weight:normal;
+					margin: 0 5px 0 5px;
+				}
 			}
+			.vco-timemarker-media {
+				max-height:100%;
+				max-width:100%;
+			}
+			
 		}
 		
+	}
+	&:hover {
+		background-color:darken(@ui-background-color, 25%);
+	}
+	&.vco-timemarker-active {
+		background-color:darken(@color-theme, 25%);
+		color:@color-background;
 	}
 }
 

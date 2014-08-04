@@ -10,18 +10,18 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	/*	Constructor
 	================================================== */
-	initialize: function(data, options, title_slide) {
+	initialize: function(data, options) {
 		
 		// DOM Elements
 		this._el = {
 			container: {},
 			content_container: {},
-			content: {}
+			content: {},
+			text: {},
+			media: {},
 		};
 	
 		// Components
-		this._media 		= null;
-		this._mediaclass	= {};
 		this._text			= {};
 	
 		// State
@@ -33,6 +33,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Data
 		this.data = {
 			uniqueid: 			"",
+			marker_number: 		0,
 			background: 		null,
 			date: {
 				year:			0,
@@ -42,6 +43,7 @@ VCO.TimeMarker = VCO.Class.extend({
 				minute: 		0,
 				second: 		0,
 				millisecond: 	0,
+				thumbnail: 		"",
 				format: 		""
 			},
 			text: {
@@ -96,9 +98,9 @@ VCO.TimeMarker = VCO.Class.extend({
 		this.active = is_active;
 		
 		if (this.active) {
-			this.loadMedia();
+			this._el.container.className = 'vco-timemarker vco-timemarker-active';
 		} else {
-			this.stopMedia();
+			this._el.container.className = 'vco-timemarker';
 		}
 	},
 	
@@ -130,7 +132,9 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	/*	Events
 	================================================== */
-
+	_onMarkerClick: function(e) {
+		this.fire("markerclick", {marker_number: this.data.marker_number});
+	},
 	
 	/*	Private Methods
 	================================================== */
@@ -144,66 +148,33 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
 		
-		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.content);
-		this._text.innerHTML			= this.data.text.headline;
-		
-		//this._text.addTo(this._el.content);
-		
-		/*
-		
-		// Determine Assets for layout and loading
-		if (this.data.media && this.data.media.url && this.data.media.url != "") {
-			this.has.media = true;
-		}
-		if (this.data.text && this.data.text.text) {
-			this.has.text = true;
-		}
-		if (this.data.text && this.data.text.headline) {
-			this.has.headline = true;
+		// Thumbnail
+		if (this.data.media.thumb && this.data.media.thumb != "") {
+			this._el.media				= VCO.Dom.create("img", "vco-timemarker-media", this._el.content);
+			this._el.media.src			= this.data.media.thumb;
 		}
 		
-		// Create Media
-		if (this.has.media) {
-			
-			// Determine the media type
-			this.data.media.mediatype 	= VCO.MediaType(this.data.media);
-			this.options.media_name 	= this.data.media.mediatype.name;
-			this.options.media_type 	= this.data.media.mediatype.type;
-			
-			// Create a media object using the matched class name
-			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
-			
+		// Text
+		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.text);
+		if (this.data.text.headline && this.data.text.headline != "") {
+			this._text.innerHTML			= this.data.text.headline;
+		} else if (this.data.text.text && this.data.text.text != "") {
+			this._text.innerHTML			= this.data.text.text;
+		} else if (this.data.media.caption && this.data.media.caption != "") {
+			this._text.innerHTML			= this.data.media.caption;
 		}
+
 		
-		// Create Text
-		if (this.has.text || this.has.headline) {
-			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
-		}
 		
-		// Add to DOM
-		if (!this.has.text && !this.has.headline && this.has.media) {
-			this._el.container.className += ' vco-slide-media-only';
-			this._media.addTo(this._el.content);
-		} else if (this.has.headline && this.has.media && !this.has.text) {
-			this._el.container.className += ' vco-slide-media-only';
-			this._text.addTo(this._el.content);
-			this._media.addTo(this._el.content);
-		} else if (this.has.text && this.has.media) {
-			this._media.addTo(this._el.content);
-			this._text.addTo(this._el.content);
-		} else if (this.has.text || this.has.headline) {
-			this._el.container.className += ' vco-slide-text-only';
-			this._text.addTo(this._el.content);
-		}
-		*/
 		// Fire event that the slide is loaded
 		this.onLoaded();
 		
 	},
 	
 	_initEvents: function() {
-		
+		VCO.DomEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
 	},
 	
 	// Update Display

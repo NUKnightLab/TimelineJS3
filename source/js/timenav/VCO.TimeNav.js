@@ -152,6 +152,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// Markers Array
 		this._markers = [];
 		
+		// Current Marker
+		this.current_marker = 0;
+		
 		// Swipe Object
 		this._swipable;
 		
@@ -213,6 +216,10 @@ VCO.TimeNav = VCO.Class.extend({
 		this._createDate(d);
 	},
 	
+	positionMarkers: function() {
+		this._positionMarkers();
+	},
+	
 	/*	Update Display
 	================================================== */
 	updateDisplay: function(w, h, a, l) {
@@ -239,8 +246,10 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_createMarkers: function(array) {
 		for (var i = 0; i < array.length; i++) {
+			array[i].marker_number = i;
 			this._createMarker(array[i]);
 		};
+		
 	},
 	
 	_createMarker: function(data) {
@@ -251,12 +260,26 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_addMarker:function(marker) {
 		marker.addTo(this._el.marker_item_container);
-		//marker.on('added', this._onMarkerAdded, this);
+		marker.on('markerclick', this._onMarkerClick, this);
+		marker.on('added', this._onMarkerAdded, this);
 	},
 	
 	_removeMarker: function(marker) {
 		marker.removeFrom(this._el.marker_item_container);
 		//marker.off('added', this._onMarkerRemoved, this);
+	},
+	
+	_positionMarkers: function() {
+		// Temporary Position Markers
+		for (var i = 0; i < this._markers.length; i++) {
+			this._markers[i].setPosition({left:(100 * i), top:0});
+		};
+	},
+	
+	_resetMarkersActive: function() {
+		for (var i = 0; i < this._markers.length; i++) {
+			this._markers[i].setActive(false);
+		};
 	},
 	
 	/*	Navigation
@@ -265,7 +288,13 @@ VCO.TimeNav = VCO.Class.extend({
 	goTo: function(n, fast, displayupdate) {
 		
 		var self = this;
-
+		
+		// Set Marker active state
+		this._resetMarkersActive();
+		this._markers[n].setActive(true);
+		
+		this.current_marker = n;
+		
 	},
 	
 	/*	Events
@@ -284,6 +313,13 @@ VCO.TimeNav = VCO.Class.extend({
 		this.fire("dateRemoved", this.data);
 	},
 	
+	_onMarkerClick: function(e) {
+		// Go to the current marker
+		this.goTo(e.marker_number);
+		this.fire("change", {current_marker: e.marker_number});
+	},
+	
+	
 	/*	Private Methods
 	================================================== */
 	
@@ -296,6 +332,9 @@ VCO.TimeNav = VCO.Class.extend({
 		if (height) {
 			this.options.height = height;
 		}
+		
+		// Go to the current slide
+		this.goTo(this.current_marker, true, true);
 	},
 	
 	/*	Init
@@ -334,6 +373,7 @@ VCO.TimeNav = VCO.Class.extend({
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.slides);
+		this._positionMarkers();
 	}
 	
 	
