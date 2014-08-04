@@ -75,7 +75,6 @@ VCO.Util = {
 		
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].data[prop] == id) {
-				trace(array[i].data[prop]);
 				_n = i;
 			}
 		};
@@ -7626,8 +7625,6 @@ VCO.StorySlider = VCO.Class.extend({
 		} else {
 			_n = n;
 		}
-		trace(n);
-		trace(_n)
 		this.goTo(_n, fast, displayupdate);
 		
 	},
@@ -9105,6 +9102,15 @@ VCO.Timeline = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
+	goToId: function(n) {
+		if (this.current_id != n) {
+			this.current_id = e.uniqueid;
+			this._timenav.goToId(this.current_id);
+			this._storyslider.goToId(this.current_id);
+			this.fire("change", {uniqueid:this.current_id}, this);
+		}
+	},
+	
 	goTo: function(n) {
 		if (n != this.current_slide) {
 			this.current_slide = n;
@@ -9356,7 +9362,6 @@ VCO.Timeline = VCO.Class.extend({
 	_getCurrentSlide: function(n, array) {
 		// Find Array Number
 		if (typeof n == 'string' || n instanceof String) {
-			trace("String");
 			_n = VCO.Util.findArrayNumberByUniqueID(n, array, "uniqueid");
 		} else {
 			_n = n;
@@ -9373,7 +9378,6 @@ VCO.Timeline = VCO.Class.extend({
 		this._initLayout();
 		this._initEvents();
 		this.ready = true;
-		trace(this.data);
 		
 	},
 	
@@ -9388,19 +9392,14 @@ VCO.Timeline = VCO.Class.extend({
 	_onSlideChange: function(e) {
 		if (this.current_id != e.uniqueid) {
 			this.current_id = e.uniqueid;
-			
-			//this._timenav.goTo(this.current_slide);
 			this._timenav.goToId(this.current_id);
 			this.fire("change", {uniqueid:this.current_id}, this);
 		}
 	},
 	
 	_onTimeNavChange: function(e) {
-		trace("_onTimeNavChange")
 		if (this.current_id != e.uniqueid) {
 			this.current_id = e.uniqueid;
-			trace("this.current_id")
-			//this._storyslider.goTo(this.current_slide);
 			this._storyslider.goToId(this.current_id);
 			this.fire("change", {uniqueid:this.current_id}, this);
 		}

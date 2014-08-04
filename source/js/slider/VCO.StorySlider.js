@@ -285,8 +285,6 @@ VCO.StorySlider = VCO.Class.extend({
 		} else {
 			_n = n;
 		}
-		trace(n);
-		trace(_n)
 		this.goTo(_n, fast, displayupdate);
 		
 	},

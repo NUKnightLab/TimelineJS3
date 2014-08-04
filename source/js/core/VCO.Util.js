@@ -29,7 +29,6 @@ VCO.Util = {
 		
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].data[prop] == id) {
-				trace(array[i].data[prop]);
 				_n = i;
 			}
 		};
