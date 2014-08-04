@@ -8395,7 +8395,8 @@ VCO.TimeNav = VCO.Class.extend({
 			width: 					600,
 			height: 				600,
 			duration: 				1000,
-			ease: 					VCO.Ease.easeInOutQuint
+			ease: 					VCO.Ease.easeInOutQuint,
+			scale_factor: 			2 				// How many screen widths wide should the timeline be
 		};
 		
 		// Animation
@@ -8525,14 +8526,14 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth);
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
 		
 		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
-			trace(this._markers[i].data.date.data.date_obj.getTime());
-			//var pos = this.timescale.getPosition(this._markers[i].data.date.date_obj.getTime());
-			//trace(pos);
-			this._markers[i].setPosition({left:(100 * i), top:0});
+			//trace(this._markers[i].data.date.data.date_obj.getTime());
+			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
+			trace(pos);
+			this._markers[i].setPosition({left:pos, top:0});
 		};
 	},
 	
@@ -9097,6 +9098,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path:            "",
 			height: 				this._el.container.offsetHeight,
 			width: 					this._el.container.offsetWidth,
+			scale_factor: 			1.5, 				// How many screen widths wide should the timeline be
 			layout: 				"landscape", 	// portrait or landscape
 			timenav_position: 		"bottom", 		// timeline on top or bottom
 			base_class: 			"",
@@ -9114,16 +9116,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 				"stamen:toner-lite",
 			slide_padding_lr: 		100, 			// padding on slide of slide
 			slide_default_fade: 	"0%", 			// landscape fade
-			menubar_default_y: 		0,
-			map_popup: 				false,
-			zoom_distance: 			100,
-			line_follows_path: 		true,   		// Map history path follows default line, if false it will connect previous and current only
-			line_color: 			"#c34528", //"#DA0000",
-			line_color_inactive: 	"#CCC",
-			line_join: 				"miter",
-			line_weight: 			3,
-			line_opacity: 			0.80,
-			line_dash: 				"5,5",
+
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               "en"		
 		};

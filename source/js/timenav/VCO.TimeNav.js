@@ -144,7 +144,8 @@ VCO.TimeNav = VCO.Class.extend({
 			width: 					600,
 			height: 				600,
 			duration: 				1000,
-			ease: 					VCO.Ease.easeInOutQuint
+			ease: 					VCO.Ease.easeInOutQuint,
+			scale_factor: 			2 				// How many screen widths wide should the timeline be
 		};
 		
 		// Animation
@@ -274,14 +275,14 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth);
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
 		
 		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
-			trace(this._markers[i].data.date.data.date_obj.getTime());
-			//var pos = this.timescale.getPosition(this._markers[i].data.date.date_obj.getTime());
-			//trace(pos);
-			this._markers[i].setPosition({left:(100 * i), top:0});
+			//trace(this._markers[i].data.date.data.date_obj.getTime());
+			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
+			trace(pos);
+			this._markers[i].setPosition({left:pos, top:0});
 		};
 	},
 	
