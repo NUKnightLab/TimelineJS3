@@ -364,83 +364,6 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/source\/gfx\/layers-2x.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 2898,
-		"inputAbbreviatedPath": "\/source\/gfx\/layers-2x.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/layers-2x.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/source\/gfx\/layers.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 1502,
-		"inputAbbreviatedPath": "\/source\/gfx\/layers.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/layers.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/source\/gfx\/map-pin.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 2120,
-		"inputAbbreviatedPath": "\/source\/gfx\/map-pin.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/map-pin.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/source\/gfx\/marker-icon-2x.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 4033,
-		"inputAbbreviatedPath": "\/source\/gfx\/marker-icon-2x.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/marker-icon-2x.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/source\/gfx\/marker-icon.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 1747,
-		"inputAbbreviatedPath": "\/source\/gfx\/marker-icon.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/marker-icon.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/source\/gfx\/marker-shadow.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 797,
-		"inputAbbreviatedPath": "\/source\/gfx\/marker-shadow.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/marker-shadow.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
-	"\/source\/gfx\/overlay.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 1007,
-		"inputAbbreviatedPath": "\/source\/gfx\/overlay.png",
-		"outputAbbreviatedPath": "\/source\/gfx\/overlay.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
 	"\/source\/jade\/multiple_timeline.jade": {
 		"compileDebug": 1,
 		"fileType": 512,
@@ -579,6 +502,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.DateFormat.js",
 		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.DateFormat-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/date\/VCO.DateUtil.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.DateUtil.js",
+		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.DateUtil-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -1992,12 +1926,12 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.TimeUtil.js": {
+	"\/source\/js\/timenav\/VCO.TimeScale.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeUtil-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeScale.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeScale-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,

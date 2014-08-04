@@ -156,6 +156,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// Current Marker
 		this.current_marker = 0;
 		
+		// TimeScale
+		this.timescale = {};
+		
 		// Swipe Object
 		this._swipable;
 		
@@ -271,8 +274,13 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth);
+		
 		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
+			trace(this._markers[i].data.date.data.date_obj.getTime());
+			//var pos = this.timescale.getPosition(this._markers[i].data.date.date_obj.getTime());
+			//trace(pos);
 			this._markers[i].setPosition({left:(100 * i), top:0});
 		};
 	},

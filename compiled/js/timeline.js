@@ -337,8 +337,39 @@ VCO.Util = {
 		
 		
 		return vars;
+	},
+	slugify: function(str) {
+		// borrowed from http://stackoverflow.com/a/5782563/102476
+		str = str.replace(/^\s+|\s+$/g, ''); // trim
+		str = str.toLowerCase();
+
+		// remove accents, swap ñ for n, etc
+		var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+		var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+		for (var i=0, l=from.length ; i<l ; i++) {
+		str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+		}
+
+		str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+		.replace(/\s+/g, '-') // collapse whitespace and replace by -
+		.replace(/-+/g, '-'); // collapse dashes
+
+		str = str.replace(/^([0-9])/,'_$1');
+		return str;
 	}
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* **********************************************
      Begin VCO.Data.js
@@ -4119,6 +4150,7 @@ VCO.DateFormat = function() {
 
 /*	VCO.Date
 	Date object
+	MONTHS are 1-BASED, not 0-BASED (different from Javascript date objects)
 ================================================== */
 VCO.Date = VCO.Class.extend({
 	
@@ -4183,7 +4215,7 @@ VCO.Date = VCO.Class.extend({
 	_createDateObj: function() {
 		var _date = {
 			year: 			0,
-			month: 			0,
+			month: 			1, // stupid JS dates
 			day: 			0,
 			hour: 			0,
 			minute: 		0,
@@ -4193,21 +4225,219 @@ VCO.Date = VCO.Class.extend({
 		
 		// Merge dates
 		VCO.Util.mergeData(_date, this.data);
-		
+		DATE_PARTS = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'];
 		// Make strings into numbers
-		for (var key in _date) {
-			_date[key] = parseInt(_date[key])
+		for (var ix in DATE_PARTS) {	
+			var parsed = parseInt(_date[DATE_PARTS[ix]]);
+			if (isNaN(parsed)) parsed = 0;
+			_date[DATE_PARTS[ix]] = parsed;
 		}
 		
+		if (_date.month > 0 && _date.month <= 12) {
+			_date.month = _date.month - 1;
+		}
 		// Create Javascript date object
 		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
-		trace(this.data.date_obj);
 	}
 	
 });
 
 
 
+
+/* **********************************************
+     Begin VCO.DateUtil.js
+********************************************** */
+
+/*	VCO.DateUtil
+	Utilities for parsing time
+================================================== */
+
+
+VCO.DateUtil = {
+	get: function (id) {
+		return (typeof id === 'string' ? document.getElementById(id) : id);
+	},
+
+	getDateFractions: function(the_date, is_utc) {
+		
+		var _time = {};
+		_time.days			= the_date		/	dateFractionBrowser.day;
+		_time.weeks 		= _time.days	/	dateFractionBrowser.week;
+		_time.months 		= _time.days	/	dateFractionBrowser.month;
+		_time.years 		= _time.months 	/	dateFractionBrowser.year;
+		_time.hours 		= _time.days	*	dateFractionBrowser.hour;
+		_time.minutes 		= _time.days	*	dateFractionBrowser.minute;
+		_time.seconds 		= _time.days	*	dateFractionBrowser.second;
+		_time.decades 		= _time.years	/	dateFractionBrowser.decade;
+		_time.centuries 	= _time.years	/	dateFractionBrowser.century;
+		_time.milleniums 	= _time.years	/	dateFractionBrowser.millenium;
+		_time.ages			= _time.years	/	dateFractionBrowser.age;
+		_time.epochs		= _time.years	/	dateFractionBrowser.epoch;
+		_time.eras			= _time.years	/	dateFractionBrowser.era;
+		_time.eons			= _time.years	/	dateFractionBrowser.eon;
+		
+		/*
+		trace("AGES "		 + 		_time.ages);
+		trace("EPOCHS "		 + 		_time.epochs);
+		trace("MILLENIUMS "  + 		_time.milleniums);
+		trace("CENTURIES "	 + 		_time.centuries);
+		trace("DECADES "	 + 		_time.decades);
+		trace("YEARS "		 + 		_time.years);
+		trace("MONTHS "		 + 		_time.months);
+		trace("WEEKS "		 + 		_time.weeks);
+		trace("DAYS "		 + 		_time.days);
+		trace("HOURS "		 + 		_time.hours);
+		trace("MINUTES "	 + 		_time.minutes);
+		trace("SECONDS "	 + 		_time.seconds);
+		*/
+		return _time;
+	},
+	
+	calculateInterval: function(time) {
+		var interval_calc = {},
+			_first								= VCO.DateUtil.getDateFractions(time[0].startdate),
+			_last								= VCO.DateUtil.getDateFractions(time[data.length - 1].enddate);
+		
+		// EON
+		interval_calc.eon.type					=	"eon";
+		interval_calc.eon.first					=	_first.eons;
+		interval_calc.eon.base					=	Math.floor(_first.eons);
+		interval_calc.eon.last					=	_last.eons;
+		interval_calc.eon.number				=	timespan.eons;
+		interval_calc.eon.multiplier		 	=	timelookup.eons;
+		interval_calc.eon.minor					=	timelookup.eons;
+		
+		// ERA
+		interval_calc.era.type					=	"era";
+		interval_calc.era.first					=	_first.eras;
+		interval_calc.era.base					=	Math.floor(_first.eras);
+		interval_calc.era.last					=	_last.eras;
+		interval_calc.era.number				=	timespan.eras;
+		interval_calc.era.multiplier		 	=	timelookup.eras;
+		interval_calc.era.minor					=	timelookup.eras;
+		
+		// EPOCH
+		interval_calc.epoch.type				=	"epoch";
+		interval_calc.epoch.first				=	_first.epochs;
+		interval_calc.epoch.base				=	Math.floor(_first.epochs);
+		interval_calc.epoch.last				=	_last.epochs;
+		interval_calc.epoch.number				=	timespan.epochs;
+		interval_calc.epoch.multiplier		 	=	timelookup.epochs;
+		interval_calc.epoch.minor				=	timelookup.epochs;
+		
+		// AGE
+		interval_calc.age.type					=	"age";
+		interval_calc.age.first					=	_first.ages;
+		interval_calc.age.base					=	Math.floor(_first.ages);
+		interval_calc.age.last					=	_last.ages;
+		interval_calc.age.number				=	timespan.ages;
+		interval_calc.age.multiplier		 	=	timelookup.ages;
+		interval_calc.age.minor					=	timelookup.ages;
+		
+		// MILLENIUM
+		interval_calc.millenium.type 			=	"millenium";
+		interval_calc.millenium.first			=	_first.milleniums;
+		interval_calc.millenium.base			=	Math.floor(_first.milleniums);
+		interval_calc.millenium.last			=	_last.milleniums;
+		interval_calc.millenium.number			=	timespan.milleniums;
+		interval_calc.millenium.multiplier	 	=	timelookup.millenium;
+		interval_calc.millenium.minor			=	timelookup.millenium;
+		
+		// CENTURY
+		interval_calc.century.type 				= "century";
+		interval_calc.century.first 			= _first.centuries;
+		interval_calc.century.base 				= Math.floor(_first.centuries);
+		interval_calc.century.last 				= _last.centuries;
+		interval_calc.century.number 			= timespan.centuries;
+		interval_calc.century.multiplier	 	= timelookup.century;
+		interval_calc.century.minor 			= timelookup.century;
+		
+		// DECADE
+		interval_calc.decade.type 				= "decade";
+		interval_calc.decade.first 				= _first.decades;
+		interval_calc.decade.base 				= Math.floor(_first.decades);
+		interval_calc.decade.last 				= _last.decades;
+		interval_calc.decade.number 			= timespan.decades;
+		interval_calc.decade.multiplier 		= timelookup.decade;
+		interval_calc.decade.minor 				= timelookup.decade;
+		
+		// YEAR
+		interval_calc.year.type					= "year";
+		interval_calc.year.first 				= _first.years;
+		interval_calc.year.base 				= Math.floor(_first.years);
+		interval_calc.year.last					= _last.years;
+		interval_calc.year.number 				= timespan.years;
+		interval_calc.year.multiplier 			= 1;
+		interval_calc.year.minor 				= timelookup.month;
+		
+		// MONTH
+		interval_calc.month.type 				= "month";
+		interval_calc.month.first 				= _first.months;
+		interval_calc.month.base 				= Math.floor(_first.months);
+		interval_calc.month.last 				= _last.months;
+		interval_calc.month.number 				= timespan.months;
+		interval_calc.month.multiplier 			= 1;
+		interval_calc.month.minor 				= Math.round(timelookup.week);
+		
+		// WEEK
+		// NOT DONE
+		interval_calc.week.type 				= "week";
+		interval_calc.week.first 				= _first.weeks;
+		interval_calc.week.base 				= Math.floor(_first.weeks);
+		interval_calc.week.last 				= _last.weeks;
+		interval_calc.week.number 				= timespan.weeks;
+		interval_calc.week.multiplier 			= 1;
+		interval_calc.week.minor 				= 7;
+		
+		// DAY
+		interval_calc.day.type 					= "day";
+		interval_calc.day.first 				= _first.days;
+		interval_calc.day.base	 				= Math.floor(_first.days);
+		interval_calc.day.last 					= _last.days;
+		interval_calc.day.number 				= timespan.days;
+		interval_calc.day.multiplier 			= 1;
+		interval_calc.day.minor 				= 24;
+		
+		// HOUR
+		interval_calc.hour.type 				= "hour";
+		interval_calc.hour.first 				= _first.hours;
+		interval_calc.hour.base 				= Math.floor(_first.hours);
+		interval_calc.hour.last 				= _last.hours;
+		interval_calc.hour.number 				= timespan.hours;
+		interval_calc.hour.multiplier 			= 1;
+		interval_calc.hour.minor 				= 60;
+		
+		// MINUTE
+		interval_calc.minute.type 				= "minute";
+		interval_calc.minute.first 				= _first.minutes;
+		interval_calc.minute.base 				= Math.floor(_first.minutes);
+		interval_calc.minute.last 				= _last.minutes;
+		interval_calc.minute.number 			= timespan.minutes;
+		interval_calc.minute.multiplier 		= 1;
+		interval_calc.minute.minor 				= 60;
+		
+		// SECOND
+		interval_calc.second.type 				= "decade";
+		interval_calc.second.first 				= _first.seconds;
+		interval_calc.second.base 				= Math.floor(_first.seconds);
+		interval_calc.second.last 				= _last.seconds;
+		interval_calc.second.number 			= timespan.seconds;
+		interval_calc.second.multiplier 		= 1;
+		interval_calc.second.minor 				= 10;
+		
+		return interval_calc;
+	},
+
+	sortByDate: function(array) { // only for use with slide data objects
+		array.sort(function(a,b){
+			if (a.date.data.date_obj < b.date.data.date_obj) return -1;
+			if (a.date.data.date_obj > b.date.data.date_obj) return 1;
+			return 0;
+		});
+	}
+	
+};
 
 /* **********************************************
      Begin VCO.Draggable.js
@@ -8177,6 +8407,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// Current Marker
 		this.current_marker = 0;
 		
+		// TimeScale
+		this.timescale = {};
+		
 		// Swipe Object
 		this._swipable;
 		
@@ -8292,8 +8525,13 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth);
+		
 		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
+			trace(this._markers[i].data.date.data.date_obj.getTime());
+			//var pos = this.timescale.getPosition(this._markers[i].data.date.date_obj.getTime());
+			//trace(pos);
 			this._markers[i].setPosition({left:(100 * i), top:0});
 		};
 	},
@@ -8412,192 +8650,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	
 });
-
-/* **********************************************
-     Begin VCO.TimeUtil.js
-********************************************** */
-
-/*	VCO.TimeUtil
-	Utilities for parsing time
-================================================== */
-
-
-VCO.TimeUtil = {
-	get: function (id) {
-		return (typeof id === 'string' ? document.getElementById(id) : id);
-	},
-
-	getDateFractions: function(the_date, is_utc) {
-		
-		var _time = {};
-		_time.days			= the_date		/	dateFractionBrowser.day;
-		_time.weeks 		= _time.days	/	dateFractionBrowser.week;
-		_time.months 		= _time.days	/	dateFractionBrowser.month;
-		_time.years 		= _time.months 	/	dateFractionBrowser.year;
-		_time.hours 		= _time.days	*	dateFractionBrowser.hour;
-		_time.minutes 		= _time.days	*	dateFractionBrowser.minute;
-		_time.seconds 		= _time.days	*	dateFractionBrowser.second;
-		_time.decades 		= _time.years	/	dateFractionBrowser.decade;
-		_time.centuries 	= _time.years	/	dateFractionBrowser.century;
-		_time.milleniums 	= _time.years	/	dateFractionBrowser.millenium;
-		_time.ages			= _time.years	/	dateFractionBrowser.age;
-		_time.epochs		= _time.years	/	dateFractionBrowser.epoch;
-		_time.eras			= _time.years	/	dateFractionBrowser.era;
-		_time.eons			= _time.years	/	dateFractionBrowser.eon;
-		
-		/*
-		trace("AGES "		 + 		_time.ages);
-		trace("EPOCHS "		 + 		_time.epochs);
-		trace("MILLENIUMS "  + 		_time.milleniums);
-		trace("CENTURIES "	 + 		_time.centuries);
-		trace("DECADES "	 + 		_time.decades);
-		trace("YEARS "		 + 		_time.years);
-		trace("MONTHS "		 + 		_time.months);
-		trace("WEEKS "		 + 		_time.weeks);
-		trace("DAYS "		 + 		_time.days);
-		trace("HOURS "		 + 		_time.hours);
-		trace("MINUTES "	 + 		_time.minutes);
-		trace("SECONDS "	 + 		_time.seconds);
-		*/
-		return _time;
-	},
-	
-	calculateInterval: function(time) {
-		var interval_calc = {},
-			_first								= VCO.TimeUtil.getDateFractions(time[0].startdate),
-			_last								= VCO.TimeUtil.getDateFractions(time[data.length - 1].enddate);
-		
-		// EON
-		interval_calc.eon.type					=	"eon";
-		interval_calc.eon.first					=	_first.eons;
-		interval_calc.eon.base					=	Math.floor(_first.eons);
-		interval_calc.eon.last					=	_last.eons;
-		interval_calc.eon.number				=	timespan.eons;
-		interval_calc.eon.multiplier		 	=	timelookup.eons;
-		interval_calc.eon.minor					=	timelookup.eons;
-		
-		// ERA
-		interval_calc.era.type					=	"era";
-		interval_calc.era.first					=	_first.eras;
-		interval_calc.era.base					=	Math.floor(_first.eras);
-		interval_calc.era.last					=	_last.eras;
-		interval_calc.era.number				=	timespan.eras;
-		interval_calc.era.multiplier		 	=	timelookup.eras;
-		interval_calc.era.minor					=	timelookup.eras;
-		
-		// EPOCH
-		interval_calc.epoch.type				=	"epoch";
-		interval_calc.epoch.first				=	_first.epochs;
-		interval_calc.epoch.base				=	Math.floor(_first.epochs);
-		interval_calc.epoch.last				=	_last.epochs;
-		interval_calc.epoch.number				=	timespan.epochs;
-		interval_calc.epoch.multiplier		 	=	timelookup.epochs;
-		interval_calc.epoch.minor				=	timelookup.epochs;
-		
-		// AGE
-		interval_calc.age.type					=	"age";
-		interval_calc.age.first					=	_first.ages;
-		interval_calc.age.base					=	Math.floor(_first.ages);
-		interval_calc.age.last					=	_last.ages;
-		interval_calc.age.number				=	timespan.ages;
-		interval_calc.age.multiplier		 	=	timelookup.ages;
-		interval_calc.age.minor					=	timelookup.ages;
-		
-		// MILLENIUM
-		interval_calc.millenium.type 			=	"millenium";
-		interval_calc.millenium.first			=	_first.milleniums;
-		interval_calc.millenium.base			=	Math.floor(_first.milleniums);
-		interval_calc.millenium.last			=	_last.milleniums;
-		interval_calc.millenium.number			=	timespan.milleniums;
-		interval_calc.millenium.multiplier	 	=	timelookup.millenium;
-		interval_calc.millenium.minor			=	timelookup.millenium;
-		
-		// CENTURY
-		interval_calc.century.type 				= "century";
-		interval_calc.century.first 			= _first.centuries;
-		interval_calc.century.base 				= Math.floor(_first.centuries);
-		interval_calc.century.last 				= _last.centuries;
-		interval_calc.century.number 			= timespan.centuries;
-		interval_calc.century.multiplier	 	= timelookup.century;
-		interval_calc.century.minor 			= timelookup.century;
-		
-		// DECADE
-		interval_calc.decade.type 				= "decade";
-		interval_calc.decade.first 				= _first.decades;
-		interval_calc.decade.base 				= Math.floor(_first.decades);
-		interval_calc.decade.last 				= _last.decades;
-		interval_calc.decade.number 			= timespan.decades;
-		interval_calc.decade.multiplier 		= timelookup.decade;
-		interval_calc.decade.minor 				= timelookup.decade;
-		
-		// YEAR
-		interval_calc.year.type					= "year";
-		interval_calc.year.first 				= _first.years;
-		interval_calc.year.base 				= Math.floor(_first.years);
-		interval_calc.year.last					= _last.years;
-		interval_calc.year.number 				= timespan.years;
-		interval_calc.year.multiplier 			= 1;
-		interval_calc.year.minor 				= timelookup.month;
-		
-		// MONTH
-		interval_calc.month.type 				= "month";
-		interval_calc.month.first 				= _first.months;
-		interval_calc.month.base 				= Math.floor(_first.months);
-		interval_calc.month.last 				= _last.months;
-		interval_calc.month.number 				= timespan.months;
-		interval_calc.month.multiplier 			= 1;
-		interval_calc.month.minor 				= Math.round(timelookup.week);
-		
-		// WEEK
-		// NOT DONE
-		interval_calc.week.type 				= "week";
-		interval_calc.week.first 				= _first.weeks;
-		interval_calc.week.base 				= Math.floor(_first.weeks);
-		interval_calc.week.last 				= _last.weeks;
-		interval_calc.week.number 				= timespan.weeks;
-		interval_calc.week.multiplier 			= 1;
-		interval_calc.week.minor 				= 7;
-		
-		// DAY
-		interval_calc.day.type 					= "day";
-		interval_calc.day.first 				= _first.days;
-		interval_calc.day.base	 				= Math.floor(_first.days);
-		interval_calc.day.last 					= _last.days;
-		interval_calc.day.number 				= timespan.days;
-		interval_calc.day.multiplier 			= 1;
-		interval_calc.day.minor 				= 24;
-		
-		// HOUR
-		interval_calc.hour.type 				= "hour";
-		interval_calc.hour.first 				= _first.hours;
-		interval_calc.hour.base 				= Math.floor(_first.hours);
-		interval_calc.hour.last 				= _last.hours;
-		interval_calc.hour.number 				= timespan.hours;
-		interval_calc.hour.multiplier 			= 1;
-		interval_calc.hour.minor 				= 60;
-		
-		// MINUTE
-		interval_calc.minute.type 				= "minute";
-		interval_calc.minute.first 				= _first.minutes;
-		interval_calc.minute.base 				= Math.floor(_first.minutes);
-		interval_calc.minute.last 				= _last.minutes;
-		interval_calc.minute.number 			= timespan.minutes;
-		interval_calc.minute.multiplier 		= 1;
-		interval_calc.minute.minor 				= 60;
-		
-		// SECOND
-		interval_calc.second.type 				= "decade";
-		interval_calc.second.first 				= _first.seconds;
-		interval_calc.second.base 				= Math.floor(_first.seconds);
-		interval_calc.second.last 				= _last.seconds;
-		interval_calc.second.number 			= timespan.seconds;
-		interval_calc.second.multiplier 		= 1;
-		interval_calc.second.minor 				= 10;
-		
-		return interval_calc;
-	}
-	
-};
 
 /* **********************************************
      Begin VCO.TimeMarker.js
@@ -8799,6 +8851,42 @@ VCO.TimeMarker = VCO.Class.extend({
 
 
 /* **********************************************
+     Begin VCO.TimeScale.js
+********************************************** */
+
+/*  VCO.TimeScale
+    Strategies for laying out the timenav
+    make a new one if the slides change
+
+    TODOS: deal with clustering 
+================================================== */
+VCO.TimeScale = VCO.Class.extend({
+    
+    initialize: function (slides, pixelWidth) {
+        if (pixelWidth == null) { pixelWidth = 0; }
+        this.slides = slides;
+
+        this.earliest = slides[0].date.data.date_obj.getTime();
+        this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
+        this.spanInMillis = this.latest - this.earliest;
+        this.average = (this.spanInMillis)/this.slides.length;
+
+        this.setPixelWidth(pixelWidth);
+    },
+    
+    setPixelWidth: function(width) {
+        this.pixelWidth = width;
+        this.pixelsPerMilli = this.pixelWidth / this.spanInMillis;
+    },
+
+    getPosition: function(timeInMillis) {
+        return ( timeInMillis - this.earliest ) * this.pixelsPerMilli
+    }
+    
+});
+
+
+/* **********************************************
      Begin VCO.Timeline.js
 ********************************************** */
 
@@ -8846,16 +8934,13 @@ VCO.TimeMarker = VCO.Class.extend({
 // Date
 	// @codekit-prepend "date/VCO.DateFormat.js";
 	// @codekit-prepend "date/VCO.Date.js";
+	// @codekit-prepend "date/VCO.DateUtil.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";
 	// @codekit-prepend "ui/VCO.Swipable.js";
 	// @codekit-prepend "ui/VCO.MenuBar.js";
 	// @codekit-prepend "ui/VCO.Message.js";
-	
-	
-		
-		
 
 // MEDIA
 	// @codekit-prepend "media/VCO.MediaType.js";
@@ -8889,8 +8974,8 @@ VCO.TimeMarker = VCO.Class.extend({
 
 // TIMENAV
 	// @codekit-prepend "timenav/VCO.TimeNav.js";
-	// @codekit-prepend "timenav/VCO.TimeUtil.js";
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
+	// @codekit-prepend "timenav/VCO.TimeScale.js";
 
 
 VCO.Timeline = VCO.Class.extend({
@@ -9246,13 +9331,38 @@ VCO.Timeline = VCO.Class.extend({
 	/*	Data Prep
 	================================================== */
 	_makeUniqueIdentifiers: function(array) {
+		var used = []
 		for (var i = 0; i < array.length; i++) {
-			if (!array[i].uniqueid || array[i].uniqueid == "") {
-				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
+			if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
+				array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
+				if (used.indexOf(array[i].uniqueid) != -1) {
+					array[i].uniqueid = '';
+				} else {
+					used.push(array[i].uniqueid);
+				}
 			}
 		};
+		if (used.length != array.length) {
+			for (var i = 0; i < array.length; i++) {
+				if (!array[i].uniqueid) {
+					var slug = VCO.Util.slugify(array[i].text.headline);
+					if (!slug) {
+						slug = VCO.Util.unique_ID(6);
+					}
+					if (used.indexOf(slug) != -1) {
+						slug = slug + '-' + i;
+					}
+					used.push(slug);
+					array[i].uniqueid = slug;
+				}
+			}
+		}
 	},
-	
+	_processDates: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			array[i].date = new VCO.Date(array[i].date);
+		}
+	},
 	/*	Init
 	================================================== */
 	// Initialize the data
@@ -9271,7 +9381,9 @@ VCO.Timeline = VCO.Class.extend({
 					if (d && d.timeline) {
 						VCO.Util.mergeData(self.data, d.timeline);
 					}
-					self._makeUniqueIdentifiers(self.data.slides);
+					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
+					self._processDates(self.data.slides);          // into '_cleanData'
+					VCO.DateUtil.sortByDate(self.data.slides);
 					self._onDataLoaded();
 				},
 				error:function(xhr, type){
