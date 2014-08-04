@@ -8,7 +8,7 @@
 ================================================== */
 /* 
 	TODO
-	
+	Avoid reliance on array position for tying markers to slides. Need to move to unique identifiers
 */ 
 
 /*	Required Files
