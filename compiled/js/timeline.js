@@ -8036,6 +8036,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el = {
 			parent: {},
 			container: {},
+			line: {},
 			marker_container_mask: {},
 			marker_container: {},
 			marker_item_container: {}
@@ -8374,7 +8375,7 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_initLayout: function () {
 		// Create Layout
-
+		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
 		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
 		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vcoanimate', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
