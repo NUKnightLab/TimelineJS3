@@ -88,7 +88,6 @@ VCO.Date = VCO.Class.extend({
 		}
 		// Create Javascript date object
 		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
-		trace(this.data.date_obj);
 	}
 	
 });

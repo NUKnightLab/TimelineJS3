@@ -176,6 +176,14 @@ VCO.DateUtil = {
 		interval_calc.second.minor 				= 10;
 		
 		return interval_calc;
+	},
+
+	sortByDate: function(array) { // only for use with slide data objects
+		array.sort(function(a,b){
+			if (a.date.data.date_obj < b.date.data.date_obj) return -1;
+			if (a.date.data.date_obj > b.date.data.date_obj) return 1;
+			return 0;
+		});
 	}
 	
 };

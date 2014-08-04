@@ -490,6 +490,7 @@ VCO.Timeline = VCO.Class.extend({
 					}
 					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
 					self._processDates(self.data.slides);          // into '_cleanData'
+					VCO.DateUtil.sortByDate(self.data.slides);
 					self._onDataLoaded();
 				},
 				error:function(xhr, type){
