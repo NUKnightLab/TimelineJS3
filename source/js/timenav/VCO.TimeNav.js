@@ -284,11 +284,21 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
+	goToId: function(n, fast, displayupdate) {
+		if (typeof n == 'string' || n instanceof String) {
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid");
+		} else {
+			_n = n;
+		}
+		
+		this.goTo(_n, fast, displayupdate);
+		
+	},
 	
 	goTo: function(n, fast, displayupdate) {
 		
-		var self = this;
-		
+		var self = 	this;
+
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
@@ -296,6 +306,8 @@ VCO.TimeNav = VCO.Class.extend({
 		this.current_marker = n;
 		
 	},
+	
+	
 	
 	/*	Events
 	================================================== */
@@ -316,7 +328,7 @@ VCO.TimeNav = VCO.Class.extend({
 	_onMarkerClick: function(e) {
 		// Go to the current marker
 		this.goTo(e.marker_number);
-		this.fire("change", {current_marker: e.marker_number});
+		this.fire("change", {uniqueid: e.uniqueid});
 	},
 	
 	

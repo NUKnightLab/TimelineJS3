@@ -279,6 +279,17 @@ VCO.StorySlider = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
+	goToId: function(n, fast, displayupdate) {
+		if (typeof n == 'string' || n instanceof String) {
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._slides, "uniqueid");
+		} else {
+			_n = n;
+		}
+		trace(n);
+		trace(_n)
+		this.goTo(_n, fast, displayupdate);
+		
+	},
 	
 	goTo: function(n, fast, displayupdate) {
 		var self = this;
@@ -626,7 +637,7 @@ VCO.StorySlider = VCO.Class.extend({
 	_onSlideChange: function(displayupdate) {
 		
 		if (!displayupdate) {
-			this.fire("change", {current_slide:this.current_slide});
+			this.fire("change", {current_slide:this.current_slide, uniqueid:this._slides[this.current_slide].data.uniqueid});
 		}
 	},
 	

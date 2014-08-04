@@ -24,6 +24,19 @@ VCO.Util = {
 		}
 	},
 	
+	findArrayNumberByUniqueID: function(id, array, prop) {
+		var _n = 0;
+		
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].data[prop] == id) {
+				trace(array[i].data[prop]);
+				_n = i;
+			}
+		};
+		
+		return _n;
+	},
+	
 	convertUnixTime: function(str) {
 		var _date, _months, _year, _month, _day, _time, _date_array = [],
 			_date_str = {

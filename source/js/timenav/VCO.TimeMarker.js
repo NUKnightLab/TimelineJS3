@@ -133,7 +133,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
-		this.fire("markerclick", {marker_number: this.data.marker_number});
+		this.fire("markerclick", {marker_number: this.data.marker_number, uniqueid:this.data.uniqueid});
 	},
 	
 	/*	Private Methods
@@ -143,7 +143,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-timemarker");
 		if (this.data.uniqueid) {
-			this._el.container.id 		= this.data.uniqueid;
+			this._el.container.id 		= this.data.uniqueid + "-marker";
 		}
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);

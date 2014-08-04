@@ -8,7 +8,7 @@
 ================================================== */
 /* 
 	TODO
-	Avoid reliance on array position for tying markers to slides. Need to move to unique identifiers
+	
 */ 
 
 /*	Required Files
@@ -316,108 +316,6 @@ VCO.Timeline = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	
-	// Initialize the data
-	_initData: function(data) {
-		trace("_initData")
-		var self = this;
-		
-		if (typeof data === 'string') {
-			trace("string");
-			
-			VCO.ajax({
-				type: 'GET',
-				url: data,
-				dataType: 'json', //json data type
-				success: function(d){
-					if (d && d.timeline) {
-						VCO.Util.mergeData(self.data, d.timeline);
-					}
-					self._onDataLoaded();
-				},
-				error:function(xhr, type){
-					trace("ERROR LOADING");
-					trace(xhr);
-					trace(type);
-				}
-			});
-		} else if (typeof data === 'object') {
-			if (data.timeline) {
-				self.data = data.timeline;
-			} else {
-				trace("data must have a timeline property")
-			}
-			self._onDataLoaded();
-		} else {
-			self._onDataLoaded();
-		}
-	},
-	
-	// Initialize the layout
-	_initLayout: function () {
-		var self = this;
-		
-		this._el.container.className += ' vco-timeline';
-		this.options.base_class = this._el.container.className;
-		
-		// Create Layout
-		if (this.options.timenav_position == "top") {
-			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
-			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
-		} else {
-			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
-			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
-		}
-		
-
-		
-		// Initial Default Layout
-		this.options.width 				= this._el.container.offsetWidth;
-		this.options.height 			= this._el.container.offsetHeight;
-		this._el.storyslider.style.top 	= "1px";
-		
-		// Create Map using preferred Map API
-		//this._map = new VCO.Map.Leaflet(this._el.map, this.data, this.options);
-		//this.map = this._map._map; // For access to Leaflet Map.
-		//this._map.on('loaded', this._onMapLoaded, this);
-		
-		// Map Background Color
-		//this._el.map.style.backgroundColor = this.options.map_background_color;
-		
-		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
-		this._timenav.on('loaded', this._onTimeNavLoaded, this);
-		this._timenav.init();
-		
-		// Create StorySlider
-		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
-		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
-		this._storyslider.init();
-		
-		// LAYOUT
-		if (this.options.layout == "portrait") {
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.timenav_height - 1);
-		} else {
-			this.options.menubar_height = this._el.menubar.offsetHeight;
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - 1);
-		}
-		
-		
-		// Update Display
-		this._updateDisplay(this.options.timenav_height, true, 2000);
-		
-	},
-	
-	_initEvents: function () {
-		
-		// TimeNav Events
-		this._timenav.on('collapse', this._onMenuBarCollapse, this);
-		this._timenav.on('change', this._onTimeNavChange, this);
-		
-		// StorySlider Events
-		this._storyslider.on('change', this._onSlideChange, this);
-		this._storyslider.on('colorchange', this._onColorChange, this);
-	},
-	
 	// Update View
 	_updateDisplay: function(timenav_height, animate, d) {
 		var duration 		= this.options.duration,
@@ -532,6 +430,133 @@ VCO.Timeline = VCO.Class.extend({
 		
 	},
 	
+	/*	Data Prep
+	================================================== */
+	_makeUniqueIdentifiers: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			if (!array[i].uniqueid || array[i].uniqueid == "") {
+				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
+			}
+		};
+	},
+	
+	/*	Init
+	================================================== */
+	// Initialize the data
+	_initData: function(data) {
+		trace("_initData")
+		var self = this;
+		
+		if (typeof data === 'string') {
+			trace("string");
+			
+			VCO.ajax({
+				type: 'GET',
+				url: data,
+				dataType: 'json', //json data type
+				success: function(d){
+					if (d && d.timeline) {
+						VCO.Util.mergeData(self.data, d.timeline);
+					}
+					self._makeUniqueIdentifiers(self.data.slides);
+					self._onDataLoaded();
+				},
+				error:function(xhr, type){
+					trace("ERROR LOADING");
+					trace(xhr);
+					trace(type);
+				}
+			});
+		} else if (typeof data === 'object') {
+			if (data.timeline) {
+				self.data = data.timeline;
+			} else {
+				trace("data must have a timeline property")
+			}
+			self._onDataLoaded();
+		} else {
+			self._onDataLoaded();
+		}
+	},
+	
+	// Initialize the layout
+	_initLayout: function () {
+		var self = this;
+		
+		this._el.container.className += ' vco-timeline';
+		this.options.base_class = this._el.container.className;
+		
+		// Create Layout
+		if (this.options.timenav_position == "top") {
+			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+		} else {
+			this._el.storyslider 	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+		}
+		
+
+		
+		// Initial Default Layout
+		this.options.width 				= this._el.container.offsetWidth;
+		this.options.height 			= this._el.container.offsetHeight;
+		this._el.storyslider.style.top 	= "1px";
+		
+		// Create Map using preferred Map API
+		//this._map = new VCO.Map.Leaflet(this._el.map, this.data, this.options);
+		//this.map = this._map._map; // For access to Leaflet Map.
+		//this._map.on('loaded', this._onMapLoaded, this);
+		
+		// Map Background Color
+		//this._el.map.style.backgroundColor = this.options.map_background_color;
+		
+		// Create TimeNav
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
+		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.init();
+		
+		// Create StorySlider
+		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
+		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
+		this._storyslider.init();
+		
+		// LAYOUT
+		if (this.options.layout == "portrait") {
+			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.timenav_height - 1);
+		} else {
+			this.options.menubar_height = this._el.menubar.offsetHeight;
+			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - 1);
+		}
+		
+		
+		// Update Display
+		this._updateDisplay(this.options.timenav_height, true, 2000);
+		
+	},
+	
+	_initEvents: function () {
+		
+		// TimeNav Events
+		this._timenav.on('collapse', this._onMenuBarCollapse, this);
+		this._timenav.on('change', this._onTimeNavChange, this);
+		
+		// StorySlider Events
+		this._storyslider.on('change', this._onSlideChange, this);
+		this._storyslider.on('colorchange', this._onColorChange, this);
+	},
+	
+	/*	Set Current Slide
+	================================================== */
+	_getCurrentSlide: function(n, array) {
+		// Find Array Number
+		if (typeof n == 'string' || n instanceof String) {
+			trace("String");
+			_n = VCO.Util.findArrayNumberByUniqueID(n, array, "uniqueid");
+		} else {
+			_n = n;
+		}
+		return _n;
+	},
 	
 	/*	Events
 	================================================== */
@@ -542,6 +567,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._initLayout();
 		this._initEvents();
 		this.ready = true;
+		trace(this.data);
 		
 	},
 	
@@ -554,18 +580,23 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_onSlideChange: function(e) {
-		if (this.current_slide != e.current_slide) {
-			this.current_slide = e.current_slide;
-			this._timenav.goTo(this.current_slide);
-			this.fire("change", {current_slide: this.current_slide}, this);
+		if (this.current_id != e.uniqueid) {
+			this.current_id = e.uniqueid;
+			
+			//this._timenav.goTo(this.current_slide);
+			this._timenav.goToId(this.current_id);
+			this.fire("change", {uniqueid:this.current_id}, this);
 		}
 	},
 	
 	_onTimeNavChange: function(e) {
-		if (this.current_slide != e.current_marker) {
-			this.current_slide = e.current_marker;
-			this._storyslider.goTo(this.current_slide);
-			this.fire("change", {current_slide: this.current_slide}, this);
+		trace("_onTimeNavChange")
+		if (this.current_id != e.uniqueid) {
+			this.current_id = e.uniqueid;
+			trace("this.current_id")
+			//this._storyslider.goTo(this.current_slide);
+			this._storyslider.goToId(this.current_id);
+			this.fire("change", {uniqueid:this.current_id}, this);
 		}
 	},
 	
