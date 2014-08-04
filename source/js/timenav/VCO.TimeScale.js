@@ -1,6 +1,8 @@
 /*  VCO.TimeScale
     Strategies for laying out the timenav
     make a new one if the slides change
+
+    TODOS: deal with clustering 
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
