@@ -1,9 +1,9 @@
-/*	VCO.TimeUtil
+/*	VCO.DateUtil
 	Utilities for parsing time
 ================================================== */
 
 
-VCO.TimeUtil = {
+VCO.DateUtil = {
 	get: function (id) {
 		return (typeof id === 'string' ? document.getElementById(id) : id);
 	},
@@ -45,8 +45,8 @@ VCO.TimeUtil = {
 	
 	calculateInterval: function(time) {
 		var interval_calc = {},
-			_first								= VCO.TimeUtil.getDateFractions(time[0].startdate),
-			_last								= VCO.TimeUtil.getDateFractions(time[data.length - 1].enddate);
+			_first								= VCO.DateUtil.getDateFractions(time[0].startdate),
+			_last								= VCO.DateUtil.getDateFractions(time[data.length - 1].enddate);
 		
 		// EON
 		interval_calc.eon.type					=	"eon";

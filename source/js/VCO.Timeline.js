@@ -42,16 +42,13 @@
 // Date
 	// @codekit-prepend "date/VCO.DateFormat.js";
 	// @codekit-prepend "date/VCO.Date.js";
+	// @codekit-prepend "date/VCO.DateUtil.js";
 
 // UI
 	// @codekit-prepend "ui/VCO.Draggable.js";
 	// @codekit-prepend "ui/VCO.Swipable.js";
 	// @codekit-prepend "ui/VCO.MenuBar.js";
 	// @codekit-prepend "ui/VCO.Message.js";
-	
-	
-		
-		
 
 // MEDIA
 	// @codekit-prepend "media/VCO.MediaType.js";
@@ -85,7 +82,6 @@
 
 // TIMENAV
 	// @codekit-prepend "timenav/VCO.TimeNav.js";
-	// @codekit-prepend "timenav/VCO.TimeUtil.js";
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
 
 
@@ -494,7 +490,6 @@ VCO.Timeline = VCO.Class.extend({
 					}
 					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
 					self._processDates(self.data.slides);          // into '_cleanData'
-					// self.data.slides = // sort it somehow
 					self._onDataLoaded();
 				},
 				error:function(xhr, type){
