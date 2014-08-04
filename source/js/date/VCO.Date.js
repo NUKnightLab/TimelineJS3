@@ -77,7 +77,9 @@ VCO.Date = VCO.Class.extend({
 		
 		// Make strings into numbers
 		for (var key in _date) {
-			_date[key] = parseInt(_date[key])
+			var parsed = parseInt(_date[key]);
+			if (isNaN(parsed)) parsed = 0;
+			_date[key] = parsed;
 		}
 		
 		// Create Javascript date object
