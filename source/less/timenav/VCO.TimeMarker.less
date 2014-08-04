@@ -10,6 +10,17 @@
 	left:0;
 	cursor:pointer;
 	overflow:hidden;
+	
+	-webkit-transition: all 0.50s ease;
+	-moz-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	transition-property: all;
+	transition-duration: 0.5s;
+	transition-timing-function: ease;
+	transition-delay: initial;
+	
 	.vco-timemarker-content-container {
 		
 		.vco-timemarker-content {
@@ -33,7 +44,7 @@
 		background-color:darken(@ui-background-color, 25%);
 	}
 	&.vco-timemarker-active {
-		background-color:@color-theme
+		background-color:@color-theme;
 		color:@color-background;
 	}
 }
