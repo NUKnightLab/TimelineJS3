@@ -5,25 +5,34 @@
 VCO.Date = VCO.Class.extend({
 	
 	initialize: function (data) {
-		this.data = {
-			year: 			"",
-			month: 			"",
-			day: 			"",
-			hour: 			"",
-			minute: 		"",
-			second: 		"",
-			millisecond: 	"",
-			format: 		"YYYY MM DD",
-			display_type: 	"April 30th, 1995",
-			date_obj: 		{}
-		};
+		if (typeof(data) == 'number') {
+			this.data = {
+				format: 		"YYYY MM DD",
+				display_type: 	"April 30th, 1995",
+				date_obj: 		new Date(data)
+			}
+		} else {
+			this.data = {
+				year: 			"",
+				month: 			"",
+				day: 			"",
+				hour: 			"",
+				minute: 		"",
+				second: 		"",
+				millisecond: 	"",
+				format: 		"YYYY MM DD",
+				display_type: 	"April 30th, 1995",
+				date_obj: 		{}
+			};
 
-		// Merge Data
-		VCO.Util.mergeData(this.data, data);
+			// Merge Data
+			VCO.Util.mergeData(this.data, data);
 
-		// Create Date Object
-		this._createDateObj();
-		
+			// Create Date Object
+			this._createDateObj();
+			
+
+		}
 		// Creat Display Type
 		if (this.data.date_obj.getMonth) {
 			this._createDisplayType();
