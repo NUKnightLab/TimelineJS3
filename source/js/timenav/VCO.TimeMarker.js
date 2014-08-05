@@ -130,6 +130,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		}
 	},
 	
+	getLeft: function() {
+		return this._el.container.style.left.slice(0, -2);
+	},
+	
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {

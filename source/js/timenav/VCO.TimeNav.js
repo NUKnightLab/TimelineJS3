@@ -312,7 +312,10 @@ VCO.TimeNav = VCO.Class.extend({
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
-		
+		trace("GET POSITION")
+		trace(this._markers[n].getLeft());
+		//this._el.marker_container.style.left = (-this._markers[n].getPosition().x) + "px";
+		this._el.marker_container.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
 	},
@@ -365,7 +368,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Layout
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
 		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
-		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vcoanimate', this._el.marker_container_mask);
+		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vco-animate', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		
 		// Update Size

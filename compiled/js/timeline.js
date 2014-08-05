@@ -8089,7 +8089,7 @@ VCO.StorySlider = VCO.Class.extend({
 		
 		// Create Layout
 		this._el.slider_container_mask		= VCO.Dom.create('div', 'vco-slider-container-mask', this._el.container);
-		this._el.background 				= VCO.Dom.create('div', 'vco-slider-background', this._el.container); 
+		this._el.background 				= VCO.Dom.create('div', 'vco-slider-background vco-animate', this._el.container); 
 		this._el.slider_container			= VCO.Dom.create('div', 'vco-slider-container vcoanimate', this._el.slider_container_mask);
 		this._el.slider_item_container		= VCO.Dom.create('div', 'vco-slider-item-container', this._el.slider_container);
 		
@@ -8563,7 +8563,10 @@ VCO.TimeNav = VCO.Class.extend({
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
-		
+		trace("GET POSITION")
+		trace(this._markers[n].getLeft());
+		//this._el.marker_container.style.left = (-this._markers[n].getPosition().x) + "px";
+		this._el.marker_container.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
 	},
@@ -8616,7 +8619,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Layout
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
 		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
-		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vcoanimate', this._el.marker_container_mask);
+		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vco-animate', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		
 		// Update Size
@@ -8786,6 +8789,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		if (this._media && this._state.loaded) {
 			this._media.stopMedia();
 		}
+	},
+	
+	getLeft: function() {
+		return this._el.container.style.left.slice(0, -2);
 	},
 	
 	/*	Events
@@ -8998,7 +9005,6 @@ VCO.Timeline = VCO.Class.extend({
 		this._el = {
 			container: {},
 			storyslider: {},
-			map: {},
 			timenav: {},
 			menubar: {}
 		};
@@ -9013,9 +9019,6 @@ VCO.Timeline = VCO.Class.extend({
 		// Slider
 		this._storyslider = {};
 		
-		// Map
-		this._map = {};
-		this.map = {}; // For direct access to Leaflet Map
 		
 		// TimeNav
 		this._timenav = {};
@@ -9243,82 +9246,59 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// LAYOUT
 		if (this.options.layout == "portrait") {
+			
 			display_class += " vco-skinny";
-			// Map Offset
-			//this._map.setMapOffset(0, 0);
-			
-			//this.options.timenav_height 		= 0;//(this.options.height / this.options.map_size_sticky);
-			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
-			
 			// Portrait
 			display_class += " vco-layout-portrait";
-			
-			
-			
-			if (animate) {
-			
-				// Animate Map
-				if (this.animator_timenav) {
-					this.animator_timenav.stop();
-				}
-			
-				this.animator_timenav = VCO.Animate(this._el.map, {
-					height: 	(this.options.timenav_height) + "px",
-					duration: 	duration,
-					easing: 	VCO.Ease.easeOutStrong,
-					complete: function () {
-						//self._map.updateDisplay(self.options.width, self.options.timenav_height, animate, d, self.options.menubar_height);
-					}
-				});
-			
-				// Animate StorySlider
-				if (this.animator_storyslider) {
-					this.animator_storyslider.stop();
-				}
-				this.animator_storyslider = VCO.Animate(this._el.storyslider, {
-					height: 	this.options.storyslider_height + "px",
-					duration: 	duration,
-					easing: 	VCO.Ease.easeOutStrong
-				});
-			
-			} else {
-				// Map
-				this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-			
-				// StorySlider
-				this._el.storyslider.style.height = this.options.storyslider_height + "px";
-			}
-			
-			// Update Component Displays
-			this._timenav.updateDisplay(this.options.width, this.options.height, animate);
-			this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
-			
+
 		} else {
-			
 			// Landscape
 			display_class += " vco-layout-landscape";
 			
-			this.options.storyslider_height = this.options.height - this.options.timenav_height;
-			
-			// Map Padding
-			//this._map.padding = [0,this.options.width/2];
-			
-			this._el.timenav.style.height = this.options.timenav_height + "px";
-			
-			// StorySlider
-			this._el.storyslider.style.top = 0;
-			this._el.storyslider.style.height = this.options.storyslider_height + "px";
-			
-			this._timenav.updateDisplay(this.options.width, this.options.height, animate);
-			this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 		}
 		
+		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
 		
+		if (animate) {
+		
+			// Animate Map
+			if (this.animator_timenav) {
+				this.animator_timenav.stop();
+			}
+		
+			this.animator_timenav = VCO.Animate(this._el.timenav, {
+				height: 	(this.options.timenav_height) + "px",
+				duration: 	duration,
+				easing: 	VCO.Ease.easeOutStrong,
+				complete: function () {
+					//self._map.updateDisplay(self.options.width, self.options.timenav_height, animate, d, self.options.menubar_height);
+				}
+			});
+		
+			// Animate StorySlider
+			if (this.animator_storyslider) {
+				this.animator_storyslider.stop();
+			}
+			this.animator_storyslider = VCO.Animate(this._el.storyslider, {
+				height: 	this.options.storyslider_height + "px",
+				duration: 	duration,
+				easing: 	VCO.Ease.easeOutStrong
+			});
+		
+		} else {
+			// TimeNav
+			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
+		
+			// StorySlider
+			this._el.storyslider.style.height = this.options.storyslider_height + "px";
+		}
+		
+		// Update Component Displays
+		this._timenav.updateDisplay(this.options.width, this.options.height, animate);
+		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 		
 		// Apply class
 		this._el.container.className = display_class;
-		
-		
 	},
 	
 	/*	Data Prep

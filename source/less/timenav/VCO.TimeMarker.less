@@ -2,7 +2,8 @@
 ================================================== */
 
 .vco-timemarker {
-	background-color:darken(@ui-background-color, 15%);
+	background-color:lighten(@ui-background-color,3);
+	border: 1px solid darken(@ui-background-color, 5);
 	width:100px;
 	height:50px;
 	position:absolute;
@@ -11,25 +12,27 @@
 	cursor:pointer;
 	overflow:hidden;
 	
-	-webkit-transition: all 0.50s ease;
-	-moz-transition: all 0.5s ease;
-	-ms-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	transition: all 0.5s ease;
-	transition-property: all;
-	transition-duration: 0.5s;
-	transition-timing-function: ease;
-	transition-delay: initial;
-	
-	.vco-timemarker-content-container {
+	-webkit-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	   -moz-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	     -o-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	        transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); /* ease (default) */
+
+	-webkit-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	   -moz-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	     -o-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	        transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); /* ease (default) */
 		
+	.vco-timemarker-content-container {
+		padding:5px;
 		.vco-timemarker-content {
+			
 			.vco-timemarker-text {
 				h2.vco-headline {
 					font-size:12px;
 					line-height:12px;
 					font-weight:normal;
 					margin: 0 5px 0 5px;
+					color:darken(@ui-background-color,15);
 				}
 			}
 			.vco-timemarker-media {
@@ -41,11 +44,40 @@
 		
 	}
 	&:hover {
-		background-color:darken(@ui-background-color, 25%);
+		background-color:@color-background;
+		border: 1px solid darken(@ui-background-color, 25);
+		.box-shadow(1px 1px 2px rgba(0,0,0,.30));
+		.vco-timemarker-content-container {
+		
+			.vco-timemarker-content {
+				.vco-timemarker-text {
+					h2.vco-headline {
+						color:darken(@ui-background-color, 60);;
+					}
+				}
+			
+			}
+		
+		}
 	}
 	&.vco-timemarker-active {
 		background-color:@color-theme;
 		color:@color-background;
+		&:hover {
+			background-color:darken(@color-theme, 10);
+		}
+		.vco-timemarker-content-container {
+		
+			.vco-timemarker-content {
+				.vco-timemarker-text {
+					h2.vco-headline {
+						color:@color-background;
+					}
+				}
+			
+			}
+		
+		}
 	}
 }
 
