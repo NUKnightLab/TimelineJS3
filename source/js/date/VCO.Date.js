@@ -50,7 +50,7 @@ VCO.Date = VCO.Class.extend({
 	
 	/*	Create Display Type
 	================================================== */
-	_setDateFormat: function(format) {
+	setDateFormat: function(format) {
 		// Set display type format
 		this.data.format = format;
 		this._createDisplayType();
@@ -70,8 +70,7 @@ VCO.Date = VCO.Class.extend({
 		// Set display Type
 		trace(VCO.DateFormat(this.data.date_obj, this.data.format));
 		
-		//VCO.Language.dateformats
-		//this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
+		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
 	
 	/*	Create JavaScript date object
