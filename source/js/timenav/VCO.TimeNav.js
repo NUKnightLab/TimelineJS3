@@ -18,7 +18,8 @@ VCO.TimeNav = VCO.Class.extend({
 			line: {},
 			marker_container_mask: {},
 			marker_container: {},
-			marker_item_container: {}
+			marker_item_container: {},
+			timeaxis: {},
 		};
 		
 		this.collapsed = false;
@@ -160,6 +161,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// TimeScale
 		this.timescale = {};
 		
+		// TimeAxis
+		this.timeaxis = {};
+		
 		// Swipe Object
 		this._swipable;
 		
@@ -246,6 +250,9 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers.push(date);
 	},
 	
+	/*	Axis
+	================================================== */
+	
 	
 	/*	Markers
 	================================================== */
@@ -276,7 +283,7 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_positionMarkers: function() {
 		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
-		
+		trace(VCO.AxisHelper.getBestHelper(this.timescale, 50));
 		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
 			//trace(this._markers[i].data.date.data.date_obj.getTime());
@@ -368,6 +375,8 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
 		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vco-animate', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
+		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.container);
+		
 		
 		// Update Size
 		this.options.width = this._el.container.offsetWidth;
