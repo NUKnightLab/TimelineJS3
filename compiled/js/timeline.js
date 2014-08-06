@@ -8712,7 +8712,7 @@ VCO.TimeScale = VCO.Class.extend({
 		
 		this.pixelsPerMilli = 0;
         this.slides = slides;
-
+		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
         this.spanInMillis = this.latest - this.earliest;
@@ -8743,8 +8743,11 @@ VCO.TimeScale = VCO.Class.extend({
 ================================================== */
 VCO.AxisHelper = VCO.Class.extend({
     initialize: function (options) {
-        this.minor = options.minor;
-        this.major = options.major;
+		if (options) {
+	        this.minor = options.minor;
+	        this.major = options.major;
+		}
+       
     },
     
     getPixelsPerTick: function(timescale) {

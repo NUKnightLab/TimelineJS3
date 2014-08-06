@@ -4,8 +4,11 @@
 ================================================== */
 VCO.AxisHelper = VCO.Class.extend({
     initialize: function (options) {
-        this.minor = options.minor;
-        this.major = options.major;
+		if (options) {
+	        this.minor = options.minor;
+	        this.major = options.major;
+		}
+       
     },
     
     getPixelsPerTick: function(timescale) {
