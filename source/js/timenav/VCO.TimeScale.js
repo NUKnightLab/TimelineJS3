@@ -7,7 +7,9 @@
 VCO.TimeScale = VCO.Class.extend({
     
     initialize: function (slides, pixelWidth) {
-        if (pixelWidth == null) { pixelWidth = 0; }
+        if (pixelWidth == null) { pixelWidth = 0; };
+		
+		this.pixelsPerMilli = 0;
         this.slides = slides;
 
         this.earliest = slides[0].date.data.date_obj.getTime();

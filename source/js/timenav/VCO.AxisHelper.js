@@ -13,7 +13,7 @@ VCO.AxisHelper = VCO.Class.extend({
     },
 
     getMajorTicks: function(timescale) {
-        return this._getTicks(timescale, this.major)
+		return this._getTicks(timescale, this.major)
     },
 
     getMinorTicks: function(timescale) {

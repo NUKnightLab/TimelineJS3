@@ -281,7 +281,6 @@ VCO.TimeNav = VCO.Class.extend({
 		for (var i = 0; i < this._markers.length; i++) {
 			//trace(this._markers[i].data.date.data.date_obj.getTime());
 			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
-			trace(pos);
 			this._markers[i].setPosition({left:pos, top:0});
 		};
 	},
@@ -312,9 +311,8 @@ VCO.TimeNav = VCO.Class.extend({
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
-		trace("GET POSITION")
-		trace(this._markers[n].getLeft());
-		//this._el.marker_container.style.left = (-this._markers[n].getPosition().x) + "px";
+		
+		// Move container to marker position
 		this._el.marker_container.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
