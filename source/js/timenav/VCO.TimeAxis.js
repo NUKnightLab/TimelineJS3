@@ -57,6 +57,24 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Minor tick dom element array
 		this.major_ticks = [];
 		
+		// Date Format Lookup
+		this.dateformat_lookup = {
+	        millisecond: 1,
+	        second: VCO.Language.dateformats.time_short,
+	        minute: VCO.Language.dateformats.time_no_seconds_short,
+	        hour: VCO.Language.dateformats.time_no_seconds_short,
+	        day: VCO.Language.dateformats.full_short,
+	        month: VCO.Language.dateformats.month_short,
+	        year: VCO.Language.dateformats.year,
+	        decade: VCO.Language.dateformats.year,
+	        century: VCO.Language.dateformats.year,
+	        millenium: VCO.Language.dateformats.year,
+	        age: VCO.Language.dateformats.year,
+	        epoch: VCO.Language.dateformats.year,
+	        era: VCO.Language.dateformats.year,
+	        eon: VCO.Language.dateformats.year,
+	    }
+		
 		// Main element
 		if (typeof elem === 'object') {
 			this._el.container = elem;
@@ -107,15 +125,18 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawTicks: function(timescale, optimal_tick_width) {
+	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
+		
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
 		
 		
 		// Create Minor Ticks
+		
 		for (var i = 0; i < minor_ticks.ticks.length; i++) {
 			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor);
+			minor_ticks.ticks[i].setDateFormat(this.dateformat_lookup[minor_ticks.name]);
 			tick.innerHTML = minor_ticks.ticks[i].getDisplayDate();
 			this.minor_ticks.push({
 				tick:tick,
@@ -126,6 +147,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Create Major Ticks
 		for (var j = 0; j < major_ticks.ticks.length; j++) {
 			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major);
+			major_ticks.ticks[j].setDateFormat(this.dateformat_lookup[major_ticks.name]);
 			tick.innerHTML = major_ticks.ticks[j].getDisplayDate();
 			this.major_ticks.push({
 				tick:tick,

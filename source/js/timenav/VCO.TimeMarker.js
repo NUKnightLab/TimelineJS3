@@ -134,6 +134,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
+	getTime: function() {
+		return this.data.date.data.date_obj.getTime();
+	},
+	
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {

@@ -1,7 +1,7 @@
 /* VCO.TimeAxis
 ================================================== */
 .vco-timeaxis-background {
-	height:35px;
+	height:@axis-height;
 	width:100%;
 	position:absolute;
 	bottom:0;
@@ -31,20 +31,45 @@
 				left:0;
 				width:50px;
 				text-align: center;
-				font-size:12px;
-				line-height:12px;
 				font-weight:normal;
-				color:darken(@ui-background-color,25);
+				&:before {
+					content: "|";
+					display:block;
+					color:@color-background;
+					width:1px;
+					margin-left:25px;
+					overflow:hidden;
+					border-left: 1px solid lighten(@color-foreground, 60);
+					text-align:center;
+				}
 			}
 		}
 		
 		.vco-timeaxis-major {
-			position:absolute;
-			bottom:0px;
+			.vco-timeaxis-tick {
+				font-size:12px;
+				line-height:12px;
+				bottom:3px;
+				color:@color-foreground;
+				&:before {
+					font-size:17px;
+					line-height:17px;
+					margin-bottom:3px;
+				}
+			}
 		}
+		
 		.vco-timeaxis-minor {
-			position:absolute;
-			bottom:14px;
+			.vco-timeaxis-tick {
+				font-size:10px;
+				line-height:10px;
+				bottom:@axis-height - 18;
+				color:lighten(@color-foreground, 60);
+				&:before {
+					font-size:8px;
+					line-height:8px;
+				}
+			}
 		}
 		
 		

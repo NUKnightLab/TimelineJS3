@@ -4074,7 +4074,7 @@ VCO.Date = VCO.Class.extend({
 		if (typeof(data) == 'number') {
 			this.data = {
 				format: 		"yyyy mmmm",
-				display_type: 	"1995",
+				display_type: 	"",
 				date_obj: 		new Date(data)
 			}
 			
@@ -4088,7 +4088,7 @@ VCO.Date = VCO.Class.extend({
 				second: 		"",
 				millisecond: 	"",
 				format: 		"yyyy mmmm",
-				display_type: 	"1995",
+				display_type: 	"",
 				date_obj: 		{}
 			};
 			
@@ -4103,9 +4103,11 @@ VCO.Date = VCO.Class.extend({
 		}
 		
 		if (format) {
-			this.data.format;
+			this.data.format = format;
+		} else {
+			this.data.format = VCO.DateUtil.findBestFormat(this.data);
 		}
-		// Set Format and set desiplay Type
+		
 		this._createDisplayType();
 		
 		
@@ -4116,7 +4118,7 @@ VCO.Date = VCO.Class.extend({
 	
 	/*	Create Display Type
 	================================================== */
-	_setDateFormat: function(format) {
+	setDateFormat: function(format) {
 		// Set display type format
 		this.data.format = format;
 		this._createDisplayType();
@@ -4133,12 +4135,9 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		// Set display Type
-		trace(VCO.DateFormat(this.data.date_obj, this.data.format));
-		
-		//VCO.Language.dateformats
-		//this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
+		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
+	
 	
 	/*	Create JavaScript date object
 	================================================== */
@@ -4195,6 +4194,41 @@ VCO.DateUtil = {
 			if (a.date.data.date_obj > b.date.data.date_obj) return 1;
 			return 0;
 		});
+	},
+	
+	/*	Find Best Format
+	================================================== */
+	findBestFormat: function(data) {
+		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
+			format = "";
+		
+		trace("FIND BEST FORMAT");
+		for (var i = 0; i < eval_array.length; i++) {
+			if (data[eval_array[i]]) {
+				trace("has " + eval_array[i]);
+				trace((data[eval_array[i]]))
+				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+			}
+		};
+		trace("NO BEST FORMAT FOUND");
+		return "";
+	},
+	
+	best_dateformat_lookup: {
+		millisecond: 1,
+		second: VCO.Language.dateformats.time_short,
+		minute: VCO.Language.dateformats.time_no_seconds_short,
+		hour: VCO.Language.dateformats.time_no_seconds_short,
+		day: VCO.Language.dateformats.full_short,
+		month: VCO.Language.dateformats.month_short,
+		year: VCO.Language.dateformats.year,
+		decade: VCO.Language.dateformats.year,
+		century: VCO.Language.dateformats.year,
+		millenium: VCO.Language.dateformats.year,
+		age: VCO.Language.dateformats.year,
+		epoch: VCO.Language.dateformats.year,
+		era: VCO.Language.dateformats.year,
+		eon: VCO.Language.dateformats.year,
 	}
 	
 };
@@ -8167,6 +8201,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Markers Array
 		this._markers = [];
+		this._marker_ticks = [];
 		
 		// Current Marker
 		this.current_marker = 0;
@@ -8264,9 +8299,6 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers.push(date);
 	},
 	
-	
-	
-	
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
@@ -8287,6 +8319,7 @@ VCO.TimeNav = VCO.Class.extend({
 		var marker = new VCO.TimeMarker(data);
 		this._addMarker(marker);
 		this._markers.push(marker);
+		this._marker_ticks.push(marker.getTime());
 	},
 	
 	_addMarker:function(marker) {
@@ -8302,7 +8335,7 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_positionMarkers: function() {
 		for (var i = 0; i < this._markers.length; i++) {
-			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
+			var pos = this.timescale.getPosition(this._markers[i].getTime());
 			this._markers[i].setPosition({left:pos, top:0});
 		};
 	},
@@ -8384,7 +8417,7 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_drawTimeline: function() {
 		this._getTimeScale();
-		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
+		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
 		this._positionMarkers();
 	},
 	
@@ -8581,6 +8614,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
+	getTime: function() {
+		return this.data.date.data.date_obj.getTime();
+	},
+	
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
@@ -8745,6 +8782,24 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Minor tick dom element array
 		this.major_ticks = [];
 		
+		// Date Format Lookup
+		this.dateformat_lookup = {
+	        millisecond: 1,
+	        second: VCO.Language.dateformats.time_short,
+	        minute: VCO.Language.dateformats.time_no_seconds_short,
+	        hour: VCO.Language.dateformats.time_no_seconds_short,
+	        day: VCO.Language.dateformats.full_short,
+	        month: VCO.Language.dateformats.month_short,
+	        year: VCO.Language.dateformats.year,
+	        decade: VCO.Language.dateformats.year,
+	        century: VCO.Language.dateformats.year,
+	        millenium: VCO.Language.dateformats.year,
+	        age: VCO.Language.dateformats.year,
+	        epoch: VCO.Language.dateformats.year,
+	        era: VCO.Language.dateformats.year,
+	        eon: VCO.Language.dateformats.year,
+	    }
+		
 		// Main element
 		if (typeof elem === 'object') {
 			this._el.container = elem;
@@ -8795,15 +8850,18 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawTicks: function(timescale, optimal_tick_width) {
+	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
+		
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
 		
 		
 		// Create Minor Ticks
+		
 		for (var i = 0; i < minor_ticks.ticks.length; i++) {
 			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor);
+			minor_ticks.ticks[i].setDateFormat(this.dateformat_lookup[minor_ticks.name]);
 			tick.innerHTML = minor_ticks.ticks[i].getDisplayDate();
 			this.minor_ticks.push({
 				tick:tick,
@@ -8814,6 +8872,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Create Major Ticks
 		for (var j = 0; j < major_ticks.ticks.length; j++) {
 			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major);
+			major_ticks.ticks[j].setDateFormat(this.dateformat_lookup[major_ticks.name]);
 			tick.innerHTML = major_ticks.ticks[j].getDisplayDate();
 			this.major_ticks.push({
 				tick:tick,
