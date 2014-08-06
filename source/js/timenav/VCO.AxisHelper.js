@@ -74,8 +74,6 @@ VCO.AxisHelper = VCO.Class.extend({
         var prev = null;
         for (var idx in HELPERS) {
             var curr = HELPERS[idx];
-            trace(curr.minor.name);
-            trace(curr.getPixelsPerTick(ts));
             if (curr.getPixelsPerTick(ts) > optimal_tick_width)  {
                 if (prev == null) return curr;
                 var curr_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
@@ -90,4 +88,4 @@ VCO.AxisHelper = VCO.Class.extend({
         }
         return HELPERS[HELPERS.length - 1]; // last resort           
     }
-})(VCO.AxisHelper)
+})(VCO.AxisHelper);

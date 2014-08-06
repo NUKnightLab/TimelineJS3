@@ -65,6 +65,8 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
+		
+		// Run date through formatter
 		// Set display Type
 		//this.data.display_type = VCO.DateFormat.create(this.data.date_obj, this.data.format);
 	},

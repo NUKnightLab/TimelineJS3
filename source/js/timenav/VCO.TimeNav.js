@@ -163,6 +163,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// TimeAxis
 		this.timeaxis = {};
+		this.axishelper = {};
 		
 		// Swipe Object
 		this._swipable;
@@ -250,9 +251,14 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers.push(date);
 	},
 	
-	/*	Axis
-	================================================== */
 	
+	
+	
+	/*	TimeScale
+	================================================== */
+	_getTimeScale: function() {
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
+	},
 	
 	/*	Markers
 	================================================== */
@@ -282,11 +288,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
-		trace(VCO.AxisHelper.getBestHelper(this.timescale, 50));
-		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
-			//trace(this._markers[i].data.date.data.date_obj.getTime());
 			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
 			this._markers[i].setPosition({left:pos, top:0});
 		};
@@ -367,6 +369,12 @@ VCO.TimeNav = VCO.Class.extend({
 		this.goTo(this.current_marker, true, true);
 	},
 	
+	_drawTimeline: function() {
+		this._getTimeScale();
+		this.timeaxis.drawAxis(this.timescale);
+		this._positionMarkers();
+	},
+	
 	/*	Init
 	================================================== */
 	_initLayout: function () {
@@ -377,7 +385,8 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.container);
 		
-		
+		// Time Axis
+		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
 		// Update Size
 		this.options.width = this._el.container.offsetWidth;
 		this.options.height = this._el.container.offsetHeight;
@@ -405,7 +414,7 @@ VCO.TimeNav = VCO.Class.extend({
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.slides);
-		this._positionMarkers();
+		this._drawTimeline();
 	}
 	
 	

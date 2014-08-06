@@ -4215,6 +4215,8 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
+		
+		// Run date through formatter
 		// Set display Type
 		//this.data.display_type = VCO.DateFormat.create(this.data.date_obj, this.data.format);
 	},
@@ -8253,6 +8255,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// TimeAxis
 		this.timeaxis = {};
+		this.axishelper = {};
 		
 		// Swipe Object
 		this._swipable;
@@ -8340,9 +8343,14 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers.push(date);
 	},
 	
-	/*	Axis
-	================================================== */
 	
+	
+	
+	/*	TimeScale
+	================================================== */
+	_getTimeScale: function() {
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
+	},
 	
 	/*	Markers
 	================================================== */
@@ -8372,11 +8380,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
-		trace(VCO.AxisHelper.getBestHelper(this.timescale, 50));
-		// Temporary Position Markers
 		for (var i = 0; i < this._markers.length; i++) {
-			//trace(this._markers[i].data.date.data.date_obj.getTime());
 			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
 			this._markers[i].setPosition({left:pos, top:0});
 		};
@@ -8457,6 +8461,12 @@ VCO.TimeNav = VCO.Class.extend({
 		this.goTo(this.current_marker, true, true);
 	},
 	
+	_drawTimeline: function() {
+		this._getTimeScale();
+		this.timeaxis.drawAxis(this.timescale);
+		this._positionMarkers();
+	},
+	
 	/*	Init
 	================================================== */
 	_initLayout: function () {
@@ -8467,7 +8477,8 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.container);
 		
-		
+		// Time Axis
+		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
 		// Update Size
 		this.options.width = this._el.container.offsetWidth;
 		this.options.height = this._el.container.offsetHeight;
@@ -8495,7 +8506,7 @@ VCO.TimeNav = VCO.Class.extend({
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.slides);
-		this._positionMarkers();
+		this._drawTimeline();
 	}
 	
 	
@@ -8716,27 +8727,27 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, pixelWidth) {
-        if (pixelWidth == null) { pixelWidth = 0; };
+    initialize: function (slides, pixel_width) {
+        if (pixel_width == null) { pixel_width = 0; };
 		
-		this.pixelsPerMilli = 0;
+		this.pixels_per_milli = 0;
         this.slides = slides;
 		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
-        this.spanInMillis = this.latest - this.earliest;
-        this.average = (this.spanInMillis)/this.slides.length;
+        this.span_in_millis = this.latest - this.earliest;
+        this.average = (this.span_in_millis)/this.slides.length;
 
-        this.setPixelWidth(pixelWidth);
+        this.setPixelWidth(pixel_width);
     },
     
     setPixelWidth: function(width) {
-        this.pixelWidth = width;
-        this.pixelsPerMilli = this.pixelWidth / this.spanInMillis;
+        this.pixel_width = width;
+        this.pixels_per_milli = this.pixel_width / this.span_in_millis; 
     },
 
-    getPosition: function(timeInMillis) {
-        return ( timeInMillis - this.earliest ) * this.pixelsPerMilli
+    getPosition: function(time_in_millis) {
+        return ( time_in_millis - this.earliest ) * this.pixels_per_milli
     }
     
 });
@@ -8758,7 +8769,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	/*	Constructor
 	================================================== */
-	initialize: function(data, options) {
+	initialize: function(elem, data, options) {
 		
 		// DOM Elements
 		this._el = {
@@ -8796,6 +8807,16 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Animation Object
 		this.animator = {};
+		
+		// Axis Helper
+		this.axis_helper = {};
+		
+		// Main element
+		if (typeof elem === 'object') {
+			this._el.container = elem;
+		} else {
+			this._el.container = VCO.Dom.get(elem);
+		}
 		
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
@@ -8840,6 +8861,32 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
+	drawAxis: function(timescale) {
+		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, 50);
+		var major_ticks = this.axis_helper.getMajorTicks(timescale),
+			minor_ticks = this.axis_helper.getMinorTicks(timescale);
+			
+		trace(minor_ticks);
+		trace(major_ticks);
+		
+		// Create Minor Ticks
+		for (var i = 0; i < minor_ticks.ticks.length; i++) {
+			trace(minor_ticks.ticks[i].data.date_obj);
+		}
+		
+		// Create Minor Ticks
+		trace("-- Minor --");
+		for (var i = 0; i < minor_ticks.ticks.length; i++) {
+			trace(minor_ticks.ticks[i].data.date_obj);
+		}
+		
+		trace("-- Major --");
+		// Create Major Ticks
+		for (var j = 0; j < major_ticks.ticks.length; j++) {
+			trace(major_ticks.ticks[j].data.date_obj);
+		}
+	},
+	
 	/*	Events
 	================================================== */
 
@@ -8848,8 +8895,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	================================================== */
 	_initLayout: function () {
 		
-		// Create Layout
-		this._el.container 				= VCO.Dom.create("div", "vco-timeaxis");
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timeaxis-content-container", this._el.container);
 		this._el.background				= VCO.Dom.create("div", "vco-timeaxis-background", this._el.content_container);
@@ -8962,8 +9007,6 @@ VCO.AxisHelper = VCO.Class.extend({
         var prev = null;
         for (var idx in HELPERS) {
             var curr = HELPERS[idx];
-            trace(curr.minor.name);
-            trace(curr.getPixelsPerTick(ts));
             if (curr.getPixelsPerTick(ts) > optimal_tick_width)  {
                 if (prev == null) return curr;
                 var curr_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
@@ -8978,7 +9021,7 @@ VCO.AxisHelper = VCO.Class.extend({
         }
         return HELPERS[HELPERS.length - 1]; // last resort           
     }
-})(VCO.AxisHelper)
+})(VCO.AxisHelper);
 
 
 /* **********************************************

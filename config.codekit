@@ -1948,17 +1948,6 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.TimeScale.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeScale.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeScale-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
 	"\/source\/js\/ui\/VCO.Draggable.js": {
 		"fileType": 64,
 		"ignore": 1,

@@ -22,7 +22,7 @@ VCO.TimeScale = VCO.Class.extend({
     
     setPixelWidth: function(width) {
         this.pixel_width = width;
-        this.pixels_per_milli = this.pixel_width / this.span_in_millis;
+        this.pixels_per_milli = this.pixel_width / this.span_in_millis; 
     },
 
     getPosition: function(time_in_millis) {

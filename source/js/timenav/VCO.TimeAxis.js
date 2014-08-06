@@ -10,7 +10,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	/*	Constructor
 	================================================== */
-	initialize: function(data, options) {
+	initialize: function(elem, data, options) {
 		
 		// DOM Elements
 		this._el = {
@@ -48,6 +48,16 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Animation Object
 		this.animator = {};
+		
+		// Axis Helper
+		this.axis_helper = {};
+		
+		// Main element
+		if (typeof elem === 'object') {
+			this._el.container = elem;
+		} else {
+			this._el.container = VCO.Dom.get(elem);
+		}
 		
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
@@ -92,6 +102,32 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
+	drawAxis: function(timescale) {
+		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, 50);
+		var major_ticks = this.axis_helper.getMajorTicks(timescale),
+			minor_ticks = this.axis_helper.getMinorTicks(timescale);
+			
+		trace(minor_ticks);
+		trace(major_ticks);
+		
+		// Create Minor Ticks
+		for (var i = 0; i < minor_ticks.ticks.length; i++) {
+			trace(minor_ticks.ticks[i].data.date_obj);
+		}
+		
+		// Create Minor Ticks
+		trace("-- Minor --");
+		for (var i = 0; i < minor_ticks.ticks.length; i++) {
+			trace(minor_ticks.ticks[i].data.date_obj);
+		}
+		
+		trace("-- Major --");
+		// Create Major Ticks
+		for (var j = 0; j < major_ticks.ticks.length; j++) {
+			trace(major_ticks.ticks[j].data.date_obj);
+		}
+	},
+	
 	/*	Events
 	================================================== */
 
@@ -100,8 +136,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	================================================== */
 	_initLayout: function () {
 		
-		// Create Layout
-		this._el.container 				= VCO.Dom.create("div", "vco-timeaxis");
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timeaxis-content-container", this._el.container);
 		this._el.background				= VCO.Dom.create("div", "vco-timeaxis-background", this._el.content_container);
