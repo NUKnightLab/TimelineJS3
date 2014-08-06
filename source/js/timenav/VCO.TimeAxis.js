@@ -125,7 +125,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawTicks: function(timescale, optimal_tick_width) {
+	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
 		
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),

@@ -8,7 +8,7 @@ VCO.Date = VCO.Class.extend({
 		if (typeof(data) == 'number') {
 			this.data = {
 				format: 		"yyyy mmmm",
-				display_type: 	"1995",
+				display_type: 	"",
 				date_obj: 		new Date(data)
 			}
 			
@@ -22,7 +22,7 @@ VCO.Date = VCO.Class.extend({
 				second: 		"",
 				millisecond: 	"",
 				format: 		"yyyy mmmm",
-				display_type: 	"1995",
+				display_type: 	"",
 				date_obj: 		{}
 			};
 			
@@ -37,9 +37,11 @@ VCO.Date = VCO.Class.extend({
 		}
 		
 		if (format) {
-			this.data.format;
+			this.data.format = format;
+		} else {
+			this.data.format = VCO.DateUtil.findBestFormat(this.data);
 		}
-		// Set Format and set desiplay Type
+		
 		this._createDisplayType();
 		
 		
@@ -67,11 +69,9 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		// Set display Type
-		trace(VCO.DateFormat(this.data.date_obj, this.data.format));
-		
 		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
+	
 	
 	/*	Create JavaScript date object
 	================================================== */

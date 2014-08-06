@@ -156,6 +156,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Markers Array
 		this._markers = [];
+		this._marker_ticks = [];
 		
 		// Current Marker
 		this.current_marker = 0;
@@ -253,9 +254,6 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers.push(date);
 	},
 	
-	
-	
-	
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
@@ -276,6 +274,7 @@ VCO.TimeNav = VCO.Class.extend({
 		var marker = new VCO.TimeMarker(data);
 		this._addMarker(marker);
 		this._markers.push(marker);
+		this._marker_ticks.push(marker.getTime());
 	},
 	
 	_addMarker:function(marker) {
@@ -291,7 +290,7 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_positionMarkers: function() {
 		for (var i = 0; i < this._markers.length; i++) {
-			var pos = this.timescale.getPosition(this._markers[i].data.date.data.date_obj.getTime());
+			var pos = this.timescale.getPosition(this._markers[i].getTime());
 			this._markers[i].setPosition({left:pos, top:0});
 		};
 	},
@@ -373,7 +372,7 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_drawTimeline: function() {
 		this._getTimeScale();
-		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
+		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
 		this._positionMarkers();
 	},
 	
