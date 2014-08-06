@@ -1,25 +1,50 @@
 /* VCO.TimeAxis
 ================================================== */
-
-.vco-timeaxis {
-	background-color:darken(@ui-background-color,25);
-	border: 1px solid darken(@ui-background-color, 50);
-	
+.vco-timeaxis-background {
+	height:35px;
+	width:100%;
 	position:absolute;
-	top:0;
+	bottom:0;
 	left:0;
-	.box-shadow(1px 1px 2px rgba(255,255,255,.30));
+	background-color:@color-background;
+	.box-shadow(7px -1px 7px rgba(0,0,0,0.1));
+	
+}
+.vco-timeaxis {
+	//background-color:darken(@ui-background-color,25);
+	//border: 1px solid darken(@ui-background-color, 50);
+	
+	width:100%;
+	position:absolute;
+	bottom:0;
+	left:0;
+	z-index:1;
 		
 	.vco-timeaxis-content-container {
-		
-		.vco-timeaxis-background {
-			
+		position:relative;
+		bottom:0;
+
+		.vco-timeaxis-major, .vco-timeaxis-minor {
+			.vco-timeaxis-tick {
+				position:absolute;
+				bottom:0;
+				left:0;
+				width:50px;
+				text-align: center;
+				font-size:12px;
+				line-height:12px;
+				font-weight:normal;
+				color:darken(@ui-background-color,25);
+			}
 		}
+		
 		.vco-timeaxis-major {
-			
+			position:absolute;
+			bottom:0px;
 		}
 		.vco-timeaxis-minor {
-			
+			position:absolute;
+			bottom:14px;
 		}
 		
 		

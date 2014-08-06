@@ -15,6 +15,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el = {
 			parent: {},
 			container: {},
+			slider: {},
 			line: {},
 			marker_container_mask: {},
 			marker_container: {},
@@ -146,6 +147,7 @@ VCO.TimeNav = VCO.Class.extend({
 			height: 				600,
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
+			optimal_tick_width: 	100,
 			scale_factor: 			2 				// How many screen widths wide should the timeline be
 		};
 		
@@ -322,7 +324,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers[n].setActive(true);
 		
 		// Move container to marker position
-		this._el.marker_container.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+		this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
 	},
@@ -371,7 +373,13 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_drawTimeline: function() {
 		this._getTimeScale();
-		this.timeaxis.drawAxis(this.timescale);
+		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
+		this._positionMarkers();
+	},
+	
+	_updateDrawTimeline: function() {
+		this._getTimeScale();
+		this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers();
 	},
 	
@@ -380,10 +388,12 @@ VCO.TimeNav = VCO.Class.extend({
 	_initLayout: function () {
 		// Create Layout
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
-		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
-		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vco-animate', this._el.marker_container_mask);
+		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider vco-animate', this._el.container);
+		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.slider);
+		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
-		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.container);
+		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.slider);
+		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);

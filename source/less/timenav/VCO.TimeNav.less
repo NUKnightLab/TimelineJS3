@@ -3,6 +3,7 @@
 
 .vco-timenav {
 	height:200px;
+	width:100%;
 	background-color:@ui-background-color;
 	position:relative;
 	.vco-timenav-button {
@@ -22,21 +23,27 @@
 		z-index: 1;
 		box-shadow: 1px 1px 7px rgba(0,0,0,0.3);
 	}
-	.vco-timenav-container-mask {
+	.vco-timenav-slider {
 		position:absolute;
-		.vco-timenav-container {
+		height:100%;
+		width:100%;
+		.vco-timenav-container-mask {
 			position:absolute;
+			.vco-timenav-container {
+				position:absolute;
 			
 
 			
-			.vco-timenav-item-container {
-				margin-top:5px;
-				position:absolute;
-			}
+				.vco-timenav-item-container {
+					margin-top:5px;
+					position:absolute;
+				}
 			
-		}
+			}
 		
+		}
 	}
+	
 	
 }
 

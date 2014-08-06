@@ -4,13 +4,14 @@
 ================================================== */
 VCO.Date = VCO.Class.extend({
 	
-	initialize: function (data) {
+	initialize: function (data, format) {
 		if (typeof(data) == 'number') {
 			this.data = {
-				format: 		"YYYY MM DD",
-				display_type: 	"April 30th, 1995",
+				format: 		"yyyy mmmm",
+				display_type: 	"1995",
 				date_obj: 		new Date(data)
 			}
+			
 		} else {
 			this.data = {
 				year: 			"",
@@ -20,11 +21,12 @@ VCO.Date = VCO.Class.extend({
 				minute: 		"",
 				second: 		"",
 				millisecond: 	"",
-				format: 		"YYYY MM DD",
-				display_type: 	"April 30th, 1995",
+				format: 		"yyyy mmmm",
+				display_type: 	"1995",
 				date_obj: 		{}
 			};
-
+			
+			
 			// Merge Data
 			VCO.Util.mergeData(this.data, data);
 
@@ -33,42 +35,43 @@ VCO.Date = VCO.Class.extend({
 			
 
 		}
-		// Creat Display Type
-		if (this.data.date_obj.getMonth) {
-			this._createDisplayType();
+		
+		if (format) {
+			this.data.format;
 		}
+		// Set Format and set desiplay Type
+		this._createDisplayType();
+		
 		
 	},
 	
 	/*	Private Methods
 	================================================== */
-	_setLanguage: function(lang) {
-		VCO.Util.mergeData(this.dateformats, lang);
-		/*
-		this.dateformats					=	lang.dateformats;	
-		this.date_dict.month				=	lang.date.month;
-		this.date_dict.month_abbr			=	lang.date.month_abbr;
-		this.date_dict.day					=	lang.date.day;
-		this.date_dict.day_abbr				=	lang.date.day_abbr;
-		this.dateformats.i18n.dayNames		=	lang.date.day_abbr.concat(lang.date.day);
-		this.dateformats.i18n.monthNames	=	lang.date.month_abbr.concat(lang.date.month);
-		*/
-	},
 	
 	/*	Create Display Type
 	================================================== */
-	_setDateFormat: function() {
-		// Set display Type
-		this.data.format = "YYYY MM DD";
+	_setDateFormat: function(format) {
+		// Set display type format
+		this.data.format = format;
+		this._createDisplayType();
+	},
+	
+	getDisplayDate: function() {
+		return this.data.display_type;
+	},
+	
+	getMillisecond: function() {
+		return this.data.date_obj.getTime();
 	},
 	
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		
-		// Run date through formatter
 		// Set display Type
-		//this.data.display_type = VCO.DateFormat.create(this.data.date_obj, this.data.format);
+		trace(VCO.DateFormat(this.data.date_obj, this.data.format));
+		
+		//VCO.Language.dateformats
+		//this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
 	
 	/*	Create JavaScript date object

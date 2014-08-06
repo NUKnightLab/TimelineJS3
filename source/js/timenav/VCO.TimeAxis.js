@@ -16,7 +16,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
-			background: {},
 			major: {},
 			minor: {},
 		};
@@ -51,6 +50,12 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Axis Helper
 		this.axis_helper = {};
+		
+		// Minor tick dom element array
+		this.minor_ticks = [];
+		
+		// Minor tick dom element array
+		this.major_ticks = [];
 		
 		// Main element
 		if (typeof elem === 'object') {
@@ -102,30 +107,45 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawAxis: function(timescale) {
-		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, 50);
+	drawTicks: function(timescale, optimal_tick_width) {
+		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
-			
-		trace(minor_ticks);
-		trace(major_ticks);
+		
 		
 		// Create Minor Ticks
 		for (var i = 0; i < minor_ticks.ticks.length; i++) {
-			trace(minor_ticks.ticks[i].data.date_obj);
+			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor);
+			tick.innerHTML = minor_ticks.ticks[i].getDisplayDate();
+			this.minor_ticks.push({
+				tick:tick,
+				date:minor_ticks.ticks[i]
+			});
 		}
 		
-		// Create Minor Ticks
-		trace("-- Minor --");
-		for (var i = 0; i < minor_ticks.ticks.length; i++) {
-			trace(minor_ticks.ticks[i].data.date_obj);
-		}
-		
-		trace("-- Major --");
 		// Create Major Ticks
 		for (var j = 0; j < major_ticks.ticks.length; j++) {
-			trace(major_ticks.ticks[j].data.date_obj);
+			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major);
+			tick.innerHTML = major_ticks.ticks[j].getDisplayDate();
+			this.major_ticks.push({
+				tick:tick,
+				date:major_ticks.ticks[j]
+			});
 		}
+		
+		this.positionTicks(timescale, optimal_tick_width);
+	},
+	
+	positionTicks: function(timescale, optimal_tick_width) {
+		for (var i = 0; i < this.minor_ticks.length; i++) {
+			var tick = this.minor_ticks[i];
+			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+		};
+		
+		for (var j = 0; j < this.major_ticks.length; j++) {
+			var tick = this.major_ticks[j];
+			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+		};
 	},
 	
 	/*	Events
@@ -138,7 +158,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timeaxis-content-container", this._el.container);
-		this._el.background				= VCO.Dom.create("div", "vco-timeaxis-background", this._el.content_container);
 		this._el.major					= VCO.Dom.create("div", "vco-timeaxis-major", this._el.content_container);
 		this._el.minor					= VCO.Dom.create("div", "vco-timeaxis-minor", this._el.content_container);
 		

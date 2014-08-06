@@ -2639,6 +2639,24 @@ VCO.Language = {
 		loading: 			"Loading",
 		wikipedia: 			"From Wikipedia, the free encyclopedia"
 	},
+	date: {
+		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
+	}, 
+	dateformats: {
+		year: "yyyy",
+		month_short: "mmm",
+		month: "mmmm yyyy",
+		full_short: "mmm d",
+		full: "mmmm d',' yyyy",
+		time_short: "h:MM:ss TT",
+		time_no_seconds_short: "h:MM TT",
+		time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+		full_long: "mmm d',' yyyy 'at' h:MM TT",
+		full_long_small_date: "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+	},
 	buttons: {
 	    map_overview: 		"Map Overview",
 		overview: 			"Overview",
@@ -3911,157 +3929,22 @@ VCO.DomEvent = {
 /*	VCO.DateFormat
 	Format Display type for dates
 ================================================== */
-VCO.DateFormat = {
-	formats: {
-		/*
-		year: "yyyy",
-		month_short: "mmm",
-		month: "mmmm yyyy",
-		full_short: "mmm d",
-		full: "mmmm d',' yyyy",
-		time_short: "h:MM:ss TT",
-		time_no_seconds_short: "h:MM TT",
-		time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
-		full_long: "mmm d',' yyyy 'at' hh:MM TT",
-		full_long_small_date: "hh:MM TT'<br/><small>mmm d',' yyyy'</small>'",
-		
-		// Dictionary
-		dictionary: {
-			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-			day_abbr: ["Sun.", "Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
-			hour: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-			hour_suffix: ["am"]
-		},
-		*/
-		masks: {
-			"default":      "ddd mmm dd yyyy HH:MM:ss",
-			shortDate:      "m/d/yy",
-			mediumDate:     "mmm d, yyyy",
-			longDate:       "mmmm d, yyyy",
-			fullDate:       "dddd, mmmm d, yyyy",
-			shortTime:      "h:MM TT",
-			mediumTime:     "h:MM:ss TT",
-			longTime:       "h:MM:ss TT Z",
-			isoDate:        "yyyy-mm-dd",
-			isoTime:        "HH:MM:ss",
-			isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
-			isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-		},
-		
-		// Internationalization strings
-		i18n: {
-			dayNames: [
-				"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-				"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-			],
-			monthNames: [
-				"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-				"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-			]
-		}
-	},
-	
-	create: function() {
-		/*
-		 * Date Format 1.2.3
-		 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-		 * MIT license
-		 *
-		 * Includes enhancements by Scott Trenda <scott.trenda.net>
-		 * and Kris Kowal <cixar.com/~kris.kowal/>
-		 *
-		 * Accepts a date, a mask, or a date and a mask.
-		 * Returns a formatted version of the given date.
-		 * The date defaults to the current date/time.
-		 * The mask defaults to dateFormat.masks.default.
-		 */
-		var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
-			timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
-			timezoneClip = /[^-+\dA-Z]/g,
-			pad = function (val, len) {
-				val = String(val);
-				len = len || 2;
-				while (val.length < len) val = "0" + val;
-				return val;
-			};
-			
-		// Regexes and supporting functions are cached through closure
-		return function (date, mask, utc) {
-			var dF = VCO.DateFormat.formats;
 
-			// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
-			if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
-				mask = date;
-				date = undefined;
-			}
+/*
+ * Date Format 1.2.3
+ * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+ * MIT license
+ *
+ * Includes enhancements by Scott Trenda <scott.trenda.net>
+ * and Kris Kowal <cixar.com/~kris.kowal/>
+ *
+ * Accepts a date, a mask, or a date and a mask.
+ * Returns a formatted version of the given date.
+ * The date defaults to the current date/time.
+ * The mask defaults to dateFormat.masks.default.
+ */
 
-			// Passing date through Date applies Date.parse, if necessary
-			// Caused problems in IE
-			// date = date ? new Date(date) : new Date;
-			if (isNaN(date)) {
-				trace("invalid date " + date);
-				//return "";
-			} 
-
-			mask = String(dF.masks[mask] || mask || dF.masks["default"]);
-
-			// Allow setting the utc argument via the mask
-			if (mask.slice(0, 4) == "UTC:") {
-				mask = mask.slice(4);
-				utc = true;
-			}
-
-			var	_ = utc ? "getUTC" : "get",
-				d = date[_ + "Date"](),
-				D = date[_ + "Day"](),
-				m = date[_ + "Month"](),
-				y = date[_ + "FullYear"](),
-				H = date[_ + "Hours"](),
-				M = date[_ + "Minutes"](),
-				s = date[_ + "Seconds"](),
-				L = date[_ + "Milliseconds"](),
-				o = utc ? 0 : date.getTimezoneOffset(),
-				flags = {
-					d:    d,
-					dd:   pad(d),
-					ddd:  dF.i18n.dayNames[D],
-					dddd: dF.i18n.dayNames[D + 7],
-					m:    m + 1,
-					mm:   pad(m + 1),
-					mmm:  dF.i18n.monthNames[m],
-					mmmm: dF.i18n.monthNames[m + 12],
-					yy:   String(y).slice(2),
-					yyyy: y,
-					h:    H % 12 || 12,
-					hh:   pad(H % 12 || 12),
-					H:    H,
-					HH:   pad(H),
-					M:    M,
-					MM:   pad(M),
-					s:    s,
-					ss:   pad(s),
-					l:    pad(L, 3),
-					L:    pad(L > 99 ? Math.round(L / 10) : L),
-					t:    H < 12 ? "a"  : "p",
-					tt:   H < 12 ? "am" : "pm",
-					T:    H < 12 ? "A"  : "P",
-					TT:   H < 12 ? "AM" : "PM",
-					Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
-					o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-					S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
-				};
-
-			return mask.replace(token, function ($0) {
-				return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-			});
-		};
-	}
-	
-};
-
-VCO.DateFormat = function() {
+VCO.DateFormat = function () {
 	var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
 		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
 		timezoneClip = /[^-+\dA-Z]/g,
@@ -4074,7 +3957,7 @@ VCO.DateFormat = function() {
 
 	// Regexes and supporting functions are cached through closure
 	return function (date, mask, utc) {
-		var dF = dateFormat;
+		var dF = VCO.DateFormat;
 
 		// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
 		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
@@ -4142,6 +4025,39 @@ VCO.DateFormat = function() {
 			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
 		});
 	};
+}();
+
+// Some common format strings
+VCO.DateFormat.masks = {
+	"default":      "ddd mmm dd yyyy HH:MM:ss",
+	shortDate:      "m/d/yy",
+	mediumDate:     "mmm d, yyyy",
+	longDate:       "mmmm d, yyyy",
+	fullDate:       "dddd, mmmm d, yyyy",
+	shortTime:      "h:MM TT",
+	mediumTime:     "h:MM:ss TT",
+	longTime:       "h:MM:ss TT Z",
+	isoDate:        "yyyy-mm-dd",
+	isoTime:        "HH:MM:ss",
+	isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
+	isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+};
+
+// Internationalization strings
+VCO.DateFormat.i18n = {
+	dayNames: [
+		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+		"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+	],
+	monthNames: [
+		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+	]
+};
+
+// For convenience...
+Date.prototype.format = function (mask, utc) {
+	return VCO.DateFormat(this, mask, utc);
 };
 
 /* **********************************************
@@ -4154,13 +4070,14 @@ VCO.DateFormat = function() {
 ================================================== */
 VCO.Date = VCO.Class.extend({
 	
-	initialize: function (data) {
+	initialize: function (data, format) {
 		if (typeof(data) == 'number') {
 			this.data = {
-				format: 		"YYYY MM DD",
-				display_type: 	"April 30th, 1995",
+				format: 		"yyyy mmmm",
+				display_type: 	"1995",
 				date_obj: 		new Date(data)
 			}
+			
 		} else {
 			this.data = {
 				year: 			"",
@@ -4170,11 +4087,12 @@ VCO.Date = VCO.Class.extend({
 				minute: 		"",
 				second: 		"",
 				millisecond: 	"",
-				format: 		"YYYY MM DD",
-				display_type: 	"April 30th, 1995",
+				format: 		"yyyy mmmm",
+				display_type: 	"1995",
 				date_obj: 		{}
 			};
-
+			
+			
 			// Merge Data
 			VCO.Util.mergeData(this.data, data);
 
@@ -4183,42 +4101,43 @@ VCO.Date = VCO.Class.extend({
 			
 
 		}
-		// Creat Display Type
-		if (this.data.date_obj.getMonth) {
-			this._createDisplayType();
+		
+		if (format) {
+			this.data.format;
 		}
+		// Set Format and set desiplay Type
+		this._createDisplayType();
+		
 		
 	},
 	
 	/*	Private Methods
 	================================================== */
-	_setLanguage: function(lang) {
-		VCO.Util.mergeData(this.dateformats, lang);
-		/*
-		this.dateformats					=	lang.dateformats;	
-		this.date_dict.month				=	lang.date.month;
-		this.date_dict.month_abbr			=	lang.date.month_abbr;
-		this.date_dict.day					=	lang.date.day;
-		this.date_dict.day_abbr				=	lang.date.day_abbr;
-		this.dateformats.i18n.dayNames		=	lang.date.day_abbr.concat(lang.date.day);
-		this.dateformats.i18n.monthNames	=	lang.date.month_abbr.concat(lang.date.month);
-		*/
-	},
 	
 	/*	Create Display Type
 	================================================== */
-	_setDateFormat: function() {
-		// Set display Type
-		this.data.format = "YYYY MM DD";
+	_setDateFormat: function(format) {
+		// Set display type format
+		this.data.format = format;
+		this._createDisplayType();
+	},
+	
+	getDisplayDate: function() {
+		return this.data.display_type;
+	},
+	
+	getMillisecond: function() {
+		return this.data.date_obj.getTime();
 	},
 	
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		
-		// Run date through formatter
 		// Set display Type
-		//this.data.display_type = VCO.DateFormat.create(this.data.date_obj, this.data.format);
+		trace(VCO.DateFormat(this.data.date_obj, this.data.format));
+		
+		//VCO.Language.dateformats
+		//this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
 	
 	/*	Create JavaScript date object
@@ -8107,6 +8026,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el = {
 			parent: {},
 			container: {},
+			slider: {},
 			line: {},
 			marker_container_mask: {},
 			marker_container: {},
@@ -8238,6 +8158,7 @@ VCO.TimeNav = VCO.Class.extend({
 			height: 				600,
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
+			optimal_tick_width: 	100,
 			scale_factor: 			2 				// How many screen widths wide should the timeline be
 		};
 		
@@ -8414,7 +8335,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers[n].setActive(true);
 		
 		// Move container to marker position
-		this._el.marker_container.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+		this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
 	},
@@ -8463,7 +8384,13 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_drawTimeline: function() {
 		this._getTimeScale();
-		this.timeaxis.drawAxis(this.timescale);
+		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
+		this._positionMarkers();
+	},
+	
+	_updateDrawTimeline: function() {
+		this._getTimeScale();
+		this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers();
 	},
 	
@@ -8472,10 +8399,12 @@ VCO.TimeNav = VCO.Class.extend({
 	_initLayout: function () {
 		// Create Layout
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
-		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.container);
-		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container vco-animate', this._el.marker_container_mask);
+		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider vco-animate', this._el.container);
+		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.slider);
+		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
-		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.container);
+		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.slider);
+		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
@@ -8775,7 +8704,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
-			background: {},
 			major: {},
 			minor: {},
 		};
@@ -8810,6 +8738,12 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Axis Helper
 		this.axis_helper = {};
+		
+		// Minor tick dom element array
+		this.minor_ticks = [];
+		
+		// Minor tick dom element array
+		this.major_ticks = [];
 		
 		// Main element
 		if (typeof elem === 'object') {
@@ -8861,30 +8795,45 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawAxis: function(timescale) {
-		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, 50);
+	drawTicks: function(timescale, optimal_tick_width) {
+		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
-			
-		trace(minor_ticks);
-		trace(major_ticks);
+		
 		
 		// Create Minor Ticks
 		for (var i = 0; i < minor_ticks.ticks.length; i++) {
-			trace(minor_ticks.ticks[i].data.date_obj);
+			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor);
+			tick.innerHTML = minor_ticks.ticks[i].getDisplayDate();
+			this.minor_ticks.push({
+				tick:tick,
+				date:minor_ticks.ticks[i]
+			});
 		}
 		
-		// Create Minor Ticks
-		trace("-- Minor --");
-		for (var i = 0; i < minor_ticks.ticks.length; i++) {
-			trace(minor_ticks.ticks[i].data.date_obj);
-		}
-		
-		trace("-- Major --");
 		// Create Major Ticks
 		for (var j = 0; j < major_ticks.ticks.length; j++) {
-			trace(major_ticks.ticks[j].data.date_obj);
+			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major);
+			tick.innerHTML = major_ticks.ticks[j].getDisplayDate();
+			this.major_ticks.push({
+				tick:tick,
+				date:major_ticks.ticks[j]
+			});
 		}
+		
+		this.positionTicks(timescale, optimal_tick_width);
+	},
+	
+	positionTicks: function(timescale, optimal_tick_width) {
+		for (var i = 0; i < this.minor_ticks.length; i++) {
+			var tick = this.minor_ticks[i];
+			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+		};
+		
+		for (var j = 0; j < this.major_ticks.length; j++) {
+			var tick = this.major_ticks[j];
+			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+		};
 	},
 	
 	/*	Events
@@ -8897,7 +8846,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timeaxis-content-container", this._el.container);
-		this._el.background				= VCO.Dom.create("div", "vco-timeaxis-background", this._el.content_container);
 		this._el.major					= VCO.Dom.create("div", "vco-timeaxis-major", this._el.content_container);
 		this._el.minor					= VCO.Dom.create("div", "vco-timeaxis-minor", this._el.content_container);
 		
@@ -9236,6 +9184,7 @@ VCO.Timeline = VCO.Class.extend({
 			scale_factor: 			1.5, 				// How many screen widths wide should the timeline be
 			layout: 				"landscape", 	// portrait or landscape
 			timenav_position: 		"bottom", 		// timeline on top or bottom
+			optimal_tick_width: 	100,			// optimal distance (in pixels) between ticks on axis
 			base_class: 			"",
 			timenav_height: 		200,
 			start_at_slide: 		0,
