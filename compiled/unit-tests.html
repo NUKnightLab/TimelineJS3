@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unit Tests</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/qunit/1.14.0/qunit.css" />
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/g/qunit@1.14.0,underscorejs@1.6.0"></script>
+
+    <script type="text/javascript" src="js/timeline.js"></script>
+
+
+    <script type="text/javascript">
+      module("timenav tests",{
+        setup: function() {
+          stop();
+          this.timeline_config = new VCO.TimelineConfig('examples/marktwain.json',function(){
+            start();
+          });
+        }
+      });        
+
+      test("TimelineConfig", function() {
+        ok(this.timeline_config,"config loaded")
+        var slides = this.timeline_config.slides;
+        var sorted = true;
+        for (var i = 0; i < slides.length - 1; i++) {
+          var earlier = slides[i];
+          var later = slides[i+1];
+          sorted = sorted && (earlier.date.data.date_obj <= later.date.data.date_obj);
+        };
+        ok(sorted,"dates are sorted");
+      });
+
+      test("TimeScale", function() {
+        ok(this.timeline_config,"test data loaded");
+        equal(1,1,"equal");
+      });
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+</body>
+</html>

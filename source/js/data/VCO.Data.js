@@ -1553,7 +1553,7 @@
     })(Zepto)
 
 
-    VCO.getJSON = Zepto.getJSON;
+  VCO.getJSON = Zepto.getJSON;
 	VCO.ajax = Zepto.ajax;
 })(VCO)
 
