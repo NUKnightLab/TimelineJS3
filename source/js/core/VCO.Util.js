@@ -24,6 +24,10 @@ VCO.Util = {
 		}
 	},
 	
+	isEven: function(n) {
+	  return n == parseFloat(n)? !(n%2) : void 0;
+	},
+	
 	findArrayNumberByUniqueID: function(id, array, prop) {
 		var _n = 0;
 		
