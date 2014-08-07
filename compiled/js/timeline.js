@@ -8310,7 +8310,7 @@ VCO.TimeNav = VCO.Class.extend({
 			height: 				600,
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
-			optimal_tick_width: 	100,
+			optimal_tick_width: 	50,
 			scale_factor: 			2 				// How many screen widths wide should the timeline be
 		};
 		
@@ -8995,22 +8995,28 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Create Minor Ticks
 		
 		for (var i = 0; i < minor_ticks.ticks.length; i++) {
-			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor);
+			var tick 		= VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor),
+				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 			minor_ticks.ticks[i].setDateFormat(this.dateformat_lookup[minor_ticks.name]);
-			tick.innerHTML = minor_ticks.ticks[i].getDisplayDate();
+			tick_text.innerHTML = minor_ticks.ticks[i].getDisplayDate();
 			this.minor_ticks.push({
 				tick:tick,
+				tick_text:tick_text,
+				display_text:minor_ticks.ticks[i].getDisplayDate(),
 				date:minor_ticks.ticks[i]
 			});
 		}
 		
 		// Create Major Ticks
 		for (var j = 0; j < major_ticks.ticks.length; j++) {
-			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major);
+			var tick		 = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major),
+				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 			major_ticks.ticks[j].setDateFormat(this.dateformat_lookup[major_ticks.name]);
-			tick.innerHTML = major_ticks.ticks[j].getDisplayDate();
+			tick_text.innerHTML = major_ticks.ticks[j].getDisplayDate();
 			this.major_ticks.push({
 				tick:tick,
+				tick_text:tick_text,
+				display_text:major_ticks.ticks[j].getDisplayDate(),
 				date:major_ticks.ticks[j]
 			});
 		}
@@ -9020,29 +9026,29 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	positionTicks: function(timescale, optimal_tick_width) {
 		
-		// Poition Minor Ticks
-		for (var i = 0; i < this.minor_ticks.length; i++) {
-			var tick = this.minor_ticks[i];
-			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-			tick.tick.style.display = "block";
-		};
-		
-		// Handle density of minor ticks
-		if ((this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft) < optimal_tick_width) {
-			for (var i = 0; i < this.minor_ticks.length; i++) {
-				if (VCO.Util.isEven(i)) {
-					var tick = this.minor_ticks[i];
-					tick.tick.style.display = "none";
-				}
-				
-			};
-		}
-		
 		// Poition Major Ticks
 		for (var j = 0; j < this.major_ticks.length; j++) {
 			var tick = this.major_ticks[j];
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 		};
+		
+		// Poition Minor Ticks
+		for (var i = 0; i < this.minor_ticks.length; i++) {
+			var tick = this.minor_ticks[i];
+			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+			tick.tick_text.innerHTML = tick.display_text;
+		};
+		
+		// Handle density of minor ticks
+		if ((this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft) < optimal_tick_width/2) {
+			for (var i = 0; i < this.minor_ticks.length; i++) {
+				if (VCO.Util.isEven(i)) {
+					var tick = this.minor_ticks[i];
+					tick.tick_text.innerHTML = "&nbsp;";
+				}
+				
+			};
+		}
 	},
 	
 	/*	Events
