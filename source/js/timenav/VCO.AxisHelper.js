@@ -76,10 +76,11 @@ VCO.AxisHelper = VCO.Class.extend({
         var prev = null;
         for (var idx in HELPERS) {
             var curr = HELPERS[idx];
-            if (curr.getPixelsPerTick(ts) > optimal_tick_width)  {
+            var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
+            if (pixels_per_tick > optimal_tick_width)  {
                 if (prev == null) return curr;
-                var curr_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
-                var prev_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
+                var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
                 if (curr_dist < prev_dist) {
                     return curr;
                 } else {

@@ -11,7 +11,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(elem, data, options) {
-		
+		trace('new VCO.TimeAxis')
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -126,10 +126,8 @@ VCO.TimeAxis = VCO.Class.extend({
 	},
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
-		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
-		
-		var major_ticks = this.axis_helper.getMajorTicks(timescale),
-			minor_ticks = this.axis_helper.getMinorTicks(timescale);
+		var major_ticks = timescale.getMajorTicks(),
+			minor_ticks = timescale.getMinorTicks();
 		
 		
 		// Create Minor Ticks

@@ -34,7 +34,8 @@
 
       test("TimeScale", function() {
         ok(this.timeline_config,"test data loaded");
-        equal(1,1,"equal");
+        var timescale = new VCO.TimeScale(this.timeline_config.slides);
+        equal(timescale.getMinorScale(),'year',"timescale should be years");
       });
     </script>
 </head>

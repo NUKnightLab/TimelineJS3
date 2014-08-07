@@ -381,7 +381,6 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	// Initialize the data
 	_initData: function(data) {
-		trace("_initData")
 		var self = this;
 		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 	},

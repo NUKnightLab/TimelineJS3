@@ -7,11 +7,8 @@ VCO.TimelineConfig = VCO.Class.extend({
 
     initialize: function (data, callback) {
         // Initialize the data
-        trace("VCO.TimelineConfig.initialize")
         if (typeof data === 'string') {
             var self = this;
-            trace("string");
-            
             VCO.ajax({
                 type: 'GET',
                 url: data,

@@ -22,10 +22,10 @@ VCO.TimeScale = VCO.Class.extend({
     },
     
     setDisplayWidth: function(display_width) {
-        this._axis_helper = VCO.AxisHelper.getBestHelper(this); // optionally pass optimal_tick_width
         this._display_width = display_width; // arbitrary. better default?
         var pixel_width = this._screen_multiplier * this._display_width;
         this._pixels_per_milli = pixel_width / this._span_in_millis;
+        this._axis_helper = VCO.AxisHelper.getBestHelper(this);
         var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
         this._scale_width = pad_pixels + pixel_width;
     },
@@ -46,5 +46,12 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.getMinorTicks(this);
     },
 
+    getMajorScale: function() {
+        return this._axis_helper.major.name;
+    },
+
+    getMinorScale: function() {
+        return this._axis_helper.minor.name;
+    }
     
 });
