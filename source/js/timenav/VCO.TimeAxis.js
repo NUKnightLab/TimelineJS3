@@ -11,7 +11,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(elem, data, options) {
-		trace('new VCO.TimeAxis')
 		// DOM Elements
 		this._el = {
 			container: {},

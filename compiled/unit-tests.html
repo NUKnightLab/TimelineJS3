@@ -32,10 +32,16 @@
         ok(sorted,"dates are sorted");
       });
 
+      test("AxisHelper", function() {
+        throws(function() { VCO.AxisHelper.floor(new Date(),'foobar'); },"bad scale throws error.")
+      });
+
       test("TimeScale", function() {
         ok(this.timeline_config,"test data loaded");
         var timescale = new VCO.TimeScale(this.timeline_config.slides);
         equal(timescale.getMinorScale(),'year',"timescale should be years");
+        ok(timescale.getMajorTicks().ticks.length > 0,"should be some major ticks")
+        ok(timescale.getMinorTicks().ticks.length > 0,"should be some minor ticks")
       });
     </script>
 </head>

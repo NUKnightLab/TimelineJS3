@@ -467,7 +467,6 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	
 	_onDataLoaded: function(e) {
-		trace("dataloaded");
 		this.fire("dataloaded");
 		this._initLayout();
 		this._initEvents();
