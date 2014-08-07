@@ -12,8 +12,8 @@ VCO.AxisHelper = VCO.Class.extend({
        
     },
     
-    getPixelsPerTick: function(timescale) {
-        return timescale.pixels_per_milli * this.minor.factor;
+    getPixelsPerTick: function(pixels_per_milli) {
+        return pixels_per_milli * this.minor.factor;
     },
 
     getMajorTicks: function(timescale) {
@@ -40,7 +40,7 @@ VCO.AxisHelper = VCO.Class.extend({
 
 (function(cls){ // add some class-level behavior
 
-    SCALES = [
+    SCALES = [ // ( name, millis_per_tick )
         ['millisecond',1],
         ['second',1000],
         ['minute',1000 * 60],

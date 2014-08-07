@@ -6,8 +6,9 @@
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, pixel_width) {
-        if (pixel_width == null) { pixel_width = 0; };
+    initialize: function (slides, display_width, screen_multiplier) {
+        this.display_width = display_width || 500; // arbitrary. better default?
+        this.screen_multiplier = screen_multiplier || 3;
 		
 		this.pixels_per_milli = 0;
         this.axis_helper = null;
@@ -30,15 +31,15 @@ VCO.TimeScale = VCO.Class.extend({
         return ( time_in_millis - this.earliest ) * this.pixels_per_milli
     },
 
-    getPixelsPerTick: function(timescale) {
-        return this.axis_helper.getPixelsPerTick(this);
+    getPixelsPerTick: function() {
+        return this.axis_helper.getPixelsPerTick(this.pixels_per_milli);
     },
 
-    getMajorTicks: function(timescale) {
+    getMajorTicks: function() {
         return this.axis_helper.getMajorTicks(this);
     },
 
-    getMinorTicks: function(timescale) {
+    getMinorTicks: function() {
         return this.axis_helper.getMinorTicks(this);
     },
 
