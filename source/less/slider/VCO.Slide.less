@@ -229,47 +229,14 @@
 	}
 }
 
-/* Landscape
+
+
+/* Skinny
 ================================================== */
-/*
-.vco-layout-landscape {
-	.vco-slide {
-		.vco-slide-content-container {
-			.vco-slide-content {
-				.vco-media {
-					display:block;
-					position:static;
-					vertical-align:baseline;
-					height:auto;
-					margin-bottom:20px;
-					max-height:50%;
-				}
-				.vco-text {
-					display:block;
-					height:auto;
-					vertical-align:baseline;
-					position:static;
-					width:100%;
-					max-width:100%;
-					min-width:0;
-					float:none;
-					padding: 0;
-					.vco-text-content-container {
-						//padding-left:10px;
-						//padding-right:10px;
-						//padding-bottom:100px;
-					}
-				}
-			}
-		}
-	}
-}
-*/
-// Skinny 500px or less
 .vco-skinny {
 	.vco-slide {
 		display:block;
-		
+		padding-top:10px;
 		.vco-slide-content-container {
 			display:block;
 			position:static;
@@ -309,13 +276,26 @@
 	}
 }
 
-// Mobile, iPhone
+
+
+/* Mobile, iPhone
+================================================== */
+.vco-mobile {
+	.vco-storyslider {
+
+	}
+}
+
+/* Mobile, iPhone and skinny
+================================================== */
 .vco-mobile.vco-skinny {
-	.vco-slide-content-container {
-		.vco-slide-content {
-			.vco-media {
-				img, embed, object, video, iframe {
-					max-height:175px;
+	.vco-slide {
+		.vco-slide-content-container {
+			.vco-slide-content {
+				.vco-media {
+					img, embed, object, video, iframe {
+						max-height:175px;
+					}
 				}
 			}
 		}

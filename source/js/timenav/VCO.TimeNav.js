@@ -147,7 +147,7 @@ VCO.TimeNav = VCO.Class.extend({
 			height: 				600,
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
-			optimal_tick_width: 	100,
+			optimal_tick_width: 	50,
 			scale_factor: 			2 				// How many screen widths wide should the timeline be
 		};
 		
