@@ -13,9 +13,25 @@
     <script type="text/javascript">
       module("timenav tests",{
         setup: function() {
-          this.timeline_config = VCO.test_data;
+          stop();
+          this.timeline_config = new VCO.TimelineConfig('examples/marktwain.json',function(){
+            start();
+          });
         }
       });        
+
+      test("TimelineConfig", function() {
+        ok(this.timeline_config,"config loaded")
+        var slides = this.timeline_config.slides;
+        var sorted = true;
+        for (var i = 0; i < slides.length - 1; i++) {
+          var earlier = slides[i];
+          var later = slides[i+1];
+          sorted = sorted && (earlier.date.data.date_obj <= later.date.data.date_obj);
+        };
+        ok(sorted,"dates are sorted");
+      });
+
       test("TimeScale", function() {
         ok(this.timeline_config,"test data loaded");
         equal(1,1,"equal");

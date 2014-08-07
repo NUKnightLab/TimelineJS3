@@ -24,6 +24,8 @@
 	// @codekit-prepend "core/VCO.Events.js";
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
+	// @codekit-prepend "core/VCO.TimelineConfig.js";
+
 
 // LANGUAGE
 	// @codekit-prepend "language/VCO.Language.js";
@@ -133,7 +135,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
-		this.data = VCO.test_data;
+		this.config = null;
 	
 		this.options = {
 			script_path:            "",
@@ -381,39 +383,7 @@ VCO.Timeline = VCO.Class.extend({
 	_initData: function(data) {
 		trace("_initData")
 		var self = this;
-		
-		if (typeof data === 'string') {
-			trace("string");
-			
-			VCO.ajax({
-				type: 'GET',
-				url: data,
-				dataType: 'json', //json data type
-				success: function(d){
-					if (d && d.timeline) {
-						VCO.Util.mergeData(self.data, d.timeline);
-					}
-					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
-					self._processDates(self.data.slides);          // into '_cleanData'
-					VCO.DateUtil.sortByDate(self.data.slides);
-					self._onDataLoaded();
-				},
-				error:function(xhr, type){
-					trace("ERROR LOADING");
-					trace(xhr);
-					trace(type);
-				}
-			});
-		} else if (typeof data === 'object') {
-			if (data.timeline) {
-				self.data = data.timeline;
-			} else {
-				trace("data must have a timeline property")
-			}
-			self._onDataLoaded();
-		} else {
-			self._onDataLoaded();
-		}
+		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 	},
 	
 	// Initialize the layout
@@ -440,7 +410,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.storyslider.style.top 	= "1px";
 		
 		// Create Map using preferred Map API
-		//this._map = new VCO.Map.Leaflet(this._el.map, this.data, this.options);
+		//this._map = new VCO.Map.Leaflet(this._el.map, this.config, this.options);
 		//this.map = this._map._map; // For access to Leaflet Map.
 		//this._map.on('loaded', this._onMapLoaded, this);
 		
@@ -448,12 +418,12 @@ VCO.Timeline = VCO.Class.extend({
 		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
 		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
 		
 		// Create StorySlider
-		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
+		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.config, this.options);
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
 		
@@ -583,7 +553,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
-			this.fire("loaded", this.data);
+			this.fire("loaded", this.config);
 		}
 	}
 	
