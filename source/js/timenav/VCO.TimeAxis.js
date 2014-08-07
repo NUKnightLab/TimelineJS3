@@ -51,6 +51,9 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Axis Helper
 		this.axis_helper = {};
 		
+		// Optimal Tick width
+		this.optimal_tick_width = 100;
+		
 		// Minor tick dom element array
 		this.minor_ticks = [];
 		
@@ -127,7 +130,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
-		
+		trace(this.options.optimal_tick_width)
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
 		
@@ -159,11 +162,26 @@ VCO.TimeAxis = VCO.Class.extend({
 	},
 	
 	positionTicks: function(timescale, optimal_tick_width) {
+		
+		// Poition Minor Ticks
 		for (var i = 0; i < this.minor_ticks.length; i++) {
 			var tick = this.minor_ticks[i];
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+			tick.tick.style.display = "block";
 		};
 		
+		// Handle density of minor ticks
+		if ((this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft) < optimal_tick_width) {
+			for (var i = 0; i < this.minor_ticks.length; i++) {
+				if (VCO.Util.isEven(i)) {
+					var tick = this.minor_ticks[i];
+					tick.tick.style.display = "none";
+				}
+				
+			};
+		}
+		
+		// Poition Major Ticks
 		for (var j = 0; j < this.major_ticks.length; j++) {
 			var tick = this.major_ticks[j];
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
