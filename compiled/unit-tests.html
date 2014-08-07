@@ -11,6 +11,28 @@
 
 
     <script type="text/javascript">
+
+      function date_dict(d) {
+        return {
+          'milliseconds': d.getMilliseconds(),
+          'seconds': d.getSeconds(),
+          'minutes': d.getMinutes(),
+          'hours': d.getHours(),
+          'day': d.getDate(),
+          'month': d.getMonth(), // 0-11 remember
+          'year': d.getYear()
+        }
+      }
+
+      function date_parts_match(a, b, parts) {
+        a = date_dict(a);
+        b = date_dict(b);
+        for (var i = 0; i < parts.length; i++) {
+          if (a[parts[i]] != b[parts[i]]) return false;
+        };
+        return true;
+      }
+
       module("timenav tests",{
         setup: function() {
           stop();
@@ -34,6 +56,59 @@
 
       test("AxisHelper", function() {
         throws(function() { VCO.AxisHelper.floor(new Date(),'foobar'); },"bad scale throws error.")
+          var d = new Date(1407440158306); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
+          var floored = VCO.AxisHelper.floor(d, 'millisecond');
+          ok(date_parts_match(d,floored,['year','month','date','hours','minutes','seconds','milliseconds']), 'millisecond rounding doesnt change others')
+          equal(floored.getTime(), d.getTime(), 'rounds to millisecond')
+
+          var floored = VCO.AxisHelper.floor(d, 'second');
+          ok(date_parts_match(d,floored,['year','month','date','hours','minutes', 'seconds']), 'second rounding doesnt change others')
+          equal(floored.getMilliseconds(),0,'seconds round to 0 millis ' + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'minute');
+          ok(date_parts_match(d,floored,['year','month','date','hours','minutes']), 'minute rounding doesnt change others')
+          equal(floored.getMilliseconds(),0,'minutes round to 0 millis ' + floored)
+          equal(floored.getSeconds(),0,'minutes round to 0 seconds ' + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'hour');
+          ok(date_parts_match(d,floored,['year','month','date','hours']), 'hour rounding doesnt change others')
+          equal(floored.getMilliseconds(),0,'hours round to 0 millis ' + floored)
+          equal(floored.getSeconds(),0,'hours round to 0 seconds ' + floored)
+          equal(floored.getMinutes(),0,'hours round to 0 minutes ' + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'day');
+          ok(date_parts_match(d,floored,['year','month','date']), 'day rounding doesnt change others')
+          equal(floored.getMilliseconds(),0,'days round to 0 millis ' + floored)
+          equal(floored.getSeconds(),0,'days round to 0 seconds ' + floored)
+          equal(floored.getMinutes(),0,'days round to 0 minutes ' + floored)
+          equal(floored.getHours(),0,'days round to 0 hours ' + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'month');
+          ok(date_parts_match(d,floored,['year','month']), 'month rounding doesnt change others')
+          equal(floored.getMilliseconds(),0,'months round to 0 millis ' + floored)
+          equal(floored.getSeconds(),0,'months round to 0 seconds ' + floored)
+          equal(floored.getMinutes(),0,'months round to 0 minutes ' + floored)
+          equal(floored.getHours(),0,'months round to 0 hours ' + floored)
+          equal(floored.getDate(),1,'months round to day 1 ' + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'year');
+          ok(date_parts_match(d,floored,['year']), 'year rounding doesnt change others')
+          equal(floored.getMilliseconds(),0,'years round to 0 millis ' + floored)
+          equal(floored.getSeconds(),0,'years round to 0 seconds ' + floored)
+          equal(floored.getMinutes(),0,'years round to 0 minutes ' + floored)
+          equal(floored.getHours(),0,'years round to 0 hours ' + floored)
+          equal(floored.getDate(),1,'years round to day 1 ' + floored)
+          equal(floored.getMonth(),0,'years round to month 0 ' + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'decade');
+          equal(floored.getYear(),110, "decade should round to 2010 " + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'century');
+          equal(floored.getYear(),100, "century should round to 2000 " + floored)
+
+          var floored = VCO.AxisHelper.floor(d, 'millennium');
+          equal(floored.getYear(),100, "Should round to 2000 " + floored)
+
       });
 
       test("TimeScale", function() {

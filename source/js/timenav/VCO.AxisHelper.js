@@ -33,7 +33,6 @@ VCO.AxisHelper = VCO.Class.extend({
 
     _getTicks: function(timescale, option) {
         var ticks = []
-        console.log(timescale.earliest,timescale.latest,option.factor)
         for (var i = timescale.earliest; i < timescale.latest; i += option.factor) {
             ticks.push(new VCO.Date(i));
         }
@@ -56,13 +55,25 @@ VCO.AxisHelper = VCO.Class.extend({
         ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
         ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
         ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
-        ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { }],
-        ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { }],
-        ['millenium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { }],
-        ['age',1000 * 60 * 60 * 24 * 365 * 1000000, function(d) { }],    // 1M years
-        ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000, function(d) { }], // 10M years
-        ['era',1000 * 60 * 60 * 24 * 365 * 100000000, function(d) { }],  // 100M years
-        ['eon',1000 * 60 * 60 * 24 * 365 * 500000000, function(d) { }]  //500M years
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 10)) 
+        }],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 100)) 
+        }],
+        ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 1000)) 
+        }],
+        // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
+        // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
+        // scales are not relevant
+        // ['age',1000 * 60 * 60 * 24 * 365 * 1000000, function(d) { }],    // 1M years
+        // ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000, function(d) { }], // 10M years
+        // ['era',1000 * 60 * 60 * 24 * 365 * 100000000, function(d) { }],  // 100M years
+        // ['eon',1000 * 60 * 60 * 24 * 365 * 500000000, function(d) { }]  //500M years
     ]
 
     cls.SCALES = SCALES;
