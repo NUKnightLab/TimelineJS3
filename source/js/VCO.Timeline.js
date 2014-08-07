@@ -133,7 +133,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
-		this.data = VCO.test_data;
+		this.data = {};
 	
 		this.options = {
 			script_path:            "",
