@@ -16,6 +16,17 @@
 		
 		}
 	}
+	h2.vco-headline-title, h2.vco-headline {
+		margin-top:0;
+	}
+	.vco-headline-date, h3.vco-headline-date {
+		font-family:@font-main;
+		font-size:@base-font-size;
+		line-height: @base-font-size;
+		font-weight: normal;
+		margin:0 0 2px 0;
+		color: darken(@color-background, 25);
+	}
 	.vco-text-date {
 		display:inline-block;
 		font-family:@font-main;
@@ -33,10 +44,14 @@
 }
 
 // When the background is an image
-.vco-full-image-background {
+.vco-full-image-background, .vco-full-color-background {
 	.vco-text, .vco-text p {
-		color: #FFF;
+		color: darken(@color-background, 25) !important;
 		text-shadow: 1px 1px 2px #000;
+		.vco-headline-date, h3.vco-headline-date {
+			color: lighten(@color-dark, 50) !important;
+		}
+
 	}
 }
 

@@ -1930,7 +1930,7 @@ VCO.Util = {
     })(Zepto)
 
 
-  VCO.getJSON = Zepto.getJSON;
+    VCO.getJSON = Zepto.getJSON;
 	VCO.ajax = Zepto.ajax;
 })(VCO)
 
@@ -2626,107 +2626,6 @@ VCO.LoadIt = (function (doc) {
 
   };
 })(this.document);
-
-
-/* **********************************************
-     Begin VCO.TimelineConfig.js
-********************************************** */
-
-/*  VCO.TimelineConfig
-    separate the configuration from the display (VCO.Timeline)
-    to make testing easier
-================================================== */
-VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
-
-    initialize: function (data, callback) {
-        // Initialize the data
-        if (typeof data === 'string') {
-            var self = this;
-            VCO.ajax({
-                type: 'GET',
-                url: data,
-                dataType: 'json', //json data type
-                success: function(d){
-                    if (d && d.timeline) {
-                        self._importProperties(d.timeline);
-                    } else {
-                        throw("data must have a timeline property")
-                    }
-                    self._cleanData();
-                    if (callback) {
-                        callback(self);
-                    }
-                },
-                error:function(xhr, type){
-                    trace(xhr);
-                    trace(type);
-                    throw("Configuration could not be loaded: " + type);
-                }
-            });
-        } else if (typeof data === 'object') {
-            if (data.timeline) {
-                this._importProperties(data.timeline);
-                this._cleanData();
-            } else {
-                throw("data must have a timeline property")
-            }
-            if (callback) {
-                callback(this);
-            }
-        } else {
-            throw("Invalid Argument");
-        }
-    },
-
-    _cleanData: function() {
-        this._makeUniqueIdentifiers(this.slides); 
-        this._processDates(this.slides);          
-        VCO.DateUtil.sortByDate(this.slides);
-    },
-
-    _importProperties: function(d) {
-        for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
-            k = this.VALID_PROPERTIES[i];
-            this[k] = d[k];
-        }
-    },
-
-    _makeUniqueIdentifiers: function(array) {
-        var used = []
-        for (var i = 0; i < array.length; i++) {
-            if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
-                array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
-                if (used.indexOf(array[i].uniqueid) != -1) {
-                    array[i].uniqueid = '';
-                } else {
-                    used.push(array[i].uniqueid);
-                }
-            }
-        };
-        if (used.length != array.length) {
-            for (var i = 0; i < array.length; i++) {
-                if (!array[i].uniqueid) {
-                    var slug = VCO.Util.slugify(array[i].text.headline);
-                    if (!slug) {
-                        slug = VCO.Util.unique_ID(6);
-                    }
-                    if (used.indexOf(slug) != -1) {
-                        slug = slug + '-' + i;
-                    }
-                    used.push(slug);
-                    array[i].uniqueid = slug;
-                }
-            }
-        }
-    },
-
-    _processDates: function(array) {
-        for (var i = 0; i < array.length; i++) {
-            array[i].date = new VCO.Date(array[i].date);
-        }
-    }
-});
 
 
 /* **********************************************
@@ -4237,6 +4136,7 @@ VCO.Date = VCO.Class.extend({
 	================================================== */
 	_createDisplayType: function() {
 		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
+		trace("display type " + this.data.display_type)
 	},
 	
 	
@@ -4308,7 +4208,6 @@ VCO.DateUtil = {
 				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
 			}
 		};
-		trace("NO BEST FORMAT FOUND");
 		return "";
 	},
 	
@@ -4322,7 +4221,7 @@ VCO.DateUtil = {
 		year: VCO.Language.dateformats.year,
 		decade: VCO.Language.dateformats.year,
 		century: VCO.Language.dateformats.year,
-		millennium: VCO.Language.dateformats.year,
+		millenium: VCO.Language.dateformats.year,
 		age: VCO.Language.dateformats.year,
 		epoch: VCO.Language.dateformats.year,
 		era: VCO.Language.dateformats.year,
@@ -6301,7 +6200,8 @@ VCO.Media.Text = VCO.Class.extend({
 		container: {},
 		content_container: {},
 		content: {},
-		headline: {}
+		headline: {},
+		date: {}
 	},
 	
 	// Data
@@ -6359,6 +6259,10 @@ VCO.Media.Text = VCO.Class.extend({
 		return this._el.headline.offsetHeight + 40;
 	},
 	
+	addDateText: function(str) {
+		this._el.date.innerHTML = str;
+	},
+	
 	/*	Events
 	================================================== */
 	onLoaded: function() {
@@ -6379,6 +6283,9 @@ VCO.Media.Text = VCO.Class.extend({
 		
 		// Create Layout
 		this._el.content_container			= VCO.Dom.create("div", "vco-text-content-container", this._el.container);
+		
+		// Date
+		this._el.date 				= VCO.Dom.create("h3", "vco-headline-date", this._el.content_container);
 		
 		// Headline
 		if (this.data.headline != "") {
@@ -6401,13 +6308,12 @@ VCO.Media.Text = VCO.Class.extend({
 				if (this.data.date.created_time.length > 10) {
 					if (typeof(moment) !== 'undefined') {
 						text_content 	+= "<div class='vco-text-date'>" + moment(this.data.date.created_time, 'YYYY-MM-DD h:mm:ss').fromNow() + "</div>";
-					
+				
 					} else {
 						text_content 	+= "<div class='vco-text-date'>" + VCO.Util.convertUnixTime(this.data.date.created_time) + "</div>";
 					}
 				}
 			}
-			
 			
 			this._el.content				= VCO.Dom.create("div", "vco-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;
@@ -7257,7 +7163,15 @@ VCO.Slide = VCO.Class.extend({
 		// Create Text
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
+			// Add Date if available
+			if (this.data.date && this.data.date.data) {
+				trace("SLIDE DATE")
+				trace(this.data.date.data.display_type);
+				this._text.addDateText(this.data.date.data.display_type);
+			}
 		}
+		
+		
 		
 		// Add to DOM
 		if (!this.has.text && !this.has.headline && this.has.media) {
@@ -8400,7 +8314,7 @@ VCO.TimeNav = VCO.Class.extend({
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
 	},
 	
 	/*	Markers
@@ -8791,53 +8705,42 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier) {
-        this._screen_multiplier = screen_multiplier || 3;
+    initialize: function (slides, pixel_width) {
+        if (pixel_width == null) { pixel_width = 0; };
 		
-		this._pixels_per_milli = 0;
-        this._axis_helper = null;
+		this.pixels_per_milli = 0;
+        this.axis_helper = null;
 		
-        this._earliest = slides[0].date.data.date_obj.getTime();
-        this._latest = slides[slides.length - 1].date.data.date_obj.getTime();
-        this._span_in_millis = this._latest - this._earliest;
-        this._average = (this._span_in_millis)/slides.length;
+        this.earliest = slides[0].date.data.date_obj.getTime();
+        this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
+        this.span_in_millis = this.latest - this.earliest;
+        this.average = (this.span_in_millis)/slides.length;
 
-        display_width = display_width || 500; //arbitrary default
-        this.setDisplayWidth(display_width);
+        this.setPixelWidth(pixel_width);
     },
     
-    setDisplayWidth: function(display_width) {
-        this._display_width = display_width; // arbitrary. better default?
-        var pixel_width = this._screen_multiplier * this._display_width;
-        this._pixels_per_milli = pixel_width / this._span_in_millis;
-        this._axis_helper = VCO.AxisHelper.getBestHelper(this);
-        var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
-        this._scale_width = pad_pixels + pixel_width;
+    setPixelWidth: function(width) {
+        this.pixel_width = width;
+        this.pixels_per_milli = this.pixel_width / this.span_in_millis; 
+        this.axis_helper = VCO.AxisHelper.getBestHelper(this);
     },
 
     getPosition: function(time_in_millis) {
-        return ( time_in_millis - this._earliest ) * this._pixels_per_milli
+        return ( time_in_millis - this.earliest ) * this.pixels_per_milli
     },
 
-    getPixelsPerTick: function() {
-        return this._axis_helper.getPixelsPerTick(this._pixels_per_milli);
+    getPixelsPerTick: function(timescale) {
+        return this.axis_helper.getPixelsPerTick(this);
     },
 
-    getMajorTicks: function() {
-        return this._axis_helper.getMajorTicks(this);
+    getMajorTicks: function(timescale) {
+        return this.axis_helper.getMajorTicks(this);
     },
 
-    getMinorTicks: function() {
-        return this._axis_helper.getMinorTicks(this);
+    getMinorTicks: function(timescale) {
+        return this.axis_helper.getMinorTicks(this);
     },
 
-    getMajorScale: function() {
-        return this._axis_helper.major.name;
-    },
-
-    getMinorScale: function() {
-        return this._axis_helper.minor.name;
-    }
     
 });
 
@@ -8859,6 +8762,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(elem, data, options) {
+		
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -8915,7 +8819,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	        year: VCO.Language.dateformats.year,
 	        decade: VCO.Language.dateformats.year,
 	        century: VCO.Language.dateformats.year,
-	        millennium: VCO.Language.dateformats.year,
+	        millenium: VCO.Language.dateformats.year,
 	        age: VCO.Language.dateformats.year,
 	        epoch: VCO.Language.dateformats.year,
 	        era: VCO.Language.dateformats.year,
@@ -8973,8 +8877,10 @@ VCO.TimeAxis = VCO.Class.extend({
 	},
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
-		var major_ticks = timescale.getMajorTicks(),
-			minor_ticks = timescale.getMinorTicks();
+		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
+		
+		var major_ticks = this.axis_helper.getMajorTicks(timescale),
+			minor_ticks = this.axis_helper.getMinorTicks(timescale);
 		
 		
 		// Create Minor Ticks
@@ -9068,14 +8974,12 @@ VCO.AxisHelper = VCO.Class.extend({
 		if (options) {
 	        this.minor = options.minor;
 	        this.major = options.major;
-		} else {
-            throw("Axis helper must be configured with options")
-        }
+		}
        
     },
     
-    getPixelsPerTick: function(pixels_per_milli) {
-        return pixels_per_milli * this.minor.factor;
+    getPixelsPerTick: function(timescale) {
+        return timescale.pixels_per_milli * this.minor.factor;
     },
 
     getMajorTicks: function(timescale) {
@@ -9084,11 +8988,6 @@ VCO.AxisHelper = VCO.Class.extend({
 
     getMinorTicks: function(timescale) {
         return this._getTicks(timescale, this.minor)
-    },
-
-    roundDown: function(date,scale) { // given a date, return the tick closest to it on 'scale' without going over (that is, scale should be 'major' or 'minor')
-        if (scale != 'minor' && scale != 'major') throw("Invalid scale");
-
     },
 
     _getTicks: function(timescale, option) {
@@ -9107,45 +9006,22 @@ VCO.AxisHelper = VCO.Class.extend({
 
 (function(cls){ // add some class-level behavior
 
-    SCALES = [ // ( name, millis_per_tick )
-        ['millisecond',1, function(d) { }],
-        ['second',1000, function(d) { d.setMilliseconds(0);}],
-        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
-        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
-        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
-        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
-        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
-        ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 10)) 
-        }],
-        ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 100)) 
-        }],
-        ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 1000)) 
-        }],
-        // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
-        // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
-        // scales are not relevant
-        // ['age',1000 * 60 * 60 * 24 * 365 * 1000000, function(d) { }],    // 1M years
-        // ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000, function(d) { }], // 10M years
-        // ['era',1000 * 60 * 60 * 24 * 365 * 100000000, function(d) { }],  // 100M years
-        // ['eon',1000 * 60 * 60 * 24 * 365 * 500000000, function(d) { }]  //500M years
+    SCALES = [
+        ['millisecond',1],
+        ['second',1000],
+        ['minute',1000 * 60],
+        ['hour',1000 * 60 * 60],
+        ['day',1000 * 60 * 60 * 24],
+        ['month',1000 * 60 * 60 * 24 * 30],
+        ['year',1000 * 60 * 60 * 24 * 365],
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100],
+        ['millenium',1000 * 60 * 60 * 24 * 365 * 1000],
+        ['age',1000 * 60 * 60 * 24 * 365 * 1000000],    // 1M years
+        ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000], // 10M years
+        ['era',1000 * 60 * 60 * 24 * 365 * 100000000],  // 100M years
+        ['eon',1000 * 60 * 60 * 24 * 365 * 500000000]  //500M years
     ]
-
-    cls.SCALES = SCALES;
-
-    cls.floor = function(date, scale) {
-        var d = new Date(date);
-        for (var i = 0; i < SCALES.length; i++) {
-            SCALES[i][2](d);
-            if (SCALES[i][0] == scale) return d;
-        };
-        throw('invalid scale');
-    }
 
     HELPERS = [];
     for (var idx = 0; idx < SCALES.length - 2; idx++) {
@@ -9164,11 +9040,10 @@ VCO.AxisHelper = VCO.Class.extend({
         var prev = null;
         for (var idx in HELPERS) {
             var curr = HELPERS[idx];
-            var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
-            if (pixels_per_tick > optimal_tick_width)  {
+            if (curr.getPixelsPerTick(ts) > optimal_tick_width)  {
                 if (prev == null) return curr;
-                var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                var curr_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
+                var prev_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
                 if (curr_dist < prev_dist) {
                     return curr;
                 } else {
@@ -9212,8 +9087,6 @@ VCO.AxisHelper = VCO.Class.extend({
 	// @codekit-prepend "core/VCO.Events.js";
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
-	// @codekit-prepend "core/VCO.TimelineConfig.js";
-
 
 // LANGUAGE
 	// @codekit-prepend "language/VCO.Language.js";
@@ -9323,7 +9196,71 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
-		this.config = null;
+		this.data = {
+			uniqueid: 				"",
+			slides: 				[
+				{
+					uniqueid: 				"",
+					type: 					"overview", // Optional
+					background: {			// OPTIONAL
+						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg/418px-Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg",
+						color: 				"",
+						opacity: 			50
+					},
+					date: {
+						year:			1978,
+						month:			01,
+						day: 			05,
+						hour: 			6,
+						minute: 		45,
+						second: 		56,
+						millisecond: 	98,
+						format: 		""
+					},
+					text: {
+						headline: 			"Mark Twain",
+						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
+					},
+					media: {
+						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						thumb: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						credit:				"",
+						caption:			"Mark Twain's birthplace, Florida, Missouri"
+					}
+				},
+				{
+					uniqueid: 				"",
+					date: {
+						year:			1978,
+						month:			01,
+						day: 			05,
+						hour: 			6,
+						minute: 		45,
+						second: 		56,
+						millisecond: 	98,
+						thumbnail: 		"",
+						format: 		""
+					},
+					location: {
+						lat: 				39.491711,
+						lon: 				-91.793260,
+						name: 				"Florida, Missouri",
+						zoom: 				12,
+						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+						line: 				true
+					},
+					text: {
+						headline: 			"Florida, Missouri",
+						text: 				"Born in Florida, Missouri. Halley’s comet visible from earth."
+					},
+					media: {
+						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
+						credit:				"",
+						caption:			"Mark Twain's birthplace, Florida, Missouri"
+					}
+				}
+			]
+		};
 	
 		this.options = {
 			script_path:            "",
@@ -9569,8 +9506,41 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	// Initialize the data
 	_initData: function(data) {
+		trace("_initData")
 		var self = this;
-		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+		
+		if (typeof data === 'string') {
+			trace("string");
+			
+			VCO.ajax({
+				type: 'GET',
+				url: data,
+				dataType: 'json', //json data type
+				success: function(d){
+					if (d && d.timeline) {
+						VCO.Util.mergeData(self.data, d.timeline);
+					}
+					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
+					self._processDates(self.data.slides);          // into '_cleanData'
+					VCO.DateUtil.sortByDate(self.data.slides);
+					self._onDataLoaded();
+				},
+				error:function(xhr, type){
+					trace("ERROR LOADING");
+					trace(xhr);
+					trace(type);
+				}
+			});
+		} else if (typeof data === 'object') {
+			if (data.timeline) {
+				self.data = data.timeline;
+			} else {
+				trace("data must have a timeline property")
+			}
+			self._onDataLoaded();
+		} else {
+			self._onDataLoaded();
+		}
 	},
 	
 	// Initialize the layout
@@ -9597,7 +9567,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.storyslider.style.top 	= "1px";
 		
 		// Create Map using preferred Map API
-		//this._map = new VCO.Map.Leaflet(this._el.map, this.config, this.options);
+		//this._map = new VCO.Map.Leaflet(this._el.map, this.data, this.options);
 		//this.map = this._map._map; // For access to Leaflet Map.
 		//this._map.on('loaded', this._onMapLoaded, this);
 		
@@ -9605,12 +9575,12 @@ VCO.Timeline = VCO.Class.extend({
 		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
 		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
 		
 		// Create StorySlider
-		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.config, this.options);
+		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
 		
@@ -9655,6 +9625,7 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	
 	_onDataLoaded: function(e) {
+		trace("dataloaded");
 		this.fire("dataloaded");
 		this._initLayout();
 		this._initEvents();
@@ -9739,7 +9710,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
-			this.fire("loaded", this.config);
+			this.fire("loaded", this.data);
 		}
 	}
 	
