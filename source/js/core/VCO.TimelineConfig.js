@@ -6,8 +6,7 @@ VCO.TimelineConfig = VCO.Class.extend({
     VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
 
     initialize: function (data, callback) {
-    // Initialize the data
-        this.data = {}
+        // Initialize the data
         trace("VCO.TimelineConfig.initialize")
         if (typeof data === 'string') {
             var self = this;
