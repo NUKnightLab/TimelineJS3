@@ -4136,6 +4136,7 @@ VCO.Date = VCO.Class.extend({
 	================================================== */
 	_createDisplayType: function() {
 		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
+		trace("display type " + this.data.display_type)
 	},
 	
 	
@@ -4202,11 +4203,8 @@ VCO.DateUtil = {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
 			format = "";
 		
-		trace("FIND BEST FORMAT");
 		for (var i = 0; i < eval_array.length; i++) {
 			if (data[eval_array[i]]) {
-				trace("has " + eval_array[i]);
-				trace((data[eval_array[i]]))
 				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
 			}
 		};
