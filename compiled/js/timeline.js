@@ -1930,7 +1930,7 @@ VCO.Util = {
     })(Zepto)
 
 
-    VCO.getJSON = Zepto.getJSON;
+  VCO.getJSON = Zepto.getJSON;
 	VCO.ajax = Zepto.ajax;
 })(VCO)
 
@@ -2626,6 +2626,110 @@ VCO.LoadIt = (function (doc) {
 
   };
 })(this.document);
+
+
+/* **********************************************
+     Begin VCO.TimelineConfig.js
+********************************************** */
+
+/*  VCO.TimelineConfig
+    separate the configuration from the display (VCO.Timeline)
+    to make testing easier
+================================================== */
+VCO.TimelineConfig = VCO.Class.extend({
+    VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
+
+    initialize: function (data, callback) {
+        // Initialize the data
+        trace("VCO.TimelineConfig.initialize")
+        if (typeof data === 'string') {
+            var self = this;
+            trace("string");
+            
+            VCO.ajax({
+                type: 'GET',
+                url: data,
+                dataType: 'json', //json data type
+                success: function(d){
+                    if (d && d.timeline) {
+                        self._importProperties(d.timeline);
+                    } else {
+                        throw("data must have a timeline property")
+                    }
+                    self._cleanData();
+                    if (callback) {
+                        callback(self);
+                    }
+                },
+                error:function(xhr, type){
+                    trace(xhr);
+                    trace(type);
+                    throw("Configuration could not be loaded: " + type);
+                }
+            });
+        } else if (typeof data === 'object') {
+            if (data.timeline) {
+                this._importProperties(data.timeline);
+                this._cleanData();
+            } else {
+                throw("data must have a timeline property")
+            }
+            if (callback) {
+                callback(this);
+            }
+        } else {
+            throw("Invalid Argument");
+        }
+    },
+
+    _cleanData: function() {
+        this._makeUniqueIdentifiers(this.slides); 
+        this._processDates(this.slides);          
+        VCO.DateUtil.sortByDate(this.slides);
+    },
+
+    _importProperties: function(d) {
+        for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
+            k = this.VALID_PROPERTIES[i];
+            this[k] = d[k];
+        }
+    },
+
+    _makeUniqueIdentifiers: function(array) {
+        var used = []
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
+                array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
+                if (used.indexOf(array[i].uniqueid) != -1) {
+                    array[i].uniqueid = '';
+                } else {
+                    used.push(array[i].uniqueid);
+                }
+            }
+        };
+        if (used.length != array.length) {
+            for (var i = 0; i < array.length; i++) {
+                if (!array[i].uniqueid) {
+                    var slug = VCO.Util.slugify(array[i].text.headline);
+                    if (!slug) {
+                        slug = VCO.Util.unique_ID(6);
+                    }
+                    if (used.indexOf(slug) != -1) {
+                        slug = slug + '-' + i;
+                    }
+                    used.push(slug);
+                    array[i].uniqueid = slug;
+                }
+            }
+        }
+    },
+
+    _processDates: function(array) {
+        for (var i = 0; i < array.length; i++) {
+            array[i].date = new VCO.Date(array[i].date);
+        }
+    }
+});
 
 
 /* **********************************************
@@ -8300,7 +8404,7 @@ VCO.TimeNav = VCO.Class.extend({
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
 	},
 	
 	/*	Markers
@@ -8691,28 +8795,46 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, pixel_width) {
-        if (pixel_width == null) { pixel_width = 0; };
+    initialize: function (slides, display_width, screen_multiplier) {
+        this._screen_multiplier = screen_multiplier || 3;
 		
-		this.pixels_per_milli = 0;
-        this.slides = slides;
+		this._pixels_per_milli = 0;
+        this._axis_helper = null;
 		
-        this.earliest = slides[0].date.data.date_obj.getTime();
-        this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
-        this.span_in_millis = this.latest - this.earliest;
-        this.average = (this.span_in_millis)/this.slides.length;
+        this._earliest = slides[0].date.data.date_obj.getTime();
+        this._latest = slides[slides.length - 1].date.data.date_obj.getTime();
+        this._span_in_millis = this._latest - this._earliest;
+        this._average = (this._span_in_millis)/slides.length;
 
-        this.setPixelWidth(pixel_width);
+        display_width = display_width || 500; //arbitrary default
+        this.setDisplayWidth(display_width);
     },
     
-    setPixelWidth: function(width) {
-        this.pixel_width = width;
-        this.pixels_per_milli = this.pixel_width / this.span_in_millis; 
+    setDisplayWidth: function(display_width) {
+        this._axis_helper = VCO.AxisHelper.getBestHelper(this); // optionally pass optimal_tick_width
+        this._display_width = display_width; // arbitrary. better default?
+        var pixel_width = this._screen_multiplier * this._display_width;
+        this._pixels_per_milli = pixel_width / this._span_in_millis;
+        var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
+        this._scale_width = pad_pixels + pixel_width;
     },
 
     getPosition: function(time_in_millis) {
-        return ( time_in_millis - this.earliest ) * this.pixels_per_milli
-    }
+        return ( time_in_millis - this._earliest ) * this._pixels_per_milli
+    },
+
+    getPixelsPerTick: function() {
+        return this._axis_helper.getPixelsPerTick(this._pixels_per_milli);
+    },
+
+    getMajorTicks: function() {
+        return this._axis_helper.getMajorTicks(this);
+    },
+
+    getMinorTicks: function() {
+        return this._axis_helper.getMinorTicks(this);
+    },
+
     
 });
 
@@ -8939,18 +9061,21 @@ VCO.TimeAxis = VCO.Class.extend({
 /*  VCO.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
+    Intended as a private class -- probably only known to TimeScale
 ================================================== */
 VCO.AxisHelper = VCO.Class.extend({
     initialize: function (options) {
 		if (options) {
 	        this.minor = options.minor;
 	        this.major = options.major;
-		}
+		} else {
+            throw("Axis helper must be configured with options")
+        }
        
     },
     
-    getPixelsPerTick: function(timescale) {
-        return timescale.pixels_per_milli * this.minor.factor;
+    getPixelsPerTick: function(pixels_per_milli) {
+        return pixels_per_milli * this.minor.factor;
     },
 
     getMajorTicks: function(timescale) {
@@ -8976,32 +9101,31 @@ VCO.AxisHelper = VCO.Class.extend({
 });
 
 (function(cls){ // add some class-level behavior
-    MILLIS_PER_UNIT = {
-        millisecond: 1,
-        second: 1000,
-        minute: 1000 * 60,
-        hour: 1000 * 60 * 60,
-        day: 1000 * 60 * 60 * 24,
-        month: 1000 * 60 * 60 * 24 * 30,
-        year: 1000 * 60 * 60 * 24 * 365,
-        decade: 1000 * 60 * 60 * 24 * 365 * 10,
-        century: 1000 * 60 * 60 * 24 * 365 * 100,
-        millenium: 1000 * 60 * 60 * 24 * 365 * 1000,
-        age: 1000 * 60 * 60 * 24 * 365 * 1000000,    // 1M years
-        epoch: 1000 * 60 * 60 * 24 * 365 * 10000000, // 10M years
-        era: 1000 * 60 * 60 * 24 * 365 * 100000000,  // 100M years
-        eon: 1000 * 60 * 60 * 24 * 365 * 500000000   //500M years
-    }
 
-    SCALES = ["millisecond", "second", "minute", "hour", "day", "month", "year", "decade", "century", "millenium", "age", "epoch", "era"]
+    SCALES = [ // ( name, millis_per_tick )
+        ['millisecond',1],
+        ['second',1000],
+        ['minute',1000 * 60],
+        ['hour',1000 * 60 * 60],
+        ['day',1000 * 60 * 60 * 24],
+        ['month',1000 * 60 * 60 * 24 * 30],
+        ['year',1000 * 60 * 60 * 24 * 365],
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100],
+        ['millenium',1000 * 60 * 60 * 24 * 365 * 1000],
+        ['age',1000 * 60 * 60 * 24 * 365 * 1000000],    // 1M years
+        ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000], // 10M years
+        ['era',1000 * 60 * 60 * 24 * 365 * 100000000],  // 100M years
+        ['eon',1000 * 60 * 60 * 24 * 365 * 500000000]  //500M years
+    ]
 
     HELPERS = [];
     for (var idx = 0; idx < SCALES.length - 2; idx++) {
-        var minor_name = SCALES[idx];
-        var major_name = SCALES[idx+1];
+        var minor = SCALES[idx];
+        var major = SCALES[idx+1];
         HELPERS.push(new cls({
-            minor: { name: minor_name, factor: MILLIS_PER_UNIT[minor_name]},
-            major: { name: major_name, factor: MILLIS_PER_UNIT[major_name]}
+            minor: { name: minor[0], factor: minor[1]},
+            major: { name: major[0], factor: major[1]}
         }));
     }
 
@@ -9059,6 +9183,8 @@ VCO.AxisHelper = VCO.Class.extend({
 	// @codekit-prepend "core/VCO.Events.js";
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
+	// @codekit-prepend "core/VCO.TimelineConfig.js";
+
 
 // LANGUAGE
 	// @codekit-prepend "language/VCO.Language.js";
@@ -9168,71 +9294,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
-		this.data = {
-			uniqueid: 				"",
-			slides: 				[
-				{
-					uniqueid: 				"",
-					type: 					"overview", // Optional
-					background: {			// OPTIONAL
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg/418px-Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg",
-						color: 				"",
-						opacity: 			50
-					},
-					date: {
-						year:			1978,
-						month:			01,
-						day: 			05,
-						hour: 			6,
-						minute: 		45,
-						second: 		56,
-						millisecond: 	98,
-						format: 		""
-					},
-					text: {
-						headline: 			"Mark Twain",
-						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
-					},
-					media: {
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						thumb: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						credit:				"",
-						caption:			"Mark Twain's birthplace, Florida, Missouri"
-					}
-				},
-				{
-					uniqueid: 				"",
-					date: {
-						year:			1978,
-						month:			01,
-						day: 			05,
-						hour: 			6,
-						minute: 		45,
-						second: 		56,
-						millisecond: 	98,
-						thumbnail: 		"",
-						format: 		""
-					},
-					location: {
-						lat: 				39.491711,
-						lon: 				-91.793260,
-						name: 				"Florida, Missouri",
-						zoom: 				12,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-						line: 				true
-					},
-					text: {
-						headline: 			"Florida, Missouri",
-						text: 				"Born in Florida, Missouri. Halley’s comet visible from earth."
-					},
-					media: {
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						credit:				"",
-						caption:			"Mark Twain's birthplace, Florida, Missouri"
-					}
-				}
-			]
-		};
+		this.config = null;
 	
 		this.options = {
 			script_path:            "",
@@ -9480,39 +9542,7 @@ VCO.Timeline = VCO.Class.extend({
 	_initData: function(data) {
 		trace("_initData")
 		var self = this;
-		
-		if (typeof data === 'string') {
-			trace("string");
-			
-			VCO.ajax({
-				type: 'GET',
-				url: data,
-				dataType: 'json', //json data type
-				success: function(d){
-					if (d && d.timeline) {
-						VCO.Util.mergeData(self.data, d.timeline);
-					}
-					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
-					self._processDates(self.data.slides);          // into '_cleanData'
-					VCO.DateUtil.sortByDate(self.data.slides);
-					self._onDataLoaded();
-				},
-				error:function(xhr, type){
-					trace("ERROR LOADING");
-					trace(xhr);
-					trace(type);
-				}
-			});
-		} else if (typeof data === 'object') {
-			if (data.timeline) {
-				self.data = data.timeline;
-			} else {
-				trace("data must have a timeline property")
-			}
-			self._onDataLoaded();
-		} else {
-			self._onDataLoaded();
-		}
+		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 	},
 	
 	// Initialize the layout
@@ -9539,7 +9569,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.storyslider.style.top 	= "1px";
 		
 		// Create Map using preferred Map API
-		//this._map = new VCO.Map.Leaflet(this._el.map, this.data, this.options);
+		//this._map = new VCO.Map.Leaflet(this._el.map, this.config, this.options);
 		//this.map = this._map._map; // For access to Leaflet Map.
 		//this._map.on('loaded', this._onMapLoaded, this);
 		
@@ -9547,12 +9577,12 @@ VCO.Timeline = VCO.Class.extend({
 		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
 		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
 		
 		// Create StorySlider
-		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
+		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.config, this.options);
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
 		
@@ -9682,7 +9712,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
-			this.fire("loaded", this.data);
+			this.fire("loaded", this.config);
 		}
 	}
 	
