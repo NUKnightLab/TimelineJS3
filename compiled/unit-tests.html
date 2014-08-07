@@ -13,21 +13,10 @@
     <script type="text/javascript">
       module("timenav tests",{
         setup: function() {
-          this.bob = 1;
-          console.log('in setup',this);
-          stop(); // block on JSON setup
-          VCO.getJSON('examples/marktwain.json', _.bind(function(data, status, xhr) {
-            this.timeline_config = data;
-            window.stash = data;
-            console.log('in callback with bind',this);
-            start(); // release block.
-          }),this);
+          this.timeline_config = VCO.test_data;
         }
       });        
       test("TimeScale", function() {
-        equal(this.bob, 1, "test setup");
-        console.log('in test',this);
-        // var timescale = new VCO.TimeScale();
         ok(this.timeline_config,"test data loaded");
         equal(1,1,"equal");
       });
