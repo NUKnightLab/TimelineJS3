@@ -183,15 +183,30 @@ VCO.TimeAxis = VCO.Class.extend({
 		};
 		
 		// Handle density of minor ticks
-		if ((this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft) < optimal_tick_width/2) {
-			for (var i = 0; i < this.minor_ticks.length; i++) {
-				if (VCO.Util.isEven(i)) {
-					var tick = this.minor_ticks[i];
-					tick.tick_text.innerHTML = "&nbsp;";
-				}
-				
-			};
+		var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
+			fraction_of_array = 1;
+			
+		if (distance < (optimal_tick_width/2 ) / 4) {
+			fraction_of_array = 3;
+		} else if (distance < (optimal_tick_width/2) / 3) {
+			fraction_of_array = 3;
+		} else if (distance < optimal_tick_width/2) {
+			fraction_of_array = 2;
 		}
+		
+		if (fraction_of_array > 1) {
+			var show = 1;
+			for (var i = 0; i < this.minor_ticks.length; i++) {
+				if (show >= fraction_of_array) {
+					show = 1;
+					
+				} else {
+					show++;
+					this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
+				}
+			};
+		};
+		
 	},
 	
 	/*	Events
