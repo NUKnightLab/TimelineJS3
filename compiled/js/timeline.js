@@ -1930,7 +1930,7 @@ VCO.Util = {
     })(Zepto)
 
 
-    VCO.getJSON = Zepto.getJSON;
+  VCO.getJSON = Zepto.getJSON;
 	VCO.ajax = Zepto.ajax;
 })(VCO)
 
@@ -2626,6 +2626,111 @@ VCO.LoadIt = (function (doc) {
 
   };
 })(this.document);
+
+
+/* **********************************************
+     Begin VCO.TimelineConfig.js
+********************************************** */
+
+/*  VCO.TimelineConfig
+    separate the configuration from the display (VCO.Timeline)
+    to make testing easier
+================================================== */
+VCO.TimelineConfig = VCO.Class.extend({
+    VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
+
+    initialize: function (data, callback) {
+    // Initialize the data
+        this.data = {}
+        trace("VCO.TimelineConfig.initialize")
+        if (typeof data === 'string') {
+            var self = this;
+            trace("string");
+            
+            VCO.ajax({
+                type: 'GET',
+                url: data,
+                dataType: 'json', //json data type
+                success: function(d){
+                    if (d && d.timeline) {
+                        self._importProperties(d.timeline);
+                    } else {
+                        throw("data must have a timeline property")
+                    }
+                    self._cleanData();
+                    if (callback) {
+                        callback(self);
+                    }
+                },
+                error:function(xhr, type){
+                    trace(xhr);
+                    trace(type);
+                    throw("Configuration could not be loaded: " + type);
+                }
+            });
+        } else if (typeof data === 'object') {
+            if (data.timeline) {
+                this._importProperties(data.timeline);
+                this._cleanData();
+            } else {
+                throw("data must have a timeline property")
+            }
+            if (callback) {
+                callback(this);
+            }
+        } else {
+            throw("Invalid Argument");
+        }
+    },
+
+    _cleanData: function() {
+        this._makeUniqueIdentifiers(this.slides); 
+        this._processDates(this.slides);          
+        VCO.DateUtil.sortByDate(this.slides);
+    },
+
+    _importProperties: function(d) {
+        for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
+            k = this.VALID_PROPERTIES[i];
+            this[k] = d[k];
+        }
+    },
+
+    _makeUniqueIdentifiers: function(array) {
+        var used = []
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
+                array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
+                if (used.indexOf(array[i].uniqueid) != -1) {
+                    array[i].uniqueid = '';
+                } else {
+                    used.push(array[i].uniqueid);
+                }
+            }
+        };
+        if (used.length != array.length) {
+            for (var i = 0; i < array.length; i++) {
+                if (!array[i].uniqueid) {
+                    var slug = VCO.Util.slugify(array[i].text.headline);
+                    if (!slug) {
+                        slug = VCO.Util.unique_ID(6);
+                    }
+                    if (used.indexOf(slug) != -1) {
+                        slug = slug + '-' + i;
+                    }
+                    used.push(slug);
+                    array[i].uniqueid = slug;
+                }
+            }
+        }
+    },
+
+    _processDates: function(array) {
+        for (var i = 0; i < array.length; i++) {
+            array[i].date = new VCO.Date(array[i].date);
+        }
+    }
+});
 
 
 /* **********************************************
@@ -9087,6 +9192,8 @@ VCO.AxisHelper = VCO.Class.extend({
 	// @codekit-prepend "core/VCO.Events.js";
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
+	// @codekit-prepend "core/VCO.TimelineConfig.js";
+
 
 // LANGUAGE
 	// @codekit-prepend "language/VCO.Language.js";
@@ -9196,71 +9303,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
-		this.data = {
-			uniqueid: 				"",
-			slides: 				[
-				{
-					uniqueid: 				"",
-					type: 					"overview", // Optional
-					background: {			// OPTIONAL
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg/418px-Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg",
-						color: 				"",
-						opacity: 			50
-					},
-					date: {
-						year:			1978,
-						month:			01,
-						day: 			05,
-						hour: 			6,
-						minute: 		45,
-						second: 		56,
-						millisecond: 	98,
-						format: 		""
-					},
-					text: {
-						headline: 			"Mark Twain",
-						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
-					},
-					media: {
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						thumb: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						credit:				"",
-						caption:			"Mark Twain's birthplace, Florida, Missouri"
-					}
-				},
-				{
-					uniqueid: 				"",
-					date: {
-						year:			1978,
-						month:			01,
-						day: 			05,
-						hour: 			6,
-						minute: 		45,
-						second: 		56,
-						millisecond: 	98,
-						thumbnail: 		"",
-						format: 		""
-					},
-					location: {
-						lat: 				39.491711,
-						lon: 				-91.793260,
-						name: 				"Florida, Missouri",
-						zoom: 				12,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-						line: 				true
-					},
-					text: {
-						headline: 			"Florida, Missouri",
-						text: 				"Born in Florida, Missouri. Halley’s comet visible from earth."
-					},
-					media: {
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						credit:				"",
-						caption:			"Mark Twain's birthplace, Florida, Missouri"
-					}
-				}
-			]
-		};
+		this.config = null;
 	
 		this.options = {
 			script_path:            "",
@@ -9508,39 +9551,7 @@ VCO.Timeline = VCO.Class.extend({
 	_initData: function(data) {
 		trace("_initData")
 		var self = this;
-		
-		if (typeof data === 'string') {
-			trace("string");
-			
-			VCO.ajax({
-				type: 'GET',
-				url: data,
-				dataType: 'json', //json data type
-				success: function(d){
-					if (d && d.timeline) {
-						VCO.Util.mergeData(self.data, d.timeline);
-					}
-					self._makeUniqueIdentifiers(self.data.slides); // TODO integrate these 
-					self._processDates(self.data.slides);          // into '_cleanData'
-					VCO.DateUtil.sortByDate(self.data.slides);
-					self._onDataLoaded();
-				},
-				error:function(xhr, type){
-					trace("ERROR LOADING");
-					trace(xhr);
-					trace(type);
-				}
-			});
-		} else if (typeof data === 'object') {
-			if (data.timeline) {
-				self.data = data.timeline;
-			} else {
-				trace("data must have a timeline property")
-			}
-			self._onDataLoaded();
-		} else {
-			self._onDataLoaded();
-		}
+		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 	},
 	
 	// Initialize the layout
@@ -9567,7 +9578,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.storyslider.style.top 	= "1px";
 		
 		// Create Map using preferred Map API
-		//this._map = new VCO.Map.Leaflet(this._el.map, this.data, this.options);
+		//this._map = new VCO.Map.Leaflet(this._el.map, this.config, this.options);
 		//this.map = this._map._map; // For access to Leaflet Map.
 		//this._map.on('loaded', this._onMapLoaded, this);
 		
@@ -9575,12 +9586,12 @@ VCO.Timeline = VCO.Class.extend({
 		//this._el.map.style.backgroundColor = this.options.map_background_color;
 		
 		// Create TimeNav
-		this._timenav = new VCO.TimeNav(this._el.timenav, this.data, this.options);
+		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
 		
 		// Create StorySlider
-		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.data, this.options);
+		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.config, this.options);
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
 		
@@ -9710,7 +9721,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
-			this.fire("loaded", this.data);
+			this.fire("loaded", this.config);
 		}
 	}
 	
