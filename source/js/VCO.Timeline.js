@@ -24,6 +24,8 @@
 	// @codekit-prepend "core/VCO.Events.js";
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
+	// @codekit-prepend "core/VCO.TimelineConfig.js";
+
 
 // LANGUAGE
 	// @codekit-prepend "language/VCO.Language.js";
