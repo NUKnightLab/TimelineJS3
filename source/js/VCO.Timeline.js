@@ -133,71 +133,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Data Object
 		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
-		this.data = {
-			uniqueid: 				"",
-			slides: 				[
-				{
-					uniqueid: 				"",
-					type: 					"overview", // Optional
-					background: {			// OPTIONAL
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg/418px-Mark_Twain_by_Abdullah_Fr%C3%A8res%2C_1867.jpg",
-						color: 				"",
-						opacity: 			50
-					},
-					date: {
-						year:			1978,
-						month:			01,
-						day: 			05,
-						hour: 			6,
-						minute: 		45,
-						second: 		56,
-						millisecond: 	98,
-						format: 		""
-					},
-					text: {
-						headline: 			"Mark Twain",
-						text: 				"Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the latter often called \"the Great American Novel.\""
-					},
-					media: {
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						thumb: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						credit:				"",
-						caption:			"Mark Twain's birthplace, Florida, Missouri"
-					}
-				},
-				{
-					uniqueid: 				"",
-					date: {
-						year:			1978,
-						month:			01,
-						day: 			05,
-						hour: 			6,
-						minute: 		45,
-						second: 		56,
-						millisecond: 	98,
-						thumbnail: 		"",
-						format: 		""
-					},
-					location: {
-						lat: 				39.491711,
-						lon: 				-91.793260,
-						name: 				"Florida, Missouri",
-						zoom: 				12,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-						line: 				true
-					},
-					text: {
-						headline: 			"Florida, Missouri",
-						text: 				"Born in Florida, Missouri. Halley’s comet visible from earth."
-					},
-					media: {
-						url: 				"http://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Mark_Twain_birthplace.jpg/800px-Mark_Twain_birthplace.jpg",
-						credit:				"",
-						caption:			"Mark Twain's birthplace, Florida, Missouri"
-					}
-				}
-			]
-		};
+		this.data = VCO.test_data;
 	
 		this.options = {
 			script_path:            "",
