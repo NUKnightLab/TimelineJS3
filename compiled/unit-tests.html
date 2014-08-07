@@ -22,8 +22,7 @@
 
       test("TimelineConfig", function() {
         ok(this.timeline_config,"config loaded")
-        var slides = this.timeline_config.data.slides;
-        equal(15,slides.length, "test data has 15 slides");
+        var slides = this.timeline_config.slides;
         var sorted = true;
         for (var i = 0; i < slides.length - 1; i++) {
           var earlier = slides[i];

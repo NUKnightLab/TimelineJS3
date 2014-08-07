@@ -3,6 +3,8 @@
     to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
+    VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
+
     initialize: function (data, callback) {
     // Initialize the data
         this.data = {}
@@ -17,25 +19,24 @@ VCO.TimelineConfig = VCO.Class.extend({
                 dataType: 'json', //json data type
                 success: function(d){
                     if (d && d.timeline) {
-                        VCO.Util.mergeData(self.data, d.timeline);
+                        self._importProperties(d.timeline);
                     } else {
                         throw("data must have a timeline property")
                     }
                     self._cleanData();
-                    VCO.DateUtil.sortByDate(self.data.slides);
                     if (callback) {
                         callback(self);
                     }
                 },
                 error:function(xhr, type){
-                    trace("ERROR LOADING");
                     trace(xhr);
                     trace(type);
+                    throw("Configuration could not be loaded: " + type);
                 }
             });
         } else if (typeof data === 'object') {
             if (data.timeline) {
-                this.data = data.timeline;
+                this._importProperties(data.timeline);
                 this._cleanData();
             } else {
                 throw("data must have a timeline property")
@@ -49,8 +50,16 @@ VCO.TimelineConfig = VCO.Class.extend({
     },
 
     _cleanData: function() {
-        this._makeUniqueIdentifiers(this.data.slides); 
-        this._processDates(this.data.slides);          
+        this._makeUniqueIdentifiers(this.slides); 
+        this._processDates(this.slides);          
+        VCO.DateUtil.sortByDate(this.slides);
+    },
+
+    _importProperties: function(d) {
+        for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
+            k = this.VALID_PROPERTIES[i];
+            this[k] = d[k];
+        }
     },
 
     _makeUniqueIdentifiers: function(array) {
