@@ -7,7 +7,8 @@ VCO.Media.Text = VCO.Class.extend({
 		container: {},
 		content_container: {},
 		content: {},
-		headline: {}
+		headline: {},
+		date: {}
 	},
 	
 	// Data
@@ -65,6 +66,10 @@ VCO.Media.Text = VCO.Class.extend({
 		return this._el.headline.offsetHeight + 40;
 	},
 	
+	addDateText: function(str) {
+		this._el.date.innerHTML = str;
+	},
+	
 	/*	Events
 	================================================== */
 	onLoaded: function() {
@@ -85,6 +90,9 @@ VCO.Media.Text = VCO.Class.extend({
 		
 		// Create Layout
 		this._el.content_container			= VCO.Dom.create("div", "vco-text-content-container", this._el.container);
+		
+		// Date
+		this._el.date 				= VCO.Dom.create("h3", "vco-headline-date", this._el.content_container);
 		
 		// Headline
 		if (this.data.headline != "") {
@@ -107,13 +115,12 @@ VCO.Media.Text = VCO.Class.extend({
 				if (this.data.date.created_time.length > 10) {
 					if (typeof(moment) !== 'undefined') {
 						text_content 	+= "<div class='vco-text-date'>" + moment(this.data.date.created_time, 'YYYY-MM-DD h:mm:ss').fromNow() + "</div>";
-					
+				
 					} else {
 						text_content 	+= "<div class='vco-text-date'>" + VCO.Util.convertUnixTime(this.data.date.created_time) + "</div>";
 					}
 				}
 			}
-			
 			
 			this._el.content				= VCO.Dom.create("div", "vco-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;

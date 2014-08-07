@@ -27,7 +27,6 @@ VCO.DateUtil = {
 				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
 			}
 		};
-		trace("NO BEST FORMAT FOUND");
 		return "";
 	},
 	

@@ -4208,7 +4208,6 @@ VCO.DateUtil = {
 				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
 			}
 		};
-		trace("NO BEST FORMAT FOUND");
 		return "";
 	},
 	
@@ -6201,7 +6200,8 @@ VCO.Media.Text = VCO.Class.extend({
 		container: {},
 		content_container: {},
 		content: {},
-		headline: {}
+		headline: {},
+		date: {}
 	},
 	
 	// Data
@@ -6259,6 +6259,10 @@ VCO.Media.Text = VCO.Class.extend({
 		return this._el.headline.offsetHeight + 40;
 	},
 	
+	addDateText: function(str) {
+		this._el.date.innerHTML = str;
+	},
+	
 	/*	Events
 	================================================== */
 	onLoaded: function() {
@@ -6279,6 +6283,9 @@ VCO.Media.Text = VCO.Class.extend({
 		
 		// Create Layout
 		this._el.content_container			= VCO.Dom.create("div", "vco-text-content-container", this._el.container);
+		
+		// Date
+		this._el.date 				= VCO.Dom.create("h3", "vco-headline-date", this._el.content_container);
 		
 		// Headline
 		if (this.data.headline != "") {
@@ -6301,13 +6308,12 @@ VCO.Media.Text = VCO.Class.extend({
 				if (this.data.date.created_time.length > 10) {
 					if (typeof(moment) !== 'undefined') {
 						text_content 	+= "<div class='vco-text-date'>" + moment(this.data.date.created_time, 'YYYY-MM-DD h:mm:ss').fromNow() + "</div>";
-					
+				
 					} else {
 						text_content 	+= "<div class='vco-text-date'>" + VCO.Util.convertUnixTime(this.data.date.created_time) + "</div>";
 					}
 				}
 			}
-			
 			
 			this._el.content				= VCO.Dom.create("div", "vco-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;
@@ -7157,7 +7163,15 @@ VCO.Slide = VCO.Class.extend({
 		// Create Text
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
+			// Add Date if available
+			if (this.data.date && this.data.date.data) {
+				trace("SLIDE DATE")
+				trace(this.data.date.data.display_type);
+				this._text.addDateText(this.data.date.data.display_type);
+			}
 		}
+		
+		
 		
 		// Add to DOM
 		if (!this.has.text && !this.has.headline && this.has.media) {
@@ -8695,12 +8709,12 @@ VCO.TimeScale = VCO.Class.extend({
         if (pixel_width == null) { pixel_width = 0; };
 		
 		this.pixels_per_milli = 0;
-        this.slides = slides;
+        this.axis_helper = null;
 		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
         this.span_in_millis = this.latest - this.earliest;
-        this.average = (this.span_in_millis)/this.slides.length;
+        this.average = (this.span_in_millis)/slides.length;
 
         this.setPixelWidth(pixel_width);
     },
@@ -8708,11 +8722,25 @@ VCO.TimeScale = VCO.Class.extend({
     setPixelWidth: function(width) {
         this.pixel_width = width;
         this.pixels_per_milli = this.pixel_width / this.span_in_millis; 
+        this.axis_helper = VCO.AxisHelper.getBestHelper(this);
     },
 
     getPosition: function(time_in_millis) {
         return ( time_in_millis - this.earliest ) * this.pixels_per_milli
-    }
+    },
+
+    getPixelsPerTick: function(timescale) {
+        return this.axis_helper.getPixelsPerTick(this);
+    },
+
+    getMajorTicks: function(timescale) {
+        return this.axis_helper.getMajorTicks(this);
+    },
+
+    getMinorTicks: function(timescale) {
+        return this.axis_helper.getMinorTicks(this);
+    },
+
     
 });
 
@@ -8939,6 +8967,7 @@ VCO.TimeAxis = VCO.Class.extend({
 /*  VCO.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
+    Intended as a private class -- probably only known to TimeScale
 ================================================== */
 VCO.AxisHelper = VCO.Class.extend({
     initialize: function (options) {
@@ -8976,32 +9005,31 @@ VCO.AxisHelper = VCO.Class.extend({
 });
 
 (function(cls){ // add some class-level behavior
-    MILLIS_PER_UNIT = {
-        millisecond: 1,
-        second: 1000,
-        minute: 1000 * 60,
-        hour: 1000 * 60 * 60,
-        day: 1000 * 60 * 60 * 24,
-        month: 1000 * 60 * 60 * 24 * 30,
-        year: 1000 * 60 * 60 * 24 * 365,
-        decade: 1000 * 60 * 60 * 24 * 365 * 10,
-        century: 1000 * 60 * 60 * 24 * 365 * 100,
-        millenium: 1000 * 60 * 60 * 24 * 365 * 1000,
-        age: 1000 * 60 * 60 * 24 * 365 * 1000000,    // 1M years
-        epoch: 1000 * 60 * 60 * 24 * 365 * 10000000, // 10M years
-        era: 1000 * 60 * 60 * 24 * 365 * 100000000,  // 100M years
-        eon: 1000 * 60 * 60 * 24 * 365 * 500000000   //500M years
-    }
 
-    SCALES = ["millisecond", "second", "minute", "hour", "day", "month", "year", "decade", "century", "millenium", "age", "epoch", "era"]
+    SCALES = [
+        ['millisecond',1],
+        ['second',1000],
+        ['minute',1000 * 60],
+        ['hour',1000 * 60 * 60],
+        ['day',1000 * 60 * 60 * 24],
+        ['month',1000 * 60 * 60 * 24 * 30],
+        ['year',1000 * 60 * 60 * 24 * 365],
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100],
+        ['millenium',1000 * 60 * 60 * 24 * 365 * 1000],
+        ['age',1000 * 60 * 60 * 24 * 365 * 1000000],    // 1M years
+        ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000], // 10M years
+        ['era',1000 * 60 * 60 * 24 * 365 * 100000000],  // 100M years
+        ['eon',1000 * 60 * 60 * 24 * 365 * 500000000]  //500M years
+    ]
 
     HELPERS = [];
     for (var idx = 0; idx < SCALES.length - 2; idx++) {
-        var minor_name = SCALES[idx];
-        var major_name = SCALES[idx+1];
+        var minor = SCALES[idx];
+        var major = SCALES[idx+1];
         HELPERS.push(new cls({
-            minor: { name: minor_name, factor: MILLIS_PER_UNIT[minor_name]},
-            major: { name: major_name, factor: MILLIS_PER_UNIT[major_name]}
+            minor: { name: minor[0], factor: minor[1]},
+            major: { name: major[0], factor: major[1]}
         }));
     }
 
