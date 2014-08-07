@@ -8,7 +8,9 @@ VCO.AxisHelper = VCO.Class.extend({
 		if (options) {
 	        this.minor = options.minor;
 	        this.major = options.major;
-		}
+		} else {
+            throw("Axis helper must be configured with options")
+        }
        
     },
     
