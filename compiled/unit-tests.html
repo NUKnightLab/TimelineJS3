@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unit Tests</title>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/qunit/1.14.0/qunit.css" />
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/g/qunit@1.14.0,underscorejs@1.6.0"></script>
+
+    <script type="text/javascript" src="js/timeline.js"></script>
+
+
+    <script type="text/javascript">
+      module("timenav tests",{
+        setup: function() {
+          this.bob = 1;
+          console.log('in setup',this);
+          stop(); // block on JSON setup
+          VCO.getJSON('examples/marktwain.json', _.bind(function(data, status, xhr) {
+            this.timeline_config = data;
+            window.stash = data;
+            console.log('in callback with bind',this);
+            start(); // release block.
+          }),this);
+        }
+      });        
+      test("TimeScale", function() {
+        equal(this.bob, 1, "test setup");
+        console.log('in test',this);
+        // var timescale = new VCO.TimeScale();
+        ok(this.timeline_config,"test data loaded");
+        equal(1,1,"equal");
+      });
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+</body>
+</html>
