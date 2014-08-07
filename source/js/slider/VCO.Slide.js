@@ -250,8 +250,6 @@ VCO.Slide = VCO.Class.extend({
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
 			// Add Date if available
 			if (this.data.date && this.data.date.data) {
-				trace("SLIDE DATE")
-				trace(this.data.date.data.display_type);
 				this._text.addDateText(this.data.date.data.display_type);
 			}
 		}
