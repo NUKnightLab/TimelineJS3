@@ -1,6 +1,7 @@
 /*  VCO.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
+    Intended as a private class -- probably only known to TimeScale
 ================================================== */
 VCO.AxisHelper = VCO.Class.extend({
     initialize: function (options) {
@@ -38,32 +39,31 @@ VCO.AxisHelper = VCO.Class.extend({
 });
 
 (function(cls){ // add some class-level behavior
-    MILLIS_PER_UNIT = {
-        millisecond: 1,
-        second: 1000,
-        minute: 1000 * 60,
-        hour: 1000 * 60 * 60,
-        day: 1000 * 60 * 60 * 24,
-        month: 1000 * 60 * 60 * 24 * 30,
-        year: 1000 * 60 * 60 * 24 * 365,
-        decade: 1000 * 60 * 60 * 24 * 365 * 10,
-        century: 1000 * 60 * 60 * 24 * 365 * 100,
-        millenium: 1000 * 60 * 60 * 24 * 365 * 1000,
-        age: 1000 * 60 * 60 * 24 * 365 * 1000000,    // 1M years
-        epoch: 1000 * 60 * 60 * 24 * 365 * 10000000, // 10M years
-        era: 1000 * 60 * 60 * 24 * 365 * 100000000,  // 100M years
-        eon: 1000 * 60 * 60 * 24 * 365 * 500000000   //500M years
-    }
 
-    SCALES = ["millisecond", "second", "minute", "hour", "day", "month", "year", "decade", "century", "millenium", "age", "epoch", "era"]
+    SCALES = [
+        ['millisecond',1],
+        ['second',1000],
+        ['minute',1000 * 60],
+        ['hour',1000 * 60 * 60],
+        ['day',1000 * 60 * 60 * 24],
+        ['month',1000 * 60 * 60 * 24 * 30],
+        ['year',1000 * 60 * 60 * 24 * 365],
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100],
+        ['millenium',1000 * 60 * 60 * 24 * 365 * 1000],
+        ['age',1000 * 60 * 60 * 24 * 365 * 1000000],    // 1M years
+        ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000], // 10M years
+        ['era',1000 * 60 * 60 * 24 * 365 * 100000000],  // 100M years
+        ['eon',1000 * 60 * 60 * 24 * 365 * 500000000]  //500M years
+    ]
 
     HELPERS = [];
     for (var idx = 0; idx < SCALES.length - 2; idx++) {
-        var minor_name = SCALES[idx];
-        var major_name = SCALES[idx+1];
+        var minor = SCALES[idx];
+        var major = SCALES[idx+1];
         HELPERS.push(new cls({
-            minor: { name: minor_name, factor: MILLIS_PER_UNIT[minor_name]},
-            major: { name: major_name, factor: MILLIS_PER_UNIT[major_name]}
+            minor: { name: minor[0], factor: minor[1]},
+            major: { name: major[0], factor: major[1]}
         }));
     }
 
