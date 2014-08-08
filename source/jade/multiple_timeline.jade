@@ -19,8 +19,9 @@ html(lang="en")
 				padding: 0px;
 				margin: 0px;
 			}
-			.vco-timeline1 {
-				
+			#timeline1, #timeline2 {
+				height:600px;
+				width:100%;
 			}
 
 
@@ -29,21 +30,21 @@ html(lang="en")
 			script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
 
 	body
-		div#timeline1(style="width:500px;height:500px")
+		div#timeline1
 		div#timeline2
 		div#timeline3
 		div#timeline4
 		
 		// JavaScript
-		script(src='../js/timeline-min.js')
+		script(src='../js/timeline.js')
 		script.
-			var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json');
-			var timeline_02 = new VCO.Timeline('timeline2', 'marktwain.json');
-			var timeline_03 = new VCO.Timeline('timeline3');
-			var timeline_04 = new VCO.Timeline('timeline4');
+			var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json', {
+				
+			});
+			var timeline_02 = new VCO.Timeline('timeline2', 'science.json', {
+				
+			});
 			window.onresize = function(event) {
 				timeline_01.updateDisplay();
 				timeline_02.updateDisplay();
-				timeline_03.updateDisplay();
-				timeline_04.updateDisplay();
 			}

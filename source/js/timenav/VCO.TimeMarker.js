@@ -80,14 +80,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show: function() {
-		trace("show");
-		/*
-		this.animator = VCO.Animate(this._el.slider_container, {
-			left: 		-(this._el.container.offsetWidth * n) + "px",
-			duration: 	this.options.duration,
-			easing: 	this.options.ease
-		});
-		*/
+
 	},
 	
 	hide: function() {

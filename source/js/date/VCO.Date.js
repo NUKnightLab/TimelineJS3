@@ -89,6 +89,7 @@ VCO.Date = VCO.Class.extend({
 		// Merge dates
 		VCO.Util.mergeData(_date, this.data);
 		DATE_PARTS = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'];
+		
 		// Make strings into numbers
 		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
@@ -99,8 +100,10 @@ VCO.Date = VCO.Class.extend({
 		if (_date.month > 0 && _date.month <= 12) {
 			_date.month = _date.month - 1;
 		}
+		trace(_date);
 		// Create Javascript date object
 		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+		trace(this.data.date_obj);
 	}
 	
 });
