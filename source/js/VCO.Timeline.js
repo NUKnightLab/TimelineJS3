@@ -100,7 +100,7 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		
 		// Version
-		this.version = "0.0.16";
+		this.version = "0.0.20";
 		
 		// Ready
 		this.ready = false;
@@ -141,7 +141,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path:            "",
 			height: 				this._el.container.offsetHeight,
 			width: 					this._el.container.offsetWidth,
-			scale_factor: 			1.5, 				// How many screen widths wide should the timeline be
+			scale_factor: 			3, 				// How many screen widths wide should the timeline be
 			layout: 				"landscape", 	// portrait or landscape
 			timenav_position: 		"bottom", 		// timeline on top or bottom
 			optimal_tick_width: 	100,			// optimal distance (in pixels) between ticks on axis

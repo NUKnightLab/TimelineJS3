@@ -239,20 +239,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDisplay(w, h, a, l);
 	},
 	
-	/*	Dates
-	================================================== */
-	_createDates: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			this._createDate(array[i]);
-		};
-	},
-	
-	_createDate: function(d) {
-		var date = new VCO.Date(d.date);
-		trace("date");
-		//this._addDate(date);
-		this._markers.push(date);
-	},
+
 	
 	/*	TimeScale
 	================================================== */
@@ -338,7 +325,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerAdded: function(e) {
-		trace("dateAdded")
+
 		this.fire("dateAdded", this.data);
 	},
 	

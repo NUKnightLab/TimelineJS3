@@ -11,7 +11,6 @@ VCO.TimelineConfig = VCO.Class.extend({
         trace("VCO.TimelineConfig.initialize")
         if (typeof data === 'string') {
             var self = this;
-            trace("string");
             
             VCO.ajax({
                 type: 'GET',

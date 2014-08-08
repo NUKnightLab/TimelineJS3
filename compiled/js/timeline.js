@@ -2649,7 +2649,6 @@ VCO.TimelineConfig = VCO.Class.extend({
         trace("VCO.TimelineConfig.initialize")
         if (typeof data === 'string') {
             var self = this;
-            trace("string");
             
             VCO.ajax({
                 type: 'GET',
@@ -4078,7 +4077,7 @@ VCO.DateFormat = function () {
 		// Caused problems in IE
 		// date = date ? new Date(date) : new Date;
 		if (isNaN(date)) {
-			trace("invalid date " + date);
+			trace("VCO.DateFormat invalid date " + date);
 			//return "";
 		} 
 
@@ -4264,6 +4263,7 @@ VCO.Date = VCO.Class.extend({
 		// Merge dates
 		VCO.Util.mergeData(_date, this.data);
 		DATE_PARTS = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'];
+		
 		// Make strings into numbers
 		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
@@ -4274,8 +4274,10 @@ VCO.Date = VCO.Class.extend({
 		if (_date.month > 0 && _date.month <= 12) {
 			_date.month = _date.month - 1;
 		}
+		trace(_date);
 		// Create Javascript date object
 		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+		trace(this.data.date_obj);
 	}
 	
 });
@@ -7141,7 +7143,6 @@ VCO.Slide = VCO.Class.extend({
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show: function() {
-		trace("show")
 		this.animator = VCO.Animate(this._el.slider_container, {
 			left: 		-(this._el.container.offsetWidth * n) + "px",
 			duration: 	this.options.duration,
@@ -8402,20 +8403,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDisplay(w, h, a, l);
 	},
 	
-	/*	Dates
-	================================================== */
-	_createDates: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			this._createDate(array[i]);
-		};
-	},
-	
-	_createDate: function(d) {
-		var date = new VCO.Date(d.date);
-		trace("date");
-		//this._addDate(date);
-		this._markers.push(date);
-	},
+
 	
 	/*	TimeScale
 	================================================== */
@@ -8501,7 +8489,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerAdded: function(e) {
-		trace("dateAdded")
+
 		this.fire("dateAdded", this.data);
 	},
 	
@@ -8678,14 +8666,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show: function() {
-		trace("show");
-		/*
-		this.animator = VCO.Animate(this._el.slider_container, {
-			left: 		-(this._el.container.offsetWidth * n) + "px",
-			duration: 	this.options.duration,
-			easing: 	this.options.ease
-		});
-		*/
+
 	},
 	
 	hide: function() {
@@ -8955,14 +8936,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show: function() {
-		trace("show");
-		/*
-		this.animator = VCO.Animate(this._el.slider_container, {
-			left: 		-(this._el.container.offsetWidth * n) + "px",
-			duration: 	this.options.duration,
-			easing: 	this.options.ease
-		});
-		*/
+
 	},
 	
 	hide: function() {
@@ -8987,7 +8961,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
-		trace(this.options.optimal_tick_width)
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
 		
@@ -9040,29 +9013,32 @@ VCO.TimeAxis = VCO.Class.extend({
 		};
 		
 		// Handle density of minor ticks
-		var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
-			fraction_of_array = 1;
+		if (this.minor_ticks[1] && this.minor_ticks[0]) {
+			var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
+				fraction_of_array = 1;
 			
-		if (distance < (optimal_tick_width/2 ) / 4) {
-			fraction_of_array = 3;
-		} else if (distance < (optimal_tick_width/2) / 3) {
-			fraction_of_array = 3;
-		} else if (distance < optimal_tick_width/2) {
-			fraction_of_array = 2;
+			if (distance < (optimal_tick_width/2 ) / 4) {
+				fraction_of_array = 3;
+			} else if (distance < (optimal_tick_width/2) / 3) {
+				fraction_of_array = 3;
+			} else if (distance < optimal_tick_width/2) {
+				fraction_of_array = 2;
+			}
+		
+			if (fraction_of_array > 1) {
+				var show = 1;
+				for (var i = 0; i < this.minor_ticks.length; i++) {
+					if (show >= fraction_of_array) {
+						show = 1;
+					
+					} else {
+						show++;
+						this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
+					}
+				};
+			};
 		}
 		
-		if (fraction_of_array > 1) {
-			var show = 1;
-			for (var i = 0; i < this.minor_ticks.length; i++) {
-				if (show >= fraction_of_array) {
-					show = 1;
-					
-				} else {
-					show++;
-					this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
-				}
-			};
-		};
 		
 	},
 	
@@ -9308,7 +9284,7 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		
 		// Version
-		this.version = "0.0.16";
+		this.version = "0.0.20";
 		
 		// Ready
 		this.ready = false;
@@ -9349,7 +9325,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path:            "",
 			height: 				this._el.container.offsetHeight,
 			width: 					this._el.container.offsetWidth,
-			scale_factor: 			1.5, 				// How many screen widths wide should the timeline be
+			scale_factor: 			3, 				// How many screen widths wide should the timeline be
 			layout: 				"landscape", 	// portrait or landscape
 			timenav_position: 		"bottom", 		// timeline on top or bottom
 			optimal_tick_width: 	100,			// optimal distance (in pixels) between ticks on axis

@@ -98,14 +98,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show: function() {
-		trace("show");
-		/*
-		this.animator = VCO.Animate(this._el.slider_container, {
-			left: 		-(this._el.container.offsetWidth * n) + "px",
-			duration: 	this.options.duration,
-			easing: 	this.options.ease
-		});
-		*/
+
 	},
 	
 	hide: function() {
@@ -130,7 +123,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
-		trace(this.options.optimal_tick_width)
 		var major_ticks = this.axis_helper.getMajorTicks(timescale),
 			minor_ticks = this.axis_helper.getMinorTicks(timescale);
 		
@@ -183,29 +175,32 @@ VCO.TimeAxis = VCO.Class.extend({
 		};
 		
 		// Handle density of minor ticks
-		var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
-			fraction_of_array = 1;
+		if (this.minor_ticks[1] && this.minor_ticks[0]) {
+			var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
+				fraction_of_array = 1;
 			
-		if (distance < (optimal_tick_width/2 ) / 4) {
-			fraction_of_array = 3;
-		} else if (distance < (optimal_tick_width/2) / 3) {
-			fraction_of_array = 3;
-		} else if (distance < optimal_tick_width/2) {
-			fraction_of_array = 2;
+			if (distance < (optimal_tick_width/2 ) / 4) {
+				fraction_of_array = 3;
+			} else if (distance < (optimal_tick_width/2) / 3) {
+				fraction_of_array = 3;
+			} else if (distance < optimal_tick_width/2) {
+				fraction_of_array = 2;
+			}
+		
+			if (fraction_of_array > 1) {
+				var show = 1;
+				for (var i = 0; i < this.minor_ticks.length; i++) {
+					if (show >= fraction_of_array) {
+						show = 1;
+					
+					} else {
+						show++;
+						this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
+					}
+				};
+			};
 		}
 		
-		if (fraction_of_array > 1) {
-			var show = 1;
-			for (var i = 0; i < this.minor_ticks.length; i++) {
-				if (show >= fraction_of_array) {
-					show = 1;
-					
-				} else {
-					show++;
-					this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
-				}
-			};
-		};
 		
 	},
 	

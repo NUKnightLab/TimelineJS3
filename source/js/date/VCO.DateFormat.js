@@ -41,7 +41,7 @@ VCO.DateFormat = function () {
 		// Caused problems in IE
 		// date = date ? new Date(date) : new Date;
 		if (isNaN(date)) {
-			trace("invalid date " + date);
+			trace("VCO.DateFormat invalid date " + date);
 			//return "";
 		} 
 
