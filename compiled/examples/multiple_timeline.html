@@ -19,7 +19,7 @@
        padding: 0px;
        margin: 0px;
       }
-      #timeline1, #timeline2 {
+      #timeline1, #timeline2, #timeline3 {
        height:600px;
        width:100%;
       }
@@ -40,13 +40,13 @@
     <!-- JavaScript-->
     <script src="../js/timeline.js"></script>
     <script>
-      var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json', {
-      });
-      var timeline_02 = new VCO.Timeline('timeline2', 'science.json', {
-      });
+      var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json');
+      var timeline_02 = new VCO.Timeline('timeline2', 'years.json');
+      var timeline_03 = new VCO.Timeline('timeline3', 'science.json');
       window.onresize = function(event) {
        timeline_01.updateDisplay();
        timeline_02.updateDisplay();
+       timeline_03.updateDisplay();
       }
     </script>
   </body>
