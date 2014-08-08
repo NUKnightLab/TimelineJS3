@@ -2641,11 +2641,8 @@ VCO.TimelineConfig = VCO.Class.extend({
 
     initialize: function (data, callback) {
         // Initialize the data
-        trace("VCO.TimelineConfig.initialize")
         if (typeof data === 'string') {
             var self = this;
-            trace("string");
-            
             VCO.ajax({
                 type: 'GET',
                 url: data,
@@ -4240,7 +4237,6 @@ VCO.Date = VCO.Class.extend({
 	================================================== */
 	_createDisplayType: function() {
 		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
-		trace("display type " + this.data.display_type)
 	},
 	
 	
@@ -4326,7 +4322,7 @@ VCO.DateUtil = {
 		year: VCO.Language.dateformats.year,
 		decade: VCO.Language.dateformats.year,
 		century: VCO.Language.dateformats.year,
-		millenium: VCO.Language.dateformats.year,
+		millennium: VCO.Language.dateformats.year,
 		age: VCO.Language.dateformats.year,
 		epoch: VCO.Language.dateformats.year,
 		era: VCO.Language.dateformats.year,
@@ -8811,10 +8807,10 @@ VCO.TimeScale = VCO.Class.extend({
     },
     
     setDisplayWidth: function(display_width) {
-        this._axis_helper = VCO.AxisHelper.getBestHelper(this); // optionally pass optimal_tick_width
         this._display_width = display_width; // arbitrary. better default?
         var pixel_width = this._screen_multiplier * this._display_width;
         this._pixels_per_milli = pixel_width / this._span_in_millis;
+        this._axis_helper = VCO.AxisHelper.getBestHelper(this);
         var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
         this._scale_width = pad_pixels + pixel_width;
     },
@@ -8835,6 +8831,13 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.getMinorTicks(this);
     },
 
+    getMajorScale: function() {
+        return this._axis_helper.major.name;
+    },
+
+    getMinorScale: function() {
+        return this._axis_helper.minor.name;
+    }
     
 });
 
@@ -8856,7 +8859,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(elem, data, options) {
-		
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -8913,7 +8915,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	        year: VCO.Language.dateformats.year,
 	        decade: VCO.Language.dateformats.year,
 	        century: VCO.Language.dateformats.year,
-	        millenium: VCO.Language.dateformats.year,
+	        millennium: VCO.Language.dateformats.year,
 	        age: VCO.Language.dateformats.year,
 	        epoch: VCO.Language.dateformats.year,
 	        era: VCO.Language.dateformats.year,
@@ -8971,10 +8973,8 @@ VCO.TimeAxis = VCO.Class.extend({
 	},
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
-		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
-		
-		var major_ticks = this.axis_helper.getMajorTicks(timescale),
-			minor_ticks = this.axis_helper.getMinorTicks(timescale);
+		var major_ticks = timescale.getMajorTicks(),
+			minor_ticks = timescale.getMinorTicks();
 		
 		
 		// Create Minor Ticks
@@ -9086,6 +9086,11 @@ VCO.AxisHelper = VCO.Class.extend({
         return this._getTicks(timescale, this.minor)
     },
 
+    roundDown: function(date,scale) { // given a date, return the tick closest to it on 'scale' without going over (that is, scale should be 'major' or 'minor')
+        if (scale != 'minor' && scale != 'major') throw("Invalid scale");
+
+    },
+
     _getTicks: function(timescale, option) {
         var ticks = []
         for (var i = timescale.earliest; i < timescale.latest; i += option.factor) {
@@ -9103,21 +9108,44 @@ VCO.AxisHelper = VCO.Class.extend({
 (function(cls){ // add some class-level behavior
 
     SCALES = [ // ( name, millis_per_tick )
-        ['millisecond',1],
-        ['second',1000],
-        ['minute',1000 * 60],
-        ['hour',1000 * 60 * 60],
-        ['day',1000 * 60 * 60 * 24],
-        ['month',1000 * 60 * 60 * 24 * 30],
-        ['year',1000 * 60 * 60 * 24 * 365],
-        ['decade',1000 * 60 * 60 * 24 * 365 * 10],
-        ['century',1000 * 60 * 60 * 24 * 365 * 100],
-        ['millenium',1000 * 60 * 60 * 24 * 365 * 1000],
-        ['age',1000 * 60 * 60 * 24 * 365 * 1000000],    // 1M years
-        ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000], // 10M years
-        ['era',1000 * 60 * 60 * 24 * 365 * 100000000],  // 100M years
-        ['eon',1000 * 60 * 60 * 24 * 365 * 500000000]  //500M years
+        ['millisecond',1, function(d) { }],
+        ['second',1000, function(d) { d.setMilliseconds(0);}],
+        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
+        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
+        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
+        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
+        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 10)) 
+        }],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 100)) 
+        }],
+        ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 1000)) 
+        }],
+        // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
+        // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
+        // scales are not relevant
+        // ['age',1000 * 60 * 60 * 24 * 365 * 1000000, function(d) { }],    // 1M years
+        // ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000, function(d) { }], // 10M years
+        // ['era',1000 * 60 * 60 * 24 * 365 * 100000000, function(d) { }],  // 100M years
+        // ['eon',1000 * 60 * 60 * 24 * 365 * 500000000, function(d) { }]  //500M years
     ]
+
+    cls.SCALES = SCALES;
+
+    cls.floor = function(date, scale) {
+        var d = new Date(date);
+        for (var i = 0; i < SCALES.length; i++) {
+            SCALES[i][2](d);
+            if (SCALES[i][0] == scale) return d;
+        };
+        throw('invalid scale');
+    }
 
     HELPERS = [];
     for (var idx = 0; idx < SCALES.length - 2; idx++) {
@@ -9136,10 +9164,11 @@ VCO.AxisHelper = VCO.Class.extend({
         var prev = null;
         for (var idx in HELPERS) {
             var curr = HELPERS[idx];
-            if (curr.getPixelsPerTick(ts) > optimal_tick_width)  {
+            var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
+            if (pixels_per_tick > optimal_tick_width)  {
                 if (prev == null) return curr;
-                var curr_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
-                var prev_dist = Math.abs(optimal_tick_width - curr.getPixelsPerTick(ts));
+                var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
                 if (curr_dist < prev_dist) {
                     return curr;
                 } else {
@@ -9540,7 +9569,6 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	// Initialize the data
 	_initData: function(data) {
-		trace("_initData")
 		var self = this;
 		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 	},
@@ -9627,7 +9655,6 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	
 	_onDataLoaded: function(e) {
-		trace("dataloaded");
 		this.fire("dataloaded");
 		this._initLayout();
 		this._initEvents();
