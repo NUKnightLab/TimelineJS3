@@ -1,5 +1,6 @@
 /*	VCO.SlideNav
-	Navigation for Slideshows
+	encapsulate DOM display/events for the 
+	'next' and 'previous' buttons on a slide.
 ================================================== */
 // TODO null out data
 

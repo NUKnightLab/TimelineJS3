@@ -253,7 +253,7 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Markers
 	================================================== */
-	_createMarkers: function(array) {
+	_createMarkers: function(array) { 
 		for (var i = 0; i < array.length; i++) {
 			array[i].marker_number = i;
 			this._createMarker(array[i]);
@@ -289,20 +289,11 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_assignRowsToMarkers: function() {
-		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
-			marker_height = (available_height /this.timescale.number_of_rows) - (this.options.marker_padding*2);
-			
-		if (marker_height < this.options.marker_height_min) {
-			//marker_height = available_height - (this.options.marker_padding*2);
-		}
-		/*	
-		if (marker_height < (this.options.timenav_height_min/2) - ((this.options.marker_padding*2) * this.timescale.number_of_rows)) {
-			trace((this.options.timenav_height_min/2) - ((this.options.marker_padding*2) * this.timescale.number_of_rows))
-			trace(marker_height)
-			marker_height = available_height - (this.options.marker_padding*2);
-		}
-		*/
+		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight);
+		trace("_positionMarkers " + available_height)
+		
 		for (var i = 0; i < this._markers.length; i++) {
+			var marker_height = (available_height /this.timescale.getNumberOfRows()) - (this.options.marker_padding*2);
 			this._markers[i].setHeight(marker_height);
 		};
 		

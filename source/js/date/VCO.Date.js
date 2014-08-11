@@ -5,11 +5,17 @@
 VCO.Date = VCO.Class.extend({
 	
 	initialize: function (data, format) {
-		if (typeof(data) == 'number') {
+		if (typeof(data) == 'number' || Date == data.constructor) {
+			var date = null;
+			if (Date == data.constructor) {
+				date = data;
+			} else {
+				date = new Date(data);
+			}
 			this.data = {
 				format: 		"yyyy mmmm",
 				display_type: 	"",
-				date_obj: 		new Date(data)
+				date_obj: 		date
 			}
 			
 		} else {
@@ -32,8 +38,6 @@ VCO.Date = VCO.Class.extend({
 
 			// Create Date Object
 			this._createDateObj();
-			
-
 		}
 		
 		if (format) {
@@ -72,7 +76,29 @@ VCO.Date = VCO.Class.extend({
 		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
 	
-	
+	isBefore: function(other_date) { 
+		if (!(VCO.Date == other_date.constructor)) { throw("Can only compare to VCO.Date")}
+		if (this.data.date_obj) {
+			if (!(Date == other_date.data.date_obj.constructor)) {
+				throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+			}
+			return this.data.date_obj < other_date.data.date_obj
+		}
+		throw("Can't compare");
+	},
+
+	isAfter: function(other_date) {
+		if (!(VCO.Date == other_date.constructor)) { throw("Can only compare to VCO.Date")}
+		if (this.data.date_obj) {
+			if (!(Date == other_date.data.date_obj.constructor)) {
+				throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+			}
+			return this.data.date_obj > other_date.data.date_obj
+		}
+		throw("Can't compare");
+
+	},
+
 	/*	Create JavaScript date object
 	================================================== */
 	_createDateObj: function() {

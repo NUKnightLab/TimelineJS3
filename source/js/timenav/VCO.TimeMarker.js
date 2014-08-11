@@ -127,8 +127,8 @@ VCO.TimeMarker = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	getTime: function() {
-		return this.data.date.data.date_obj.getTime();
+	getTime: function() { // TODO does this need to know about the end date?
+		return this.data.start_date.data.date_obj.getTime();
 	},
 	
 	setHeight: function(h) {
