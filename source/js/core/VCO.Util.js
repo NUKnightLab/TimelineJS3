@@ -322,7 +322,7 @@ VCO.Util = {
 		var stack = [];
 		var max_depth = 0;
 		for (var i = 0; i < ary.length; i++) {
-			console.log(ary[i]);
+
 			stack.push(ary[i]);
 			if (stack.length > 1) {
 				var top = stack[stack.length - 1]
@@ -335,9 +335,9 @@ VCO.Util = {
 				if (bottom_idx >= 0) {
 					stack = stack.slice(bottom_idx + 1);
 				}
-				console.log("after " + i + " stack is " + stack.length, JSON.stringify(stack))
+
 			}
-			console.log("stack length",stack.length,"max depth", max_depth)
+
 			if (stack.length > max_depth) {
 				max_depth = stack.length;
 			}
