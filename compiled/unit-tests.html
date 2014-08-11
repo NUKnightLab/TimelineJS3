@@ -33,6 +33,58 @@
         return true;
       }
 
+      test("VCO.Util", function() {
+        var test = [
+          [0,1],
+          [2,3],
+          [5,7]
+        ];
+        equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
+
+        var test = [
+          [0,5],
+          [2,8],
+          [9,10]
+        ];
+        equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
+
+        var test = [
+          [0,3],
+          [5,8],
+          [9,10]
+        ];
+        equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
+
+        var test = [
+          [0,3],
+          [2,8],
+          [4,9],
+          [15,20]
+        ];
+        equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
+
+        var test = [
+          [0,5],
+          [2,8],
+          [4,9],
+          [15,20]
+        ];
+        equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
+
+        var test = [
+          [0,5],
+          [2,8],
+          [10,25],
+          [15,20],
+          [18,27],
+          [24,28],
+
+        ];
+        equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
+
+
+      });
+
       test("VCO.Date", function() {
         var refdate = new VCO.Date({year: 2000, month: 6, day: 21});
         var jsdate = new Date();

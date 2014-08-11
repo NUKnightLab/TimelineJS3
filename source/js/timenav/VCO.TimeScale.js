@@ -62,8 +62,14 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.minor.name;
     },
 
-    _computeNumberOfRows: function() {
+    _computeNumberOfRows: function(default_marker_width) { // default_marker_width should be in pixels
+        default_marker_width = default_marker_width || 80;
         var pixel_widths = [];
+        for (var i = 0; i < this.slides.length; i++) {
+            // TODO this won't work on cosmological scale
+            var l = this.slides[i].start_date.data.date_obj.getTime();
+            pixel_widths.push({left: l, right: l + (default_marker_width)})
+        };
         // to do -- take into account start and either end date or default width
         this._number_of_rows = 2;
     },
