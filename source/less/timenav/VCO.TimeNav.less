@@ -6,6 +6,9 @@
 	width:100%;
 	background-color:@ui-background-color;
 	position:relative;
+	overflow:hidden;
+	border-top: 2px solid darken(@ui-background-color, 10);
+	
 	.vco-timenav-button {
 		width:50px;
 		height:50px;
@@ -17,16 +20,45 @@
 		position: absolute;
 		top: 0;
 		left: 50%;
-		width: 3px;
+		width: 1px;
 		height: 100%;
-		background-color: @color-theme;
+		background-color: @color-theme;//darken(@ui-background-color, 10);
 		z-index: 1;
-		box-shadow: 1px 1px 7px rgba(0,0,0,0.3);
+		//box-shadow: 1px 1px 7px rgba(0,0,0,0.3);
+		&:before, &:after {
+			font-family: 'vco-icons';
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			line-height: 1;
+			
+			/* Better Font Rendering =========== */
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			
+			color:darken(@ui-background-color, 10);
+			font-size:32px;
+			line-height:32px;
+			//text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+			position: absolute;
+			left:-14px;
+		}
+		&:before {
+			//content: "\e647";
+			top: -10px;
+		}
+		&:after {
+			//content: "\e648";
+			bottom:24px;
+		}
 	}
 	.vco-timenav-slider {
 		position:absolute;
 		height:100%;
 		width:100%;
+		
 		.vco-timenav-container-mask {
 			position:absolute;
 			.vco-timenav-container {

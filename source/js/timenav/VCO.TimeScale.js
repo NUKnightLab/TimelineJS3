@@ -9,8 +9,9 @@ VCO.TimeScale = VCO.Class.extend({
     initialize: function (slides, display_width, screen_multiplier) {
         this._screen_multiplier = screen_multiplier || 3;
 		
-		this._pixels_per_milli = 0;
-        this._axis_helper = null;
+		this.pixels_per_milli = 0;
+        this.axis_helper = null;
+		this.number_of_rows = 2;
 		
         this._earliest = slides[0].date.data.date_obj.getTime();
         this._latest = slides[slides.length - 1].date.data.date_obj.getTime();
@@ -49,7 +50,7 @@ VCO.TimeScale = VCO.Class.extend({
     getMajorScale: function() {
         return this._axis_helper.major.name;
     },
-
+    
     getMinorScale: function() {
         return this._axis_helper.minor.name;
     }
