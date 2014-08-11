@@ -90,7 +90,13 @@ VCO.TimelineConfig = VCO.Class.extend({
 
     _processDates: function(array) {
         for (var i = 0; i < array.length; i++) {
-            array[i].date = new VCO.Date(array[i].date);
+            if (typeof(array[i].start_date) == 'undefined') {
+                throw("item " + i + " is missing a start_date");
+            }
+            array[i].start_date = new VCO.Date(array[i].start_date);
+            if (typeof(array[i].end_date) != 'undefined') {
+                array[i].date = new VCO.Date(array[i].date);
+            }
         }
     }
 });

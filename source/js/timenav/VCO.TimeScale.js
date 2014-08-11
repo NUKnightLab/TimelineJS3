@@ -14,8 +14,9 @@ VCO.TimeScale = VCO.Class.extend({
         this.axis_helper = null;
 		this._number_of_rows = 2;
 		
-        this._earliest = slides[0].date.data.date_obj.getTime();
-        this._latest = slides[slides.length - 1].date.data.date_obj.getTime();
+        this._earliest = slides[0].start_date.data.date_obj.getTime();
+        // TODO: should _latest be the end date if there is one?
+        this._latest = slides[slides.length - 1].start_date.data.date_obj.getTime();
         this._span_in_millis = this._latest - this._earliest;
         this._average = (this._span_in_millis)/slides.length;
 
