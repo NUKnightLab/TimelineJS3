@@ -8440,10 +8440,13 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
+		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPosition(this._markers[i].getTime());
 			this._markers[i].setPosition({left:pos, top:0});
 		};
+		
+		// POSITION ROWS
 	},
 	
 	_resetMarkersActive: function() {
@@ -9322,31 +9325,33 @@ VCO.Timeline = VCO.Class.extend({
 		this.config = null;
 	
 		this.options = {
-			script_path:            "",
-			height: 				this._el.container.offsetHeight,
-			width: 					this._el.container.offsetWidth,
-			scale_factor: 			3, 				// How many screen widths wide should the timeline be
-			layout: 				"landscape", 	// portrait or landscape
-			timenav_position: 		"bottom", 		// timeline on top or bottom
-			optimal_tick_width: 	100,			// optimal distance (in pixels) between ticks on axis
-			base_class: 			"",
-			timenav_height: 		200,
-			start_at_slide: 		0,
-			menubar_height: 		0,
-			skinny_size: 			650,
-			relative_date: 			false, 			// Use momentjs to show a relative date from the slide.text.date.created_time field
+			script_path: 				"",
+			height: 					this._el.container.offsetHeight,
+			width: 						this._el.container.offsetWidth,
+			scale_factor: 				3, 				// How many screen widths wide should the timeline be
+			layout: 					"landscape", 	// portrait or landscape
+			timenav_position: 			"bottom", 		// timeline on top or bottom
+			optimal_tick_width: 		100,			// optimal distance (in pixels) between ticks on axis
+			base_class: 				"",
+			timenav_height: 			150,
+			timenav_height_percentage: 	20,				// Overrides timenav height as a percentage of the screen
+			timenav_height_min: 		150, 			// Minimum timenav height
+			start_at_slide: 			0,
+			menubar_height: 			0,
+			skinny_size: 				650,
+			relative_date: 				false, 			// Use momentjs to show a relative date from the slide.text.date.created_time field
 			// animation
-			duration: 				1000,
-			ease: 					VCO.Ease.easeInOutQuint,
+			duration: 					1000,
+			ease: 						VCO.Ease.easeInOutQuint,
 			// interaction
-			dragging: 				true,
-			trackResize: 			true,
-			map_type: 				"stamen:toner-lite",
-			slide_padding_lr: 		100, 			// padding on slide of slide
-			slide_default_fade: 	"0%", 			// landscape fade
+			dragging: 					true,
+			trackResize: 				true,
+			map_type: 					"stamen:toner-lite",
+			slide_padding_lr: 			100, 			// padding on slide of slide
+			slide_default_fade: 		"0%", 			// landscape fade
 
-			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
-			language:               "en"		
+			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
+			language:               	"en"		
 		};
 		
 		// Current Slide
@@ -9425,11 +9430,31 @@ VCO.Timeline = VCO.Class.extend({
 			this._map.goTo(this.current_slide);
 		}
 	},
-
+	
+	/*	Display
+	================================================== */
 	updateDisplay: function() {
 		if (this.ready) {
 			this._updateDisplay();
 		}
+	},
+	
+	_calculateTimeNavHeight: function(timenav_height) {
+		var height = 0;
+		
+		if (timenav_height) {
+			height = timenav_height;
+		} else {
+			if (this.options.timenav_height_percentage) {
+				height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
+			}
+		}
+		if (height < this.options.timenav_height_min) {
+			height = this.options.timenav_height_min;
+		}
+		
+		
+		return height;
 	},
 	
 	/*	Private Methods
@@ -9457,10 +9482,8 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		
-		// Map Height
-		if (timenav_height) {
-			this.options.timenav_height = timenav_height;
-		}
+		// Set TimeNav Height
+		this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
 		
 		
 		// Detect Mobile and Update Orientation on Touch devices
@@ -9526,7 +9549,6 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.container.className = display_class;
 	},
 	
-
 	/*	Init
 	================================================== */
 	// Initialize the data
@@ -9559,13 +9581,8 @@ VCO.Timeline = VCO.Class.extend({
 		this.options.height 			= this._el.container.offsetHeight;
 		this._el.storyslider.style.top 	= "1px";
 		
-		// Create Map using preferred Map API
-		//this._map = new VCO.Map.Leaflet(this._el.map, this.config, this.options);
-		//this.map = this._map._map; // For access to Leaflet Map.
-		//this._map.on('loaded', this._onMapLoaded, this);
-		
-		// Map Background Color
-		//this._el.map.style.backgroundColor = this.options.map_background_color;
+		// Set TimeNav Height
+		this.options.timenav_height = this._calculateTimeNavHeight();
 		
 		// Create TimeNav
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);

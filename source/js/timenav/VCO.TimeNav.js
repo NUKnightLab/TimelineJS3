@@ -276,10 +276,13 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionMarkers: function() {
+		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPosition(this._markers[i].getTime());
 			this._markers[i].setPosition({left:pos, top:0});
 		};
+		
+		// POSITION ROWS
 	},
 	
 	_resetMarkersActive: function() {
