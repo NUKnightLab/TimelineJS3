@@ -42,6 +42,31 @@
         ok(jsdate.isAfter(refdate),"any new date should be after refdate");
       });
 
+      test("VCO.DateUtil", function() {
+        var a = {start_date: new VCO.Date({year: 1999})} // will break when we have start dates
+        var b = {start_date: new VCO.Date({year: 2000})}
+        var c = {start_date: new VCO.Date({year: 2001})}
+
+        var ary = [c,b,a]
+        VCO.DateUtil.sortByDate(ary);
+        equal(ary[0],a,"A should sort first")
+        equal(ary[1],b,"B should sort second")
+        equal(ary[2],c,"C should sort third")
+
+        ary = [b,a,c];
+        VCO.DateUtil.sortByDate(ary);
+        equal(ary[0],a,"A should sort first")
+        equal(ary[1],b,"B should sort second")
+        equal(ary[2],c,"C should sort third")
+
+        ary = [b,c,a]
+        VCO.DateUtil.sortByDate(ary);
+        equal(ary[0],a,"A should sort first")
+        equal(ary[1],b,"B should sort second")
+        equal(ary[2],c,"C should sort third")
+
+      })
+
       module("timenav tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
@@ -58,7 +83,7 @@
         for (var i = 0; i < slides.length - 1; i++) {
           var earlier = slides[i];
           var later = slides[i+1];
-          sorted = sorted && (earlier.date.data.date_obj <= later.date.data.date_obj);
+          sorted = sorted && (earlier.start_date.data.date_obj <= later.start_date.data.date_obj);
         };
         ok(sorted,"dates are sorted");
       });
