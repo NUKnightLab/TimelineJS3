@@ -33,7 +33,16 @@
         return true;
       }
 
-      module("timenav tests",{
+      test("VCO.Date", function() {
+        var refdate = new VCO.Date({year: 2000, month: 6, day: 21});
+        var jsdate = new Date();
+        throws(function() { refdate.isBefore(jsdate) }, "Don't allow comparison with JS Dates");
+        jsdate = new VCO.Date(new Date());
+        ok(refdate.isBefore(jsdate),"any new date should be after refdate");
+        ok(jsdate.isAfter(refdate),"any new date should be after refdate");
+      });
+
+      module("timenav tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
           this.timeline_config = new VCO.TimelineConfig('examples/marktwain.json',function(){

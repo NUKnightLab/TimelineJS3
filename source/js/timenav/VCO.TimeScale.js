@@ -53,6 +53,10 @@ VCO.TimeScale = VCO.Class.extend({
     
     getMinorScale: function() {
         return this._axis_helper.minor.name;
+    },
+
+    eventsOverlap: function(e1, e2) { /* events should be JS objects with e.start and e.end properties which should be VCO.Date objects */
+        
     }
     
 });
