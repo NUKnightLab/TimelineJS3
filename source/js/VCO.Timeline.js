@@ -149,6 +149,7 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_height: 			150,
 			timenav_height_percentage: 	20,				// Overrides timenav height as a percentage of the screen
 			timenav_height_min: 		150, 			// Minimum timenav height
+			marker_padding: 			5,				// Top Bottom Marker Padding
 			start_at_slide: 			0,
 			menubar_height: 			0,
 			skinny_size: 				650,

@@ -11,7 +11,7 @@ VCO.TimeScale = VCO.Class.extend({
 		
 		this.pixels_per_milli = 0;
         this.axis_helper = null;
-		this.number_of_rows = 1;
+		this.number_of_rows = 2;
 		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();

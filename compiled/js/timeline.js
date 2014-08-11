@@ -8185,6 +8185,7 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_container: {},
 			marker_item_container: {},
 			timeaxis: {},
+			timeaxis_background: {}
 		};
 		
 		this.collapsed = false;
@@ -8312,7 +8313,8 @@ VCO.TimeNav = VCO.Class.extend({
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
 			optimal_tick_width: 	50,
-			scale_factor: 			2 				// How many screen widths wide should the timeline be
+			scale_factor: 			2, 				// How many screen widths wide should the timeline be
+			marker_padding: 		5
 		};
 		
 		// Animation
@@ -8446,7 +8448,17 @@ VCO.TimeNav = VCO.Class.extend({
 			this._markers[i].setPosition({left:pos, top:0});
 		};
 		
-		// POSITION ROWS
+	},
+	
+	_assignRowsToMarkers: function() {
+		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight);
+		trace("_positionMarkers " + available_height)
+		
+		for (var i = 0; i < this._markers.length; i++) {
+			var marker_height = (available_height /this.timescale.number_of_rows) - (this.options.marker_padding*2);
+			this._markers[i].setHeight(marker_height);
+		};
+		
 	},
 	
 	_resetMarkersActive: function() {
@@ -8519,7 +8531,10 @@ VCO.TimeNav = VCO.Class.extend({
 		if (height) {
 			this.options.height = height;
 		}
-		trace(this.options.height);
+		
+		// Size Markers
+		this._assignRowsToMarkers();
+		
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},
@@ -8528,12 +8543,14 @@ VCO.TimeNav = VCO.Class.extend({
 		this._getTimeScale();
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
 		this._positionMarkers();
+		this._assignRowsToMarkers();
 	},
 	
 	_updateDrawTimeline: function() {
 		this._getTimeScale();
 		this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers();
+		this._assignRowsToMarkers();
 	},
 	
 	/*	Init
@@ -8550,9 +8567,11 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
+		
 		// Update Size
 		this.options.width = this._el.container.offsetWidth;
 		this.options.height = this._el.container.offsetHeight;
+		
 		// Buttons
 		//this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
@@ -8564,8 +8583,6 @@ VCO.TimeNav = VCO.Class.extend({
 		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
 		
 		
-		if (VCO.Browser.mobile) {
-		}
 		
 		
 	},
@@ -8720,6 +8737,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		return this.data.date.data.date_obj.getTime();
 	},
 	
+	setHeight: function(h) {
+		this._el.container.style.height = h + "px";
+	},
+	
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
@@ -8800,7 +8821,7 @@ VCO.TimeScale = VCO.Class.extend({
 		
 		this.pixels_per_milli = 0;
         this.axis_helper = null;
-		this.number_of_rows = 1;
+		this.number_of_rows = 2;
 		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
@@ -9337,6 +9358,7 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_height: 			150,
 			timenav_height_percentage: 	20,				// Overrides timenav height as a percentage of the screen
 			timenav_height_min: 		150, 			// Minimum timenav height
+			marker_padding: 			5,				// Top Bottom Marker Padding
 			start_at_slide: 			0,
 			menubar_height: 			0,
 			skinny_size: 				650,
