@@ -33,7 +33,9 @@ VCO.AxisHelper = VCO.Class.extend({
 
     _getTicks: function(timescale, option) {
         var ticks = []
-        for (var i = timescale.earliest; i < timescale.latest; i += option.factor) {
+        console.log(option);
+        console.log(timescale);
+        for (var i = timescale._earliest; i < timescale._latest; i += option.factor) {
             ticks.push(new VCO.Date(i));
         }
         return {
