@@ -8519,7 +8519,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (height) {
 			this.options.height = height;
 		}
-		
+		trace(this.options.height);
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},
@@ -8800,6 +8800,7 @@ VCO.TimeScale = VCO.Class.extend({
 		
 		this.pixels_per_milli = 0;
         this.axis_helper = null;
+		this.number_of_rows = 1;
 		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
@@ -9542,7 +9543,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		// Update Component Displays
-		this._timenav.updateDisplay(this.options.width, this.options.height, animate);
+		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
 		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 		
 		// Apply class

@@ -355,7 +355,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (height) {
 			this.options.height = height;
 		}
-		
+		trace(this.options.height);
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},

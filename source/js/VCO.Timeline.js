@@ -355,7 +355,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		// Update Component Displays
-		this._timenav.updateDisplay(this.options.width, this.options.height, animate);
+		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
 		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 		
 		// Apply class
