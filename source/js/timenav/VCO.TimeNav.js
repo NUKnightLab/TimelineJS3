@@ -248,7 +248,7 @@ VCO.TimeNav = VCO.Class.extend({
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth * this.options.scale_factor);
+		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
 	},
 	
 	/*	Markers

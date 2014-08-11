@@ -11,7 +11,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(elem, data, options) {
-		
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -71,7 +70,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	        year: VCO.Language.dateformats.year,
 	        decade: VCO.Language.dateformats.year,
 	        century: VCO.Language.dateformats.year,
-	        millenium: VCO.Language.dateformats.year,
+	        millennium: VCO.Language.dateformats.year,
 	        age: VCO.Language.dateformats.year,
 	        epoch: VCO.Language.dateformats.year,
 	        era: VCO.Language.dateformats.year,
@@ -122,9 +121,8 @@ VCO.TimeAxis = VCO.Class.extend({
 	},
 	
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
-		this.axis_helper = VCO.AxisHelper.getBestHelper(timescale, optimal_tick_width);
-		var major_ticks = this.axis_helper.getMajorTicks(timescale),
-			minor_ticks = this.axis_helper.getMinorTicks(timescale);
+		var major_ticks = timescale.getMajorTicks(),
+			minor_ticks = timescale.getMinorTicks();
 		
 		
 		// Create Minor Ticks

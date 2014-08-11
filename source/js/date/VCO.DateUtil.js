@@ -40,7 +40,7 @@ VCO.DateUtil = {
 		year: VCO.Language.dateformats.year,
 		decade: VCO.Language.dateformats.year,
 		century: VCO.Language.dateformats.year,
-		millenium: VCO.Language.dateformats.year,
+		millennium: VCO.Language.dateformats.year,
 		age: VCO.Language.dateformats.year,
 		epoch: VCO.Language.dateformats.year,
 		era: VCO.Language.dateformats.year,

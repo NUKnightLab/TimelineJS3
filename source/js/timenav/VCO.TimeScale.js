@@ -6,42 +6,53 @@
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, pixel_width) {
-        if (pixel_width == null) { pixel_width = 0; };
+    initialize: function (slides, display_width, screen_multiplier) {
+        this._screen_multiplier = screen_multiplier || 3;
 		
 		this.pixels_per_milli = 0;
         this.axis_helper = null;
 		this.number_of_rows = 3;
 		
-        this.earliest = slides[0].date.data.date_obj.getTime();
-        this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
-        this.span_in_millis = this.latest - this.earliest;
-        this.average = (this.span_in_millis)/slides.length;
+        this._earliest = slides[0].date.data.date_obj.getTime();
+        this._latest = slides[slides.length - 1].date.data.date_obj.getTime();
+        this._span_in_millis = this._latest - this._earliest;
+        this._average = (this._span_in_millis)/slides.length;
 
-        this.setPixelWidth(pixel_width);
+        display_width = display_width || 500; //arbitrary default
+        this.setDisplayWidth(display_width);
     },
     
-    setPixelWidth: function(width) {
-        this.pixel_width = width;
-        this.pixels_per_milli = this.pixel_width / this.span_in_millis; 
-        this.axis_helper = VCO.AxisHelper.getBestHelper(this);
+    setDisplayWidth: function(display_width) {
+        this._display_width = display_width; // arbitrary. better default?
+        var pixel_width = this._screen_multiplier * this._display_width;
+        this._pixels_per_milli = pixel_width / this._span_in_millis;
+        this._axis_helper = VCO.AxisHelper.getBestHelper(this);
+        var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
+        this._scale_width = pad_pixels + pixel_width;
     },
 
     getPosition: function(time_in_millis) {
-        return ( time_in_millis - this.earliest ) * this.pixels_per_milli
+        return ( time_in_millis - this._earliest ) * this._pixels_per_milli
     },
 
-    getPixelsPerTick: function(timescale) {
-        return this.axis_helper.getPixelsPerTick(this);
+    getPixelsPerTick: function() {
+        return this._axis_helper.getPixelsPerTick(this._pixels_per_milli);
     },
 
-    getMajorTicks: function(timescale) {
-        return this.axis_helper.getMajorTicks(this);
+    getMajorTicks: function() {
+        return this._axis_helper.getMajorTicks(this);
     },
 
-    getMinorTicks: function(timescale) {
-        return this.axis_helper.getMinorTicks(this);
+    getMinorTicks: function() {
+        return this._axis_helper.getMinorTicks(this);
     },
 
+    getMajorScale: function() {
+        return this._axis_helper.major.name;
+    },
+    
+    getMinorScale: function() {
+        return this._axis_helper.minor.name;
+    }
     
 });
