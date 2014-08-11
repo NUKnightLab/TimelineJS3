@@ -10,8 +10,8 @@ VCO.DateUtil = {
 
 	sortByDate: function(array) { // only for use with slide data objects
 		array.sort(function(a,b){
-			if (a.date.data.date_obj < b.date.data.date_obj) return -1;
-			if (a.date.data.date_obj > b.date.data.date_obj) return 1;
+			if (a.date.isBefore(b.date)) return -1;
+			if (a.date.isAfter(b.date)) return 1;
 			return 0;
 		});
 	},
