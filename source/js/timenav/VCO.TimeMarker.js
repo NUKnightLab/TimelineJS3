@@ -132,7 +132,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	},
 	
 	setHeight: function(h) {
-		this._el.container.style.height = h + "px";
+		this._el.content_container.style.height = h + "px";
 	},
 	
 	/*	Events

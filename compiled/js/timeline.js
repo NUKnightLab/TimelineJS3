@@ -8314,7 +8314,9 @@ VCO.TimeNav = VCO.Class.extend({
 			ease: 					VCO.Ease.easeInOutQuint,
 			optimal_tick_width: 	50,
 			scale_factor: 			2, 				// How many screen widths wide should the timeline be
-			marker_padding: 		5
+			marker_padding: 		5,
+			timenav_height_min: 	150, 			// Minimum timenav height
+			marker_height_min: 		30, 			// Minimum Marker Height
 		};
 		
 		// Animation
@@ -8451,11 +8453,20 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_assignRowsToMarkers: function() {
-		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight);
-		trace("_positionMarkers " + available_height)
-		
+		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
+			marker_height = (available_height /this.timescale.number_of_rows) - (this.options.marker_padding*2);
+			
+		if (marker_height < this.options.marker_height_min) {
+			//marker_height = available_height - (this.options.marker_padding*2);
+		}
+		/*	
+		if (marker_height < (this.options.timenav_height_min/2) - ((this.options.marker_padding*2) * this.timescale.number_of_rows)) {
+			trace((this.options.timenav_height_min/2) - ((this.options.marker_padding*2) * this.timescale.number_of_rows))
+			trace(marker_height)
+			marker_height = available_height - (this.options.marker_padding*2);
+		}
+		*/
 		for (var i = 0; i < this._markers.length; i++) {
-			var marker_height = (available_height /this.timescale.number_of_rows) - (this.options.marker_padding*2);
 			this._markers[i].setHeight(marker_height);
 		};
 		
@@ -8738,7 +8749,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	},
 	
 	setHeight: function(h) {
-		this._el.container.style.height = h + "px";
+		this._el.content_container.style.height = h + "px";
 	},
 	
 	/*	Events
@@ -8821,7 +8832,7 @@ VCO.TimeScale = VCO.Class.extend({
 		
 		this.pixels_per_milli = 0;
         this.axis_helper = null;
-		this.number_of_rows = 2;
+		this.number_of_rows = 3;
 		
         this.earliest = slides[0].date.data.date_obj.getTime();
         this.latest = slides[slides.length - 1].date.data.date_obj.getTime();
@@ -9358,6 +9369,7 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_height: 			150,
 			timenav_height_percentage: 	20,				// Overrides timenav height as a percentage of the screen
 			timenav_height_min: 		150, 			// Minimum timenav height
+			marker_height_min: 			30, 			// Minimum Marker Height
 			marker_padding: 			5,				// Top Bottom Marker Padding
 			start_at_slide: 			0,
 			menubar_height: 			0,

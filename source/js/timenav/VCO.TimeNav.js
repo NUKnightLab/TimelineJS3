@@ -150,7 +150,9 @@ VCO.TimeNav = VCO.Class.extend({
 			ease: 					VCO.Ease.easeInOutQuint,
 			optimal_tick_width: 	50,
 			scale_factor: 			2, 				// How many screen widths wide should the timeline be
-			marker_padding: 		5
+			marker_padding: 		5,
+			timenav_height_min: 	150, 			// Minimum timenav height
+			marker_height_min: 		30, 			// Minimum Marker Height
 		};
 		
 		// Animation
@@ -287,11 +289,20 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_assignRowsToMarkers: function() {
-		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight);
-		trace("_positionMarkers " + available_height)
-		
+		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
+			marker_height = (available_height /this.timescale.number_of_rows) - (this.options.marker_padding*2);
+			
+		if (marker_height < this.options.marker_height_min) {
+			//marker_height = available_height - (this.options.marker_padding*2);
+		}
+		/*	
+		if (marker_height < (this.options.timenav_height_min/2) - ((this.options.marker_padding*2) * this.timescale.number_of_rows)) {
+			trace((this.options.timenav_height_min/2) - ((this.options.marker_padding*2) * this.timescale.number_of_rows))
+			trace(marker_height)
+			marker_height = available_height - (this.options.marker_padding*2);
+		}
+		*/
 		for (var i = 0; i < this._markers.length; i++) {
-			var marker_height = (available_height /this.timescale.number_of_rows) - (this.options.marker_padding*2);
 			this._markers[i].setHeight(marker_height);
 		};
 		
