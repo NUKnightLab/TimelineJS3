@@ -113,6 +113,10 @@ VCO.Util = {
 	    };
 	}()),
 	
+    getRandomNumber: function(range) {
+   		return Math.floor(Math.random() * range);
+   	},
+		
 	unique_ID: function(size, prefix) {
 		
 		var getRandomNumber = function(range) {

@@ -159,6 +159,10 @@ VCO.Util = {
 	    };
 	}()),
 	
+    getRandomNumber: function(range) {
+   		return Math.floor(Math.random() * range);
+   	},
+		
 	unique_ID: function(size, prefix) {
 		
 		var getRandomNumber = function(range) {
@@ -8539,7 +8543,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPosition(this._markers[i].getTime());
-			this._markers[i].setPosition({left:pos, top:0});
+			this._markers[i].setPosition({left:pos});
 			this._markers[i].setWidth(100);
 			if (this._markers[i].getEndTime()) {
 				var end_pos = this.timescale.getPosition(this._markers[i].getEndTime());
@@ -8561,6 +8565,10 @@ VCO.TimeNav = VCO.Class.extend({
 			this._markers[i].setHeight(marker_height);
 			
 			//Position by Row
+			var random_row = VCO.Util.getRandomNumber(this.timescale.getNumberOfRows());
+			var marker_y = random_row * (marker_height+ this.options.marker_padding);
+			var remainder_height = available_height - marker_y;
+			this._markers[i].setRowPosition(marker_y, remainder_height);
 			// Do something here
 		};
 		
@@ -8727,7 +8735,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
-			//background: {},
+			timespan: {},
 			line_left: {},
 			line_right: {},
 			content: {},
@@ -8862,8 +8870,8 @@ VCO.TimeMarker = VCO.Class.extend({
 	},
 	
 	setHeight: function(h) {
-		this._el.content_container.style.height = h + "px";
-		//this._el.background.style.height = h + "px";
+		this._el.content_container.style.height = h  + "px";
+		this._el.timespan_content.style.height = h  + "px";
 		// Handle Line height for better display of text
 		if (h <= 24 ) {
 			this._text.className = "vco-headline vco-headline-small";
@@ -8873,7 +8881,15 @@ VCO.TimeMarker = VCO.Class.extend({
 	},
 	
 	setWidth: function(w) {
-		this._el.container.style.width = w + "px";
+		if (this.data.end_date) {
+			this._el.container.style.width = w + "px";
+		}
+		
+	},
+	
+	setRowPosition: function(n, remainder) {
+		this.setPosition({top:n});
+		this._el.timespan.style.height = remainder + "px";
 		
 	},
 	
@@ -8898,13 +8914,14 @@ VCO.TimeMarker = VCO.Class.extend({
 			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
 		}
 		
-		
+		this._el.timespan				= VCO.Dom.create("div", "vco-timemarker-timespan", this._el.container);
+		this._el.timespan_content		= VCO.Dom.create("div", "vco-timemarker-timespan-content", this._el.timespan);
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
 		
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
-		//this._el.background				= VCO.Dom.create("div", "vco-timemarker-background", this._el.content_container);
-		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.content_container);
-		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.content_container);
+		
+		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.timespan);
+		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.timespan);
 		
 		// Thumbnail
 		if (this.data.media.thumb && this.data.media.thumb != "") {
