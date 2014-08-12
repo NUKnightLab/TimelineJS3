@@ -67,6 +67,10 @@ VCO.Date = VCO.Class.extend({
 	},
 	
 	getMillisecond: function() {
+		return this.getTime();
+	},
+	
+	getTime: function() {
 		return this.data.date_obj.getTime();
 	},
 	

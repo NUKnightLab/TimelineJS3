@@ -14,9 +14,9 @@ VCO.TimeScale = VCO.Class.extend({
         this.axis_helper = null;
 		this._number_of_rows = 2;
 		
-        this._earliest = slides[0].start_date.data.date_obj.getTime();
+        this._earliest = slides[0].start_date.getTime();
         // TODO: should _latest be the end date if there is one?
-        this._latest = slides[slides.length - 1].start_date.data.date_obj.getTime();
+        this._latest = slides[slides.length - 1].start_date.getTime();
         this._span_in_millis = this._latest - this._earliest;
         this._average = (this._span_in_millis)/slides.length;
 
@@ -67,7 +67,7 @@ VCO.TimeScale = VCO.Class.extend({
         var pixel_widths = [];
         for (var i = 0; i < this.slides.length; i++) {
             // TODO this won't work on cosmological scale
-            var l = this.getPosition(this.slides[i].start_date.data.date_obj.getTime());
+            var l = this.getPosition(this.slides[i].start_date.getTime());
             pixel_widths.push([l,l+default_marker_width]);
         };
         window.pixel_widths = pixel_widths;
