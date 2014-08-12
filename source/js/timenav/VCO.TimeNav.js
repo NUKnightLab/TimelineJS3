@@ -306,7 +306,7 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			//Position by Row
 			var random_row = VCO.Util.getRandomNumber(this.timescale.getNumberOfRows());
-			var marker_y = random_row * (marker_height+ this.options.marker_padding);
+			var marker_y = Math.floor(random_row * (marker_height+ this.options.marker_padding));
 			var remainder_height = available_height - marker_y;
 			this._markers[i].setRowPosition(marker_y, remainder_height);
 			// Do something here
