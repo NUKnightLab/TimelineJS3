@@ -1,6 +1,11 @@
 /* VCO.TimeMarker
 ================================================== */
-.vco-timemarker, .vco-timemarker .vco-timemarker-content-container {
+.vco-timemarker,
+.vco-timemarker .vco-timemarker-content-container,
+.vco-timemarker .vco-timemarker-timespan,
+.vco-timemarker .vco-timemarker-timespan .vco-timemarker-line-left,
+.vco-timemarker .vco-timemarker-timespan .vco-timemarker-line-right {
+	/*
 	-webkit-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
 	   -moz-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
 	     -o-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
@@ -10,6 +15,7 @@
 	   -moz-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
 	     -o-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
 	        transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
+	*/
 }
 .vco-timemarker {
 	//width:100px;
@@ -18,21 +24,40 @@
 	position:absolute;
 	top:0;
 	left:0;
-	
-
+	cursor:pointer;
+	.vco-timemarker-timespan {
+		position:absolute;
+		width:100%;
+		height:100%;
+		//background-color: darken(@ui-background-color, 2);
+		background-color: fadeout(darken(@ui-background-color, 5), 75%);
+		border-top-right-radius:7px;
+		border-bottom-right-radius:7px;
+		.vco-timemarker-timespan-content {
+			display:none;
+			position:absolute;
+			width:100%;
+			background-color: @ui-background-color;
+			background-color: darken(@ui-background-color, 5);
+			//border: 1px solid darken(@ui-background-color, 5);
+			border-top-right-radius:7px;
+			border-bottom-right-radius:7px;
+			height:100px;
+		}
+	}
 	.vco-timemarker-content-container {
-		
-		background-color: @ui-background-color;
-		border: 1px solid darken(@ui-background-color, 5);
+		position:absolute;
+		background-color: darken(@ui-background-color, 5);
+		//border: 1px solid darken(@ui-background-color, 5);
 		border-left:0;
 		border-top-right-radius:7px;
 		border-bottom-right-radius:7px;
 		height:100%;
 		
-		width:100%;
-		cursor:pointer;
+		width:100px;
+		
 		overflow:hidden;
-		.box-shadow(1px 1px 2px rgba(255,255,255,.70));
+		//.box-shadow(1px 1px 2px rgba(255,255,255,.70));
 		
 		.vco-timemarker-content {
 			position:relative;
@@ -80,11 +105,30 @@
 			
 		}
 		
-		&:hover {
+
+		
+	}
+	&:hover {
+		//z-index:1;
+		.vco-timemarker-timespan {
+			background-color: fadeout(@color-background, 50%);
+			
+			.vco-timemarker-timespan-content {
+				background-color:@color-background;
+				//border-radius:0;
+			}
+			.vco-timemarker-line-left, .vco-timemarker-line-right {
+				border-color:@color-background;
+				
+			}
+		}
+		.vco-timemarker-content-container {
 			background-color:@color-background;
+			//z-index:1;
 			//border-color:darken(@ui-background-color, 25);
-			.box-shadow(1px 1px 2px rgba(0,0,0,.10));
+			//.box-shadow(1px 1px 2px rgba(0,0,0,.10));
 			.vco-timemarker-content {
+				
 				.vco-timemarker-text {
 					h2.vco-headline {
 						color:darken(@ui-background-color, 60);;
@@ -92,16 +136,31 @@
 				}
 			}
 		}
-		
+		&.vco-timemarker-active {
+			.vco-timemarker-line-left, .vco-timemarker-line-right {
+				border-color:@color-theme;
+			
+				&:after {
+					//z-index:6;
+					background-color:@color-theme;
+				}
+			}
+		}
 	}
 
 	&.vco-timemarker-active {
-		
-		.vco-timemarker-content-container {
-			
+		.vco-timemarker-timespan {
+			background-color: fadeout(@color-theme, 75%);
+			//z-index:1;
+			.vco-timemarker-timespan-content {
+				background-color: @color-theme;
+				border-radius:0;
+				
+				
+			}
 		}
-		&:before {
-			border-left:0;
+		.vco-timemarker-content-container {
+			z-index:1;
 		}
 		.vco-timemarker-background {
 		
@@ -117,9 +176,7 @@
 		.vco-timemarker-content-container {
 			background-color:@color-theme;
 			color:@color-background;
-			&:hover {
-				background-color:darken(@color-theme, 10);
-			}
+
 			.vco-timemarker-content {
 				.vco-timemarker-text {
 					h2.vco-headline {
@@ -130,14 +187,6 @@
 			}
 		
 		}
-	}
-	
-	.vco-timemarker-background {
-		top:0;
-		width:100%;
-		position:absolute;
-		background-color:darken(@ui-background-color,5);
-		z-index:0;
 	}
 	
 	.vco-timemarker-line-left {
@@ -153,7 +202,8 @@
 	}
 	
 	.vco-timemarker-line-left, .vco-timemarker-line-right {
-		border-left: 1px solid darken(@ui-background-color,5);
+		border-left: 2px solid darken(@ui-background-color,5);
+		//z-index:6;
 		top:0;
 		content:" ";
 		position:absolute;
@@ -180,8 +230,14 @@
 	}
 	
 	&.vco-timemarker-with-end {
+		.vco-timemarker-timespan {
+			.vco-timemarker-timespan-content {
+				display:block;
+			}
+		}
 		.vco-timemarker-content-container {
 			border-radius:0;
+			//background-color:transparent;
 			//width:100%;
 		}
 		
@@ -194,36 +250,7 @@
 		
 		}
 	}
-	&:before {
-		/*
-		border-left: 1px solid rgba(255,255,255,.70);
-		height:100%;
-		width:2px;
-		position:absolute;
-		left:1px;
-		top:0;
-		content:" ";
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-khtml-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-		*/
-	}
-	&:after {
-		/*
-		content:" ";
-		position:absolute;
-		left:-3px;
-		bottom:34px;
-		height:6px;
-		width:6px;
-		background-color:darken(@ui-background-color, 50);
-		z-index:6;
-		border-radius:50%;
-		*/
-	}
+
 }
 
 /* Skinny
