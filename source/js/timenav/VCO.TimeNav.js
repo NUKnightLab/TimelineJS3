@@ -223,16 +223,6 @@ VCO.TimeNav = VCO.Class.extend({
 		*/
 	},
 	
-	// Create Dates
-	createDates: function(array) {
-		this._createDates(array);
-	},
-	
-	// Create a date
-	createDate: function(d) {
-		this._createDate(d);
-	},
-	
 	positionMarkers: function() {
 		this._positionMarkers();
 	},
