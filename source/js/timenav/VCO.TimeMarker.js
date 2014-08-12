@@ -168,6 +168,13 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 	},
 	
+	setRowPosition: function(n, remainder) {
+		this.setPosition({top:n});
+		this._el.timespan.style.height = remainder + "px";
+		trace(remainder);
+		
+	},
+	
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
