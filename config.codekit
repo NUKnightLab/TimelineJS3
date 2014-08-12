@@ -362,6 +362,17 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/source\/jade\/mark_twain.jade": {
+		"compileDebug": 1,
+		"fileType": 512,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/jade\/mark_twain.jade",
+		"outputAbbreviatedPath": "\/compiled\/examples\/mark_twain.html",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0
+		},
 	"\/source\/jade\/multiple_timeline.jade": {
 		"compileDebug": 1,
 		"fileType": 512,

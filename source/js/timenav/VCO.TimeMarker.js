@@ -133,6 +133,13 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h + "px";
+		
+		// Handle Line height for better display of text
+		if (h <= 24 ) {
+			this._text.className = "vco-headline vco-headline-small";
+		} else {
+			this._text.className = "vco-headline";
+		}
 	},
 	
 	/*	Events
@@ -153,7 +160,6 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
-		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
 		
 		// Thumbnail
 		if (this.data.media.thumb && this.data.media.thumb != "") {
@@ -162,13 +168,14 @@ VCO.TimeMarker = VCO.Class.extend({
 		}
 		
 		// Text
+		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
 		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML			= this.data.text.headline;
+			this._text.innerHTML		= this.data.text.headline;
 		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML			= this.data.text.text;
+			this._text.innerHTML		= this.data.text.text;
 		} else if (this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML			= this.data.media.caption;
+			this._text.innerHTML		= this.data.media.caption;
 		}
 
 		
