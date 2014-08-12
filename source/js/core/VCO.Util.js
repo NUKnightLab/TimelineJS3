@@ -314,6 +314,35 @@ VCO.Util = {
 
 		str = str.replace(/^([0-9])/,'_$1');
 		return str;
+	},
+	maxDepth: function(ary) {
+		// given a sorted array of 2-tuples of numbers, count how many "deep" the items are.
+		// that is, what is the maximum number of tuples that occupy any one moment
+		// each tuple should also be sorted
+		var stack = [];
+		var max_depth = 0;
+		for (var i = 0; i < ary.length; i++) {
+
+			stack.push(ary[i]);
+			if (stack.length > 1) {
+				var top = stack[stack.length - 1]
+				var bottom_idx = -1;
+				for (var j = 0; j < stack.length - 1; j++) {
+					if (stack[j][1] < top[0]) {
+						bottom_idx = j;
+					}
+				};
+				if (bottom_idx >= 0) {
+					stack = stack.slice(bottom_idx + 1);
+				}
+
+			}
+
+			if (stack.length > max_depth) {
+				max_depth = stack.length;
+			}
+		};
+		return max_depth;
 	}
 };
 
