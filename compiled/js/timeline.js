@@ -2792,11 +2792,12 @@ VCO.Language = {
 		month: "mmmm yyyy",
 		full_short: "mmm d",
 		full: "mmmm d',' yyyy",
+		time: "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
 		time_short: "h:MM:ss TT",
 		time_no_seconds_short: "h:MM TT",
-		time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+		time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 		full_long: "mmm d',' yyyy 'at' h:MM TT",
-		full_long_small_date: "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+		full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
 	},
 	buttons: {
 	    map_overview: 		"Map Overview",
@@ -4211,7 +4212,7 @@ Date.prototype.format = function (mask, utc) {
 ================================================== */
 VCO.Date = VCO.Class.extend({
 	
-	initialize: function (data, format) {
+	initialize: function (data, format, format_short) {
 		if (typeof(data) == 'number' || Date == data.constructor) {
 			var date = null;
 			if (Date == data.constructor) {
@@ -4235,7 +4236,9 @@ VCO.Date = VCO.Class.extend({
 				second: 		"",
 				millisecond: 	"",
 				format: 		"yyyy mmmm",
-				display_type: 	"",
+				format_short: 	"yyyy mmmm",
+				display_text: 	"",
+				display_text_short: "",
 				date_obj: 		{}
 			};
 			
@@ -4251,6 +4254,12 @@ VCO.Date = VCO.Class.extend({
 			this.data.format = format;
 		} else {
 			this.data.format = VCO.DateUtil.findBestFormat(this.data);
+		}
+		
+		if (format_short) {
+			this.data.format_short = format_short;
+		} else {
+			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
 		}
 		
 		this._createDisplayType();
@@ -4269,8 +4278,13 @@ VCO.Date = VCO.Class.extend({
 		this._createDisplayType();
 	},
 	
-	getDisplayDate: function() {
-		return this.data.display_type;
+	getDisplayDate: function(use_short) {
+		if (use_short) {
+			return this.data.display_text_short;
+		} else {
+			return this.data.display_text;
+		}
+		
 	},
 	
 	getMillisecond: function() {
@@ -4284,7 +4298,8 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
+		this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
+		this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
 	
 	isBefore: function(other_date) { 
@@ -4371,19 +4386,41 @@ VCO.DateUtil = {
 	
 	/*	Find Best Format
 	================================================== */
-	findBestFormat: function(data) {
+	findBestFormat: function(data, use_short) {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
 			if (data[eval_array[i]]) {
-				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+				if (use_short) {
+					return VCO.DateUtil.best_dateformat_lookup_short[eval_array[i]];
+				} else {
+					return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+				}
+				
 			}
 		};
 		return "";
 	},
 	
 	best_dateformat_lookup: {
+		millisecond: 1,
+		second: VCO.Language.dateformats.time,
+		minute: VCO.Language.dateformats.time_no_seconds_small_date,
+		hour: VCO.Language.dateformats.time_no_seconds_small_date,
+		day: VCO.Language.dateformats.full,
+		month: VCO.Language.dateformats.month,
+		year: VCO.Language.dateformats.year,
+		decade: VCO.Language.dateformats.year,
+		century: VCO.Language.dateformats.year,
+		millennium: VCO.Language.dateformats.year,
+		age: VCO.Language.dateformats.year,
+		epoch: VCO.Language.dateformats.year,
+		era: VCO.Language.dateformats.year,
+		eon: VCO.Language.dateformats.year,
+	},
+	
+	best_dateformat_lookup_short: {
 		millisecond: 1,
 		second: VCO.Language.dateformats.time_short,
 		minute: VCO.Language.dateformats.time_no_seconds_short,
@@ -7259,7 +7296,7 @@ VCO.Slide = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		
+		var date_text = "";
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
 		if (this.data.uniqueid) {
@@ -7323,8 +7360,12 @@ VCO.Slide = VCO.Class.extend({
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
 			// Add Date if available
-			if (this.data.date) {
-				this._text.addDateText(this.data.date.getDisplayDate());
+			if (this.data.end_date) {
+				date_text = " &mdash; " + this.data.end_date.getDisplayDate();
+			}
+			if (this.data.start_date) {
+				date_text = this.data.start_date.getDisplayDate() + date_text;
+				this._text.addDateText(date_text);
 			}
 		}
 		
@@ -8501,7 +8542,10 @@ VCO.TimeNav = VCO.Class.extend({
 			this._markers[i].setPosition({left:pos, top:0});
 			this._markers[i].setWidth(100);
 			if (this._markers[i].getEndTime()) {
-				this._markers[i].setWidth(100); // TODO get position of end date and calculate width
+				var end_pos = this.timescale.getPosition(this._markers[i].getEndTime());
+				var marker_width = end_pos - pos;
+				trace(marker_width);
+				this._markers[i].setWidth(marker_width); // TODO get position of end date and calculate width
 			}
 		};
 		
@@ -8683,6 +8727,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
+			//background: {},
 			line_left: {},
 			line_right: {},
 			content: {},
@@ -8818,7 +8863,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h + "px";
-		
+		//this._el.background.style.height = h + "px";
 		// Handle Line height for better display of text
 		if (h <= 24 ) {
 			this._text.className = "vco-headline vco-headline-small";
@@ -8853,8 +8898,11 @@ VCO.TimeMarker = VCO.Class.extend({
 			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
 		}
 		
+		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
+		
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		//this._el.background				= VCO.Dom.create("div", "vco-timemarker-background", this._el.content_container);
 		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.content_container);
 		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.content_container);
 		
@@ -9126,11 +9174,11 @@ VCO.TimeAxis = VCO.Class.extend({
 			var tick 		= VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor),
 				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 			minor_ticks.ticks[i].setDateFormat(this.dateformat_lookup[minor_ticks.name]);
-			tick_text.innerHTML = minor_ticks.ticks[i].getDisplayDate();
+			tick_text.innerHTML = minor_ticks.ticks[i].getDisplayDate(true);
 			this.minor_ticks.push({
 				tick:tick,
 				tick_text:tick_text,
-				display_text:minor_ticks.ticks[i].getDisplayDate(),
+				display_text:minor_ticks.ticks[i].getDisplayDate(true),
 				date:minor_ticks.ticks[i]
 			});
 		}
@@ -9140,11 +9188,11 @@ VCO.TimeAxis = VCO.Class.extend({
 			var tick		 = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major),
 				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 			major_ticks.ticks[j].setDateFormat(this.dateformat_lookup[major_ticks.name]);
-			tick_text.innerHTML = major_ticks.ticks[j].getDisplayDate();
+			tick_text.innerHTML = major_ticks.ticks[j].getDisplayDate(true);
 			this.major_ticks.push({
 				tick:tick,
 				tick_text:tick_text,
-				display_text:major_ticks.ticks[j].getDisplayDate(),
+				display_text:major_ticks.ticks[j].getDisplayDate(true),
 				date:major_ticks.ticks[j]
 			});
 		}

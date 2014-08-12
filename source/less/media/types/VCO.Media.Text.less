@@ -26,6 +26,12 @@
 		font-weight: normal;
 		margin:0 0 2px 0;
 		color: darken(@color-background, 25);
+		small {
+			font-size:@base-font-size;
+			line-height: @base-font-size;
+			font-weight: normal;
+			color: darken(@color-background, 25);
+		}
 	}
 	.vco-text-date {
 		display:inline-block;
@@ -50,6 +56,9 @@
 		text-shadow: 1px 1px 2px #000;
 		.vco-headline-date, h3.vco-headline-date {
 			color: lighten(@color-dark, 50) !important;
+			small {
+				color: lighten(@color-dark, 50) !important;
+			}
 		}
 
 	}

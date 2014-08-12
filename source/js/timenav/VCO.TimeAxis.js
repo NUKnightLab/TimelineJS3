@@ -131,11 +131,11 @@ VCO.TimeAxis = VCO.Class.extend({
 			var tick 		= VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.minor),
 				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 			minor_ticks.ticks[i].setDateFormat(this.dateformat_lookup[minor_ticks.name]);
-			tick_text.innerHTML = minor_ticks.ticks[i].getDisplayDate();
+			tick_text.innerHTML = minor_ticks.ticks[i].getDisplayDate(true);
 			this.minor_ticks.push({
 				tick:tick,
 				tick_text:tick_text,
-				display_text:minor_ticks.ticks[i].getDisplayDate(),
+				display_text:minor_ticks.ticks[i].getDisplayDate(true),
 				date:minor_ticks.ticks[i]
 			});
 		}
@@ -145,11 +145,11 @@ VCO.TimeAxis = VCO.Class.extend({
 			var tick		 = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", this._el.major),
 				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 			major_ticks.ticks[j].setDateFormat(this.dateformat_lookup[major_ticks.name]);
-			tick_text.innerHTML = major_ticks.ticks[j].getDisplayDate();
+			tick_text.innerHTML = major_ticks.ticks[j].getDisplayDate(true);
 			this.major_ticks.push({
 				tick:tick,
 				tick_text:tick_text,
-				display_text:major_ticks.ticks[j].getDisplayDate(),
+				display_text:major_ticks.ticks[j].getDisplayDate(true),
 				date:major_ticks.ticks[j]
 			});
 		}

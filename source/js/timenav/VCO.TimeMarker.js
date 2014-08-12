@@ -16,6 +16,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
+			//background: {},
 			line_left: {},
 			line_right: {},
 			content: {},
@@ -151,7 +152,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h + "px";
-		
+		//this._el.background.style.height = h + "px";
 		// Handle Line height for better display of text
 		if (h <= 24 ) {
 			this._text.className = "vco-headline vco-headline-small";
@@ -186,8 +187,11 @@ VCO.TimeMarker = VCO.Class.extend({
 			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
 		}
 		
+		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
+		
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		//this._el.background				= VCO.Dom.create("div", "vco-timemarker-background", this._el.content_container);
 		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.content_container);
 		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.content_container);
 		

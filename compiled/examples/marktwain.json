@@ -6,9 +6,19 @@
 					"year":			"1900",
 					"month":		"01",
 					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1900",
+					"month":		"06",
+					"day": 			"07",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
 					"millisecond": 	"",
 					"format": 		""
 				},
@@ -36,10 +46,20 @@
                 "start_date": {
 					"year":			"2000",
 					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"2001",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
 					"millisecond": 	"",
 					"format": 		""
 				},
@@ -67,9 +87,19 @@
 					"year":			"1920",
 					"month":		"01",
 					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"2001",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
 					"millisecond": 	"",
 					"format": 		""
 				},
@@ -103,6 +133,16 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
+                "end_date": {
+					"year":			"1920",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
                 "location": {
                     "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
                     "lat": 39.710083,
@@ -129,6 +169,16 @@
 					"hour": 		"6",
 					"minute": 		"45",
 					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1916",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
 					"millisecond": 	"",
 					"format": 		""
 				},

@@ -17,11 +17,12 @@ VCO.Language = {
 		month: "mmmm yyyy",
 		full_short: "mmm d",
 		full: "mmmm d',' yyyy",
+		time: "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
 		time_short: "h:MM:ss TT",
 		time_no_seconds_short: "h:MM TT",
-		time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+		time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 		full_long: "mmm d',' yyyy 'at' h:MM TT",
-		full_long_small_date: "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+		full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
 	},
 	buttons: {
 	    map_overview: 		"Map Overview",

@@ -19,19 +19,41 @@ VCO.DateUtil = {
 	
 	/*	Find Best Format
 	================================================== */
-	findBestFormat: function(data) {
+	findBestFormat: function(data, use_short) {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
 			if (data[eval_array[i]]) {
-				return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+				if (use_short) {
+					return VCO.DateUtil.best_dateformat_lookup_short[eval_array[i]];
+				} else {
+					return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+				}
+				
 			}
 		};
 		return "";
 	},
 	
 	best_dateformat_lookup: {
+		millisecond: 1,
+		second: VCO.Language.dateformats.time,
+		minute: VCO.Language.dateformats.time_no_seconds_small_date,
+		hour: VCO.Language.dateformats.time_no_seconds_small_date,
+		day: VCO.Language.dateformats.full,
+		month: VCO.Language.dateformats.month,
+		year: VCO.Language.dateformats.year,
+		decade: VCO.Language.dateformats.year,
+		century: VCO.Language.dateformats.year,
+		millennium: VCO.Language.dateformats.year,
+		age: VCO.Language.dateformats.year,
+		epoch: VCO.Language.dateformats.year,
+		era: VCO.Language.dateformats.year,
+		eon: VCO.Language.dateformats.year,
+	},
+	
+	best_dateformat_lookup_short: {
 		millisecond: 1,
 		second: VCO.Language.dateformats.time_short,
 		minute: VCO.Language.dateformats.time_no_seconds_short,

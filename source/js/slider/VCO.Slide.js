@@ -185,7 +185,7 @@ VCO.Slide = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		
+		var date_text = "";
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
 		if (this.data.uniqueid) {
@@ -249,8 +249,12 @@ VCO.Slide = VCO.Class.extend({
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
 			// Add Date if available
-			if (this.data.date) {
-				this._text.addDateText(this.data.date.getDisplayDate());
+			if (this.data.end_date) {
+				date_text = " &mdash; " + this.data.end_date.getDisplayDate();
+			}
+			if (this.data.start_date) {
+				date_text = this.data.start_date.getDisplayDate() + date_text;
+				this._text.addDateText(date_text);
 			}
 		}
 		

@@ -4,7 +4,7 @@
 ================================================== */
 VCO.Date = VCO.Class.extend({
 	
-	initialize: function (data, format) {
+	initialize: function (data, format, format_short) {
 		if (typeof(data) == 'number' || Date == data.constructor) {
 			var date = null;
 			if (Date == data.constructor) {
@@ -28,7 +28,9 @@ VCO.Date = VCO.Class.extend({
 				second: 		"",
 				millisecond: 	"",
 				format: 		"yyyy mmmm",
-				display_type: 	"",
+				format_short: 	"yyyy mmmm",
+				display_text: 	"",
+				display_text_short: "",
 				date_obj: 		{}
 			};
 			
@@ -44,6 +46,12 @@ VCO.Date = VCO.Class.extend({
 			this.data.format = format;
 		} else {
 			this.data.format = VCO.DateUtil.findBestFormat(this.data);
+		}
+		
+		if (format_short) {
+			this.data.format_short = format_short;
+		} else {
+			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
 		}
 		
 		this._createDisplayType();
@@ -62,8 +70,13 @@ VCO.Date = VCO.Class.extend({
 		this._createDisplayType();
 	},
 	
-	getDisplayDate: function() {
-		return this.data.display_type;
+	getDisplayDate: function(use_short) {
+		if (use_short) {
+			return this.data.display_text_short;
+		} else {
+			return this.data.display_text;
+		}
+		
 	},
 	
 	getMillisecond: function() {
@@ -77,7 +90,8 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		this.data.display_type = VCO.DateFormat(this.data.date_obj, this.data.format);
+		this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
+		this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
 	},
 	
 	isBefore: function(other_date) { 
