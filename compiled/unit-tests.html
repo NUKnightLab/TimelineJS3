@@ -203,7 +203,7 @@
         equal(timescale.getMinorScale(),'year',"timescale should be years");
         ok(timescale.getMajorTicks().ticks.length > 0,"should be some major ticks")
         ok(timescale.getMinorTicks().ticks.length > 0,"should be some minor ticks")
-        equal(timescale.getNumberOfRows(),1,"Expecting 1 rows")
+        equal(timescale.getNumberOfRows(),3,"Expecting 3 rows")
       });
 
       module("marktwain_juked tests",{ // setup for tests that need TimelineConfig
@@ -218,16 +218,21 @@
       test("TimeScale", function() {
         var timescale = new VCO.TimeScale(this.timeline_config.slides);
         equal(timescale.getNumberOfRows(),4, "expect 4 rows");
+        equal(timescale._positions.length,this.timeline_config.slides.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+this.timeline_config.slides.length+")")
         var row_check = new Array(timescale.getNumberOfRows());
         for (var i = 0; i < row_check.length; i++) {
           row_check[i] = [];
         };
+        var all_posinfos_defined = true;
+        var all_posinfos
         for (var i = 0; i < this.timeline_config.slides.length; i++) {
-          var pos_info = timescale.getPosition(i);
+          var pos_info = timescale.getPositionInfo(i);
+          all_posinfos_defined = all_posinfos_defined && (typeof(pos_info) != "undefined")
           row_check[pos_info.row].push(pos_info);
         };
+        ok(all_posinfos_defined,"There should be a pos_info for every idx");
         for (var i = 0; i < timescale.getNumberOfRows(); i++) {
-          timescale.getNumberOfRows()]
+
         };
       })
 
