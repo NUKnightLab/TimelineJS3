@@ -13,7 +13,6 @@ VCO.TimeScale = VCO.Class.extend({
         this._positions = [];
         this._pixels_per_milli = 0;
         this.axis_helper = null;
-        this._number_of_rows = 2;
         
         this._earliest = slides[0].start_date.getTime();
         // TODO: should _latest be the end date if there is one?
@@ -29,7 +28,6 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
         var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
         this._scale_width = pad_pixels + pixel_width;
-        this._number_of_rows = this._computeNumberOfRows();
         this._computePositionInfo(slides);
     },
     
@@ -101,23 +99,20 @@ VCO.TimeScale = VCO.Class.extend({
         for (var i = 0; i < this._positions.length; i++) {
             var pos_info = this._positions[i];
             for (var j = 0; j < lasts_in_rows.length; j++) {
-                console.log("slide " + i + " new start: " + pos_info.start + " >? row " + j + " end: " + lasts_in_rows[j].end);
-                console.log("boolean:",(pos_info.start > lasts_in_rows[j].end))
                 if (pos_info.start > lasts_in_rows[j].end) {
                     pos_info.row = j;
                     lasts_in_rows[j] = pos_info;
-                    console.log("put slide " + i + " in row " + j)
                     break;
                 }
             };
             if (typeof(pos_info.row) == 'undefined') {
-                console.log("need a new row for slide " + i);
                 pos_info.row = lasts_in_rows.length;
                 lasts_in_rows.push(pos_info);
             }
 
         };
-        return lasts_in_rows.length;
+
+        this._number_of_rows = lasts_in_rows.length;
         
     }
     

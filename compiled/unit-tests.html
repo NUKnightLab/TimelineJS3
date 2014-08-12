@@ -231,9 +231,16 @@
           row_check[pos_info.row].push(pos_info);
         };
         ok(all_posinfos_defined,"There should be a pos_info for every idx");
+        var slides_in_rows = 0;
         for (var i = 0; i < timescale.getNumberOfRows(); i++) {
-
+          slides_in_rows += row_check[i].length;
+          var no_overlaps = true;
+          for (var j = 1; j < row_check[i].length; j++) {
+            no_overlaps = no_overlaps && (row_check[i][j-1].end < row_check[i][j].start);
+          };
+          ok(no_overlaps,"No overlaps in row " + i)
         };
+        equal(slides_in_rows,this.timeline_config.slides.length,"In checking rows we should have seen all slides")
       })
 
 
