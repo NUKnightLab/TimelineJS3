@@ -282,15 +282,9 @@ VCO.TimeNav = VCO.Class.extend({
 	_positionMarkers: function() {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
-			var pos = this.timescale.getPosition(this._markers[i].getTime());
-			this._markers[i].setPosition({left:pos});
-			this._markers[i].setWidth(100);
-			if (this._markers[i].getEndTime()) {
-				var end_pos = this.timescale.getPosition(this._markers[i].getEndTime());
-				var marker_width = end_pos - pos;
-				trace(marker_width);
-				this._markers[i].setWidth(marker_width); // TODO get position of end date and calculate width
-			}
+			var pos = this.timescale.getPositionInfo(i);
+			this._markers[i].setPosition({left:pos.start});
+			this._markers[i].setWidth(pos.width);
 		};
 		
 	},
@@ -305,8 +299,8 @@ VCO.TimeNav = VCO.Class.extend({
 			this._markers[i].setHeight(marker_height);
 			
 			//Position by Row
-			var random_row = VCO.Util.getRandomNumber(this.timescale.getNumberOfRows());
-			var marker_y = Math.floor(random_row * (marker_height+ this.options.marker_padding));
+			var row = this.timescale.getPositionInfo(i).row;
+			var marker_y = Math.floor(row * (marker_height+ this.options.marker_padding));
 			var remainder_height = available_height - marker_y;
 			this._markers[i].setRowPosition(marker_y, remainder_height);
 			// Do something here
