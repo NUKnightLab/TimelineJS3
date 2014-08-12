@@ -360,6 +360,35 @@ VCO.Util = {
 
 		str = str.replace(/^([0-9])/,'_$1');
 		return str;
+	},
+	maxDepth: function(ary) {
+		// given a sorted array of 2-tuples of numbers, count how many "deep" the items are.
+		// that is, what is the maximum number of tuples that occupy any one moment
+		// each tuple should also be sorted
+		var stack = [];
+		var max_depth = 0;
+		for (var i = 0; i < ary.length; i++) {
+
+			stack.push(ary[i]);
+			if (stack.length > 1) {
+				var top = stack[stack.length - 1]
+				var bottom_idx = -1;
+				for (var j = 0; j < stack.length - 1; j++) {
+					if (stack[j][1] < top[0]) {
+						bottom_idx = j;
+					}
+				};
+				if (bottom_idx >= 0) {
+					stack = stack.slice(bottom_idx + 1);
+				}
+
+			}
+
+			if (stack.length > max_depth) {
+				max_depth = stack.length;
+			}
+		};
+		return max_depth;
 	}
 };
 
@@ -1976,7 +2005,7 @@ SOFTWARE.
 VCO.Class = function () {};
 
 VCO.Class.extend = function (/*Object*/ props) /*-> Class*/ {
-
+ 
 	// extended class with the new prototype
 	var NewClass = function () {
 		if (this.initialize) {
@@ -8842,7 +8871,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._screen_multiplier = screen_multiplier || 3;
 		
         this.slides = slides; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
-		this.pixels_per_milli = 0;
+		this._pixels_per_milli = 0;
         this.axis_helper = null;
 		this._number_of_rows = 2;
 		
@@ -8867,7 +8896,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
         var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
         this._scale_width = pad_pixels + pixel_width;
-        this._computeNumberOfRows();
+        this._number_of_rows = this._computeNumberOfRows();
     },
 
     getPosition: function(time_in_millis) {
@@ -8894,10 +8923,16 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.minor.name;
     },
 
-    _computeNumberOfRows: function() {
+    _computeNumberOfRows: function(default_marker_width) { // default_marker_width should be in pixels
+        default_marker_width = default_marker_width || 100;
         var pixel_widths = [];
-        // to do -- take into account start and either end date or default width
-        this._number_of_rows = 2;
+        for (var i = 0; i < this.slides.length; i++) {
+            // TODO this won't work on cosmological scale
+            var l = this.getPosition(this.slides[i].start_date.data.date_obj.getTime());
+            pixel_widths.push([l,l+default_marker_width]);
+        };
+        window.pixel_widths = pixel_widths;
+        return VCO.Util.maxDepth(pixel_widths);
     },
 
     eventsOverlap: function(e1, e2) { /* events should be JS objects with e.start and e.end properties which should be VCO.Date objects */
@@ -9193,8 +9228,6 @@ VCO.AxisHelper = VCO.Class.extend({
 
     _getTicks: function(timescale, option) {
         var ticks = []
-        console.log(option);
-        console.log(timescale);
         for (var i = timescale._earliest; i < timescale._latest; i += option.factor) {
             ticks.push(new VCO.Date(i));
         }

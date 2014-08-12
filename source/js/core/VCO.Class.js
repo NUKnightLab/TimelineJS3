@@ -4,7 +4,7 @@
 VCO.Class = function () {};
 
 VCO.Class.extend = function (/*Object*/ props) /*-> Class*/ {
-
+ 
 	// extended class with the new prototype
 	var NewClass = function () {
 		if (this.initialize) {
