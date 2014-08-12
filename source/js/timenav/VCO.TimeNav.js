@@ -1,7 +1,7 @@
 /*	VCO.TimeNav
 	
 ================================================== */
- 
+  
 VCO.TimeNav = VCO.Class.extend({
 	
 	includes: [VCO.Events, VCO.DomMixins],

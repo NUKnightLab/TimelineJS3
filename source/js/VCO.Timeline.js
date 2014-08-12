@@ -399,6 +399,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.options.timenav_height = this._calculateTimeNavHeight();
 		
 		// Create TimeNav
+		
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
@@ -512,7 +513,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 
 		if (type === 'contextmenu') {
-			VCO.DomEvent.preventDefault(e);
+			VCO.DomEvent.preventDefault(e); s
 		}
 		
 		this.fire(type, {
