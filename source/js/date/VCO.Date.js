@@ -130,10 +130,8 @@ VCO.Date = VCO.Class.extend({
 		if (_date.month > 0 && _date.month <= 12) {
 			_date.month = _date.month - 1;
 		}
-		trace(_date);
 		// Create Javascript date object
 		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
-		trace(this.data.date_obj);
 	}
 	
 });
