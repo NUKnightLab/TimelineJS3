@@ -95,7 +95,7 @@ VCO.TimelineConfig = VCO.Class.extend({
             }
             array[i].start_date = new VCO.Date(array[i].start_date);
             if (typeof(array[i].end_date) != 'undefined') {
-                array[i].date = new VCO.Date(array[i].date);
+                array[i].end_date = new VCO.Date(array[i].end_date);
             }
         }
     }

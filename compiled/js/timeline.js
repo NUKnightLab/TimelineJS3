@@ -2762,7 +2762,7 @@ VCO.TimelineConfig = VCO.Class.extend({
             }
             array[i].start_date = new VCO.Date(array[i].start_date);
             if (typeof(array[i].end_date) != 'undefined') {
-                array[i].date = new VCO.Date(array[i].date);
+                array[i].end_date = new VCO.Date(array[i].end_date);
             }
         }
     }
@@ -8499,6 +8499,10 @@ VCO.TimeNav = VCO.Class.extend({
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPosition(this._markers[i].getTime());
 			this._markers[i].setPosition({left:pos, top:0});
+			this._markers[i].setWidth(100);
+			if (this._markers[i].getEndTime()) {
+				this._markers[i].setWidth(100); // TODO get position of end date and calculate width
+			}
 		};
 		
 	},
@@ -8679,6 +8683,8 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
+			line_left: {},
+			line_right: {},
 			content: {},
 			text: {},
 			media: {},
@@ -8730,6 +8736,9 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Animation Object
 		this.animator = {};
 		
+		// End date
+		this.has_end_date = false;
+		
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
@@ -8753,8 +8762,12 @@ VCO.TimeMarker = VCO.Class.extend({
 	setActive: function(is_active) {
 		this.active = is_active;
 		
-		if (this.active) {
+		if (this.active && this.has_end_date) {
+			this._el.container.className = 'vco-timemarker vco-timemarker-with-end vco-timemarker-active';
+		} else if (this.active){
 			this._el.container.className = 'vco-timemarker vco-timemarker-active';
+		} else if (this.has_end_date){
+			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
 		} else {
 			this._el.container.className = 'vco-timemarker';
 		}
@@ -8794,6 +8807,15 @@ VCO.TimeMarker = VCO.Class.extend({
 		return this.data.start_date.getTime();
 	},
 	
+	getEndTime: function() {
+		
+		if (this.data.end_date) {
+			return this.data.end_date.getTime();
+		} else {
+			return false;
+		}
+	},
+	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h + "px";
 		
@@ -8803,6 +8825,11 @@ VCO.TimeMarker = VCO.Class.extend({
 		} else {
 			this._text.className = "vco-headline";
 		}
+	},
+	
+	setWidth: function(w) {
+		this._el.container.style.width = w + "px";
+		
 	},
 	
 	/*	Events
@@ -8821,8 +8848,15 @@ VCO.TimeMarker = VCO.Class.extend({
 			this._el.container.id 		= this.data.uniqueid + "-marker";
 		}
 		
+		if (this.data.end_date) {
+			this.has_end_date = true;
+			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
+		}
+		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.content_container);
+		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.content_container);
 		
 		// Thumbnail
 		if (this.data.media.thumb && this.data.media.thumb != "") {

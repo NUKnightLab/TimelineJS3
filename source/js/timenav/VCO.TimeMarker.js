@@ -16,6 +16,8 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
+			line_left: {},
+			line_right: {},
 			content: {},
 			text: {},
 			media: {},
@@ -67,6 +69,9 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Animation Object
 		this.animator = {};
 		
+		// End date
+		this.has_end_date = false;
+		
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
@@ -90,8 +95,12 @@ VCO.TimeMarker = VCO.Class.extend({
 	setActive: function(is_active) {
 		this.active = is_active;
 		
-		if (this.active) {
+		if (this.active && this.has_end_date) {
+			this._el.container.className = 'vco-timemarker vco-timemarker-with-end vco-timemarker-active';
+		} else if (this.active){
 			this._el.container.className = 'vco-timemarker vco-timemarker-active';
+		} else if (this.has_end_date){
+			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
 		} else {
 			this._el.container.className = 'vco-timemarker';
 		}
@@ -131,6 +140,15 @@ VCO.TimeMarker = VCO.Class.extend({
 		return this.data.start_date.getTime();
 	},
 	
+	getEndTime: function() {
+		
+		if (this.data.end_date) {
+			return this.data.end_date.getTime();
+		} else {
+			return false;
+		}
+	},
+	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h + "px";
 		
@@ -140,6 +158,11 @@ VCO.TimeMarker = VCO.Class.extend({
 		} else {
 			this._text.className = "vco-headline";
 		}
+	},
+	
+	setWidth: function(w) {
+		this._el.container.style.width = w + "px";
+		
 	},
 	
 	/*	Events
@@ -158,8 +181,15 @@ VCO.TimeMarker = VCO.Class.extend({
 			this._el.container.id 		= this.data.uniqueid + "-marker";
 		}
 		
+		if (this.data.end_date) {
+			this.has_end_date = true;
+			this._el.container.className = 'vco-timemarker vco-timemarker-with-end';
+		}
+		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timemarker-content-container", this._el.container);
 		this._el.content				= VCO.Dom.create("div", "vco-timemarker-content", this._el.content_container);
+		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.content_container);
+		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.content_container);
 		
 		// Thumbnail
 		if (this.data.media.thumb && this.data.media.thumb != "") {

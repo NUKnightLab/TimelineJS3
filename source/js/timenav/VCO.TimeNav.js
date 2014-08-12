@@ -284,6 +284,10 @@ VCO.TimeNav = VCO.Class.extend({
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPosition(this._markers[i].getTime());
 			this._markers[i].setPosition({left:pos, top:0});
+			this._markers[i].setWidth(100);
+			if (this._markers[i].getEndTime()) {
+				this._markers[i].setWidth(100); // TODO get position of end date and calculate width
+			}
 		};
 		
 	},
