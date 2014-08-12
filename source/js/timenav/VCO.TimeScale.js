@@ -6,10 +6,11 @@
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier) {
+    initialize: function (slides, display_width, screen_multiplier, max_rows) {
+        max_rows = max_rows || 6;
         this._screen_multiplier = screen_multiplier || 3;
 		
-        this.slides = slides; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
+        this._positions = []; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
 		this._pixels_per_milli = 0;
         this.axis_helper = null;
 		this._number_of_rows = 2;
@@ -21,25 +22,28 @@ VCO.TimeScale = VCO.Class.extend({
         this._average = (this._span_in_millis)/slides.length;
 
         display_width = display_width || 500; //arbitrary default
-        this.setDisplayWidth(display_width);
-    },
-    
-    getNumberOfRows: function() {
-        return this._number_of_rows
-    },
 
-    setDisplayWidth: function(display_width) {
         this._display_width = display_width; // arbitrary. better default?
         var pixel_width = this._screen_multiplier * this._display_width;
         this._pixels_per_milli = pixel_width / this._span_in_millis;
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
         var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
         this._scale_width = pad_pixels + pixel_width;
-        this._number_of_rows = this._computeNumberOfRows();
+        this._number_of_rows = this._computePositionInfo(slides);
+    },
+    
+    getNumberOfRows: function() {
+        return this._number_of_rows
     },
 
-    getPosition: function(time_in_millis) {
+    _getPosition: function(time_in_millis) {
+        // TODO: obsolete after transition to getPositionInfo
         return ( time_in_millis - this._earliest ) * this._pixels_per_milli
+    },
+
+    getPositionInfo: function(idx) {
+        // TODO: given an index position, return a dict
+        // start/end/row
     },
 
     getPixelsPerTick: function() {
@@ -62,20 +66,32 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.minor.name;
     },
 
-    _computeNumberOfRows: function(default_marker_width) { // default_marker_width should be in pixels
+    _computePositionInfo: function(slides,default_marker_width) { // default_marker_width should be in pixels
         default_marker_width = default_marker_width || 100;
-        var pixel_widths = [];
-        for (var i = 0; i < this.slides.length; i++) {
-            // TODO this won't work on cosmological scale
-            var l = this.getPosition(this.slides[i].start_date.getTime());
-            pixel_widths.push([l,l+default_marker_width]);
-        };
-        window.pixel_widths = pixel_widths;
-        return VCO.Util.maxDepth(pixel_widths);
-    },
+        var lasts_in_rows = []; 
 
-    eventsOverlap: function(e1, e2) { /* events should be JS objects with e.start and e.end properties which should be VCO.Date objects */
-        
+        for (var i = 0; i < slides.length; i++) {
+            var pos_info = { start: this._getPosition(slides[i].start_date.getTime()) }
+            if (typeof(slides[i].end_date) != 'undefined') {
+                pos_info.end = this._getPosition(slides[i].end_date.getTime());
+            } else {
+                pos_info.end = pos_info.start + default_marker_width;
+            }
+        };
+
+        for (var i = 0; i < lasts_in_rows.length; i++) {
+            if (pos_info.start > lasts_in_rows[i].end) {
+                pos_info.row = i;
+                lasts_in_rows[i] = pos_info;
+                break;
+            }
+        };
+        if (!pos_info.row) {
+            pos_info.row = lasts_in_rows.length;
+            lasts_in_rows.push(pos_info);
+        }
+        this._positions.push(pos_info);
+        return lasts_in_rows.length;
     }
     
 });

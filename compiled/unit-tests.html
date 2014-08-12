@@ -119,7 +119,7 @@
 
       })
 
-      module("timenav tests",{ // setup for tests that need TimelineConfig
+      module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
           this.timeline_config = new VCO.TimelineConfig('examples/marktwain.json',function(){
@@ -203,7 +203,35 @@
         equal(timescale.getMinorScale(),'year',"timescale should be years");
         ok(timescale.getMajorTicks().ticks.length > 0,"should be some major ticks")
         ok(timescale.getMinorTicks().ticks.length > 0,"should be some minor ticks")
+        equal(timescale.getNumberOfRows(),1,"Expecting 1 rows")
       });
+
+      module("marktwain_juked tests",{ // setup for tests that need TimelineConfig
+        setup: function() {
+          stop();
+          this.timeline_config = new VCO.TimelineConfig('examples/marktwain_juked.json',function(){
+            start();
+          });
+        }
+      });
+
+      test("TimeScale", function() {
+        var timescale = new VCO.TimeScale(this.timeline_config.slides);
+        equal(timescale.getNumberOfRows(),4, "expect 4 rows");
+        var row_check = new Array(timescale.getNumberOfRows());
+        for (var i = 0; i < row_check.length; i++) {
+          row_check[i] = [];
+        };
+        for (var i = 0; i < this.timeline_config.slides.length; i++) {
+          var pos_info = timescale.getPosition(i);
+          row_check[pos_info.row].push(pos_info);
+        };
+        for (var i = 0; i < timescale.getNumberOfRows(); i++) {
+          timescale.getNumberOfRows()]
+        };
+      })
+
+
     </script>
 </head>
 <body>
