@@ -9725,7 +9725,7 @@ VCO.Timeline = VCO.Class.extend({
 			height = this.options.timenav_height_min;
 		}
 		
-		
+		height = height - (this.options.marker_padding * 2);
 		return height;
 	},
 	
