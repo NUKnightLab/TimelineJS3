@@ -117,6 +117,21 @@ VCO.Date = VCO.Class.extend({
 
 	},
 
+    floor: function(scale) { // more likely problems with cosmological time
+    	/* Return a NEW VCO.Date which has been 'floored' at the given scale.
+		   'scale' should be a string value from VCO.Date.SCALES
+		   This will need to be smarter to work with cosmological dates.
+    	*/
+    	var d = new Date(this.data.date_obj);
+        for (var i = 0; i < VCO.Date.SCALES.length; i++) {
+            VCO.Date.SCALES[i][2](d);
+            if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
+        };
+
+        throw('invalid scale ' + scale);
+    },
+
+
 	/*	Create JavaScript date object
 	================================================== */
 	_createDateObj: function() {
@@ -151,3 +166,35 @@ VCO.Date = VCO.Class.extend({
 });
 
 
+(function(cls){
+    SCALES = [ // ( name, millis_per_tick )
+        ['millisecond',1, function(d) { }],
+        ['second',1000, function(d) { d.setMilliseconds(0);}],
+        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
+        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
+        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
+        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
+        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
+        ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 10)) 
+        }],
+        ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 100)) 
+        }],
+        ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
+            var real_year = 1900 + d.getYear();
+            d.setYear( real_year - (real_year % 1000)) 
+        }],
+        // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
+        // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
+        // scales are not relevant
+        // ['age',1000 * 60 * 60 * 24 * 365 * 1000000, function(d) { }],    // 1M years
+        // ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000, function(d) { }], // 10M years
+        // ['era',1000 * 60 * 60 * 24 * 365 * 100000000, function(d) { }],  // 100M years
+        // ['eon',1000 * 60 * 60 * 24 * 365 * 500000000, function(d) { }]  //500M years
+    ]
+
+    cls.SCALES = SCALES;
+})(VCO.Date)
