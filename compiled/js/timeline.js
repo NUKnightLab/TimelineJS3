@@ -8483,16 +8483,6 @@ VCO.TimeNav = VCO.Class.extend({
 		*/
 	},
 	
-	// Create Dates
-	createDates: function(array) {
-		this._createDates(array);
-	},
-	
-	// Create a date
-	createDate: function(d) {
-		this._createDate(d);
-	},
-	
 	positionMarkers: function() {
 		this._positionMarkers();
 	},
@@ -8542,15 +8532,9 @@ VCO.TimeNav = VCO.Class.extend({
 	_positionMarkers: function() {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
-			var pos = this.timescale.getPosition(this._markers[i].getTime());
-			this._markers[i].setPosition({left:pos});
-			this._markers[i].setWidth(100);
-			if (this._markers[i].getEndTime()) {
-				var end_pos = this.timescale.getPosition(this._markers[i].getEndTime());
-				var marker_width = end_pos - pos;
-				trace(marker_width);
-				this._markers[i].setWidth(marker_width); // TODO get position of end date and calculate width
-			}
+			var pos = this.timescale.getPositionInfo(i);
+			this._markers[i].setPosition({left:pos.start});
+			this._markers[i].setWidth(pos.width);
 		};
 		
 	},
@@ -8561,12 +8545,12 @@ VCO.TimeNav = VCO.Class.extend({
 		for (var i = 0; i < this._markers.length; i++) {
 			
 			// Set Height
-			var marker_height = Math.floor((available_height /this.timescale.getNumberOfRows()) - (this.options.marker_padding*2));
+			var marker_height = Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
 			this._markers[i].setHeight(marker_height);
 			
 			//Position by Row
-			var random_row = VCO.Util.getRandomNumber(this.timescale.getNumberOfRows());
-			var marker_y = Math.floor(random_row * (marker_height+ this.options.marker_padding));
+			var row = this.timescale.getPositionInfo(i).row;
+			var marker_y = Math.floor(row * (marker_height+ this.options.marker_padding));
 			var remainder_height = available_height - marker_y;
 			this._markers[i].setRowPosition(marker_y, remainder_height);
 			// Do something here
@@ -8979,15 +8963,14 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier, max_rows) {
-        max_rows = max_rows || 6;
+    initialize: function (slides, display_width, screen_multiplier) {
         this._screen_multiplier = screen_multiplier || 3;
-		
-        this._positions = []; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
-		this._pixels_per_milli = 0;
+        
+        this.slides = slides; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
+        this._positions = [];
+        this._pixels_per_milli = 0;
         this.axis_helper = null;
-		this._number_of_rows = 2;
-		
+        
         this._earliest = slides[0].start_date.getTime();
         // TODO: should _latest be the end date if there is one?
         this._latest = slides[slides.length - 1].start_date.getTime();
@@ -9002,21 +8985,19 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
         var pad_pixels = display_width * this.getPixelsPerTick(); // .5 width before & .5 after
         this._scale_width = pad_pixels + pixel_width;
-        this._number_of_rows = this._computePositionInfo(slides);
+        this._computePositionInfo(slides);
     },
     
     getNumberOfRows: function() {
         return this._number_of_rows
     },
 
-    _getPosition: function(time_in_millis) {
-        // TODO: obsolete after transition to getPositionInfo
+    getPosition: function(time_in_millis) {
         return ( time_in_millis - this._earliest ) * this._pixels_per_milli
     },
 
     getPositionInfo: function(idx) {
-        // TODO: given an index position, return a dict
-        // start/end/row
+        return this._positions[idx];
     },
 
     getPixelsPerTick: function() {
@@ -9039,32 +9020,57 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.minor.name;
     },
 
+    _computeNumberOfRows: function(default_marker_width) { // default_marker_width should be in pixels
+        default_marker_width = default_marker_width || 100;
+        var pixel_widths = [];
+        for (var i = 0; i < this.slides.length; i++) {
+            // TODO this won't work on cosmological scale
+            var l = this.getPosition(this.slides[i].start_date.getTime());
+            pixel_widths.push([l,l+default_marker_width]);
+        };
+        window.pixel_widths = pixel_widths;
+        return VCO.Util.maxDepth(pixel_widths);
+    },
+
     _computePositionInfo: function(slides,default_marker_width) { // default_marker_width should be in pixels
         default_marker_width = default_marker_width || 100;
         var lasts_in_rows = []; 
 
         for (var i = 0; i < slides.length; i++) {
-            var pos_info = { start: this._getPosition(slides[i].start_date.getTime()) }
+            var pos_info = { start: this.getPosition(slides[i].start_date.getTime()) }
+            this._positions.push(pos_info);
             if (typeof(slides[i].end_date) != 'undefined') {
-                pos_info.end = this._getPosition(slides[i].end_date.getTime());
+                var end_pos = this.getPosition(slides[i].end_date.getTime());
+                pos_info.width = end_pos - pos_info.start;
+                if (pos_info.width > default_marker_width) {
+                    pos_info.end = pos_info.start + pos_info.width; 
+                } else {
+                    pos_info.end = pos_info.start + default_marker_width; 
+                }
             } else {
+                pos_info.width = default_marker_width;
                 pos_info.end = pos_info.start + default_marker_width;
             }
         };
 
-        for (var i = 0; i < lasts_in_rows.length; i++) {
-            if (pos_info.start > lasts_in_rows[i].end) {
-                pos_info.row = i;
-                lasts_in_rows[i] = pos_info;
-                break;
+        for (var i = 0; i < this._positions.length; i++) {
+            var pos_info = this._positions[i];
+            for (var j = 0; j < lasts_in_rows.length; j++) {
+                if (pos_info.start > lasts_in_rows[j].end) {
+                    pos_info.row = j;
+                    lasts_in_rows[j] = pos_info;
+                    break;
+                }
+            };
+            if (typeof(pos_info.row) == 'undefined') {
+                pos_info.row = lasts_in_rows.length;
+                lasts_in_rows.push(pos_info);
             }
+
         };
-        if (!pos_info.row) {
-            pos_info.row = lasts_in_rows.length;
-            lasts_in_rows.push(pos_info);
-        }
-        this._positions.push(pos_info);
-        return lasts_in_rows.length;
+
+        this._number_of_rows = lasts_in_rows.length;
+        
     }
     
 });

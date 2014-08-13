@@ -285,7 +285,7 @@ VCO.TimeNav = VCO.Class.extend({
 		for (var i = 0; i < this._markers.length; i++) {
 			
 			// Set Height
-			var marker_height = Math.floor((available_height /this.timescale.getNumberOfRows()) - (this.options.marker_padding*2));
+			var marker_height = Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
 			this._markers[i].setHeight(marker_height);
 			
 			//Position by Row
