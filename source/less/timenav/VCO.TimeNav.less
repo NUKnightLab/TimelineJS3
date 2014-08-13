@@ -2,7 +2,7 @@
 ================================================== */
 
 .vco-timenav {
-	height:200px;
+	//height:200px;
 	width:100%;
 	background-color:@ui-background-color;
 	position:relative;
@@ -22,8 +22,8 @@
 		left: 50%;
 		width: 1px;
 		height: 100%;
-		background-color: @color-theme;//darken(@ui-background-color, 10);
-		z-index: 1;
+		background-color: darken(@ui-background-color, 10);//@color-theme;//darken(@ui-background-color, 10);
+		z-index: 2;
 		display:none;
 		//box-shadow: 1px 1px 7px rgba(0,0,0,0.3);
 		&:before, &:after {
@@ -40,6 +40,8 @@
 			-moz-osx-font-smoothing: grayscale;
 			
 			color:darken(@ui-background-color, 10);
+			color:@color-background;
+			color:@color-theme;
 			font-size:32px;
 			line-height:32px;
 			//text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
@@ -51,7 +53,7 @@
 			top: -10px;
 		}
 		&:after {
-			//content: "\e648";
+			content: "\e648";
 			bottom:24px;
 		}
 	}
@@ -59,10 +61,11 @@
 		position:absolute;
 		height:100%;
 		width:100%;
-		
+		top:0;
 		.vco-timenav-container-mask {
 			position:absolute;
 			height:100%;
+			top:0;
 			.vco-timenav-container {
 				position:absolute;
 				height:100%;

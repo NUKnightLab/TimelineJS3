@@ -7,6 +7,8 @@
 	bottom:0;
 	left:0;
 	background-color:@color-background;
+	//background-color:fadeout(@color-background, 95%);
+	
 	//.box-shadow(1px -1px 5px rgba(0,0,0,0.1));
 	border-top: 1px solid darken(@ui-background-color,5);
 	z-index:2;
@@ -14,17 +16,18 @@
 .vco-timeaxis {
 	//background-color:darken(@ui-background-color,25);
 	//border: 1px solid darken(@ui-background-color, 50);
-	
+	height:@axis-height;
 	width:100%;
 	position:absolute;
 	bottom:0;
+	//bottom:-@axis-height + 10;
 	left:0;
 	z-index:3;
 		
 	.vco-timeaxis-content-container {
 		position:relative;
 		bottom:0;
-
+		height:@axis-height;
 		.vco-timeaxis-major, .vco-timeaxis-minor {
 			.vco-timeaxis-tick {
 				position:absolute;
