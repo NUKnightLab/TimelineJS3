@@ -52,12 +52,10 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.getPixelsPerTick(this._pixels_per_milli);
     },
 
-    getMajorTicks: function() {
-        return this._axis_helper.getMajorTicks(this);
-    },
-
-    getMinorTicks: function() {
-        return this._axis_helper.getMinorTicks(this);
+    getTicks: function() {
+        return { 
+            major: this._axis_helper.getMajorTicks(this), 
+            minor: this._axis_helper.getMinorTicks(this) }
     },
 
     getMajorScale: function() {
