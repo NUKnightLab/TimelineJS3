@@ -61,7 +61,8 @@ VCO.TimeMarker = VCO.Class.extend({
 			duration: 			1000,
 			ease: 				VCO.Ease.easeInSpline,
 			width: 				600,
-			height: 			600
+			height: 			600,
+			marker_width_min: 	100 			// Minimum Marker Width
 		};
 		
 		// Actively Displaying
@@ -152,9 +153,9 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h  + "px";
-		this._el.timespan_content.style.height = h  + "px";
+		this._el.timespan_content.style.height = h + "px";
 		// Handle Line height for better display of text
-		if (h <= 24 ) {
+		if (h <= 30) {
 			this._text.className = "vco-headline vco-headline-small";
 		} else {
 			this._text.className = "vco-headline";
@@ -164,6 +165,11 @@ VCO.TimeMarker = VCO.Class.extend({
 	setWidth: function(w) {
 		if (this.data.end_date) {
 			this._el.container.style.width = w + "px";
+			if (w > this.options.marker_width_min) {
+				this._el.content_container.style.width = w + "px";
+			} else {
+				this._el.content_container.style.width = this.options.marker_width_min + "px";
+			}
 		}
 		
 	},

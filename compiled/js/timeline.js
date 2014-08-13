@@ -8413,6 +8413,7 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_padding: 		5,
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
+			marker_width_min: 		100 			// Minimum Marker Width
 		};
 		
 		// Animation
@@ -8512,7 +8513,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_createMarker: function(data) {
-		var marker = new VCO.TimeMarker(data);
+		var marker = new VCO.TimeMarker(data, this.options);
 		this._addMarker(marker);
 		this._markers.push(marker);
 		this._marker_ticks.push(marker.getTime());
@@ -8540,7 +8541,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_assignRowsToMarkers: function() {
-		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight);
+		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
 		
 		for (var i = 0; i < this._markers.length; i++) {
 			
@@ -8550,10 +8551,10 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			//Position by Row
 			var row = this.timescale.getPositionInfo(i).row;
-			var marker_y = Math.floor(row * (marker_height+ this.options.marker_padding));
-			var remainder_height = available_height - marker_y;
+			var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
+			
+			var remainder_height = available_height - marker_y + this.options.marker_padding;
 			this._markers[i].setRowPosition(marker_y, remainder_height);
-			// Do something here
 		};
 		
 	},
@@ -8764,7 +8765,8 @@ VCO.TimeMarker = VCO.Class.extend({
 			duration: 			1000,
 			ease: 				VCO.Ease.easeInSpline,
 			width: 				600,
-			height: 			600
+			height: 			600,
+			marker_width_min: 	100 			// Minimum Marker Width
 		};
 		
 		// Actively Displaying
@@ -8855,9 +8857,9 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 	setHeight: function(h) {
 		this._el.content_container.style.height = h  + "px";
-		this._el.timespan_content.style.height = h  + "px";
+		this._el.timespan_content.style.height = h + "px";
 		// Handle Line height for better display of text
-		if (h <= 24 ) {
+		if (h <= 30) {
 			this._text.className = "vco-headline vco-headline-small";
 		} else {
 			this._text.className = "vco-headline";
@@ -8867,6 +8869,11 @@ VCO.TimeMarker = VCO.Class.extend({
 	setWidth: function(w) {
 		if (this.data.end_date) {
 			this._el.container.style.width = w + "px";
+			if (w > this.options.marker_width_min) {
+				this._el.content_container.style.width = w + "px";
+			} else {
+				this._el.content_container.style.width = this.options.marker_width_min + "px";
+			}
 		}
 		
 	},
@@ -9607,6 +9614,7 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_height_percentage: 	20,				// Overrides timenav height as a percentage of the screen
 			timenav_height_min: 		150, 			// Minimum timenav height
 			marker_height_min: 			30, 			// Minimum Marker Height
+			marker_width_min: 			100, 			// Minimum Marker Width
 			marker_padding: 			5,				// Top Bottom Marker Padding
 			start_at_slide: 			0,
 			menubar_height: 			0,
