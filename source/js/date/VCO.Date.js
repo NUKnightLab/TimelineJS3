@@ -176,16 +176,16 @@ VCO.Date = VCO.Class.extend({
         ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
         ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
         ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 10)) 
+            var real_year = d.getFullYear();
+            d.setFullYear( real_year - (real_year % 10)) 
         }],
         ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 100)) 
+            var real_year = d.getFullYear();
+            d.setFullYear( real_year - (real_year % 100)) 
         }],
         ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 1000)) 
+            var real_year = d.getFullYear();
+            d.setFullYear( real_year - (real_year % 1000)) 
         }],
         // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
         // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
