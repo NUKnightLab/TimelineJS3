@@ -8,6 +8,9 @@ VCO.TimeScale = VCO.Class.extend({
     
     initialize: function (slides, display_width, screen_multiplier) {
         this._screen_multiplier = screen_multiplier || 3;
+        display_width = display_width || 500; //arbitrary default
+        this._display_width = display_width; 
+        this._pixel_width = this._screen_multiplier * this._display_width;
         
         this.slides = slides; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
         this._positions = [];
@@ -20,11 +23,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._span_in_millis = this._latest - this._earliest;
         this._average = (this._span_in_millis)/slides.length;
 
-        display_width = display_width || 500; //arbitrary default
-
-        this._display_width = display_width; 
-        var pixel_width = this._screen_multiplier * this._display_width;
-        this._pixels_per_milli = pixel_width / this._span_in_millis;
+        this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
 
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
@@ -34,6 +33,10 @@ VCO.TimeScale = VCO.Class.extend({
     
     getNumberOfRows: function() {
         return this._number_of_rows
+    },
+
+    getPixelWidth: function() {
+        return this._pixel_width;
     },
 
     getPosition: function(time_in_millis) {
