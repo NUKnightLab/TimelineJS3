@@ -16,6 +16,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
+			media_container: {},
 			timespan: {},
 			line_left: {},
 			line_right: {},
@@ -156,15 +157,16 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el.timespan_content.style.height = h + "px";
 		// Handle Line height for better display of text
 		if (h <= 30) {
-			this._text.className = "vco-headline vco-headline-small";
+			this._el.content.className = "vco-timemarker-content vco-timemarker-content-small";
 		} else {
-			this._text.className = "vco-headline";
+			this._el.content.className = "vco-timemarker-content";
 		}
 	},
 	
 	setWidth: function(w) {
 		if (this.data.end_date) {
 			this._el.container.style.width = w + "px";
+			
 			if (w > this.options.marker_width_min) {
 				this._el.content_container.style.width = w + "px";
 			} else {
@@ -189,7 +191,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		
+		//trace(this.data)
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-timemarker");
 		if (this.data.uniqueid) {
@@ -210,11 +212,22 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el.line_left				= VCO.Dom.create("div", "vco-timemarker-line-left", this._el.timespan);
 		this._el.line_right				= VCO.Dom.create("div", "vco-timemarker-line-right", this._el.timespan);
 		
-		// Thumbnail
-		if (this.data.media.thumb && this.data.media.thumb != "") {
-			this._el.media				= VCO.Dom.create("img", "vco-timemarker-media", this._el.content);
-			this._el.media.src			= this.data.media.thumb;
+		// Thumbnail or Icon
+		if (this.data.media) {
+			this._el.media_container	= VCO.Dom.create("div", "vco-timemarker-media-container", this._el.content);
+			
+			if (this.data.media.thumb && this.data.media.thumb != "") {
+				this._el.media				= VCO.Dom.create("img", "vco-timemarker-media", this._el.media_container);
+				this._el.media.src			= this.data.media.thumb;
+				
+			} else {
+				var media_type = VCO.MediaType(this.data.media).type;
+				this._el.media				= VCO.Dom.create("span", "vco-icon-" + media_type, this._el.media_container);
+				
+			}
+			
 		}
+		
 		
 		// Text
 		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
