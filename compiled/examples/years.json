@@ -2,7 +2,7 @@
     "timeline": {
         "slides": [
             {
-                "date": {
+                "start_date": {
 					"year":			"-5410"
 				},
                 "media": {
@@ -15,7 +15,7 @@
                 "type": "overview"
             },
             {
-                "date": {
+                "start_date": {
 					"year":			"-5410"
 				},
                 "media": {
@@ -28,7 +28,7 @@
                 "uniqueid": ""
             },
             {
-                "date": {
+                "start_date": {
 					"year":			"-2520"
 				},
                 "media": {
@@ -41,7 +41,7 @@
                 "uniqueid": ""
             },
             {
-                "date": {
+                "start_date": {
 					"year":			"-2010"
 				},
                 "media": {
@@ -54,7 +54,7 @@
                 "uniqueid": ""
             },
             {
-                "date": {
+                "start_date": {
 					"year":			"-1450"
 				},
                 "media": {
@@ -67,7 +67,7 @@
                 "uniqueid": ""
             },
             {
-                "date": {
+                "start_date": {
 					"year":			"-258"
 				},
                 "media": {
