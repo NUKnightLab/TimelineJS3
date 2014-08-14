@@ -395,6 +395,9 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
 		this._el.slider_background.style.left = -(this.options.width/2) + "px";
 		this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
+		
+		// Update Swipable constraint
+		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},
@@ -440,7 +443,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Swipable
 		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
 			enable: {x:true, y:false},
-			constraint: {top: false,bottom: false,left: false,right: false},
+			constraint: {top: false,bottom: false,left: (this.options.width/2),right: false},
 			snap: 	false
 		});
 		this._swipable.on('dragmove', this._onDragMove, this);
