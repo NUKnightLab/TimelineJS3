@@ -9803,14 +9803,22 @@ VCO.Timeline = VCO.Class.extend({
 		}
 	},
 	
-	_calculateTimeNavHeight: function(timenav_height) {
+	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
+		trace("_calculateTimeNavHeight");
 		var height = 0;
 		
 		if (timenav_height) {
+			trace("timenav_height " + timenav_height)
 			height = timenav_height;
 		} else {
-			if (this.options.timenav_height_percentage) {
-				height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
+			if (this.options.timenav_height_percentage || timenav_height_percentage) {
+				if (timenav_height_percentage) {
+					trace("timenav_height_percentage " + timenav_height_percentage)
+					height = Math.round((this.options.height/100)*timenav_height_percentage);
+				} else {
+					height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
+				}
+				
 			}
 		}
 		if (height < this.options.timenav_height_min) {
@@ -9818,6 +9826,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		height = height - (this.options.marker_padding * 2);
+		trace("height " + height)
 		return height;
 	},
 	
@@ -9846,14 +9855,18 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		
-		// Set TimeNav Height
-		this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
+		
 		
 		
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
 			display_class += " vco-mobile";
+			// Set TimeNav Height
+			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, 40);
+		} else {
+			// Set TimeNav Height
+			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
 		}
 		
 		// LAYOUT
@@ -9869,31 +9882,35 @@ VCO.Timeline = VCO.Class.extend({
 			
 		}
 		
+		// Set StorySlider Height
 		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
 		
 		if (animate) {
 		
-			// Animate Map
+			// Animate TimeNav
+			/*
 			if (this.animator_timenav) {
 				this.animator_timenav.stop();
 			}
 		
 			this.animator_timenav = VCO.Animate(this._el.timenav, {
 				height: 	(this.options.timenav_height) + "px",
-				duration: 	duration,
+				duration: 	duration/4,
 				easing: 	VCO.Ease.easeOutStrong,
 				complete: function () {
 					//self._map.updateDisplay(self.options.width, self.options.timenav_height, animate, d, self.options.menubar_height);
 				}
 			});
-		
+			*/
+			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
+			
 			// Animate StorySlider
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
 			}
 			this.animator_storyslider = VCO.Animate(this._el.storyslider, {
 				height: 	this.options.storyslider_height + "px",
-				duration: 	duration,
+				duration: 	duration/2,
 				easing: 	VCO.Ease.easeOutStrong
 			});
 		
@@ -9968,7 +9985,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		
 		// Update Display
-		this._updateDisplay(this.options.timenav_height, true, 2000);
+		this._updateDisplay(false, true, 2000);
 		
 	},
 	
