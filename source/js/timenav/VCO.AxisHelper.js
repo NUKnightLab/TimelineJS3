@@ -31,7 +31,6 @@ VCO.AxisHelper = VCO.Class.extend({
         var factor_scale = timescale._scaled_padding * option.factor;
         var first_tick_time = timescale._earliest - factor_scale;
         var last_tick_time = timescale._latest + factor_scale;
-        console.log(first_tick_time,last_tick_time,option.name,option.factor)
         var ticks = []
         for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
             ticks.push(new VCO.Date(i).floor(option.name));
