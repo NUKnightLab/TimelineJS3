@@ -211,6 +211,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
+                "background": {
+                    "color": "#000000",
+                    "opacity": 50,
+                    "url": null
+                },
                 "location": {
                     "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
                     "lat": 39.309514,
@@ -476,11 +481,6 @@
                     "lat": 40.714353,
                     "lon": -74.005973,
                     "zoom": 11
-                },
-                "media": {
-                    "caption": "something",
-                    "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
                 },
                 "text": {
                     "headline": "Livy dies",
