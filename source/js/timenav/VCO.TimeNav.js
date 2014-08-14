@@ -391,6 +391,10 @@ VCO.TimeNav = VCO.Class.extend({
 		// Size Markers
 		this._assignRowsToMarkers();
 		
+		// Size swipable area
+		this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
+		this._el.slider_background.style.left = -(this.options.width/2) + "px";
+		this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},

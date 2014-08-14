@@ -4435,6 +4435,8 @@ VCO.DateUtil = {
 	},
 	
 	/*	Find Best Format
+	 * this may not work with 'cosmologic' dates, or with VCO.Date if we 
+	 * support constructing them based on JS Date and time
 	================================================== */
 	findBestFormat: function(data, use_short) {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
@@ -5045,7 +5047,6 @@ VCO.Swipable = VCO.Class.extend({
 		this.data.new_pos.x = -(change.x - this.data.pos.start.x);
 		this.data.new_pos.y = -(change.y - this.data.pos.start.y );
 		
-		
 		if (this.options.enable.x && ( Math.abs(change.x) > Math.abs(change.y) ) ) {
 			e.preventDefault();
 			this._el.move.style.left = this.data.new_pos.x + "px";
@@ -5089,15 +5090,13 @@ VCO.Swipable = VCO.Class.extend({
 		pos_adjust.x = Math.round(pos_change.x / pos_change.time);
 		pos_adjust.y = Math.round(pos_change.y / pos_change.time);
 		
-		this.data.new_pos.x = Math.min(this.data.pos.end.x + pos_adjust.x);
-		this.data.new_pos.y = Math.min(this.data.pos.end.y + pos_adjust.y);
-
+		this.data.new_pos.x = Math.min(this.data.new_pos.x + pos_adjust.x);
+		this.data.new_pos.y = Math.min(this.data.new_pos.y + pos_adjust.y);
 		
 		if (!this.options.enable.x) {
 			this.data.new_pos.x = this.data.pos.start.x;
 		} else if (this.options.constraint.left && this.data.new_pos.x > this.options.constraint.left) {
 			this.data.new_pos.x = this.options.constraint.left;
-			trace("constraint left")
 		}
 		
 		if (!this.options.enable.y) {
@@ -8698,6 +8697,10 @@ VCO.TimeNav = VCO.Class.extend({
 		// Size Markers
 		this._assignRowsToMarkers();
 		
+		// Size swipable area
+		this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
+		this._el.slider_background.style.left = -(this.options.width/2) + "px";
+		this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},
@@ -9064,6 +9067,9 @@ VCO.TimeScale = VCO.Class.extend({
     
     initialize: function (slides, display_width, screen_multiplier) {
         this._screen_multiplier = screen_multiplier || 3;
+        display_width = display_width || 500; //arbitrary default
+        this._display_width = display_width; 
+        this._pixel_width = this._screen_multiplier * this._display_width;
         
         this.slides = slides; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
         this._positions = [];
@@ -9076,11 +9082,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._span_in_millis = this._latest - this._earliest;
         this._average = (this._span_in_millis)/slides.length;
 
-        display_width = display_width || 500; //arbitrary default
-
-        this._display_width = display_width; 
-        var pixel_width = this._screen_multiplier * this._display_width;
-        this._pixels_per_milli = pixel_width / this._span_in_millis;
+        this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
 
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
@@ -9090,6 +9092,10 @@ VCO.TimeScale = VCO.Class.extend({
     
     getNumberOfRows: function() {
         return this._number_of_rows
+    },
+
+    getPixelWidth: function() {
+        return this._pixel_width;
     },
 
     getPosition: function(time_in_millis) {
