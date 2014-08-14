@@ -18,6 +18,8 @@ VCO.DateUtil = {
 	},
 	
 	/*	Find Best Format
+	 * this may not work with 'cosmologic' dates, or with VCO.Date if we 
+	 * support constructing them based on JS Date and time
 	================================================== */
 	findBestFormat: function(data, use_short) {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
