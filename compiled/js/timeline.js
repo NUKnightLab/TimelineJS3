@@ -5095,8 +5095,9 @@ VCO.Swipable = VCO.Class.extend({
 		
 		if (!this.options.enable.x) {
 			this.data.new_pos.x = this.data.pos.start.x;
-		} else if (this.data.new_pos.x > 0) {
-			this.data.new_pos.x = 0;
+		} else if (this.options.constraint.left && this.data.new_pos.x > this.options.constraint.left) {
+			this.data.new_pos.x = this.options.constraint.left;
+			trace("constraint left")
 		}
 		
 		if (!this.options.enable.y) {
@@ -5199,13 +5200,13 @@ VCO.Swipable = VCO.Class.extend({
 		}
 		
 		if (this.options.enable.x) {
-			if (this.options.constraint.left || this.options.constraint.right) {
-				if (pos.x >= this.options.constraint.left) {
-					pos.x = this.options.constraint.left;
-				} else if (pos.x < this.options.constraint.right) {
-					pos.x = this.options.constraint.right;
-				}
+			if (this.options.constraint.left && pos.x >= this.options.constraint.left) {
+				pos.x = this.options.constraint.left;
 			}
+			if (this.options.constraint.right && pos.x < this.options.constraint.right) {
+				pos.x = this.options.constraint.right;
+			}
+
 			animate.left = Math.floor(pos.x) + "px";
 		}
 		
@@ -8322,6 +8323,7 @@ VCO.TimeNav = VCO.Class.extend({
 			parent: {},
 			container: {},
 			slider: {},
+			slider_background: {},
 			line: {},
 			marker_container_mask: {},
 			marker_container: {},
@@ -8463,7 +8465,7 @@ VCO.TimeNav = VCO.Class.extend({
 		};
 		
 		// Animation
-		this.animator = {};
+		this.animator = null;
 		
 		// Markers Array
 		this._markers = [];
@@ -8633,7 +8635,24 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers[n].setActive(true);
 		
 		// Move container to marker position
-		this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+		
+		// Stop animation
+		if (this.animator) {
+			this.animator.stop();
+		}
+		
+		if (fast) {
+			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+		} else {
+			this.animator = VCO.Animate(this._el.slider, {
+				left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
+				duration: 	this.options.duration,
+				easing: 	this.options.ease
+			});
+			
+		}
+		
+		//this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
 	},
@@ -8697,12 +8716,17 @@ VCO.TimeNav = VCO.Class.extend({
 		this._assignRowsToMarkers();
 	},
 	
+	_onDragMove: function(e) {
+		
+	},
+	
 	/*	Init
 	================================================== */
 	_initLayout: function () {
 		// Create Layout
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
-		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider vco-animate', this._el.container);
+		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider', this._el.container);
+		this._el.slider_background			= VCO.Dom.create('div', 'vco-timenav-slider-background', this._el.slider);
 		this._el.marker_container_mask		= VCO.Dom.create('div', 'vco-timenav-container-mask', this._el.slider);
 		this._el.marker_container			= VCO.Dom.create('div', 'vco-timenav-container', this._el.marker_container_mask);
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
@@ -8715,6 +8739,15 @@ VCO.TimeNav = VCO.Class.extend({
 		// Update Size
 		this.options.width = this._el.container.offsetWidth;
 		this.options.height = this._el.container.offsetHeight;
+		
+		// Swipable
+		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
+			enable: {x:true, y:false},
+			constraint: {top: false,bottom: false,left: false,right: false},
+			snap: 	false
+		});
+		this._swipable.on('dragmove', this._onDragMove, this);
+		this._swipable.enable();
 		
 		// Buttons
 		//this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
@@ -9653,7 +9686,7 @@ VCO.Timeline = VCO.Class.extend({
 			optimal_tick_width: 		100,			// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
 			timenav_height: 			150,
-			timenav_height_percentage: 	20,				// Overrides timenav height as a percentage of the screen
+			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen
 			timenav_height_min: 		150, 			// Minimum timenav height
 			marker_height_min: 			30, 			// Minimum Marker Height
 			marker_width_min: 			100, 			// Minimum Marker Width

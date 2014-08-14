@@ -13,7 +13,7 @@
 					"format": 		""
 				},
                 "end_date": {
-					"year":			"1905",
+					"year":			"1902",
 					"month":		"01",
 					"day": 			"05",
 					"hour": 		"6",
@@ -109,6 +109,64 @@
                 "text": {
                     "headline": "Hannibal, Missouri",
                     "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+                    "year":         "1900",
+                    "month":        "01",
+                    "day":          "06",
+                    "hour":         "6",
+                    "minute":       "45",
+                    "second":       "56",
+                    "millisecond":  "",
+                    "format":       ""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 39.710083,
+                    "line": true,
+                    "lon": -91.357441,
+                    "zoom": 12
+                },
+                "media": {
+                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                    "credit": null,
+                    "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
+                },
+                "text": {
+                    "headline": "",
+                    "text": ""
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+                    "year":         "1900",
+                    "month":        "01",
+                    "day":          "06",
+                    "hour":         "6",
+                    "minute":       "45",
+                    "second":       "56",
+                    "millisecond":  "",
+                    "format":       ""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 39.710083,
+                    "line": true,
+                    "lon": -91.357441,
+                    "zoom": 12
+                },
+                "media": {
+                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                    "credit": null,
+                    "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
+                },
+                "text": {
+                    "headline": "",
+                    "text": ""
                 },
                 "uniqueid": ""
             },

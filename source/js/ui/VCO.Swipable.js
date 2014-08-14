@@ -269,8 +269,9 @@ VCO.Swipable = VCO.Class.extend({
 		
 		if (!this.options.enable.x) {
 			this.data.new_pos.x = this.data.pos.start.x;
-		} else if (this.data.new_pos.x > 0) {
-			this.data.new_pos.x = 0;
+		} else if (this.options.constraint.left && this.data.new_pos.x > this.options.constraint.left) {
+			this.data.new_pos.x = this.options.constraint.left;
+			trace("constraint left")
 		}
 		
 		if (!this.options.enable.y) {
@@ -373,13 +374,13 @@ VCO.Swipable = VCO.Class.extend({
 		}
 		
 		if (this.options.enable.x) {
-			if (this.options.constraint.left || this.options.constraint.right) {
-				if (pos.x >= this.options.constraint.left) {
-					pos.x = this.options.constraint.left;
-				} else if (pos.x < this.options.constraint.right) {
-					pos.x = this.options.constraint.right;
-				}
+			if (this.options.constraint.left && pos.x >= this.options.constraint.left) {
+				pos.x = this.options.constraint.left;
 			}
+			if (this.options.constraint.right && pos.x < this.options.constraint.right) {
+				pos.x = this.options.constraint.right;
+			}
+
 			animate.left = Math.floor(pos.x) + "px";
 		}
 		

@@ -39,8 +39,8 @@
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
 			
-			color:darken(@ui-background-color, 10);
-			color:@color-background;
+			//color:darken(@ui-background-color, 10);
+			//color:@color-background;
 			color:@color-theme;
 			font-size:32px;
 			line-height:32px;
@@ -62,6 +62,13 @@
 		height:100%;
 		width:100%;
 		top:0;
+		.vco-timenav-slider-background {
+			position:absolute;
+			height:100%;
+			width:100%;
+			background-color:darken(@ui-background-color, 10);
+			cursor:move;
+		}
 		.vco-timenav-container-mask {
 			position:absolute;
 			height:100%;
