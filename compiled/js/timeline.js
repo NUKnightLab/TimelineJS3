@@ -2788,7 +2788,9 @@ VCO.Language = {
 		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
 		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
+		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
+		before_common_era: "BC",
+		common_era: "CE"
 	}, 
 	dateformats: {
 		year: "yyyy",
@@ -4147,7 +4149,7 @@ VCO.DateFormat = function () {
 				mmm:  dF.i18n.monthNames[m],
 				mmmm: dF.i18n.monthNames[m + 12],
 				yy:   String(y).slice(2),
-				yyyy: y,
+				yyyy: y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
 				h:    H % 12 || 12,
 				hh:   pad(H % 12 || 12),
 				H:    H,
