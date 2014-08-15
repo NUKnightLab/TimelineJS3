@@ -159,6 +159,10 @@
           var date_obj = floored.data.date_obj;
           equal(date_obj.getYear(),100, "Should round to 2000 " + floored)
 
+          var early_ce = new VCO.Date(-59149708181438); // 8/14/95 (90 not 1995)
+          var floored = early_ce.floor('decade');
+          equal(floored.getTime(),-59326970400000,'Early floored dates should not go into the 20th Century')
+
       });
 
       test("VCO.DateUtil", function() {
@@ -213,8 +217,8 @@
         ok(this.timeline_config,"test data loaded");
         var timescale = new VCO.TimeScale(this.timeline_config.slides);
         equal(timescale.getMinorScale(),'year',"timescale should be years");
-        ok(timescale.getMajorTicks().ticks.length > 0,"should be some major ticks")
-        ok(timescale.getMinorTicks().ticks.length > 0,"should be some minor ticks")
+        ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
+        ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
         equal(timescale.getNumberOfRows(),3,"Expecting 3 rows")
       });
 
@@ -229,7 +233,7 @@
 
       test("TimeScale", function() {
         var timescale = new VCO.TimeScale(this.timeline_config.slides);
-        equal(timescale.getNumberOfRows(),4, "expect 4 rows");
+        equal(timescale.getNumberOfRows(),6, "expect 6 rows");
         equal(timescale._positions.length,this.timeline_config.slides.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+this.timeline_config.slides.length+")")
         var row_check = new Array(timescale.getNumberOfRows());
         for (var i = 0; i < row_check.length; i++) {
