@@ -72,7 +72,7 @@ VCO.Slide = VCO.Class.extend({
 			background: {
 				image: false,
 				color: false,
-				color_value :"#FFF"
+				color_value :""
 			}
 		}
 		

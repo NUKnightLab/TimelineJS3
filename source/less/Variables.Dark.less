@@ -22,9 +22,9 @@
 
 /* COLOR SCHEME
 ================================================== */
-@color-background: 				#FFF;
-@color-foreground: 				#333;
-@color-dark: 					#000;
+@color-background: 				#222;
+@color-foreground: 				#CCC;
+@color-dark: 					#FFF;
 
 @color-theme:					#c34528; //#DA0000;
 
@@ -38,20 +38,20 @@
 @color-theme-split1:			spin(@color-theme, -158);
 @color-theme-split2:			spin(@color-theme, 158);
 
-@color-text: 					lighten(@color-foreground,25);
+@color-text: 					darken(@color-dark,50);
 @color-header-text: 			@color-dark;
 
-@color-text-inverted:			darken(@color-background,33);
-@color-header-text-inverted:	@color-background;
+@color-text-inverted:			darken(@color-dark, 25);
+@color-header-text-inverted:	@color-dark;
 
 /* UI COLOR
 ================================================== */
-@ui-background-color:			darken(@color-background, 5); 
+@ui-background-color:			darken(@color-foreground,50); 
 @marker-color: 					darken(@ui-background-color, 15);
-@marker-selected-text-color: 	@color-background;
+@marker-selected-text-color: 	@color-dark;
 
-@minor-ticks-color:				darken(@ui-background-color,10);
-@major-ticks-color:				@color-foreground;
+@minor-ticks-color:				darken(@color-dark,66);
+@major-ticks-color:				darken(@color-dark,33);
 
 /* UI
 ================================================== */

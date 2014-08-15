@@ -26,7 +26,7 @@
 		margin:0;
 		width:100%;
 		height:100%;
-		background-color: fadeout(darken(@ui-background-color, 5), 85%);
+		background-color: fadeout(@marker-color, 85%);
 		border-top-right-radius:@time-marker-border-radius;
 		border-top-left-radius:@time-marker-border-radius;
 		
@@ -34,7 +34,7 @@
 			display:none;
 			position:absolute;
 			width:100%;
-			background-color: darken(@ui-background-color, 5);
+			background-color: @marker-color;
 			border-top-left-radius:@time-marker-border-radius;
 			border-top-right-radius:@time-marker-border-radius;
 			//border-bottom-right-radius:@time-marker-border-radius;
@@ -57,7 +57,7 @@
 	
 	.vco-timemarker-line-left, .vco-timemarker-line-right {
 		margin-top:@time-marker-border-radius;
-		border-left: 2px solid darken(@ui-background-color,5);
+		border-left: 2px solid @marker-color;
 		z-index:5;
 		top:0;
 		content:" ";
@@ -90,7 +90,7 @@
 	================================================== */
 	.vco-timemarker-content-container {
 		position:absolute;
-		background-color: darken(@ui-background-color, 5);
+		background-color: @marker-color;
 		border:0;
 		border-top-left-radius:@time-marker-border-radius;
 		border-top-right-radius:@time-marker-border-radius;
@@ -129,7 +129,7 @@
 					overflow:hidden;
 					font-weight:normal;
 					margin:0;
-					color:darken(@ui-background-color,15);
+					color:darken(@marker-color,10);
 
 				}
 			}
@@ -151,7 +151,7 @@
 
 					display:block;
 					font-size:24px;
-					color:darken(@ui-background-color,15);
+					color:darken(@marker-color,10);
 					margin-top:0px;
 				}
 			}
@@ -181,18 +181,18 @@
 	================================================== */
 	&:hover {
 		.vco-timemarker-timespan {
-			background-color: fadeout(darken(@ui-background-color,20), 85%);
+			background-color: fadeout(darken(@marker-color,15), 85%);
 			
 			.vco-timemarker-timespan-content {
-				background-color: darken(@ui-background-color,20);
+				background-color: darken(@marker-color,15);
 			}
 			
 			.vco-timemarker-line-left, .vco-timemarker-line-right {
 				//border-color:@color-background;
-				border-color: darken(@ui-background-color,20);
+				border-color: darken(@marker-color,15);
 				&:after {
 					//z-index:7;
-					background-color:darken(@ui-background-color, 100);
+					background-color:darken(@marker-color, 100);
 				}
 			}
 			
@@ -202,12 +202,11 @@
 		
 		.vco-timemarker-content-container {
 			background-color:@color-background;
-			background-color: darken(@ui-background-color,20);
+			background-color: darken(@marker-color,15);
 			.vco-timemarker-content {
 				.vco-timemarker-text {
 					h2.vco-headline {
-						//color:darken(@ui-background-color, 60);
-						color:@color-background;
+						color:@marker-selected-text-color;
 					}
 				}
 				.vco-timemarker-media-container {
@@ -215,7 +214,7 @@
 						opacity:1;
 					}
 					[class^="vco-icon-"], [class*=" vco-icon-"] {
-						color:@color-background;
+						color:@marker-selected-text-color;
 					}
 				}
 			}
@@ -266,7 +265,7 @@
 			.vco-timemarker-content {
 				.vco-timemarker-text {
 					h2.vco-headline {
-						color:@color-background;
+						color:@marker-selected-text-color;
 					}
 				}
 				.vco-timemarker-media-container {

@@ -8,7 +8,7 @@
 	left:0;
 	background-color:@color-background;
 	//background-color:fadeout(@color-background, 95%);
-	
+	//.box-shadow(1px -1px 7px rgba(0,0,0,.10));
 	//.box-shadow(1px -1px 5px rgba(0,0,0,0.1));
 	border-top: 1px solid darken(@ui-background-color,5);
 	z-index:2;
@@ -55,7 +55,7 @@
 				font-size:12px;
 				line-height:12px;
 				bottom:3px;
-				color:@color-foreground;
+				color:@major-ticks-color;
 				&:before {
 					font-size:17px;
 					line-height:17px;
@@ -69,7 +69,7 @@
 				font-size:10px;
 				line-height:10px;
 				bottom:@axis-height - 20;
-				color:darken(@ui-background-color,10);
+				color:@minor-ticks-color;
 				&:before {
 					font-size:10px;
 					line-height:10px;

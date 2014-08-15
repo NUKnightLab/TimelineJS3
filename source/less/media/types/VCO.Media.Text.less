@@ -11,6 +11,10 @@
 	text-align: left;
 	//float:left;
 	text-shadow: none;
+	color:@color-text;
+	p {
+		color:@color-text;
+	}
 	.vco-text-content-container {
 		.vco-text-content{
 		
@@ -25,12 +29,12 @@
 		line-height: @base-font-size;
 		font-weight: normal;
 		margin:0 0 2px 0;
-		color: darken(@color-background, 25);
+		color: lighten(@color-text,25);
 		small {
 			font-size:@base-font-size;
 			line-height: @base-font-size;
 			font-weight: normal;
-			color: darken(@color-background, 25);
+			color: lighten(@color-text,25);
 		}
 	}
 	.vco-text-date {
@@ -39,7 +43,7 @@
 		font-weight:normal;
 		margin-top:10px;
 		font-size:12px;
-		color: lighten(@color-dark, 40%);
+		color: lighten(@color-text,25);
 		&:after {
 			//margin-left:3px;
 			//color:#999;
@@ -52,12 +56,12 @@
 // When the background is an image
 .vco-full-image-background, .vco-full-color-background {
 	.vco-text, .vco-text p {
-		color: darken(@color-background, 25) !important;
+		color: @color-text-inverted !important;
 		text-shadow: 1px 1px 2px #000;
 		.vco-headline-date, h3.vco-headline-date {
-			color: lighten(@color-dark, 50) !important;
+			color: @color-text-inverted !important;
 			small {
-				color: lighten(@color-dark, 50) !important;
+				color: @color-text-inverted !important;
 			}
 		}
 

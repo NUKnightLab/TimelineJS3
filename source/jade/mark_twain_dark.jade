@@ -1,0 +1,44 @@
+doctype html
+html(lang="en")
+	head
+		title TimelineJS
+		meta(charset='utf-8')
+		meta(name='description', content='TimelineJS Embed')
+		meta(name='apple-mobile-web-app-capable', content='yes')
+		meta(name='apple-touch-fullscreen', content='yes')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0')
+		// CSS
+		link(rel='stylesheet', href='../css/timeline.dark.css?v1')
+		//FONT
+		link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;subset=latin,latin')
+		
+		// Style
+		style.
+			html, body {
+				height:100%;
+				width:100%;
+				padding: 0px;
+				margin: 0px;
+			}
+			.vco-timeline {
+				
+			}
+
+		// HTML5 shim, for IE6-8 support of HTML elements
+		//if lt IE 9
+			script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+
+	body
+
+		div#timeline
+
+		
+		// JavaScript
+		script(src='../js/timeline.js')
+		script.
+			var timeline = new VCO.Timeline('timeline', 'marktwain.json', {
+				
+			});
+			window.onresize = function(event) {
+				timeline.updateDisplay();
+			}

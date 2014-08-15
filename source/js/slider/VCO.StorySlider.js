@@ -292,7 +292,7 @@ VCO.StorySlider = VCO.Class.extend({
 	goTo: function(n, fast, displayupdate) {
 		var self = this;
 		
-		this.changeBackground({color_value:"#FFF", image:false});
+		this.changeBackground({color_value:"", image:false});
 		
 		// Clear Preloader Timer
 		if (this.preloadTimer) {
@@ -432,8 +432,6 @@ VCO.StorySlider = VCO.Class.extend({
 	
 	changeBackground: function(bg) {
 		
-		// TODO Add opacity fade out/in transition
-		
 		var bg_color = {r:256, g:256, b:256},
 			bg_color_rgb,
 			bg_percent_start 	= this.options.slide_default_fade,
@@ -449,9 +447,12 @@ VCO.StorySlider = VCO.Class.extend({
 		this._el.background.style.backgroundImage = "none";
 		
 		if (bg.color_value) {
+			trace("bg.color_value " + bg.color_value)
+			trace(bg)
 			this._el.background.style.backgroundColor = bg.color_value;
 		} else {
-			this._el.background.style.backgroundColor = "#FFF";
+			trace("transparent ")
+			this._el.background.style.backgroundColor = "transparent";
 		}
 		
 		if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255 || bg.image) {
