@@ -892,7 +892,7 @@
   background-color: #4d4d4d;
   position: relative;
   overflow: hidden;
-  border-top: 2px solid #4d4d4d;
+  border-top: 1px solid #404040;
 }
 .vco-timenav .vco-timenav-button {
   width: 50px;
@@ -1102,7 +1102,7 @@
   overflow: hidden;
   font-weight: normal;
   margin: 0;
-  color: #0d0d0d;
+  color: #000000;
 }
 .vco-timemarker .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-media-container {
   float: left;
@@ -1252,6 +1252,7 @@
   left: 0;
   background-color: #222222;
   border-top: 1px solid #404040;
+  border-top: 1px solid #222222;
   z-index: 2;
 }
 .vco-timeaxis {
@@ -1846,9 +1847,6 @@
   -o-user-select: none;
   user-select: none;
   position: relative;
-  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   z-index: 8;
 }
 .vco-storyslider img,

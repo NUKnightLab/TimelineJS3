@@ -129,7 +129,7 @@
 					overflow:hidden;
 					font-weight:normal;
 					margin:0;
-					color:darken(@marker-color,10);
+					color:darken(@marker-color,15);
 
 				}
 			}
@@ -251,7 +251,7 @@
 		
 		.vco-timemarker-line-left, .vco-timemarker-line-right {
 			border-color:@color-theme;
-			
+			//.box-shadow(-1px 1px 2px rgba(0,0,0,0.3));
 			&:after {
 				background-color:darken(@color-theme, 20);
 				background-color:@color-theme;
@@ -262,6 +262,7 @@
 			background-color:@color-theme;
 			color:@color-background;
 			z-index:7;
+			//.box-shadow(1px 2px 3px rgba(0,0,0,0.3));
 			.vco-timemarker-content {
 				.vco-timemarker-text {
 					h2.vco-headline {
