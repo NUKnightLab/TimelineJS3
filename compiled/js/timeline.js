@@ -8649,7 +8649,6 @@ VCO.TimeNav = VCO.Class.extend({
 			
 		}
 		
-		//this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		this.current_marker = n;
 		
 	},
@@ -8678,6 +8677,50 @@ VCO.TimeNav = VCO.Class.extend({
 		this.fire("change", {uniqueid: e.uniqueid});
 	},
 	
+	_onMouseScroll: function(e) {
+		
+		var delta		= 0,
+			scroll_to	= 0,
+			constraint 	= {
+				right: 	-(this.timescale.getPixelWidth() - (this.options.width/2)),
+				left: 	this.options.width/2
+			};
+		if (!e) {
+			e = window.event;
+		}
+		if (e.originalEvent) {
+			e = e.originalEvent;
+		}
+		
+		// Webkit and browsers able to differntiate between up/down and left/right scrolling
+		if (typeof e.wheelDeltaX != 'undefined' ) {
+			delta = e.wheelDeltaY/6;
+			if (Math.abs(e.wheelDeltaX) > Math.abs(e.wheelDeltaY)) {
+				delta = e.wheelDeltaX/6;
+			} else {
+				//delta = e.wheelDeltaY/6;
+				delta = 0;
+			}
+		}
+		if (delta) {
+			if (e.preventDefault) {
+				 e.preventDefault();
+			}
+			e.returnValue = false;
+		}
+		// Stop from scrolling too far
+		scroll_to = parseInt(this._el.slider.style.left.replace("px", "")) + delta;
+		
+		
+		if (scroll_to > constraint.left) {
+			scroll_to = constraint.left;
+		} else if (scroll_to < constraint.right) {
+			scroll_to = constraint.right;
+		}
+		
+		this._el.slider.style.left = scroll_to + "px";
+		
+	},
 	
 	/*	Private Methods
 	================================================== */
@@ -8750,7 +8793,6 @@ VCO.TimeNav = VCO.Class.extend({
 			constraint: {top: false,bottom: false,left: (this.options.width/2),right: false},
 			snap: 	false
 		});
-		this._swipable.on('dragmove', this._onDragMove, this);
 		this._swipable.enable();
 		
 		// Buttons
@@ -8763,12 +8805,15 @@ VCO.TimeNav = VCO.Class.extend({
 		//this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
 		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
 		
-		
-		
-		
 	},
 	
 	_initEvents: function () {
+		// Drag Events
+		this._swipable.on('dragmove', this._onDragMove, this);
+		
+		// Scroll Events
+		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
+		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
 		
 	},
 	
@@ -10001,6 +10046,7 @@ VCO.Timeline = VCO.Class.extend({
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
+		
 	},
 	
 	/*	Set Current Slide

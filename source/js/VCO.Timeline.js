@@ -448,6 +448,7 @@ VCO.Timeline = VCO.Class.extend({
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
+		
 	},
 	
 	/*	Set Current Slide
