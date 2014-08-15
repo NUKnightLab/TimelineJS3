@@ -4388,16 +4388,16 @@ VCO.Date = VCO.Class.extend({
         ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
         ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
         ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 10)) 
+            var real_year = d.getFullYear();
+            d.setFullYear( real_year - (real_year % 10)) 
         }],
         ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 100)) 
+            var real_year = d.getFullYear();
+            d.setFullYear( real_year - (real_year % 100)) 
         }],
         ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
-            var real_year = 1900 + d.getYear();
-            d.setYear( real_year - (real_year % 1000)) 
+            var real_year = d.getFullYear();
+            d.setFullYear( real_year - (real_year % 1000)) 
         }],
         // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
         // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
@@ -8072,11 +8072,8 @@ VCO.StorySlider = VCO.Class.extend({
 		this._el.background.style.backgroundImage = "none";
 		
 		if (bg.color_value) {
-			trace("bg.color_value " + bg.color_value)
-			trace(bg)
 			this._el.background.style.backgroundColor = bg.color_value;
 		} else {
-			trace("transparent ")
 			this._el.background.style.backgroundColor = "transparent";
 		}
 		
@@ -9317,58 +9314,66 @@ VCO.TimeAxis = VCO.Class.extend({
 	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
 
 		var ticks = timescale.getTicks();
-		var major_ticks = ticks['major'],
-			minor_ticks = ticks['minor'];
-		
+
 		var controls = {
 			minor: {
 				el: this._el.minor,
-				dateformat: this.dateformat_lookup[minor_ticks.name],
+				dateformat: this.dateformat_lookup[ticks['minor'].name],
 				ts_ticks: ticks['minor'].ticks,
 				tick_elements: this.minor_ticks
 			},
 			major: {
 				el: this._el.major,
-				dateformat: this.dateformat_lookup[major_ticks.name],
+				dateformat: this.dateformat_lookup[ticks['major'].name],
 				ts_ticks: ticks['major'].ticks,
 				tick_elements: this.major_ticks
 			}
 		}
+
+		this.major_ticks = this._createTickElements(
+			ticks['major'].ticks, 
+			this._el.major, 
+			this.dateformat_lookup[ticks['major'].name]
+		);
 		
-		// Create Minor Ticks
-		var control = controls['minor'];
-		for (var i = 0; i < control['ts_ticks'].length; i++) {
-			var ts_tick = control.ts_ticks[i];
-			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", control.el),
-				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
-			ts_tick.setDateFormat(control.dateformat);
-			tick_text.innerHTML = ts_tick.getDisplayDate(true);
-			control.tick_elements.push({
-				tick:tick,
-				tick_text:tick_text,
-				display_text:ts_tick.getDisplayDate(true),
-				date:ts_tick
-			});
-		}
-		
-		// Create Major Ticks
-		var control = controls['major'];
-		for (var j = 0; j < control['ts_ticks'].length; j++) {
-			var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", control.el),
-				tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
-			control['ts_ticks'][j].setDateFormat(control.dateformat);
-			tick_text.innerHTML = control['ts_ticks'][j].getDisplayDate(true);
-			control.tick_elements.push({
-				tick:tick,
-				tick_text:tick_text,
-				display_text:control['ts_ticks'][j].getDisplayDate(true),
-				date:control['ts_ticks'][j]
-			});
-		}
+		this.minor_ticks = this._createTickElements(
+			ticks['minor'].ticks, 
+			this._el.minor, 
+			this.dateformat_lookup[ticks['minor'].name],
+			ticks['major'].ticks
+		);
 		
 		this.positionTicks(timescale, optimal_tick_width);
 	},
 	
+	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
+
+		var skip_times = {}
+		if (ticks_to_skip){
+			for (idx in ticks_to_skip) {
+				skip_times[ticks_to_skip[idx].getTime()] = true;
+			}
+		}
+
+		var tick_elements = []
+		for (var i = 0; i < ts_ticks.length; i++) {
+			var ts_tick = ts_ticks[i];
+			if (!(ts_tick.getTime() in skip_times)) {
+				var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", tick_element),
+					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
+				ts_tick.setDateFormat(dateformat);
+				tick_text.innerHTML = ts_tick.getDisplayDate(true);
+				tick_elements.push({
+					tick:tick,
+					tick_text:tick_text,
+					display_text:ts_tick.getDisplayDate(true),
+					date:ts_tick
+				});
+			}
+		}
+		return tick_elements;
+	},
+
 	positionTicks: function(timescale, optimal_tick_width) {
 		
 		// Poition Major Ticks
@@ -9490,7 +9495,6 @@ VCO.AxisHelper = VCO.Class.extend({
         var factor_scale = timescale._scaled_padding * option.factor;
         var first_tick_time = timescale._earliest - factor_scale;
         var last_tick_time = timescale._latest + factor_scale;
-        console.log(first_tick_time,last_tick_time,option.name,option.factor)
         var ticks = []
         for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
             ticks.push(new VCO.Date(i).floor(option.name));
@@ -9805,7 +9809,6 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
-		trace("_calculateTimeNavHeight");
 		var height = 0;
 		
 		if (timenav_height) {
@@ -9814,7 +9817,6 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			if (this.options.timenav_height_percentage || timenav_height_percentage) {
 				if (timenav_height_percentage) {
-					trace("timenav_height_percentage " + timenav_height_percentage)
 					height = Math.round((this.options.height/100)*timenav_height_percentage);
 				} else {
 					height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
@@ -9827,7 +9829,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		height = height - (this.options.marker_padding * 2);
-		trace("height " + height)
+		
 		return height;
 	},
 	

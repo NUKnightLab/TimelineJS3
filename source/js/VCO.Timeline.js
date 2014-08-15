@@ -256,7 +256,6 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
-		trace("_calculateTimeNavHeight");
 		var height = 0;
 		
 		if (timenav_height) {
@@ -265,7 +264,6 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			if (this.options.timenav_height_percentage || timenav_height_percentage) {
 				if (timenav_height_percentage) {
-					trace("timenav_height_percentage " + timenav_height_percentage)
 					height = Math.round((this.options.height/100)*timenav_height_percentage);
 				} else {
 					height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
@@ -278,7 +276,7 @@ VCO.Timeline = VCO.Class.extend({
 		}
 		
 		height = height - (this.options.marker_padding * 2);
-		trace("height " + height)
+		
 		return height;
 	},
 	

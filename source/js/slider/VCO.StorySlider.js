@@ -447,11 +447,8 @@ VCO.StorySlider = VCO.Class.extend({
 		this._el.background.style.backgroundImage = "none";
 		
 		if (bg.color_value) {
-			trace("bg.color_value " + bg.color_value)
-			trace(bg)
 			this._el.background.style.backgroundColor = bg.color_value;
 		} else {
-			trace("transparent ")
 			this._el.background.style.backgroundColor = "transparent";
 		}
 		
