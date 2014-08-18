@@ -330,7 +330,12 @@ VCO.Swipable = VCO.Class.extend({
 			}
 		}
 		
-		this._animateMomentum();
+		if (pos_change.time < 1000 ) {
+			
+		} else {
+			this._animateMomentum();
+		}
+		
 		if (swipe && this.data.direction) {
 			this.fire("swipe_" + this.data.direction, this.data);
 		} else if (this.data.direction) {
