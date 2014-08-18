@@ -243,6 +243,28 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
 	},
 	
+	_updateTimeScale: function(new_scale) {
+		this.options.scale_factor = new_scale;
+		this._updateDrawTimeline();
+	},
+	
+	zoomIn: function(n) {
+		this.options.scale_factor++;
+		this._updateDrawTimeline();
+		this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
+	},
+	
+	zoomOut: function(n) {
+		if (this.options.scale_factor > 1) {
+			
+			this.options.scale_factor--;
+			this._updateDrawTimeline();
+			this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
+			trace("this.options.scale_factor " + this.options.scale_factor)
+		}
+		
+	},
+	
 	/*	Markers
 	================================================== */
 	_createMarkers: function(array) { 
@@ -319,15 +341,19 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	goTo: function(n, fast, displayupdate) {
+	goTo: function(n, fast, ease) {
 		
-		var self = 	this;
-
+		var self = 	this,
+			_ease = this.options.ease;
+		
+		if (ease) {
+			_ease = ease;
+		}
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
 		
-		// Move container to marker position
+		
 		
 		// Stop animation
 		if (this.animator) {
@@ -340,7 +366,7 @@ VCO.TimeNav = VCO.Class.extend({
 			this.animator = VCO.Animate(this._el.slider, {
 				left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
 				duration: 	this.options.duration,
-				easing: 	this.options.ease
+				easing: 	_ease
 			});
 			
 		}
@@ -353,7 +379,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Events
 	================================================== */
-	
 	_onLoaded: function() {
 		this.fire("loaded", this.data);
 	},
@@ -420,7 +445,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Private Methods
 	================================================== */
-	
 	// Update Display
 	_updateDisplay: function(width, height, animate) {
 		
@@ -441,6 +465,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Update Swipable constraint
 		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
+		
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},
@@ -491,16 +516,6 @@ VCO.TimeNav = VCO.Class.extend({
 		});
 		this._swipable.enable();
 		
-		// Buttons
-		//this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
-		
-		//this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		
-		//this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
-		
 	},
 	
 	_initEvents: function () {
@@ -510,6 +525,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Scroll Events
 		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
 		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
+		
 		
 	},
 	

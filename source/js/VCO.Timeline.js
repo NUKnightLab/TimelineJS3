@@ -177,6 +177,7 @@ VCO.Timeline = VCO.Class.extend({
 		// Animation Objects
 		this.animator_timenav = null;
 		this.animator_storyslider = null;
+		this.animator_menubar = null;
 		
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
@@ -366,6 +367,18 @@ VCO.Timeline = VCO.Class.extend({
 				duration: 	duration/2,
 				easing: 	VCO.Ease.easeOutStrong
 			});
+			
+			// Animate Menubar
+			if (this.animator_menubar) {
+				this.animator_menubar.stop();
+				trace("stop animation")
+			}
+			
+			this.animator_menubar = VCO.Animate(this._el.menubar, {
+				top: 	(this.options.storyslider_height + 1) + "px",
+				duration: 	duration/2,
+				easing: 	VCO.Ease.easeOutStrong
+			});
 		
 		} else {
 			// TimeNav
@@ -373,7 +386,12 @@ VCO.Timeline = VCO.Class.extend({
 		
 			// StorySlider
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
+			
+			// Menubar
+			this._el.menubar.style.top = this.options.storyslider_height + 1 + "px";
 		}
+		
+		
 		
 		// Update Component Displays
 		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
@@ -407,6 +425,7 @@ VCO.Timeline = VCO.Class.extend({
 			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
 		}
 		
+		this._el.menubar			= VCO.Dom.create('div', 'vco-menubar', this._el.container);
 
 		
 		// Initial Default Layout
@@ -418,7 +437,6 @@ VCO.Timeline = VCO.Class.extend({
 		this.options.timenav_height = this._calculateTimeNavHeight();
 		
 		// Create TimeNav
-		
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
@@ -428,12 +446,14 @@ VCO.Timeline = VCO.Class.extend({
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
 		
+		// Create Menu Bar
+		this._menubar = new VCO.MenuBar(this._el.menubar, this._el.container, this.options);
+		
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.timenav_height - 1);
+			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
 		} else {
-			this.options.menubar_height = this._el.menubar.offsetHeight;
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - 1);
+			this.options.storyslider_height = (this.options.height - 1);
 		}
 		
 		
@@ -445,12 +465,16 @@ VCO.Timeline = VCO.Class.extend({
 	_initEvents: function () {
 		
 		// TimeNav Events
-		this._timenav.on('collapse', this._onMenuBarCollapse, this);
 		this._timenav.on('change', this._onTimeNavChange, this);
 		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
+		
+		// Menubar Events
+		this._menubar.on('zoom_in', this._onZoomIn, this);
+		this._menubar.on('zoom_out', this._onZoomOut, this);
+		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
 	
@@ -506,14 +530,18 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_onBackToStart: function(e) {
-		this.current_slide = 0;
-		this._timenav.goTo(this.current_slide);
-		this._storyslider.goTo(this.current_slide);
-		this.fire("change", {current_slide: this.current_slide}, this);
+		this._storyslider.goTo(0);
+		//this.fire("change", {uniqueid:this.current_id}, this);
 	},
 	
-	_onMenuBarCollapse: function(e) {
-		this._updateDisplay(e.y, true);
+	_onZoomIn: function(e) {
+		this._timenav.zoomIn();
+		this.fire("zoom_in", {uniqueid:this.current_id}, this);
+	},
+	
+	_onZoomOut: function(e) {
+		this._timenav.zoomOut();
+		this.fire("zoom_out", {uniqueid:this.current_id}, this);
 	},
 	
 	_onMouseClick: function(e) {

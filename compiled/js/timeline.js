@@ -5245,9 +5245,9 @@ VCO.MenuBar = VCO.Class.extend({
 		this._el = {
 			parent: {},
 			container: {},
-			button_overview: {},
 			button_backtostart: {},
-			button_collapse_toggle: {},
+			button_zoomin: {},
+			button_zoomout: {},
 			arrow: {},
 			line: {},
 			coverbar: {},
@@ -5336,80 +5336,43 @@ VCO.MenuBar = VCO.Class.extend({
 
 	/*	Events
 	================================================== */
-
+	_onButtonZoomIn: function(e) {
+		this.fire("zoom_in", e);
+	},
 	
-	_onButtonOverview: function(e) {
-		this.fire("overview", e);
+	_onButtonZoomOut: function(e) {
+		this.fire("zoom_out", e);
 	},
 	
 	_onButtonBackToStart: function(e) {
 		this.fire("back_to_start", e);
 	},
 	
-	_onButtonCollapseMap: function(e) {
-		if (this.collapsed) {
-			this.collapsed = false;
-			this.show();
-			this._el.button_overview.style.display = "inline";
-			this.fire("collapse", {y:this.options.menubar_default_y});
-			if (VCO.Browser.mobile) {
-				this._el.button_collapse_toggle.innerHTML	= "<span class='vco-icon-arrow-up'></span>";
-			} else {
-				this._el.button_collapse_toggle.innerHTML	= VCO.Language.buttons.collapse_toggle + "<span class='vco-icon-arrow-up'></span>";
-			}
-		} else {
-			this.collapsed = true;
-			this.hide(25);
-			this._el.button_overview.style.display = "none";
-			this.fire("collapse", {y:1});
-			if (VCO.Browser.mobile) {
-				this._el.button_collapse_toggle.innerHTML	= "<span class='vco-icon-arrow-down'></span>";
-			} else {
-				this._el.button_collapse_toggle.innerHTML	= VCO.Language.buttons.uncollapse_toggle + "<span class='vco-icon-arrow-down'></span>";
-			}
-		}
-	},
 	
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
+		
 		// Create Layout
-		
-		// Buttons
-		this._el.button_overview 						= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
-		VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
-		
+		this._el.button_zoomin 							= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
+		this._el.button_zoomout 						= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
 		this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
-		VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		
-		this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-menubar-button', this._el.container);
-		VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
-		
-		if (this.options.map_as_image) {
-			this._el.button_overview.innerHTML			= VCO.Language.buttons.overview;
-		} else {
-			this._el.button_overview.innerHTML			= VCO.Language.buttons.map_overview;
-		}
 		
 		if (VCO.Browser.mobile) {
-			
-			this._el.button_backtostart.innerHTML		= "<span class='vco-icon-goback'></span>";
-			this._el.button_collapse_toggle.innerHTML	= "<span class='vco-icon-arrow-up'></span>";
 			this._el.container.setAttribute("ontouchstart"," ");
-		} else {
-			
-			this._el.button_backtostart.innerHTML		= VCO.Language.buttons.backtostart + " <span class='vco-icon-goback'></span>";
-			this._el.button_collapse_toggle.innerHTML	= VCO.Language.buttons.collapse_toggle + "<span class='vco-icon-arrow-up'></span>";
 		}
 		
-		if (this.options.layout == "landscape") {
-			this._el.button_collapse_toggle.style.display = "none";
-		}
+		this._el.button_backtostart.innerHTML		= "<span class='vco-icon-goback'></span>";
+		this._el.button_zoomin.innerHTML			= "<span class='vco-icon-zoom-in'></span>";
+		this._el.button_zoomout.innerHTML			= "<span class='vco-icon-zoom-out'></span>";
+		
 		
 	},
 	
 	_initEvents: function () {
-		
+		VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
+		VCO.DomEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomIn, this);
+		VCO.DomEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
 	},
 	
 	// Update Display
@@ -8555,6 +8518,28 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
 	},
 	
+	_updateTimeScale: function(new_scale) {
+		this.options.scale_factor = new_scale;
+		this._updateDrawTimeline();
+	},
+	
+	zoomIn: function(n) {
+		this.options.scale_factor++;
+		this._updateDrawTimeline();
+		this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
+	},
+	
+	zoomOut: function(n) {
+		if (this.options.scale_factor > 1) {
+			
+			this.options.scale_factor--;
+			this._updateDrawTimeline();
+			this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
+			trace("this.options.scale_factor " + this.options.scale_factor)
+		}
+		
+	},
+	
 	/*	Markers
 	================================================== */
 	_createMarkers: function(array) { 
@@ -8631,15 +8616,19 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	goTo: function(n, fast, displayupdate) {
+	goTo: function(n, fast, ease) {
 		
-		var self = 	this;
-
+		var self = 	this,
+			_ease = this.options.ease;
+		
+		if (ease) {
+			_ease = ease;
+		}
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
 		
-		// Move container to marker position
+		
 		
 		// Stop animation
 		if (this.animator) {
@@ -8652,7 +8641,7 @@ VCO.TimeNav = VCO.Class.extend({
 			this.animator = VCO.Animate(this._el.slider, {
 				left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
 				duration: 	this.options.duration,
-				easing: 	this.options.ease
+				easing: 	_ease
 			});
 			
 		}
@@ -8665,7 +8654,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Events
 	================================================== */
-	
 	_onLoaded: function() {
 		this.fire("loaded", this.data);
 	},
@@ -8732,7 +8720,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Private Methods
 	================================================== */
-	
 	// Update Display
 	_updateDisplay: function(width, height, animate) {
 		
@@ -8753,6 +8740,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Update Swipable constraint
 		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
+		
 		// Go to the current slide
 		this.goTo(this.current_marker, true, true);
 	},
@@ -8803,16 +8791,6 @@ VCO.TimeNav = VCO.Class.extend({
 		});
 		this._swipable.enable();
 		
-		// Buttons
-		//this._el.button_overview 						= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_overview, 'click', this._onButtonOverview, this);
-		
-		//this._el.button_backtostart 					= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		
-		//this._el.button_collapse_toggle 				= VCO.Dom.create('span', 'vco-timenav-button', this._el.container);
-		//VCO.DomEvent.addListener(this._el.button_collapse_toggle, 'click', this._onButtonCollapseMap, this);
-		
 	},
 	
 	_initEvents: function () {
@@ -8822,6 +8800,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Scroll Events
 		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
 		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
+		
 		
 	},
 	
@@ -9783,6 +9762,7 @@ VCO.Timeline = VCO.Class.extend({
 		// Animation Objects
 		this.animator_timenav = null;
 		this.animator_storyslider = null;
+		this.animator_menubar = null;
 		
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
@@ -9972,6 +9952,18 @@ VCO.Timeline = VCO.Class.extend({
 				duration: 	duration/2,
 				easing: 	VCO.Ease.easeOutStrong
 			});
+			
+			// Animate Menubar
+			if (this.animator_menubar) {
+				this.animator_menubar.stop();
+				trace("stop animation")
+			}
+			
+			this.animator_menubar = VCO.Animate(this._el.menubar, {
+				top: 	(this.options.storyslider_height + 1) + "px",
+				duration: 	duration/2,
+				easing: 	VCO.Ease.easeOutStrong
+			});
 		
 		} else {
 			// TimeNav
@@ -9979,7 +9971,12 @@ VCO.Timeline = VCO.Class.extend({
 		
 			// StorySlider
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
+			
+			// Menubar
+			this._el.menubar.style.top = this.options.storyslider_height + 1 + "px";
 		}
+		
+		
 		
 		// Update Component Displays
 		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
@@ -10013,6 +10010,7 @@ VCO.Timeline = VCO.Class.extend({
 			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
 		}
 		
+		this._el.menubar			= VCO.Dom.create('div', 'vco-menubar', this._el.container);
 
 		
 		// Initial Default Layout
@@ -10024,7 +10022,6 @@ VCO.Timeline = VCO.Class.extend({
 		this.options.timenav_height = this._calculateTimeNavHeight();
 		
 		// Create TimeNav
-		
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.init();
@@ -10034,12 +10031,14 @@ VCO.Timeline = VCO.Class.extend({
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
 		
+		// Create Menu Bar
+		this._menubar = new VCO.MenuBar(this._el.menubar, this._el.container, this.options);
+		
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - this.options.timenav_height - 1);
+			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
 		} else {
-			this.options.menubar_height = this._el.menubar.offsetHeight;
-			this.options.storyslider_height = (this.options.height - this._el.menubar.offsetHeight - 1);
+			this.options.storyslider_height = (this.options.height - 1);
 		}
 		
 		
@@ -10051,12 +10050,16 @@ VCO.Timeline = VCO.Class.extend({
 	_initEvents: function () {
 		
 		// TimeNav Events
-		this._timenav.on('collapse', this._onMenuBarCollapse, this);
 		this._timenav.on('change', this._onTimeNavChange, this);
 		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
+		
+		// Menubar Events
+		this._menubar.on('zoom_in', this._onZoomIn, this);
+		this._menubar.on('zoom_out', this._onZoomOut, this);
+		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
 	
@@ -10112,14 +10115,18 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_onBackToStart: function(e) {
-		this.current_slide = 0;
-		this._timenav.goTo(this.current_slide);
-		this._storyslider.goTo(this.current_slide);
-		this.fire("change", {current_slide: this.current_slide}, this);
+		this._storyslider.goTo(0);
+		//this.fire("change", {uniqueid:this.current_id}, this);
 	},
 	
-	_onMenuBarCollapse: function(e) {
-		this._updateDisplay(e.y, true);
+	_onZoomIn: function(e) {
+		this._timenav.zoomIn();
+		this.fire("zoom_in", {uniqueid:this.current_id}, this);
+	},
+	
+	_onZoomOut: function(e) {
+		this._timenav.zoomOut();
+		this.fire("zoom_out", {uniqueid:this.current_id}, this);
 	},
 	
 	_onMouseClick: function(e) {

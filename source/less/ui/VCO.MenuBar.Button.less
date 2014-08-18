@@ -2,21 +2,19 @@
 ================================================== */
 
 .vco-menubar-button {
-	border-left: 1px solid darken(@color-background,10);
-	font-size: 14px;
-	padding: 6px 12px 6px 12px;
-	//position:relative;
-	//top:-24px;
-	background-color:#FFF;
+	//border-left: 1px solid darken(@color-background,10);
+	font-size: 18px;
+	line-height:18px;
+	//padding: 6px 12px 6px 12px;
+	//padding:12px;
+	background-color:fadeout(@ui-background-color, 33%);
 	cursor:pointer;
-	font-weight: bold;
-	.vco-icon-arrow-up, .vco-icon-arrow-down {
-		display:inline-block;
-		height:14px;
-		overflow:hidden;
-		font-size: 20px;
-		position:relative;
-		top:-2px;
+	padding: 6px 12px 6px 12px;
+	display:inline-block;
+	color:@color-text;
+	color:darken(@marker-color,15);
+	[class^="vco-icon-"], [class*=" vco-icon-"] {
+		
 	}
 }
 .vco-menubar-button:hover {
