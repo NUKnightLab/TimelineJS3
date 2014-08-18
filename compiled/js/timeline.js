@@ -9915,6 +9915,7 @@ VCO.Timeline = VCO.Class.extend({
 	_updateDisplay: function(timenav_height, animate, d) {
 		var duration 		= this.options.duration,
 			display_class 	= this.options.base_class,
+			menu_position 	= 0,
 			self			= this;
 		
 		if (d) {
@@ -9931,10 +9932,6 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			this.options.layout = "landscape";
 		}
-		
-		
-		
-		
 		
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
@@ -9963,6 +9960,10 @@ VCO.Timeline = VCO.Class.extend({
 		// Set StorySlider Height
 		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
 		
+		// Positon Menu
+		menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
+		trace(this._el.menubar.offsetHeight)
+		
 		if (animate) {
 		
 			// Animate TimeNav
@@ -9982,6 +9983,8 @@ VCO.Timeline = VCO.Class.extend({
 			*/
 			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
 			
+			
+			
 			// Animate StorySlider
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
@@ -9999,7 +10002,7 @@ VCO.Timeline = VCO.Class.extend({
 			}
 			
 			this.animator_menubar = VCO.Animate(this._el.menubar, {
-				top: 	(this.options.storyslider_height + 1) + "px",
+				top: 	menu_position + "px",
 				duration: 	duration/2,
 				easing: 	VCO.Ease.easeOutStrong
 			});
@@ -10012,7 +10015,7 @@ VCO.Timeline = VCO.Class.extend({
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
 			
 			// Menubar
-			this._el.menubar.style.top = this.options.storyslider_height + 1 + "px";
+			this._el.menubar.style.top = menu_position + "px";
 		}
 		
 		
