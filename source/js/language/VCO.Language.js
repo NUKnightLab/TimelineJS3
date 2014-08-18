@@ -9,9 +9,7 @@ VCO.Language = {
 		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
 		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
-		before_common_era: "BC",
-		common_era: "CE"
+		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
 	}, 
 	dateformats: {
 		year: "yyyy",

@@ -156,6 +156,7 @@ VCO.Timeline = VCO.Class.extend({
 			menubar_height: 			0,
 			skinny_size: 				650,
 			relative_date: 				false, 			// Use momentjs to show a relative date from the slide.text.date.created_time field
+			use_bc: 					false, 			// Use declared suffix on dates earlier than 0
 			// animation
 			duration: 					1000,
 			ease: 						VCO.Ease.easeInOutQuint,
@@ -220,9 +221,11 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		if(this.options.language == 'en') {
 		    this.options.language = VCO.Language;
+			VCO.Language.use_bc = this.options.use_bc;
 		    this._initData(data);
 		} else {
 			VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
+				VCO.Language.use_bc = this.options.use_bc;
 				self._initData(data);
 			});
 		}

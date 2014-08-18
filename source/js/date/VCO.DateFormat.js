@@ -63,6 +63,7 @@ VCO.DateFormat = function () {
 			s = date[_ + "Seconds"](),
 			L = date[_ + "Milliseconds"](),
 			o = utc ? 0 : date.getTimezoneOffset(),
+			year = "",
 			flags = {
 				d:    d,
 				dd:   pad(d),
@@ -73,7 +74,7 @@ VCO.DateFormat = function () {
 				mmm:  dF.i18n.monthNames[m],
 				mmmm: dF.i18n.monthNames[m + 12],
 				yy:   String(y).slice(2),
-				yyyy: y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
+				yyyy: (VCO.Language.use_bc && y < 0) ? year = Math.abs(y) + " " + VCO.Language.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
 				h:    H % 12 || 12,
 				hh:   pad(H % 12 || 12),
 				H:    H,
@@ -131,3 +132,4 @@ VCO.DateFormat.i18n = {
 Date.prototype.format = function (mask, utc) {
 	return VCO.DateFormat(this, mask, utc);
 };
+

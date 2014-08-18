@@ -2788,9 +2788,7 @@ VCO.Language = {
 		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
 		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
-		before_common_era: "BC",
-		common_era: "CE"
+		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
 	}, 
 	dateformats: {
 		year: "yyyy",
@@ -4139,6 +4137,7 @@ VCO.DateFormat = function () {
 			s = date[_ + "Seconds"](),
 			L = date[_ + "Milliseconds"](),
 			o = utc ? 0 : date.getTimezoneOffset(),
+			year = "",
 			flags = {
 				d:    d,
 				dd:   pad(d),
@@ -4149,7 +4148,7 @@ VCO.DateFormat = function () {
 				mmm:  dF.i18n.monthNames[m],
 				mmmm: dF.i18n.monthNames[m + 12],
 				yy:   String(y).slice(2),
-				yyyy: y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
+				yyyy: (VCO.Language.use_bc && y < 0) ? year = Math.abs(y) + " " + VCO.Language.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
 				h:    H % 12 || 12,
 				hh:   pad(H % 12 || 12),
 				H:    H,
@@ -4207,6 +4206,8 @@ VCO.DateFormat.i18n = {
 Date.prototype.format = function (mask, utc) {
 	return VCO.DateFormat(this, mask, utc);
 };
+
+
 
 /* **********************************************
      Begin VCO.Date.js
@@ -5160,7 +5161,12 @@ VCO.Swipable = VCO.Class.extend({
 			}
 		}
 		
-		this._animateMomentum();
+		if (pos_change.time < 1000 ) {
+			
+		} else {
+			this._animateMomentum();
+		}
+		
 		if (swipe && this.data.direction) {
 			this.fire("swipe_" + this.data.direction, this.data);
 		} else if (this.data.direction) {
@@ -9756,6 +9762,7 @@ VCO.Timeline = VCO.Class.extend({
 			menubar_height: 			0,
 			skinny_size: 				650,
 			relative_date: 				false, 			// Use momentjs to show a relative date from the slide.text.date.created_time field
+			use_bc: 					false, 			// Use declared suffix on dates earlier than 0
 			// animation
 			duration: 					1000,
 			ease: 						VCO.Ease.easeInOutQuint,
@@ -9820,9 +9827,11 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		if(this.options.language == 'en') {
 		    this.options.language = VCO.Language;
+			VCO.Language.use_bc = this.options.use_bc;
 		    this._initData(data);
 		} else {
 			VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
+				VCO.Language.use_bc = this.options.use_bc;
 				self._initData(data);
 			});
 		}
