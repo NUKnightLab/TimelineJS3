@@ -1,4 +1,4 @@
-TimelineJS3
+#TimelineJS3
 ===========
 
 TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.knightlab.com
@@ -6,6 +6,8 @@ TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.kni
 ## API
 	`timelineobj.goToId("idname")`
 ## Options
+	TODO: Need to document this in a better format with an init example
+	
 		this.options = {
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
@@ -25,6 +27,7 @@ TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.kni
 			menubar_height: 			0,
 			skinny_size: 				650,
 			relative_date: 				false, 			// Use momentjs to show a relative date from the slide.text.date.created_time field
+			use_bc: 					false, 			// Use declared suffix on dates earlier than 0
 			// animation
 			duration: 					1000,
 			ease: 						VCO.Ease.easeInOutQuint,
@@ -35,6 +38,11 @@ TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.kni
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 
-			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
+			api_key_flickr: 			"", 			// Flickr API Key
 			language:               	"en"		
 		};
+		
+##Events
+	`change` returns `current_id` when the current slide changes.
+	`dataloaded` fires when the data is loaded and TimelineJS is ready to render
+	
