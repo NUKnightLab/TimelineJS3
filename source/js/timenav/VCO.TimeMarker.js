@@ -176,6 +176,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 	},
 	
+	setClass: function(n) {
+		this._el.container.className = n;
+	},
+	
 	setRowPosition: function(n, remainder) {
 		this.setPosition({top:n});
 		this._el.timespan.style.height = remainder + "px";

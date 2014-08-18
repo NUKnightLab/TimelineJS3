@@ -8429,7 +8429,8 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_padding: 		5,
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
-			marker_width_min: 		100 			// Minimum Marker Width
+			marker_width_min: 		100, 			// Minimum Marker Width
+			zoom_sequence: 			[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 		};
 		
 		// Animation
@@ -8448,6 +8449,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// TimeAxis
 		this.timeaxis = {};
 		this.axishelper = {};
+		
+		// Animate CSS
+		this.animate_css = false;
 		
 		// Swipe Object
 		this._swipable;
@@ -8524,18 +8528,40 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	zoomIn: function(n) {
-		this.options.scale_factor++;
-		this._updateDrawTimeline();
-		this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
+		var new_scale = 1;
+		for (var i = 0; i < this.options.zoom_sequence.length; i++) {
+			
+			if (this.options.scale_factor == this.options.zoom_sequence[i]) {
+				if (this.options.scale_factor == this.options.zoom_sequence[this.options.zoom_sequence.length - 1]) {
+					new_scale = this.options.scale_factor;
+				} else {
+					new_scale = this.options.zoom_sequence[i + 1];
+				}
+			}
+		};
+
+		this.options.scale_factor = new_scale;
+		//this._updateDrawTimeline(true);
+		this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
 	},
 	
 	zoomOut: function(n) {
-		if (this.options.scale_factor > 1) {
+		if (this.options.scale_factor > 0) {
+			var new_scale = 1;
+			for (var i = 0; i < this.options.zoom_sequence.length; i++) {
 			
-			this.options.scale_factor--;
-			this._updateDrawTimeline();
-			this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
-			trace("this.options.scale_factor " + this.options.scale_factor)
+				if (this.options.scale_factor == this.options.zoom_sequence[i]) {
+					if (this.options.scale_factor == this.options.zoom_sequence[0]) {
+						new_scale = this.options.zoom_sequence[0];
+					} else {
+						new_scale = this.options.zoom_sequence[i -1];
+					}
+				}
+			};
+			
+			this.options.scale_factor = new_scale;
+			//this._updateDrawTimeline(true);
+			this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
 		}
 		
 	},
@@ -8568,10 +8594,15 @@ VCO.TimeNav = VCO.Class.extend({
 		//marker.off('added', this._onMarkerRemoved, this);
 	},
 	
-	_positionMarkers: function() {
+	_positionMarkers: function(fast) {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPositionInfo(i);
+			if (fast) {
+				this._markers[i].setClass("vco-timemarker vco-timemarker-fast");
+			} else {
+				this._markers[i].setClass("vco-timemarker");
+			}
 			this._markers[i].setPosition({left:pos.start});
 			this._markers[i].setWidth(pos.width);
 		};
@@ -8616,14 +8647,14 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	goTo: function(n, fast, ease) {
+	goTo: function(n, fast, css_animation) {
 		
 		var self = 	this,
-			_ease = this.options.ease;
+			_ease = this.options.ease,
+			_duration = this.options.duration;
 		
-		if (ease) {
-			_ease = ease;
-		}
+
+		
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
@@ -8636,13 +8667,22 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		if (fast) {
+			this._el.slider.className = "vco-timenav-slider";
 			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		} else {
-			this.animator = VCO.Animate(this._el.slider, {
-				left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
-				duration: 	this.options.duration,
-				easing: 	_ease
-			});
+			if (css_animation) {
+				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
+				this.animate_css = true;
+				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+			} else {
+				this._el.slider.className = "vco-timenav-slider";
+				this.animator = VCO.Animate(this._el.slider, {
+					left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
+					duration: 	_duration,
+					easing: 	_ease
+				});
+			}
+			
 			
 		}
 		
@@ -8745,21 +8785,47 @@ VCO.TimeNav = VCO.Class.extend({
 		this.goTo(this.current_marker, true, true);
 	},
 	
-	_drawTimeline: function() {
+	_drawTimeline: function(fast) {
 		this._getTimeScale();
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
-		this._positionMarkers();
+		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
 	},
 	
-	_updateDrawTimeline: function() {
-		this._getTimeScale();
-		this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
-		this._positionMarkers();
-		this._assignRowsToMarkers();
+	_updateDrawTimeline: function(check_update) {
+		var do_update = false;
+		
+		// Check to see if redraw is needed
+		if (check_update) {
+			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+			
+			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() && this.timescale.getMinorScale() == temp_timescale.getMinorScale() ) {
+				do_update = true;
+			}
+		} else {
+			do_update = true;
+		}
+		
+		// Perform update or redraw
+		if (do_update) {
+			this._getTimeScale();
+			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
+			this._positionMarkers();
+			this._assignRowsToMarkers();
+			this._updateDisplay();
+		} else {
+			this._drawTimeline(true);
+		}
+		
+		return do_update;
+		
 	},
 	
 	_onDragMove: function(e) {
+		if (this.animate_css) {
+			this._el.slider.className = "vco-timenav-slider";
+			this.animate_css = false;
+		}
 		
 	},
 	
@@ -8993,6 +9059,10 @@ VCO.TimeMarker = VCO.Class.extend({
 			}
 		}
 		
+	},
+	
+	setClass: function(n) {
+		this._el.container.className = n;
 	},
 	
 	setRowPosition: function(n, remainder) {
@@ -9375,11 +9445,11 @@ VCO.TimeAxis = VCO.Class.extend({
 			ticks['major'].ticks
 		);
 		
-		this.positionTicks(timescale, optimal_tick_width);
+		this.positionTicks(timescale, optimal_tick_width, true);
 	},
 	
 	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
-
+		tick_element.innerHTML = "";
 		var skip_times = {}
 		if (ticks_to_skip){
 			for (idx in ticks_to_skip) {
@@ -9391,7 +9461,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		for (var i = 0; i < ts_ticks.length; i++) {
 			var ts_tick = ts_ticks[i];
 			if (!(ts_tick.getTime() in skip_times)) {
-				var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", tick_element),
+				var tick = VCO.Dom.create("div", "vco-timeaxis-tick", tick_element),
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 				ts_tick.setDateFormat(dateformat);
 				tick_text.innerHTML = ts_tick.getDisplayDate(true);
@@ -9406,17 +9476,24 @@ VCO.TimeAxis = VCO.Class.extend({
 		return tick_elements;
 	},
 
-	positionTicks: function(timescale, optimal_tick_width) {
+	positionTicks: function(timescale, optimal_tick_width, no_animate) {
 		
 		// Poition Major Ticks
 		for (var j = 0; j < this.major_ticks.length; j++) {
 			var tick = this.major_ticks[j];
+			
+			if (!no_animate) {
+				tick.tick.className = "vco-timeaxis-tick vco-animate";
+			} 
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 		};
 		
 		// Poition Minor Ticks
 		for (var i = 0; i < this.minor_ticks.length; i++) {
 			var tick = this.minor_ticks[i];
+			if (!no_animate) {
+				tick.tick.className = "vco-timeaxis-tick vco-animate";
+			} 
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 			tick.tick_text.innerHTML = tick.display_text;
 		};
@@ -9751,6 +9828,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55], 	//Array of Fibonacci numbers for TimeNav zoom levels
 
 			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		
@@ -9876,6 +9954,7 @@ VCO.Timeline = VCO.Class.extend({
 	_updateDisplay: function(timenav_height, animate, d) {
 		var duration 		= this.options.duration,
 			display_class 	= this.options.base_class,
+			menu_position 	= 0,
 			self			= this;
 		
 		if (d) {
@@ -9892,10 +9971,6 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			this.options.layout = "landscape";
 		}
-		
-		
-		
-		
 		
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
@@ -9924,6 +9999,10 @@ VCO.Timeline = VCO.Class.extend({
 		// Set StorySlider Height
 		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
 		
+		// Positon Menu
+		menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
+		trace(this._el.menubar.offsetHeight)
+		
 		if (animate) {
 		
 			// Animate TimeNav
@@ -9943,6 +10022,8 @@ VCO.Timeline = VCO.Class.extend({
 			*/
 			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
 			
+			
+			
 			// Animate StorySlider
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
@@ -9960,7 +10041,7 @@ VCO.Timeline = VCO.Class.extend({
 			}
 			
 			this.animator_menubar = VCO.Animate(this._el.menubar, {
-				top: 	(this.options.storyslider_height + 1) + "px",
+				top: 	menu_position + "px",
 				duration: 	duration/2,
 				easing: 	VCO.Ease.easeOutStrong
 			});
@@ -9973,7 +10054,7 @@ VCO.Timeline = VCO.Class.extend({
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
 			
 			// Menubar
-			this._el.menubar.style.top = this.options.storyslider_height + 1 + "px";
+			this._el.menubar.style.top = menu_position + "px";
 		}
 		
 		
