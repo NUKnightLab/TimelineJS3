@@ -42,9 +42,9 @@ TODO: Need to document this in a better format with an init example
 
 ## API
 ### Methods
-`timelineobj.goToId("idname")` Go to a specific ID
+* **`timelineobj.goToId("idname")`** Go to a specific ID
 
 ###Events
-`change` returns `current_id` when the current slide changes.
-`dataloaded` fires when the data is loaded and TimelineJS is ready to render
+* **`change`** returns `current_id` when the current slide changes.
+* **`dataloaded`** fires when the data is loaded and TimelineJS is ready to render
 	
