@@ -8429,7 +8429,8 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_padding: 		5,
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
-			marker_width_min: 		100 			// Minimum Marker Width
+			marker_width_min: 		100, 			// Minimum Marker Width
+			zoom_sequence: 			[1, 2, 3, 5, 8, 13, 21, 34, 55]
 		};
 		
 		// Animation
@@ -8448,6 +8449,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// TimeAxis
 		this.timeaxis = {};
 		this.axishelper = {};
+		
+		// Animate CSS
+		this.animate_css = false;
 		
 		// Swipe Object
 		this._swipable;
@@ -8524,18 +8528,39 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	zoomIn: function(n) {
-		this.options.scale_factor++;
+		var new_scale = 1;
+		for (var i = 0; i < this.options.zoom_sequence.length; i++) {
+			
+			if (this.options.scale_factor == this.options.zoom_sequence[i]) {
+				if (this.options.scale_factor == this.options.zoom_sequence[this.options.zoom_sequence.length - 1]) {
+					new_scale = this.options.scale_factor;
+				} else {
+					new_scale = this.options.zoom_sequence[i + 1];
+				}
+			}
+		};
+		this.options.scale_factor = new_scale;
 		this._updateDrawTimeline();
-		this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
+		this.goTo(this.current_marker, false, true);
 	},
 	
 	zoomOut: function(n) {
 		if (this.options.scale_factor > 1) {
+			var new_scale = 1;
+			for (var i = 0; i < this.options.zoom_sequence.length; i++) {
 			
-			this.options.scale_factor--;
+				if (this.options.scale_factor == this.options.zoom_sequence[i]) {
+					if (this.options.scale_factor == this.options.zoom_sequence[0]) {
+						new_scale = this.options.zoom_sequence[0];
+					} else {
+						new_scale = this.options.zoom_sequence[i -1];
+					}
+				}
+			};
+			this.options.scale_factor = new_scale;
+			
 			this._updateDrawTimeline();
-			this.goTo(this.current_marker, false, VCO.Ease.easeInOutQuart);
-			trace("this.options.scale_factor " + this.options.scale_factor)
+			this.goTo(this.current_marker, false, true);
 		}
 		
 	},
@@ -8616,14 +8641,14 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	goTo: function(n, fast, ease) {
+	goTo: function(n, fast, css_animation) {
 		
 		var self = 	this,
-			_ease = this.options.ease;
+			_ease = this.options.ease,
+			_duration = this.options.duration;
 		
-		if (ease) {
-			_ease = ease;
-		}
+
+		
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
@@ -8638,11 +8663,19 @@ VCO.TimeNav = VCO.Class.extend({
 		if (fast) {
 			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		} else {
-			this.animator = VCO.Animate(this._el.slider, {
-				left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
-				duration: 	this.options.duration,
-				easing: 	_ease
-			});
+			if (css_animation) {
+				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
+				this.animate_css = true;
+				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+			} else {
+				this._el.slider.className = "vco-timenav-slider";
+				this.animator = VCO.Animate(this._el.slider, {
+					left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
+					duration: 	_duration,
+					easing: 	_ease
+				});
+			}
+			
 			
 		}
 		
@@ -8757,9 +8790,14 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers();
 		this._assignRowsToMarkers();
+		this._updateDisplay();
 	},
 	
 	_onDragMove: function(e) {
+		if (this.animate_css) {
+			this._el.slider.className = "vco-timenav-slider";
+			this.animate_css = false;
+		}
 		
 	},
 	
@@ -9751,6 +9789,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
+			zoom_sequence: 				[1, 2, 3, 5, 8, 13, 21, 34, 55], 	//Array of Fibonacci numbers for TimeNav zoom levels
 
 			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		
