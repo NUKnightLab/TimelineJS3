@@ -3,9 +3,6 @@
 
 TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.knightlab.com
 
-## API
-`timelineobj.goToId("idname")`
-
 ## Options
 TODO: Need to document this in a better format with an init example
 	
@@ -42,8 +39,12 @@ TODO: Need to document this in a better format with an init example
 		api_key_flickr: 			"", 			// Flickr API Key
 		language:               	"en"		
 	};
-		
-##Events
+
+## API
+### Methods
+`timelineobj.goToId("idname")` Go to a specific ID
+
+###Events
 `change` returns `current_id` when the current slide changes.
 `dataloaded` fires when the data is loaded and TimelineJS is ready to render
 	
