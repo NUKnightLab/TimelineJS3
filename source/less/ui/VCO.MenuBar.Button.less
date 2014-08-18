@@ -22,14 +22,17 @@
 	color:@color-background;
 }
 .vco-mobile {
-	.vco-menubar-button:hover {
-		//background:transparent;
-		background-color:#FFF;
-		color:inherit;
-	}
-	.vco-menubar-button:active {
-		background:@color-theme;
-		color:@color-background;
+	.vco-menubar-button {
+		display:block;
+		&:hover {
+			//background-color:#FFF;
+			background-color:fadeout(@ui-background-color, 33%);
+			color:@color-text;
+		}
+		&:active {
+			background:@color-theme;
+			color:@color-background;
+		}
 	}
 }
 
