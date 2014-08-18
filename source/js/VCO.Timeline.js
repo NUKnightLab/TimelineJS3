@@ -166,7 +166,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
-			zoom_sequence: 				[1, 2, 3, 5, 8, 13, 21, 34, 55], 	//Array of Fibonacci numbers for TimeNav zoom levels
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55], 	//Array of Fibonacci numbers for TimeNav zoom levels
 
 			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		

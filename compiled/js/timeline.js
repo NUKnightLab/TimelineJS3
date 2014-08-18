@@ -8430,7 +8430,7 @@ VCO.TimeNav = VCO.Class.extend({
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
 			marker_width_min: 		100, 			// Minimum Marker Width
-			zoom_sequence: 			[1, 2, 3, 5, 8, 13, 21, 34, 55]
+			zoom_sequence: 			[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 		};
 		
 		// Animation
@@ -8539,13 +8539,14 @@ VCO.TimeNav = VCO.Class.extend({
 				}
 			}
 		};
+
 		this.options.scale_factor = new_scale;
-		this._updateDrawTimeline();
-		this.goTo(this.current_marker, false, true);
+		//this._updateDrawTimeline(true);
+		this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
 	},
 	
 	zoomOut: function(n) {
-		if (this.options.scale_factor > 1) {
+		if (this.options.scale_factor > 0) {
 			var new_scale = 1;
 			for (var i = 0; i < this.options.zoom_sequence.length; i++) {
 			
@@ -8557,10 +8558,10 @@ VCO.TimeNav = VCO.Class.extend({
 					}
 				}
 			};
-			this.options.scale_factor = new_scale;
 			
-			this._updateDrawTimeline();
-			this.goTo(this.current_marker, false, true);
+			this.options.scale_factor = new_scale;
+			//this._updateDrawTimeline(true);
+			this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
 		}
 		
 	},
@@ -8593,10 +8594,15 @@ VCO.TimeNav = VCO.Class.extend({
 		//marker.off('added', this._onMarkerRemoved, this);
 	},
 	
-	_positionMarkers: function() {
+	_positionMarkers: function(fast) {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
 			var pos = this.timescale.getPositionInfo(i);
+			if (fast) {
+				this._markers[i].setClass("vco-timemarker vco-timemarker-fast");
+			} else {
+				this._markers[i].setClass("vco-timemarker");
+			}
 			this._markers[i].setPosition({left:pos.start});
 			this._markers[i].setWidth(pos.width);
 		};
@@ -8661,6 +8667,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		if (fast) {
+			this._el.slider.className = "vco-timenav-slider";
 			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		} else {
 			if (css_animation) {
@@ -8778,19 +8785,40 @@ VCO.TimeNav = VCO.Class.extend({
 		this.goTo(this.current_marker, true, true);
 	},
 	
-	_drawTimeline: function() {
+	_drawTimeline: function(fast) {
 		this._getTimeScale();
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
-		this._positionMarkers();
+		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
 	},
 	
-	_updateDrawTimeline: function() {
-		this._getTimeScale();
-		this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
-		this._positionMarkers();
-		this._assignRowsToMarkers();
-		this._updateDisplay();
+	_updateDrawTimeline: function(check_update) {
+		var do_update = false;
+		
+		// Check to see if redraw is needed
+		if (check_update) {
+			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+			
+			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() && this.timescale.getMinorScale() == temp_timescale.getMinorScale() ) {
+				do_update = true;
+			}
+		} else {
+			do_update = true;
+		}
+		
+		// Perform update or redraw
+		if (do_update) {
+			this._getTimeScale();
+			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
+			this._positionMarkers();
+			this._assignRowsToMarkers();
+			this._updateDisplay();
+		} else {
+			this._drawTimeline(true);
+		}
+		
+		return do_update;
+		
 	},
 	
 	_onDragMove: function(e) {
@@ -9031,6 +9059,10 @@ VCO.TimeMarker = VCO.Class.extend({
 			}
 		}
 		
+	},
+	
+	setClass: function(n) {
+		this._el.container.className = n;
 	},
 	
 	setRowPosition: function(n, remainder) {
@@ -9413,11 +9445,11 @@ VCO.TimeAxis = VCO.Class.extend({
 			ticks['major'].ticks
 		);
 		
-		this.positionTicks(timescale, optimal_tick_width);
+		this.positionTicks(timescale, optimal_tick_width, true);
 	},
 	
 	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
-
+		tick_element.innerHTML = "";
 		var skip_times = {}
 		if (ticks_to_skip){
 			for (idx in ticks_to_skip) {
@@ -9429,7 +9461,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		for (var i = 0; i < ts_ticks.length; i++) {
 			var ts_tick = ts_ticks[i];
 			if (!(ts_tick.getTime() in skip_times)) {
-				var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate", tick_element),
+				var tick = VCO.Dom.create("div", "vco-timeaxis-tick", tick_element),
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 				ts_tick.setDateFormat(dateformat);
 				tick_text.innerHTML = ts_tick.getDisplayDate(true);
@@ -9444,17 +9476,24 @@ VCO.TimeAxis = VCO.Class.extend({
 		return tick_elements;
 	},
 
-	positionTicks: function(timescale, optimal_tick_width) {
+	positionTicks: function(timescale, optimal_tick_width, no_animate) {
 		
 		// Poition Major Ticks
 		for (var j = 0; j < this.major_ticks.length; j++) {
 			var tick = this.major_ticks[j];
+			
+			if (!no_animate) {
+				tick.tick.className = "vco-timeaxis-tick vco-animate";
+			} 
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 		};
 		
 		// Poition Minor Ticks
 		for (var i = 0; i < this.minor_ticks.length; i++) {
 			var tick = this.minor_ticks[i];
+			if (!no_animate) {
+				tick.tick.className = "vco-timeaxis-tick vco-animate";
+			} 
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 			tick.tick_text.innerHTML = tick.display_text;
 		};
@@ -9789,7 +9828,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
-			zoom_sequence: 				[1, 2, 3, 5, 8, 13, 21, 34, 55], 	//Array of Fibonacci numbers for TimeNav zoom levels
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55], 	//Array of Fibonacci numbers for TimeNav zoom levels
 
 			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		
