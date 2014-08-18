@@ -25,6 +25,7 @@
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
 	// @codekit-prepend "core/VCO.TimelineConfig.js";
+	// @codekit-prepend "core/VCO.ConfigFactory.js";
 
 
 // LANGUAGE
