@@ -6,7 +6,7 @@
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier) {
+    initialize: function (slides, display_width, screen_multiplier, max_rows) {
         this._screen_multiplier = screen_multiplier || 3;
         display_width = display_width || 500; //arbitrary default
         this._display_width = display_width; 
