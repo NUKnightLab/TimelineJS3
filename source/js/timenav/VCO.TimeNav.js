@@ -167,6 +167,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Current Marker
 		this.current_marker = 0;
+		this.current_id = "";
 		
 		// TimeScale
 		this.timescale = {};
@@ -412,7 +413,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		this.current_marker = n;
-		
+		this.current_id = this._markers[n].data.uniqueid;
 	},
 	
 	
@@ -479,7 +480,20 @@ VCO.TimeNav = VCO.Class.extend({
 			scroll_to = constraint.right;
 		}
 		
+		if (this.animate_css) {
+			this._el.slider.className = "vco-timenav-slider";
+			this.animate_css = false;
+		}
+		
 		this._el.slider.style.left = scroll_to + "px";
+		
+	},
+	
+	_onDragMove: function(e) {
+		if (this.animate_css) {
+			this._el.slider.className = "vco-timenav-slider";
+			this.animate_css = false;
+		}
 		
 	},
 	
@@ -546,13 +560,6 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	_onDragMove: function(e) {
-		if (this.animate_css) {
-			this._el.slider.className = "vco-timenav-slider";
-			this.animate_css = false;
-		}
-		
-	},
 	
 	/*	Init
 	================================================== */
