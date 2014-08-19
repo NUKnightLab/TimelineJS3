@@ -2774,6 +2774,110 @@ VCO.TimelineConfig = VCO.Class.extend({
 
 
 /* **********************************************
+     Begin VCO.ConfigFactory.js
+********************************************** */
+
+/* VCO.ConfigFactory.js
+ * Build TimelineConfig objects from other data sources
+ */
+;(function(VCO){
+    function extractSpreadsheetKey(url) {
+        var pat = /\bkey=([_A-Za-z0-9]+)&?/i;
+        if (url.match(pat)) {
+            return url.match(pat)[1];
+        }
+        var key = null;
+        if (url.match("docs.google.com/spreadsheets/d/")) {
+            var pos = url.indexOf("docs.google.com/spreadsheets/d/") + "docs.google.com/spreadsheets/d/".length;
+            var tail = url.substr(pos);
+            key = tail.split('/')[0]
+        }
+        if (!key) { key = url}
+        return key;
+    }
+
+    function trim(str) {
+        return str.replace(/^\s+/,'').replace(/\s+$/,'');
+    }
+
+    function parseDate(str) {
+        if (str.match(/^\-?\d+$/)) {
+            return { year: str }
+        }
+
+        var parsed = {}
+        if (str.match(/\d+\/\d+\/\d+/)) {
+            var date = str.match(/\d+\/\d+\/\d+/)[0];
+            str = trim(str.replace(date,''));
+            var date_parts = date.split('/');
+            parsed.month = date_parts[0];
+            parsed.day = date_parts[1];
+            parsed.year = date_parts[2];
+        }
+
+        if (str.match(/\d+\/\d+/)) {
+            var date = str.match(/\d+\/\d+/)[0];
+            str = trim(str.replace(date,''));
+            var date_parts = date.split('/');
+            parsed.month = date_parts[0];
+            parsed.year = date_parts[1];
+        }
+        // todo: handle hours, minutes, seconds, millis other date formats, etc...
+        return parsed;
+    }
+
+    function extractGoogleEntryData(item) {
+        var item_data = {}
+        for (k in item) {
+            if (k.indexOf('gsx$') == 0) {
+                item_data[k.substr(4)] = item[k].$t;
+            }
+        }
+        if (!item_data.startdate) {
+            throw("All items must have a start date column.")
+        }
+        var d = {
+            media: {
+                caption: item_data.mediacaption || '',
+                credit: item_data.mediacredit || '',
+                url: item_data.media || '',
+                thumb: ''
+            },
+            text: {
+                headline: item_data.headline || '',
+                text: item_data.text || ''
+            }
+        }
+        d['start_date'] = parseDate(item_data.startdate);
+        if (item.enddate) {
+            d['end_date'] = parseDate(item.enddate);
+        }
+        return d;
+    }
+
+    VCO.ConfigFactory = {
+        fromGoogle: function(url) {
+            var key = extractSpreadsheetKey(url);
+            // TODO: maybe get specific worksheets?
+            var worksheet = 'od6';
+            url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
+            var data = VCO.ajax({
+                url: url, 
+                async: false
+            });
+            var slides = [];
+            data = JSON.parse(data.responseText);
+            window.google_data = data;
+            for (var i = 0; i < data.feed.entry.length; i++) {
+                slides.push(extractGoogleEntryData(data.feed.entry[i]));
+            };
+            return {timeline: {slides: slides}}
+        }   
+    }
+})(VCO)
+
+
+/* **********************************************
      Begin VCO.Language.js
 ********************************************** */
 
@@ -8451,6 +8555,9 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis = {};
 		this.axishelper = {};
 		
+		// Max Rows
+		this._max_rows = 3;
+		
 		// Animate CSS
 		this.animate_css = false;
 		
@@ -8520,7 +8627,13 @@ VCO.TimeNav = VCO.Class.extend({
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+		// Set Max Rows
+		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
+		if (this.max_rows < 1) {
+			this.max_rows = 1;
+		}
+		
+		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -8784,6 +8897,12 @@ VCO.TimeNav = VCO.Class.extend({
 			this.options.height = height;
 		}
 		
+		// Set Max Rows
+		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
+		if (this.max_rows < 1) {
+			this.max_rows = 1;
+		}
+		
 		// Size Markers
 		this._assignRowsToMarkers();
 		
@@ -8800,7 +8919,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_drawTimeline: function(fast) {
-		this._getTimeScale();
+		this.timescale = this._getTimeScale();
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
@@ -8811,7 +8930,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() && this.timescale.getMinorScale() == temp_timescale.getMinorScale() ) {
 				do_update = true;
@@ -8822,7 +8941,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Perform update or redraw
 		if (do_update) {
-			this._getTimeScale();
+			this.timescale = this._getTimeScale();
 			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 			this._positionMarkers();
 			this._assignRowsToMarkers();
@@ -9175,7 +9294,7 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier) {
+    initialize: function (slides, display_width, screen_multiplier, max_rows) {
         this._screen_multiplier = screen_multiplier || 3;
         display_width = display_width || 500; //arbitrary default
         this._display_width = display_width; 
@@ -9694,6 +9813,7 @@ VCO.AxisHelper = VCO.Class.extend({
 	// @codekit-prepend "core/VCO.Browser.js";
 	// @codekit-prepend "core/VCO.Load.js";
 	// @codekit-prepend "core/VCO.TimelineConfig.js";
+	// @codekit-prepend "core/VCO.ConfigFactory.js";
 
 
 // LANGUAGE
@@ -10085,7 +10205,12 @@ VCO.Timeline = VCO.Class.extend({
 	// Initialize the data
 	_initData: function(data) {
 		var self = this;
-		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+		if (VCO.TimelineConfig == data.constructor) {
+			self.config = data;
+			self._onDataLoaded();
+		} else {
+			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+		}
 	},
 	
 	// Initialize the layout

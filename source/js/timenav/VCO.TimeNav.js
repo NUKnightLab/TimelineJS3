@@ -176,6 +176,9 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis = {};
 		this.axishelper = {};
 		
+		// Max Rows
+		this._max_rows = 3;
+		
 		// Animate CSS
 		this.animate_css = false;
 		
@@ -245,7 +248,13 @@ VCO.TimeNav = VCO.Class.extend({
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
-		this.timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+		// Set Max Rows
+		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
+		if (this.max_rows < 1) {
+			this.max_rows = 1;
+		}
+		
+		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -509,6 +518,12 @@ VCO.TimeNav = VCO.Class.extend({
 			this.options.height = height;
 		}
 		
+		// Set Max Rows
+		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
+		if (this.max_rows < 1) {
+			this.max_rows = 1;
+		}
+		
 		// Size Markers
 		this._assignRowsToMarkers();
 		
@@ -525,7 +540,7 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_drawTimeline: function(fast) {
-		this._getTimeScale();
+		this.timescale = this._getTimeScale();
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
@@ -536,7 +551,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor);
+			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() && this.timescale.getMinorScale() == temp_timescale.getMinorScale() ) {
 				do_update = true;
@@ -547,7 +562,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Perform update or redraw
 		if (do_update) {
-			this._getTimeScale();
+			this.timescale = this._getTimeScale();
 			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 			this._positionMarkers();
 			this._assignRowsToMarkers();
