@@ -17,36 +17,6 @@
         return key;
     }
 
-    function trim(str) {
-        return str.replace(/^\s+/,'').replace(/\s+$/,'');
-    }
-
-    function parseDate(str) {
-        if (str.match(/^\-?\d+$/)) {
-            return { year: str }
-        }
-
-        var parsed = {}
-        if (str.match(/\d+\/\d+\/\d+/)) {
-            var date = str.match(/\d+\/\d+\/\d+/)[0];
-            str = trim(str.replace(date,''));
-            var date_parts = date.split('/');
-            parsed.month = date_parts[0];
-            parsed.day = date_parts[1];
-            parsed.year = date_parts[2];
-        }
-
-        if (str.match(/\d+\/\d+/)) {
-            var date = str.match(/\d+\/\d+/)[0];
-            str = trim(str.replace(date,''));
-            var date_parts = date.split('/');
-            parsed.month = date_parts[0];
-            parsed.year = date_parts[1];
-        }
-        // todo: handle hours, minutes, seconds, millis other date formats, etc...
-        return parsed;
-    }
-
     function extractGoogleEntryData(item) {
         var item_data = {}
         for (k in item) {
@@ -69,9 +39,9 @@
                 text: item_data.text || ''
             }
         }
-        d['start_date'] = parseDate(item_data.startdate);
+        d['start_date'] = VCO.Date.parseDate(item_data.startdate);
         if (item.enddate) {
-            d['end_date'] = parseDate(item.enddate);
+            d['end_date'] = VCO.Date.parseDate(item.enddate);
         }
         return d;
     }

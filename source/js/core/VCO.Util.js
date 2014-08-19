@@ -300,9 +300,14 @@ VCO.Util = {
 		
 		return vars;
 	},
+
+	trim: function(str) {
+		return str.replace(/^\s+|\s+$/g, '');
+	},
+
 	slugify: function(str) {
 		// borrowed from http://stackoverflow.com/a/5782563/102476
-		str = str.replace(/^\s+|\s+$/g, ''); // trim
+		str = VCO.Util.trim(str);
 		str = str.toLowerCase();
 
 		// remove accents, swap ñ for n, etc
