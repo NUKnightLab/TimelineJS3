@@ -47,4 +47,5 @@ TODO: Need to document this in a better format with an init example
 ###Events
 * **`change`** returns `current_id` when the current slide changes.
 * **`dataloaded`** fires when the data is loaded and TimelineJS is ready to render
+* **`loaded`** fires when storymap is loaded and ready 
 	
