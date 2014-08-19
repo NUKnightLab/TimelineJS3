@@ -425,7 +425,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 		this._el.container.className += ' vco-timeline';
 		this.options.base_class = this._el.container.className;
-		
+		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
 			this._el.timenav 		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
