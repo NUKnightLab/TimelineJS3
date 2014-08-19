@@ -28,10 +28,14 @@
     script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     
     -->
+    <style type="text/css">
+      #input: {height: 20%;}
+      #timeline: { height: 80%;}
+    </style>
   </head>
   <body>
-    <input type="text" id="url" placeholder="Enter a google spreadsheet URL" size="100"/> <button type="button" id="preview">Go</button>
-    <hr>
+    <div id="input"><input type="text" id="url" placeholder="Enter a google spreadsheet URL" size="100"/> <button type="button" id="preview">Go</button>
+    </div>
     <div id="timeline"></div>
     <!-- JavaScript-->
     <script src="js/timeline.js"></script>
@@ -52,7 +56,7 @@
       
       window.factory_json = json;
 
-      var timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+      timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
       });
       window.onresize = function(event) {
        timeline.updateDisplay();
