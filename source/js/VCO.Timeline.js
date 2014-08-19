@@ -417,7 +417,12 @@ VCO.Timeline = VCO.Class.extend({
 	// Initialize the data
 	_initData: function(data) {
 		var self = this;
-		self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+		if (VCO.TimelineConfig == data.constructor) {
+			self.config = data;
+			self._onDataLoaded();
+		} else {
+			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+		}
 	},
 	
 	// Initialize the layout
