@@ -8442,6 +8442,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Current Marker
 		this.current_marker = 0;
+		this.current_id = "";
 		
 		// TimeScale
 		this.timescale = {};
@@ -8687,7 +8688,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		this.current_marker = n;
-		
+		this.current_id = this._markers[n].data.uniqueid;
 	},
 	
 	
@@ -8754,7 +8755,20 @@ VCO.TimeNav = VCO.Class.extend({
 			scroll_to = constraint.right;
 		}
 		
+		if (this.animate_css) {
+			this._el.slider.className = "vco-timenav-slider";
+			this.animate_css = false;
+		}
+		
 		this._el.slider.style.left = scroll_to + "px";
+		
+	},
+	
+	_onDragMove: function(e) {
+		if (this.animate_css) {
+			this._el.slider.className = "vco-timenav-slider";
+			this.animate_css = false;
+		}
 		
 	},
 	
@@ -8821,13 +8835,6 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	_onDragMove: function(e) {
-		if (this.animate_css) {
-			this._el.slider.className = "vco-timenav-slider";
-			this.animate_css = false;
-		}
-		
-	},
 	
 	/*	Init
 	================================================== */
@@ -9803,6 +9810,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			hash_bookmark: 				false,
 			scale_factor: 				3, 				// How many screen widths wide should the timeline be
 			layout: 					"landscape", 	// portrait or landscape
 			timenav_position: 			"bottom", 		// timeline on top or bottom
@@ -9899,7 +9907,7 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	goToId: function(n) {
 		if (this.current_id != n) {
-			this.current_id = e.uniqueid;
+			this.current_id = n;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id);
 			this.fire("change", {uniqueid:this.current_id}, this);
@@ -9909,8 +9917,8 @@ VCO.Timeline = VCO.Class.extend({
 	goTo: function(n) {
 		if (n != this.current_slide) {
 			this.current_slide = n;
+			this._timenav.goTo(this.current_slide);
 			this._storyslider.goTo(this.current_slide);
-			this._map.goTo(this.current_slide);
 		}
 	},
 	
@@ -10067,6 +10075,11 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.container.className = display_class;
 	},
 	
+	// Update hashbookmark in the url bar
+	_updateHashBookmark: function(id) {
+		window.location.hash = "#" + "event-" + id.toString();
+	},
+	
 	/*	Init
 	================================================== */
 	// Initialize the data
@@ -10179,7 +10192,7 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.current_id != e.uniqueid) {
 			this.current_id = e.uniqueid;
 			this._timenav.goToId(this.current_id);
-			this.fire("change", {uniqueid:this.current_id}, this);
+			this._onChange(e);
 		}
 	},
 	
@@ -10187,17 +10200,19 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.current_id != e.uniqueid) {
 			this.current_id = e.uniqueid;
 			this._storyslider.goToId(this.current_id);
-			this.fire("change", {uniqueid:this.current_id}, this);
+			this._onChange(e);
 		}
 	},
 	
-	_onOverview: function(e) {
-		this._timenav.goToOverview();
+	_onChange: function(e) {
+		this.fire("change", {uniqueid:this.current_id}, this);
+		if (this.options.hash_bookmark) {
+			this._updateHashBookmark(this.current_id);
+		}
 	},
 	
 	_onBackToStart: function(e) {
 		this._storyslider.goTo(0);
-		//this.fire("change", {uniqueid:this.current_id}, this);
 	},
 	
 	_onZoomIn: function(e) {
@@ -10208,32 +10223,6 @@ VCO.Timeline = VCO.Class.extend({
 	_onZoomOut: function(e) {
 		this._timenav.zoomOut();
 		this.fire("zoom_out", {uniqueid:this.current_id}, this);
-	},
-	
-	_onMouseClick: function(e) {
-		
-	},
-	
-	_fireMouseEvent: function (e) {
-		if (!this._loaded) {
-			return;
-		}
-
-		var type = e.type;
-		type = (type === 'mouseenter' ? 'mouseover' : (type === 'mouseleave' ? 'mouseout' : type));
-
-		if (!this.hasEventListeners(type)) {
-			return;
-		}
-
-		if (type === 'contextmenu') {
-			VCO.DomEvent.preventDefault(e); s
-		}
-		
-		this.fire(type, {
-			latlng: "something", //this.mouseEventToLatLng(e),
-			layerPoint: "something else" //this.mouseEventToLayerPoint(e)
-		});
 	},
 	
 	_onTimeNavLoaded: function() {
@@ -10249,6 +10238,19 @@ VCO.Timeline = VCO.Class.extend({
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.config);
+			
+			// Go to proper slide
+			if (this.options.hash_bookmark && window.location.hash != "") {
+				trace(window.location.hash);
+				this.goToId(window.location.hash.replace("#event-", ""));
+			} else {
+				this.goTo(this.options.start_at_slide);
+				this.current_id = this._timenav.current_id;
+				if (this.options.hash_bookmark) {
+					this._updateHashBookmark(this.current_id);
+				}
+			}
+			
 		}
 	}
 	
