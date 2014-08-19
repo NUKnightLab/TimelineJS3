@@ -96,30 +96,21 @@ VCO.TimeScale = VCO.Class.extend({
             for (var j = 0; j < lasts_in_rows.length; j++) {
                 overlaps.push(lasts_in_rows[j].end - pos_info.start);
                 if (overlaps[j] <= 0) {
-                    console.log('negative overlap', overlaps[j]);
-                    console.log('curr:', pos_info);
-                    console.log('check:', lasts_in_rows[j]);
                     pos_info.row = j;
                     lasts_in_rows[j] = pos_info;
                     break;
                 }
             };
             if (typeof(pos_info.row) == 'undefined') {
-                console.log('max_rows',max_rows);
-                console.log('all rows',lasts_in_rows.length);
                 if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
-                    console.log("add a new row")
                     pos_info.row = lasts_in_rows.length;
                     lasts_in_rows.push(pos_info);
                 } else {
-                    console.log("minimize overlap");
                     var min_overlap = Math.min.apply(null,overlaps);
                     var idx = overlaps.indexOf(min_overlap);
-                    console.log(overlaps,min_overlap,idx)
                     pos_info.row = idx;
                     if (pos_info.end > lasts_in_rows[idx].end) {
                         lasts_in_rows[idx] = pos_info
-                        console.log("new end of row")
                     }
                 }
             }
