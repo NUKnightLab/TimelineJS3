@@ -410,6 +410,7 @@ VCO.Timeline = VCO.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		window.location.hash = "#" + "event-" + id.toString();
+		this.fire("hash_updated", {uniqueid:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 	
 	/*	Init
@@ -518,6 +519,7 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	_onColorChange: function(e) {
+		this.fire("color_change", {uniqueid:this.current_id}, this);
 		if (e.color || e.image) {
 			
 		} else {
@@ -550,16 +552,17 @@ VCO.Timeline = VCO.Class.extend({
 	
 	_onBackToStart: function(e) {
 		this._storyslider.goTo(0);
+		this.fire("back_to_start", {uniqueid:this.current_id}, this);
 	},
 	
 	_onZoomIn: function(e) {
 		this._timenav.zoomIn();
-		this.fire("zoom_in", {uniqueid:this.current_id}, this);
+		this.fire("zoom_in", {zoom_level:this._timenav.options.scale_factor}, this);
 	},
 	
 	_onZoomOut: function(e) {
 		this._timenav.zoomOut();
-		this.fire("zoom_out", {uniqueid:this.current_id}, this);
+		this.fire("zoom_out", {zoom_level:this._timenav.options.scale_factor}, this);
 	},
 	
 	_onTimeNavLoaded: function() {
