@@ -138,7 +138,12 @@ VCO.TimeAxis = VCO.Class.extend({
 				tick_elements: this.major_ticks
 			}
 		}
-
+		// FADE OUT
+		this._el.major.className = "vco-timeaxis-major";
+		this._el.minor.className = "vco-timeaxis-minor";
+		this._el.major.style.opacity = 0;
+		this._el.minor.style.opacity = 0;
+		
 		this.major_ticks = this._createTickElements(
 			ticks['major'].ticks, 
 			this._el.major, 
@@ -153,6 +158,12 @@ VCO.TimeAxis = VCO.Class.extend({
 		);
 		
 		this.positionTicks(timescale, optimal_tick_width, true);
+		
+		// FADE IN
+		this._el.major.className = "vco-timeaxis-major vco-animate-opacity";
+		this._el.minor.className = "vco-timeaxis-minor vco-animate-opacity";
+		this._el.major.style.opacity = 1;
+		this._el.minor.style.opacity = 1;
 	},
 	
 	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
@@ -168,9 +179,10 @@ VCO.TimeAxis = VCO.Class.extend({
 		for (var i = 0; i < ts_ticks.length; i++) {
 			var ts_tick = ts_ticks[i];
 			if (!(ts_tick.getTime() in skip_times)) {
-				var tick = VCO.Dom.create("div", "vco-timeaxis-tick", tick_element),
+				var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate-opacity", tick_element),
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
 				ts_tick.setDateFormat(dateformat);
+				
 				tick_text.innerHTML = ts_tick.getDisplayDate(true);
 				tick_elements.push({
 					tick:tick,
@@ -188,10 +200,11 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Poition Major Ticks
 		for (var j = 0; j < this.major_ticks.length; j++) {
 			var tick = this.major_ticks[j];
-			
+			//tick.tick.style.opacity = 1;
 			if (!no_animate) {
 				tick.tick.className = "vco-timeaxis-tick vco-animate";
 			} 
+			
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 		};
 		
@@ -201,6 +214,7 @@ VCO.TimeAxis = VCO.Class.extend({
 			if (!no_animate) {
 				tick.tick.className = "vco-timeaxis-tick vco-animate";
 			} 
+			
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 			tick.tick_text.innerHTML = tick.display_text;
 		};
