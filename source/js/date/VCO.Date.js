@@ -3,7 +3,8 @@
 	MONTHS are 1-BASED, not 0-BASED (different from Javascript date objects)
 ================================================== */
 VCO.Date = VCO.Class.extend({
-	
+    /*Initialize with a time value (in milliseconds), a JavaScript Date object,
+     * or a JS dictionary with properties for year, month, day, etc. */	
 	initialize: function (data, format, format_short) {
 		if (typeof(data) == 'number' || Date == data.constructor) {
 			var date = null;
@@ -90,31 +91,33 @@ VCO.Date = VCO.Class.extend({
 	/*	Create Display Type
 	================================================== */
 	_createDisplayType: function() {
-		this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
-		this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
+        if (Date == this.data.date_obj.constructor) {
+            this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
+            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
+        } else {
+            this.data.display_text = this.data.date_obj.getDisplayText();
+            this.data.display_text_short = this.data.date_obj.getDisplayTextShort();
+        }
 	},
 	
 	isBefore: function(other_date) { 
-		if (!(VCO.Date == other_date.constructor)) { throw("Can only compare to VCO.Date")}
-		if (this.data.date_obj) {
-			if (!(Date == other_date.data.date_obj.constructor)) {
-				throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
-			}
-			return this.data.date_obj < other_date.data.date_obj
-		}
-		throw("Can't compare");
+        if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
+                throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+        }
+        if ('isBefore' in this.data.date_obj) {
+            return this.data.date_obj['isBefore'](other_date.data.date_obj);
+        }
+        return this.data.date_obj < other_date.data.date_obj
 	},
 
 	isAfter: function(other_date) {
-		if (!(VCO.Date == other_date.constructor)) { throw("Can only compare to VCO.Date")}
-		if (this.data.date_obj) {
-			if (!(Date == other_date.data.date_obj.constructor)) {
-				throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
-			}
-			return this.data.date_obj > other_date.data.date_obj
-		}
-		throw("Can't compare");
-
+        if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
+                throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+        }
+        if ('isAfter' in this.data.date_obj) {
+            return this.data.date_obj['isAfter'](other_date.data.date_obj);
+        }
+        return this.data.date_obj > other_date.data.date_obj
 	},
 
     floor: function(scale) { // more likely problems with cosmological time
@@ -159,12 +162,48 @@ VCO.Date = VCO.Class.extend({
 		if (_date.month > 0 && _date.month <= 12) {
 			_date.month = _date.month - 1;
 		}
-		// Create Javascript date object
-		this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+
+        if (this.data.scale == 'cosmological' 
+            || _date.year < -271820 
+            || _date.year >  275759) {
+    		// Create Javascript date object
+            this.data.scale = 'cosmological';
+            this.data.date_obj = new VCO.BigYear(_date.year);
+        } else {
+            this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+        }
+
 	}
 	
 });
 
+VCO.BigYear = VCO.Class.extend({
+    initialize: function (year) {
+        this.year = parseInt(year);
+        if (isNaN(this.year)) { throw("Invalid year " + year) }
+    },
+    
+    getDisplayText: function() { 
+        return this.year.toLocaleString(VCO.Language.lang);
+    },
+
+    getDisplayTextShort: function() {
+        return this.year.toLocaleString(VCO.Language.lang);
+    },
+
+    isBefore: function(that) {
+        return this.year < that.year;
+    },
+
+    isAfter: function(that) {
+        return this.year > that.year;
+    },
+
+    getTime: function() {
+        return this.year;
+    }
+
+});
 
 (function(cls){
     SCALES = [ // ( name, millis_per_tick )
@@ -197,14 +236,52 @@ VCO.Date = VCO.Class.extend({
     ]
 
     cls.SCALES = SCALES;
+    // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
+    var ISO8601_SHORT_PATTERN = /^([\+-]?\d+)(-\d{2})?(-\d{2})?$/;
+    var ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
+
+    /* For now, rather than extract parts from regexp, let's trust the browser.
+     * Famous last words...
+     * What about UTC vs local time?
+     * see also http://stackoverflow.com/questions/10005374/ecmascript-5-date-parse-results-for-iso-8601-test-cases
+     */
+    cls.parseISODate = function(str) {
+        var d = new Date(str);
+        if (isNaN(d)) throw "Invalid date: " + str;
+        return {
+            year: d.getFullYear(),
+            month: d.getMonth() + 1,
+            day: d.getDate(),
+            hour: d.getHours(),
+            minute: d.getMinutes(),
+            second: d.getSeconds(),
+            millisecond: d.getMilliseconds()
+        }
+
+    }
 
     cls.parseDate = function(str) {
+
+        if (str.match(ISO8601_SHORT_PATTERN)) { 
+            // parse short specifically to avoid timezone offset confusion
+            // most browsers assume short is UTC, not local time.
+            var parts = str.split('-');
+            d = { year: parts[0]}
+            if (parts[1]) { d['month'] = parts[1]; }
+            if (parts[2]) { d['day'] = parts[2]; }
+            return d;
+        }
+
+        if (str.match(ISO8601_PATTERN)) {
+            return cls.parseISODate(str);
+        }
+
         if (str.match(/^\-?\d+$/)) {
             return { year: str }
         }
 
         var parsed = {}
-        if (str.match(/\d+\/\d+\/\d+/)) {
+        if (str.match(/\d+\/\d+\/\d+/)) { // mm/yy/dddd
             var date = str.match(/\d+\/\d+\/\d+/)[0];
             str = VCO.Util.trim(str.replace(date,''));
             var date_parts = date.split('/');
@@ -213,7 +290,7 @@ VCO.Date = VCO.Class.extend({
             parsed.year = date_parts[2];
         }
 
-        if (str.match(/\d+\/\d+/)) {
+        if (str.match(/\d+\/\d+/)) { // mm/yy
             var date = str.match(/\d+\/\d+/)[0];
             str = VCO.Util.trim(str.replace(date,''));
             var date_parts = date.split('/');
