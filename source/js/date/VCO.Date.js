@@ -14,11 +14,16 @@ VCO.Date = VCO.Class.extend({
 				date = new Date(data);
 			}
 			this.data = {
+                scale:          "javascript",
 				format: 		"yyyy mmmm",
 				display_type: 	"",
 				date_obj: 		date
 			}
-			
+		} else if (VCO.BigYear == data.constructor) {
+            this.data = {
+                scale:          "cosmological",
+                date_obj:       data
+            }
 		} else {
 			this.data = {
 				year: 			"",
@@ -58,6 +63,10 @@ VCO.Date = VCO.Class.extend({
 		this._createDisplayType();
 		
 		
+    },
+
+    getScale: function() {
+        return this.data.scale;
 	},
 	
 	/*	Private Methods
@@ -125,11 +134,27 @@ VCO.Date = VCO.Class.extend({
 		   'scale' should be a string value from VCO.Date.SCALES
 		   This will need to be smarter to work with cosmological dates.
     	*/
-    	var d = new Date(this.data.date_obj);
-        for (var i = 0; i < VCO.Date.SCALES.length; i++) {
-            VCO.Date.SCALES[i][2](d);
-            if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
-        };
+        if (this.getScale() == 'javascript') {
+            var d = new Date(this.data.date_obj);
+            for (var i = 0; i < VCO.Date.SCALES.length; i++) {
+                if (VCO.Date.SCALES[i][3] == this.getScale()) {
+                    // for JS dates, we iteratively apply flooring functions
+                    VCO.Date.SCALES[i][2](d);
+                    if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
+                }
+            };
+        }
+        // it would be nice if there wasn't special casing here...
+        if (this.getScale() == 'cosmological') {
+            for (var i = 0; i < VCO.Date.SCALES.length; i++) {
+                if (VCO.Date.SCALES[i][3] == this.getScale()) {
+                    if (VCO.Date.SCALES[i][0] == scale) {
+                        var floored = VCO.Date.SCALES[i][2](this.data.date_obj);
+                        return new VCO.Date(floored);
+                    }
+                }
+            };
+        }
 
         throw('invalid scale ' + scale);
     },
@@ -170,6 +195,7 @@ VCO.Date = VCO.Class.extend({
             this.data.scale = 'cosmological';
             this.data.date_obj = new VCO.BigYear(_date.year);
         } else {
+            this.data.scale = 'javascript';
             this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
         }
 
@@ -206,38 +232,50 @@ VCO.BigYear = VCO.Class.extend({
 });
 
 (function(cls){
-    SCALES = [ // ( name, millis_per_tick )
-        ['millisecond',1, function(d) { }],
-        ['second',1000, function(d) { d.setMilliseconds(0);}],
-        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
-        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
-        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
-        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
-        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
+    // cosmo units are years, not millis
+    var AGE = 1000000;
+    var EPOCH = AGE * 10;
+    var ERA = EPOCH * 10;
+    var EON = ERA * 5;
+
+    var Floorer = function(unit) {
+        return function(a_big_year) {
+            var year = a_big_year.getTime();
+            return new VCO.BigYear(Math.floor(year/unit) * unit);
+        }
+    }
+    SCALES = [ // ( name, units_per_tick, flooring function, scale_class )
+        ['millisecond',1, function(d) { },'javascript'],
+        ['second',1000, function(d) { d.setMilliseconds(0);},'javascript'],
+        ['minute',1000 * 60, function(d) { d.setSeconds(0);},'javascript'],
+        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);},'javascript'],
+        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);},'javascript'],
+        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);},'javascript'],
+        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);},'javascript'],
         ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 10)) 
-        }],
+        },'javascript'],
         ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 100)) 
-        }],
+        },'javascript'],
         ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 1000)) 
-        }],
-        // Javascript dates only go from -8640000000000000 millis to 8640000000000000 millis
-        // or 271,821 BCE to 275,760 CE so as long as we do this with JS dates, the following
-        // scales are not relevant
-        // ['age',1000 * 60 * 60 * 24 * 365 * 1000000, function(d) { }],    // 1M years
-        // ['epoch',1000 * 60 * 60 * 24 * 365 * 10000000, function(d) { }], // 10M years
-        // ['era',1000 * 60 * 60 * 24 * 365 * 100000000, function(d) { }],  // 100M years
-        // ['eon',1000 * 60 * 60 * 24 * 365 * 500000000, function(d) { }]  //500M years
+        },'javascript'],
+        // cosmological scales
+        ['age',AGE, new Floorer(AGE),'cosmological'],    // 1M years
+        ['epoch',EPOCH, new Floorer(EPOCH),'cosmological'], // 10M years
+        ['era',ERA, new Floorer(ERA),'cosmological'],  // 100M years
+        ['eon',EON, new Floorer(EON),'cosmological']  //500M years
     ]
 
     cls.SCALES = SCALES;
-    // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
+
     var ISO8601_SHORT_PATTERN = /^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/;
+    // regex below from
+    // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
     var ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 
     /* For now, rather than extract parts from regexp, let's trust the browser.

@@ -92,6 +92,14 @@
         jsdate = new VCO.Date(new Date());
         ok(refdate.isBefore(jsdate),"any new date should be after refdate");
         ok(jsdate.isAfter(refdate),"any new date should be after refdate");
+
+        equal(refdate.getScale(),'javascript',"small dates are javascript");
+
+        var smalldate = new VCO.Date({year: 2015});
+        equal(smalldate.getScale(),'javascript',"small dates are javascript");
+
+        var bigdate = new VCO.Date({year: 1000000});
+        equal(bigdate.getScale(),'cosmological',"big dates are cosmological");        
       });
 
       test("VCO.Date.parseDate", function() {
@@ -187,6 +195,13 @@
           var floored = early_ce.floor('decade');
           equal(floored.getTime(),-59326970400000,'Early floored dates should not go into the 20th Century')
 
+          var age_scale = new VCO.Date({year: 1500000});
+          equal(age_scale.getScale(),'cosmological', 'testing the big guns')
+          throws(function() {
+            age_scale.floor('year');
+          },/invalid scale/,'year not valid scale for cosmo');
+          equal(age_scale.floor('age').getTime(),1000000,'Should floor to 1M years');
+
       });
 
       test("VCO.DateUtil", function() {
@@ -244,6 +259,7 @@
         ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
         ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
         equal(timescale.getNumberOfRows(),3,"Expecting 3 rows")
+        equal(timescale.getScale(),'javascript','test case uses JS dates')
       });
 
       module("marktwain_juked tests",{ // setup for tests that need TimelineConfig
