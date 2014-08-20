@@ -88,12 +88,12 @@ VCO.SlideNav = VCO.Class.extend({
 		
 		// Title
 		if (this.data.title != "") {
-			this._el.title.innerHTML		= this.data.title;
+			this._el.title.innerHTML		= VCO.Util.unlinkify(this.data.title);
 		}
 		
 		// Date
 		if (this.data.date != "") {
-			this._el.description.innerHTML	= this.data.description;
+			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.description);
 		}
 	},
 	

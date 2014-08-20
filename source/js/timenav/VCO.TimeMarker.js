@@ -237,11 +237,11 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
 		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML		= this.data.text.headline;
+			this._text.innerHTML		= VCO.Util.unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML		= this.data.text.text;
+			this._text.innerHTML		= VCO.Util.unlinkify(this.data.text.text);
 		} else if (this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML		= this.data.media.caption;
+			this._text.innerHTML		= VCO.Util.unlinkify(this.data.media.caption);
 		}
 
 		

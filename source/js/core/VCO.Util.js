@@ -153,6 +153,13 @@ VCO.Util = {
 		}
 	},
 	
+	unlinkify: function(text) {
+		if(!text) return text;
+		text = text.replace(/<a\b[^>]*>/i,"");
+		text = text.replace(/<\/a>/i, "");
+		return text;
+	},
+	
 	getParamString: function (obj) {
 		var params = [];
 		for (var i in obj) {

@@ -199,6 +199,13 @@ VCO.Util = {
 		}
 	},
 	
+	unlinkify: function(text) {
+		if(!text) return text;
+		text = text.replace(/<a\b[^>]*>/i,"");
+		text = text.replace(/<\/a>/i, "");
+		return text;
+	},
+	
 	getParamString: function (obj) {
 		var params = [];
 		for (var i in obj) {
@@ -7677,12 +7684,12 @@ VCO.SlideNav = VCO.Class.extend({
 		
 		// Title
 		if (this.data.title != "") {
-			this._el.title.innerHTML		= this.data.title;
+			this._el.title.innerHTML		= VCO.Util.unlinkify(this.data.title);
 		}
 		
 		// Date
 		if (this.data.date != "") {
-			this._el.description.innerHTML	= this.data.description;
+			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.description);
 		}
 	},
 	
@@ -9230,11 +9237,11 @@ VCO.TimeMarker = VCO.Class.extend({
 		this._el.text					= VCO.Dom.create("div", "vco-timemarker-text", this._el.content);
 		this._text						= VCO.Dom.create("h2", "vco-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML		= this.data.text.headline;
+			this._text.innerHTML		= VCO.Util.unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML		= this.data.text.text;
+			this._text.innerHTML		= VCO.Util.unlinkify(this.data.text.text);
 		} else if (this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML		= this.data.media.caption;
+			this._text.innerHTML		= VCO.Util.unlinkify(this.data.media.caption);
 		}
 
 		
