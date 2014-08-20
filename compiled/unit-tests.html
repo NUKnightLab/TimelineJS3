@@ -259,6 +259,23 @@
         equal(slides_in_rows,this.timeline_config.slides.length,"In checking rows we should have seen all slides")
       })
 
+      test("TimeScale max rows", function() {
+        var config = new VCO.TimelineConfig({timeline: { slides: 
+          [
+            {start_date: 1, end_date: 1000},
+            {start_date: 100, end_date: 1500},
+            {start_date: 200, end_date: 2000},
+            {start_date: 300, end_date: 2500},
+            {start_date: 400, end_date: 2600},
+            {start_date: 500, end_date: 4000},
+          ]
+        }})
+        var timescale = new VCO.TimeScale(config.slides,600,3,4);
+        equal(timescale.getNumberOfRows(),4,"Max rows 4 should be honored.")
+        var timescale = new VCO.TimeScale(config.slides,600,3,3);
+        equal(timescale.getNumberOfRows(),3,"Max rows 3 should be honored.")
+      });
+
 
     </script>
 </head>

@@ -74,7 +74,7 @@ VCO.TimelineConfig = VCO.Class.extend({
         if (used.length != array.length) {
             for (var i = 0; i < array.length; i++) {
                 if (!array[i].uniqueid) {
-                    var slug = VCO.Util.slugify(array[i].text.headline);
+                    var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
                     if (!slug) {
                         slug = VCO.Util.unique_ID(6);
                     }

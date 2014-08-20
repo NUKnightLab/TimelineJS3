@@ -28,7 +28,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
-        this._computePositionInfo(slides);
+        this._computePositionInfo(slides, max_rows);
     },
     
     getNumberOfRows: function() {
@@ -69,19 +69,7 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.minor.name;
     },
 
-    _computeNumberOfRows: function(default_marker_width) { // default_marker_width should be in pixels
-        default_marker_width = default_marker_width || 100;
-        var pixel_widths = [];
-        for (var i = 0; i < this.slides.length; i++) {
-            // TODO this won't work on cosmological scale
-            var l = this.getPosition(this.slides[i].start_date.getTime());
-            pixel_widths.push([l,l+default_marker_width]);
-        };
-        window.pixel_widths = pixel_widths;
-        return VCO.Util.maxDepth(pixel_widths);
-    },
-
-    _computePositionInfo: function(slides,default_marker_width) { // default_marker_width should be in pixels
+    _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
         default_marker_width = default_marker_width || 100;
         var lasts_in_rows = []; 
 
@@ -104,16 +92,27 @@ VCO.TimeScale = VCO.Class.extend({
 
         for (var i = 0; i < this._positions.length; i++) {
             var pos_info = this._positions[i];
+            var overlaps = []
             for (var j = 0; j < lasts_in_rows.length; j++) {
-                if (pos_info.start > lasts_in_rows[j].end) {
+                overlaps.push(lasts_in_rows[j].end - pos_info.start);
+                if (overlaps[j] <= 0) {
                     pos_info.row = j;
                     lasts_in_rows[j] = pos_info;
                     break;
                 }
             };
             if (typeof(pos_info.row) == 'undefined') {
-                pos_info.row = lasts_in_rows.length;
-                lasts_in_rows.push(pos_info);
+                if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
+                    pos_info.row = lasts_in_rows.length;
+                    lasts_in_rows.push(pos_info);
+                } else {
+                    var min_overlap = Math.min.apply(null,overlaps);
+                    var idx = overlaps.indexOf(min_overlap);
+                    pos_info.row = idx;
+                    if (pos_info.end > lasts_in_rows[idx].end) {
+                        lasts_in_rows[idx] = pos_info
+                    }
+                }
             }
 
         };
