@@ -2750,7 +2750,7 @@ VCO.TimelineConfig = VCO.Class.extend({
         if (used.length != array.length) {
             for (var i = 0; i < array.length; i++) {
                 if (!array[i].uniqueid) {
-                    var slug = VCO.Util.slugify(array[i].text.headline);
+                    var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
                     if (!slug) {
                         slug = VCO.Util.unique_ID(6);
                     }
@@ -8568,7 +8568,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this.axishelper = {};
 		
 		// Max Rows
-		this._max_rows = 3;
+		this.max_rows = 6;
 		
 		// Animate CSS
 		this.animate_css = false;
@@ -8599,31 +8599,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Public
 	================================================== */
-	show: function(d) {
-		
-		var duration = this.options.duration;
-		if (d) {
-			duration = d;
-		}
-		/*
-		this.animator = VCO.Animate(this._el.container, {
-			top: 		this.options.menubar_default_y + "px",
-			duration: 	duration,
-			easing: 	VCO.Ease.easeOutStrong
-		});
-		*/
-	},
-	
-	hide: function(top) {
-		/*
-		this.animator = VCO.Animate(this._el.container, {
-			top: 		top,
-			duration: 	this.options.duration,
-			easing: 	VCO.Ease.easeOutStrong
-		});
-		*/
-	},
-	
 	positionMarkers: function() {
 		this._positionMarkers();
 	},
@@ -8644,8 +8619,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		
-		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -8736,12 +8710,17 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_assignRowsToMarkers: function() {
-		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
-		
+		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
+			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+		/*	
+		if (marker_height < this.options.marker_height_min) {
+			this.timescale = this._getTimeScale();
+			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+		}
+		*/
 		for (var i = 0; i < this._markers.length; i++) {
 			
 			// Set Height
-			var marker_height = Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
 			this._markers[i].setHeight(marker_height);
 			
 			//Position by Row
@@ -8905,14 +8884,9 @@ VCO.TimeNav = VCO.Class.extend({
 		if (width) {
 			this.options.width = width;
 		}
-		if (height) {
+		if (height && height != this.options.height) {
 			this.options.height = height;
-		}
-		
-		// Set Max Rows
-		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
-		if (this.max_rows < 1) {
-			this.max_rows = 1;
+			this.timescale = this._getTimeScale();
 		}
 		
 		// Size Markers
@@ -8982,10 +8956,6 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
-		
-		// Update Size
-		this.options.width = this._el.container.offsetWidth;
-		this.options.height = this._el.container.offsetHeight;
 		
 		// Swipable
 		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
@@ -9328,7 +9298,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
-        this._computePositionInfo(slides);
+        this._computePositionInfo(slides, max_rows);
     },
     
     getNumberOfRows: function() {
@@ -9369,19 +9339,7 @@ VCO.TimeScale = VCO.Class.extend({
         return this._axis_helper.minor.name;
     },
 
-    _computeNumberOfRows: function(default_marker_width) { // default_marker_width should be in pixels
-        default_marker_width = default_marker_width || 100;
-        var pixel_widths = [];
-        for (var i = 0; i < this.slides.length; i++) {
-            // TODO this won't work on cosmological scale
-            var l = this.getPosition(this.slides[i].start_date.getTime());
-            pixel_widths.push([l,l+default_marker_width]);
-        };
-        window.pixel_widths = pixel_widths;
-        return VCO.Util.maxDepth(pixel_widths);
-    },
-
-    _computePositionInfo: function(slides,default_marker_width) { // default_marker_width should be in pixels
+    _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
         default_marker_width = default_marker_width || 100;
         var lasts_in_rows = []; 
 
@@ -9404,16 +9362,27 @@ VCO.TimeScale = VCO.Class.extend({
 
         for (var i = 0; i < this._positions.length; i++) {
             var pos_info = this._positions[i];
+            var overlaps = []
             for (var j = 0; j < lasts_in_rows.length; j++) {
-                if (pos_info.start > lasts_in_rows[j].end) {
+                overlaps.push(lasts_in_rows[j].end - pos_info.start);
+                if (overlaps[j] <= 0) {
                     pos_info.row = j;
                     lasts_in_rows[j] = pos_info;
                     break;
                 }
             };
             if (typeof(pos_info.row) == 'undefined') {
-                pos_info.row = lasts_in_rows.length;
-                lasts_in_rows.push(pos_info);
+                if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
+                    pos_info.row = lasts_in_rows.length;
+                    lasts_in_rows.push(pos_info);
+                } else {
+                    var min_overlap = Math.min.apply(null,overlaps);
+                    var idx = overlaps.indexOf(min_overlap);
+                    pos_info.row = idx;
+                    if (pos_info.end > lasts_in_rows[idx].end) {
+                        lasts_in_rows[idx] = pos_info
+                    }
+                }
             }
 
         };
@@ -10066,7 +10035,6 @@ VCO.Timeline = VCO.Class.extend({
 		var height = 0;
 		
 		if (timenav_height) {
-			trace("timenav_height " + timenav_height)
 			height = timenav_height;
 		} else {
 			if (this.options.timenav_height_percentage || timenav_height_percentage) {
@@ -10141,7 +10109,6 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Positon Menu
 		menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
-		trace(this._el.menubar.offsetHeight)
 		
 		if (animate) {
 		
@@ -10177,7 +10144,6 @@ VCO.Timeline = VCO.Class.extend({
 			// Animate Menubar
 			if (this.animator_menubar) {
 				this.animator_menubar.stop();
-				trace("stop animation")
 			}
 			
 			this.animator_menubar = VCO.Animate(this._el.menubar, {
@@ -10256,6 +10222,7 @@ VCO.Timeline = VCO.Class.extend({
 		// Create TimeNav
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 		
 		// Create StorySlider
@@ -10381,7 +10348,6 @@ VCO.Timeline = VCO.Class.extend({
 			
 			// Go to proper slide
 			if (this.options.hash_bookmark && window.location.hash != "") {
-				trace(window.location.hash);
 				this.goToId(window.location.hash.replace("#event-", ""));
 			} else {
 				this.goTo(this.options.start_at_slide);

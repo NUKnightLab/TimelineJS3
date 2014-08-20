@@ -266,7 +266,6 @@ VCO.Timeline = VCO.Class.extend({
 		var height = 0;
 		
 		if (timenav_height) {
-			trace("timenav_height " + timenav_height)
 			height = timenav_height;
 		} else {
 			if (this.options.timenav_height_percentage || timenav_height_percentage) {
@@ -341,7 +340,6 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Positon Menu
 		menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
-		trace(this._el.menubar.offsetHeight)
 		
 		if (animate) {
 		
@@ -377,7 +375,6 @@ VCO.Timeline = VCO.Class.extend({
 			// Animate Menubar
 			if (this.animator_menubar) {
 				this.animator_menubar.stop();
-				trace("stop animation")
 			}
 			
 			this.animator_menubar = VCO.Animate(this._el.menubar, {
@@ -456,6 +453,7 @@ VCO.Timeline = VCO.Class.extend({
 		// Create TimeNav
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 		
 		// Create StorySlider
@@ -581,7 +579,6 @@ VCO.Timeline = VCO.Class.extend({
 			
 			// Go to proper slide
 			if (this.options.hash_bookmark && window.location.hash != "") {
-				trace(window.location.hash);
 				this.goToId(window.location.hash.replace("#event-", ""));
 			} else {
 				this.goTo(this.options.start_at_slide);

@@ -177,7 +177,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this.axishelper = {};
 		
 		// Max Rows
-		this._max_rows = 3;
+		this.max_rows = 6;
 		
 		// Animate CSS
 		this.animate_css = false;
@@ -208,31 +208,6 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Public
 	================================================== */
-	show: function(d) {
-		
-		var duration = this.options.duration;
-		if (d) {
-			duration = d;
-		}
-		/*
-		this.animator = VCO.Animate(this._el.container, {
-			top: 		this.options.menubar_default_y + "px",
-			duration: 	duration,
-			easing: 	VCO.Ease.easeOutStrong
-		});
-		*/
-	},
-	
-	hide: function(top) {
-		/*
-		this.animator = VCO.Animate(this._el.container, {
-			top: 		top,
-			duration: 	this.options.duration,
-			easing: 	VCO.Ease.easeOutStrong
-		});
-		*/
-	},
-	
 	positionMarkers: function() {
 		this._positionMarkers();
 	},
@@ -253,8 +228,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		
-		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -345,12 +319,17 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_assignRowsToMarkers: function() {
-		var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
-		
+		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
+			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+		/*	
+		if (marker_height < this.options.marker_height_min) {
+			this.timescale = this._getTimeScale();
+			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+		}
+		*/
 		for (var i = 0; i < this._markers.length; i++) {
 			
 			// Set Height
-			var marker_height = Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
 			this._markers[i].setHeight(marker_height);
 			
 			//Position by Row
@@ -514,14 +493,9 @@ VCO.TimeNav = VCO.Class.extend({
 		if (width) {
 			this.options.width = width;
 		}
-		if (height) {
+		if (height && height != this.options.height) {
 			this.options.height = height;
-		}
-		
-		// Set Max Rows
-		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
-		if (this.max_rows < 1) {
-			this.max_rows = 1;
+			this.timescale = this._getTimeScale();
 		}
 		
 		// Size Markers
@@ -591,10 +565,6 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
-		
-		// Update Size
-		this.options.width = this._el.container.offsetWidth;
-		this.options.height = this._el.container.offsetHeight;
 		
 		// Swipable
 		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
