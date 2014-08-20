@@ -94,6 +94,30 @@
         ok(jsdate.isAfter(refdate),"any new date should be after refdate");
       });
 
+      test("VCO.Date.parseDate", function() {
+        var d = VCO.Date.parseDate('2014-08-20');
+        equal(d.year,'2014','three part date gets year 2014');
+        equal(d.month,'08', 'three part date gets month 08');
+        equal(d.day,'20', 'three part date gets day 20');
+
+        var d = VCO.Date.parseDate('2014-08');
+        equal(d.year,'2014','two part date gets year 2014');
+        equal(d.month,'08','two part date gets month 08');
+        ok(!(d.day), 'two-part date has no day');
+
+        var d = VCO.Date.parseDate('2014');
+        equal(d.year,'2014','year-only date gets 2014');
+        ok(!(d.month), 'year only date has no month');
+        ok(!(d.day), 'year only date has no day');
+
+        var d = VCO.Date.parseDate('-6');
+        equal(d.year,'-6','year-only date gets -6 (BC ok)');
+        ok(!(d.month), 'year only date has no month');
+        ok(!(d.day), 'year only date has no day');
+
+
+      });
+
       test("VCO.Date.floor", function() {
         throws(function() { new VCO.Date(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
           var d = new VCO.Date(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)

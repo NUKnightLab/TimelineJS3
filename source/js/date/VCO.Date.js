@@ -237,7 +237,7 @@ VCO.BigYear = VCO.Class.extend({
 
     cls.SCALES = SCALES;
     // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
-    var ISO8601_SHORT_PATTERN = /^([\+-]?\d+)(-\d{2})?(-\d{2})?$/;
+    var ISO8601_SHORT_PATTERN = /^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/;
     var ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 
     /* For now, rather than extract parts from regexp, let's trust the browser.
@@ -265,10 +265,10 @@ VCO.BigYear = VCO.Class.extend({
         if (str.match(ISO8601_SHORT_PATTERN)) { 
             // parse short specifically to avoid timezone offset confusion
             // most browsers assume short is UTC, not local time.
-            var parts = str.split('-');
-            d = { year: parts[0]}
-            if (parts[1]) { d['month'] = parts[1]; }
-            if (parts[2]) { d['day'] = parts[2]; }
+            var parts = str.match(ISO8601_SHORT_PATTERN).slice(1);
+            d = { year: parts[0].replace('+','')} // year can be negative
+            if (parts[1]) { d['month'] = parts[1].replace('-',''); }
+            if (parts[2]) { d['day'] = parts[2].replace('-',''); }
             return d;
         }
 
