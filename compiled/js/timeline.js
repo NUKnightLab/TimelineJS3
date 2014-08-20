@@ -346,9 +346,14 @@ VCO.Util = {
 		
 		return vars;
 	},
+
+	trim: function(str) {
+		return str.replace(/^\s+|\s+$/g, '');
+	},
+
 	slugify: function(str) {
 		// borrowed from http://stackoverflow.com/a/5782563/102476
-		str = str.replace(/^\s+|\s+$/g, ''); // trim
+		str = VCO.Util.trim(str);
 		str = str.toLowerCase();
 
 		// remove accents, swap ñ for n, etc
@@ -2796,36 +2801,6 @@ VCO.TimelineConfig = VCO.Class.extend({
         return key;
     }
 
-    function trim(str) {
-        return str.replace(/^\s+/,'').replace(/\s+$/,'');
-    }
-
-    function parseDate(str) {
-        if (str.match(/^\-?\d+$/)) {
-            return { year: str }
-        }
-
-        var parsed = {}
-        if (str.match(/\d+\/\d+\/\d+/)) {
-            var date = str.match(/\d+\/\d+\/\d+/)[0];
-            str = trim(str.replace(date,''));
-            var date_parts = date.split('/');
-            parsed.month = date_parts[0];
-            parsed.day = date_parts[1];
-            parsed.year = date_parts[2];
-        }
-
-        if (str.match(/\d+\/\d+/)) {
-            var date = str.match(/\d+\/\d+/)[0];
-            str = trim(str.replace(date,''));
-            var date_parts = date.split('/');
-            parsed.month = date_parts[0];
-            parsed.year = date_parts[1];
-        }
-        // todo: handle hours, minutes, seconds, millis other date formats, etc...
-        return parsed;
-    }
-
     function extractGoogleEntryData(item) {
         var item_data = {}
         for (k in item) {
@@ -2848,9 +2823,9 @@ VCO.TimelineConfig = VCO.Class.extend({
                 text: item_data.text || ''
             }
         }
-        d['start_date'] = parseDate(item_data.startdate);
+        d['start_date'] = VCO.Date.parseDate(item_data.startdate);
         if (item.enddate) {
-            d['end_date'] = parseDate(item.enddate);
+            d['end_date'] = VCO.Date.parseDate(item.enddate);
         }
         return d;
     }
@@ -4516,6 +4491,43 @@ VCO.Date = VCO.Class.extend({
     ]
 
     cls.SCALES = SCALES;
+
+    cls.parseDate = function(str) {
+        if (str.match(/^\-?\d+$/)) {
+            return { year: str }
+        }
+
+        var parsed = {}
+        if (str.match(/\d+\/\d+\/\d+/)) {
+            var date = str.match(/\d+\/\d+\/\d+/)[0];
+            str = VCO.Util.trim(str.replace(date,''));
+            var date_parts = date.split('/');
+            parsed.month = date_parts[0];
+            parsed.day = date_parts[1];
+            parsed.year = date_parts[2];
+        }
+
+        if (str.match(/\d+\/\d+/)) {
+            var date = str.match(/\d+\/\d+/)[0];
+            str = VCO.Util.trim(str.replace(date,''));
+            var date_parts = date.split('/');
+            parsed.month = date_parts[0];
+            parsed.year = date_parts[1];
+        }
+        // todo: handle hours, minutes, seconds, millis other date formats, etc...
+        if (str.match(':')) {
+            var time_parts = str.split(':');
+            parsed.hour = time_parts[0];
+            parsed.minute = time_parts[1];
+            if (time_parts[2]) {
+                second_parts = time_parts[2].split('.');
+                parsed.second = second_parts[0];
+                parsed.millisecond = second_parts[1];
+            }
+        }
+        return parsed;
+    }
+
 })(VCO.Date)
 
 /* **********************************************

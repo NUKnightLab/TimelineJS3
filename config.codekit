@@ -341,6 +341,15 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/compiled\/spreadsheet.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/spreadsheet.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/compiled\/test\/js\/data\/VCO.getJSON.html": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -472,6 +481,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.Class.js",
 		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.Class-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/core\/VCO.ConfigFactory.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.ConfigFactory.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.ConfigFactory-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
