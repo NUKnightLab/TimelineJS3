@@ -11,11 +11,20 @@ VCO.TimeScale = VCO.Class.extend({
         display_width = display_width || 500; //arbitrary default
         this._display_width = display_width; 
         this._pixel_width = this._screen_multiplier * this._display_width;
-        
-        this.slides = slides; // didn't want to hold on to this, but will need to recompute numberOfRows if display width changes.
+
+        var scales = {}
+        for (var i in slides) {
+            scales[slides[i].start_date.getScale()] = true;
+        }
+
+        if (Object.keys(scales).length > 1) {
+            throw "Can't mix cosmological dates with javascript dates."
+        } else {
+            this._scale = Object.keys(scales)[0];
+        }
+
         this._positions = [];
         this._pixels_per_milli = 0;
-        this.axis_helper = null;
         
         this._earliest = slides[0].start_date.getTime();
         // TODO: should _latest be the end date if there is one?
@@ -29,6 +38,10 @@ VCO.TimeScale = VCO.Class.extend({
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
         this._computePositionInfo(slides, max_rows);
+    },
+    
+    getScale: function() {
+        return this._scale;
     },
     
     getNumberOfRows: function() {
