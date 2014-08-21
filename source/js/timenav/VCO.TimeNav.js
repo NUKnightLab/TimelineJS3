@@ -155,7 +155,7 @@ VCO.TimeNav = VCO.Class.extend({
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
 			marker_width_min: 		100, 			// Minimum Marker Width
-			zoom_sequence: 			[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
 		};
 		
 		// Animation

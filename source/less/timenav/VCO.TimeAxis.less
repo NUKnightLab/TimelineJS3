@@ -39,7 +39,11 @@
 				margin-left:-25px;
 				text-align: center;
 				font-weight:normal;
-				
+				.vco-timeaxis-tick-text {
+					display:inline-block;
+					width:100%;
+					
+				}
 						
 				&:before {
 					content: "|";
@@ -76,6 +80,9 @@
 				color:@minor-ticks-color;
 				.vco-timeaxis-tick-text {
 					opacity:0;
+					text-overflow: ellipsis;
+					overflow:hidden;
+					
 				}
 				&:before {
 					font-size:10px;
