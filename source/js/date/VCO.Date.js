@@ -102,7 +102,7 @@ VCO.Date = VCO.Class.extend({
 	_createDisplayType: function() {
         if (Date == this.data.date_obj.constructor) {
             this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
-            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
+            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format_short);
         } else {
             this.data.display_text = this.data.date_obj.getDisplayText();
             this.data.display_text_short = this.data.date_obj.getDisplayTextShort();
