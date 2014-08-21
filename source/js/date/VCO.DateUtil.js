@@ -26,7 +26,7 @@ VCO.DateUtil = {
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
-			if (data[eval_array[i]]) {
+			if ( data[eval_array[i]]) {
 				if (use_short) {
 					return VCO.DateUtil.best_dateformat_lookup_short[eval_array[i]];
 				} else {
@@ -59,7 +59,7 @@ VCO.DateUtil = {
 		millisecond: 1,
 		second: VCO.Language.dateformats.time_short,
 		minute: VCO.Language.dateformats.time_no_seconds_short,
-		hour: VCO.Language.dateformats.time_no_seconds_short,
+		hour: VCO.Language.dateformats.time_no_minutes_short,
 		day: VCO.Language.dateformats.full_short,
 		month: VCO.Language.dateformats.month_short,
 		year: VCO.Language.dateformats.year,

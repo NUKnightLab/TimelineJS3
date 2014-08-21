@@ -147,7 +147,7 @@ VCO.Timeline = VCO.Class.extend({
 			scale_factor: 				3, 				// How many screen widths wide should the timeline be
 			layout: 					"landscape", 	// portrait or landscape
 			timenav_position: 			"bottom", 		// timeline on top or bottom
-			optimal_tick_width: 		100,			// optimal distance (in pixels) between ticks on axis
+			optimal_tick_width: 		50,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
 			timenav_height: 			150,
 			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen

@@ -2885,6 +2885,7 @@ VCO.Language = {
 		time: "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
 		time_short: "h:MM:ss TT",
 		time_no_seconds_short: "h:MM TT",
+		time_no_minutes_short: "h TT",
 		time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 		full_long: "mmm d',' yyyy 'at' h:MM TT",
 		full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
@@ -4684,7 +4685,7 @@ VCO.DateUtil = {
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
-			if (data[eval_array[i]]) {
+			if ( data[eval_array[i]]) {
 				if (use_short) {
 					return VCO.DateUtil.best_dateformat_lookup_short[eval_array[i]];
 				} else {
@@ -4717,7 +4718,7 @@ VCO.DateUtil = {
 		millisecond: 1,
 		second: VCO.Language.dateformats.time_short,
 		minute: VCO.Language.dateformats.time_no_seconds_short,
-		hour: VCO.Language.dateformats.time_no_seconds_short,
+		hour: VCO.Language.dateformats.time_no_minutes_short,
 		day: VCO.Language.dateformats.full_short,
 		month: VCO.Language.dateformats.month_short,
 		year: VCO.Language.dateformats.year,
@@ -8922,7 +8923,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
 		
 		// Time Axis
-		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
+		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis, this.options);
 		
 		// Swipable
 		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
@@ -9390,7 +9391,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	
 	/*	Constructor
 	================================================== */
-	initialize: function(elem, data, options) {
+	initialize: function(elem, options) {
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -9409,16 +9410,15 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		
 		// Data
-		this.data = {
-			
-		};
+		this.data = {};
 	
 		// Options
 		this.options = {
-			duration: 			1000,
-			ease: 				VCO.Ease.easeInSpline,
-			width: 				600,
-			height: 			600
+			duration: 				1000,
+			ease: 					VCO.Ease.easeInSpline,
+			optimal_tick_width: 	50,
+			width: 					600,
+			height: 				600
 		};
 		
 		// Actively Displaying
@@ -9444,7 +9444,7 @@ VCO.TimeAxis = VCO.Class.extend({
 	        millisecond: 1,
 	        second: VCO.Language.dateformats.time_short,
 	        minute: VCO.Language.dateformats.time_no_seconds_short,
-	        hour: VCO.Language.dateformats.time_no_seconds_short,
+	        hour: VCO.Language.dateformats.time_no_minutes_short,
 	        day: VCO.Language.dateformats.full_short,
 	        month: VCO.Language.dateformats.month_short,
 	        year: VCO.Language.dateformats.year,
@@ -9466,7 +9466,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
-		VCO.Util.mergeData(this.data, data);
 		
 		this._initLayout();
 		this._initEvents();
@@ -9560,7 +9559,7 @@ VCO.TimeAxis = VCO.Class.extend({
 			var ts_tick = ts_ticks[i];
 			if (!(ts_tick.getTime() in skip_times)) {
 				var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate-opacity", tick_element),
-					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text", tick);
+					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text vco-animate-opacity", tick);
 				ts_tick.setDateFormat(dateformat);
 				
 				tick_text.innerHTML = ts_tick.getDisplayDate(true);
@@ -9593,17 +9592,28 @@ VCO.TimeAxis = VCO.Class.extend({
 			var tick = this.minor_ticks[i];
 			if (!no_animate) {
 				tick.tick.className = "vco-timeaxis-tick vco-animate";
+				//tick.tick_text.className = "vco-timeaxis-tick-text vco-animate-opacity";
 			} 
-			
+			//this.minor_ticks[i].tick.style.opacity = 1;
+			//this.minor_ticks[i].tick_text.style.opacity = 1;
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 			tick.tick_text.innerHTML = tick.display_text;
 		};
 		
 		// Handle density of minor ticks
+		trace("optimal_tick_width " + optimal_tick_width)
+		
 		if (this.minor_ticks[1] && this.minor_ticks[0]) {
 			var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
 				fraction_of_array = 1;
-			
+				
+			if (distance < optimal_tick_width) {
+				trace("TICKS TOO CLOSE");
+				trace(distance)
+				fraction_of_array = Math.round(optimal_tick_width/timescale.getPixelsPerTick());
+				trace(fraction_of_array)
+			}
+			/*
 			if (distance < (optimal_tick_width/2 ) / 4) {
 				fraction_of_array = 3;
 			} else if (distance < (optimal_tick_width/2) / 3) {
@@ -9611,19 +9621,47 @@ VCO.TimeAxis = VCO.Class.extend({
 			} else if (distance < optimal_tick_width/2) {
 				fraction_of_array = 2;
 			}
-		
+			*/
+			var show = 1;
+			for (var i = 0; i < this.minor_ticks.length; i++) {
+				if (fraction_of_array > 1) {
+					
+					if (show >= fraction_of_array) {
+						show = 1;
+						//this.minor_ticks[i].tick_text.style.opacity = 0;
+						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text vco-animate-opacity";
+						this.minor_ticks[i].tick_text.style.opacity = 1;
+						//this.minor_ticks[i].tick.style.opacity = 1;
+					} else {
+						show++;
+						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text";
+						this.minor_ticks[i].tick_text.style.opacity = 0;
+						//this.minor_ticks[i].tick.style.opacity = 0.5;
+						//this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
+					}
+				} else {
+					this.minor_ticks[i].tick_text.style.opacity = 1;
+				}
+				
+			};
+			/*
 			if (fraction_of_array > 1) {
 				var show = 1;
 				for (var i = 0; i < this.minor_ticks.length; i++) {
 					if (show >= fraction_of_array) {
 						show = 1;
-					
+						//this.minor_ticks[i].tick_text.style.opacity = 0;
+						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text vco-animate-opacity";
+						this.minor_ticks[i].tick_text.style.opacity = 1;
 					} else {
 						show++;
-						this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
+						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text";
+						this.minor_ticks[i].tick_text.style.opacity = 0;
+						//this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
 					}
 				};
 			};
+			*/
 		}
 		
 		
@@ -9922,7 +9960,7 @@ VCO.Timeline = VCO.Class.extend({
 			scale_factor: 				3, 				// How many screen widths wide should the timeline be
 			layout: 					"landscape", 	// portrait or landscape
 			timenav_position: 			"bottom", 		// timeline on top or bottom
-			optimal_tick_width: 		100,			// optimal distance (in pixels) between ticks on axis
+			optimal_tick_width: 		50,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
 			timenav_height: 			150,
 			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen

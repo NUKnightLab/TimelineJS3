@@ -564,7 +564,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
 		
 		// Time Axis
-		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis);
+		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis, this.options);
 		
 		// Swipable
 		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
