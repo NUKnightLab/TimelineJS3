@@ -143,6 +143,7 @@ VCO.Timeline = VCO.Class.extend({
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
 			hash_bookmark: 				false,
+			default_bg_color: 			{r:256, g:256, b:256},
 			scale_factor: 				3, 				// How many screen widths wide should the timeline be
 			layout: 					"landscape", 	// portrait or landscape
 			timenav_position: 			"bottom", 		// timeline on top or bottom

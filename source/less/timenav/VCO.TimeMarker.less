@@ -162,7 +162,7 @@
 					overflow:hidden;
 					font-weight:normal;
 					margin:0;
-					color:darken(@marker-color,15);
+					color:@marker-text-color;
 
 				}
 			}
@@ -187,7 +187,7 @@
 
 					display:block;
 					font-size:24px;
-					color:darken(@marker-color,10);
+					color:@marker-text-color;
 					margin-top:0px;
 				}
 			}
@@ -217,15 +217,15 @@
 	================================================== */
 	&:hover {
 		.vco-timemarker-timespan {
-			background-color: fadeout(darken(@marker-color,15), 85%);
+			background-color: fadeout(@marker-text-color, 85%);
 			
 			.vco-timemarker-timespan-content {
-				background-color: darken(@marker-color,15);
+				background-color: @marker-text-color;
 			}
 			
 			.vco-timemarker-line-left, .vco-timemarker-line-right {
 				//border-color:@color-background;
-				border-color: darken(@marker-color,15);
+				border-color: @marker-text-color;
 				&:after {
 					//z-index:7;
 					background-color:darken(@marker-color, 100);
