@@ -211,76 +211,36 @@ VCO.TimeAxis = VCO.Class.extend({
 			var tick = this.minor_ticks[i];
 			if (!no_animate) {
 				tick.tick.className = "vco-timeaxis-tick vco-animate";
-				//tick.tick_text.className = "vco-timeaxis-tick-text vco-animate-opacity";
 			} 
-			//this.minor_ticks[i].tick.style.opacity = 1;
-			//this.minor_ticks[i].tick_text.style.opacity = 1;
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 			tick.tick_text.innerHTML = tick.display_text;
 		};
 		
 		// Handle density of minor ticks
-		trace("optimal_tick_width " + optimal_tick_width)
-		
 		if (this.minor_ticks[1] && this.minor_ticks[0]) {
 			var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
 				fraction_of_array = 1;
 				
 			if (distance < optimal_tick_width) {
-				trace("TICKS TOO CLOSE");
-				trace(distance)
 				fraction_of_array = Math.round(optimal_tick_width/timescale.getPixelsPerTick());
-				trace(fraction_of_array)
 			}
-			/*
-			if (distance < (optimal_tick_width/2 ) / 4) {
-				fraction_of_array = 3;
-			} else if (distance < (optimal_tick_width/2) / 3) {
-				fraction_of_array = 3;
-			} else if (distance < optimal_tick_width/2) {
-				fraction_of_array = 2;
-			}
-			*/
+			
 			var show = 1;
 			for (var i = 0; i < this.minor_ticks.length; i++) {
 				if (fraction_of_array > 1) {
 					
 					if (show >= fraction_of_array) {
 						show = 1;
-						//this.minor_ticks[i].tick_text.style.opacity = 0;
-						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text vco-animate-opacity";
 						this.minor_ticks[i].tick_text.style.opacity = 1;
-						//this.minor_ticks[i].tick.style.opacity = 1;
 					} else {
 						show++;
-						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text";
 						this.minor_ticks[i].tick_text.style.opacity = 0;
-						//this.minor_ticks[i].tick.style.opacity = 0.5;
-						//this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
 					}
 				} else {
 					this.minor_ticks[i].tick_text.style.opacity = 1;
 				}
 				
 			};
-			/*
-			if (fraction_of_array > 1) {
-				var show = 1;
-				for (var i = 0; i < this.minor_ticks.length; i++) {
-					if (show >= fraction_of_array) {
-						show = 1;
-						//this.minor_ticks[i].tick_text.style.opacity = 0;
-						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text vco-animate-opacity";
-						this.minor_ticks[i].tick_text.style.opacity = 1;
-					} else {
-						show++;
-						//this.minor_ticks[i].tick_text.className = "vco-timeaxis-tick-text";
-						this.minor_ticks[i].tick_text.style.opacity = 0;
-						//this.minor_ticks[i].tick_text.innerHTML = "&nbsp;";
-					}
-				};
-			};
-			*/
 		}
 		
 		
