@@ -21,56 +21,59 @@ VCO.DateUtil = {
 	 * this may not work with 'cosmologic' dates, or with VCO.Date if we 
 	 * support constructing them based on JS Date and time
 	================================================== */
-	findBestFormat: function(data, use_short) {
-		return ""; // TODO fix for languages
+	findBestFormat: function(data, variant) {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
 			if ( data[eval_array[i]]) {
-				if (use_short) {
-					return VCO.DateUtil.best_dateformat_lookup_short[eval_array[i]];
+				if (variant) {
+					if (!(variant in VCO.DateUtil.best_dateformats)) {
+						variant = 'short'; // legacy
+					}
 				} else {
-					return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+					variant = 'default'
 				}
-				
+				return VCO.DateUtil.best_dateformats[variant][eval_array[i]];		
 			}
 		};
 		return "";
 	},
 	
-	// best_dateformat_lookup: {
-	// 	millisecond: 1,
-	// 	second: VCO.Language.dateformats.time,
-	// 	minute: VCO.Language.dateformats.time_no_seconds_small_date,
-	// 	hour: VCO.Language.dateformats.time_no_seconds_small_date,
-	// 	day: VCO.Language.dateformats.full,
-	// 	month: VCO.Language.dateformats.month,
-	// 	year: VCO.Language.dateformats.year,
-	// 	decade: VCO.Language.dateformats.year,
-	// 	century: VCO.Language.dateformats.year,
-	// 	millennium: VCO.Language.dateformats.year,
-	// 	age: VCO.Language.dateformats.year,
-	// 	epoch: VCO.Language.dateformats.year,
-	// 	era: VCO.Language.dateformats.year,
-	// 	eon: VCO.Language.dateformats.year,
-	// },
-	
-	// best_dateformat_lookup_short: {
-	// 	millisecond: 1,
-	// 	second: VCO.Language.dateformats.time_short,
-	// 	minute: VCO.Language.dateformats.time_no_seconds_short,
-	// 	hour: VCO.Language.dateformats.time_no_minutes_short,
-	// 	day: VCO.Language.dateformats.full_short,
-	// 	month: VCO.Language.dateformats.month_short,
-	// 	year: VCO.Language.dateformats.year,
-	// 	decade: VCO.Language.dateformats.year,
-	// 	century: VCO.Language.dateformats.year,
-	// 	millennium: VCO.Language.dateformats.year,
-	// 	age: VCO.Language.dateformats.year,
-	// 	epoch: VCO.Language.dateformats.year,
-	// 	era: VCO.Language.dateformats.year,
-	// 	eon: VCO.Language.dateformats.year,
-	// }
+	best_dateformats: {
+		default: {
+			millisecond: 1,
+			second: 'dateformats.time',
+			minute: 'dateformats.time_no_seconds_small_date',
+			hour: 'dateformats.time_no_seconds_small_date',
+			day: 'dateformats.full',
+			month: 'dateformats.month',
+			year: 'dateformats.year',
+			decade: 'dateformats.year',
+			century: 'dateformats.year',
+			millennium: 'dateformats.year',
+			age: 'dateformats.year',
+			epoch: 'dateformats.year',
+			era: 'dateformats.year',
+			eon: 'dateformats.year',
+		},
+		
+		short: {
+			millisecond: 1,
+			second: 'dateformats.time_short',
+			minute: 'dateformats.time_no_seconds_short',
+			hour: 'dateformats.time_no_minutes_short',
+			day: 'dateformats.full_short',
+			month: 'dateformats.month_short',
+			year: 'dateformats.year',
+			decade: 'dateformats.year',
+			century: 'dateformats.year',
+			millennium: 'dateformats.year',
+			age: 'dateformats.year',
+			epoch: 'dateformats.year',
+			era: 'dateformats.year',
+			eon: 'dateformats.year',
+		}
+	}
 	
 };

@@ -16,7 +16,6 @@ VCO.Date = VCO.Class.extend({
 			this.data = {
                 scale:          "javascript",
 				format: 		"yyyy mmmm",
-				display_type: 	"",
 				date_obj: 		date
 			}
 		} else if (VCO.BigYear == data.constructor) {
@@ -35,8 +34,6 @@ VCO.Date = VCO.Class.extend({
 				millisecond: 	"",
 				format: 		"yyyy mmmm",
 				format_short: 	"yyyy mmmm",
-				display_text: 	"",
-				display_text_short: "",
 				date_obj: 		{}
 			};
 			
@@ -60,9 +57,6 @@ VCO.Date = VCO.Class.extend({
 			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
 		}
 		
-		this._createDisplayType();
-		
-		
     },
 
     getScale: function() {
@@ -77,10 +71,23 @@ VCO.Date = VCO.Class.extend({
 	setDateFormat: function(format) {
 		// Set display type format
 		this.data.format = format;
-		this._createDisplayType();
 	},
 	
-	getDisplayDate: function(use_short) {
+	getDisplayDate: function(language,use_short) {
+
+        if (language && !use_short) {
+            use_short = 'short';
+            language = VCO.Language.default;
+        }
+
+        if (Date == this.data.date_obj.constructor) {
+            this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
+            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
+        } else {
+            this.data.display_text = this.data.date_obj.getDisplayText();
+            this.data.display_text_short = this.data.date_obj.getDisplayTextShort();
+        }
+
 		if (use_short) {
 			return this.data.display_text_short;
 		} else {
@@ -95,18 +102,6 @@ VCO.Date = VCO.Class.extend({
 	
 	getTime: function() {
 		return this.data.date_obj.getTime();
-	},
-	
-	/*	Create Display Type
-	================================================== */
-	_createDisplayType: function() {
-        if (Date == this.data.date_obj.constructor) {
-            this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
-            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
-        } else {
-            this.data.display_text = this.data.date_obj.getDisplayText();
-            this.data.display_text_short = this.data.date_obj.getDisplayTextShort();
-        }
 	},
 	
 	isBefore: function(other_date) { 

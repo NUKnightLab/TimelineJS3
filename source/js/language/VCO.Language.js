@@ -71,3 +71,5 @@ VCO.Language.languages = {
 		}
 	}
 }
+
+VCO.Language.default = new VCO.Language();
