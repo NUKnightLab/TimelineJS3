@@ -53,114 +53,7 @@ VCO.StorySlider = VCO.Class.extend({
 		this.current_slide = 0;
 		
 		// Data Object
-		this.data = {
-			uniqueid: 				"",
-			slides: 				[
-				{
-					uniqueid: 				"",
-					background: {			// OPTIONAL
-						url: 				null,
-						color: 				null,
-						opacity: 			50
-					},
-					date: 					null,
-					location: {
-						lat: 				-9.143962,
-						lon: 				38.731094,
-						zoom: 				13,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-					},
-					text: {
-						headline: 			"Slideshow Example",
-						text: 				"Example slideshow slide "
-					},
-					media: [
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						}
-					]
-				},
-				{
-					uniqueid: 				"",
-					background: {			// OPTIONAL
-						url: 				null,
-						color: 				null,
-						opacity: 			50
-					},
-					date: 					null,
-					location: {
-						lat: 				-9.143962,
-						lon: 				38.731094,
-						zoom: 				13,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-					},
-					text: {
-						headline: 			"YouTube",
-						text: 				"Just add a link to the video in the media field."
-					},
-					media: {
-						url: 				"http://www.youtube.com/watch?v=lIvftGgps24",
-						credit:				"",
-						caption:			"",
-						link: 				null,
-						link_target: 		null
-					}
-				}
-			]
-		};
+		this.data = {};
 		
 		this.options = {
 			id: 					"",
@@ -582,25 +475,9 @@ VCO.StorySlider = VCO.Class.extend({
 	/*	Events
 	================================================== */
 	_onBackgroundChange: function(e) {
-		var slide_background;
-		
-		slide_background = this._slides[this.current_slide].getBackground();
+		var slide_background = this._slides[this.current_slide].getBackground();
 		this.changeBackground(e);
-		
 		this.fire("colorchange", slide_background);
-		/*
-		if (slide_background.color || slide_background.image) {
-			if (this.options.layout != "landscape") {
-				this._nav.next.setColor(true);
-				this._nav.previous.setColor(true);
-			}
-		} else {
-			if (this.options.layout != "landscape") {
-				this._nav.next.setColor(false);
-				this._nav.previous.setColor(false);
-			}
-		}
-		*/
 	},
 	
 	_onMessageClick: function(e) {
@@ -669,5 +546,3 @@ VCO.StorySlider = VCO.Class.extend({
 	
 	
 });
-
-

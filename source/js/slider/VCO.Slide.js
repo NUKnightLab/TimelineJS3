@@ -1,38 +1,6 @@
 /*	VCO.Slide
 	Creates a slide. Takes a data object and
 	populates the slide with content.
-
-	Object Model
-	this.data = {
-		uniqueid: 				"",
-		background: {			// OPTIONAL
-			url: 				null,
-			color: 				null,
-			text_background: 	null,
-			opacity: 			50
-		},
-		date: 					null,
-		location: {
-			lat: 				-9.143962,
-			lon: 				38.731094,
-			zoom: 				13,
-			icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-		},
-		text: {
-			headline: 			"Le portrait mystérieux",
-			text: 				"Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
-		},
-		media: {
-			url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-			credit:				"Georges Méliès",
-			caption:			"Le portrait mystérieux"
-		}
-	
-	};
-
-	TODO
-	Active state and memory management
-	video play state
 ================================================== */
 
 VCO.Slide = VCO.Class.extend({
