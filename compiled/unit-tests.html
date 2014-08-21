@@ -229,6 +229,16 @@
 
       })
 
+      test("VCO.Language",function() {
+        var msgs = new VCO.Language();
+        equal(msgs._('name'),"English","English is default");
+        equal(msgs._('lang'),"en","en is default");
+        equal(msgs._('messages.loading'),"Loading","try a dotted message");
+        equal(msgs._('foobar'),"foobar","invalid keys should pass through");
+        equal(msgs._('date.month',0),"January","test indexed message");
+        equal(msgs._('buttons.overview'),"Overview","test another dot, just in case");
+      })
+
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
