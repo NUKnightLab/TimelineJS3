@@ -112,7 +112,7 @@ VCO.Media = VCO.Class.extend({
 			// Fix for max-width issues in Firefox
 			if (VCO.Browser.firefox) {
 				if (this._el.content_item.offsetWidth > this._el.content_item.offsetHeight) {
-					this._el.content_item.style.width = "100%";
+					//this._el.content_item.style.width = "100%";
 				}
 			}
 			

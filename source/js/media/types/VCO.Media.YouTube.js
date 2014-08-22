@@ -111,6 +111,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 					showinfo:			0,
 					theme:				'light',
 					start:				this.media_id.start,
+					fs: 				0,
 					rel:				0
 				},
 				videoId: this.media_id.id,

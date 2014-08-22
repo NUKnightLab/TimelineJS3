@@ -81,14 +81,14 @@ VCO.Date = VCO.Class.extend({
 
         if (Date == this.data.date_obj.constructor) {
             var message_key = this.data.format;
-            if (use_short) {
+		if (use_short) {
                 message_key = this.data.format_short;
             }
             return language.formatDate(this.data.date_obj,message_key);
-        } else {
+		} else {
             if (use_short) {
                 return this.data.date_obj.getDisplayTextShort();
-            } 
+		}
             return this.data.date_obj.getDisplayText();
         }
 	},
