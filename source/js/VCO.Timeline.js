@@ -43,7 +43,6 @@
 	// @codekit-prepend "dom/VCO.DomEvent.js";
 	
 // Date
-	// @codekit-prepend "date/VCO.DateFormat.js";
 	// @codekit-prepend "date/VCO.Date.js";
 	// @codekit-prepend "date/VCO.DateUtil.js";
 
