@@ -74,26 +74,23 @@ VCO.Date = VCO.Class.extend({
 	},
 	
 	getDisplayDate: function(language,use_short) {
-
         if (language && !use_short) {
             use_short = 'short';
             language = VCO.Language.default;
         }
 
         if (Date == this.data.date_obj.constructor) {
-            this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
-            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
+            var message_key = this.data.format;
+            if (use_short) {
+                message_key = this.data.format_short;
+            }
+            return language.formatDate(this.data.date_obj,message_key);
         } else {
-            this.data.display_text = this.data.date_obj.getDisplayText();
-            this.data.display_text_short = this.data.date_obj.getDisplayTextShort();
+            if (use_short) {
+                return this.data.date_obj.getDisplayTextShort();
+            } 
+            return this.data.date_obj.getDisplayText();
         }
-
-		if (use_short) {
-			return this.data.display_text_short;
-		} else {
-			return this.data.display_text;
-		}
-		
 	},
 	
 	getMillisecond: function() {
@@ -191,7 +188,7 @@ VCO.Date = VCO.Class.extend({
             this.data.date_obj = new VCO.BigYear(_date.year);
         } else {
             this.data.scale = 'javascript';
-            this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+            this.data.date_obj = new Date(Date.UTC(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond));
         }
 
 	}
