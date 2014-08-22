@@ -6010,7 +6010,7 @@ VCO.Media = VCO.Class.extend({
 			// Fix for max-width issues in Firefox
 			if (VCO.Browser.firefox) {
 				if (this._el.content_item.offsetWidth > this._el.content_item.offsetHeight) {
-					this._el.content_item.style.width = "100%";
+					//this._el.content_item.style.width = "100%";
 				}
 			}
 			
@@ -6560,6 +6560,7 @@ VCO.Media.Image = VCO.Media.extend({
 		
 		if(VCO.Browser.firefox) {
 			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
+			this._el.content_item.style.width = "auto";
 		}
 	}
 	
@@ -9115,6 +9116,9 @@ VCO.TimeMarker = VCO.Class.extend({
 	},
 	
 	setHeight: function(h) {
+		var text_line_height = 12,
+			text_lines = 1;
+			
 		this._el.content_container.style.height = h  + "px";
 		this._el.timespan_content.style.height = h + "px";
 		// Handle Line height for better display of text
@@ -9123,6 +9127,25 @@ VCO.TimeMarker = VCO.Class.extend({
 		} else {
 			this._el.content.className = "vco-timemarker-content";
 		}
+		
+		// Handle number of lines visible vertically
+		text_lines = Math.floor(h/ text_line_height);
+		if (text_lines < 1) {
+			text_lines = 1;
+		}
+		
+		if (VCO.Browser.webkit) {
+			this._text.className = "vco-headline";
+			this._text.style.webkitLineClamp = text_lines;
+		} else {
+			if (text_lines > 1) {
+				this._text.className = "vco-headline vco-headline-fadeout";
+			} else {
+				this._text.className = "vco-headline";
+			}
+			this._text.style.height = (text_lines * text_line_height)  + "px";
+		}
+		
 	},
 	
 	setWidth: function(w) {
