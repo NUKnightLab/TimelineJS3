@@ -8,20 +8,13 @@
 	left:0;
 	background-color:@color-background;
 	border-top: 1px solid darken(@ui-background-color,5);
-	
-	//background-color:darken(@color-background,2);
-	//.box-shadow(1px -1px 2px rgba(0,0,0,0.1));
-	//border-top: 1px solid @color-background;
 	z-index:2;
 }
 .vco-timeaxis {
-	//background-color:darken(@ui-background-color,25);
-	//border: 1px solid darken(@ui-background-color, 50);
 	height:@axis-height;
 	width:100%;
 	position:absolute;
 	bottom:0;
-	//bottom:-@axis-height + 10;
 	left:0;
 	z-index:3;
 		
@@ -33,24 +26,23 @@
 			opacity:0;
 			.vco-timeaxis-tick {
 				position:absolute;
-				bottom:0;
+				display:block;
+				top:0;
 				left:0;
-				width:50px;
-				margin-left:-25px;
 				text-align: center;
 				font-weight:normal;
 				.vco-timeaxis-tick-text {
 					display:inline-block;
 					width:100%;
-					
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow:hidden;
 				}
-						
 				&:before {
 					content: "|";
 					display:block;
 					color:@color-background;
 					width:1px;
-					margin-left:25px;
 					overflow:hidden;
 					border-left: 1px solid darken(@ui-background-color,10);
 					text-align:center;
@@ -61,13 +53,15 @@
 		.vco-timeaxis-major {
 			.vco-timeaxis-tick {
 				font-size:12px;
-				line-height:12px;
-				bottom:3px;
+				line-height:14px;
 				color:@major-ticks-color;
+				width:@major-ticks-width;
+				margin-left:-(@major-ticks-width/2);
 				&:before {
 					font-size:17px;
 					line-height:17px;
 					margin-bottom:3px;
+					margin-left:(@major-ticks-width/2);
 				}
 			}
 		}
@@ -75,18 +69,17 @@
 		.vco-timeaxis-minor {
 			.vco-timeaxis-tick {
 				font-size:10px;
-				line-height:10px;
-				bottom:@axis-height - 20;
+				line-height:12px;
 				color:@minor-ticks-color;
+				width:@minor-ticks-width;
+				margin-left:-(@minor-ticks-width/2);
 				.vco-timeaxis-tick-text {
 					opacity:0;
-					text-overflow: ellipsis;
-					overflow:hidden;
-					
 				}
 				&:before {
 					font-size:10px;
 					line-height:10px;
+					margin-left:(@minor-ticks-width/2);
 				}
 			}
 		}

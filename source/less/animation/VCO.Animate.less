@@ -4,44 +4,11 @@
 	-webkit-backface-visibility: hidden;
 }
 .vco-animate {
-	//-webkit-transform: translateZ(0);
-	//-webkit-perspective: 1000;
-	//-webkit-backface-visibility: hidden;
-	
-	
-	/* easeInOutQuart */
-	
-	-webkit-transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	   -moz-transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	     -o-transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	        transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-
-	-webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	   -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	     -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-	
-	/*
-	-webkit-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	   -moz-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	     -o-transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	        transition: all 500ms cubic-bezier(0.250, 0.100, 0.250, 1.000);
-
-	-webkit-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	   -moz-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	     -o-transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	        transition-timing-function: cubic-bezier(0.250, 0.100, 0.250, 1.000); 
-	*/
+	.property-animation(all, @animation-duration, @animation-ease);
+	.animation-timing-cubic-bezier();
 }
 
 .vco-animate-opacity {
-	-webkit-transition: opacity 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	   -moz-transition: opacity 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	     -o-transition: opacity 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	        transition: opacity 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-
-	-webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	   -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	     -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-	        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+	.property-animation(opacity, @animation-duration, @animation-ease);
+	.animation-timing-cubic-bezier();
 }

@@ -33,12 +33,9 @@
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
 			
-			//color:darken(@ui-background-color, 10);
-			//color:@color-background;
 			color:@color-theme;
 			font-size:32px;
 			line-height:32px;
-			//text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
 			position: absolute;
 			left:-14px;
 		}
@@ -58,21 +55,13 @@
 		top:0;
 		
 		&.vco-timenav-slider-animate {
-			-webkit-transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-			   -moz-transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-			     -o-transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-			        transition: all 1000ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-
-			-webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-			   -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-			     -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
-			        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+			.property-animation(all, @animation-duration, @animation-ease);
+			.animation-timing-cubic-bezier();
 		}
 		.vco-timenav-slider-background {
 			position:absolute;
 			height:100%;
 			width:100%;
-			//background-color:fadeout(darken(@ui-background-color,50),75);
 			cursor:move;
 			z-index:6;
 		}

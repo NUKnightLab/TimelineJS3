@@ -35,7 +35,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		this.options = {
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInSpline,
-			optimal_tick_width: 	50,
 			width: 					600,
 			height: 				600
 		};
@@ -48,9 +47,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Axis Helper
 		this.axis_helper = {};
-		
-		// Optimal Tick width
-		this.optimal_tick_width = 100;
 		
 		// Minor tick dom element array
 		this.minor_ticks = [];
