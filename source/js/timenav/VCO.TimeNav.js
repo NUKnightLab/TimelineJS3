@@ -350,14 +350,14 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
-	goToId: function(n, fast, displayupdate) {
+	goToId: function(n, fast, css_animation) {
 		if (typeof n == 'string' || n instanceof String) {
 			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid");
 		} else {
 			_n = n;
 		}
 		
-		this.goTo(_n, fast, displayupdate);
+		this.goTo(_n, fast, css_animation);
 		
 	},
 	
@@ -385,6 +385,7 @@ VCO.TimeNav = VCO.Class.extend({
 			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		} else {
 			if (css_animation) {
+				
 				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
 				this.animate_css = true;
 				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
@@ -510,7 +511,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
 		
 		// Go to the current slide
-		this.goTo(this.current_marker, true, true);
+		this.goTo(this.current_marker, true);
 	},
 	
 	_drawTimeline: function(fast) {

@@ -18,7 +18,10 @@
 	
 
 	&.vco-timemarker-fast {
-		
+		.property-animation(top, @animation-duration-fast, @animation-ease);
+		.property-animation(height, @animation-duration-fast, @animation-ease);
+		.property-animation(width, @animation-duration-fast, @animation-ease);
+		.animation-timing-cubic-bezier();
 	}
 	/* Timespan
 	================================================== */

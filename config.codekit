@@ -339,17 +339,6 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/compiled\/js\/timeline.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/timeline.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/min\/timeline-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
 	"\/compiled\/spreadsheet.html": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -3215,7 +3204,7 @@
 	},
 "hooks": [
 	],
-"lastSavedByUser": "Joe Germuska",
+"lastSavedByUser": "Zach Wise",
 "manualImportLinks": {
 	},
 "projectAttributes": {

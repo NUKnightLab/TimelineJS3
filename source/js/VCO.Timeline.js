@@ -241,7 +241,7 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.current_id != n) {
 			this.current_id = n;
 			this._timenav.goToId(this.current_id);
-			this._storyslider.goToId(this.current_id);
+			this._storyslider.goToId(this.current_id, false, true);
 			this.fire("change", {uniqueid:this.current_id}, this);
 		}
 	},
