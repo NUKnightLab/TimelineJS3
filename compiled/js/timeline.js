@@ -9123,15 +9123,16 @@ VCO.TimeMarker = VCO.Class.extend({
 		}
 		
 		// Handle number of lines visible vertically
-		text_lines = Math.floor(h/ text_line_height);
-		if (text_lines < 1) {
-			text_lines = 1;
-		}
 		
 		if (VCO.Browser.webkit) {
+			text_lines = Math.floor(h / (text_line_height + 2));
+			if (text_lines < 1) {
+				text_lines = 1;
+			}
 			this._text.className = "vco-headline";
 			this._text.style.webkitLineClamp = text_lines;
 		} else {
+			text_lines = h / text_line_height;
 			if (text_lines > 1) {
 				this._text.className = "vco-headline vco-headline-fadeout";
 			} else {
