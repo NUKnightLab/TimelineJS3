@@ -4,7 +4,7 @@
 
 VCO.TimeAxis = VCO.Class.extend({
 	
-	includes: [VCO.Events, VCO.DomMixins],
+	includes: [VCO.Events, VCO.DomMixins, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -57,19 +57,19 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Date Format Lookup
 		this.dateformat_lookup = {
 	        millisecond: 1,
-	        second: 'dateformats.time_short',
-	        minute: 'dateformats.time_no_seconds_short',
-	        hour: 'dateformats.time_no_minutes_short',
-	        day: 'dateformats.full_short',
-	        month: 'dateformats.month_short',
-	        year: 'dateformats.year',
-	        decade: 'dateformats.year',
-	        century: 'dateformats.year',
-	        millennium: 'dateformats.year',
-	        age: 'dateformats.year',
-	        epoch: 'dateformats.year',
-	        era: 'dateformats.year',
-	        eon: 'dateformats.year'
+	        second: 'time_short',
+	        minute: 'time_no_seconds_short',
+	        hour: 'time_no_minutes_short',
+	        day: 'full_short',
+	        month: 'month_short',
+	        year: 'year',
+	        decade: 'year',
+	        century: 'year',
+	        millennium: 'year',
+	        age: 'year',
+	        epoch: 'year',
+	        era: 'year',
+	        eon: 'year'
 	    }
 		
 		// Main element
@@ -84,7 +84,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		this._initLayout();
 		this._initEvents();
-		
 		
 	},
 	
@@ -177,11 +176,11 @@ VCO.TimeAxis = VCO.Class.extend({
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text vco-animate-opacity", tick);
 				ts_tick.setDateFormat(dateformat);
 				
-				tick_text.innerHTML = ts_tick.getDisplayDate(true);
+				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage());
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
-					display_text:ts_tick.getDisplayDate(true),
+					display_text:ts_tick.getDisplayDate(this.getLanguage()),
 					date:ts_tick
 				});
 			}

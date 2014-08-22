@@ -35,6 +35,7 @@ VCO.Language.prototype.getMessage = function(k,idx) {
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
 
 VCO.Language.prototype.formatDate = function(js_date, format_name) {
+	// ultimately we probably want this to work with VCO.Date instead of (in addition to?) JS Date
 	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
 	var utc = false, 
 		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,

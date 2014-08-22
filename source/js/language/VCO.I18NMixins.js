@@ -2,11 +2,15 @@
     assumes that its class has an options object with a VCO.Language instance    
 ================================================== */
 VCO.I18NMixins = {
-    _: function(msg) {
+    getLanguage: function() {
         if (this.options && this.options.language) {
-            return this.options.language._(msg);
+            return this.options.language;
         }
         trace("Expected a language option");
-        return VCO.Language.default._(msg);
+        return VCO.Language.default;
+    },
+
+    _: function(msg) {
+        return this.getLanguage()._msg;
     }
 }

@@ -2875,12 +2875,16 @@ VCO.TimelineConfig = VCO.Class.extend({
     assumes that its class has an options object with a VCO.Language instance    
 ================================================== */
 VCO.I18NMixins = {
-    _: function(msg) {
+    getLanguage: function() {
         if (this.options && this.options.language) {
-            return this.options.language._(msg);
+            return this.options.language;
         }
         trace("Expected a language option");
-        return VCO.Language.default._(msg);
+        return VCO.Language.default;
+    },
+
+    _: function(msg) {
+        return this.getLanguage()._msg;
     }
 }
 
@@ -2926,6 +2930,7 @@ VCO.Language.prototype.getMessage = function(k,idx) {
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
 
 VCO.Language.prototype.formatDate = function(js_date, format_name) {
+	// ultimately we probably want this to work with VCO.Date instead of (in addition to?) JS Date
 	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
 	var utc = false, 
 		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
@@ -4370,18 +4375,17 @@ VCO.Date = VCO.Class.extend({
 	},
 	
 	getDisplayDate: function(language,use_short) {
-        if (language && !use_short) {
-            use_short = 'short';
+        if (!language) {
             language = VCO.Language.default;
         }
-
-        if (!language) {
+        if (language.constructor != VCO.Language) {
+            trace("First argument to getDisplayDate must be VCO.Language");
             language = VCO.Language.default;
         }
 
         if (Date == this.data.date_obj.constructor) {
             var message_key = this.data.format;
-		if (use_short) {
+		    if (use_short) {
                 message_key = this.data.format_short;
             }
             return language.formatDate(this.data.date_obj,message_key);
@@ -7373,7 +7377,7 @@ VCO.Media.Slider = VCO.Media.extend({
 
 VCO.Slide = VCO.Class.extend({
 	
-	includes: [VCO.Events, VCO.DomMixins],
+	includes: [VCO.Events, VCO.DomMixins, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -7585,10 +7589,10 @@ VCO.Slide = VCO.Class.extend({
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
 			// Add Date if available
 			if (this.data.end_date) {
-				date_text = " &mdash; " + this.data.end_date.getDisplayDate();
+				date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
 			}
 			if (this.data.start_date) {
-				date_text = this.data.start_date.getDisplayDate() + date_text;
+				date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
 				this._text.addDateText(date_text);
 			}
 		}
@@ -9403,7 +9407,7 @@ VCO.TimeScale = VCO.Class.extend({
 
 VCO.TimeAxis = VCO.Class.extend({
 	
-	includes: [VCO.Events, VCO.DomMixins],
+	includes: [VCO.Events, VCO.DomMixins, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -9456,19 +9460,19 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Date Format Lookup
 		this.dateformat_lookup = {
 	        millisecond: 1,
-	        second: 'dateformats.time_short',
-	        minute: 'dateformats.time_no_seconds_short',
-	        hour: 'dateformats.time_no_minutes_short',
-	        day: 'dateformats.full_short',
-	        month: 'dateformats.month_short',
-	        year: 'dateformats.year',
-	        decade: 'dateformats.year',
-	        century: 'dateformats.year',
-	        millennium: 'dateformats.year',
-	        age: 'dateformats.year',
-	        epoch: 'dateformats.year',
-	        era: 'dateformats.year',
-	        eon: 'dateformats.year'
+	        second: 'time_short',
+	        minute: 'time_no_seconds_short',
+	        hour: 'time_no_minutes_short',
+	        day: 'full_short',
+	        month: 'month_short',
+	        year: 'year',
+	        decade: 'year',
+	        century: 'year',
+	        millennium: 'year',
+	        age: 'year',
+	        epoch: 'year',
+	        era: 'year',
+	        eon: 'year'
 	    }
 		
 		// Main element
@@ -9483,7 +9487,6 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		this._initLayout();
 		this._initEvents();
-		
 		
 	},
 	
@@ -9576,11 +9579,11 @@ VCO.TimeAxis = VCO.Class.extend({
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text vco-animate-opacity", tick);
 				ts_tick.setDateFormat(dateformat);
 				
-				tick_text.innerHTML = ts_tick.getDisplayDate(true);
+				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage());
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
-					display_text:ts_tick.getDisplayDate(true),
+					display_text:ts_tick.getDisplayDate(this.getLanguage()),
 					date:ts_tick
 				});
 			}

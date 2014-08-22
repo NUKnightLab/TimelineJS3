@@ -5,7 +5,7 @@
 
 VCO.Slide = VCO.Class.extend({
 	
-	includes: [VCO.Events, VCO.DomMixins],
+	includes: [VCO.Events, VCO.DomMixins, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -217,10 +217,10 @@ VCO.Slide = VCO.Class.extend({
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
 			// Add Date if available
 			if (this.data.end_date) {
-				date_text = " &mdash; " + this.data.end_date.getDisplayDate();
+				date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
 			}
 			if (this.data.start_date) {
-				date_text = this.data.start_date.getDisplayDate() + date_text;
+				date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
 				this._text.addDateText(date_text);
 			}
 		}

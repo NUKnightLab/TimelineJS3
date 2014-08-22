@@ -74,18 +74,17 @@ VCO.Date = VCO.Class.extend({
 	},
 	
 	getDisplayDate: function(language,use_short) {
-        if (language && !use_short) {
-            use_short = 'short';
+        if (!language) {
             language = VCO.Language.default;
         }
-
-        if (!language) {
+        if (language.constructor != VCO.Language) {
+            trace("First argument to getDisplayDate must be VCO.Language");
             language = VCO.Language.default;
         }
 
         if (Date == this.data.date_obj.constructor) {
             var message_key = this.data.format;
-		if (use_short) {
+		    if (use_short) {
                 message_key = this.data.format_short;
             }
             return language.formatDate(this.data.date_obj,message_key);
