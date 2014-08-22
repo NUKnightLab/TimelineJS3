@@ -44,7 +44,7 @@
 					color:@color-background;
 					width:1px;
 					overflow:hidden;
-					border-left: 1px solid darken(@ui-background-color,10);
+					border-left: 1px solid @minor-ticks-line-color;
 					text-align:center;
 				}
 			}
@@ -52,15 +52,17 @@
 		
 		.vco-timeaxis-major {
 			.vco-timeaxis-tick {
-				font-size:12px;
-				line-height:14px;
+				font-size:@major-ticks-font-size;
+				line-height:@major-ticks-font-size + @tick-padding;
 				color:@major-ticks-color;
 				width:@major-ticks-width;
 				margin-left:-(@major-ticks-width/2);
 				&:before {
-					font-size:17px;
-					line-height:17px;
-					margin-bottom:3px;
+					border-color:@major-ticks-line-color;
+					//border-left: 2px solid @major-ticks-line-color;
+					font-size:@major-ticks-font-size + (@tick-padding*3);
+					line-height:@major-ticks-font-size + (@tick-padding*3);
+					margin-bottom:@tick-padding;
 					margin-left:(@major-ticks-width/2);
 				}
 			}
@@ -68,8 +70,8 @@
 		
 		.vco-timeaxis-minor {
 			.vco-timeaxis-tick {
-				font-size:10px;
-				line-height:12px;
+				font-size:@minor-ticks-font-size;
+				line-height:@minor-ticks-font-size + @tick-padding;
 				color:@minor-ticks-color;
 				width:@minor-ticks-width;
 				margin-left:-(@minor-ticks-width/2);
@@ -77,8 +79,8 @@
 					opacity:0;
 				}
 				&:before {
-					font-size:10px;
-					line-height:10px;
+					font-size:@minor-ticks-font-size - @tick-padding;
+					line-height:@minor-ticks-font-size - @tick-padding;
 					margin-left:(@minor-ticks-width/2);
 				}
 			}

@@ -1,8 +1,5 @@
 /*	VARIABLES
 ----------------------------------------------------- */
-/* UI
-================================================== */
-@axis-height:					35px;
 
 /* TYPEFACE
 ================================================== */
@@ -50,18 +47,31 @@
 @marker-color: 					darken(@ui-background-color,5);
 @marker-selected-text-color: 	@color-background;
 @marker-text-color: 			darken(@marker-color,15);
+@marker-dot-color: 				darken(@marker-color, 33);
+@marker-dot-hover-color: 		darken(@marker-dot-color, 33);
 
 @minor-ticks-color:				darken(@ui-background-color,10);
-@major-ticks-color:				@color-foreground;
+@major-ticks-color:				darken(@minor-ticks-color,30);
+
+@minor-ticks-line-color: 		@minor-ticks-color;
+@major-ticks-line-color: 		darken(@minor-ticks-line-color,10);
 
 /* UI
 ================================================== */
 @base-spacing: 					15px;
 @arrow-size: 					20px;
+
+// Marker
 @time-marker-border-radius: 	10px;
+@marker-icon-size: 				24px;
+
+// Time Axis
 @minor-ticks-width: 			50px;
 @major-ticks-width: 			100px;
-@marker-icon-size: 				24px;
+@minor-ticks-font-size: 		10px;
+@major-ticks-font-size: 		12px;
+@tick-padding: 					2px;
+@axis-height:					@minor-ticks-font-size + (@major-ticks-font-size*2) + (@tick-padding*2);
 
 /* Animation
 ================================================== */

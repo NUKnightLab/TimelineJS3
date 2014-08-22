@@ -79,7 +79,7 @@
 			bottom:0px;
 			height:6px;
 			width:6px;
-			background-color:darken(@ui-background-color, 50);
+			background-color:@marker-dot-color;
 			z-index:8;
 			.border-radius(50%);
 		}
@@ -202,9 +202,9 @@
 			}
 			
 			.vco-timemarker-line-left, .vco-timemarker-line-right {
-				border-color: @marker-text-color;
+				border-color: darken(@marker-color,15);
 				&:after {
-					background-color:darken(@marker-color, 100);
+					background-color:@marker-dot-hover-color;
 				}
 			}
 			
