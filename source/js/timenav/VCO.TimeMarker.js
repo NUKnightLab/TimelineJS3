@@ -166,7 +166,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		}
 		
 		// Handle number of lines visible vertically
-		text_lines = Math.floor(h / text_line_height);
+		text_lines = Math.floor(h/ text_line_height);
 		if (text_lines < 1) {
 			text_lines = 1;
 		}
