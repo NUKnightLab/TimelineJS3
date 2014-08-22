@@ -251,6 +251,32 @@
         equal(msgs._('buttons.overview'),"Overview","test another dot, just in case");
       })
 
+      test("VCO.Language date formatting", function() {
+        var msgs = VCO.Language.default;
+        var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
+        equal(msgs.formatDate(d,'d'),'7','short day');
+        equal(msgs.formatDate(d,'dd'),'07','padded day');
+        equal(msgs.formatDate(d,'ddd'),'Thurs.','short day of week');
+        equal(msgs.formatDate(d,'dddd'),'Thursday','full day of week');
+        equal(msgs.formatDate(d,'m'),'8','month number');
+        equal(msgs.formatDate(d,'mm'),'08','padded month number');
+        equal(msgs.formatDate(d,'mmm'),'Aug.','short month name');
+        equal(msgs.formatDate(d,'mmmm'),'August','long month name');
+        equal(msgs.formatDate(d,'yy'),'14','short year');
+        equal(msgs.formatDate(d,'yyyy'),'2014','long year');
+        equal(msgs.formatDate(d,'h'),'4','hour');
+        equal(msgs.formatDate(d,'hh'),'04','padded hour');
+        equal(msgs.formatDate(d,'H'),'4','hour (24HR)');
+        equal(msgs.formatDate(d,'HH'),'04','padded hour (24HR)');
+        equal(msgs.formatDate(d,'M'),'5','minute');
+        equal(msgs.formatDate(d,'MM'),'05','padded minute');
+        var d2 = new Date(d.getTime()+(1000*60*60*12)); 
+        equal(msgs.formatDate(d2,'H'),'16','hour (24HR after noon)');
+        equal(msgs.formatDate(d2,'HH'),'16','padded hour (24HR after noon)');
+        equal(msgs.formatDate(d,'s'),'0','second');
+        equal(msgs.formatDate(d,'ss'),'00','padded second');
+      });
+
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
