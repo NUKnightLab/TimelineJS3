@@ -63,11 +63,8 @@ VCO.Message = VCO.Class.extend({
 	
 	_updateMessage: function(t) {
 		if (!t) {
-			if (VCO.Language) {
-				this._el.message.innerHTML = VCO.Language.messages.loading;
-			} else {
-				this._el.message.innerHTML = "Loading";
-			}
+			var lang = this.options.language || VCO.Language.default;
+			this._el.message.innerHTML = lang._('loading');
 		} else {
 			this._el.message.innerHTML = t;
 		}

@@ -13,7 +13,7 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-wikipedia", this._el.content);
@@ -76,7 +76,7 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 			}
 			
 			content		=	"<h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
-			content		+=	"<span class='wiki-source'>" + VCO.Language.messages.wikipedia + "</span>";
+			content		+=	"<span class='wiki-source'>" + this._('wikipedia') + "</span>";
 			content		+=	wiki.text;
 			
 			if (wiki.extract.match("REDIRECT")) {

@@ -12,7 +12,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 			url_vars;
 		
 		// Loading Message 
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		this.youtube_loaded = false;
 		

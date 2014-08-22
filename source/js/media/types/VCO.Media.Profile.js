@@ -10,7 +10,7 @@ VCO.Media.Profile = VCO.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-profile vco-media-shadow", this._el.content);
 		this._el.content_item.src			= this.data.url;

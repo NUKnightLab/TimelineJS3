@@ -13,7 +13,7 @@ VCO.Media.Flickr = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content);

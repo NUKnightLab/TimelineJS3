@@ -10,7 +10,7 @@ VCO.Media.Blockquote = VCO.Media.extend({
 	_loadMedia: function() {
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-blockquote", this._el.content);

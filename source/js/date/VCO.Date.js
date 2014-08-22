@@ -79,6 +79,10 @@ VCO.Date = VCO.Class.extend({
             language = VCO.Language.default;
         }
 
+        if (!language) {
+            language = VCO.Language.default;
+        }
+
         if (Date == this.data.date_obj.constructor) {
             var message_key = this.data.format;
 		if (use_short) {
@@ -87,9 +91,9 @@ VCO.Date = VCO.Class.extend({
             return language.formatDate(this.data.date_obj,message_key);
 		} else {
             if (use_short) {
-                return this.data.date_obj.getDisplayTextShort();
+                return this.data.date_obj.getDisplayTextShort(language);
 		}
-            return this.data.date_obj.getDisplayText();
+            return this.data.date_obj.getDisplayText(language);
         }
 	},
 	
@@ -201,12 +205,12 @@ VCO.BigYear = VCO.Class.extend({
         if (isNaN(this.year)) { throw("Invalid year " + year) }
     },
     
-    getDisplayText: function() { 
-        return this.year.toLocaleString(VCO.Language.lang);
+    getDisplayText: function(vco_language) { 
+        return this.year.toLocaleString(vco_language.lang);
     },
 
-    getDisplayTextShort: function() {
-        return this.year.toLocaleString(VCO.Language.lang);
+    getDisplayTextShort: function(vco_language) {
+        return this.year.toLocaleString(vco_language.lang);
     },
 
     isBefore: function(that) {

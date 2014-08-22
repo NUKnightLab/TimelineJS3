@@ -29,6 +29,7 @@
 
 
 // LANGUAGE
+	// @codekit-prepend "language/VCO.I18NMixins.js"
 	// @codekit-prepend "language/VCO.Language.js";
 
 // ANIMATION
@@ -223,7 +224,7 @@ VCO.Timeline = VCO.Class.extend({
 	_loadLanguage: function(data) {
 		var self = this;
 		if(this.options.language == 'en') {
-		    this.options.language = VCO.Language;
+		    this.options.language = VCO.Language.default;
 			VCO.Language.use_bc = this.options.use_bc;
 		    this._initData(data);
 		} else {

@@ -12,7 +12,6 @@ VCO.Slide = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(data, options, title_slide) {
-		
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -215,7 +214,7 @@ VCO.Slide = VCO.Class.extend({
 		
 		// Create Text
 		if (this.has.text || this.has.headline) {
-			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
+			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
 			// Add Date if available
 			if (this.data.end_date) {
 				date_text = " &mdash; " + this.data.end_date.getDisplayDate();

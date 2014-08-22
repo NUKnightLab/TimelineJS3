@@ -6,7 +6,7 @@
 
 VCO.Media = VCO.Class.extend({
 	
-	includes: [VCO.Events],
+	includes: [VCO.Events, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -100,6 +100,10 @@ VCO.Media = VCO.Class.extend({
 		
 	},
 	
+	loadingMessage: function() {
+		this.message.updateMessage(this._('loading') + " " + this.options.media_name);
+	},
+
 	updateMediaDisplay: function(layout) {
 		if (this._state.loaded) {
 			this._updateMediaDisplay(layout);

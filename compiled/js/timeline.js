@@ -405,7 +405,15 @@ VCO.Util = {
 			}
 		};
 		return max_depth;
+	},
+
+	pad: function (val, len) {
+		val = String(val);
+		len = len || 2;
+		while (val.length < len) val = "0" + val;
+		return val;
 	}
+
 };
 
 
@@ -2860,44 +2868,171 @@ VCO.TimelineConfig = VCO.Class.extend({
 
 
 /* **********************************************
+     Begin VCO.I18NMixins.js
+********************************************** */
+
+/*  VCO.I18NMixins
+    assumes that its class has an options object with a VCO.Language instance    
+================================================== */
+VCO.I18NMixins = {
+    _: function(msg) {
+        if (this.options && this.options.language) {
+            return this.options.language._(msg);
+        }
+        trace("Expected a language option");
+        return VCO.Language.default._(msg);
+    }
+}
+
+
+/* **********************************************
      Begin VCO.Language.js
 ********************************************** */
 
-VCO.Language = {
-	name: 					"English",
-	lang: 					"en",
-	messages: {
-		loading: 			"Loading",
-		wikipedia: 			"From Wikipedia, the free encyclopedia"
-	},
-	date: {
-		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-		day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
-	}, 
-	dateformats: {
-		year: "yyyy",
-		month_short: "mmm",
-		month: "mmmm yyyy",
-		full_short: "mmm d",
-		full: "mmmm d',' yyyy",
-		time: "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
-		time_short: "h:MM:ss TT",
-		time_no_seconds_short: "h:MM TT",
-		time_no_minutes_short: "h TT",
-		time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
-		full_long: "mmm d',' yyyy 'at' h:MM TT",
-		full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
-	},
-	buttons: {
-	    map_overview: 		"Map Overview",
-		overview: 			"Overview",
-	    backtostart: 		"Back To Beginning",
-	    collapse_toggle: 	"Hide Map",
-	    uncollapse_toggle: 	"Show Map"
+VCO.Language = function(options) {
+	this.messages = VCO.Language.languages.en;
+	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
+		var code = options.language;
+		if (!(code in VCO.Language.languages)) {
+			var url = options.script_path + "/locale/" + code + ".json"
+			VCO.Language.languages[code] = VCO.ajax({ url: url, async: false });
+		}
+		VCO.Util.mergeData(this.messages,VCO.Language.languages[code]);
 	}
 }
+
+VCO.Language.prototype.getMessage = function(k,idx) {
+	try {
+		var parts = k.split('.');
+		var d = this.messages;
+		for (var i = 0; i < parts.length; i++) {
+			d = d[parts[i]];
+		};
+		if (d) {
+			if (typeof(idx) != 'undefined') {
+				return d[idx];
+			}
+			return d;
+		}
+	} catch(e) {
+		trace(e);
+	}
+	if (idx) {
+		return [k,idx].join(',');
+	}
+	return k
+}
+
+VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
+
+VCO.Language.prototype.formatDate = function(js_date, format_name) {
+	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
+	var utc = false, 
+		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+		timezoneClip = /[^-+\dA-Z]/g;
+
+
+	if (!format_name) {
+		format_name = 'full'; 
+	}
+	if (format_name.indexOf('dateformats.') == 0) {
+		format_name = format_name.substr('dateformats.'.length);
+	}
+
+	var mask = this.messages['dateformats'][format_name];
+	if (!mask) {
+		mask = format_name; // allow custom format strings
+	}
+
+
+	var	_ = utc ? "getUTC" : "get",
+		d = js_date[_ + "Date"](),
+		D = js_date[_ + "Day"](),
+		m = js_date[_ + "Month"](),
+		y = js_date[_ + "FullYear"](),
+		H = js_date[_ + "Hours"](),
+		M = js_date[_ + "Minutes"](),
+		s = js_date[_ + "Seconds"](),
+		L = js_date[_ + "Milliseconds"](),
+		o = utc ? 0 : js_date.getTimezoneOffset(),
+		year = "",
+		flags = {
+			d:    d,
+			dd:   VCO.Util.pad(d),
+			ddd:  this.messages.date.day_abbr[D],
+			dddd: this.messages.date.day[D],
+			m:    m + 1,
+			mm:   VCO.Util.pad(m + 1),
+			mmm:  this.messages.date.month_abbr[m],
+			mmmm: this.messages.date.month[m],
+			yy:   String(y).slice(2),
+			yyyy: (this.use_bc && y < 0) ? year = Math.abs(y) + " " + this.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
+			h:    H % 12 || 12,
+			hh:   VCO.Util.pad(H % 12 || 12),
+			H:    H,
+			HH:   VCO.Util.pad(H),
+			M:    M,
+			MM:   VCO.Util.pad(M),
+			s:    s,
+			ss:   VCO.Util.pad(s),
+			l:    VCO.Util.pad(L, 3),
+			L:    VCO.Util.pad(L > 99 ? Math.round(L / 10) : L),
+			t:    H < 12 ? "a"  : "p",
+			tt:   H < 12 ? "am" : "pm",
+			T:    H < 12 ? "A"  : "P",
+			TT:   H < 12 ? "AM" : "PM",
+			Z:    utc ? "UTC" : (String(js_date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+			o:    (o > 0 ? "-" : "+") + VCO.Util.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+		};
+
+		return mask.replace(VCO.Language.DATE_FORMAT_TOKENS, function ($0) {
+			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+		});
+
+}
+
+VCO.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
+
+VCO.Language.languages = {
+	en: {
+		name: 					"English",
+		lang: 					"en",
+		messages: {
+			loading: 			"Loading",
+			wikipedia: 			"From Wikipedia, the free encyclopedia"
+		},
+		date: {
+			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
+		}, 
+		dateformats: {
+			year: "yyyy",
+			month_short: "mmm",
+			month: "mmmm yyyy",
+			full_short: "mmm d",
+			full: "mmmm d',' yyyy",
+			time: "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
+			time_short: "h:MM:ss TT",
+			time_no_seconds_short: "h:MM TT",
+			time_no_minutes_short: "h TT",
+			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
+			full_long: "mmm d',' yyyy 'at' h:MM TT",
+			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
+		},
+		buttons: {
+		    map_overview: 		"Map Overview",
+			overview: 			"Overview",
+		    backtostart: 		"Back To Beginning",
+		    collapse_toggle: 	"Hide Map",
+		    uncollapse_toggle: 	"Show Map"
+		}
+	}
+}
+
+VCO.Language.default = new VCO.Language();
 
 /* **********************************************
      Begin VCO.Ease.js
@@ -4156,147 +4291,6 @@ VCO.DomEvent = {
 
 
 /* **********************************************
-     Begin VCO.DateFormat.js
-********************************************** */
-
-/*	VCO.DateFormat
-	Format Display type for dates
-================================================== */
-
-/*
- * Date Format 1.2.3
- * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
- * MIT license
- *
- * Includes enhancements by Scott Trenda <scott.trenda.net>
- * and Kris Kowal <cixar.com/~kris.kowal/>
- *
- * Accepts a date, a mask, or a date and a mask.
- * Returns a formatted version of the given date.
- * The date defaults to the current date/time.
- * The mask defaults to dateFormat.masks.default.
- */
-
-VCO.DateFormat = function () {
-	var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
-		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
-		timezoneClip = /[^-+\dA-Z]/g,
-		pad = function (val, len) {
-			val = String(val);
-			len = len || 2;
-			while (val.length < len) val = "0" + val;
-			return val;
-		};
-
-	// Regexes and supporting functions are cached through closure
-	return function (date, mask, utc) {
-		var dF = VCO.DateFormat;
-
-		// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
-		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
-			mask = date;
-			date = undefined;
-		}
-
-		// Passing date through Date applies Date.parse, if necessary
-		// Caused problems in IE
-		// date = date ? new Date(date) : new Date;
-		if (isNaN(date)) {
-			trace("VCO.DateFormat invalid date " + date);
-			//return "";
-		} 
-
-		mask = String(dF.masks[mask] || mask || dF.masks["default"]);
-
-		// Allow setting the utc argument via the mask
-		if (mask.slice(0, 4) == "UTC:") {
-			mask = mask.slice(4);
-			utc = true;
-		}
-
-		var	_ = utc ? "getUTC" : "get",
-			d = date[_ + "Date"](),
-			D = date[_ + "Day"](),
-			m = date[_ + "Month"](),
-			y = date[_ + "FullYear"](),
-			H = date[_ + "Hours"](),
-			M = date[_ + "Minutes"](),
-			s = date[_ + "Seconds"](),
-			L = date[_ + "Milliseconds"](),
-			o = utc ? 0 : date.getTimezoneOffset(),
-			year = "",
-			flags = {
-				d:    d,
-				dd:   pad(d),
-				ddd:  dF.i18n.dayNames[D],
-				dddd: dF.i18n.dayNames[D + 7],
-				m:    m + 1,
-				mm:   pad(m + 1),
-				mmm:  dF.i18n.monthNames[m],
-				mmmm: dF.i18n.monthNames[m + 12],
-				yy:   String(y).slice(2),
-				yyyy: (VCO.Language.use_bc && y < 0) ? year = Math.abs(y) + " " + VCO.Language.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
-				h:    H % 12 || 12,
-				hh:   pad(H % 12 || 12),
-				H:    H,
-				HH:   pad(H),
-				M:    M,
-				MM:   pad(M),
-				s:    s,
-				ss:   pad(s),
-				l:    pad(L, 3),
-				L:    pad(L > 99 ? Math.round(L / 10) : L),
-				t:    H < 12 ? "a"  : "p",
-				tt:   H < 12 ? "am" : "pm",
-				T:    H < 12 ? "A"  : "P",
-				TT:   H < 12 ? "AM" : "PM",
-				Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
-				o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-				S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
-			};
-
-		return mask.replace(token, function ($0) {
-			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-		});
-	};
-}();
-
-// Some common format strings
-VCO.DateFormat.masks = {
-	"default":      "ddd mmm dd yyyy HH:MM:ss",
-	shortDate:      "m/d/yy",
-	mediumDate:     "mmm d, yyyy",
-	longDate:       "mmmm d, yyyy",
-	fullDate:       "dddd, mmmm d, yyyy",
-	shortTime:      "h:MM TT",
-	mediumTime:     "h:MM:ss TT",
-	longTime:       "h:MM:ss TT Z",
-	isoDate:        "yyyy-mm-dd",
-	isoTime:        "HH:MM:ss",
-	isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
-	isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-};
-
-// Internationalization strings
-VCO.DateFormat.i18n = {
-	dayNames: [
-		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-		"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-	],
-	monthNames: [
-		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-	]
-};
-
-// For convenience...
-Date.prototype.format = function (mask, utc) {
-	return VCO.DateFormat(this, mask, utc);
-};
-
-
-
-/* **********************************************
      Begin VCO.Date.js
 ********************************************** */
 
@@ -4318,7 +4312,6 @@ VCO.Date = VCO.Class.extend({
 			this.data = {
                 scale:          "javascript",
 				format: 		"yyyy mmmm",
-				display_type: 	"",
 				date_obj: 		date
 			}
 		} else if (VCO.BigYear == data.constructor) {
@@ -4337,8 +4330,6 @@ VCO.Date = VCO.Class.extend({
 				millisecond: 	"",
 				format: 		"yyyy mmmm",
 				format_short: 	"yyyy mmmm",
-				display_text: 	"",
-				display_text_short: "",
 				date_obj: 		{}
 			};
 			
@@ -4362,9 +4353,6 @@ VCO.Date = VCO.Class.extend({
 			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
 		}
 		
-		this._createDisplayType();
-		
-		
     },
 
     getScale: function() {
@@ -4379,16 +4367,30 @@ VCO.Date = VCO.Class.extend({
 	setDateFormat: function(format) {
 		// Set display type format
 		this.data.format = format;
-		this._createDisplayType();
 	},
 	
-	getDisplayDate: function(use_short) {
+	getDisplayDate: function(language,use_short) {
+        if (language && !use_short) {
+            use_short = 'short';
+            language = VCO.Language.default;
+        }
+
+        if (!language) {
+            language = VCO.Language.default;
+        }
+
+        if (Date == this.data.date_obj.constructor) {
+            var message_key = this.data.format;
 		if (use_short) {
-			return this.data.display_text_short;
+                message_key = this.data.format_short;
+            }
+            return language.formatDate(this.data.date_obj,message_key);
 		} else {
-			return this.data.display_text;
+            if (use_short) {
+                return this.data.date_obj.getDisplayTextShort(language);
 		}
-		
+            return this.data.date_obj.getDisplayText(language);
+        }
 	},
 	
 	getMillisecond: function() {
@@ -4397,18 +4399,6 @@ VCO.Date = VCO.Class.extend({
 	
 	getTime: function() {
 		return this.data.date_obj.getTime();
-	},
-	
-	/*	Create Display Type
-	================================================== */
-	_createDisplayType: function() {
-        if (Date == this.data.date_obj.constructor) {
-            this.data.display_text = VCO.DateFormat(this.data.date_obj, this.data.format);
-            this.data.display_text_short = VCO.DateFormat(this.data.date_obj, this.data.format);
-        } else {
-            this.data.display_text = this.data.date_obj.getDisplayText();
-            this.data.display_text_short = this.data.date_obj.getDisplayTextShort();
-        }
 	},
 	
 	isBefore: function(other_date) { 
@@ -4498,7 +4488,7 @@ VCO.Date = VCO.Class.extend({
             this.data.date_obj = new VCO.BigYear(_date.year);
         } else {
             this.data.scale = 'javascript';
-            this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+            this.data.date_obj = new Date(Date.UTC(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond));
         }
 
 	}
@@ -4511,12 +4501,12 @@ VCO.BigYear = VCO.Class.extend({
         if (isNaN(this.year)) { throw("Invalid year " + year) }
     },
     
-    getDisplayText: function() { 
-        return this.year.toLocaleString(VCO.Language.lang);
+    getDisplayText: function(vco_language) { 
+        return this.year.toLocaleString(vco_language.lang);
     },
 
-    getDisplayTextShort: function() {
-        return this.year.toLocaleString(VCO.Language.lang);
+    getDisplayTextShort: function(vco_language) {
+        return this.year.toLocaleString(vco_language.lang);
     },
 
     isBefore: function(that) {
@@ -4680,55 +4670,59 @@ VCO.DateUtil = {
 	 * this may not work with 'cosmologic' dates, or with VCO.Date if we 
 	 * support constructing them based on JS Date and time
 	================================================== */
-	findBestFormat: function(data, use_short) {
+	findBestFormat: function(data, variant) {
 		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
 			if ( data[eval_array[i]]) {
-				if (use_short) {
-					return VCO.DateUtil.best_dateformat_lookup_short[eval_array[i]];
+				if (variant) {
+					if (!(variant in VCO.DateUtil.best_dateformats)) {
+						variant = 'short'; // legacy
+					}
 				} else {
-					return VCO.DateUtil.best_dateformat_lookup[eval_array[i]];
+					variant = 'default'
 				}
-				
+				return VCO.DateUtil.best_dateformats[variant][eval_array[i]];		
 			}
 		};
 		return "";
 	},
 	
-	best_dateformat_lookup: {
-		millisecond: 1,
-		second: VCO.Language.dateformats.time,
-		minute: VCO.Language.dateformats.time_no_seconds_small_date,
-		hour: VCO.Language.dateformats.time_no_seconds_small_date,
-		day: VCO.Language.dateformats.full,
-		month: VCO.Language.dateformats.month,
-		year: VCO.Language.dateformats.year,
-		decade: VCO.Language.dateformats.year,
-		century: VCO.Language.dateformats.year,
-		millennium: VCO.Language.dateformats.year,
-		age: VCO.Language.dateformats.year,
-		epoch: VCO.Language.dateformats.year,
-		era: VCO.Language.dateformats.year,
-		eon: VCO.Language.dateformats.year,
-	},
-	
-	best_dateformat_lookup_short: {
-		millisecond: 1,
-		second: VCO.Language.dateformats.time_short,
-		minute: VCO.Language.dateformats.time_no_seconds_short,
-		hour: VCO.Language.dateformats.time_no_minutes_short,
-		day: VCO.Language.dateformats.full_short,
-		month: VCO.Language.dateformats.month_short,
-		year: VCO.Language.dateformats.year,
-		decade: VCO.Language.dateformats.year,
-		century: VCO.Language.dateformats.year,
-		millennium: VCO.Language.dateformats.year,
-		age: VCO.Language.dateformats.year,
-		epoch: VCO.Language.dateformats.year,
-		era: VCO.Language.dateformats.year,
-		eon: VCO.Language.dateformats.year,
+	best_dateformats: {
+		default: {
+			millisecond: 1,
+			second: 'dateformats.time',
+			minute: 'dateformats.time_no_seconds_small_date',
+			hour: 'dateformats.time_no_seconds_small_date',
+			day: 'dateformats.full',
+			month: 'dateformats.month',
+			year: 'dateformats.year',
+			decade: 'dateformats.year',
+			century: 'dateformats.year',
+			millennium: 'dateformats.year',
+			age: 'dateformats.year',
+			epoch: 'dateformats.year',
+			era: 'dateformats.year',
+			eon: 'dateformats.year',
+		},
+		
+		short: {
+			millisecond: 1,
+			second: 'dateformats.time_short',
+			minute: 'dateformats.time_no_seconds_short',
+			hour: 'dateformats.time_no_minutes_short',
+			day: 'dateformats.full_short',
+			month: 'dateformats.month_short',
+			year: 'dateformats.year',
+			decade: 'dateformats.year',
+			century: 'dateformats.year',
+			millennium: 'dateformats.year',
+			age: 'dateformats.year',
+			epoch: 'dateformats.year',
+			era: 'dateformats.year',
+			eon: 'dateformats.year',
+		}
 	}
 	
 };
@@ -5696,11 +5690,8 @@ VCO.Message = VCO.Class.extend({
 	
 	_updateMessage: function(t) {
 		if (!t) {
-			if (VCO.Language) {
-				this._el.message.innerHTML = VCO.Language.messages.loading;
-			} else {
-				this._el.message.innerHTML = "Loading";
-			}
+			var lang = this.options.language || VCO.Language.default;
+			this._el.message.innerHTML = lang._('loading');
 		} else {
 			this._el.message.innerHTML = t;
 		}
@@ -5904,7 +5895,7 @@ VCO.MediaType = function(m) {
 
 VCO.Media = VCO.Class.extend({
 	
-	includes: [VCO.Events],
+	includes: [VCO.Events, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -5998,6 +5989,10 @@ VCO.Media = VCO.Class.extend({
 		
 	},
 	
+	loadingMessage: function() {
+		this.message.updateMessage(this._('loading') + " " + this.options.media_name);
+	},
+
 	updateMediaDisplay: function(layout) {
 		if (this._state.loaded) {
 			this._updateMediaDisplay(layout);
@@ -6182,7 +6177,7 @@ VCO.Media.Blockquote = VCO.Media.extend({
 	_loadMedia: function() {
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-blockquote", this._el.content);
@@ -6228,7 +6223,7 @@ VCO.Media.Flickr = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content);
@@ -6325,7 +6320,7 @@ VCO.Media.Instagram = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
@@ -6372,7 +6367,7 @@ VCO.Media.Profile = VCO.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-profile vco-media-shadow", this._el.content);
 		this._el.content_item.src			= this.data.url;
@@ -6409,7 +6404,7 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe", this._el.content);
@@ -6458,7 +6453,7 @@ VCO.Media.GooglePlus = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-googleplus", this._el.content);
@@ -6503,7 +6498,7 @@ VCO.Media.IFrame = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe", this._el.content);
@@ -6547,7 +6542,7 @@ VCO.Media.Image = VCO.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
 		this._el.content_item.src			= this.data.url;
@@ -6584,7 +6579,7 @@ VCO.Media.SoundCloud = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-soundcloud vco-media-shadow", this._el.content);
@@ -6629,7 +6624,7 @@ VCO.Media.Storify = VCO.Media.extend({
 		var content;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-storify", this._el.content);
@@ -6806,7 +6801,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 			self = this;
 			
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item = VCO.Dom.create("div", "vco-media-twitter", this._el.content);
@@ -6911,7 +6906,7 @@ VCO.Media.Vimeo = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-vimeo vco-media-shadow", this._el.content);
@@ -6970,7 +6965,7 @@ VCO.Media.DailyMotion = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-dailymotion", this._el.content);
@@ -7019,7 +7014,7 @@ VCO.Media.Vine = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-vine vco-media-shadow", this._el.content);
@@ -7096,7 +7091,7 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-wikipedia", this._el.content);
@@ -7159,7 +7154,7 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 			}
 			
 			content		=	"<h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
-			content		+=	"<span class='wiki-source'>" + VCO.Language.messages.wikipedia + "</span>";
+			content		+=	"<span class='wiki-source'>" + this._('wikipedia') + "</span>";
 			content		+=	wiki.text;
 			
 			if (wiki.extract.match("REDIRECT")) {
@@ -7205,7 +7200,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 			url_vars;
 		
 		// Loading Message 
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		this.youtube_loaded = false;
 		
@@ -7385,7 +7380,6 @@ VCO.Slide = VCO.Class.extend({
 	/*	Constructor
 	================================================== */
 	initialize: function(data, options, title_slide) {
-		
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -7588,7 +7582,7 @@ VCO.Slide = VCO.Class.extend({
 		
 		// Create Text
 		if (this.has.text || this.has.headline) {
-			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title});
+			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
 			// Add Date if available
 			if (this.data.end_date) {
 				date_text = " &mdash; " + this.data.end_date.getDisplayDate();
@@ -9466,19 +9460,19 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Date Format Lookup
 		this.dateformat_lookup = {
 	        millisecond: 1,
-	        second: VCO.Language.dateformats.time_short,
-	        minute: VCO.Language.dateformats.time_no_seconds_short,
-	        hour: VCO.Language.dateformats.time_no_minutes_short,
-	        day: VCO.Language.dateformats.full_short,
-	        month: VCO.Language.dateformats.month_short,
-	        year: VCO.Language.dateformats.year,
-	        decade: VCO.Language.dateformats.year,
-	        century: VCO.Language.dateformats.year,
-	        millennium: VCO.Language.dateformats.year,
-	        age: VCO.Language.dateformats.year,
-	        epoch: VCO.Language.dateformats.year,
-	        era: VCO.Language.dateformats.year,
-	        eon: VCO.Language.dateformats.year,
+	        second: 'dateformats.time_short',
+	        minute: 'dateformats.time_no_seconds_short',
+	        hour: 'dateformats.time_no_minutes_short',
+	        day: 'dateformats.full_short',
+	        month: 'dateformats.month_short',
+	        year: 'dateformats.year',
+	        decade: 'dateformats.year',
+	        century: 'dateformats.year',
+	        millennium: 'dateformats.year',
+	        age: 'dateformats.year',
+	        epoch: 'dateformats.year',
+	        era: 'dateformats.year',
+	        eon: 'dateformats.year'
 	    }
 		
 		// Main element
@@ -9826,6 +9820,7 @@ VCO.AxisHelper = VCO.Class.extend({
 
 
 // LANGUAGE
+	// @codekit-prepend "language/VCO.I18NMixins.js"
 	// @codekit-prepend "language/VCO.Language.js";
 
 // ANIMATION
@@ -9840,7 +9835,6 @@ VCO.AxisHelper = VCO.Class.extend({
 	// @codekit-prepend "dom/VCO.DomEvent.js";
 	
 // Date
-	// @codekit-prepend "date/VCO.DateFormat.js";
 	// @codekit-prepend "date/VCO.Date.js";
 	// @codekit-prepend "date/VCO.DateUtil.js";
 
@@ -10021,7 +10015,7 @@ VCO.Timeline = VCO.Class.extend({
 	_loadLanguage: function(data) {
 		var self = this;
 		if(this.options.language == 'en') {
-		    this.options.language = VCO.Language;
+		    this.options.language = VCO.Language.default;
 			VCO.Language.use_bc = this.options.use_bc;
 		    this._initData(data);
 		} else {

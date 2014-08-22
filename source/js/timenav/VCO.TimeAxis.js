@@ -61,19 +61,19 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Date Format Lookup
 		this.dateformat_lookup = {
 	        millisecond: 1,
-	        second: VCO.Language.dateformats.time_short,
-	        minute: VCO.Language.dateformats.time_no_seconds_short,
-	        hour: VCO.Language.dateformats.time_no_minutes_short,
-	        day: VCO.Language.dateformats.full_short,
-	        month: VCO.Language.dateformats.month_short,
-	        year: VCO.Language.dateformats.year,
-	        decade: VCO.Language.dateformats.year,
-	        century: VCO.Language.dateformats.year,
-	        millennium: VCO.Language.dateformats.year,
-	        age: VCO.Language.dateformats.year,
-	        epoch: VCO.Language.dateformats.year,
-	        era: VCO.Language.dateformats.year,
-	        eon: VCO.Language.dateformats.year,
+	        second: 'dateformats.time_short',
+	        minute: 'dateformats.time_no_seconds_short',
+	        hour: 'dateformats.time_no_minutes_short',
+	        day: 'dateformats.full_short',
+	        month: 'dateformats.month_short',
+	        year: 'dateformats.year',
+	        decade: 'dateformats.year',
+	        century: 'dateformats.year',
+	        millennium: 'dateformats.year',
+	        age: 'dateformats.year',
+	        epoch: 'dateformats.year',
+	        era: 'dateformats.year',
+	        eon: 'dateformats.year'
 	    }
 		
 		// Main element

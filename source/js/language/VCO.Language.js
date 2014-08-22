@@ -1,6 +1,6 @@
 VCO.Language = function(options) {
 	this.messages = VCO.Language.languages.en;
-	if (options && options.language && typeof(options.language) == 'string') {
+	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
 			var url = options.script_path + "/locale/" + code + ".json"

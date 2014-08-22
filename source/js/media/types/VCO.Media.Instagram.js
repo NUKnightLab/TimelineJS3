@@ -13,7 +13,7 @@ VCO.Media.Instagram = VCO.Media.extend({
 			self = this;
 		
 		// Loading Message
-		this.message.updateMessage(VCO.Language.messages.loading + " " + this.options.media_name);
+		this.loadingMessage();
 		
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];

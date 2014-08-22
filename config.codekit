@@ -583,17 +583,6 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/date\/VCO.DateFormat.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.DateFormat.js",
-		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.DateFormat-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
 	"\/source\/js\/date\/VCO.DateUtil.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -787,6 +776,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/js\/language\/locale\/zh-tw.js",
 		"outputAbbreviatedPath": "\/source\/js\/language\/locale\/min\/zh-tw-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/language\/VCO.I18NMixins.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
+		"inputAbbreviatedPath": "\/source\/js\/language\/VCO.I18NMixins.js",
+		"outputAbbreviatedPath": "\/source\/js\/language\/min\/VCO.I18NMixins-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -3215,7 +3215,7 @@
 	},
 "hooks": [
 	],
-"lastSavedByUser": "Zach Wise",
+"lastSavedByUser": "Joe Germuska",
 "manualImportLinks": {
 	},
 "projectAttributes": {
