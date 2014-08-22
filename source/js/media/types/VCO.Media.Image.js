@@ -25,6 +25,7 @@ VCO.Media.Image = VCO.Media.extend({
 		
 		if(VCO.Browser.firefox) {
 			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
+			this._el.content_item.style.width = "auto";
 		}
 	}
 	

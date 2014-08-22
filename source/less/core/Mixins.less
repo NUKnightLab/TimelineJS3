@@ -1,7 +1,16 @@
 /*	Mixins.less
 	Snippets of reusable CSS to develop faster and keep code readable
  * ----------------------------------------------------------------- */
-
+// Marker bottom text fade
+.marker-text-fade(@thecolor, @thepercent: 100%) {
+	background: -moz-linear-gradient(top,  fadeout(@thecolor, 100%) 0%, @thecolor @thepercent); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,fadeout(@thecolor, 100%)), color-stop(@thepercent,@thecolor)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  fadeout(@thecolor, 100%) 0%,@thecolor @thepercent); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  fadeout(@thecolor, 100%) 0%,@thecolor @thepercent); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  fadeout(@thecolor, 100%) 0%,@thecolor @thepercent); /* IE10+ */
+	background: linear-gradient(to bottom,  fadeout(@thecolor, 100%) 0%,@thecolor @thepercent); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@thecolor', endColorstr='@thecolor',GradientType=0 ); /* IE6-9 */
+}
 // Opacity
 .opacity(@opacity: 100) {
  	filter: e(%("alpha(opacity=%d)", @opacity));
