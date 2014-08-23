@@ -11,6 +11,6 @@ VCO.I18NMixins = {
     },
 
     _: function(msg) {
-        return this.getLanguage()._msg;
+        return this.getLanguage()._(msg);
     }
 }
