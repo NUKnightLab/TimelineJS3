@@ -6,7 +6,9 @@ VCO.Language = function(options) {
 			if (code.endsWith('.json')) {
 				var url = code;
 			} else {
-				var url = options.script_path + "/locale/" + code + ".json"
+				var fragment = "/locale/" + code + ".json";
+				if (options.script_path.endsWith('/')) { fragment = fragment.substr(1)}
+				var url = options.script_path + fragment;
 			}
 			var self = this;
 			VCO.ajax({ 
