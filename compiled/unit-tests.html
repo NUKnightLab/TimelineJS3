@@ -285,24 +285,10 @@
 
       test("VCO.Date date formatting", function() {
         var msgs = VCO.Language.default;
+        var d = new VCO.Date({year: '2014', month: '1', day: '1' }) 
+        equal(d.getDisplayDate(msgs),"January 1, 2014")
         var d = new VCO.Date({year: '2014'}) 
         equal(d.getDisplayDate(msgs),"2014")
-        // equal(msgs.formatDate(d,'d'),'7','short day');
-        // equal(msgs.formatDate(d,'dd'),'07','padded day');
-        // equal(msgs.formatDate(d,'ddd'),'Thurs.','short day of week');
-        // equal(msgs.formatDate(d,'dddd'),'Thursday','full day of week');
-        // equal(msgs.formatDate(d,'m'),'8','month number');
-        // equal(msgs.formatDate(d,'mm'),'08','padded month number');
-        // equal(msgs.formatDate(d,'mmm'),'Aug.','short month name');
-        // equal(msgs.formatDate(d,'mmmm'),'August','long month name');
-        // equal(msgs.formatDate(d,'yy'),'14','short year');
-        // equal(msgs.formatDate(d,'yyyy'),'2014','long year');
-        // equal(msgs.formatDate(d,'h'),'4','hour');
-        // equal(msgs.formatDate(d,'hh'),'04','padded hour');
-        // equal(msgs.formatDate(d,'H'),'4','hour (24HR)');
-        // equal(msgs.formatDate(d,'HH'),'04','padded hour (24HR)');
-        // equal(msgs.formatDate(d,'M'),'5','minute');
-        // equal(msgs.formatDate(d,'MM'),'05','padded minute');
       });
 
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig

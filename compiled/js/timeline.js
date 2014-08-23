@@ -2884,7 +2884,7 @@ VCO.I18NMixins = {
     },
 
     _: function(msg) {
-        return this.getLanguage()._msg;
+        return this.getLanguage()._(msg);
     }
 }
 
@@ -2894,37 +2894,53 @@ VCO.I18NMixins = {
 ********************************************** */
 
 VCO.Language = function(options) {
-	this.messages = VCO.Language.languages.en;
+	for (k in VCO.Language.languages.en) {
+		this[k] = VCO.Language.languages.en[k];
+	}
+
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
-			var url = options.script_path + "/locale/" + code + ".json"
-			VCO.Language.languages[code] = VCO.ajax({ url: url, async: false });
+			if (code.endsWith('.json')) {
+				var url = code;
+			} else {
+				var fragment = "/locale/" + code + ".json";
+				var script_path = options.script_path || '';
+				if (script_path.endsWith('/')) { fragment = fragment.substr(1)}
+				var url = script_path + fragment;
+			}
+			var self = this;
+			var xhr = VCO.ajax({ 
+				url: url, async: false
+			});
+			if (xhr.status == 200) {
+				VCO.Language.languages[code] = JSON.parse(xhr.responseText);
+			} else {
+				throw "Could not load language [" + code + "]: " + xhr.statusText;
+			}
 		}
-		VCO.Util.mergeData(this.messages,VCO.Language.languages[code]);
+		VCO.Util.mergeData(this,VCO.Language.languages[code]);
+
 	}
 }
 
-VCO.Language.prototype.getMessage = function(k,idx) {
-	try {
-		var parts = k.split('.');
-		var d = this.messages;
-		for (var i = 0; i < parts.length; i++) {
-			d = d[parts[i]];
-		};
-		if (d) {
-			if (typeof(idx) != 'undefined') {
-				return d[idx];
+/* VCO.Util.mergeData is shallow, we have nested dicts. 
+   This is a simplistic handling but should work.
+ */
+VCO.Language.prototype.mergeData = function(lang_json) {
+	for (k in VCO.Language.languages.en) {
+		if (lang_json[k]) {
+			if (typeof(this[k]) == 'object') {
+				VCO.Util.mergeData(lang_json[k], this[k]);
+			} else {
+				this[k] = lang_json[k]; // strings, mostly
 			}
-			return d;
 		}
-	} catch(e) {
-		trace(e);
 	}
-	if (idx) {
-		return [k,idx].join(',');
-	}
-	return k
+}
+
+VCO.Language.prototype.getMessage = function(k) {
+	return this.messages[k] || VCO.Language.default.messages[k] || k;
 }
 
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
@@ -2940,11 +2956,8 @@ VCO.Language.prototype.formatDate = function(js_date, format_name) {
 	if (!format_name) {
 		format_name = 'full'; 
 	}
-	if (format_name.indexOf('dateformats.') == 0) {
-		format_name = format_name.substr('dateformats.'.length);
-	}
 
-	var mask = this.messages['dateformats'][format_name];
+	var mask = this.dateformats[format_name] || VCO.Language.default.dateformats[format_name];
 	if (!mask) {
 		mask = format_name; // allow custom format strings
 	}
@@ -2964,12 +2977,12 @@ VCO.Language.prototype.formatDate = function(js_date, format_name) {
 		flags = {
 			d:    d,
 			dd:   VCO.Util.pad(d),
-			ddd:  this.messages.date.day_abbr[D],
-			dddd: this.messages.date.day[D],
+			ddd:  this.date.day_abbr[D],
+			dddd: this.date.day[D],
 			m:    m + 1,
 			mm:   VCO.Util.pad(m + 1),
-			mmm:  this.messages.date.month_abbr[m],
-			mmmm: this.messages.date.month[m],
+			mmm:  this.date.month_abbr[m],
+			mmmm: this.date.month[m],
 			yy:   String(y).slice(2),
 			yyyy: (this.use_bc && y < 0) ? year = Math.abs(y) + " " + this.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
 			h:    H % 12 || 12,
@@ -3026,13 +3039,6 @@ VCO.Language.languages = {
 			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 			full_long: "mmm d',' yyyy 'at' h:MM TT",
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
-		},
-		buttons: {
-		    map_overview: 		"Map Overview",
-			overview: 			"Overview",
-		    backtostart: 		"Back To Beginning",
-		    collapse_toggle: 	"Hide Map",
-		    uncollapse_toggle: 	"Show Map"
 		}
 	}
 }
@@ -4325,22 +4331,7 @@ VCO.Date = VCO.Class.extend({
                 date_obj:       data
             }
 		} else {
-			this.data = {
-				year: 			"",
-				month: 			"",
-				day: 			"",
-				hour: 			"",
-				minute: 		"",
-				second: 		"",
-				millisecond: 	"",
-				format: 		"yyyy mmmm",
-				format_short: 	"yyyy mmmm",
-				date_obj: 		{}
-			};
-			
-			
-			// Merge Data
-			VCO.Util.mergeData(this.data, data);
+			this.data = data;
 
 			// Create Date Object
 			this._createDateObj();
@@ -4462,7 +4453,7 @@ VCO.Date = VCO.Class.extend({
 		var _date = {
 			year: 			0,
 			month: 			1, // stupid JS dates
-			day: 			0,
+			day: 			1,
 			hour: 			0,
 			minute: 		0,
 			second: 		0,
@@ -4476,11 +4467,13 @@ VCO.Date = VCO.Class.extend({
 		// Make strings into numbers
 		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
-			if (isNaN(parsed)) parsed = 0;
+			if (isNaN(parsed)) {
+                parsed = (ix == 1 || ix == 2) ? 1 : 0; // month and day have diff baselines
+            }
 			_date[DATE_PARTS[ix]] = parsed;
 		}
 		
-		if (_date.month > 0 && _date.month <= 12) {
+		if (_date.month > 0 && _date.month <= 12) { // adjust for JS's weirdness
 			_date.month = _date.month - 1;
 		}
 
@@ -4491,8 +4484,9 @@ VCO.Date = VCO.Class.extend({
             this.data.scale = 'cosmological';
             this.data.date_obj = new VCO.BigYear(_date.year);
         } else {
+            window._date = _date;
             this.data.scale = 'javascript';
-            this.data.date_obj = new Date(Date.UTC(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond));
+            this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
         }
 
 	}
@@ -4696,36 +4690,36 @@ VCO.DateUtil = {
 	best_dateformats: {
 		default: {
 			millisecond: 1,
-			second: 'dateformats.time',
-			minute: 'dateformats.time_no_seconds_small_date',
-			hour: 'dateformats.time_no_seconds_small_date',
-			day: 'dateformats.full',
-			month: 'dateformats.month',
-			year: 'dateformats.year',
-			decade: 'dateformats.year',
-			century: 'dateformats.year',
-			millennium: 'dateformats.year',
-			age: 'dateformats.year',
-			epoch: 'dateformats.year',
-			era: 'dateformats.year',
-			eon: 'dateformats.year',
+			second: 'time',
+			minute: 'time_no_seconds_small_date',
+			hour: 'time_no_seconds_small_date',
+			day: 'full',
+			month: 'month',
+			year: 'year',
+			decade: 'year',
+			century: 'year',
+			millennium: 'year',
+			age: 'year',
+			epoch: 'year',
+			era: 'year',
+			eon: 'year',
 		},
 		
 		short: {
 			millisecond: 1,
-			second: 'dateformats.time_short',
-			minute: 'dateformats.time_no_seconds_short',
-			hour: 'dateformats.time_no_minutes_short',
-			day: 'dateformats.full_short',
-			month: 'dateformats.month_short',
-			year: 'dateformats.year',
-			decade: 'dateformats.year',
-			century: 'dateformats.year',
-			millennium: 'dateformats.year',
-			age: 'dateformats.year',
-			epoch: 'dateformats.year',
-			era: 'dateformats.year',
-			eon: 'dateformats.year',
+			second: 'time_short',
+			minute: 'time_no_seconds_short',
+			hour: 'time_no_minutes_short',
+			day: 'full_short',
+			month: 'month_short',
+			year: 'year',
+			decade: 'year',
+			century: 'year',
+			millennium: 'year',
+			age: 'year',
+			epoch: 'year',
+			era: 'year',
+			eon: 'year',
 		}
 	}
 	
@@ -7421,7 +7415,8 @@ VCO.Slide = VCO.Class.extend({
 		this.data = {
 			uniqueid: 				null,
 			background: 			null,
-			date: 					null,
+			start_date: 			null,
+			end_date: 				null,
 			location: 				null,
 			text: 					null,
 			media: 					null
@@ -10014,16 +10009,18 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	_loadLanguage: function(data) {
 		var self = this;
-		if(this.options.language == 'en') {
-		    this.options.language = VCO.Language.default;
-			VCO.Language.use_bc = this.options.use_bc;
-		    this._initData(data);
-		} else {
-			VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
-				VCO.Language.use_bc = this.options.use_bc;
-				self._initData(data);
-			});
-		}
+		this.options.language = new VCO.Language(this.options);
+	    this._initData(data);
+		// if(this.options.language == 'en') {
+		//     this.options.language = VCO.Language.default;
+		// 	VCO.Language.use_bc = this.options.use_bc;
+		//     this._initData(data);
+		// } else {
+		// 	VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
+		// 		VCO.Language.use_bc = this.options.use_bc;
+		// 		self._initData(data);
+		// 	});
+		// }
 	},
 	
 	/*	Navigation
