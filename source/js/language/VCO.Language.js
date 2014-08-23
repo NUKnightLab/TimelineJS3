@@ -10,8 +10,9 @@ VCO.Language = function(options) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
-				if (options.script_path.endsWith('/')) { fragment = fragment.substr(1)}
-				var url = options.script_path + fragment;
+				var script_path = options.script_path || '';
+				if (script_path.endsWith('/')) { fragment = fragment.substr(1)}
+				var url = script_path + fragment;
 			}
 			var self = this;
 			var xhr = VCO.ajax({ 
