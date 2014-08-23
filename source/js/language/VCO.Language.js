@@ -3,10 +3,20 @@ VCO.Language = function(options) {
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
-			var url = options.script_path + "/locale/" + code + ".json"
-			VCO.Language.languages[code] = VCO.ajax({ url: url, async: false });
+			if (code.endsWith('.json')) {
+				var url = code;
+			} else {
+				var url = options.script_path + "/locale/" + code + ".json"
+			}
+			var self = this;
+			VCO.ajax({ 
+				url: url, success: function(data){
+					VCO.Language.languages[code] = data;
+					VCO.Util.mergeData(self.messages,data);
+			}});
+		} else {
+			VCO.Util.mergeData(this.messages,VCO.Language.languages[code]);
 		}
-		VCO.Util.mergeData(this.messages,VCO.Language.languages[code]);
 	}
 }
 
