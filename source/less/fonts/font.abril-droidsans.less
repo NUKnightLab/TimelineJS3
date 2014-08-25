@@ -3,92 +3,36 @@
 http://www.google.com/fonts/specimen/Abril+Fatface
 http://www.google.com/fonts/specimen/Droid+Sans
 ----------------------------------------------------- */
+
+// Main Variables 
 @import "../Variables.less"; 
 
 // Font Import
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Abril+Fatface);
 
-
-
+// Font Variables
 @font-main:						'Droid Sans', sans-serif;
 @font-secondary:				'Abril Fatface', cursive;
+@font-navigation:				@font-main;
+@font-marker: 					@font-main;
 
-.vco-storymap {
-	font-family: @font-main;
-	font-weight:400;
-	font-size: 16px;
-	line-height: 24px;
-	
-	h1, h2, h3, h4, h5, h6 {
-		font-family: @font-secondary;
-		text-transform: none;
-		font-weight:700;
-		font-size:46px;
-		line-height:46px;
-	}
-	
-	h2.vco-headline-title {
-		font-size: 58px;
-		line-height: 58px;
-	}
-	
-	p {
-		font-family: @font-main;
-		font-size: 16px;
-		line-height: 24px;
-	}
-	strong {
-		font-weight:700;
-	}
-	ul {
-		font-family: @font-main;
-	}
-	.vco-media .vco-media-wikipedia h4 a {
-		font-family: @font-main;
-		font-weight:700;
-		font-size:28px;
-		line-height:28px;
-	}
-	.vco-caption, .vco-credit {
-		font-family: @font-main;
-	}
-	
-	.vcard {
-		font-family: @font-main;
-		font-weight:400;
-	}
-	
-	.vco-slidenav-next, .vco-slidenav-previous {
-		font-family: @font-main;
-		font-weight:400;
-		text-transform: none;
-		.vco-slidenav-title {
-			line-height:1.3em !important;
-		}
-	}
-	
-	.vco-menubar {
-		font-family: @font-main;
-		
-		.vco-menubar-button {
-			font-weight:400 !important;
-		}
-	}
-	
-	blockquote, blockquote p {
-		font-family: @font-main;
-		font-style: normal;
-		font-weight:400;
-	}
-	
-	
-}
+@base-font-size: 				16px;
+@base-font-weight: 				400;
 
-input[type="text"].editor-headline {
-    font-family: @font-secondary;
-    text-transform: none;
-    font-weight:700;
-    font-size:46px;
-    line-height:46px;
-}
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		normal;
 
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			700;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+@import "font.base.less";

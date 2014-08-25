@@ -3,91 +3,42 @@
 http://www.google.com/fonts/specimen/Clicker+Script
 http://www.google.com/fonts/specimen/EB+Garamond
 ----------------------------------------------------- */
+
+// Main Variables 
 @import "../Variables.less"; 
 
 // Font Import
 @import url(http://fonts.googleapis.com/css?family=Clicker+Script|EB+Garamond);
 
-
-
+// Font Variables
 @font-main:						'EB Garamond', serif;
 @font-secondary:				'Clicker Script', cursive;
+@font-navigation:				@font-main;//'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-marker: 					@font-navigation;
 
-.vco-storymap {
-	font-family: @font-main;
-	font-weight:400;
-	font-size: 18px;
-	line-height: 26px;
-	
-	h1, h2, h3, h4, h5, h6 {
-		font-family: @font-secondary;
-		text-transform: none;
-		font-weight:400;
-		font-size:58px;
-		line-height:58px;
-	}
-	
-	h2.vco-headline-title {
-		font-size: 64px;
-		line-height: 64px;
-	}
-	
-	p {
-		font-family: @font-main;
-		font-size: 18px;
-		line-height: 26px;
-	}
-	strong {
-		font-weight:700;
-	}
-	ul {
-		font-family: @font-main;
-	}
-	.vco-media .vco-media-wikipedia h4 a {
-		font-family: @font-main;
-		font-weight:700;
-		font-size:28px;
-		line-height:28px;
-	}
-	.vco-caption, .vco-credit {
-		font-family: @font-main;
-	}
-	
-	.vcard {
-		font-family: @font-main;
-		font-weight:400;
-	}
-	
-	.vco-slidenav-next, .vco-slidenav-previous {
-		font-family: @font-main;
-		font-weight:400;
-		text-transform: none;
-		.vco-slidenav-title {
-			line-height:1.3em !important;
-		}
-	}
-	
-	.vco-menubar {
-		font-family: @font-main;
-		
-		.vco-menubar-button {
-			font-weight:400 !important;
-		}
-	}
-	
-	blockquote, blockquote p {
-		font-family: @font-main;
-		font-style: normal;
-		font-weight:400;
-	}
-	
-	
-}
+@base-font-size: 				18px;
+@base-font-weight: 				400;
 
-input[type="text"].editor-headline {
-    font-family: @font-secondary;
-    text-transform: none;
-    font-weight:400;
-    font-size:58px;
-    line-height:58px;
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			58px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		64px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+ 
+@import "font.base.less";
+
+.vco-timeline {
+	.vco-headline-date, h3.vco-headline-date {
+		margin-bottom:10px !important;
+	}
 }

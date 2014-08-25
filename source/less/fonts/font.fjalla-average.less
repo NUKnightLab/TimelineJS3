@@ -3,87 +3,42 @@
 http://www.google.com/fonts/specimen/Fjalla+One
 http://www.google.com/fonts/specimen/Average+Sans
 ----------------------------------------------------- */
+
+// Main Variables 
 @import "../Variables.less"; 
 
 // Font Import
 @import url(http://fonts.googleapis.com/css?family=Average+Sans|Fjalla+One);
 
-
-
+// Font Variables
 @font-main:						'Average Sans', sans-serif;
 @font-secondary:				'Fjalla One', sans-serif;
+@font-navigation:				@font-main;
+@font-marker: 					@font-navigation;
 
-.vco-storymap {
-	font-family: @font-main;
-	font-weight:400;
-	font-size: 17px;
-	line-height: 24px;
-	
-	h1, h2, h3, h4, h5, h6 {
-		font-family: @font-secondary;
-		text-transform: none;
-		font-weight:400;
-		font-size:46px;
-		line-height:46px;
-	}
-	
-	h2.vco-headline-title {
-		font-size: 58px;
-		line-height: 70px;
-	}
-	
-	p {
-		font-family: @font-main;
-		font-size: 17px;
-		line-height: 23px;
-	}
-	
-	ul {
-		font-family: @font-main;
-	}
-	.vco-media .vco-media-wikipedia h4 a {
-		font-family: @font-main;
-		font-weight:normal;
-		font-size:28px;
-		line-height:28px;
-	}
-	.vco-caption, .vco-credit {
-		font-family: @font-main;
-	}
-	
-	.vcard {
-		font-family: @font-main;
-		font-weight:400;
-	}
-	
-	.vco-slidenav-next, .vco-slidenav-previous {
-		font-family: @font-secondary;
-		font-weight:400;
-		text-transform: none;
-		.vco-slidenav-title {
-			line-height:1.3em !important;
-		}
-	}
-	
-	.vco-menubar {
-		font-family: @font-main;
-		.vco-menubar-button {
-			
-		}
-	}
-	
-	blockquote, blockquote p {
-		font-family: @font-main;
-		font-style: normal;
-	}
-	
-	
-}
+@base-font-size: 				17px;
+@base-font-weight: 				400;
 
-input[type="text"].editor-headline {
-    font-family: @font-secondary;
-    text-transform: none;
-    font-weight:400;
-    font-size:46px;
-    line-height:46px;
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		normal;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		1.1em;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+ 
+@import "font.base.less";
+
+.vco-timeline {
+	.vco-headline-date, h3.vco-headline-date {
+		margin-bottom:10px !important;
+	}
 }
