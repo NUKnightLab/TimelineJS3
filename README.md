@@ -19,14 +19,14 @@ TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.kni
 		</script>
 	``
 5.	To handle browser resizing include a `window.onresize` event handler telling timeline to update it's display
-	``
+	```
 		<script>
 			var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
 			window.onresize = function(event) {
 				timeline.updateDisplay();
 			}
 		</script>
-	``
+
 	
 
 ## Options
