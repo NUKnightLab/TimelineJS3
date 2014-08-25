@@ -223,16 +223,18 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	_loadLanguage: function(data) {
 		var self = this;
-		if(this.options.language == 'en') {
-		    this.options.language = VCO.Language.default;
-			VCO.Language.use_bc = this.options.use_bc;
-		    this._initData(data);
-		} else {
-			VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
-				VCO.Language.use_bc = this.options.use_bc;
-				self._initData(data);
-			});
-		}
+		this.options.language = new VCO.Language(this.options);
+	    this._initData(data);
+		// if(this.options.language == 'en') {
+		//     this.options.language = VCO.Language.default;
+		// 	VCO.Language.use_bc = this.options.use_bc;
+		//     this._initData(data);
+		// } else {
+		// 	VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
+		// 		VCO.Language.use_bc = this.options.use_bc;
+		// 		self._initData(data);
+		// 	});
+		// }
 	},
 	
 	/*	Navigation

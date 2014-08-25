@@ -49,7 +49,8 @@ VCO.Slide = VCO.Class.extend({
 		this.data = {
 			uniqueid: 				null,
 			background: 			null,
-			date: 					null,
+			start_date: 			null,
+			end_date: 				null,
 			location: 				null,
 			text: 					null,
 			media: 					null

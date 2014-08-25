@@ -1,35 +1,51 @@
 VCO.Language = function(options) {
-	this.messages = VCO.Language.languages.en;
+	for (k in VCO.Language.languages.en) {
+		this[k] = VCO.Language.languages.en[k];
+	}
+
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
-			var url = options.script_path + "/locale/" + code + ".json"
-			VCO.Language.languages[code] = VCO.ajax({ url: url, async: false });
+			if (code.endsWith('.json')) {
+				var url = code;
+			} else {
+				var fragment = "/locale/" + code + ".json";
+				var script_path = options.script_path || '';
+				if (script_path.endsWith('/')) { fragment = fragment.substr(1)}
+				var url = script_path + fragment;
+			}
+			var self = this;
+			var xhr = VCO.ajax({ 
+				url: url, async: false
+			});
+			if (xhr.status == 200) {
+				VCO.Language.languages[code] = JSON.parse(xhr.responseText);
+			} else {
+				throw "Could not load language [" + code + "]: " + xhr.statusText;
+			}
 		}
-		VCO.Util.mergeData(this.messages,VCO.Language.languages[code]);
+		VCO.Util.mergeData(this,VCO.Language.languages[code]);
+
 	}
 }
 
-VCO.Language.prototype.getMessage = function(k,idx) {
-	try {
-		var parts = k.split('.');
-		var d = this.messages;
-		for (var i = 0; i < parts.length; i++) {
-			d = d[parts[i]];
-		};
-		if (d) {
-			if (typeof(idx) != 'undefined') {
-				return d[idx];
+/* VCO.Util.mergeData is shallow, we have nested dicts. 
+   This is a simplistic handling but should work.
+ */
+VCO.Language.prototype.mergeData = function(lang_json) {
+	for (k in VCO.Language.languages.en) {
+		if (lang_json[k]) {
+			if (typeof(this[k]) == 'object') {
+				VCO.Util.mergeData(lang_json[k], this[k]);
+			} else {
+				this[k] = lang_json[k]; // strings, mostly
 			}
-			return d;
 		}
-	} catch(e) {
-		trace(e);
 	}
-	if (idx) {
-		return [k,idx].join(',');
-	}
-	return k
+}
+
+VCO.Language.prototype.getMessage = function(k) {
+	return this.messages[k] || VCO.Language.default.messages[k] || k;
 }
 
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
@@ -45,11 +61,8 @@ VCO.Language.prototype.formatDate = function(js_date, format_name) {
 	if (!format_name) {
 		format_name = 'full'; 
 	}
-	if (format_name.indexOf('dateformats.') == 0) {
-		format_name = format_name.substr('dateformats.'.length);
-	}
 
-	var mask = this.messages['dateformats'][format_name];
+	var mask = this.dateformats[format_name] || VCO.Language.default.dateformats[format_name];
 	if (!mask) {
 		mask = format_name; // allow custom format strings
 	}
@@ -69,12 +82,12 @@ VCO.Language.prototype.formatDate = function(js_date, format_name) {
 		flags = {
 			d:    d,
 			dd:   VCO.Util.pad(d),
-			ddd:  this.messages.date.day_abbr[D],
-			dddd: this.messages.date.day[D],
+			ddd:  this.date.day_abbr[D],
+			dddd: this.date.day[D],
 			m:    m + 1,
 			mm:   VCO.Util.pad(m + 1),
-			mmm:  this.messages.date.month_abbr[m],
-			mmmm: this.messages.date.month[m],
+			mmm:  this.date.month_abbr[m],
+			mmmm: this.date.month[m],
 			yy:   String(y).slice(2),
 			yyyy: (this.use_bc && y < 0) ? year = Math.abs(y) + " " + this.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
 			h:    H % 12 || 12,
@@ -131,13 +144,6 @@ VCO.Language.languages = {
 			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 			full_long: "mmm d',' yyyy 'at' h:MM TT",
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
-		},
-		buttons: {
-		    map_overview: 		"Map Overview",
-			overview: 			"Overview",
-		    backtostart: 		"Back To Beginning",
-		    collapse_toggle: 	"Hide Map",
-		    uncollapse_toggle: 	"Show Map"
 		}
 	}
 }

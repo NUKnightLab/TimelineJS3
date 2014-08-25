@@ -24,22 +24,7 @@ VCO.Date = VCO.Class.extend({
                 date_obj:       data
             }
 		} else {
-			this.data = {
-				year: 			"",
-				month: 			"",
-				day: 			"",
-				hour: 			"",
-				minute: 		"",
-				second: 		"",
-				millisecond: 	"",
-				format: 		"yyyy mmmm",
-				format_short: 	"yyyy mmmm",
-				date_obj: 		{}
-			};
-			
-			
-			// Merge Data
-			VCO.Util.mergeData(this.data, data);
+			this.data = data;
 
 			// Create Date Object
 			this._createDateObj();
@@ -161,7 +146,7 @@ VCO.Date = VCO.Class.extend({
 		var _date = {
 			year: 			0,
 			month: 			1, // stupid JS dates
-			day: 			0,
+			day: 			1,
 			hour: 			0,
 			minute: 		0,
 			second: 		0,
@@ -175,11 +160,13 @@ VCO.Date = VCO.Class.extend({
 		// Make strings into numbers
 		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
-			if (isNaN(parsed)) parsed = 0;
+			if (isNaN(parsed)) {
+                parsed = (ix == 1 || ix == 2) ? 1 : 0; // month and day have diff baselines
+            }
 			_date[DATE_PARTS[ix]] = parsed;
 		}
 		
-		if (_date.month > 0 && _date.month <= 12) {
+		if (_date.month > 0 && _date.month <= 12) { // adjust for JS's weirdness
 			_date.month = _date.month - 1;
 		}
 
@@ -190,8 +177,9 @@ VCO.Date = VCO.Class.extend({
             this.data.scale = 'cosmological';
             this.data.date_obj = new VCO.BigYear(_date.year);
         } else {
+            window._date = _date;
             this.data.scale = 'javascript';
-            this.data.date_obj = new Date(Date.UTC(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond));
+            this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
         }
 
 	}

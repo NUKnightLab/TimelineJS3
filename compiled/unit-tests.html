@@ -228,28 +228,34 @@
         equal(ary[2],c,"C should sort third")
 
 
-        equal(VCO.DateUtil.findBestFormat({'second': 1}),"dateformats.time","Expect a format key")
-        equal(VCO.DateUtil.findBestFormat({'second': 1},true),"dateformats.time_short","Expect a different format key for short (legacy)")
-        equal(VCO.DateUtil.findBestFormat({'second': 1},'short'),"dateformats.time_short","Expect a different format key for short (explicit)")
+        equal(VCO.DateUtil.findBestFormat({'second': 1}),"time","Expect a format key")
+        equal(VCO.DateUtil.findBestFormat({'second': 1},true),"time_short","Expect a different format key for short (legacy)")
+        equal(VCO.DateUtil.findBestFormat({'second': 1},'short'),"time_short","Expect a different format key for short (explicit)")
       })
 
       test("VCO.Language",function() {
         var msgs = new VCO.Language();
-        equal(msgs._('name'),"English","English is default");
-        equal(msgs._('lang'),"en","en is default");
-        equal(msgs._('messages.loading'),"Loading","try a dotted message");
+        equal(msgs.name,"English","English is default");
+        equal(msgs.lang,"en","en is default");
+        equal(msgs._('loading'),"Loading","get a message");
         equal(msgs._('foobar'),"foobar","invalid keys should pass through");
-        equal(msgs._('date.month',0),"January","test indexed message");
-        equal(msgs._('buttons.overview'),"Overview","test another dot, just in case");
 
         var msgs = VCO.Language.default;
-        equal(msgs._('name'),"English","English is default");
-        equal(msgs._('lang'),"en","en is default");
-        equal(msgs._('messages.loading'),"Loading","try a dotted message");
+        equal(msgs.name,"English","English is default");
+        equal(msgs.lang,"en","en is default");
+        equal(msgs._('loading'),"Loading","get a message");
         equal(msgs._('foobar'),"foobar","invalid keys should pass through");
-        equal(msgs._('date.month',0),"January","test indexed message");
-        equal(msgs._('buttons.overview'),"Overview","test another dot, just in case");
+
       })
+
+      test( "VCO.Language test non-english", function( ) {
+          var msgs = new VCO.Language({language: 'pl', script_path: '/js'});
+          equal(msgs.name,"English","English is default and polish doesn't have one");
+          equal(msgs.lang,"pl","should have gotten 'pl'");
+          equal(msgs._('loading'),"\u0141adowanie","get a message for loading");
+          equal(msgs._('foobar'),"foobar","invalid keys should pass through");
+      });
+
 
       test("VCO.Language date formatting", function() {
         var msgs = VCO.Language.default;
@@ -279,24 +285,10 @@
 
       test("VCO.Date date formatting", function() {
         var msgs = VCO.Language.default;
+        var d = new VCO.Date({year: '2014', month: '1', day: '1' }) 
+        equal(d.getDisplayDate(msgs),"January 1, 2014")
         var d = new VCO.Date({year: '2014'}) 
         equal(d.getDisplayDate(msgs),"2014")
-        // equal(msgs.formatDate(d,'d'),'7','short day');
-        // equal(msgs.formatDate(d,'dd'),'07','padded day');
-        // equal(msgs.formatDate(d,'ddd'),'Thurs.','short day of week');
-        // equal(msgs.formatDate(d,'dddd'),'Thursday','full day of week');
-        // equal(msgs.formatDate(d,'m'),'8','month number');
-        // equal(msgs.formatDate(d,'mm'),'08','padded month number');
-        // equal(msgs.formatDate(d,'mmm'),'Aug.','short month name');
-        // equal(msgs.formatDate(d,'mmmm'),'August','long month name');
-        // equal(msgs.formatDate(d,'yy'),'14','short year');
-        // equal(msgs.formatDate(d,'yyyy'),'2014','long year');
-        // equal(msgs.formatDate(d,'h'),'4','hour');
-        // equal(msgs.formatDate(d,'hh'),'04','padded hour');
-        // equal(msgs.formatDate(d,'H'),'4','hour (24HR)');
-        // equal(msgs.formatDate(d,'HH'),'04','padded hour (24HR)');
-        // equal(msgs.formatDate(d,'M'),'5','minute');
-        // equal(msgs.formatDate(d,'MM'),'05','padded minute');
       });
 
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
