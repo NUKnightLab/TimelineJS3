@@ -73,6 +73,7 @@ TODO: Need to document this in a better format
 
 ## Data file
 The data file should be in JSON format with the following structure
+	```
 	{
 	    "timeline": {
 	        "slides": [
@@ -111,7 +112,7 @@ The data file should be in JSON format with the following structure
 			]
 		}
 	}
-	
+	```
 ## API
 ### Methods
 * **`timelineobj.goToId("idname")`** Go to a specific ID
