@@ -30,6 +30,7 @@
 		margin:0;
 		width:100%;
 		height:100%;
+		//overflow:hidden;
 		background-color: fadeout(@marker-color, 85%);
 		border-top-right-radius:@time-marker-border-radius;
 		border-top-left-radius:@time-marker-border-radius;
@@ -66,15 +67,24 @@
 	
 	.vco-timemarker-line-left, .vco-timemarker-line-right {
 		margin-top:@time-marker-border-radius;
+		//margin-bottom:@time-marker-border-radius;
+		//margin-top:10px; 
+		//overflow:hidden;
+		//border-top-right-radius:@time-marker-border-radius;
+		//border-top-left-radius:@time-marker-border-radius;
+		//margin-top:10%;
+		.border-box();
 		border-left: 2px solid @marker-color;
 		z-index:5;
-		top:0;
+		//.border-top-radius(10px);
 		content:" ";
 		position:absolute;
+		//bottom:0;
 		height:100%;
 		.disable-selection();
 		
 		&:after {
+			
 			display:block;
 			content:" ";
 			position:absolute;
@@ -388,7 +398,7 @@
 		&.vco-timemarker-active {
 			.vco-timemarker-timespan {
 				&:after {
-					background-color: fadeout(@color-theme,85%);
+					background-color: fadeout(@color-theme,50%);
 				}
 			}
 			
@@ -408,7 +418,7 @@
 			&:hover {
 				.vco-timemarker-timespan {
 					&:after {
-						background-color: fadeout(@color-theme,85%);
+						background-color: fadeout(@color-theme,50%);
 					}
 				}
 			
