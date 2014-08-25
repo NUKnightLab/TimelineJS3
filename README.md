@@ -4,34 +4,34 @@
 TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.knightlab.com
 
 ## Getting Started
-1. Include CSS file(s) in the head of your page.
-	```
-	<link rel="stylesheet" href="css/timeline.css">
-	```
-2. 	Include any font files
-	```
-	<link rel="stylesheet" href="css/fonts/font.default.css?v1">
-	```
-3.	Add a `div` to the body that will contain your timeline. The div should have a unique `id`.
-4.	Include the JS file at the bootom of the page right before the `</body>` closes.
-	```
-	<script src="js/timeline.js"></script>
-	```
-5.	After you include the timeline.js file, create an instance of timeline and link to your timeline data file and include any config options you want to use.
-	```
-	<script>
-		var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
-	</script>
-	```
-6.	To handle browser resizing include a `window.onresize` event handler telling timeline to update it's display
-	```
-	<script>
-		var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
-		window.onresize = function(event) {
-			timeline.updateDisplay();
-		}
-	</script>
-	```
+Include CSS file(s) in the head of your page.
+```
+<link rel="stylesheet" href="css/timeline.css">
+```
+Include any font files
+```
+<link rel="stylesheet" href="css/fonts/font.default.css?v1">
+```
+Add a `div` to the body that will contain your timeline. The div should have a unique `id`.
+Include the JS file at the bootom of the page right before the `</body>` closes.
+```
+<script src="js/timeline.js"></script>
+```
+After you include the timeline.js file, create an instance of timeline and link to your timeline data file and include any config options you want to use.
+```
+<script>
+	var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
+</script>
+```
+To handle browser resizing include a `window.onresize` event handler telling timeline to update it's display
+```
+<script>
+	var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
+	window.onresize = function(event) {
+		timeline.updateDisplay();
+	}
+</script>
+```
 	
 
 ## Options
