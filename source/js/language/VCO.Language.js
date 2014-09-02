@@ -29,6 +29,21 @@ VCO.Language = function(options) {
 	}
 }
 
+VCO.Language.formatNumber = function(val,mask) {
+		if (mask.match(/%(\.(\d+))?f/)) {
+			var match = mask.match(/%(\.(\d+))?f/);
+			var token = match[0];
+			if (match[2]) {
+				val = val.toFixed(match[2]);
+			}
+			return mask.replace(token,val);
+		}
+		// use mask as literal display value.
+		return mask;
+	}
+
+
+
 /* VCO.Util.mergeData is shallow, we have nested dicts. 
    This is a simplistic handling but should work.
  */
@@ -50,7 +65,55 @@ VCO.Language.prototype.getMessage = function(k) {
 
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
 
-VCO.Language.prototype.formatDate = function(js_date, format_name) {
+VCO.Language.prototype.formatDate = function(date, format_name) {
+
+	if (date.constructor == Date) {
+		return this.formatJSDate(date, format_name);
+	}
+
+	if (date.constructor == VCO.BigYear) {
+		return this.formatBigYear(date, format_name);
+	}
+
+	if (date.data && date.data.date_obj) {
+		return this.formatDate(date.data.date_obj, format_name);
+	}
+
+	trace("Unfamiliar date presented for formatting");
+	return date.toString();
+}
+
+VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
+
+	var the_year = bigyear.year;
+	var format_list = this.bigdateformats[format_name];
+
+	if (!format_list) {
+		return VCO.Language.formatNumber(the_year,format_name);
+	}
+
+	if (format_list) {
+		for (var i = 0; i < format_list.length; i++) {
+			var tuple = format_list[i];
+			if (Math.abs(the_year / tuple[0]) > 1) {
+				// will we ever deal with distant future dates?
+				return VCO.Language.formatNumber(Math.abs(the_year / tuple[0]),tuple[1])
+			}
+		};
+
+		return the_year.toString();
+
+	} else {
+		trace("Language file dateformats missing cosmological. Falling back.");
+	}
+	trace("TODO: format bigyears")
+	if (format_name == 'short') {
+		return bigyear.getDisplayTextShort(this);
+	}
+	return bigyear.getDisplayText(this);
+}
+
+VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 	// ultimately we probably want this to work with VCO.Date instead of (in addition to?) JS Date
 	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
 	var utc = false, 
@@ -144,6 +207,14 @@ VCO.Language.languages = {
 			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 			full_long: "mmm d',' yyyy 'at' h:MM TT",
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
+		},
+		bigdateformats: {
+			default: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+				[1000000000,"%.2f bya"],
+				[1000000,"%.1f mya"],
+				[1000,"%.1f kya"],
+				[1, "%f years ago"]
+			]
 		}
 	}
 }

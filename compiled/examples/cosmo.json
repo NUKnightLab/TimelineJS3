@@ -4,14 +4,14 @@
             {
                 "start_date": {
                     "scale":        "cosmological",
-					"year":			"0",
+					"year":			"-13798000000",
 					"month":		"",
 					"day": 			"",
 					"hour": 		"",
 					"minute": 		"",
 					"second": 		"",
 					"millisecond": 	"",
-					"format": 		""
+					"format": 		"13.798 bya"
 				},
                 "media": {
                     "caption": "Illustration of evolution of the universe from the Big Bang",
@@ -26,7 +26,7 @@
             {
                 "start_date": {
                     "scale":        "cosmological",
-					"year":			"70000",
+					"year":			"-13797930000",
 					"month":		"",
 					"day": 			"",
 					"hour": 		"",
@@ -43,7 +43,8 @@
             },
             {
                 "start_date": {
-					"year":			"377000",
+                    "scale":        "cosmological",
+					"year":			"-13797623000",
 					"month":		"",
 					"day": 			"",
 					"hour": 		"",
@@ -65,7 +66,7 @@
             {
                 "start_date": {
                     "scale":        "cosmological",
-                    "year":         "150000000",
+                    "year":         "-13648000000",
                     "month":        "",
                     "day":          "",
                     "hour":         "",
@@ -76,7 +77,7 @@
                 },
                 "end_date": {
                     "scale":        "cosmological",
-                    "year":         "1000000000",
+                    "year":         "-12798000000",
                     "month":        "",
                     "day":          "",
                     "hour":         "",
@@ -96,7 +97,8 @@
             },
             {
                 "start_date": {
-					"year":			"9000000000",
+                    "scale":        "cosmological",
+					"year":			"-4,798000000",
 					"month":		"",
 					"day": 			"",
 					"hour": 		"",
@@ -113,7 +115,8 @@
             },
             {
                 "start_date": {
-					"year":			"13800000000",
+                    "scale":        "cosmological",
+					"year":			"0",
 					"month":		"",
 					"day": 			"",
 					"hour": 		"",
