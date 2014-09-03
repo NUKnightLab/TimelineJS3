@@ -1716,6 +1716,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/source\/js\/media\/types\/VCO.Media.Spotify.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Spotify.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Spotify-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/source\/js\/media\/types\/VCO.Media.Storify.js": {
 		"fileType": 64,
 		"ignore": 1,

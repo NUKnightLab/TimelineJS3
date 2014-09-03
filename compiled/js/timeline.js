@@ -2924,6 +2924,21 @@ VCO.Language = function(options) {
 	}
 }
 
+VCO.Language.formatNumber = function(val,mask) {
+		if (mask.match(/%(\.(\d+))?f/)) {
+			var match = mask.match(/%(\.(\d+))?f/);
+			var token = match[0];
+			if (match[2]) {
+				val = val.toFixed(match[2]);
+			}
+			return mask.replace(token,val);
+		}
+		// use mask as literal display value.
+		return mask;
+	}
+
+
+
 /* VCO.Util.mergeData is shallow, we have nested dicts. 
    This is a simplistic handling but should work.
  */
@@ -2945,7 +2960,55 @@ VCO.Language.prototype.getMessage = function(k) {
 
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
 
-VCO.Language.prototype.formatDate = function(js_date, format_name) {
+VCO.Language.prototype.formatDate = function(date, format_name) {
+
+	if (date.constructor == Date) {
+		return this.formatJSDate(date, format_name);
+	}
+
+	if (date.constructor == VCO.BigYear) {
+		return this.formatBigYear(date, format_name);
+	}
+
+	if (date.data && date.data.date_obj) {
+		return this.formatDate(date.data.date_obj, format_name);
+	}
+
+	trace("Unfamiliar date presented for formatting");
+	return date.toString();
+}
+
+VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
+
+	var the_year = bigyear.year;
+	var format_list = this.bigdateformats[format_name];
+
+	if (!format_list) {
+		return VCO.Language.formatNumber(the_year,format_name);
+	}
+
+	if (format_list) {
+		for (var i = 0; i < format_list.length; i++) {
+			var tuple = format_list[i];
+			if (Math.abs(the_year / tuple[0]) > 1) {
+				// will we ever deal with distant future dates?
+				return VCO.Language.formatNumber(Math.abs(the_year / tuple[0]),tuple[1])
+			}
+		};
+
+		return the_year.toString();
+
+	} else {
+		trace("Language file dateformats missing cosmological. Falling back.");
+	}
+	trace("TODO: format bigyears")
+	if (format_name == 'short') {
+		return bigyear.getDisplayTextShort(this);
+	}
+	return bigyear.getDisplayText(this);
+}
+
+VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 	// ultimately we probably want this to work with VCO.Date instead of (in addition to?) JS Date
 	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
 	var utc = false, 
@@ -3039,6 +3102,14 @@ VCO.Language.languages = {
 			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
 			full_long: "mmm d',' yyyy 'at' h:MM TT",
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
+		},
+		bigdateformats: {
+			default: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+				[1000000000,"%.2f bya"],
+				[1000000,"%.1f mya"],
+				[1000,"%.1f kya"],
+				[1, "%f years ago"]
+			]
 		}
 	}
 }
@@ -4339,13 +4410,13 @@ VCO.Date = VCO.Class.extend({
 		
 		if (format) {
 			this.data.format = format;
-		} else {
+		} else if (!this.data.format) {
 			this.data.format = VCO.DateUtil.findBestFormat(this.data);
 		}
 		
 		if (format_short) {
 			this.data.format_short = format_short;
-		} else {
+		} else if (!this.data.format_short) {
 			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
 		}
 		
@@ -4374,18 +4445,24 @@ VCO.Date = VCO.Class.extend({
             language = VCO.Language.default;
         }
 
-        if (Date == this.data.date_obj.constructor) {
-            var message_key = this.data.format;
-		    if (use_short) {
-                message_key = this.data.format_short;
-            }
-            return language.formatDate(this.data.date_obj,message_key);
-		} else {
-            if (use_short) {
-                return this.data.date_obj.getDisplayTextShort(language);
-		}
-            return this.data.date_obj.getDisplayText(language);
+        var message_key = this.data.format;
+        if (use_short) {
+            message_key = this.data.format_short;
         }
+        return language.formatDate(this.data.date_obj,message_key);
+
+  //       if (Date == this.data.date_obj.constructor) {
+  //           var message_key = this.data.format;
+		//     if (use_short) {
+  //               message_key = this.data.format_short;
+  //           }
+  //           return language.formatDate(this.data.date_obj,message_key);
+		// } else {
+  //           if (use_short) {
+  //               return this.data.date_obj.getDisplayTextShort(language);
+		// }
+  //           return this.data.date_obj.getDisplayText(language);
+  //       }
 	},
 	
 	getMillisecond: function() {
@@ -4699,10 +4776,10 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'year',
-			epoch: 'year',
-			era: 'year',
-			eon: 'year',
+			age: 'default',
+			epoch: 'default',
+			era: 'default',
+			eon: 'default',
 		},
 		
 		short: {
@@ -4716,10 +4793,10 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'year',
-			epoch: 'year',
-			era: 'year',
-			eon: 'year',
+			age: 'default',
+			epoch: 'default',
+			era: 'default',
+			eon: 'default',
 		}
 	}
 	
@@ -5829,6 +5906,12 @@ VCO.MediaType = function(m) {
 				name: 		"Wikipedia",
 				match_str: 	"(www.)?wikipedia\.org",
 				cls: 		VCO.Media.Wikipedia
+			},
+			{
+				type: 		"spotify",
+				name: 		"spotify",
+				match_str: 	"spotify",
+				cls: 		VCO.Media.Spotify
 			},
 			{
 				type: 		"iframe",
@@ -7359,6 +7442,105 @@ VCO.Media.Slider = VCO.Media.extend({
 	}
 	
 });
+
+/* **********************************************
+     Begin VCO.Media.Spotify.js
+********************************************** */
+
+/*	VCO.Media.Spotify
+================================================== */
+
+VCO.Media.Spotify = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-spotify", this._el.content);
+		
+		// Get Media ID
+		// http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z
+		// spotify:track:1OT1G66Lt9EpKFWkwK8i9z
+		//this.media_id = this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];
+		
+		if (this.data.url.match("open.spotify.com/track/")) {
+			// http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z
+			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
+		} else if (this.data.url.match("spotify:track:")) {
+			// spotify:track:1OT1G66Lt9EpKFWkwK8i9z
+			this.media_id = this.data.url;
+		} else if (this.data.url.match("/playlist/")) {
+			// http://open.spotify.com/user/zachwise/playlist/3KqOUdFJXsEUC0DKudovj1
+			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
+			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
+			//<iframe src="https://embed.spotify.com/?uri=spotify:user:zachwise:playlist:3KqOUdFJXsEUC0DKudovj1" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+			//<iframe src="https://embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:5Z7ygHQo02SUrFmcgpwsKW,1x6ACsKV4UdWS2FMuPFUiT,4bi73jCM02fMpkI11Lqmfe" frameborder="0" allowtransparency="true"></iframe>
+		} else if (this.data.url.match(":playlist:")) {
+			this.media_id = this.data.url;
+			//spotify:user:zachwise:playlist:3KqOUdFJXsEUC0DKudovj1
+		}
+		
+		trace(this.media_id);
+		
+		// API URL
+		api_url = "https://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+		//<iframe src="https://embed.spotify.com/?uri=spotify:track:3wAX3qn53iQUFE84hpfeen" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+		
+		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
+		this.player.width 		= "100%";
+		this.player.height 		= "100%";
+		this.player.frameBorder = "0";
+		this.player.src 		= api_url;
+		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	// Update Media Display
+	
+	_updateMediaDisplay: function(l) {
+		var _height = this.options.height;
+		if (!VCO.Browser.mobile) {
+			_height = (this.options.height/2);
+		}
+		trace("_updateMediaDisplay Spotify")
+		//trace(this._el.content_item.offsetHeight - 80)
+		trace(this.options.height);
+		trace(this.options.width);
+		trace(this._el.content_item.offsetHeight)
+		trace(this._el.content_item.offsetWidth)
+		
+		if (_height > this.options.width) {
+			this.player.style.height = this._el.content_item.offsetWidth + 80 + "px";
+			this.player.style.width = this.options.width + "px";
+		} else {
+			this.player.style.width = _height - 80 + "px";
+			this.player.style.height = _height + "px";
+		}
+		
+		//this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+		//this._el.content_item.style.width = VCO.Util.ratio.square({h:this._el.content_item.offsetHeight}) - 80 + "px";
+		//this.player.style.width = VCO.Util.ratio.square({h:this._el.content_item.offsetHeight}) - 80 + "px";
+		//this.player.style.height = this._el.content_item.offsetWidth + 80 + "px";
+		//square
+	},
+	
+	
+	_stopMedia: function() {
+		// Need spotify stop code
+		
+	}
+	
+});
+
 
 /* **********************************************
      Begin VCO.Slide.js
@@ -9864,6 +10046,7 @@ VCO.AxisHelper = VCO.Class.extend({
 	// @codekit-prepend "media/types/VCO.Media.Wikipedia.js";
 	// @codekit-prepend "media/types/VCO.Media.YouTube.js";
 	// @codekit-prepend "media/types/VCO.Media.Slider.js";
+	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 
 // STORYSLIDER
 	// @codekit-prepend "slider/VCO.Slide.js";

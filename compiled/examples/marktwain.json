@@ -33,7 +33,7 @@
                 "media": {
                     "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
                     "credit": "Vanity Fair",
-                    "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg",
+                    "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z",
 					"thumb": 	"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg"
                 },
                 "text": {
@@ -163,7 +163,7 @@
             },
             {
                 "start_date": {
-					"year":			"1915",
+					"year":			"1910",
 					"month":		"01",
 					"day": 			"05",
 					"hour": 		"6",
@@ -173,7 +173,46 @@
 					"format": 		""
 				},
                 "end_date": {
-					"year":			"1916",
+					"year":			"1920",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 39.710083,
+                    "line": true,
+                    "lon": -91.357441,
+                    "zoom": 12
+                },
+                "media": {
+                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                    "credit": null,
+                    "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
+                },
+                "text": {
+                    "headline": "",
+                    "text": ""
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1918",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1919",
 					"month":		"",
 					"day": 			"",
 					"hour": 		"",
@@ -192,10 +231,127 @@
                 "media": {
                     "caption": null,
                     "credit": null,
-                    "url": "https://vine.co/v/bjHh0zHdgZT"
+                    "url": "spotify:track:1OT1G66Lt9EpKFWkwK8i9z"
                 },
                 "text": {
-                    "headline": "Itinerant Printer",
+                    "headline": "Spotify Track URI",
+                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1919",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1920",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 40.714353,
+                    "line": true,
+                    "lon": -74.005973,
+                    "zoom": 11
+                },
+                "media": {
+                    "caption": null,
+                    "credit": null,
+                    "url": "spotify:user:zachwise:playlist:3KqOUdFJXsEUC0DKudovj1"
+                },
+                "text": {
+                    "headline": "Spotify Playlist URI",
+                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1920",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1921",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 40.714353,
+                    "line": true,
+                    "lon": -74.005973,
+                    "zoom": 11
+                },
+                "media": {
+                    "caption": null,
+                    "credit": null,
+                    "url": "http://open.spotify.com/user/zachwise/playlist/3KqOUdFJXsEUC0DKudovj1"
+                },
+                "text": {
+                    "headline": "Spotify Playlist URL",
+                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1921",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1922",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 40.714353,
+                    "line": true,
+                    "lon": -74.005973,
+                    "zoom": 11
+                },
+                "media": {
+                    "caption": null,
+                    "credit": null,
+                    "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z"
+                },
+                "text": {
+                    "headline": "Spotify Track URL",
                     "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
                 },
                 "uniqueid": ""

@@ -96,6 +96,12 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Wikipedia
 			},
 			{
+				type: 		"spotify",
+				name: 		"spotify",
+				match_str: 	"spotify",
+				cls: 		VCO.Media.Spotify
+			},
+			{
 				type: 		"iframe",
 				name: 		"iFrame",
 				match_str: 	"iframe",

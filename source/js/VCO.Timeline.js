@@ -77,6 +77,7 @@
 	// @codekit-prepend "media/types/VCO.Media.Wikipedia.js";
 	// @codekit-prepend "media/types/VCO.Media.YouTube.js";
 	// @codekit-prepend "media/types/VCO.Media.Slider.js";
+	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 
 // STORYSLIDER
 	// @codekit-prepend "slider/VCO.Slide.js";

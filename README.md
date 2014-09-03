@@ -127,3 +127,9 @@ The data file should be in JSON format with the following structure
 * **`zoom_out`** fires when timeline zooms out. returns `zoom_level`
 * **`hash_updated`** fires when hash bookmark is updated returns `uniqueid` and `hashbookmark` name
 	
+## Extending Media Types
+* Create a new class for the media type in `source/js/media/type`. It's easiest to duplicate an existing one and change the filename and classname.
+* Add the new file to the code-kit compile list inside the main `VCO.Timeline.js` file. Code-kit uses the following language to prepend the file to the compile `// @codekit-prepend "media/types/VCO.Media.Spotify.js";`
+* Add a new object to the `media_types` array in `source/js/media/VCO.MediaType.js`. Make sure to have the correct class name in `cls` and use `match_str` as a regex to help timeline figure out what type of media the given url is.
+* If you want icons for the media to show up in the Timeline, then you will also need to add an icon class to `source/less/icons/Icons.less` that has the name `.vco-icon-yourmediatypename`. 
+
