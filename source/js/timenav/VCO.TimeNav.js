@@ -385,7 +385,6 @@ VCO.TimeNav = VCO.Class.extend({
 			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
 		} else {
 			if (css_animation) {
-				
 				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
 				this.animate_css = true;
 				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";

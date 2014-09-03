@@ -15,6 +15,7 @@
 		.vco-media-content{
 			position: relative;
 			.clearfix();
+			
 			.vco-media-loaderror {
 				p {
 					color:@ui-background-color;
@@ -44,33 +45,17 @@
 
 /* Media Shodow 
 ================================================== */
+
 .vco-media-shadow {
 	position: relative;
 	z-index: 1;
+	//display:block;
 	//background:@color-background;
-	.box-shadow(1px 1px 7px rgba(0,0,0,.50));
+	//.box-shadow(1px 1px 7px rgba(0,0,0,.50));
+	.box-shadow(0 12px 10px -10px rgba(0,0,0,.60));
 	
 }
-/*
-.vco-media-shadow:before, .vco-media-shadow:after {
-	z-index: -1;
-	position: absolute;
-	content: "";
-	bottom: 15px;
-	left: 10px;
-	width: 50%;
-	top: 80%;
-	max-width:300px;
-	background: #333;
-	.box-shadow(0 15px 10px #666);
-	.transform(rotate(-2deg));
-}
-.vco-media-shadow::after {
-	.transform(rotate(2deg));
-	right: 10px;
-	left: auto;
-}
-*/
+
 /* VCard
 ================================================== */
 .vcard {
