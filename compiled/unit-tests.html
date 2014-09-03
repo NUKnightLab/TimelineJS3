@@ -246,6 +246,10 @@
         equal(msgs._('loading'),"Loading","get a message");
         equal(msgs._('foobar'),"foobar","invalid keys should pass through");
 
+        equal(VCO.Language.formatNumber(18.54,'%.1f and some other stuff'), "18.5 and some other stuff", "check rounding and replacement")
+
+        equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
+
       })
 
       test( "VCO.Language test non-english", function( ) {

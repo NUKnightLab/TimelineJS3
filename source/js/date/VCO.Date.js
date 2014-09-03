@@ -32,13 +32,13 @@ VCO.Date = VCO.Class.extend({
 		
 		if (format) {
 			this.data.format = format;
-		} else {
+		} else if (!this.data.format) {
 			this.data.format = VCO.DateUtil.findBestFormat(this.data);
 		}
 		
 		if (format_short) {
 			this.data.format_short = format_short;
-		} else {
+		} else if (!this.data.format_short) {
 			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
 		}
 		
@@ -67,18 +67,24 @@ VCO.Date = VCO.Class.extend({
             language = VCO.Language.default;
         }
 
-        if (Date == this.data.date_obj.constructor) {
-            var message_key = this.data.format;
-		    if (use_short) {
-                message_key = this.data.format_short;
-            }
-            return language.formatDate(this.data.date_obj,message_key);
-		} else {
-            if (use_short) {
-                return this.data.date_obj.getDisplayTextShort(language);
-		}
-            return this.data.date_obj.getDisplayText(language);
+        var message_key = this.data.format;
+        if (use_short) {
+            message_key = this.data.format_short;
         }
+        return language.formatDate(this.data.date_obj,message_key);
+
+  //       if (Date == this.data.date_obj.constructor) {
+  //           var message_key = this.data.format;
+		//     if (use_short) {
+  //               message_key = this.data.format_short;
+  //           }
+  //           return language.formatDate(this.data.date_obj,message_key);
+		// } else {
+  //           if (use_short) {
+  //               return this.data.date_obj.getDisplayTextShort(language);
+		// }
+  //           return this.data.date_obj.getDisplayText(language);
+  //       }
 	},
 	
 	getMillisecond: function() {
