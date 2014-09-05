@@ -14,12 +14,13 @@
     <!-- Style-->
     <style>
       html, body {
-       height:100%;
-       width:100%;
-       padding: 0px;
-       margin: 0px;
+      	height:100%;
+      	width:100%;
+      	padding: 0px;
+      	margin: 0px;
       }
       .vco-timeline {
+      	
       }
       
     </style>
@@ -35,9 +36,10 @@
     <script src="../js/timeline.js"></script>
     <script>
       var timeline = new VCO.Timeline('timeline', 'marktwain_juked.json', {
+      	
       });
       window.onresize = function(event) {
-       timeline.updateDisplay();
+      	timeline.updateDisplay();
       }
     </script>
   </body>
