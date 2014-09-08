@@ -59,6 +59,7 @@ VCO.Language.prototype.mergeData = function(lang_json) {
 	}
 }
 
+VCO.Language.default = { messages: {} }; // placeholder to satisfy IE8 early compilation
 VCO.Language.prototype.getMessage = function(k) {
 	return this.messages[k] || VCO.Language.default.messages[k] || k;
 }
