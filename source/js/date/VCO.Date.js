@@ -60,11 +60,11 @@ VCO.Date = VCO.Class.extend({
 	
 	getDisplayDate: function(language,use_short) {
         if (!language) {
-            language = VCO.Language.default;
+            language = VCO.Language.fallback;
         }
         if (language.constructor != VCO.Language) {
             trace("First argument to getDisplayDate must be VCO.Language");
-            language = VCO.Language.default;
+            language = VCO.Language.fallback;
         }
 
         var message_key = this.data.format;
