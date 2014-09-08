@@ -22,8 +22,6 @@ VCO.StyleSheet = VCO.Class.extend({
 		
 		this.sheet = this.style.sheet;
 		
-		//this.style.sheet.insertRule("div {background-color:#333;}", 0);
-		
 	},
 	
 	addRule: function(selector, rules, index) {
@@ -35,7 +33,6 @@ VCO.StyleSheet = VCO.Class.extend({
 		
 		if("insertRule" in this.sheet) {
 			this.sheet.insertRule(selector + "{" + rules + "}", _index);
-			trace("insertRule")
 		}
 		else if("addRule" in this.sheet) {
 			this.sheet.addRule(selector, rules, _index);

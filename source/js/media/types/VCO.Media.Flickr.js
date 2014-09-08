@@ -22,7 +22,7 @@ VCO.Media.Flickr = VCO.Media.extend({
 		this.establishMediaID();
 		
 		// API URL
-		api_url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
+		api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
 		
 		// API Call
 		VCO.getJSON(api_url, function(d) {

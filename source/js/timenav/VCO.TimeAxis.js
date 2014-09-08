@@ -137,12 +137,14 @@ VCO.TimeAxis = VCO.Class.extend({
 		this._el.major.style.opacity = 0;
 		this._el.minor.style.opacity = 0;
 		
+		// CREATE MAJOR TICKS
 		this.major_ticks = this._createTickElements(
 			ticks['major'].ticks, 
 			this._el.major, 
 			this.dateformat_lookup[ticks['major'].name]
 		);
 		
+		// CREATE MINOR TICKS
 		this.minor_ticks = this._createTickElements(
 			ticks['minor'].ticks, 
 			this._el.minor, 
@@ -153,8 +155,8 @@ VCO.TimeAxis = VCO.Class.extend({
 		this.positionTicks(timescale, optimal_tick_width, true);
 		
 		// FADE IN
-		this._el.major.className = "vco-timeaxis-major vco-animate-opacity";
-		this._el.minor.className = "vco-timeaxis-minor vco-animate-opacity";
+		this._el.major.className = "vco-timeaxis-major vco-animate-opacity vco-timeaxis-animate-opacity";
+		this._el.minor.className = "vco-timeaxis-minor vco-animate-opacity vco-timeaxis-animate-opacity";
 		this._el.major.style.opacity = 1;
 		this._el.minor.style.opacity = 1;
 	},
@@ -172,11 +174,13 @@ VCO.TimeAxis = VCO.Class.extend({
 		for (var i = 0; i < ts_ticks.length; i++) {
 			var ts_tick = ts_ticks[i];
 			if (!(ts_tick.getTime() in skip_times)) {
-				var tick = VCO.Dom.create("div", "vco-timeaxis-tick vco-animate-opacity", tick_element),
+				var tick = VCO.Dom.create("div", "vco-timeaxis-tick", tick_element),
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text vco-animate-opacity", tick);
+					
 				ts_tick.setDateFormat(dateformat);
 				
 				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage());
+				
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
@@ -190,54 +194,57 @@ VCO.TimeAxis = VCO.Class.extend({
 
 	positionTicks: function(timescale, optimal_tick_width, no_animate) {
 		
+		// Handle Animation
+		if (no_animate) {
+			this._el.major.className = "vco-timeaxis-major";
+			this._el.minor.className = "vco-timeaxis-minor";
+		} else {
+			this._el.major.className = "vco-timeaxis-major vco-timeaxis-animate";
+			this._el.minor.className = "vco-timeaxis-minor vco-timeaxis-animate";
+		}
+		
 		// Poition Major Ticks
 		for (var j = 0; j < this.major_ticks.length; j++) {
 			var tick = this.major_ticks[j];
-			//tick.tick.style.opacity = 1;
-			if (!no_animate) {
-				tick.tick.className = "vco-timeaxis-tick vco-animate";
-			} 
 			
 			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 		};
 		
-		// Poition Minor Ticks
-		for (var i = 0; i < this.minor_ticks.length; i++) {
-			var tick = this.minor_ticks[i];
-			if (!no_animate) {
-				tick.tick.className = "vco-timeaxis-tick vco-animate";
-			} 
-			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-			tick.tick_text.innerHTML = tick.display_text;
-		};
-		
-		// Handle density of minor ticks
+		// Poition Minor Ticks & Handle density of minor ticks
 		if (this.minor_ticks[1] && this.minor_ticks[0]) {
-			var distance = (this.minor_ticks[1].tick.offsetLeft - this.minor_ticks[0].tick.offsetLeft),
+			var distance = ( timescale.getPosition(this.minor_ticks[1].date.getMillisecond()) - timescale.getPosition(this.minor_ticks[0].date.getMillisecond()) ),
 				fraction_of_array = 1;
+				
 				
 			if (distance < optimal_tick_width) {
 				fraction_of_array = Math.round(optimal_tick_width/timescale.getPixelsPerTick());
 			}
 			
 			var show = 1;
+			
 			for (var i = 0; i < this.minor_ticks.length; i++) {
+				
+				var tick = this.minor_ticks[i];
+				
+				// Poition Minor Ticks
+				tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
+				tick.tick_text.innerHTML = tick.display_text;
+				
+				// Handle density of minor ticks
 				if (fraction_of_array > 1) {
-					
 					if (show >= fraction_of_array) {
 						show = 1;
-						this.minor_ticks[i].tick_text.style.opacity = 1;
+						tick.tick_text.style.opacity = 1;
 					} else {
 						show++;
-						this.minor_ticks[i].tick_text.style.opacity = 0;
+						tick.tick_text.style.opacity = 0;
 					}
 				} else {
-					this.minor_ticks[i].tick_text.style.opacity = 1;
+					tick.tick_text.style.opacity = 1;
 				}
 				
 			};
 		}
-		
 		
 	},
 	

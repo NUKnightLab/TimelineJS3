@@ -31,6 +31,8 @@
 				left:0;
 				text-align: center;
 				font-weight:normal;
+				//.property-animation(opacity, @animation-duration, @animation-ease);
+				//.animation-timing-cubic-bezier();
 				.vco-timeaxis-tick-text {
 					display:inline-block;
 					width:100%;
@@ -46,6 +48,20 @@
 					overflow:hidden;
 					border-left: 1px solid @minor-ticks-line-color;
 					text-align:center;
+				}
+			}
+			
+			&.vco-timeaxis-animate {
+				.vco-timeaxis-tick {
+					.property-animation(all, @animation-duration, @animation-ease);
+					.animation-timing-cubic-bezier();
+				}
+			}
+			
+			&.vco-timeaxis-animate-opacity {
+				.vco-timeaxis-tick {
+					.property-animation(opacity, @animation-duration, @animation-ease);
+					.animation-timing-cubic-bezier();
 				}
 			}
 		}
