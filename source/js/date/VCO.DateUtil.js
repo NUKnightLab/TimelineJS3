@@ -32,7 +32,7 @@ VCO.DateUtil = {
 						variant = 'short'; // legacy
 					}
 				} else {
-					variant = 'default'
+					variant = 'base'
 				}
 				return VCO.DateUtil.best_dateformats[variant][eval_array[i]];		
 			}
@@ -41,7 +41,7 @@ VCO.DateUtil = {
 	},
 	
 	best_dateformats: {
-		default: {
+		base: {
 			millisecond: 1,
 			second: 'time',
 			minute: 'time_no_seconds_small_date',

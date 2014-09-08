@@ -59,9 +59,9 @@ VCO.Language.prototype.mergeData = function(lang_json) {
 	}
 }
 
-VCO.Language.default = { messages: {} }; // placeholder to satisfy IE8 early compilation
+VCO.Language.fallback = { messages: {} }; // placeholder to satisfy IE8 early compilation
 VCO.Language.prototype.getMessage = function(k) {
-	return this.messages[k] || VCO.Language.default.messages[k] || k;
+	return this.messages[k] || VCO.Language.fallback.messages[k] || k;
 }
 
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
@@ -126,7 +126,7 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 		format_name = 'full'; 
 	}
 
-	var mask = this.dateformats[format_name] || VCO.Language.default.dateformats[format_name];
+	var mask = this.dateformats[format_name] || VCO.Language.fallback.dateformats[format_name];
 	if (!mask) {
 		mask = format_name; // allow custom format strings
 	}
@@ -210,7 +210,7 @@ VCO.Language.languages = {
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
 		},
 		bigdateformats: {
-			default: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+			fallback: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
 				[1000000000,"%.2f bya"],
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
@@ -220,4 +220,4 @@ VCO.Language.languages = {
 	}
 }
 
-VCO.Language.default = new VCO.Language();
+VCO.Language.fallback = new VCO.Language();
