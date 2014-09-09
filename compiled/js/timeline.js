@@ -5889,6 +5889,7 @@ VCO.Media = VCO.Class.extend({
 			content_container: {},
 			content: {},
 			content_item: {},
+			content_link: {},
 			caption: null,
 			credit: null,
 			parent: {},
@@ -6195,8 +6196,13 @@ VCO.Media.Flickr = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content);
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
+		
+		// Photo
+		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content_link);
 		
 		// Get Media ID
 		this.establishMediaID();
@@ -6289,9 +6295,14 @@ VCO.Media.Instagram = VCO.Media.extend({
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
 		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content);
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
 		
+		// Photo
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
+		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
 		
 		this.onLoaded();
 		
@@ -6478,7 +6489,16 @@ VCO.Media.Image = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
+		// Link
+		if (this.data.link) {
+			this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+			this._el.content_link.href 			= this.data.link;
+			this._el.content_link.target 		= "_blank";
+			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content_link);
+		} else {
+			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
+		}
+		
 		this._el.content_item.src			= this.data.url;
 		
 		this.onLoaded();

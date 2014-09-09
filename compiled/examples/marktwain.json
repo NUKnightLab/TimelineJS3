@@ -133,6 +133,28 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
+                "media": {
+                    "caption": "Flickr",
+                    "credit": "Zach Wise",
+                    "url": "https://www.flickr.com/photos/zachwise/14514563402/"
+                },
+                "text": {
+                    "headline": "",
+                    "text": ""
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1910",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
                 "end_date": {
 					"year":			"1920",
 					"month":		"",
@@ -143,13 +165,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.710083,
-                    "line": true,
-                    "lon": -91.357441,
-                    "zoom": 12
-                },
                 "media": {
                     "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                     "credit": null,
@@ -182,13 +197,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.710083,
-                    "line": true,
-                    "lon": -91.357441,
-                    "zoom": 12
-                },
                 "media": {
                     "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                     "credit": null,
@@ -221,13 +229,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 40.714353,
-                    "line": true,
-                    "lon": -74.005973,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": null,
                     "credit": null,
@@ -260,13 +261,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 40.714353,
-                    "line": true,
-                    "lon": -74.005973,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": null,
                     "credit": null,
@@ -299,13 +293,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 40.714353,
-                    "line": true,
-                    "lon": -74.005973,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": null,
                     "credit": null,
@@ -370,14 +357,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.501711,
-                    "line": true,
-                    "lon": -91.94326,
-                    "name": "Florida, Missouri",
-                    "zoom": 12
-                },
                 "media": {
                     "caption": "",
                     "credit": "Dr. Seuss",
@@ -410,13 +389,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 40.714353,
-                    "line": true,
-                    "lon": -74.005973,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": null,
                     "credit": null,
@@ -443,13 +415,6 @@
                     "color": "#000000",
                     "opacity": 50,
                     "url": null
-                },
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.309514,
-                    "line": true,
-                    "lon": -119.649979,
-                    "zoom": 11
                 },
                 "media": {
                     "caption": "Mark Twain's desk when he was editor of the Territorial Enterprise. Mark Twain Territorial Enterprise Museum, Virginia City, NV.",
@@ -478,17 +443,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 37.774929,
-                    "line": true,
-                    "lon": -122.419416,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "something",
                     "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "San Francisco",
@@ -507,17 +466,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 19.896766,
-                    "line": true,
-                    "lon": -155.582782,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "Wreck of USS Hornet.",
                     "credit": "",
-                    "url": "http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg"
+                    "url": "http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "Hawaii",
@@ -536,16 +489,10 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 54.525961,
-                    "line": true,
-                    "lon": 15.255119,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "",
                     "credit": "",
+					"link": "http://knightlab.com",
                     "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu/page1-395px-1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu.jpg"
                 },
                 "text": {
@@ -570,17 +517,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 42.089796,
-                    "line": true,
-                    "lon": -76.807734,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "something",
                     "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "Livy",
@@ -604,16 +545,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 42.886447,
-                    "lon": -78.878369,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "something",
                     "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "Married",
@@ -637,17 +573,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 41.763711,
-                    "line": true,
-                    "lon": -72.685093,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "something",
                     "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "Roughing It",
@@ -671,16 +601,11 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 54.525961,
-                    "lon": 15.255119,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "something",
                     "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "Financial",
@@ -704,12 +629,6 @@
 					"millisecond": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 40.714353,
-                    "lon": -74.005973,
-                    "zoom": 11
-                },
                 "text": {
                     "headline": "Livy dies",
                     "text": "Livy dies. Begins dictating autobiography. Moves to New York City."
@@ -733,17 +652,11 @@
 					"thumbnail": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 41.30454,
-                    "line": true,
-                    "lon": -73.392898,
-                    "zoom": 11
-                },
                 "media": {
                     "caption": "Twains house, \"Stormfield\", in Redding, Connecticut (front view)",
                     "credit": "",
-                    "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif/lossy-page1-800px-Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif.jpg"
+                    "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif/lossy-page1-800px-Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif.jpg",
+					"link": "http://knightlab.com"
                 },
                 "text": {
                     "headline": "Stormfield",
