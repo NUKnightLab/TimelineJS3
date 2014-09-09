@@ -15,8 +15,13 @@ VCO.Media.Flickr = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content);
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
+		
+		// Photo
+		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content_link);
 		
 		// Get Media ID
 		this.establishMediaID();

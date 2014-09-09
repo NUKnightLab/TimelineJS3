@@ -2817,22 +2817,6 @@ VCO.TimelineConfig = VCO.Class.extend({
         }   
     }
 })(VCO)
-/*  VCO.I18NMixins
-    assumes that its class has an options object with a VCO.Language instance    
-================================================== */
-VCO.I18NMixins = {
-    getLanguage: function() {
-        if (this.options && this.options.language) {
-            return this.options.language;
-        }
-        trace("Expected a language option");
-        return VCO.Language.default;
-    },
-
-    _: function(msg) {
-        return this.getLanguage()._(msg);
-    }
-}
 VCO.Language = function(options) {
 	for (k in VCO.Language.languages.en) {
 		this[k] = VCO.Language.languages.en[k];
@@ -2894,8 +2878,9 @@ VCO.Language.prototype.mergeData = function(lang_json) {
 	}
 }
 
+VCO.Language.fallback = { messages: {} }; // placeholder to satisfy IE8 early compilation
 VCO.Language.prototype.getMessage = function(k) {
-	return this.messages[k] || VCO.Language.default.messages[k] || k;
+	return this.messages[k] || VCO.Language.fallback.messages[k] || k;
 }
 
 VCO.Language.prototype._ = VCO.Language.prototype.getMessage; // keep it concise
@@ -2960,7 +2945,7 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 		format_name = 'full'; 
 	}
 
-	var mask = this.dateformats[format_name] || VCO.Language.default.dateformats[format_name];
+	var mask = this.dateformats[format_name] || VCO.Language.fallback.dateformats[format_name];
 	if (!mask) {
 		mask = format_name; // allow custom format strings
 	}
@@ -3044,7 +3029,7 @@ VCO.Language.languages = {
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
 		},
 		bigdateformats: {
-			default: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+			fallback: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
 				[1000000000,"%.2f bya"],
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
@@ -3054,7 +3039,23 @@ VCO.Language.languages = {
 	}
 }
 
-VCO.Language.default = new VCO.Language();/* The equations defined here are open source under BSD License.
+VCO.Language.fallback = new VCO.Language();/*  VCO.I18NMixins
+    assumes that its class has an options object with a VCO.Language instance    
+================================================== */
+VCO.I18NMixins = {
+    getLanguage: function() {
+        if (this.options && this.options.language) {
+            return this.options.language;
+        }
+        trace("Expected a language option");
+        return VCO.Language.fallback;
+    },
+
+    _: function(msg) {
+        return this.getLanguage()._(msg);
+    }
+}
+/* The equations defined here are open source under BSD License.
  * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
  * Adapted to single time-based by
  * Brian Crescimanno <brian.crescimanno@gmail.com>
@@ -4379,11 +4380,11 @@ VCO.Date = VCO.Class.extend({
 	
 	getDisplayDate: function(language,use_short) {
         if (!language) {
-            language = VCO.Language.default;
+            language = VCO.Language.fallback;
         }
         if (language.constructor != VCO.Language) {
             trace("First argument to getDisplayDate must be VCO.Language");
-            language = VCO.Language.default;
+            language = VCO.Language.fallback;
         }
 
         var message_key = this.data.format;
@@ -4691,7 +4692,7 @@ VCO.DateUtil = {
 						variant = 'short'; // legacy
 					}
 				} else {
-					variant = 'default'
+					variant = 'base'
 				}
 				return VCO.DateUtil.best_dateformats[variant][eval_array[i]];		
 			}
@@ -4700,7 +4701,7 @@ VCO.DateUtil = {
 	},
 	
 	best_dateformats: {
-		default: {
+		base: {
 			millisecond: 1,
 			second: 'time',
 			minute: 'time_no_seconds_small_date',
@@ -5676,7 +5677,7 @@ VCO.Message = VCO.Class.extend({
 	
 	_updateMessage: function(t) {
 		if (!t) {
-			var lang = this.options.language || VCO.Language.default;
+			var lang = this.options.language || VCO.Language.fallback;
 			this._el.message.innerHTML = lang._('loading');
 		} else {
 			this._el.message.innerHTML = t;
@@ -5888,6 +5889,7 @@ VCO.Media = VCO.Class.extend({
 			content_container: {},
 			content: {},
 			content_item: {},
+			content_link: {},
 			caption: null,
 			credit: null,
 			parent: {},
@@ -6155,6 +6157,7 @@ VCO.Media.Blockquote = VCO.Media.extend({
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-blockquote", this._el.content);
+		this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
 		
 		// Get Media ID
 		this.media_id = this.data.url;
@@ -6193,8 +6196,13 @@ VCO.Media.Flickr = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content);
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
+		
+		// Photo
+		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content_link);
 		
 		// Get Media ID
 		this.establishMediaID();
@@ -6287,9 +6295,14 @@ VCO.Media.Instagram = VCO.Media.extend({
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
 		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content);
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
 		
+		// Photo
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
+		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
 		
 		this.onLoaded();
 		
@@ -6476,7 +6489,16 @@ VCO.Media.Image = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
+		// Link
+		if (this.data.link) {
+			this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+			this._el.content_link.href 			= this.data.link;
+			this._el.content_link.target 		= "_blank";
+			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content_link);
+		} else {
+			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
+		}
+		
 		this._el.content_item.src			= this.data.url;
 		
 		this.onLoaded();
@@ -6973,6 +6995,7 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 		
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-wikipedia", this._el.content);
+		this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
 		
 		// Get Media ID
 		this.media_id	 = this.data.url.split("wiki\/")[1].split("#")[0].replace("_", " ");
@@ -9496,16 +9519,15 @@ VCO.TimeAxis = VCO.Class.extend({
 			this._el.minor.className = "vco-timeaxis-minor vco-timeaxis-animate";
 		}
 		
-		// Poition Major Ticks
-		for (var j = 0; j < this.major_ticks.length; j++) {
-			var tick = this.major_ticks[j];
-			
-			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-		};
+		this._positionTickArray(this.major_ticks, timescale, optimal_tick_width);
+		this._positionTickArray(this.minor_ticks, timescale, optimal_tick_width);
 		
-		// Poition Minor Ticks & Handle density of minor ticks
-		if (this.minor_ticks[1] && this.minor_ticks[0]) {
-			var distance = ( timescale.getPosition(this.minor_ticks[1].date.getMillisecond()) - timescale.getPosition(this.minor_ticks[0].date.getMillisecond()) ),
+	},
+	
+	_positionTickArray: function(tick_array, timescale, optimal_tick_width) {
+		// Poition Ticks & Handle density of ticks
+		if (tick_array[1] && tick_array[0]) {
+			var distance = ( timescale.getPosition(tick_array[1].date.getMillisecond()) - timescale.getPosition(tick_array[0].date.getMillisecond()) ),
 				fraction_of_array = 1;
 				
 				
@@ -9515,15 +9537,15 @@ VCO.TimeAxis = VCO.Class.extend({
 			
 			var show = 1;
 			
-			for (var i = 0; i < this.minor_ticks.length; i++) {
+			for (var i = 0; i < tick_array.length; i++) {
 				
-				var tick = this.minor_ticks[i];
+				var tick = tick_array[i];
 				
-				// Poition Minor Ticks
+				// Poition Ticks
 				tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 				tick.tick_text.innerHTML = tick.display_text;
 				
-				// Handle density of minor ticks
+				// Handle density of ticks
 				if (fraction_of_array > 1) {
 					if (show >= fraction_of_array) {
 						show = 1;
@@ -9538,7 +9560,6 @@ VCO.TimeAxis = VCO.Class.extend({
 				
 			};
 		}
-		
 	},
 	
 	/*	Events
@@ -9548,16 +9569,12 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		
-		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timeaxis-content-container", this._el.container);
 		this._el.major					= VCO.Dom.create("div", "vco-timeaxis-major", this._el.content_container);
 		this._el.minor					= VCO.Dom.create("div", "vco-timeaxis-minor", this._el.content_container);
 		
-		
 		// Fire event that the slide is loaded
 		this.onLoaded();
-		
 	},
 	
 	_initEvents: function() {
@@ -9704,8 +9721,8 @@ VCO.AxisHelper = VCO.Class.extend({
 
 
 // LANGUAGE
-	// @codekit-prepend "language/VCO.I18NMixins.js"
 	// @codekit-prepend "language/VCO.Language.js";
+	// @codekit-prepend "language/VCO.I18NMixins.js";
 
 // ANIMATION
 	// @codekit-prepend "animation/VCO.Ease.js";
@@ -9907,16 +9924,6 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		this.options.language = new VCO.Language(this.options);
 	    this._initData(data);
-		// if(this.options.language == 'en') {
-		//     this.options.language = VCO.Language.default;
-		// 	VCO.Language.use_bc = this.options.use_bc;
-		//     this._initData(data);
-		// } else {
-		// 	VCO.Load.js(this.options.script_path + "/locale/" + this.options.language + ".js", function() {
-		// 		VCO.Language.use_bc = this.options.use_bc;
-		// 		self._initData(data);
-		// 	});
-		// }
 	},
 	
 	

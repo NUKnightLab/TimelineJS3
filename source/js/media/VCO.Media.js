@@ -19,6 +19,7 @@ VCO.Media = VCO.Class.extend({
 			content_container: {},
 			content: {},
 			content_item: {},
+			content_link: {},
 			caption: null,
 			credit: null,
 			parent: {},
