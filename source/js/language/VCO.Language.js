@@ -6,12 +6,12 @@ VCO.Language = function(options) {
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
-			if (code.endsWith('.json')) {
+			if (/\.json$/.test(code)) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
 				var script_path = options.script_path || '';
-				if (script_path.endsWith('/')) { fragment = fragment.substr(1)}
+				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;
 			}
 			var self = this;
