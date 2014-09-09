@@ -87,7 +87,7 @@ VCO.Language.prototype.formatDate = function(date, format_name) {
 VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
 
 	var the_year = bigyear.year;
-	var format_list = this.bigdateformats[format_name];
+	var format_list = this.bigdateformats[format_name] || this.bigdateformats['fallback'];
 
 	if (!format_list) {
 		return VCO.Language.formatNumber(the_year,format_name);
