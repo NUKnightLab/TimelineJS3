@@ -99,7 +99,10 @@
         equal(smalldate.getScale(),'javascript',"small dates are javascript");
 
         var bigdate = new VCO.Date({year: 1000000});
-        equal(bigdate.getScale(),'cosmological',"big dates are cosmological");        
+        equal(bigdate.getScale(),'cosmological',"big dates are cosmological"); 
+        
+        var cdate = new VCO.Date({year: 2014, display_text: "hello"});
+        equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')       
       });
 
       test("VCO.Date.parseDate", function() {
@@ -250,6 +253,7 @@
 
         equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
 
+        equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 kya', "use fallback bigdateformat") 
       })
 
       test( "VCO.Language test non-english", function( ) {
