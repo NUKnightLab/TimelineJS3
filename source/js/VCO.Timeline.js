@@ -30,7 +30,7 @@
 
 // LANGUAGE
 	// @codekit-prepend "language/VCO.Language.js";
-	// @codekit-prepend "language/VCO.I18NMixins.js"
+	// @codekit-prepend "language/VCO.I18NMixins.js";
 
 // ANIMATION
 	// @codekit-prepend "animation/VCO.Ease.js";
