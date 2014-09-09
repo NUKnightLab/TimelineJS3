@@ -1,19 +1,20 @@
-/*	Font Playfair & Playfair SC
+/*	Font Unica One & Vollkorn
 
-https://www.google.com/fonts/specimen/Playfair+Display
-https://www.google.com/fonts/specimen/Playfair+Display+SC
+http://www.google.com/fonts/specimen/Vollkorn
+http://www.google.com/fonts/specimen/Unica+One
 ----------------------------------------------------- */
 
 // Main Variables 
 @import "../Variables.less"; 
 
 // Font Import
-@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400,700|Playfair+Display+SC);
+@import url(http://fonts.googleapis.com/css?family=Vollkorn:400italic,400);
+@import url(http://fonts.googleapis.com/css?family=Unica+One);
 
 // Font Variables
-@font-main:						'Playfair Display', serif;
-@font-secondary:				'Playfair Display SC', serif;
-@font-navigation:				'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-main:						'Vollkorn', Georgia, serif;
+@font-secondary:				'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-navigation:				@font-secondary;
 @font-marker: 					@font-secondary;
 @font-headline-date: 			@font-navigation;
 
@@ -21,14 +22,14 @@ https://www.google.com/fonts/specimen/Playfair+Display+SC
 @base-font-weight: 				400;
 
 // Blockquote
-@font-blockquote: 				@font-main;
+@font-blockquote: 				@font-secondary;
 @font-blockquote-weight: 		400;
 @font-blockquote-style: 		italic;
 
 // Headings
 @font-size-headings: 			46px;
 @font-headings-lineheight: 		@font-size-headings;
-@font-headings-text-transform: 	none;
+@font-headings-text-transform: 	uppercase;
 @font-size-headings-small: 		24px;
 @font-headings-weight: 			400;
 @font-size-headline-title: 		58px;

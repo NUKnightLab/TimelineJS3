@@ -319,6 +319,78 @@
             },
             {
                 "start_date": {
+					"year":			"1905",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1907",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "media": {
+                    "caption": "",
+                    "credit": "",
+                    "url": "https://twitter.com/zlwise/status/502535723715923968"
+                },
+                "text": {
+                    "headline": "Twitter",
+                    "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1905",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1907",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "location": {
+                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                    "lat": 39.501711,
+                    "line": true,
+                    "lon": -91.94326,
+                    "name": "Florida, Missouri",
+                    "zoom": 12
+                },
+                "media": {
+                    "caption": "",
+                    "credit": "Dr. Seuss",
+                    "url": "<blockquote><p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p></blockquote>"
+                },
+                "text": {
+                    "headline": "Blockquote",
+                    "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
 					"year":			"1921",
 					"month":		"01",
 					"day": 			"05",

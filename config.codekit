@@ -1,6 +1,6 @@
 {
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
-"creatorBuild": "17753",
+"creatorBuild": "17756",
 "files": {
 	"\/compiled\/cosmo.html": {
 		"fileType": 8192,
@@ -128,6 +128,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/compiled\/css\/fonts\/font.playfair-faunaone.css": {
+		"fileType": 16,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/css\/fonts\/font.playfair-faunaone.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/compiled\/css\/fonts\/font.playfair.css": {
 		"fileType": 16,
 		"ignore": 1,
@@ -164,6 +173,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/compiled\/css\/fonts\/font.unicaone-vollkorn.css": {
+		"fileType": 16,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/css\/fonts\/font.unicaone-vollkorn.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/compiled\/css\/icons\/icons.html": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -187,6 +205,15 @@
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/compiled\/css\/timeline.dark.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/compiled\/examples\/mark_twain.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/examples\/mark_twain.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -215,105 +242,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/compiled\/js\/library\/moment.js",
 		"outputAbbreviatedPath": "\/compiled\/js\/library\/min\/moment-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/de.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/de.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/de-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/es.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/es.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/es-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/fr.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/fr.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/fr-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/it.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/it.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/it-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/no.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/no.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/no-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/pl.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/pl.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/pl-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/sr.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/sr.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/sr-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/sv.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/sv.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/sv-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/compiled\/js\/locale\/zh-cn.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/js\/locale\/zh-cn.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/locale\/min\/zh-cn-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -2344,6 +2272,26 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
+	"\/source\/less\/fonts\/font.playfair-faunaone.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/fonts\/font.playfair-faunaone.less",
+		"outputAbbreviatedPath": "\/compiled\/css\/fonts\/font.playfair-faunaone.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
 	"\/source\/less\/fonts\/font.playfair.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
@@ -2384,6 +2332,26 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
+	"\/source\/less\/fonts\/font.roboto-megrim.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/fonts\/font.roboto-megrim.less",
+		"outputAbbreviatedPath": "\/compiled\/css\/fonts\/font.roboto-megrim.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
 	"\/source\/less\/fonts\/font.rufina-sintony.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
@@ -2417,6 +2385,26 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 2,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/fonts\/font.unicaone-vollkorn.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/fonts\/font.unicaone-vollkorn.less",
+		"outputAbbreviatedPath": "\/compiled\/css\/fonts\/font.unicaone-vollkorn.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0,
 		"relativeURLS": 0,
 		"shouldRunAutoprefixer": 0,
 		"shouldRunBless": 0,

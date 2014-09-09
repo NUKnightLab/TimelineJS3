@@ -1,0 +1,120 @@
+@import url(http://fonts.googleapis.com/css?family=Vollkorn:400italic,400);
+@import url(http://fonts.googleapis.com/css?family=Unica+One);
+/*	Font Unica One & Vollkorn
+
+http://www.google.com/fonts/specimen/Vollkorn
+http://www.google.com/fonts/specimen/Unica+One
+----------------------------------------------------- */
+/*	VARIABLES
+----------------------------------------------------- */
+/* TYPEFACE
+================================================== */
+/* COLOR SCHEME
+================================================== */
+/* UI COLOR
+================================================== */
+/* UI
+================================================== */
+/* Animation
+================================================== */
+/* GFX
+================================================== */
+/*	Font Base
+----------------------------------------------------- */
+.vco-timeline {
+  font-family: 'Vollkorn', Georgia, serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.3em;
+}
+.vco-timeline h1,
+.vco-timeline h2,
+.vco-timeline h3,
+.vco-timeline h4,
+.vco-timeline h5,
+.vco-timeline h6 {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 46px;
+}
+.vco-timeline h2.vco-headline-title {
+  font-size: 58px;
+  line-height: 58px;
+}
+.vco-timeline p {
+  font-family: 'Vollkorn', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.3em;
+}
+.vco-timeline ul {
+  font-family: 'Vollkorn', Georgia, serif;
+}
+.vco-timeline .vco-media .vco-media-wikipedia h4 a {
+  font-family: 'Vollkorn', Georgia, serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 24px;
+}
+.vco-timeline .vco-caption,
+.vco-timeline .vco-credit {
+  font-family: 'Vollkorn', Georgia, serif;
+}
+.vco-timeline .vcard {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif !important;
+  font-weight: normal !important;
+}
+.vco-timeline .vco-slidenav-next,
+.vco-timeline .vco-slidenav-previous,
+.vco-timeline .vco-message {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.vco-timeline .vco-slidenav-next .vco-slidenav-title,
+.vco-timeline .vco-slidenav-previous .vco-slidenav-title,
+.vco-timeline .vco-message .vco-slidenav-title {
+  line-height: 1.3em !important;
+}
+.vco-timeline .vco-headline-date,
+.vco-timeline h3.vco-headline-date {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif !important;
+  font-weight: normal !important;
+  text-transform: uppercase !important;
+}
+.vco-timeline .vco-headline-date small,
+.vco-timeline h3.vco-headline-date small {
+  font-weight: normal !important;
+}
+.vco-timeline .vco-timenav-slider {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+  font-weight: 400;
+}
+.vco-timeline .vco-timenav-slider h2.vco-headline {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.vco-timeline .vco-timenav-slider .vco-timeaxis {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.vco-timeline .vco-menubar {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+}
+.vco-timeline blockquote,
+.vco-timeline blockquote p {
+  font-family: 'Vollkorn', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.3;
+}
+input[type="text"].editor-headline {
+  font-family: 'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 46px;
+}
