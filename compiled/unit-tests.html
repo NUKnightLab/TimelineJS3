@@ -240,7 +240,7 @@
         equal(msgs._('loading'),"Loading","get a message");
         equal(msgs._('foobar'),"foobar","invalid keys should pass through");
 
-        var msgs = VCO.Language.default;
+        var msgs = VCO.Language.fallback;
         equal(msgs.name,"English","English is default");
         equal(msgs.lang,"en","en is default");
         equal(msgs._('loading'),"Loading","get a message");
@@ -262,7 +262,7 @@
 
 
       test("VCO.Language date formatting", function() {
-        var msgs = VCO.Language.default;
+        var msgs = VCO.Language.fallback;
         var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
         equal(msgs.formatDate(d,'d'),'7','short day');
         equal(msgs.formatDate(d,'dd'),'07','padded day');
@@ -324,7 +324,7 @@
         equal(timescale.getMinorScale(),'year',"timescale should be years");
         ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
         ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
-        equal(timescale.getNumberOfRows(),3,"Expecting 3 rows")
+        equal(timescale.getNumberOfRows(),5,"Expecting 5 rows") // this will change if someone monkeys around with the config file!
         equal(timescale.getScale(),'javascript','test case uses JS dates')
       });
 

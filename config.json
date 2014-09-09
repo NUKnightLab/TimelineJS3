@@ -1,0 +1,143 @@
+//
+// TimelineJS3 configuration 
+// 
+// All file/directory paths are relative to the project directory.
+//
+// Regular expressions are in python regular expression format, but backslashes
+// must be escaped for JSON.  When used to match files, matching will take
+// place against the the file/directory path realtive to the project directory.
+//
+{
+    //
+    // name of the project as it will appear in the cdn and css/js banners
+    //
+    "name": "timelinejs3",
+    //
+    // author string to appear in css/js banners
+    //
+    "author": "Northwestern University Knight Lab",
+    //
+    // build
+    // 
+    // These commands will be run the exact order in which they appear.
+    // This order is determined in code by fabfile/__init__.py.
+    //
+    "build": {
+        // copy files
+        // input: list of objects specifying inputs and outputs
+        //      @src: source file/directory
+        //      @dst: destination file/directory
+        //      @regex: regular expression to match files (if @src is directory)
+        //
+        "copy": [
+            {
+                "src": "website",
+                "dst": "build",
+                "regex": "(css/.*|img/.*|js/.*|.*\\.(ico))$"
+            },
+            {
+                "src": "source",
+                "dst": "build",
+                "regex": "(css/.*|img/.*|.*\\.(ico|html)|gfx/.*\\.(png|jpg|gif))$"
+            },
+            {
+                "src": "source/js/language/locale",
+                "dst": "build/js/locale",
+                "regex": ".*\\.json"
+            }
+        ],
+        // compile less files
+        // input: list of objects specifying inputs and output
+        // input: list of objects, where
+        //      @src: source file/directory
+        //      @dst: destination file/directory
+        //      @regex: regular expression to match files (if @src is directory)
+        //      @opt: options to pass to lessc
+        "lessc": [
+            {
+                "src": "source/less/VCO.Timeline.less",
+                "dst": "build/css/timeline.css",
+                "opt": "--clean-css --clean-option=--s0"
+            },
+            {
+                "src": "source/less/VCO.Timeline.Dark.less",
+                "dst": "build/css/timeline.dark.css",
+                "opt": "--clean-css --clean-option=--s0"
+            },
+            {
+                "src": "source/less/fonts",
+                "dst": "build/css/fonts",
+                "regex": ".*(?<!font.base)\\.less"
+            }
+        ],
+        // 
+        // process codekit style imports on files
+        // input: list of objects specifying inputs and output
+        //      @src:    source file
+        //      @dst:    destination file
+        //
+        "process": [
+            {
+                "src": "source/js/VCO.Timeline.js",
+                "dst": "build/js/timeline.js"
+            }            
+        ],
+        // concatenate files
+        // input: list of objects, where
+        //      @src: list of source files
+        //      @dst: destination file
+        "concat": [
+        ],
+        // minify files using uglifyjs
+        // input list of objects specifying inputs and output
+        //      @src:   source file/directory
+        //      @dst:   destination file/directory 
+        //      @opt:   options to pass to uglifyjs
+        //      @ext:   extension to prepend to destination file name (optional, default = none)
+        //
+        "minify": [
+            {
+                "src": "build/js/timeline.js",
+                "dst": "build/js/timeline-min.js",
+                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
+            },
+            {
+                "src": "source/js/library/moment.js",
+                "dst": "build/js/library/moment.js",
+                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
+            }
+
+        ],
+        //
+        // process usermin style build blocks on html files
+        // input: list of files/directorys to process in-place
+        //
+        "usemin": [     
+        ],
+        //
+        // banner
+        // input: list of objects, where
+        //      @src: source file/directory
+        //      @regex: regular expression to match files (if @src is directory)
+        "banner": [
+        ]
+    },
+    //
+    // stage
+    // input: regular expression to match files in the build directory
+    //  
+    "stage": [{
+        "src": "build",
+        "regex": "(css/.*|js/.*|gfx/.*|embed/.*)$"
+    }],
+    //
+    // deploy
+    // input: {
+    //   env: {bucket: name of the S3 bucket that will host the website}
+    // }
+    //
+    "deploy": {
+        "stg": {"bucket": "TODO.knilab.com", "usemin_context": {"cdn": "dev"}},
+        "prd": {"bucket": "TODO.knightlab.com", "usemin_context": {"cdn": "latest"}}
+    }
+}

@@ -7,7 +7,7 @@ VCO.I18NMixins = {
             return this.options.language;
         }
         trace("Expected a language option");
-        return VCO.Language.default;
+        return VCO.Language.fallback;
     },
 
     _: function(msg) {
