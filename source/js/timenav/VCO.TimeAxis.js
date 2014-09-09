@@ -203,16 +203,15 @@ VCO.TimeAxis = VCO.Class.extend({
 			this._el.minor.className = "vco-timeaxis-minor vco-timeaxis-animate";
 		}
 		
-		// Poition Major Ticks
-		for (var j = 0; j < this.major_ticks.length; j++) {
-			var tick = this.major_ticks[j];
-			
-			tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-		};
+		this._positionTickArray(this.major_ticks, timescale, optimal_tick_width);
+		this._positionTickArray(this.minor_ticks, timescale, optimal_tick_width);
 		
-		// Poition Minor Ticks & Handle density of minor ticks
-		if (this.minor_ticks[1] && this.minor_ticks[0]) {
-			var distance = ( timescale.getPosition(this.minor_ticks[1].date.getMillisecond()) - timescale.getPosition(this.minor_ticks[0].date.getMillisecond()) ),
+	},
+	
+	_positionTickArray: function(tick_array, timescale, optimal_tick_width) {
+		// Poition Ticks & Handle density of ticks
+		if (tick_array[1] && tick_array[0]) {
+			var distance = ( timescale.getPosition(tick_array[1].date.getMillisecond()) - timescale.getPosition(tick_array[0].date.getMillisecond()) ),
 				fraction_of_array = 1;
 				
 				
@@ -222,15 +221,15 @@ VCO.TimeAxis = VCO.Class.extend({
 			
 			var show = 1;
 			
-			for (var i = 0; i < this.minor_ticks.length; i++) {
+			for (var i = 0; i < tick_array.length; i++) {
 				
-				var tick = this.minor_ticks[i];
+				var tick = tick_array[i];
 				
-				// Poition Minor Ticks
+				// Poition Ticks
 				tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 				tick.tick_text.innerHTML = tick.display_text;
 				
-				// Handle density of minor ticks
+				// Handle density of ticks
 				if (fraction_of_array > 1) {
 					if (show >= fraction_of_array) {
 						show = 1;
@@ -245,7 +244,6 @@ VCO.TimeAxis = VCO.Class.extend({
 				
 			};
 		}
-		
 	},
 	
 	/*	Events
@@ -255,16 +253,12 @@ VCO.TimeAxis = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		
-		
 		this._el.content_container		= VCO.Dom.create("div", "vco-timeaxis-content-container", this._el.container);
 		this._el.major					= VCO.Dom.create("div", "vco-timeaxis-major", this._el.content_container);
 		this._el.minor					= VCO.Dom.create("div", "vco-timeaxis-minor", this._el.content_container);
 		
-		
 		// Fire event that the slide is loaded
 		this.onLoaded();
-		
 	},
 	
 	_initEvents: function() {
