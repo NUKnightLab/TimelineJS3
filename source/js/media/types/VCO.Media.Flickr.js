@@ -23,6 +23,11 @@ VCO.Media.Flickr = VCO.Media.extend({
 		// Photo
 		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content_link);
 		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
 		// Get Media ID
 		this.establishMediaID();
 		
@@ -51,13 +56,14 @@ VCO.Media.Flickr = VCO.Media.extend({
 	createMedia: function(d) {
 		var best_size 	= this.sizes(this.options.height),
 			size 		= d.sizes.size[d.sizes.size.length - 2].source;
+			self = this;
 		
 		for(var i = 0; i < d.sizes.size.length; i++) {
 			if (d.sizes.size[i].label == best_size) {
 				size = d.sizes.size[i].source;
 			}
 		}
-		
+			
 		// Set Image Source
 		this._el.content_item.src			= size;
 		

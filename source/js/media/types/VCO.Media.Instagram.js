@@ -25,6 +25,13 @@ VCO.Media.Instagram = VCO.Media.extend({
 		
 		// Photo
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
+		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
+		// Set source
 		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
 		
 		this.onLoaded();

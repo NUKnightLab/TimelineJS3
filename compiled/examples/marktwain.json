@@ -168,7 +168,7 @@
                 "media": {
                     "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                     "credit": null,
-                    "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
+                    "url": "https://www.youtube.com/watch?v=h3K3kEDEAN4"
                 },
                 "text": {
                     "headline": "",
@@ -200,11 +200,75 @@
                 "media": {
                     "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                     "credit": null,
-                    "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
+                    "url": "https://vimeo.com/105602328"
+                },
+                "text": {
+                    "headline": "Vimeo",
+                    "text": "vimeo"
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1910",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1920",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "media": {
+                    "caption": "",
+                    "credit": null,
+                    "url": "https://vimeo.com/105602328"
                 },
                 "text": {
                     "headline": "",
                     "text": ""
+                },
+                "uniqueid": ""
+            },
+            {
+                "start_date": {
+					"year":			"1910",
+					"month":		"01",
+					"day": 			"05",
+					"hour": 		"6",
+					"minute": 		"45",
+					"second": 		"56",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "end_date": {
+					"year":			"1920",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
+					"millisecond": 	"",
+					"format": 		""
+				},
+                "media": {
+                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                    "credit": null,
+                    "url": "https://www.youtube.com/watch?v=h3K3kEDEAN4"
+                },
+                "text": {
+                    "headline": "YouTube",
+                    "text": "YouTube"
                 },
                 "uniqueid": ""
             },
@@ -230,8 +294,8 @@
 					"format": 		""
 				},
                 "media": {
-                    "caption": null,
-                    "credit": null,
+                    "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
+                    "credit": "Vanity Fair",
                     "url": "spotify:track:1OT1G66Lt9EpKFWkwK8i9z"
                 },
                 "text": {

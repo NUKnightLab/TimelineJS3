@@ -24,6 +24,12 @@ VCO.Media.Vimeo = VCO.Media.extend({
 		api_url = "http://player.vimeo.com/video/" + this.media_id + "?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff";
 		
 		this.player = VCO.Dom.create("iframe", "", this._el.content_item);
+		
+		// Media Loaded Event
+		this.player.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
 		this.player.width 		= "100%";
 		this.player.height 		= "100%";
 		this.player.frameBorder = "0";

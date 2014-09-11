@@ -49,7 +49,9 @@ VCO.Media.YouTube = VCO.Media.extend({
 	
 	// Update Media Display
 	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+		//this.el.content_item = document.getElementById(this._el.content_item.id);
+		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this.options.width}) + "px";
+		this._el.content_item.style.width = this.options.width + "px";
 	},
 	
 	_stopMedia: function() {
@@ -108,6 +110,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 				playerVars: {
 					enablejsapi:		1,
 					color: 				'white',
+					autohide: 			1,
 					showinfo:			0,
 					theme:				'light',
 					start:				this.media_id.start,
@@ -136,6 +139,8 @@ VCO.Media.YouTube = VCO.Media.extend({
 	================================================== */
 	onPlayerReady: function(e) {
 		this.youtube_loaded = true;
+		this._el.content_item = document.getElementById(this._el.content_item.id);
+		this.onMediaLoaded();
 		
 	},
 	

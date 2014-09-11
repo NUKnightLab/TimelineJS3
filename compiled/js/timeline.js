@@ -2825,12 +2825,12 @@ VCO.Language = function(options) {
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
-			if (code.endsWith('.json')) {
+			if (/\.json$/.test(code)) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
 				var script_path = options.script_path || '';
-				if (script_path.endsWith('/')) { fragment = fragment.substr(1)}
+				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;
 			}
 			var self = this;
@@ -2906,7 +2906,7 @@ VCO.Language.prototype.formatDate = function(date, format_name) {
 VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
 
 	var the_year = bigyear.year;
-	var format_list = this.bigdateformats[format_name];
+	var format_list = this.bigdateformats[format_name] || this.bigdateformats['fallback'];
 
 	if (!format_list) {
 		return VCO.Language.formatNumber(the_year,format_name);
@@ -4379,6 +4379,10 @@ VCO.Date = VCO.Class.extend({
 	},
 	
 	getDisplayDate: function(language,use_short) {
+	    if (this.data.display_text) {
+	        return this.data.display_text;
+	    }
+	    
         if (!language) {
             language = VCO.Language.fallback;
         }
@@ -5911,7 +5915,9 @@ VCO.Media = VCO.Class.extend({
 		
 		// State
 		this._state = {
-			loaded: false
+			loaded: false,
+			show_meta: false,
+			media_loaded: false
 		};
 	
 		// Data
@@ -5938,7 +5944,11 @@ VCO.Media = VCO.Class.extend({
 		VCO.Util.mergeData(this.data, data);
 		
 		this._el.container = VCO.Dom.create("div", "vco-media");
-		this._el.container.id = this.data.uniqueid;
+		
+		if (this.data.uniqueid) {
+			this._el.container.id = this.data.uniqueid;
+		}
+		
 		
 		this._initLayout();
 		
@@ -5977,13 +5987,16 @@ VCO.Media = VCO.Class.extend({
 
 	updateMediaDisplay: function(layout) {
 		if (this._state.loaded) {
-			this._updateMediaDisplay(layout);
 			
-			if (!VCO.Browser.mobile) {
+			
+			if (VCO.Browser.mobile) {
 				this._el.content_item.style.maxHeight = (this.options.height/2) + "px";
+			} else {
+				this._el.content_item.style.maxHeight = this.options.height - this.options.credit_height - this.options.caption_height - 30 + "px";
 			}
 			
-			
+			//this._el.content_item.style.maxWidth = this.options.width + "px";
+			this._el.container.style.maxWidth = this.options.width + "px";
 			// Fix for max-width issues in Firefox
 			if (VCO.Browser.firefox) {
 				if (this._el.content_item.offsetWidth > this._el.content_item.offsetHeight) {
@@ -5991,6 +6004,18 @@ VCO.Media = VCO.Class.extend({
 				}
 			}
 			
+			
+			
+			this._updateMediaDisplay(layout);
+			
+			if (this._state.media_loaded) {
+				if (this._el.credit) {
+					this._el.credit.style.width		= this._el.content_item.offsetWidth + "px";
+				}
+				if (this._el.caption) {
+					this._el.caption.style.width		= this._el.content_item.offsetWidth + "px";
+				}
+			}
 			
 		}
 	},
@@ -6003,6 +6028,10 @@ VCO.Media = VCO.Class.extend({
 		
 		_updateMediaDisplay: function(l) {
 			//this._el.content_item.style.maxHeight = (this.options.height - this.options.credit_height - this.options.caption_height - 16) + "px";
+			if(VCO.Browser.firefox) {
+				this._el.content_item.style.maxWidth = this.options.width + "px";
+				this._el.content_item.style.width = "auto";
+			}
 		},
 	
 	/*	Public
@@ -6057,8 +6086,20 @@ VCO.Media = VCO.Class.extend({
 		this.updateDisplay();
 	},
 	
-	showMeta: function() {
-		
+	onMediaLoaded: function(e) {
+		trace("onMediaLoaded");
+		this._state.media_loaded = true;
+		this.fire("media_loaded", this.data);
+		if (this._el.credit) {
+			this._el.credit.style.width		= this._el.content_item.offsetWidth + "px";
+		}
+		if (this._el.caption) {
+			this._el.caption.style.width		= this._el.content_item.offsetWidth + "px";
+		}
+	},
+	
+	showMeta: function(credit, caption) {
+		this._state.show_meta = true;
 		// Credit
 		if (this.data.credit && this.data.credit != "") {
 			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
@@ -6117,7 +6158,9 @@ VCO.Media = VCO.Class.extend({
 	_updateDisplay: function(w, h, l) {
 		if (w) {
 			this.options.width = w;
-		}
+			
+		} 
+		//this._el.container.style.width = this.options.width + "px";
 		if (h) {
 			this.options.height = h;
 		}
@@ -6204,6 +6247,11 @@ VCO.Media.Flickr = VCO.Media.extend({
 		// Photo
 		this._el.content_item	= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-flickr vco-media-shadow", this._el.content_link);
 		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
 		// Get Media ID
 		this.establishMediaID();
 		
@@ -6232,13 +6280,14 @@ VCO.Media.Flickr = VCO.Media.extend({
 	createMedia: function(d) {
 		var best_size 	= this.sizes(this.options.height),
 			size 		= d.sizes.size[d.sizes.size.length - 2].source;
+			self = this;
 		
 		for(var i = 0; i < d.sizes.size.length; i++) {
 			if (d.sizes.size[i].label == best_size) {
 				size = d.sizes.size[i].source;
 			}
 		}
-		
+			
 		// Set Image Source
 		this._el.content_item.src			= size;
 		
@@ -6302,6 +6351,13 @@ VCO.Media.Instagram = VCO.Media.extend({
 		
 		// Photo
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
+		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
+		// Set source
 		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
 		
 		this.onLoaded();
@@ -6477,7 +6533,6 @@ VCO.Media.IFrame = VCO.Media.extend({
 	Produces image assets.
 	Takes a data object and populates a dom object
 ================================================== */
-// TODO Add link
 
 VCO.Media.Image = VCO.Media.extend({
 	
@@ -6486,6 +6541,7 @@ VCO.Media.Image = VCO.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
+		var self = this;
 		// Loading Message
 		this.loadingMessage();
 		
@@ -6499,6 +6555,11 @@ VCO.Media.Image = VCO.Media.extend({
 			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
 		}
 		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
 		this._el.content_item.src			= this.data.url;
 		
 		this.onLoaded();
@@ -6508,9 +6569,10 @@ VCO.Media.Image = VCO.Media.extend({
 		
 		
 		if(VCO.Browser.firefox) {
-			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
+			//this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
 			this._el.content_item.style.width = "auto";
 		}
+		
 	}
 	
 });/*	VCO.Media.SoundCloud
@@ -6735,6 +6797,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 		
 		// Create Dom element
 		this._el.content_item = VCO.Dom.create("div", "vco-media-twitter", this._el.content);
+		this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
 		
 		// Get Media ID
 		if (this.data.url.match("status\/")) {
@@ -6842,6 +6905,12 @@ VCO.Media.Vimeo = VCO.Media.extend({
 		api_url = "http://player.vimeo.com/video/" + this.media_id + "?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff";
 		
 		this.player = VCO.Dom.create("iframe", "", this._el.content_item);
+		
+		// Media Loaded Event
+		this.player.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
 		this.player.width 		= "100%";
 		this.player.height 		= "100%";
 		this.player.frameBorder = "0";
@@ -7132,7 +7201,9 @@ VCO.Media.YouTube = VCO.Media.extend({
 	
 	// Update Media Display
 	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+		//this.el.content_item = document.getElementById(this._el.content_item.id);
+		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this.options.width}) + "px";
+		this._el.content_item.style.width = this.options.width + "px";
 	},
 	
 	_stopMedia: function() {
@@ -7191,6 +7262,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 				playerVars: {
 					enablejsapi:		1,
 					color: 				'white',
+					autohide: 			1,
 					showinfo:			0,
 					theme:				'light',
 					start:				this.media_id.start,
@@ -7219,6 +7291,8 @@ VCO.Media.YouTube = VCO.Media.extend({
 	================================================== */
 	onPlayerReady: function(e) {
 		this.youtube_loaded = true;
+		this._el.content_item = document.getElementById(this._el.content_item.id);
+		this.onMediaLoaded();
 		
 	},
 	
@@ -7281,7 +7355,7 @@ VCO.Media.Spotify = VCO.Media.extend({
 		}
 		
 		// API URL
-		api_url = "https://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
 				
 		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
 		this.player.width 		= "100%";
@@ -7296,17 +7370,39 @@ VCO.Media.Spotify = VCO.Media.extend({
 	// Update Media Display
 	
 	_updateMediaDisplay: function(l) {
-		var _height = this.options.height;
-		if (!VCO.Browser.mobile) {
+		var _height = this.options.height,
+			_player_height = 0,
+			_player_width = 0;
+			
+		if (VCO.Browser.mobile) {
 			_height = (this.options.height/2);
+		} else {
+			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
 		}
 		
+		this._el.content_item.style.maxHeight = "none";
+		trace(_height);
+		trace(this.options.width)
 		if (_height > this.options.width) {
-			this.player.style.height = this._el.content_item.offsetWidth + 80 + "px";
-			this.player.style.width = this.options.width + "px";
+			trace("height is greater")
+			_player_height = this.options.width + 80 + "px";
+			_player_width = this.options.width + "px";
 		} else {
-			this.player.style.width = _height - 80 + "px";
-			this.player.style.height = _height + "px";
+			trace("width is greater")
+			trace(this.options.width)
+			_player_height = _height + "px";
+			_player_width = _height - 80 + "px";
+		}
+		
+
+		this.player.style.width = _player_width;
+		this.player.style.height = _player_height;
+		
+		if (this._el.credit) {
+			this._el.credit.style.width		= _player_width;
+		}
+		if (this._el.caption) {
+			this._el.caption.style.width		= _player_width;
 		}
 	},
 	
@@ -7574,6 +7670,9 @@ VCO.Slide = VCO.Class.extend({
 	
 	// Update Display
 	_updateDisplay: function(width, height, layout) {
+		var content_width,
+			content_padding_left = this.options.slide_padding_lr,
+			content_padding_right = this.options.slide_padding_lr;
 		
 		if (width) {
 			this.options.width 					= width;
@@ -7581,25 +7680,23 @@ VCO.Slide = VCO.Class.extend({
 			this.options.width 					= this._el.container.offsetWidth;
 		}
 		
-		if(VCO.Browser.mobile && (this.options.width <= this.options.skinny_size)) {
-			this._el.content.style.paddingLeft 	= 0 + "px";
-			this._el.content.style.paddingRight = 0 + "px";
-			this._el.content.style.width		= this.options.width - 0 + "px";
-		} else if (layout == "landscape") {
-			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
-			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
-			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
+		content_width = this.options.width - (this.options.slide_padding_lr * 2);
 		
+		if(VCO.Browser.mobile && (this.options.width <= this.options.skinny_size)) {
+			content_padding_left = 0;
+			content_padding_right = 0;
+			content_width = this.options.width;
+		} else if (layout == "landscape") {
+			
 		} else if (this.options.width <= this.options.skinny_size) {
-			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
-			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
-			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
+			
 		} else {
-			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
-			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
-			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
+			
 		}
 		
+		this._el.content.style.paddingLeft 	= content_padding_left + "px";
+		this._el.content.style.paddingRight = content_padding_right + "px";
+		this._el.content.style.width		= content_width + "px";
 		
 		if (height) {
 			this.options.height = height;
@@ -7611,9 +7708,11 @@ VCO.Slide = VCO.Class.extend({
 		
 		if (this._media) {
 			if (!this.has.text && this.has.headline) {
-				this._media.updateDisplay(this.options.width, (this.options.height - this._text.headlineHeight()), layout);
+				this._media.updateDisplay(content_width/2, (this.options.height - this._text.headlineHeight()), layout);
+			} else if (!this.has.text && !this.has.headline) {
+				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
-				this._media.updateDisplay(this.options.width, this.options.height, layout);
+				this._media.updateDisplay(content_width/2, this.options.height, layout);
 			}
 		}
 		
@@ -9882,21 +9981,6 @@ VCO.Timeline = VCO.Class.extend({
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
 		
-		if (this.options.layout == "landscape") {
-			this.options.map_center_offset = {left: -200, top: 0};
-		}
-		
-		// Zoomify Layout
-		if (this.options.map_type == "zoomify" && this.options.map_as_image) {
-			this.options.map_size_sticky = 2;
-			
-		}
-		
-		// Map as Image 
-		if (this.options.map_as_image) {
-			this.options.calculate_zoom = false;
-		}
-		
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {
@@ -10006,6 +10090,9 @@ VCO.Timeline = VCO.Class.extend({
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
+		} 
+		
+		if (VCO.Browser.mobile) {
 			display_class += " vco-mobile";
 			// Set TimeNav Height
 			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, 40);

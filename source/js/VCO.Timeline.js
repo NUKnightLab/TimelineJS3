@@ -190,21 +190,6 @@ VCO.Timeline = VCO.Class.extend({
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
 		
-		if (this.options.layout == "landscape") {
-			this.options.map_center_offset = {left: -200, top: 0};
-		}
-		
-		// Zoomify Layout
-		if (this.options.map_type == "zoomify" && this.options.map_as_image) {
-			this.options.map_size_sticky = 2;
-			
-		}
-		
-		// Map as Image 
-		if (this.options.map_as_image) {
-			this.options.calculate_zoom = false;
-		}
-		
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {
@@ -314,6 +299,9 @@ VCO.Timeline = VCO.Class.extend({
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
+		} 
+		
+		if (VCO.Browser.mobile) {
 			display_class += " vco-mobile";
 			// Set TimeNav Height
 			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, 40);

@@ -45,7 +45,7 @@
 		//font-family: @font-secondary;
 		color: lighten(@color-dark, 40%);
 		a {
-
+			/*
 			color: lighten(@color-dark, 40%);
 			text-decoration: none;
 			background-image: -moz-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
@@ -60,6 +60,14 @@
 			&:focus {
 				color:@color-theme;
 				text-decoration: none;
+			}
+			*/
+			color: lighten(@color-dark, 40%);
+			text-decoration: underline;
+			&:hover,
+			&:focus {
+				color:@color-theme;
+				//text-decoration: none;
 			}
 		}
 		

@@ -523,31 +523,19 @@
                     "url": null
                 },
                 "start_date": {
-					"year":			"1994",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
+					"year":			"2014",
+					"month":		"",
+					"day": 			"",
+					"hour": 		"",
+					"minute": 		"",
+					"second": 		"",
 					"millisecond": 	"",
 					"thumbnail": 	"",
 					"format": 		""
 				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 41.30454,
-                    "line": true,
-                    "lon": -73.392898,
-                    "zoom": 11
-                },
-                "media": {
-                    "caption": "Twains house, \"Stormfield\", in Redding, Connecticut (front view)",
-                    "credit": "",
-                    "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif/lossy-page1-800px-Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif.jpg"
-                },
                 "text": {
-                    "headline": "Stormfield",
-                    "text": "Moves into Stormfield in Redding, CT. Forms the Angelfish Club for young girls."
+                    "headline": "Get started!",
+                    "text": ""
                 },
                 "uniqueid": ""
             }

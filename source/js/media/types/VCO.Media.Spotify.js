@@ -30,7 +30,7 @@ VCO.Media.Spotify = VCO.Media.extend({
 		}
 		
 		// API URL
-		api_url = "https://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
 				
 		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
 		this.player.width 		= "100%";
@@ -45,17 +45,39 @@ VCO.Media.Spotify = VCO.Media.extend({
 	// Update Media Display
 	
 	_updateMediaDisplay: function(l) {
-		var _height = this.options.height;
-		if (!VCO.Browser.mobile) {
+		var _height = this.options.height,
+			_player_height = 0,
+			_player_width = 0;
+			
+		if (VCO.Browser.mobile) {
 			_height = (this.options.height/2);
+		} else {
+			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
 		}
 		
+		this._el.content_item.style.maxHeight = "none";
+		trace(_height);
+		trace(this.options.width)
 		if (_height > this.options.width) {
-			this.player.style.height = this._el.content_item.offsetWidth + 80 + "px";
-			this.player.style.width = this.options.width + "px";
+			trace("height is greater")
+			_player_height = this.options.width + 80 + "px";
+			_player_width = this.options.width + "px";
 		} else {
-			this.player.style.width = _height - 80 + "px";
-			this.player.style.height = _height + "px";
+			trace("width is greater")
+			trace(this.options.width)
+			_player_height = _height + "px";
+			_player_width = _height - 80 + "px";
+		}
+		
+
+		this.player.style.width = _player_width;
+		this.player.style.height = _player_height;
+		
+		if (this._el.credit) {
+			this._el.credit.style.width		= _player_width;
+		}
+		if (this._el.caption) {
+			this._el.caption.style.width		= _player_width;
 		}
 	},
 	

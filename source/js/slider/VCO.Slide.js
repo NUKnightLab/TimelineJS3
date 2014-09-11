@@ -255,6 +255,9 @@ VCO.Slide = VCO.Class.extend({
 	
 	// Update Display
 	_updateDisplay: function(width, height, layout) {
+		var content_width,
+			content_padding_left = this.options.slide_padding_lr,
+			content_padding_right = this.options.slide_padding_lr;
 		
 		if (width) {
 			this.options.width 					= width;
@@ -262,25 +265,23 @@ VCO.Slide = VCO.Class.extend({
 			this.options.width 					= this._el.container.offsetWidth;
 		}
 		
-		if(VCO.Browser.mobile && (this.options.width <= this.options.skinny_size)) {
-			this._el.content.style.paddingLeft 	= 0 + "px";
-			this._el.content.style.paddingRight = 0 + "px";
-			this._el.content.style.width		= this.options.width - 0 + "px";
-		} else if (layout == "landscape") {
-			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
-			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
-			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
+		content_width = this.options.width - (this.options.slide_padding_lr * 2);
 		
+		if(VCO.Browser.mobile && (this.options.width <= this.options.skinny_size)) {
+			content_padding_left = 0;
+			content_padding_right = 0;
+			content_width = this.options.width;
+		} else if (layout == "landscape") {
+			
 		} else if (this.options.width <= this.options.skinny_size) {
-			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
-			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
-			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
+			
 		} else {
-			this._el.content.style.paddingLeft 	= this.options.slide_padding_lr + "px";
-			this._el.content.style.paddingRight = this.options.slide_padding_lr + "px";
-			this._el.content.style.width		= this.options.width - (this.options.slide_padding_lr * 2) + "px";
+			
 		}
 		
+		this._el.content.style.paddingLeft 	= content_padding_left + "px";
+		this._el.content.style.paddingRight = content_padding_right + "px";
+		this._el.content.style.width		= content_width + "px";
 		
 		if (height) {
 			this.options.height = height;
@@ -292,9 +293,11 @@ VCO.Slide = VCO.Class.extend({
 		
 		if (this._media) {
 			if (!this.has.text && this.has.headline) {
-				this._media.updateDisplay(this.options.width, (this.options.height - this._text.headlineHeight()), layout);
+				this._media.updateDisplay(content_width/2, (this.options.height - this._text.headlineHeight()), layout);
+			} else if (!this.has.text && !this.has.headline) {
+				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
-				this._media.updateDisplay(this.options.width, this.options.height, layout);
+				this._media.updateDisplay(content_width/2, this.options.height, layout);
 			}
 		}
 		
