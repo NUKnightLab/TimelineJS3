@@ -215,6 +215,13 @@ VCO.Language.languages = {
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
 				[1, "%f years ago"]
+			],
+			// year_short: use fallback
+		    year: [ 
+				[1000000000,"%.2f billion years ago"],
+				[1000000,"%.1f million years ago"],
+				[1000,"%.1f thousand years ago"],
+				[1, "%f years ago"]
 			]
 		}
 	}

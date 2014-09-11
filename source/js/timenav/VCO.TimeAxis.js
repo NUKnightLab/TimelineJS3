@@ -54,9 +54,9 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Minor tick dom element array
 		this.major_ticks = [];
 		
-		// Date Format Lookup
+		// Date Format Lookup, map VCO.Date.SCALES to...
 		this.dateformat_lookup = {
-	        millisecond: 1,
+	        millisecond: 1,     // VCO.Language.<code>.dateformats
 	        second: 'time_short',
 	        minute: 'time_no_seconds_short',
 	        hour: 'time_no_minutes_short',
@@ -65,12 +65,12 @@ VCO.TimeAxis = VCO.Class.extend({
 	        year: 'year',
 	        decade: 'year',
 	        century: 'year',
-	        millennium: 'year',
-	        age: 'year',
-	        epoch: 'year',
-	        era: 'year',
-	        eon: 'year',
-	        eon2: 'year'
+	        millennium: 'year', 
+	        age: 'year_short',  // VCO.Language.<code>.bigdateformats
+	        epoch: 'year_short',
+	        era: 'year_short',
+	        eon: 'year_short',
+	        eon2: 'year_short'
 	    }
 		
 		// Main element
