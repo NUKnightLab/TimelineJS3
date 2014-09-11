@@ -69,7 +69,8 @@ VCO.TimeAxis = VCO.Class.extend({
 	        age: 'year',
 	        epoch: 'year',
 	        era: 'year',
-	        eon: 'year'
+	        eon: 'year',
+	        eon2: 'year'
 	    }
 		
 		// Main element

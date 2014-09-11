@@ -56,7 +56,7 @@ VCO.AxisHelper = VCO.Class.extend({
 (function(cls){ // add some class-level behavior
 
     HELPERS = [];
-    for (var idx = 0; idx < VCO.Date.SCALES.length - 2; idx++) {
+    for (var idx = 0; idx < VCO.Date.SCALES.length - 1; idx++) {
         var minor = VCO.Date.SCALES[idx];
         var major = VCO.Date.SCALES[idx+1];
         if (minor[3] == major[3]) { // don't mix javascript and cosmological
