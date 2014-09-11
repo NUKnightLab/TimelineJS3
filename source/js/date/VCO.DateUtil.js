@@ -52,10 +52,11 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'default',
-			epoch: 'default',
-			era: 'default',
-			eon: 'default',
+			age: 'fallback',
+			epoch: 'fallback',
+			era: 'fallback',
+			eon: 'fallback',
+			eon2: 'fallback'
 		},
 		
 		short: {
@@ -69,10 +70,11 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'default',
-			epoch: 'default',
-			era: 'default',
-			eon: 'default',
+			age: 'fallback',
+			epoch: 'fallback',
+			era: 'fallback',
+			eon: 'fallback',
+			eon2: 'fallback'
 		}
 	}
 	
