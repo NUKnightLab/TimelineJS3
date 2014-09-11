@@ -230,6 +230,7 @@ VCO.BigYear = VCO.Class.extend({
     var EPOCH = AGE * 10;
     var ERA = EPOCH * 10;
     var EON = ERA * 5;
+    var EON2 = EON * 2;
 
     var Floorer = function(unit) {
         return function(a_big_year) {
@@ -261,7 +262,9 @@ VCO.BigYear = VCO.Class.extend({
         ['age',AGE, new Floorer(AGE),'cosmological'],    // 1M years
         ['epoch',EPOCH, new Floorer(EPOCH),'cosmological'], // 10M years
         ['era',ERA, new Floorer(ERA),'cosmological'],  // 100M years
-        ['eon',EON, new Floorer(EON),'cosmological']  //500M years
+        ['eon',EON, new Floorer(EON),'cosmological'],  //500M years
+        ['eon2', EON2, new Floorer(EON2),'cosmological'] // 1B years
+        
     ]
 
     cls.SCALES = SCALES;
