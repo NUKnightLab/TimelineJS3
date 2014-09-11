@@ -165,9 +165,10 @@ VCO.Date = VCO.Class.extend({
 		
 		// Merge dates
 		VCO.Util.mergeData(_date, this.data);
-		DATE_PARTS = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'];
 		
 		// Make strings into numbers
+		DATE_PARTS = VCO.Date.DATE_PARTS;
+
 		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
 			if (isNaN(parsed)) {
@@ -268,6 +269,10 @@ VCO.BigYear = VCO.Class.extend({
     ]
 
     cls.SCALES = SCALES;
+    
+    // Date parts from highest to lowest precision    
+    cls.DATE_PARTS = ["millisecond", "second", "minute", "hour", "day", "month", "year"];
+    
 
     var ISO8601_SHORT_PATTERN = /^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/;
     // regex below from
