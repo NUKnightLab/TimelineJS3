@@ -8,35 +8,28 @@
 //
 
 VCO.Date = VCO.Class.extend({
+     
     // @data = ms, JS Date object, or JS dictionary with date properties
 	initialize: function (data, format, format_short) {
 	    if (typeof(data) == 'number') {
 			this.data = {
-                scale:      "javascript",
 				format:     "yyyy mmmm",
 				date_obj:   new Date(data)
 			};	        
 	    } else if(Date == data.constructor) {
 			this.data = {
-                scale:      "javascript",
 				format:     "yyyy mmmm",
 				date_obj:   data
 			};	        
 	    } else {
 	        this.data = data;
-            this.data.scale = "javascript";
             this._createDateObj();            
 	    }
 	    
 		this._setFormat(format, format_short);			
     },
-    
-    getScale: function() {
-        return this.data.scale;
-	},
-	
+
 	setDateFormat: function(format) {
-		// Set display type format
 		this.data.format = format;
 	},
 	
@@ -89,11 +82,9 @@ VCO.Date = VCO.Class.extend({
     floor: function(scale) { 
         var d = new Date(this.data.date_obj);
         for (var i = 0; i < VCO.Date.SCALES.length; i++) {
-            if (VCO.Date.SCALES[i][3] == this.getScale()) {
-                // for JS dates, we iteratively apply flooring functions
-                VCO.Date.SCALES[i][2](d);
-                if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
-            }
+             // for JS dates, we iteratively apply flooring functions
+            VCO.Date.SCALES[i][2](d);
+            if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
         };
 
         throw('invalid scale ' + scale);
@@ -184,50 +175,30 @@ VCO.BigYear = VCO.Class.extend({
 });
 
 (function(cls){
-    // cosmo units are years, not millis
-    var AGE = 1000000;
-    var EPOCH = AGE * 10;
-    var ERA = EPOCH * 10;
-    var EON = ERA * 5;
-    var EON2 = EON * 2;
-
-    var Floorer = function(unit) {
-        return function(a_big_year) {
-            var year = a_big_year.getTime();
-            return new VCO.BigYear(Math.floor(year/unit) * unit);
-        }
-    }
-    SCALES = [ // ( name, units_per_tick, flooring function, scale_class )
-        ['millisecond',1, function(d) { },'javascript'],
-        ['second',1000, function(d) { d.setMilliseconds(0);},'javascript'],
-        ['minute',1000 * 60, function(d) { d.setSeconds(0);},'javascript'],
-        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);},'javascript'],
-        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);},'javascript'],
-        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);},'javascript'],
-        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);},'javascript'],
+    
+    // javascript scales
+    cls.SCALES = [ // ( name, units_per_tick, flooring function )
+        ['millisecond',1, function(d) { }],
+        ['second',1000, function(d) { d.setMilliseconds(0);}],
+        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
+        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
+        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
+        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
+        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
         ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 10)) 
-        },'javascript'],
+        }],
         ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 100)) 
-        },'javascript'],
+        }],
         ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 1000)) 
-        },'javascript'],
-        // cosmological scales
-        ['age',AGE, new Floorer(AGE),'cosmological'],    // 1M years
-        ['epoch',EPOCH, new Floorer(EPOCH),'cosmological'], // 10M years
-        ['era',ERA, new Floorer(ERA),'cosmological'],  // 100M years
-        ['eon',EON, new Floorer(EON),'cosmological'],  //500M years
-        ['eon2', EON2, new Floorer(EON2),'cosmological'] // 1B years
-        
-    ]
-
-    cls.SCALES = SCALES;
-    
+        }]     
+    ];
+            
     // Date parts from highest to lowest precision    
     cls.DATE_PARTS = ["millisecond", "second", "minute", "hour", "day", "month", "year"];
     
@@ -319,12 +290,10 @@ VCO.BigDate = VCO.Date.extend({
     initialize: function(data, format, format_short) {
         if (VCO.BigYear == data.constructor) {
             this.data = {
-                scale:      "cosmological",
                 date_obj:   data
             }
         } else {
             this.data = data;
-            this.data.scale = "cosmological";           
             this._createDateObj();
         }
         
@@ -338,17 +307,41 @@ VCO.BigDate = VCO.Date.extend({
     },
     
     // Return a new VCO.BigDate which has been 'floored' at the given scale.
-    // @scale = string value from VCO.Date.SCALES    
+    // @scale = string value from VCO.BigDate.SCALES    
     floor: function(scale) {
-        for (var i = 0; i < VCO.Date.SCALES.length; i++) {
-            if (VCO.Date.SCALES[i][3] == this.getScale()) {
-                if (VCO.Date.SCALES[i][0] == scale) {
-                    var floored = VCO.Date.SCALES[i][2](this.data.date_obj);
-                    return new VCO.BigDate(floored);
-                }
+        for (var i = 0; i < VCO.BigDate.SCALES.length; i++) {
+            if (VCO.BigDate.SCALES[i][0] == scale) {
+                var floored = VCO.BigDate.SCALES[i][2](this.data.date_obj);
+                return new VCO.BigDate(floored);
             }
         };
 
         throw('invalid scale ' + scale);
     } 
 });
+
+(function(cls){
+    // cosmo units are years, not millis
+    var AGE = 1000000;
+    var EPOCH = AGE * 10;
+    var ERA = EPOCH * 10;
+    var EON = ERA * 5;
+    var EON2 = EON * 2;
+
+    var Floorer = function(unit) {
+        return function(a_big_year) {
+            var year = a_big_year.getTime();
+            return new VCO.BigYear(Math.floor(year/unit) * unit);
+        }
+    }
+
+    // cosmological scales
+    cls.SCALES = [ // ( name, units_per_tick, flooring function )
+        ['age',AGE, new Floorer(AGE)],          // 1M years
+        ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
+        ['era',ERA, new Floorer(ERA)],          // 100M years
+        ['eon',EON, new Floorer(EON)],          //500M years
+        ['eon2', EON2, new Floorer(EON2)]       // 1B years        
+    ];
+
+})(VCO.BigDate)

@@ -49,41 +49,54 @@ VCO.AxisHelper = VCO.Class.extend({
 
 (function(cls){ // add some class-level behavior
 
-    HELPERS = [];
-    for (var idx = 0; idx < VCO.Date.SCALES.length - 1; idx++) {
-        var minor = VCO.Date.SCALES[idx];
-        var major = VCO.Date.SCALES[idx+1];
-        if (minor[3] == major[3]) { // don't mix javascript and cosmological
-            HELPERS.push(new cls({
+    var HELPERS = {};
+    
+    var setHelpers = function(scale_type, scales) {
+        HELPERS[scale_type] = [];
+        
+        for (var idx = 0; idx < scales.length - 1; idx++) {
+            var minor = scales[idx];
+            var major = scales[idx+1];
+            HELPERS[scale_type].push(new cls({
                 scale: minor[3],
                 minor: { name: minor[0], factor: minor[1]},
                 major: { name: major[0], factor: major[1]}
             }));
         }
-    }
+    };
+    
+    setHelpers('javascript', VCO.Date.SCALES);
+    setHelpers('cosmological', VCO.BigDate.SCALES);
+    
     cls.HELPERS = HELPERS;
+    
     cls.getBestHelper = function(ts,optimal_tick_width) {
         if (typeof(optimal_tick_width) != 'number' ) {
             optimal_tick_width = 100;
         }
-        var prev = null;
-        for (var idx in HELPERS) {
-            var curr = HELPERS[idx];
-            if (curr.scale == ts.getScale()){
-                var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
-                if (pixels_per_tick > optimal_tick_width)  {
-                    if (prev == null) return curr;
-                    var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                    var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                    if (curr_dist < prev_dist) {
-                        return curr;
-                    } else {
-                        return prev;
-                    }
-                }
-                prev = curr;
-            }
+        var ts_scale = ts.getScale();
+        var helpers = HELPERS[ts_scale];
+        
+        if (!helpers) {
+            throw ("No AxisHelper available for "+ts_scale);
         }
-        return HELPERS[HELPERS.length - 1]; // last resort           
+        
+        var prev = null;
+        for (var idx in helpers) {
+            var curr = helpers[idx];
+            var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
+            if (pixels_per_tick > optimal_tick_width)  {
+                if (prev == null) return curr;
+                var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                if (curr_dist < prev_dist) {
+                    return curr;
+                } else {
+                    return prev;
+                }
+            }
+            prev = curr;
+        }
+        return helpers[helpers.length - 1]; // last resort           
     }
 })(VCO.AxisHelper);
