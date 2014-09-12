@@ -93,10 +93,10 @@ VCO.TimelineConfig = VCO.Class.extend({
         
         if(this.scale == 'javascript') {
             dateCls = VCO.Date;
-            console.log('USING VCO.DATE');
+            trace('using VCO.Date');
         } else if(this.scale == 'cosmological') {
             dateCls = VCO.BigDate;
-            console.log('USING VCO.BIGDATE');
+            trace('using VCO.BigDate');
         } else {
             throw ("Don't know how to process dates on scale "+this.scale);
         }
