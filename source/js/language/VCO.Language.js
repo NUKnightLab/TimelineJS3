@@ -211,18 +211,23 @@ VCO.Language.languages = {
 		},
 		bigdateformats: {
 			fallback: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+				[1000000000,"%.2f billion years ago"],
+				[1000000,"%.1f million years ago"],
+				[1000,"%.1f thousand years ago"],
+				[1, "%f years ago"]
+			],
+		    compact: [ 
 				[1000000000,"%.2f bya"],
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
 				[1, "%f years ago"]
 			],
-			// year_short: use fallback
-		    year: [ 
+		    verbose: [ 
 				[1000000000,"%.2f billion years ago"],
 				[1000000,"%.1f million years ago"],
 				[1000,"%.1f thousand years ago"],
 				[1, "%f years ago"]
-			]
+			]		
 		}
 	}
 }

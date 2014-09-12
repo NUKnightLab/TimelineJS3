@@ -6,22 +6,12 @@
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier, max_rows) {
+    initialize: function (scale, slides, display_width, screen_multiplier, max_rows) {
+        this._scale = scale || 'javascript';    // default
+        
+        this._display_width = display_width || 500; //arbitrary default
         this._screen_multiplier = screen_multiplier || 3;
-        display_width = display_width || 500; //arbitrary default
-        this._display_width = display_width; 
         this._pixel_width = this._screen_multiplier * this._display_width;
-
-        var scales = {}
-        for (var i in slides) {
-            scales[slides[i].start_date.getScale()] = true;
-        }
-
-        if (Object.keys(scales).length > 1) {
-            throw "Can't mix cosmological dates with javascript dates."
-        } else {
-            this._scale = Object.keys(scales)[0];
-        }
 
         this._positions = [];
         this._pixels_per_milli = 0;
@@ -74,6 +64,16 @@ VCO.TimeScale = VCO.Class.extend({
             minor: this._axis_helper.getMinorTicks(this) }
     },
 
+    getDateFromTime: function(t) {
+        if(this._scale == 'javascript') {
+            return new VCO.Date(t);
+        } else if(this._scale == 'cosmological') {
+            return new VCO.BigDate(new VCO.BigYear(t));
+        }  
+        
+        throw("Don't know how to get date from time for "+this._scale);
+    },
+    
     getMajorScale: function() {
         return this._axis_helper.major.name;
     },

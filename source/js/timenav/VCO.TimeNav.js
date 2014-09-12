@@ -228,7 +228,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -525,9 +525,10 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
-			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() && this.timescale.getMinorScale() == temp_timescale.getMinorScale() ) {
+			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
+			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
 				do_update = true;
 			}
 		} else {

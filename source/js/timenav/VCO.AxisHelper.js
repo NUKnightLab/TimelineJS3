@@ -34,13 +34,7 @@ VCO.AxisHelper = VCO.Class.extend({
         var last_tick_time = timescale._latest + factor_scale;
         var ticks = []
         for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
-            if (timescale.getScale() == 'javascript') {
-                ticks.push(new VCO.Date(i).floor(option.name));
-            } else if (timescale.getScale() == 'cosmological') {
-                ticks.push(new VCO.Date(new VCO.BigYear(i)).floor(option.name));
-            } else {
-                throw "Don't know how to make ticks for " + timescale.getScale();
-            }
+            ticks.push(timescale.getDateFromTime(i));
         }
         window.ticks = ticks;
         window.axis_helper = this;

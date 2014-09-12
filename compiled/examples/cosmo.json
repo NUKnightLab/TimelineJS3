@@ -1,9 +1,9 @@
 {
     "timeline": {
+        "scale": "cosmological",
         "slides": [
             {
                 "start_date": {
-                    "scale":        "cosmological",
 					"year":			"-13798000000",
 					"month":		"",
 					"day": 			"",
@@ -11,7 +11,7 @@
 					"minute": 		"",
 					"second": 		"",
 					"millisecond": 	"",
-					"format": 		"13.798 bya"
+					"format": 		""
 				},
                 "media": {
                     "caption": "Illustration of evolution of the universe from the Big Bang",
@@ -25,7 +25,6 @@
             },
             {
                 "start_date": {
-                    "scale":        "cosmological",
 					"year":			"-13797930000",
 					"month":		"",
 					"day": 			"",
@@ -43,7 +42,6 @@
             },
             {
                 "start_date": {
-                    "scale":        "cosmological",
 					"year":			"-13797623000",
 					"month":		"",
 					"day": 			"",
@@ -65,7 +63,6 @@
             },
             {
                 "start_date": {
-                    "scale":        "cosmological",
                     "year":         "-13648000000",
                     "month":        "",
                     "day":          "",
@@ -76,7 +73,6 @@
                     "format":       ""
                 },
                 "end_date": {
-                    "scale":        "cosmological",
                     "year":         "-12798000000",
                     "month":        "",
                     "day":          "",
@@ -97,7 +93,6 @@
             },
             {
                 "start_date": {
-                    "scale":        "cosmological",
 					"year":			"-4798000000",
 					"month":		"",
 					"day": 			"",
@@ -115,7 +110,6 @@
             },
             {
                 "start_date": {
-                    "scale":        "cosmological",
 					"year":			"0",
 					"month":		"",
 					"day": 			"",
@@ -123,7 +117,8 @@
 					"minute": 		"",
 					"second": 		"",
 					"millisecond": 	"",
-					"format": 		""
+					"format": 		"",
+					"display_text": "Now"
 				},
                 "text": {
                     "headline": "“Today”",
