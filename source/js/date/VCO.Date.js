@@ -127,8 +127,6 @@ VCO.Date = VCO.Class.extend({
 
 	_createDateObj: function() {
 	    var _date = this._getDateData();          
-	    
-	    this.data.scale = 'javascript';
         this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
 	},
 
