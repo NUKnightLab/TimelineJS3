@@ -150,7 +150,7 @@ VCO.BigYear = VCO.Class.extend({
         this.year = parseInt(year);
         if (isNaN(this.year)) { throw("Invalid year " + year) }
     },
-    
+/* THERE ARE UNUSED ...    
     getDisplayText: function(vco_language) { 
         return this.year.toLocaleString(vco_language.lang);
     },
@@ -158,7 +158,7 @@ VCO.BigYear = VCO.Class.extend({
     getDisplayTextShort: function(vco_language) {
         return this.year.toLocaleString(vco_language.lang);
     },
-
+*/
     isBefore: function(that) {
         return this.year < that.year;
     },
