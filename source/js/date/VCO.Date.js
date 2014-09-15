@@ -323,8 +323,7 @@ VCO.BigDate = VCO.Date.extend({
     var AGE = 1000000;
     var EPOCH = AGE * 10;
     var ERA = EPOCH * 10;
-    var EON = ERA * 5;
-    var EON2 = EON * 2;
+    var EON = ERA * 10;
 
     var Floorer = function(unit) {
         return function(a_big_year) {
@@ -338,8 +337,7 @@ VCO.BigDate = VCO.Date.extend({
         ['age',AGE, new Floorer(AGE)],          // 1M years
         ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
         ['era',ERA, new Floorer(ERA)],          // 100M years
-        ['eon',EON, new Floorer(EON)],          //500M years
-        ['eon2', EON2, new Floorer(EON2)]       // 1B years        
+        ['eon',EON, new Floorer(EON)]           // 1B years     
     ];
 
 })(VCO.BigDate)
