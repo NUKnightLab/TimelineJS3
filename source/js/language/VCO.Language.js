@@ -85,13 +85,8 @@ VCO.Language.prototype.formatDate = function(date, format_name) {
 }
 
 VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
-
 	var the_year = bigyear.year;
 	var format_list = this.bigdateformats[format_name] || this.bigdateformats['fallback'];
-
-	if (!format_list) {
-		return VCO.Language.formatNumber(the_year,format_name);
-	}
 
 	if (format_list) {
 		for (var i = 0; i < format_list.length; i++) {
@@ -104,14 +99,10 @@ VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
 
 		return the_year.toString();
 
-	} else {
-		trace("Language file dateformats missing cosmological. Falling back.");
+	} else {	
+	    trace("Language file dateformats missing cosmological. Falling back.");
+	    return VCO.Language.formatNumber(the_year,format_name);
 	}
-	trace("TODO: format bigyears")
-	if (format_name == 'short') {
-		return bigyear.getDisplayTextShort(this);
-	}
-	return bigyear.getDisplayText(this);
 }
 
 VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
@@ -211,11 +202,23 @@ VCO.Language.languages = {
 		},
 		bigdateformats: {
 			fallback: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+				[1000000000,"%.2f billion years ago"],
+				[1000000,"%.1f million years ago"],
+				[1000,"%.1f thousand years ago"],
+				[1, "%f years ago"]
+			],
+		    compact: [ 
 				[1000000000,"%.2f bya"],
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
 				[1, "%f years ago"]
-			]
+			],
+		    verbose: [ 
+				[1000000000,"%.2f billion years ago"],
+				[1000000,"%.1f million years ago"],
+				[1000,"%.1f thousand years ago"],
+				[1, "%f years ago"]
+			]		
 		}
 	}
 }

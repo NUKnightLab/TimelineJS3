@@ -3,7 +3,7 @@
     to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
+    VALID_PROPERTIES: ['scale', 'slides'], // we'll only pull things in from this
 
     initialize: function (data, callback) {
     // Initialize the data
@@ -89,13 +89,26 @@ VCO.TimelineConfig = VCO.Class.extend({
     },
 
     _processDates: function(array) {
+        var dateCls = null;
+        
+        if(this.scale == 'javascript') {
+            dateCls = VCO.Date;
+            trace('using VCO.Date');
+        } else if(this.scale == 'cosmological') {
+            dateCls = VCO.BigDate;
+            trace('using VCO.BigDate');
+        } else {
+            throw ("Don't know how to process dates on scale "+this.scale);
+        }
+            
         for (var i = 0; i < array.length; i++) {
             if (typeof(array[i].start_date) == 'undefined') {
                 throw("item " + i + " is missing a start_date");
             }
-            array[i].start_date = new VCO.Date(array[i].start_date);
+            
+            array[i].start_date = new dateCls(array[i].start_date);
             if (typeof(array[i].end_date) != 'undefined') {
-                array[i].end_date = new VCO.Date(array[i].end_date);
+                array[i].end_date = new dateCls(array[i].end_date);
             }
         }
     }

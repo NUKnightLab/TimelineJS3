@@ -22,7 +22,7 @@ VCO.DateUtil = {
 	 * support constructing them based on JS Date and time
 	================================================== */
 	findBestFormat: function(data, variant) {
-		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
+		var eval_array = VCO.Date.DATE_PARTS,
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
@@ -52,10 +52,11 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'default',
-			epoch: 'default',
-			era: 'default',
-			eon: 'default',
+			age: 'fallback',
+			epoch: 'fallback',
+			era: 'fallback',
+			eon: 'fallback',
+			eon2: 'fallback'
 		},
 		
 		short: {
@@ -69,10 +70,11 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'default',
-			epoch: 'default',
-			era: 'default',
-			eon: 'default',
+			age: 'fallback',
+			epoch: 'fallback',
+			era: 'fallback',
+			eon: 'fallback',
+			eon2: 'fallback'
 		}
 	}
 	

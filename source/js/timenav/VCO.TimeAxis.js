@@ -54,9 +54,9 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Minor tick dom element array
 		this.major_ticks = [];
 		
-		// Date Format Lookup
+		// Date Format Lookup, map VCO.Date.SCALES names to...
 		this.dateformat_lookup = {
-	        millisecond: 1,
+	        millisecond: 1,     // ...VCO.Language.<code>.dateformats
 	        second: 'time_short',
 	        minute: 'time_no_seconds_short',
 	        hour: 'time_no_minutes_short',
@@ -65,12 +65,12 @@ VCO.TimeAxis = VCO.Class.extend({
 	        year: 'year',
 	        decade: 'year',
 	        century: 'year',
-	        millennium: 'year',
-	        age: 'year',
-	        epoch: 'year',
-	        era: 'year',
-	        eon: 'year',
-	        eon2: 'year'
+	        millennium: 'year', 
+	        age: 'compact',  // ...VCO.Language.<code>.bigdateformats
+	        epoch: 'compact',
+	        era: 'compact',
+	        eon: 'compact',
+	        eon2: 'compact'
 	    }
 		
 		// Main element
@@ -177,15 +177,13 @@ VCO.TimeAxis = VCO.Class.extend({
 			if (!(ts_tick.getTime() in skip_times)) {
 				var tick = VCO.Dom.create("div", "vco-timeaxis-tick", tick_element),
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text vco-animate-opacity", tick);
-					
-				ts_tick.setDateFormat(dateformat);
 				
-				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage());
+				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage(), dateformat);
 				
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
-					display_text:ts_tick.getDisplayDate(this.getLanguage()),
+					display_text:ts_tick.getDisplayDate(this.getLanguage(), dateformat),
 					date:ts_tick
 				});
 			}
