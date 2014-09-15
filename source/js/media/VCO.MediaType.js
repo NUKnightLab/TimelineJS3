@@ -126,10 +126,10 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Website
 			},
 			{
-				type: 		"",
-				name: 		"",
+				type: 		"image",
+				name: 		"Image",
 				match_str: 	"",
-				cls: 		VCO.Media
+				cls: 		VCO.Media.Image
 			}
 		];
 	

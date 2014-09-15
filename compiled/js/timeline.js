@@ -5851,10 +5851,10 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Website
 			},
 			{
-				type: 		"",
-				name: 		"",
+				type: 		"image",
+				name: 		"Image",
 				match_str: 	"",
-				cls: 		VCO.Media
+				cls: 		VCO.Media.Image
 			}
 		];
 	
@@ -6090,7 +6090,6 @@ VCO.Media = VCO.Class.extend({
 	},
 	
 	onMediaLoaded: function(e) {
-		trace("onMediaLoaded");
 		this._state.media_loaded = true;
 		this.fire("media_loaded", this.data);
 		if (this._el.credit) {
@@ -7033,16 +7032,31 @@ VCO.Media.Website = VCO.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
+		// Loading Message
+		this.loadingMessage();
 		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-blockquote", this._el.content);
+		this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
 		
-	},
-	
-	createMedia: function(d) {		
-
+		// Get Media ID
+		this.media_id = this.data.url;
+		
+		// API Call
+		this._el.content_item.innerHTML = "<a target='_blank' href='" + this.media_id + "'> " + this.media_id + "</a>";
 		
 		// After Loaded
 		this.onLoaded();
-			
+		
+	},
+	
+	
+	updateMediaDisplay: function() {
+		
+	},
+	
+	_updateMediaDisplay: function() {
+		
 	}
 	
 	
@@ -7711,7 +7725,7 @@ VCO.Slide = VCO.Class.extend({
 		
 		if (this._media) {
 			if (!this.has.text && this.has.headline) {
-				this._media.updateDisplay(content_width/2, (this.options.height - this._text.headlineHeight()), layout);
+				this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
 			} else if (!this.has.text && !this.has.headline) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
@@ -9947,7 +9961,7 @@ VCO.Timeline = VCO.Class.extend({
 			scale_factor: 				3, 				// How many screen widths wide should the timeline be
 			layout: 					"landscape", 	// portrait or landscape
 			timenav_position: 			"bottom", 		// timeline on top or bottom
-			optimal_tick_width: 		50,				// optimal distance (in pixels) between ticks on axis
+			optimal_tick_width: 		60,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
 			timenav_height: 			150,
 			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen

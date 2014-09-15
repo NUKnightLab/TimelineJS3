@@ -213,7 +213,6 @@ VCO.Media = VCO.Class.extend({
 	},
 	
 	onMediaLoaded: function(e) {
-		trace("onMediaLoaded");
 		this._state.media_loaded = true;
 		this.fire("media_loaded", this.data);
 		if (this._el.credit) {
