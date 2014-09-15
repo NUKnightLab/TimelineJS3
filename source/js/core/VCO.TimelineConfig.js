@@ -87,9 +87,28 @@ VCO.TimelineConfig = VCO.Class.extend({
             }
         }
     },
-
+    
     _processDates: function(array) {
         var dateCls = null;
+        
+        if(!this.scale) {
+            trace("Determining scale dynamically");
+            
+            this.scale = "javascript"; // default
+            
+            for (var i = 0; i < array.length; i++) {
+                if (typeof(array[i].start_date) == 'undefined') {
+                    throw("item " + i + " is missing a start_date");
+                }
+                
+                var d = new VCO.BigDate(array[i].start_date);
+                var year = d.data.date_obj.year;               
+                if(year < -271820 || year >  275759) {
+                    this.scale = "cosmological";
+                    break;
+                }
+            }
+        }
         
         if(this.scale == 'javascript') {
             dateCls = VCO.Date;
