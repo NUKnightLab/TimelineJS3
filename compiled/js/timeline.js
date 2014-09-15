@@ -2652,7 +2652,7 @@ VCO.LoadIt = (function (doc) {
     to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['slides'], // we'll only pull things in from this
+    VALID_PROPERTIES: ['scale', 'slides'], // we'll only pull things in from this
 
     initialize: function (data, callback) {
     // Initialize the data
@@ -2738,13 +2738,26 @@ VCO.TimelineConfig = VCO.Class.extend({
     },
 
     _processDates: function(array) {
+        var dateCls = null;
+        
+        if(this.scale == 'javascript') {
+            dateCls = VCO.Date;
+            trace('using VCO.Date');
+        } else if(this.scale == 'cosmological') {
+            dateCls = VCO.BigDate;
+            trace('using VCO.BigDate');
+        } else {
+            throw ("Don't know how to process dates on scale "+this.scale);
+        }
+            
         for (var i = 0; i < array.length; i++) {
             if (typeof(array[i].start_date) == 'undefined') {
                 throw("item " + i + " is missing a start_date");
             }
-            array[i].start_date = new VCO.Date(array[i].start_date);
+            
+            array[i].start_date = new dateCls(array[i].start_date);
             if (typeof(array[i].end_date) != 'undefined') {
-                array[i].end_date = new VCO.Date(array[i].end_date);
+                array[i].end_date = new dateCls(array[i].end_date);
             }
         }
     }
@@ -2813,7 +2826,7 @@ VCO.TimelineConfig = VCO.Class.extend({
             for (var i = 0; i < data.feed.entry.length; i++) {
                 slides.push(extractGoogleEntryData(data.feed.entry[i]));
             };
-            return {timeline: {slides: slides}}
+            return {scale: 'javascript', timeline: {slides: slides}}
         }   
     }
 })(VCO)
@@ -2904,13 +2917,8 @@ VCO.Language.prototype.formatDate = function(date, format_name) {
 }
 
 VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
-
 	var the_year = bigyear.year;
 	var format_list = this.bigdateformats[format_name] || this.bigdateformats['fallback'];
-
-	if (!format_list) {
-		return VCO.Language.formatNumber(the_year,format_name);
-	}
 
 	if (format_list) {
 		for (var i = 0; i < format_list.length; i++) {
@@ -2923,14 +2931,10 @@ VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
 
 		return the_year.toString();
 
-	} else {
-		trace("Language file dateformats missing cosmological. Falling back.");
+	} else {	
+	    trace("Language file dateformats missing cosmological. Falling back.");
+	    return VCO.Language.formatNumber(the_year,format_name);
 	}
-	trace("TODO: format bigyears")
-	if (format_name == 'short') {
-		return bigyear.getDisplayTextShort(this);
-	}
-	return bigyear.getDisplayText(this);
 }
 
 VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
@@ -3030,11 +3034,23 @@ VCO.Language.languages = {
 		},
 		bigdateformats: {
 			fallback: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+				[1000000000,"%.2f billion years ago"],
+				[1000000,"%.1f million years ago"],
+				[1000,"%.1f thousand years ago"],
+				[1, "%f years ago"]
+			],
+		    compact: [ 
 				[1000000000,"%.2f bya"],
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
 				[1, "%f years ago"]
-			]
+			],
+		    verbose: [ 
+				[1000000000,"%.2f billion years ago"],
+				[1000000,"%.1f million years ago"],
+				[1000,"%.1f thousand years ago"],
+				[1, "%f years ago"]
+			]		
 		}
 	}
 }
@@ -4322,67 +4338,41 @@ VCO.StyleSheet = VCO.Class.extend({
 	Date object
 	MONTHS are 1-BASED, not 0-BASED (different from Javascript date objects)
 ================================================== */
-VCO.Date = VCO.Class.extend({
-    /*Initialize with a time value (in milliseconds), a JavaScript Date object,
-     * or a JS dictionary with properties for year, month, day, etc. */	
-	initialize: function (data, format, format_short) {
-		if (typeof(data) == 'number' || Date == data.constructor) {
-			var date = null;
-			if (Date == data.constructor) {
-				date = data;
-			} else {
-				date = new Date(data);
-			}
-			this.data = {
-                scale:          "javascript",
-				format: 		"yyyy mmmm",
-				date_obj: 		date
-			}
-		} else if (VCO.BigYear == data.constructor) {
-            this.data = {
-                scale:          "cosmological",
-                date_obj:       data
-            }
-		} else {
-			this.data = data;
 
-			// Create Date Object
-			this._createDateObj();
-		}
-		
-		if (format) {
-			this.data.format = format;
-		} else if (!this.data.format) {
-			this.data.format = VCO.DateUtil.findBestFormat(this.data);
-		}
-		
-		if (format_short) {
-			this.data.format_short = format_short;
-		} else if (!this.data.format_short) {
-			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
-		}
-		
+//
+// Class for javascript dates
+//
+
+VCO.Date = VCO.Class.extend({
+     
+    // @data = ms, JS Date object, or JS dictionary with date properties
+	initialize: function (data, format, format_short) {
+	    if (typeof(data) == 'number') {
+			this.data = {
+				format:     "yyyy mmmm",
+				date_obj:   new Date(data)
+			};	        
+	    } else if(Date == data.constructor) {
+			this.data = {
+				format:     "yyyy mmmm",
+				date_obj:   data
+			};	        
+	    } else {
+	        this.data = data;
+            this._createDateObj();            
+	    }
+	    
+		this._setFormat(format, format_short);			
     },
 
-    getScale: function() {
-        return this.data.scale;
-	},
-	
-	/*	Private Methods
-	================================================== */
-	
-	/*	Create Display Type
-	================================================== */
 	setDateFormat: function(format) {
-		// Set display type format
 		this.data.format = format;
 	},
 	
-	getDisplayDate: function(language,use_short) {
+	getDisplayDate: function(language, format) {
 	    if (this.data.display_text) {
 	        return this.data.display_text;
-	    }
-	    
+	    }	    
         if (!language) {
             language = VCO.Language.fallback;
         }
@@ -4391,24 +4381,8 @@ VCO.Date = VCO.Class.extend({
             language = VCO.Language.fallback;
         }
 
-        var message_key = this.data.format;
-        if (use_short) {
-            message_key = this.data.format_short;
-        }
-        return language.formatDate(this.data.date_obj,message_key);
-
-  //       if (Date == this.data.date_obj.constructor) {
-  //           var message_key = this.data.format;
-		//     if (use_short) {
-  //               message_key = this.data.format_short;
-  //           }
-  //           return language.formatDate(this.data.date_obj,message_key);
-		// } else {
-  //           if (use_short) {
-  //               return this.data.date_obj.getDisplayTextShort(language);
-		// }
-  //           return this.data.date_obj.getDisplayText(language);
-  //       }
+        format_key = format || this.data.format;
+        return language.formatDate(this.data.date_obj, format_key);
 	},
 	
 	getMillisecond: function() {
@@ -4421,7 +4395,7 @@ VCO.Date = VCO.Class.extend({
 	
 	isBefore: function(other_date) { 
         if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
-                throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+            throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
         }
         if ('isBefore' in this.data.date_obj) {
             return this.data.date_obj['isBefore'](other_date.data.date_obj);
@@ -4431,7 +4405,7 @@ VCO.Date = VCO.Class.extend({
 
 	isAfter: function(other_date) {
         if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
-                throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+            throw("Can't compare VCO.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
         }
         if ('isAfter' in this.data.date_obj) {
             return this.data.date_obj['isAfter'](other_date.data.date_obj);
@@ -4439,56 +4413,40 @@ VCO.Date = VCO.Class.extend({
         return this.data.date_obj > other_date.data.date_obj
 	},
 
-    floor: function(scale) { // more likely problems with cosmological time
-    	/* Return a NEW VCO.Date which has been 'floored' at the given scale.
-		   'scale' should be a string value from VCO.Date.SCALES
-		   This will need to be smarter to work with cosmological dates.
-    	*/
-        if (this.getScale() == 'javascript') {
-            var d = new Date(this.data.date_obj);
-            for (var i = 0; i < VCO.Date.SCALES.length; i++) {
-                if (VCO.Date.SCALES[i][3] == this.getScale()) {
-                    // for JS dates, we iteratively apply flooring functions
-                    VCO.Date.SCALES[i][2](d);
-                    if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
-                }
-            };
-        }
-        // it would be nice if there wasn't special casing here...
-        if (this.getScale() == 'cosmological') {
-            for (var i = 0; i < VCO.Date.SCALES.length; i++) {
-                if (VCO.Date.SCALES[i][3] == this.getScale()) {
-                    if (VCO.Date.SCALES[i][0] == scale) {
-                        var floored = VCO.Date.SCALES[i][2](this.data.date_obj);
-                        return new VCO.Date(floored);
-                    }
-                }
-            };
-        }
+    // Return a new VCO.Date which has been 'floored' at the given scale.
+    // @scale = string value from VCO.Date.SCALES    
+    floor: function(scale) { 
+        var d = new Date(this.data.date_obj);
+        for (var i = 0; i < VCO.Date.SCALES.length; i++) {
+             // for JS dates, we iteratively apply flooring functions
+            VCO.Date.SCALES[i][2](d);
+            if (VCO.Date.SCALES[i][0] == scale) return new VCO.Date(d);
+        };
 
         throw('invalid scale ' + scale);
     },
 
-
-	/*	Create JavaScript date object
+	/*	Private Methods
 	================================================== */
-	_createDateObj: function() {
-		var _date = {
-			year: 			0,
-			month: 			1, // stupid JS dates
-			day: 			1,
-			hour: 			0,
-			minute: 		0,
-			second: 		0,
-			millisecond: 	0
+
+    _getDateData: function() {
+        var _date = {
+            year: 			0,
+            month: 			1, // stupid JS dates
+            day: 			1,
+            hour: 			0,
+            minute: 		0,
+            second: 		0,
+            millisecond: 	0
 		};
-		
-		// Merge dates
+   
+		// Merge data
 		VCO.Util.mergeData(_date, this.data);
-		DATE_PARTS = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'];
-		
-		// Make strings into numbers
-		for (var ix in DATE_PARTS) {	
+ 
+ 		// Make strings into numbers
+		DATE_PARTS = VCO.Date.DATE_PARTS;
+ 
+ 		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
 			if (isNaN(parsed)) {
                 parsed = (ix == 1 || ix == 2) ? 1 : 0; // month and day have diff baselines
@@ -4499,21 +4457,28 @@ VCO.Date = VCO.Class.extend({
 		if (_date.month > 0 && _date.month <= 12) { // adjust for JS's weirdness
 			_date.month = _date.month - 1;
 		}
+		
+		return _date;
+    },
 
-        if (this.data.scale == 'cosmological' 
-            || _date.year < -271820 
-            || _date.year >  275759) {
-    		// Create Javascript date object
-            this.data.scale = 'cosmological';
-            this.data.date_obj = new VCO.BigYear(_date.year);
-        } else {
-            window._date = _date;
-            this.data.scale = 'javascript';
-            this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
-        }
+	_createDateObj: function() {
+	    var _date = this._getDateData();          
+        this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+	},
 
-	}
-	
+    _setFormat: function(format, format_short) {
+		if (format) {
+			this.data.format = format;
+		} else if (!this.data.format) {
+			this.data.format = VCO.DateUtil.findBestFormat(this.data);
+		}
+		
+		if (format_short) {
+			this.data.format_short = format_short;
+		} else if (!this.data.format_short) {
+			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
+		}
+    }
 });
 
 VCO.BigYear = VCO.Class.extend({
@@ -4521,7 +4486,7 @@ VCO.BigYear = VCO.Class.extend({
         this.year = parseInt(year);
         if (isNaN(this.year)) { throw("Invalid year " + year) }
     },
-    
+/* THERE ARE UNUSED ...    
     getDisplayText: function(vco_language) { 
         return this.year.toLocaleString(vco_language.lang);
     },
@@ -4529,7 +4494,7 @@ VCO.BigYear = VCO.Class.extend({
     getDisplayTextShort: function(vco_language) {
         return this.year.toLocaleString(vco_language.lang);
     },
-
+*/
     isBefore: function(that) {
         return this.year < that.year;
     },
@@ -4541,54 +4506,36 @@ VCO.BigYear = VCO.Class.extend({
     getTime: function() {
         return this.year;
     }
-
 });
 
 (function(cls){
-    // cosmo units are years, not millis
-    var AGE = 1000000;
-    var EPOCH = AGE * 10;
-    var ERA = EPOCH * 10;
-    var EON = ERA * 5;
-    var EON2 = EON * 2;
-
-    var Floorer = function(unit) {
-        return function(a_big_year) {
-            var year = a_big_year.getTime();
-            return new VCO.BigYear(Math.floor(year/unit) * unit);
-        }
-    }
-    SCALES = [ // ( name, units_per_tick, flooring function, scale_class )
-        ['millisecond',1, function(d) { },'javascript'],
-        ['second',1000, function(d) { d.setMilliseconds(0);},'javascript'],
-        ['minute',1000 * 60, function(d) { d.setSeconds(0);},'javascript'],
-        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);},'javascript'],
-        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);},'javascript'],
-        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);},'javascript'],
-        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);},'javascript'],
+    
+    // javascript scales
+    cls.SCALES = [ // ( name, units_per_tick, flooring function )
+        ['millisecond',1, function(d) { }],
+        ['second',1000, function(d) { d.setMilliseconds(0);}],
+        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
+        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
+        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
+        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
+        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
         ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 10)) 
-        },'javascript'],
+        }],
         ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 100)) 
-        },'javascript'],
+        }],
         ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) { 
             var real_year = d.getFullYear();
             d.setFullYear( real_year - (real_year % 1000)) 
-        },'javascript'],
-        // cosmological scales
-        ['age',AGE, new Floorer(AGE),'cosmological'],    // 1M years
-        ['epoch',EPOCH, new Floorer(EPOCH),'cosmological'], // 10M years
-        ['era',ERA, new Floorer(ERA),'cosmological'],  // 100M years
-        ['eon',EON, new Floorer(EON),'cosmological'],  //500M years
-        ['eon2', EON2, new Floorer(EON2),'cosmological'] // 1B years
-        
-    ]
-
-    cls.SCALES = SCALES;
-
+        }]     
+    ];
+            
+    // Date parts from highest to lowest precision    
+    cls.DATE_PARTS = ["millisecond", "second", "minute", "hour", "day", "month", "year"];
+    
     var ISO8601_SHORT_PATTERN = /^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/;
     // regex below from
     // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
@@ -4665,7 +4612,72 @@ VCO.BigYear = VCO.Class.extend({
         return parsed;
     }
 
-})(VCO.Date)/*	VCO.DateUtil
+})(VCO.Date)
+
+
+//
+// Class for cosmological dates
+//
+VCO.BigDate = VCO.Date.extend({
+    
+    // @data = VCO.BigYear object or JS dictionary with date properties
+    initialize: function(data, format, format_short) {
+        if (VCO.BigYear == data.constructor) {
+            this.data = {
+                date_obj:   data
+            }
+        } else {
+            this.data = data;
+            this._createDateObj();
+        }
+        
+        this._setFormat(format, format_short);
+    },
+    
+    // Create date_obj
+    _createDateObj: function() {
+	    var _date = this._getDateData();          
+        this.data.date_obj = new VCO.BigYear(_date.year);        
+    },
+    
+    // Return a new VCO.BigDate which has been 'floored' at the given scale.
+    // @scale = string value from VCO.BigDate.SCALES    
+    floor: function(scale) {
+        for (var i = 0; i < VCO.BigDate.SCALES.length; i++) {
+            if (VCO.BigDate.SCALES[i][0] == scale) {
+                var floored = VCO.BigDate.SCALES[i][2](this.data.date_obj);
+                return new VCO.BigDate(floored);
+            }
+        };
+
+        throw('invalid scale ' + scale);
+    } 
+});
+
+(function(cls){
+    // cosmo units are years, not millis
+    var AGE = 1000000;
+    var EPOCH = AGE * 10;
+    var ERA = EPOCH * 10;
+    var EON = ERA * 10;
+
+    var Floorer = function(unit) {
+        return function(a_big_year) {
+            var year = a_big_year.getTime();
+            return new VCO.BigYear(Math.floor(year/unit) * unit);
+        }
+    }
+
+    // cosmological scales
+    cls.SCALES = [ // ( name, units_per_tick, flooring function )
+        ['age',AGE, new Floorer(AGE)],          // 1M years
+        ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
+        ['era',ERA, new Floorer(ERA)],          // 100M years
+        ['eon',EON, new Floorer(EON)]           // 1B years     
+    ];
+
+})(VCO.BigDate)
+/*	VCO.DateUtil
 	Utilities for parsing time
 ================================================== */
 
@@ -4689,7 +4701,7 @@ VCO.DateUtil = {
 	 * support constructing them based on JS Date and time
 	================================================== */
 	findBestFormat: function(data, variant) {
-		var eval_array = ["millisecond", "second", "minute", "hour", "day", "month", "year"],
+		var eval_array = VCO.Date.DATE_PARTS,
 			format = "";
 		
 		for (var i = 0; i < eval_array.length; i++) {
@@ -4719,10 +4731,11 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'default',
-			epoch: 'default',
-			era: 'default',
-			eon: 'default',
+			age: 'fallback',
+			epoch: 'fallback',
+			era: 'fallback',
+			eon: 'fallback',
+			eon2: 'fallback'
 		},
 		
 		short: {
@@ -4736,10 +4749,11 @@ VCO.DateUtil = {
 			decade: 'year',
 			century: 'year',
 			millennium: 'year',
-			age: 'default',
-			epoch: 'default',
-			era: 'default',
-			eon: 'default',
+			age: 'fallback',
+			epoch: 'fallback',
+			era: 'fallback',
+			eon: 'fallback',
+			eon2: 'fallback'
 		}
 	}
 	
@@ -8633,7 +8647,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -8930,9 +8944,10 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
-			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() && this.timescale.getMinorScale() == temp_timescale.getMinorScale() ) {
+			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
+			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
 				do_update = true;
 			}
 		} else {
@@ -9301,22 +9316,12 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (slides, display_width, screen_multiplier, max_rows) {
+    initialize: function (scale, slides, display_width, screen_multiplier, max_rows) {
+        this._scale = scale || 'javascript';    // default
+        
+        this._display_width = display_width || 500; //arbitrary default
         this._screen_multiplier = screen_multiplier || 3;
-        display_width = display_width || 500; //arbitrary default
-        this._display_width = display_width; 
         this._pixel_width = this._screen_multiplier * this._display_width;
-
-        var scales = {}
-        for (var i in slides) {
-            scales[slides[i].start_date.getScale()] = true;
-        }
-
-        if (Object.keys(scales).length > 1) {
-            throw "Can't mix cosmological dates with javascript dates."
-        } else {
-            this._scale = Object.keys(scales)[0];
-        }
 
         this._positions = [];
         this._pixels_per_milli = 0;
@@ -9369,6 +9374,16 @@ VCO.TimeScale = VCO.Class.extend({
             minor: this._axis_helper.getMinorTicks(this) }
     },
 
+    getDateFromTime: function(t) {
+        if(this._scale == 'javascript') {
+            return new VCO.Date(t);
+        } else if(this._scale == 'cosmological') {
+            return new VCO.BigDate(new VCO.BigYear(t));
+        }  
+        
+        throw("Don't know how to get date from time for "+this._scale);
+    },
+    
     getMajorScale: function() {
         return this._axis_helper.major.name;
     },
@@ -9486,9 +9501,9 @@ VCO.TimeAxis = VCO.Class.extend({
 		// Minor tick dom element array
 		this.major_ticks = [];
 		
-		// Date Format Lookup
+		// Date Format Lookup, map VCO.Date.SCALES names to...
 		this.dateformat_lookup = {
-	        millisecond: 1,
+	        millisecond: 1,     // ...VCO.Language.<code>.dateformats
 	        second: 'time_short',
 	        minute: 'time_no_seconds_short',
 	        hour: 'time_no_minutes_short',
@@ -9497,12 +9512,12 @@ VCO.TimeAxis = VCO.Class.extend({
 	        year: 'year',
 	        decade: 'year',
 	        century: 'year',
-	        millennium: 'year',
-	        age: 'year',
-	        epoch: 'year',
-	        era: 'year',
-	        eon: 'year',
-	        eon2: 'year'
+	        millennium: 'year', 
+	        age: 'compact',  // ...VCO.Language.<code>.bigdateformats
+	        epoch: 'compact',
+	        era: 'compact',
+	        eon: 'compact',
+	        eon2: 'compact'
 	    }
 		
 		// Main element
@@ -9609,15 +9624,13 @@ VCO.TimeAxis = VCO.Class.extend({
 			if (!(ts_tick.getTime() in skip_times)) {
 				var tick = VCO.Dom.create("div", "vco-timeaxis-tick", tick_element),
 					tick_text 	= VCO.Dom.create("span", "vco-timeaxis-tick-text vco-animate-opacity", tick);
-					
-				ts_tick.setDateFormat(dateformat);
 				
-				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage());
+				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage(), dateformat);
 				
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
-					display_text:ts_tick.getDisplayDate(this.getLanguage()),
+					display_text:ts_tick.getDisplayDate(this.getLanguage(), dateformat),
 					date:ts_tick
 				});
 			}
@@ -9748,13 +9761,7 @@ VCO.AxisHelper = VCO.Class.extend({
         var last_tick_time = timescale._latest + factor_scale;
         var ticks = []
         for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
-            if (timescale.getScale() == 'javascript') {
-                ticks.push(new VCO.Date(i).floor(option.name));
-            } else if (timescale.getScale() == 'cosmological') {
-                ticks.push(new VCO.Date(new VCO.BigYear(i)).floor(option.name));
-            } else {
-                throw "Don't know how to make ticks for " + timescale.getScale();
-            }
+            ticks.push(timescale.getDateFromTime(i).floor(option.name));
         }
         window.ticks = ticks;
         window.axis_helper = this;
@@ -9769,42 +9776,55 @@ VCO.AxisHelper = VCO.Class.extend({
 
 (function(cls){ // add some class-level behavior
 
-    HELPERS = [];
-    for (var idx = 0; idx < VCO.Date.SCALES.length - 1; idx++) {
-        var minor = VCO.Date.SCALES[idx];
-        var major = VCO.Date.SCALES[idx+1];
-        if (minor[3] == major[3]) { // don't mix javascript and cosmological
-            HELPERS.push(new cls({
+    var HELPERS = {};
+    
+    var setHelpers = function(scale_type, scales) {
+        HELPERS[scale_type] = [];
+        
+        for (var idx = 0; idx < scales.length - 1; idx++) {
+            var minor = scales[idx];
+            var major = scales[idx+1];
+            HELPERS[scale_type].push(new cls({
                 scale: minor[3],
                 minor: { name: minor[0], factor: minor[1]},
                 major: { name: major[0], factor: major[1]}
             }));
         }
-    }
+    };
+    
+    setHelpers('javascript', VCO.Date.SCALES);
+    setHelpers('cosmological', VCO.BigDate.SCALES);
+    
     cls.HELPERS = HELPERS;
+    
     cls.getBestHelper = function(ts,optimal_tick_width) {
         if (typeof(optimal_tick_width) != 'number' ) {
             optimal_tick_width = 100;
         }
-        var prev = null;
-        for (var idx in HELPERS) {
-            var curr = HELPERS[idx];
-            if (curr.scale == ts.getScale()){
-                var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
-                if (pixels_per_tick > optimal_tick_width)  {
-                    if (prev == null) return curr;
-                    var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                    var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                    if (curr_dist < prev_dist) {
-                        return curr;
-                    } else {
-                        return prev;
-                    }
-                }
-                prev = curr;
-            }
+        var ts_scale = ts.getScale();
+        var helpers = HELPERS[ts_scale];
+        
+        if (!helpers) {
+            throw ("No AxisHelper available for "+ts_scale);
         }
-        return HELPERS[HELPERS.length - 1]; // last resort           
+        
+        var prev = null;
+        for (var idx in helpers) {
+            var curr = helpers[idx];
+            var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
+            if (pixels_per_tick > optimal_tick_width)  {
+                if (prev == null) return curr;
+                var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
+                if (curr_dist < prev_dist) {
+                    return curr;
+                } else {
+                    return prev;
+                }
+            }
+            prev = curr;
+        }
+        return helpers[helpers.length - 1]; // last resort           
     }
 })(VCO.AxisHelper);
 /*	TimelineJS
@@ -9960,7 +9980,7 @@ VCO.Timeline = VCO.Class.extend({
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				3, 				// How many screen widths wide should the timeline be
 			layout: 					"landscape", 	// portrait or landscape
-			timenav_position: 			"bottom", 		// timeline on top or bottom
+			timenav_position: 			"bottom", 		// timeline on top or bottom 
 			optimal_tick_width: 		60,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
 			timenav_height: 			150,
