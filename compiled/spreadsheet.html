@@ -29,8 +29,14 @@
     
     -->
     <style type="text/css">
-      #input {height: 20%;}
-      #timeline { height: 80%;}
+      #input {
+		  height: 40px;
+		  background-color:#CCC;
+	  }
+	  #url {
+	  	margin:10px;
+	  }
+      #timeline { height: 100%;}
     </style>
   </head>
   <body>
@@ -45,25 +51,34 @@
     button.addEventListener('click',function(){
       new_timeline(document.getElementById('url').value);
     });
+
     document.getElementById('url').addEventListener('keyup',function(evt) {
       if (evt.keyCode == 13) {
         new_timeline(document.getElementById('url').value);
       }
     });
 
-    function new_timeline(url) {
-      timeline = null; // TODO: actively 'destroy' an existing timeline?
-      var json = VCO.ConfigFactory.fromGoogle(url);
+	function new_timeline(url) {
+		timeline = null; // TODO: actively 'destroy' an existing timeline?
+	  	var json = VCO.ConfigFactory.fromGoogle(url);
       
-      window.factory_json = json;
-
-      timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
-      });
-      window.onresize = function(event) {
-       timeline.updateDisplay();
-      }
-    }
-
+	  	window.factory_json = json;
+		
+		document.getElementById('input').style.height = "40px"
+		document.getElementById('timeline').style.height = (window.innerHeight - 40 + "px");
+		
+	  	timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+		});
+	  
+		
+		window.onresize = function(event) {
+			console.log("resize")
+			document.getElementById('input').style.height = "30px"
+			document.getElementById('timeline').style.height = (window.innerHeight - 30 + "px");
+			timeline.updateDisplay();
+		}
+	}
+    
     function getQueryParams(qs) {
       qs = qs.split("+").join(" ");
 
