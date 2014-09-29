@@ -1,7 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-</head>
-<body>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "_overview.html" %}
+  {# TODO: fix demo #}
+  {# include "_demo.html" #}
+  {% include "_description.html" %}
+  {% include "_make.html" %}
+  {# TODO: update examples #}
+  {# include "_examples.html" #}
+  {# TODO: update help/FAQ #}
+  {# include "_help.html" #}
+  {% include "_developers.html" %}
+{% endblock %}
