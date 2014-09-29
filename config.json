@@ -137,7 +137,7 @@
     // }
     //
     "deploy": {
-        "stg": {"bucket": "TODO.knilab.com", "usemin_context": {"cdn": "dev"}},
-        "prd": {"bucket": "TODO.knightlab.com", "usemin_context": {"cdn": "latest"}}
+        "stg": {"bucket": "timelinejs3.knilab.com", "usemin_context": {"cdn": "dev"}},
+        "prd": {"bucket": "timelinejs3.knightlab.com", "usemin_context": {"cdn": "latest"}}
     }
 }
