@@ -36,13 +36,18 @@ $blueline(document).ready(function() {
     var $embed = $("#preview");
 
     $embed.show();
+    
+    // Need to 'reload' the iframe to get it to display correctly
+    var $if = $("#preview iframe");
+    $if.attr("src", $if.attr("src"));
+    
     $("body,html").animate({scrollTop: $embed.offset().top - 60}, 250);
   });
 
 
 
   // Embed Generator
-  updateEmbedCode();
+  //updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
   $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-wordpressplugin').change(function(evt) { updateEmbedCode(evt); });
