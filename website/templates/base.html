@@ -129,14 +129,14 @@
 
     <!-- Override -->
     <script type="text/javascript">
-        //var generator_embed_path = "http://cdn.knightlab.com/libs/timelinejs3/latest/embed/index.html";
+        var generator_embed_path = "http://cdn.knightlab.com/libs/timelinejs3/dev/embed/index.html";
     </script>
     <!-- build:js http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/js/timeline-embed-generator.js -->
-    <script src="/build/js/timeline-embed-generator.js"></script>
-    <!-- endbuild -->
     <script type="text/javascript">
         var generator_embed_path = "/source/embed/index.html";
     </script>    
+    <script src="/build/js/timeline-embed-generator.js"></script>
+    <!-- endbuild -->
     <script src="{{ static_url }}/js/main.js"></script>
 	{% endblock %}
 </body>
