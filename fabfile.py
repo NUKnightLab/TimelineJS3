@@ -20,7 +20,7 @@ def add_paths(*args):
 project_path = dirname(abspath(__file__))
 repos_path = dirname(project_path)
 
-add_paths(project_path, repos_path, join(project_path, 'website'))
+add_paths(project_path, repos_path)
 
 #
 # Import from fablib

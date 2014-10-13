@@ -44,6 +44,10 @@
                 "src": "source/js/language/locale",
                 "dst": "build/js/locale",
                 "regex": ".*\\.json"
+            },
+            {
+                "src": "source/embed",
+                "dst": "build/embed"
             }
         ],
         // compile less files
@@ -80,7 +84,19 @@
             {
                 "src": "source/js/VCO.Timeline.js",
                 "dst": "build/js/timeline.js"
-            }            
+            },
+            {
+                "src": "source/js/Embed/Embed.CDN.Generator.js",
+                "dst": "build/js/timeline-embed-generator.js"
+            },            
+            {
+                "src": "source/js/Embed/Embed.CDN.js",
+                "dst": "build/js/timeline-embed-cdn.js"
+            },
+            {
+                "src": "source/js/Embed/Embed.js",
+                "dst": "build/js/timeline-embed.js"
+            }
         ],
         // concatenate files
         // input: list of objects, where
@@ -105,14 +121,29 @@
                 "src": "source/js/library/moment.js",
                 "dst": "build/js/library/moment.js",
                 "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
-            }
-
+            },
+            {
+                "src": "build/js/timeline-embed-generator.js",
+                "dst": "build/js/timeline-embed-generator.js",
+                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
+            },
+            {
+                "src": "build/js/timeline-embed-cdn.js",
+                "dst": "build/js/timeline-embed-cdn.js",
+                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
+            },
+            {
+                "src": "build/js/timeline-embed.js",
+                "dst": "build/js/timeline-embed.js",
+                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
+            }                
         ],
         //
         // process usermin style build blocks on html files
         // input: list of files/directorys to process in-place
         //
         "usemin": [     
+            "build/embed"      
         ],
         //
         // banner
@@ -137,7 +168,7 @@
     // }
     //
     "deploy": {
-        "stg": {"bucket": "TODO.knilab.com", "usemin_context": {"cdn": "dev"}},
-        "prd": {"bucket": "TODO.knightlab.com", "usemin_context": {"cdn": "latest"}}
+        "stg": {"bucket": "timelinejs3.knilab.com", "usemin_context": {"cdn": "dev"}},
+        "prd": {"bucket": "timelinejs3.knightlab.com", "usemin_context": {"cdn": "latest"}}
     }
 }
