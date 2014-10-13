@@ -13,6 +13,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._screen_multiplier = screen_multiplier || 3;
         this._pixel_width = this._screen_multiplier * this._display_width;
 
+        this._group_labels = undefined;
         this._positions = [];
         this._pixels_per_milli = 0;
         
@@ -28,6 +29,10 @@ VCO.TimeScale = VCO.Class.extend({
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
         this._computePositionInfo(slides, max_rows);
+    },
+    
+    getGroupLabels: function() {
+        return this._group_labels;
     },
     
     getScale: function() {
@@ -85,7 +90,8 @@ VCO.TimeScale = VCO.Class.extend({
     _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
         default_marker_width = default_marker_width || 100;
         var lasts_in_rows = []; 
-
+        var groups = [];
+ 
         for (var i = 0; i < slides.length; i++) {
             var pos_info = { start: this.getPosition(slides[i].start_date.getTime()) }
             this._positions.push(pos_info);
@@ -101,37 +107,61 @@ VCO.TimeScale = VCO.Class.extend({
                 pos_info.width = default_marker_width;
                 pos_info.end = pos_info.start + default_marker_width;
             }
-        };
+            
+            if(slides[i].group) {
+                if(groups.indexOf(slides[i].group) < 0) {
+                    groups.push(slides[i].group);
+                }            
+            } 
+        }
 
-        for (var i = 0; i < this._positions.length; i++) {
-            var pos_info = this._positions[i];
-            var overlaps = []
-            for (var j = 0; j < lasts_in_rows.length; j++) {
-                overlaps.push(lasts_in_rows[j].end - pos_info.start);
-                if (overlaps[j] <= 0) {
-                    pos_info.row = j;
-                    lasts_in_rows[j] = pos_info;
-                    break;
-                }
-            };
-            if (typeof(pos_info.row) == 'undefined') {
-                if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
-                    pos_info.row = lasts_in_rows.length;
-                    lasts_in_rows.push(pos_info);
+        if(groups.length) {
+            var empty_group = false;
+            
+            for(var i = 0; i < this._positions.length; i++) {
+                var pos_info = this._positions[i];
+                if(slides[i].group) {
+                    pos_info.row = groups.indexOf(slides[i].group);
                 } else {
-                    var min_overlap = Math.min.apply(null,overlaps);
-                    var idx = overlaps.indexOf(min_overlap);
-                    pos_info.row = idx;
-                    if (pos_info.end > lasts_in_rows[idx].end) {
-                        lasts_in_rows[idx] = pos_info
-                    }
+                    empty_group = true;
+                    pos_info.row = groups.length;
                 }
             }
+            if(empty_group) {
+                groups.push("");
+            }
+            this._group_labels = groups;
+            this._number_of_rows = groups.length;
+        } else {
+            for (var i = 0; i < this._positions.length; i++) {
+                var pos_info = this._positions[i];
+                var overlaps = []
+                for (var j = 0; j < lasts_in_rows.length; j++) {
+                    overlaps.push(lasts_in_rows[j].end - pos_info.start);
+                    if (overlaps[j] <= 0) {
+                        pos_info.row = j;
+                        lasts_in_rows[j] = pos_info;
+                        break;
+                    }
+                }
+                if (typeof(pos_info.row) == 'undefined') {
+                    if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
+                        pos_info.row = lasts_in_rows.length;
+                        lasts_in_rows.push(pos_info);
+                    } else {
+                        var min_overlap = Math.min.apply(null,overlaps);
+                        var idx = overlaps.indexOf(min_overlap);
+                        pos_info.row = idx;
+                        if (pos_info.end > lasts_in_rows[idx].end) {
+                            lasts_in_rows[idx] = pos_info
+                        }
+                    }
+                }
 
-        };
+            }
 
-        this._number_of_rows = lasts_in_rows.length;
-        
+            this._number_of_rows = lasts_in_rows.length;      
+        }  
     },
 
 });
