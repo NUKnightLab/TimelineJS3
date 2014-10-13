@@ -66,7 +66,7 @@
 	}
 	
 	.vco-timemarker-line-left, .vco-timemarker-line-right {
-		margin-top:@time-marker-border-radius;
+		margin-top:@marker-dot-offset;
 		//margin-bottom:@time-marker-border-radius;
 		//margin-top:10px; 
 		//overflow:hidden;
@@ -352,7 +352,7 @@
 				content:" ";
 				position:absolute;
 				left:0px;
-				bottom:-10px;
+				bottom:-@marker-dot-offset;
 				height:6px;
 				width:100%;
 				background-color: fadeout(darken(@ui-background-color, 50), 85%);
