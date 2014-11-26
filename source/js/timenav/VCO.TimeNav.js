@@ -224,7 +224,18 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_getTimeScale: function() {
 		// Set Max Rows
-		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
+		var marker_height_min = 0;
+		try {
+			marker_height_min = parseInt(this.options.marker_height_min);
+		} catch(e) {
+			trace("Invalid value for marker_height_min option."); 
+			marker_height_min = 30;
+		}
+		if (marker_height_min == 0) {
+			trace("marker_height_min option must not be zero.")
+			marker_height_min = 30;
+		}
+		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / marker_height_min);
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
