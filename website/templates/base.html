@@ -123,21 +123,10 @@
   </footer>
   <!-- END FOOTER -->
 
-	{% block scripts %}
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="http://cdn.knightlab.com/libs/blueline/latest/js/blueline.min.js"></script>
-
-    <!-- Override -->
-    <script type="text/javascript">
-        var generator_embed_path = "http://cdn.knightlab.com/libs/timelinejs3/dev/embed/index.html";
-    </script>
-    <!-- build:js http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/js/timeline-embed-generator.js -->
-    <script type="text/javascript">
-        var generator_embed_path = "/source/embed/index.html";
-    </script>    
-    <script src="/build/js/timeline-embed-generator.js"></script>
-    <!-- endbuild -->
-    <script src="{{ static_url }}/js/main.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://cdn.knightlab.com/libs/blueline/latest/js/blueline.min.js"></script>
+  
+  {% block scripts %}
 	{% endblock %}
 </body>
 </html>
