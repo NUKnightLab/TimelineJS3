@@ -61,12 +61,12 @@
             {
                 "src": "source/less/VCO.Timeline.less",
                 "dst": "build/css/timeline.css",
-                "opt": "--clean-css --clean-option=--s0"
+                "opt": "--clean-css=--s0"
             },
             {
                 "src": "source/less/VCO.Timeline.Dark.less",
                 "dst": "build/css/timeline.dark.css",
-                "opt": "--clean-css --clean-option=--s0"
+                "opt": "--clean-css=--s0"
             },
             {
                 "src": "source/less/fonts",
