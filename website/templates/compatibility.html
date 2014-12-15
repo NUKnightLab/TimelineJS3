@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% block header %}
 <title>Timeline JS3 - Test With Old Google Spreadsheets</title>
-
-
-    <link rel="stylesheet" href="css/timeline.css?v1">
-    <!--FONT-->
-     <link rel="stylesheet" href="css/fonts/font.default.css?v1">
-    <!-- Style-->
     <style>
       html, body {
        height:100%;
@@ -38,7 +32,7 @@
 
 {% block content %}
 
-    <div id="input"><input type="text" id="url" placeholder="Enter a google spreadsheet ID or URL" size="100"/> <button type="button" id="preview">Go</button>
+    <div id="input">Enter a google spreadsheet ID or URL: <input type="text" id="url" style="width: 500px"/> <button type="button" id="preview">Go</button>
     </div>
     <div id="timeline"></div>
 {% endblock %}
