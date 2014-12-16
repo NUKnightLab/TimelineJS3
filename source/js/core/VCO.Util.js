@@ -366,6 +366,10 @@ VCO.Util = {
 		len = len || 2;
 		while (val.length < len) val = "0" + val;
 		return val;
+	},
+
+	makeGoogleMapsEmbedURL: function(url,api_key) {
+
 	}
 
 };

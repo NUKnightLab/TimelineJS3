@@ -6872,7 +6872,13 @@ VCO.Media.Map = VCO.Media.extend({
         this.media_id = this.data.url;
         
         // API Call
-        this._el.content_item.innerHTML = this.media_id;
+        
+        this.mapframe = VCO.Dom.create("iframe", "", this._el.content_item);
+        window.stash = this;
+        this.mapframe.width       = "100%";
+        this.mapframe.height      = "100%";
+        this.mapframe.frameBorder = "0";
+        this.mapframe.src         = this.data.url + "&output=embed";
         
         // After Loaded
         this.onLoaded();
