@@ -8,18 +8,6 @@ VCO.Media.Map = VCO.Media.extend({
     _API_KEY: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
     /*  Load the media
     ================================================== */
-    _buildURL: function(url) {
-        var match = url.
-        var match = url.match(/(http.+\/maps\/)(search|place|directions|view)\/(.+)/)
-        if (match && match[2] == 'place') {
-            parts = [match[1],'embed/v1',match[2]];
-            var new_url = parts.join('/');
-
-        }
-        
-
-        // streetview has different setup?
-    },
     _loadMedia: function() {
         
         // Loading Message
