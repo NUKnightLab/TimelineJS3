@@ -32,7 +32,7 @@
 
 {% block content %}
 
-    <div id="input">Enter a google spreadsheet ID or URL: <input type="text" id="url" style="width: 500px"/> <button type="button" id="preview">Go</button>
+    <div id="input">Enter a google spreadsheet ID or URL: <input type="text" id="url" style="width: 500px"/> <button type="button" id="go-preview">Go</button>
     </div>
     <div id="timeline"></div>
 {% endblock %}
@@ -47,7 +47,7 @@
     <!-- endbuild -->
     <script>
     var timeline = null;
-    var button = document.getElementById('preview');
+    var button = document.getElementById('go-preview');
     button.addEventListener('click',function(){
       new_timeline(document.getElementById('url').value);
     });
