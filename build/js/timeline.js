@@ -417,6 +417,20 @@ VCO.Util = {
 		len = len || 2;
 		while (val.length < len) val = "0" + val;
 		return val;
+	},
+
+	makeGoogleMapsEmbedURL: function(url,api_key) {
+		var view_regex = /(https:\/\/.+google.+?\/maps)\/@([-\d.]+),([-\d.]+),(\d+?)z.*/;
+		if (url.match(view_regex)) {
+			var match = url.match(view_regex);
+			var url_root=match[1], lat=match[2], lon=match[3], zoom=match[4];
+			var param_string = VCO.Util.getParamString({
+				"key": api_key,
+        "center": lat + "," + lon,
+        "zoom": zoom
+			});
+		}
+    return (url_root + "/embed/v1/view" + param_string);
 	}
 
 };
@@ -6140,6 +6154,7 @@ VCO.Media = VCO.Class.extend({
 		//Options
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
+			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
 			credit_height: 			0,
 			caption_height: 		0
 		};
@@ -6868,7 +6883,7 @@ VCO.Media.Map = VCO.Media.extend({
         this._el.content_item   = VCO.Dom.create("div", "vco-media-item vco-media-map", this._el.content);
         this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
         
-        // Get Media ID
+        // Get Media ID (why?)
         this.media_id = this.data.url;
         
         // API Call
@@ -6878,7 +6893,7 @@ VCO.Media.Map = VCO.Media.extend({
         this.mapframe.width       = "100%";
         this.mapframe.height      = "100%";
         this.mapframe.frameBorder = "0";
-        this.mapframe.src         = this.data.url + "&output=embed";
+        this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
         
         // After Loaded
         this.onLoaded();
@@ -10460,7 +10475,6 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		
 		};
 		
