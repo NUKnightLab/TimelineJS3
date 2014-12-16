@@ -2909,6 +2909,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 ********************************************** */
 
 VCO.Language = function(options) {
+	// borrowed from http://stackoverflow.com/a/14446414/102476
 	for (k in VCO.Language.languages.en) {
 		this[k] = VCO.Language.languages.en[k];
 	}
@@ -2920,7 +2921,7 @@ VCO.Language = function(options) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
-				var script_path = options.script_path || '';
+				var script_path = options.script_path || VCO.Timeline.source_path;
 				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;
 			}
@@ -4619,6 +4620,15 @@ VCO.Date = VCO.Class.extend({
     }
 });
 
+// offer something that can figure out the right date class to return
+VCO.Date.makeDate = function(data) {
+    var date = new VCO.Date(data);
+    if (!isNaN(date.getTime())) {
+        return date;
+    }
+    return new VCO.BigDate(data);
+}
+
 VCO.BigYear = VCO.Class.extend({
     initialize: function (year) {
         this.year = parseInt(year);
@@ -5963,7 +5973,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googlemaps",
 				name: 		"Google Map", 
-				match_str: 	"maps.google",
+				match_str: 	/maps.google|google\.\w+\/maps/,
 				cls: 		VCO.Media.Map
 			},
 			{
@@ -6427,6 +6437,54 @@ VCO.Media.Blockquote = VCO.Media.extend({
 
 
 /* **********************************************
+     Begin VCO.Media.DailyMotion.js
+********************************************** */
+
+/*	VCO.Media.DailyMotion
+================================================== */
+
+VCO.Media.DailyMotion = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-dailymotion", this._el.content);
+		
+		// Get Media ID
+		if (this.data.url.match("video")) {
+			this.media_id = this.data.url.split("video\/")[1].split(/[?&]/)[0];
+		} else {
+			this.media_id = this.data.url.split("embed\/")[1].split(/[?&]/)[0];
+		}
+		
+		// API URL
+		api_url = "http://www.dailymotion.com/embed/video/" + this.media_id;
+		
+		// API Call
+		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"		
+		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	// Update Media Display
+	_updateMediaDisplay: function() {
+		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+	}
+	
+});
+
+
+/* **********************************************
      Begin VCO.Media.Flickr.js
 ********************************************** */
 
@@ -6533,102 +6591,6 @@ VCO.Media.Flickr = VCO.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin VCO.Media.Instagram.js
-********************************************** */
-
-/*	VCO.Media.Instagram
-
-================================================== */
-
-VCO.Media.Instagram = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
-		// Get Media ID
-		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
-		
-		// Link
-		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
-		this._el.content_link.href 			= this.data.url;
-		this._el.content_link.target 		= "_blank";
-		
-		// Photo
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
-		
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-		
-		// Set source
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
-		
-		this.onLoaded();
-		
-	},
-	
-	sizes: function(s) {
-		var _size = "";
-		if (s <= 150) {
-			_size = "t";
-		} else if (s <= 306) {
-			_size = "m";
-		} else {
-			_size = "l";
-		}
-		
-		return _size;
-	}
-	
-	
-	
-});
-
-
-/* **********************************************
-     Begin VCO.Media.Profile.js
-********************************************** */
-
-/*	VCO.Media.Profile
-
-================================================== */
-
-VCO.Media.Profile = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-profile vco-media-shadow", this._el.content);
-		this._el.content_item.src			= this.data.url;
-		
-		this.onLoaded();
-	},
-	
-	_updateMediaDisplay: function(layout) {
-		
-		
-		if(VCO.Browser.firefox) {
-			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
-		}
-	}
-	
-});
 
 /* **********************************************
      Begin VCO.Media.GoogleDoc.js
@@ -6822,6 +6784,174 @@ VCO.Media.Image = VCO.Media.extend({
 });
 
 /* **********************************************
+     Begin VCO.Media.Instagram.js
+********************************************** */
+
+/*	VCO.Media.Instagram
+
+================================================== */
+
+VCO.Media.Instagram = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Get Media ID
+		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
+		
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
+		
+		// Photo
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
+		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
+		// Set source
+		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
+		
+		this.onLoaded();
+		
+	},
+	
+	sizes: function(s) {
+		var _size = "";
+		if (s <= 150) {
+			_size = "t";
+		} else if (s <= 306) {
+			_size = "m";
+		} else {
+			_size = "l";
+		}
+		
+		return _size;
+	}
+	
+	
+	
+});
+
+
+/* **********************************************
+     Begin VCO.Media.Map.js
+********************************************** */
+
+/*  VCO.Media.Blockquote
+================================================== */
+
+VCO.Media.Map = VCO.Media.extend({
+    
+    includes: [VCO.Events],
+    
+    _API_KEY: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
+    /*  Load the media
+    ================================================== */
+    _loadMedia: function() {
+        
+        // Loading Message
+        this.loadingMessage();
+        
+        // Create Dom element
+        this._el.content_item   = VCO.Dom.create("div", "vco-media-item vco-media-map", this._el.content);
+        this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
+        
+        // Get Media ID
+        this.media_id = this.data.url;
+        
+        // API Call
+        this._el.content_item.innerHTML = this.media_id;
+        
+        // After Loaded
+        this.onLoaded();
+    },
+    
+    updateMediaDisplay: function() {
+        
+    },
+    
+    _updateMediaDisplay: function() {
+        
+    }
+
+    
+});
+
+
+/* **********************************************
+     Begin VCO.Media.Profile.js
+********************************************** */
+
+/*	VCO.Media.Profile
+
+================================================== */
+
+VCO.Media.Profile = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		// Loading Message
+		this.loadingMessage();
+		
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-profile vco-media-shadow", this._el.content);
+		this._el.content_item.src			= this.data.url;
+		
+		this.onLoaded();
+	},
+	
+	_updateMediaDisplay: function(layout) {
+		
+		
+		if(VCO.Browser.firefox) {
+			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
+		}
+	}
+	
+});
+
+/* **********************************************
+     Begin VCO.Media.Slider.js
+********************************************** */
+
+/*	VCO.Media.SLider
+	Produces a Slider
+	Takes a data object and populates a dom object
+	TODO
+	Placeholder
+================================================== */
+
+VCO.Media.Slider = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image", this._el.content);
+		this._el.content_item.src			= this.data.url;
+		
+		this.onLoaded();
+	}
+	
+});
+
+/* **********************************************
      Begin VCO.Media.SoundCloud.js
 ********************************************** */
 
@@ -6862,6 +6992,102 @@ VCO.Media.SoundCloud = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+	}
+	
+});
+
+
+/* **********************************************
+     Begin VCO.Media.Spotify.js
+********************************************** */
+
+/*	VCO.Media.Spotify
+================================================== */
+
+VCO.Media.Spotify = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-spotify", this._el.content);
+		
+		// Get Media ID
+		if (this.data.url.match("open.spotify.com/track/")) {
+			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
+		} else if (this.data.url.match("spotify:track:")) {
+			this.media_id = this.data.url;
+		} else if (this.data.url.match("/playlist/")) {
+			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
+			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
+		} else if (this.data.url.match(":playlist:")) {
+			this.media_id = this.data.url;
+		}
+		
+		// API URL
+		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+				
+		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
+		this.player.width 		= "100%";
+		this.player.height 		= "100%";
+		this.player.frameBorder = "0";
+		this.player.src 		= api_url;
+		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	// Update Media Display
+	
+	_updateMediaDisplay: function(l) {
+		var _height = this.options.height,
+			_player_height = 0,
+			_player_width = 0;
+			
+		if (VCO.Browser.mobile) {
+			_height = (this.options.height/2);
+		} else {
+			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
+		}
+		
+		this._el.content_item.style.maxHeight = "none";
+		trace(_height);
+		trace(this.options.width)
+		if (_height > this.options.width) {
+			trace("height is greater")
+			_player_height = this.options.width + 80 + "px";
+			_player_width = this.options.width + "px";
+		} else {
+			trace("width is greater")
+			trace(this.options.width)
+			_player_height = _height + "px";
+			_player_width = _height - 80 + "px";
+		}
+		
+
+		this.player.style.width = _player_width;
+		this.player.style.height = _player_height;
+		
+		if (this._el.credit) {
+			this._el.credit.style.width		= _player_width;
+		}
+		if (this._el.caption) {
+			this._el.caption.style.width		= _player_width;
+		}
+	},
+	
+	
+	_stopMedia: function() {
+		// Need spotify stop code
+		
 	}
 	
 });
@@ -7209,54 +7435,6 @@ VCO.Media.Vimeo = VCO.Media.extend({
 			trace(err);
 		}
 		
-	}
-	
-});
-
-
-/* **********************************************
-     Begin VCO.Media.DailyMotion.js
-********************************************** */
-
-/*	VCO.Media.DailyMotion
-================================================== */
-
-VCO.Media.DailyMotion = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-dailymotion", this._el.content);
-		
-		// Get Media ID
-		if (this.data.url.match("video")) {
-			this.media_id = this.data.url.split("video\/")[1].split(/[?&]/)[0];
-		} else {
-			this.media_id = this.data.url.split("embed\/")[1].split(/[?&]/)[0];
-		}
-		
-		// API URL
-		api_url = "http://www.dailymotion.com/embed/video/" + this.media_id;
-		
-		// API Call
-		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"		
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
 	}
 	
 });
@@ -7619,129 +7797,6 @@ VCO.Media.YouTube = VCO.Media.extend({
 		
 	}
 
-	
-});
-
-
-/* **********************************************
-     Begin VCO.Media.Slider.js
-********************************************** */
-
-/*	VCO.Media.SLider
-	Produces a Slider
-	Takes a data object and populates a dom object
-	TODO
-	Placeholder
-================================================== */
-
-VCO.Media.Slider = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image", this._el.content);
-		this._el.content_item.src			= this.data.url;
-		
-		this.onLoaded();
-	}
-	
-});
-
-/* **********************************************
-     Begin VCO.Media.Spotify.js
-********************************************** */
-
-/*	VCO.Media.Spotify
-================================================== */
-
-VCO.Media.Spotify = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-spotify", this._el.content);
-		
-		// Get Media ID
-		if (this.data.url.match("open.spotify.com/track/")) {
-			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
-		} else if (this.data.url.match("spotify:track:")) {
-			this.media_id = this.data.url;
-		} else if (this.data.url.match("/playlist/")) {
-			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
-			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
-		} else if (this.data.url.match(":playlist:")) {
-			this.media_id = this.data.url;
-		}
-		
-		// API URL
-		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
-				
-		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
-		this.player.width 		= "100%";
-		this.player.height 		= "100%";
-		this.player.frameBorder = "0";
-		this.player.src 		= api_url;
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	
-	_updateMediaDisplay: function(l) {
-		var _height = this.options.height,
-			_player_height = 0,
-			_player_width = 0;
-			
-		if (VCO.Browser.mobile) {
-			_height = (this.options.height/2);
-		} else {
-			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
-		}
-		
-		this._el.content_item.style.maxHeight = "none";
-		trace(_height);
-		trace(this.options.width)
-		if (_height > this.options.width) {
-			trace("height is greater")
-			_player_height = this.options.width + 80 + "px";
-			_player_width = this.options.width + "px";
-		} else {
-			trace("width is greater")
-			trace(this.options.width)
-			_player_height = _height + "px";
-			_player_width = _height - 80 + "px";
-		}
-		
-
-		this.player.style.width = _player_width;
-		this.player.style.height = _player_height;
-		
-		if (this._el.credit) {
-			this._el.credit.style.width		= _player_width;
-		}
-		if (this._el.caption) {
-			this._el.caption.style.width		= _player_width;
-		}
-	},
-	
-	
-	_stopMedia: function() {
-		// Need spotify stop code
-		
-	}
 	
 });
 
@@ -10284,25 +10339,26 @@ VCO.AxisHelper = VCO.Class.extend({
 
 // MEDIA TYPES
 	// @codekit-prepend "media/types/VCO.Media.Blockquote.js";
+	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
 	// @codekit-prepend "media/types/VCO.Media.Flickr.js";
-	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
-	// @codekit-prepend "media/types/VCO.Media.Profile.js";
 	// @codekit-prepend "media/types/VCO.Media.GoogleDoc.js";
 	// @codekit-prepend "media/types/VCO.Media.GooglePlus.js";
 	// @codekit-prepend "media/types/VCO.Media.IFrame.js";
 	// @codekit-prepend "media/types/VCO.Media.Image.js";
+	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
+	// @codekit-prepend "media/types/VCO.Media.Map.js";
+	// @codekit-prepend "media/types/VCO.Media.Profile.js";
+	// @codekit-prepend "media/types/VCO.Media.Slider.js";
 	// @codekit-prepend "media/types/VCO.Media.SoundCloud.js";
+	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 	// @codekit-prepend "media/types/VCO.Media.Storify.js";
 	// @codekit-prepend "media/types/VCO.Media.Text.js";
 	// @codekit-prepend "media/types/VCO.Media.Twitter.js";
 	// @codekit-prepend "media/types/VCO.Media.Vimeo.js";
-	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
 	// @codekit-prepend "media/types/VCO.Media.Vine.js";
 	// @codekit-prepend "media/types/VCO.Media.Website.js";
 	// @codekit-prepend "media/types/VCO.Media.Wikipedia.js";
 	// @codekit-prepend "media/types/VCO.Media.YouTube.js";
-	// @codekit-prepend "media/types/VCO.Media.Slider.js";
-	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 
 // STORYSLIDER
 	// @codekit-prepend "slider/VCO.Slide.js";
@@ -10318,7 +10374,6 @@ VCO.AxisHelper = VCO.Class.extend({
 
 
 VCO.Timeline = VCO.Class.extend({
-	
 	includes: VCO.Events,
 	
 	/*	Private Methods
@@ -10826,6 +10881,13 @@ VCO.Timeline = VCO.Class.extend({
 	
 	
 });
+
+VCO.Timeline.source_path = (function() {
+    var script_tags = document.getElementsByTagName('script');
+	var src = script_tags[script_tags.length-1].src;
+	return src.substr(0,src.lastIndexOf('/'));
+})();
+
 
 
 

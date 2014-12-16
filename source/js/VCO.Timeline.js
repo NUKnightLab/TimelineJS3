@@ -60,25 +60,26 @@
 
 // MEDIA TYPES
 	// @codekit-prepend "media/types/VCO.Media.Blockquote.js";
+	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
 	// @codekit-prepend "media/types/VCO.Media.Flickr.js";
-	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
-	// @codekit-prepend "media/types/VCO.Media.Profile.js";
 	// @codekit-prepend "media/types/VCO.Media.GoogleDoc.js";
 	// @codekit-prepend "media/types/VCO.Media.GooglePlus.js";
 	// @codekit-prepend "media/types/VCO.Media.IFrame.js";
 	// @codekit-prepend "media/types/VCO.Media.Image.js";
+	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
+	// @codekit-prepend "media/types/VCO.Media.Map.js";
+	// @codekit-prepend "media/types/VCO.Media.Profile.js";
+	// @codekit-prepend "media/types/VCO.Media.Slider.js";
 	// @codekit-prepend "media/types/VCO.Media.SoundCloud.js";
+	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 	// @codekit-prepend "media/types/VCO.Media.Storify.js";
 	// @codekit-prepend "media/types/VCO.Media.Text.js";
 	// @codekit-prepend "media/types/VCO.Media.Twitter.js";
 	// @codekit-prepend "media/types/VCO.Media.Vimeo.js";
-	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
 	// @codekit-prepend "media/types/VCO.Media.Vine.js";
 	// @codekit-prepend "media/types/VCO.Media.Website.js";
 	// @codekit-prepend "media/types/VCO.Media.Wikipedia.js";
 	// @codekit-prepend "media/types/VCO.Media.YouTube.js";
-	// @codekit-prepend "media/types/VCO.Media.Slider.js";
-	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 
 // STORYSLIDER
 	// @codekit-prepend "slider/VCO.Slide.js";

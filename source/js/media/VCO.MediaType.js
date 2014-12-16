@@ -50,7 +50,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googlemaps",
 				name: 		"Google Map", 
-				match_str: 	"maps.google",
+				match_str: 	/maps.google|google\.\w+\/maps/,
 				cls: 		VCO.Media.Map
 			},
 			{

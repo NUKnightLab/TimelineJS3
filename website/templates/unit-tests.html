@@ -298,6 +298,29 @@
         equal(d.getDisplayDate(msgs),"2014")
       });
 
+      module("media type tests", {});
+
+      test("URL tests", function() {
+
+        function mediaTypeEqual(url, expected) {
+          var d = VCO.MediaType({'url': url})
+          return equal(d.type,expected,expected);
+        }
+
+        mediaTypeEqual('https://www.flickr.com/photos/cleopatra69/5399251313/in/photostream','flickr')
+
+        mediaTypeEqual('http://en.wikipedia.org/wiki/Project_Gutenberg','wikipedia')
+
+        mediaTypeEqual('https://www.google.com/maps/place/Northwestern+University+Knight+Lab/@42.050703,-87.673881,17z/data=!3m1!4b1!4m2!3m1!1s0x880fd074140e35d1:0x954a22c1989c7105','googlemaps');
+  var JS_SELF_PATH = (function() {
+      var script_tags = document.getElementsByTagName('script');
+      var src = script_tags[script_tags.length-1].src;
+      return src.substr(0,src.lastIndexOf('/'));
+  })();
+
+
+      });
+
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
