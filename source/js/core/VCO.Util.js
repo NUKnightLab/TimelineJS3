@@ -369,6 +369,14 @@ VCO.Util = {
 	},
 
 	makeGoogleMapsEmbedURL: function(url,api_key) {
+		var view_regex = /(https:\/\/.+google.+?\/maps)\/@([-\d.]+),([-\d.]+),(\d+?)z.*/;
+		if (url.match(view_regex)) {
+			var match = url.match(view_regex);
+			var url_root=match[0], lat=match[1], lon=match[2], zoom=match[3];
+			var param_string = VCO.Util.getParamString({
+				
+			});
+		}
 
 	}
 
