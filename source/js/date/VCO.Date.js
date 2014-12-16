@@ -145,6 +145,15 @@ VCO.Date = VCO.Class.extend({
     }
 });
 
+// offer something that can figure out the right date class to return
+VCO.Date.makeDate = function(data) {
+    var date = new VCO.Date(data);
+    if (!isNaN(date.getTime())) {
+        return date;
+    }
+    return new VCO.BigDate(data);
+}
+
 VCO.BigYear = VCO.Class.extend({
     initialize: function (year) {
         this.year = parseInt(year);

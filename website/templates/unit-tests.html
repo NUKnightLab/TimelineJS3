@@ -7,7 +7,9 @@
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/g/qunit@1.14.0,underscorejs@1.6.0"></script>
 
-    <script type="text/javascript" src="js/timeline.js"></script>
+  <!-- build:js http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/js/timeline-min.js -->
+  <script src="/build/js/timeline.js"></script>
+  <!-- endbuild -->
 
 
     <script type="text/javascript">
@@ -86,22 +88,20 @@
       });
 
       test("VCO.Date", function() {
-        var refdate = new VCO.Date({year: 2000, month: 6, day: 21});
+        var refdate = VCO.Date.makeDate({year: 2000, month: 6, day: 21});
         var jsdate = new Date();
         throws(function() { refdate.isBefore(jsdate) }, "Don't allow comparison with JS Dates");
-        jsdate = new VCO.Date(new Date());
-        ok(refdate.isBefore(jsdate),"any new date should be after refdate");
+        jsdate = VCO.Date.makeDate(new Date());
+        ok(refdate.isBefore(jsdate),"refdate should be before any new date");
         ok(jsdate.isAfter(refdate),"any new date should be after refdate");
 
-        equal(refdate.getScale(),'javascript',"small dates are javascript");
+        var smalldate = VCO.Date.makeDate({year: 2015});
+        ok(!isNaN(smalldate.getTime()),"small dates are javascript");
 
-        var smalldate = new VCO.Date({year: 2015});
-        equal(smalldate.getScale(),'javascript',"small dates are javascript");
-
-        var bigdate = new VCO.Date({year: 1000000});
-        equal(bigdate.getScale(),'cosmological',"big dates are cosmological"); 
+        var bigdate = VCO.Date.makeDate({year: 1000000});
+        ok(!isNaN(bigdate.getTime()),"big dates are cosmological"); 
         
-        var cdate = new VCO.Date({year: 2014, display_text: "hello"});
+        var cdate = VCO.Date.makeDate({year: 2014, display_text: "hello"});
         equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')       
       });
 
@@ -130,8 +130,8 @@
       });
 
       test("VCO.Date.floor", function() {
-        throws(function() { new VCO.Date(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
-          var d = new VCO.Date(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
+        throws(function() { VCO.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
+          var d = VCO.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
           var floored = d.floor('millisecond');
           var date_obj = floored.data.date_obj;
           ok(date_parts_match(d,floored,['year','month','date','hours','minutes','seconds','milliseconds']), 'millisecond rounding doesnt change others')
@@ -194,12 +194,11 @@
           var date_obj = floored.data.date_obj;
           equal(date_obj.getYear(),100, "Should round to 2000 " + floored)
 
-          var early_ce = new VCO.Date(-59149708181438); // 8/14/95 (90 not 1995)
+          var early_ce = VCO.Date.makeDate(-59149708181438); // 8/14/95 (90 not 1995)
           var floored = early_ce.floor('decade');
           equal(floored.getTime(),-59326970400000,'Early floored dates should not go into the 20th Century')
 
-          var age_scale = new VCO.Date({year: 1500000});
-          equal(age_scale.getScale(),'cosmological', 'testing the big guns')
+          var age_scale = VCO.Date.makeDate({year: 1500000});
           throws(function() {
             age_scale.floor('year');
           },/invalid scale/,'year not valid scale for cosmo');
@@ -208,9 +207,9 @@
       });
 
       test("VCO.DateUtil", function() {
-        var a = {start_date: new VCO.Date({year: 1999})} // will break when we have start dates
-        var b = {start_date: new VCO.Date({year: 2000})}
-        var c = {start_date: new VCO.Date({year: 2001})}
+        var a = {start_date: VCO.Date.makeDate({year: 1999})} // will break when we have start dates
+        var b = {start_date: VCO.Date.makeDate({year: 2000})}
+        var c = {start_date: VCO.Date.makeDate({year: 2001})}
 
         var ary = [c,b,a]
         VCO.DateUtil.sortByDate(ary);
@@ -253,11 +252,11 @@
 
         equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
 
-        equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 kya', "use fallback bigdateformat") 
+        equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat") 
       })
 
       test( "VCO.Language test non-english", function( ) {
-          var msgs = new VCO.Language({language: 'pl', script_path: '/js'});
+          var msgs = new VCO.Language({language: 'pl'});
           equal(msgs.name,"English","English is default and polish doesn't have one");
           equal(msgs.lang,"pl","should have gotten 'pl'");
           equal(msgs._('loading'),"\u0141adowanie","get a message for loading");
@@ -293,9 +292,9 @@
 
       test("VCO.Date date formatting", function() {
         var msgs = VCO.Language.default;
-        var d = new VCO.Date({year: '2014', month: '1', day: '1' }) 
+        var d = VCO.Date.makeDate({year: '2014', month: '1', day: '1' }) 
         equal(d.getDisplayDate(msgs),"January 1, 2014")
-        var d = new VCO.Date({year: '2014'}) 
+        var d = VCO.Date.makeDate({year: '2014'}) 
         equal(d.getDisplayDate(msgs),"2014")
       });
 

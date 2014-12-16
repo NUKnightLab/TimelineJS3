@@ -1,4 +1,5 @@
 VCO.Language = function(options) {
+	// borrowed from http://stackoverflow.com/a/14446414/102476
 	for (k in VCO.Language.languages.en) {
 		this[k] = VCO.Language.languages.en[k];
 	}
@@ -10,7 +11,7 @@ VCO.Language = function(options) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
-				var script_path = options.script_path || '';
+				var script_path = options.script_path || VCO.Timeline.source_path;
 				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;
 			}

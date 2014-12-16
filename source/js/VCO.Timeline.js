@@ -94,7 +94,6 @@
 
 
 VCO.Timeline = VCO.Class.extend({
-	
 	includes: VCO.Events,
 	
 	/*	Private Methods
@@ -602,5 +601,12 @@ VCO.Timeline = VCO.Class.extend({
 	
 	
 });
+
+VCO.Timeline.source_path = (function() {
+    var script_tags = document.getElementsByTagName('script');
+	var src = script_tags[script_tags.length-1].src;
+	return src.substr(0,src.lastIndexOf('/'));
+})();
+
 
 
