@@ -369,42 +369,66 @@ VCO.Util = {
 	},
 
 	makeGoogleMapsEmbedURL: function(url,api_key) {
-		var view_regex = /(https:\/\/.+google.+?\/maps)\/@([-\d.]+),([-\d.]+),(\d+?)z.*/;
+     function determineMapTypeURL(maptype, match) {
+        if (maptype == "view") {
+            console.log(match);
+            var url_root=match[1], lat=match[2], lon=match[3], zoom=match[4];
+            var param_string = VCO.Util.getParamString({
+              "key": api_key,
+              "center": lat + "," + lon,
+              "zoom": zoom
+            });
+        } else if (maptype == "place") {
+            console.log(match);
+            var url_root=match[1], dropped_pin=match[2], lat=match[3], lon=match[4], zoom=match[5];
+            var param_string = VCO.Util.getParamString({
+              "key": api_key,
+              "q": dropped_pin
+            });
+        } else if (maptype == "directions") {
+            console.log(match);
+            var url_root=match[1], origin=match[2], destination=match[3], lat=match[4], lon=match[5], zoom=match[6];
+            var param_string = VCO.Util.getParamString({
+              "key": api_key,
+              "origin": origin,
+              "destination": destination
+            });
 
-    var place_regex = /(https:\/\/.+google.+?\/maps)\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),(\d+?)z.*\/data=([\S]*)/;
+        } else if (maptype == "search") {
+            console.log(match);
+            var url_root=match[1], search=match[2], lat=match[3], lon=match[4], zoom=match[5];
+            var param_string = VCO.Util.getParamString({
+              "key": api_key,
+              "q": search
+            });
 
-    var directions_regex = /(https:\/\/.+google.+?\/maps)\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),(\d+?)z.*\/data=([\S]*)/;
-
-    var search_regex = /(https:\/\/.+google.+?\/maps)\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),(\d+?)z.*\/data=([\S]*)/;
-
-		if (url.match(view_regex)) {
-			var match = url.match(view_regex);
-      console.log(match);
-			var url_root=match[1], lat=match[2], lon=match[3], zoom=match[4];
-			var param_string = VCO.Util.getParamString({
-				"key": api_key,
-        "center": lat + "," + lon,
-        "zoom": zoom
-			});
-      return (url_root + "/embed/v1/view" + param_string);
-		} else if (url.match(place_regex)) {
-      console.log("place match", url);
-    } else if (url.match(directions_regex)) {
-      console.log("directions match", url);
-    } else if (url.match(search_regex)) {
-      console.log("search match", url);
+        }
+        return (url_root + "/embed/v1/" + maptype + param_string);
     }
+
+    function determineMapType(url){
+        maptype = "view";
+        if (url.match(regexes["place"])) {
+            maptype = "place";
+        } else if (url.match(regexes["directions"])) {
+            maptype = "directions";
+        } else if (url.match(regexes["search"])) {
+            maptype = "search";
+        }
+        return determineMapTypeURL(maptype, url.match(regexes[maptype]));
+    }
+
+    // Set up regex parts to make updating these easier if Google changes them
+    var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
+    var coords_zoom_regex = /@([-\d.]+),([-\d.]+),(\d+?)z.*/;
+    var addy_regex = /([\w\W]+)/;
+    var data_regex = /data=([\S]*)/;
+		var regexes = {
+        view: new RegExp(root_url_regex.source + "/" + coords_zoom_regex.source),
+        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_zoom_regex.source + "/" + data_regex.source),
+        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_zoom_regex.source + "/" + data_regex.source),
+        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_zoom_regex.source + "/" + data_regex.source)
+    };
+    return determineMapType(url);
 	}
-
 };
-
-
-
-
-
-
-
-
-
-
-
