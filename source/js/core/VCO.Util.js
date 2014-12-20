@@ -371,7 +371,7 @@ VCO.Util = {
 	makeGoogleMapsEmbedURL: function(url,api_key) {
      function determineMapTypeURL(maptype, match) {
         if (maptype == "view") {
-            console.log(match);
+          console.log(match);
             var url_root=match[1], lat=match[2], lon=match[3], zoom=match[4];
             var param_string = VCO.Util.getParamString({
               "key": api_key,
@@ -379,30 +379,36 @@ VCO.Util = {
               "zoom": zoom
             });
         } else if (maptype == "place") {
-            console.log(match);
+          console.log(match);
             var url_root=match[1], dropped_pin=match[2], lat=match[3], lon=match[4], zoom=match[5];
             var param_string = VCO.Util.getParamString({
+              "q": dropped_pin,
               "key": api_key,
-              "q": dropped_pin
+              "zoom": zoom
             });
         } else if (maptype == "directions") {
-            console.log(match);
+          console.log(match);
             var url_root=match[1], origin=match[2], destination=match[3], lat=match[4], lon=match[5], zoom=match[6];
             var param_string = VCO.Util.getParamString({
-              "key": api_key,
               "origin": origin,
-              "destination": destination
+              "destination": destination,
+              "key": api_key,
+              "center": lat + "," + lon,
+              "zoom": zoom
             });
 
         } else if (maptype == "search") {
-            console.log(match);
+          console.log(match);
             var url_root=match[1], search=match[2], lat=match[3], lon=match[4], zoom=match[5];
             var param_string = VCO.Util.getParamString({
+              "q": search,
               "key": api_key,
-              "q": search
+              "center": lat + "," + lon,
+              "zoom": zoom
             });
 
         }
+        console.log(param_string);
         return (url_root + "/embed/v1/" + maptype + param_string);
     }
 
@@ -420,14 +426,23 @@ VCO.Util = {
 
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
-    var coords_zoom_regex = /@([-\d.]+),([-\d.]+),(\d+?)z.*/;
+    var coords_regex = /@([-\d.]+),([-\d.]+)/;
     var addy_regex = /([\w\W]+)/;
-    var data_regex = /data=([\S]*)/;
+
+    // Data doesn't seem to get used for anything
+    var data_regex = /data=[\S]*/;
+
+    // Capture the parameters that determine what map tiles to use
+    // In roadmap view, mode URLs include zoom paramater (e.g. "14z")
+    // In satellite (or "earth") view, URLs include a parameter (e.g. "84511m")
+    // In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
+    var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
+
 		var regexes = {
-        view: new RegExp(root_url_regex.source + "/" + coords_zoom_regex.source),
-        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_zoom_regex.source + "/" + data_regex.source),
-        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_zoom_regex.source + "/" + data_regex.source),
-        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_zoom_regex.source + "/" + data_regex.source)
+        view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source)
     };
     return determineMapType(url);
 	}
