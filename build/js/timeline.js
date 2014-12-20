@@ -420,59 +420,72 @@ VCO.Util = {
 	},
 
 	makeGoogleMapsEmbedURL: function(url,api_key) {
-     function determineMapTypeURL(maptype, match) {
-        if (maptype == "view") {
-          console.log(match);
-            var url_root=match[1], lat=match[2], lon=match[3], zoom=match[4];
-            var param_string = VCO.Util.getParamString({
-              "key": api_key,
-              "center": lat + "," + lon,
-              "zoom": zoom
-            });
-        } else if (maptype == "place") {
-          console.log(match);
-            var url_root=match[1], dropped_pin=match[2], lat=match[3], lon=match[4], zoom=match[5];
-            var param_string = VCO.Util.getParamString({
-              "q": dropped_pin,
-              "key": api_key,
-              "zoom": zoom
-            });
-        } else if (maptype == "directions") {
-          console.log(match);
-            var url_root=match[1], origin=match[2], destination=match[3], lat=match[4], lon=match[5], zoom=match[6];
-            var param_string = VCO.Util.getParamString({
-              "origin": origin,
-              "destination": destination,
-              "key": api_key,
-              "center": lat + "," + lon,
-              "zoom": zoom
-            });
-
-        } else if (maptype == "search") {
-          console.log(match);
-            var url_root=match[1], search=match[2], lat=match[3], lon=match[4], zoom=match[5];
-            var param_string = VCO.Util.getParamString({
-              "q": search,
-              "key": api_key,
-              "center": lat + "," + lon,
-              "zoom": zoom
-            });
-
+    var Streetview = false;
+    function determineMapMode(url){
+          function parseDisplayMode(display_mode, param_string) {
+            if (display_mode.slice(-1) == "z") {
+                param_string["zoom"] = display_mode;
+            } else if (display_mode.slice(-1) == "m") {
+                console.log(display_mode);
+            } else if (display_mode.slice(-1) == "t") {
+                Streetview = true;
+                streetview_params = display_mode.split(",");
+                param_string["fov"] = streetview_params[1].slice(0,-1);
+                param_string["pitch"] = streetview_params[3].slice(0,-1);
+                param_string["heading"] = streetview_params[2].slice(0,-1);
+                // streetview uses "location" instead of "center"
+                param_string["location"] = param_string["center"];
+                delete param_string["center"];
+            }
+            return param_string;
+          }
+          function determineMapModeURL(mapmode, match) {
+            if (mapmode == "view") {
+                var url_root=match[1], lat=match[2], lon=match[3], display_mode=match[4];
+                var param_string = {
+                  "key": api_key,
+                  "center": lat + "," + lon
+                };
+            } else if (mapmode == "place") {
+                var url_root=match[1], dropped_pin=match[2], lat=match[3], lon=match[4], display_mode=match[5];
+                // The center paramater is supported in theory for all modes but fails in fact for place
+                // see: http://stackoverflow.com/a/25239518
+                var param_string = {
+                  "key": api_key,
+                  "q": dropped_pin
+                };
+            } else if (mapmode == "directions") {
+                var url_root=match[1], origin=match[2], destination=match[3], lat=match[4], lon=match[5], display_mode=match[6];
+                var param_string = {
+                  "key": api_key,
+                  "center": lat + "," + lon,
+                  "origin": origin,
+                  "destination": destination
+                };
+            } else if (mapmode == "search") {
+                var url_root=match[1], search=match[2], lat=match[3], lon=match[4], display_mode=match[5];
+                var param_string = {
+                  "key": api_key,
+                  "center": lat + "," + lon,
+                  "q": search
+                };
+            }
+            parseDisplayMode(display_mode, param_string);
+            if (Streetview == true) {
+                mapmode = "streetview";
+            }
+            return (url_root + "/embed/v1/" + mapmode + VCO.Util.getParamString(param_string));
         }
-        console.log(param_string);
-        return (url_root + "/embed/v1/" + maptype + param_string);
-    }
 
-    function determineMapType(url){
-        maptype = "view";
+        mapmode = "view";
         if (url.match(regexes["place"])) {
-            maptype = "place";
+            mapmode = "place";
         } else if (url.match(regexes["directions"])) {
-            maptype = "directions";
+            mapmode = "directions";
         } else if (url.match(regexes["search"])) {
-            maptype = "search";
+            mapmode = "search";
         }
-        return determineMapTypeURL(maptype, url.match(regexes[maptype]));
+        return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
     }
 
     // Set up regex parts to make updating these easier if Google changes them
@@ -495,7 +508,7 @@ VCO.Util = {
         directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
         search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source)
     };
-    return determineMapType(url);
+    return determineMapMode(url);
 	}
 };
 
@@ -6947,7 +6960,7 @@ VCO.Media.Map = VCO.Media.extend({
         this.mapframe.height      = "100%";
         this.mapframe.frameBorder = "0";
         this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
-        
+        console.log(this.mapframe.src);
         // After Loaded
         this.onLoaded();
     },
