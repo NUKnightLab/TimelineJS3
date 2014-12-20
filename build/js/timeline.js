@@ -426,7 +426,10 @@ VCO.Util = {
             if (display_mode.slice(-1) == "z") {
                 param_string["zoom"] = display_mode;
             } else if (display_mode.slice(-1) == "m") {
-                console.log(display_mode);
+                // TODO: make this somehow interpret the correct zoom level
+                // until then fake it by using Google's default zoom level
+                param_string["zoom"] = 14;
+                param_string["maptype"] = "satellite";
             } else if (display_mode.slice(-1) == "t") {
                 Streetview = true;
                 streetview_params = display_mode.split(",");
