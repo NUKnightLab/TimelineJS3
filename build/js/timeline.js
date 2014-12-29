@@ -421,64 +421,63 @@ VCO.Util = {
 
 	makeGoogleMapsEmbedURL: function(url,api_key) {
     var Streetview = false;
+
     function determineMapMode(url){
           function parseDisplayMode(display_mode, param_string) {
+            // Set the zoom param
             if (display_mode.slice(-1) == "z") {
                 param_string["zoom"] = display_mode;
+            // Set the maptype to something other than "roadmap"
             } else if (display_mode.slice(-1) == "m") {
                 // TODO: make this somehow interpret the correct zoom level
                 // until then fake it by using Google's default zoom level
                 param_string["zoom"] = 14;
                 param_string["maptype"] = "satellite";
+            // Set all the fun streetview params
             } else if (display_mode.slice(-1) == "t") {
                 Streetview = true;
-                streetview_params = display_mode.split(",");
-                param_string["fov"] = streetview_params[1].slice(0,-1);
-                param_string["pitch"] = streetview_params[3].slice(0,-1);
-                param_string["heading"] = streetview_params[2].slice(0,-1);
                 // streetview uses "location" instead of "center"
-                param_string["location"] = param_string["center"];
-                delete param_string["center"];
+                // "place" mode doesn't have the center param, so we may need to grab that now
+                if (mapmode == "place") {
+                    var center = url.match(regexes["place"])[3] + "," + url.match(regexes["place"])[4];
+                } else {
+                    var center = param_string["center"];
+                    delete param_string["center"];
+                }
+                // Clear out all the other params -- this is so hacky
+                param_string = {};
+                param_string["location"] = center;
+                streetview_params = display_mode.split(",");
+                for (param in param_defs["streetview"]) {
+                    var i = parseInt(param) + 1;
+                    param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                }
+
             }
             return param_string;
           }
           function determineMapModeURL(mapmode, match) {
-            if (mapmode == "view") {
-                var url_root=match[1], lat=match[2], lon=match[3], display_mode=match[4];
-                var param_string = {
-                  "key": api_key,
-                  "center": lat + "," + lon
-                };
-            } else if (mapmode == "place") {
-                var url_root=match[1], dropped_pin=match[2], lat=match[3], lon=match[4], display_mode=match[5];
-                // The center paramater is supported in theory for all modes but fails in fact for place
-                // see: http://stackoverflow.com/a/25239518
-                var param_string = {
-                  "key": api_key,
-                  "q": dropped_pin
-                };
-            } else if (mapmode == "directions") {
-                var url_root=match[1], origin=match[2], destination=match[3], lat=match[4], lon=match[5], display_mode=match[6];
-                var param_string = {
-                  "key": api_key,
-                  "center": lat + "," + lon,
-                  "origin": origin,
-                  "destination": destination
-                };
-            } else if (mapmode == "search") {
-                var url_root=match[1], search=match[2], lat=match[3], lon=match[4], display_mode=match[5];
-                var param_string = {
-                  "key": api_key,
-                  "center": lat + "," + lon,
-                  "q": search
-                };
+            var param_string = {};
+            var url_root = match[1], display_mode = match[match.length - 1];
+            for (param in param_defs[mapmode]) {
+                // skip first 2 matches, because they reflect the URL and not params
+                var i = parseInt(param)+2;
+                if (param_defs[mapmode][param] == "center") {
+                  param_string[param_defs[mapmode][param]] = match[i] + "," + match[++i];
+                } else {
+                  param_string[param_defs[mapmode][param]] = match[i];
+                }
             }
-            parseDisplayMode(display_mode, param_string);
+
+            param_string = parseDisplayMode(display_mode, param_string);
+            param_string["key"] = api_key;
             if (Streetview == true) {
                 mapmode = "streetview";
+            } else {
             }
             return (url_root + "/embed/v1/" + mapmode + VCO.Util.getParamString(param_string));
         }
+
 
         mapmode = "view";
         if (url.match(regexes["place"])) {
@@ -489,7 +488,19 @@ VCO.Util = {
             mapmode = "search";
         }
         return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
+
     }
+
+    // These must be in the order they appear in the original URL
+    // "key" param not included since it's not in the URL structure
+    // Streetview "location" param not included since it's captured as "center"
+    var param_defs = {
+        "view": ["center"],
+        "place": ["q"],
+        "directions": ["origin", "destination", "center"],
+        "search": ["q", "center"],
+        "streetview": ["fov", "heading", "pitch"]
+    };
 
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
@@ -501,7 +512,7 @@ VCO.Util = {
 
     // Capture the parameters that determine what map tiles to use
     // In roadmap view, mode URLs include zoom paramater (e.g. "14z")
-    // In satellite (or "earth") view, URLs include a parameter (e.g. "84511m")
+    // In satellite (or "earth") view, URLs include a distance parameter (e.g. "84511m")
     // In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
     var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
 
