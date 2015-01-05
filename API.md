@@ -20,7 +20,7 @@ Event is fired when the user clicks the control to return to the beginning of th
 
 Event is fired when the current slide changes.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  I don't necessarily know why we would need the previous index though.
 
-`colorchange`
+`color_change`
 
 * uniqueid: string, id of the new current slide
 
