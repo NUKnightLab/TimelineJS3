@@ -2,13 +2,43 @@
 
 ### Events
 
-`back_to_start`
+```javascript
+timeline.on(eventtype function(data) {
 
-There is a `back_to_start` event fired when the user clicks to control to return to the beginning of the timeline.  The event data contains the id of the new current slide.
+});
+```
+
+ `back_to_start`
+
+* uniqueid: string, id of the new current slide
+
+Event is fired when the user clicks the control to return to the beginning of the timeline.  
 
 `change`
 
-There is a `change` event fired when the current slide changes.  The event data contains the id of the new current slide.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  
+* uniqueid: string, id of the new current slide
+
+Event is fired when the current slide changes.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  I don't necessarily know why we would need the previous index though.
+
+`hash_updated`
+
+* uniqueid:  string, id of the new current slide
+* hashbookmark: string, the hash
+
+Event is fired when the hashbookmark in the url bar is updated.
+
+`zoom_in`
+
+* zoom_level: integer, current zoom level
+
+Event is fired when user zooms in the time navigator.
+
+`zoom_out`
+
+* zoom_level: integer, current zoom level
+
+Fired when user zooms out the time navigator.
+
 
 ### Control
 
@@ -69,6 +99,5 @@ Get data for slide by index or id.  Slide data is stored in `Timeline.config.sli
 `getSlideId(n)`
 
 Get VCO.Slide object for slide by index or id.  Slide objects are stored in `Timeline._storyslider._slides`
-
 
 
