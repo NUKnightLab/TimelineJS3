@@ -2,9 +2,13 @@
 
 ### Events
 
+`back_to_start`
+
+There is a `back_to_start` event fired when the user clicks to control to return to the beginning of the timeline.  The event data contains the id of the new current slide.
+
 `change`
 
-There is already a `change` event fired by StorySlider and captured by Timeline when the current slide changes.  The latter then fires a `change` event of it's own, where the event data contains the id of the new current slide.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  
+There is a `change` event fired when the current slide changes.  The event data contains the id of the new current slide.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  
 
 ### Control
 
