@@ -39,7 +39,7 @@ Event is fired when the hashbookmark in the url bar is updated.
 
 `loaded`
 
-* scale: string set to "javascript" or "cosmological" (this date scale)
+* scale: "javascript" or "cosmological", the type of date scale
 * slides: array, the processed slide data
 
 Event is fired after story slider and time navigator have loaded.
