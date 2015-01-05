@@ -20,12 +20,29 @@ Event is fired when the user clicks the control to return to the beginning of th
 
 Event is fired when the current slide changes.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  I don't necessarily know why we would need the previous index though.
 
+`colorchange`
+
+* uniqueid: string, id of the new current slide
+
+Event is fired when the background of the current slide changes?
+
+`dataloaded`
+
+Event is fired after data has been loaded.
+
 `hash_updated`
 
 * uniqueid:  string, id of the new current slide
 * hashbookmark: string, the hash
 
 Event is fired when the hashbookmark in the url bar is updated.
+
+`loaded`
+
+* scale: string set to "javascript" or "cosmological" (this date scale)
+* slides: array, the processed slide data
+
+Event is fired after story slider and time navigator have loaded.
 
 `zoom_in`
 
