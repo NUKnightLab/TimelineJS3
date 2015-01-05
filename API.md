@@ -10,7 +10,7 @@ var timeline = new VCO.Timeline(...);
 // Set event handlers
 // event_name = string, name of the event, e.g. "change"
 // data = JavaScript object containing event-specific properties listed below
-timeline.on(event_name function(data) {
+timeline.on(event_name, function(data) {
     // handle event
 });
 ```
