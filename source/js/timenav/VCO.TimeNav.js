@@ -183,7 +183,6 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_createMarkers: function(array) { 
 		for (var i = 0; i < array.length; i++) {
-			array[i].marker_number = i;
 			this._createMarker(array[i]);
 		};
 		

@@ -37,7 +37,6 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Data
 		this.data = {
 			uniqueid: 			"",
-			marker_number: 		0,
 			background: 		null,
 			date: {
 				year:			0,
@@ -212,7 +211,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
-		this.fire("markerclick", {marker_number: this.data.marker_number, uniqueid:this.data.uniqueid});
+		this.fire("markerclick", {uniqueid:this.data.uniqueid});
 	},
 	
 	/*	Private Methods
