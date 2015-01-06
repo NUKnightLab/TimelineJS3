@@ -25,7 +25,7 @@ Event is fired when the user clicks the control to return to the beginning of th
 
 * uniqueid: string, id of the new current slide
 
-Event is fired when the current slide changes.  Maybe change this so that the event data consists for the previous and current slide index and/or ids.  I don't necessarily know why we would need the previous index though.
+Event is fired when the current slide changes.
 
 `color_change`
 
@@ -76,8 +76,6 @@ Go to the slide at index `n`.
 
 Go to the slide with id `n`.
 
-####Suggested functions
-
 `Timeline.goToNext()`
 
 Go to the next slide
@@ -93,6 +91,9 @@ Go to the first slide
 `Timeline.goToEnd()`
 
 Go to the last slide
+
+
+####Suggested functions
 
 `Timeline.goToTitle()`
 

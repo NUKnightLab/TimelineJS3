@@ -536,9 +536,15 @@ VCO.Timeline = VCO.Class.extend({
 		return _n;
 	},
 	
+	/*	Set the current slide index
+	================================================== */
 	_getCurrentSlideIndex: function() {
-	    return VCO.Util.findArrayNumberByUniqueID(this.current_id, 
-	        this.config.slides, "uniqueid");
+	    for(var i = 0; i < this.config.slides.length; i++) {
+	        if(this.current_id == this.config.slides[i].uniqueid) {
+	            return i;
+	        }
+	    }
+	    return 0;
 	},
 	
 	/*	Events
