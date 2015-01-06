@@ -66,8 +66,6 @@ Fired when user zooms out the time navigator.
 
 ### Control
 
-####Existing functions
-
 `Timeline.goTo(n)`
 
 Go to the slide at index `n`.
@@ -93,7 +91,7 @@ Go to the first slide
 Go to the last slide
 
 
-####Suggested functions
+####TO DO?
 
 `Timeline.goToTitle()`
 
@@ -111,7 +109,7 @@ Remove slide at index `n`.
 
 Remove slide with id `n`.
 
-### Other
+### Data Access
 
 `getData(n)`
 
