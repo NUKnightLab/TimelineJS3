@@ -223,9 +223,9 @@ VCO.Timeline = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
-	goToId: function(n) {
-		if (this.current_id != n) {
-			this.current_id = n;
+	goToId: function(id) {
+		if (this.current_id != id) {
+			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
 			this.fire("change", {uniqueid:this.current_id}, this);
@@ -261,6 +261,34 @@ VCO.Timeline = VCO.Class.extend({
 	    this.goTo(this._getSlideIndex(this.current_id) + 1);
 	},
 	
+    /* Maniupluation
+	================================================== */
+	
+	remove: function(n) {
+	    if(n >= 0  && n < this.config.slides.length 
+	    && this.config.slides.length > 1) {
+	        // If removing the current slide, nav to new one first
+            if(this.config.slides[n].uniqueid == this.current_id) {
+                if(n < this.config.slides.length - 1) {
+                    this.goTo(n + 1);
+                } else {
+                    this.goTo(n - 1);
+                }
+            }
+        
+            var slide = this.config.slides.splice(n, 1);
+        
+            // TODO: update this._storyslider
+        
+            this._timenav.destroyMarker(n);
+            this._timenav._updateDrawTimeline(false);
+        }
+	},
+	
+	removeId: function(id) {
+	    this.remove(this._getSlideIndex(id));
+	},
+    
 	/* Get slide data
 	================================================== */
 

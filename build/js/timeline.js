@@ -9003,16 +9003,11 @@ VCO.TimeNav = VCO.Class.extend({
 		//marker.off('added', this._onMarkerRemoved, this);
 	},
 	
-	_destroyMarker: function(marker) {
-	    this._removeMarker(marker);
-	    for(var i = 0; i < this._markers.length; i++) {
-	        if(this._markers[i] == marker) {
-	            this._markers.splice(i, 1);
-	            break;
-	        }	    
-	    }	
+	_destroyMarker: function(n) {
+	    this._removeMarker(this._markers[n]);
+	    this._markers.splice(n, 1);
 	},
-	
+		
 	_positionMarkers: function(fast) {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
@@ -9058,18 +9053,24 @@ VCO.TimeNav = VCO.Class.extend({
 		};
 	},
 	
-	/*	Navigation
-	================================================== */
-	goToId: function(n, fast, css_animation) {
+	_findMarkerIndex: function(n) {	
+	    var _n = n;
 		if (typeof n == 'string' || n instanceof String) {
 			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid");
-		} else {
-			_n = n;
-		}
-		
-		this.goTo(_n, fast, css_animation);		
+		} 
+		return _n;
 	},
 	
+	destroyMarker: function(n) {
+	    this._destroyMarker(n);
+	},
+	
+	destroyMarkerId: function(id) {
+	    this.destroyMarker(this._findMarkerIndex(id));
+	},
+	
+	/*	Navigation
+	================================================== */	
 	goTo: function(n, fast, css_animation) {		
 		var self = 	this,
 			_ease = this.options.ease,
@@ -9104,9 +9105,11 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		this.current_id = this._markers[n].data.uniqueid;
 	},
-	
-	
-	
+
+	goToId: function(id, fast, css_animation) {
+		this.goTo(this._findMarkerIndex(id), fast, css_animation);		
+	},
+		
 	/*	Events
 	================================================== */
 	_onLoaded: function() {
@@ -10393,9 +10396,9 @@ VCO.Timeline = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
-	goToId: function(n) {
-		if (this.current_id != n) {
-			this.current_id = n;
+	goToId: function(id) {
+		if (this.current_id != id) {
+			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
 			this.fire("change", {uniqueid:this.current_id}, this);
@@ -10431,6 +10434,34 @@ VCO.Timeline = VCO.Class.extend({
 	    this.goTo(this._getSlideIndex(this.current_id) + 1);
 	},
 	
+    /* Maniupluation
+	================================================== */
+	
+	remove: function(n) {
+	    if(n >= 0  && n < this.config.slides.length 
+	    && this.config.slides.length > 1) {
+	        // If removing the current slide, nav to new one first
+            if(this.config.slides[n].uniqueid == this.current_id) {
+                if(n < this.config.slides.length - 1) {
+                    this.goTo(n + 1);
+                } else {
+                    this.goTo(n - 1);
+                }
+            }
+        
+            var slide = this.config.slides.splice(n, 1);
+        
+            // TODO: update this._storyslider
+        
+            this._timenav.destroyMarker(n);
+            this._timenav._updateDrawTimeline(false);
+        }
+	},
+	
+	removeId: function(id) {
+	    this.remove(this._getSlideIndex(id));
+	},
+    
 	/* Get slide data
 	================================================== */
 
