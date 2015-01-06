@@ -254,12 +254,43 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	goToPrev: function() {
-	    this.goTo(this._getCurrentSlideIndex() - 1);
+	    this.goTo(this._getSlideIndex(this.current_id) - 1);
 	},
 	
 	goToNext: function() {
-	    this.goTo(this._getCurrentSlideIndex() + 1);
+	    this.goTo(this._getSlideIndex(this.current_id) + 1);
 	},
+	
+	/* Get slide data
+	================================================== */
+
+    getData: function(n) {
+        if(n >= 0 && n < this.config.slides.length) {
+            return this.config.slides[n];
+        }
+        
+        return null;
+    },
+
+    getDataId: function(id) {
+        return this.getData(this._getSlideIndex(id));
+    },
+
+	/* Get slide object
+	================================================== */
+
+    getSlide: function(n) {
+        if(n >= 0 && n < this.config.slides.length) {
+            return this._storyslider._slides[n];
+        }
+        
+        return null;
+    },
+
+    getSlideId: function(id) {
+        return this.getSlide(this._getSlideIndex(id));
+    },
+   
 	
 	/*	Display
 	================================================== */
@@ -536,15 +567,15 @@ VCO.Timeline = VCO.Class.extend({
 		return _n;
 	},
 	
-	/*	Set the current slide index
+	/*	Get the current slide index
 	================================================== */
-	_getCurrentSlideIndex: function() {
+	_getSlideIndex: function(id) {
 	    for(var i = 0; i < this.config.slides.length; i++) {
-	        if(this.current_id == this.config.slides[i].uniqueid) {
+	        if(id == this.config.slides[i].uniqueid) {
 	            return i;
 	        }
 	    }
-	    return 0;
+	    return -1;
 	},
 	
 	/*	Events
