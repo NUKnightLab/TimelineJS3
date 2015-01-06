@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TimelineJS: API Test</title>
+    <meta charset="utf-8">
+    <meta name="description" content="TimelineJS Embed">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- CSS-->
+    <link rel="stylesheet" href="build/css/timeline.css?v1">
+    <!--FONT-->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+    <!-- Style-->
+    <style>
+      html, body {
+      	height:100%;
+      	width:100%;
+      	padding: 0px;
+      	margin: 0px;
+      }
+      .vco-timeline {
+      
+      }
+      
+      #timeline {
+        position: asbolute;
+        left: 0;
+        right: 0;
+        top: 100px;
+        bottom: 0;
+       }
+      #panel {
+        background: #fdfdfd;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 100px;
+        padding: 4px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+      
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    
+    -->
+  </head>
+  <body>
+    <div id="timeline"></div>
+    <div id="panel">
+        <div style="display: inline-block;width: 300px;">
+            <button id="goToStart">goToStart</button>
+            <button id="goToPrev">goToPrev</button>
+            <button id="goToNext">goToNext</button>
+            <button id="goToEnd">goToEnd</button>
+            <br>
+            <input id="goToVal" type="text"/><button id="goTo">goTo</button>
+            <br>            
+            <input id="goToIdVal" type="text" /><button id="goToId">goToId</button>
+        </div>
+        <div style="display: inline-block;width: 250px;">
+            <em>objects are output to console...</em>
+            <br>
+            <input id="getDataVal" type="text"/><button id="getData">getData</button>
+            <br>
+            <input id="getDataIdVal" type="text" /><button id="getDataId">getDataId</button>
+        </div>
+        <div style="display: inline-block;width: 250px;">
+            <input id="getSlideVal" type="text"/><button id="getSlide">getSlide</button>
+            <br>
+            <input id="getSlideIdVal" type="text" /><button id="getSlideId">getSlideId</button>
+        </div>
+    </div>
+    
+    <!-- JavaScript-->
+    <script src="build/js/timeline.js"></script>
+    <script>
+    
+    $('#goToStart').click(function(event) {
+        timeline.goToStart();
+    });
+    $('#goToPrev').click(function(event) {
+        timeline.goToPrev();
+    });
+    $('#goToNext').click(function(event) {
+        timeline.goToNext();
+    });
+    $('#goToEnd').click(function(event) {
+        timeline.goToEnd();
+    });
+    $('#goTo').click(function(event) {
+         timeline.goTo(parseInt($('#goToVal').val())); 
+    });  
+    $('#goToId').click(function(event) {
+         timeline.goToId($('#goToIdVal').val()); 
+    });    
+    $('#getData').click(function(event) {
+        alert(JSON.stringify(timeline.getData(parseInt($('#getDataVal').val()))));
+    });
+    $('#getDataId').click(function(event) {
+        alert(JSON.stringify(timeline.getDataId($('#getDataIdVal').val())));
+    });
+    $('#getSlide').click(function(event) {
+        console.log(timeline.getSlide(parseInt($('#getSlideVal').val())));
+    });
+    $('#getSlideId').click(function(event) {
+        console.log(timeline.getSlideId($('#getSlideIdVal').val()));
+    });
+    
+    // List of events to look for
+    var event_list = [
+        'back_to_start',
+        'change',
+        'color_change',
+        'dataloaded',
+        'hash_updated',
+        'loaded',
+        'zoom_in',
+        'zoom_out'
+    ];
+    
+    // Log event details
+    function log_event(data) {
+        var s = 'EVENT='+data.type;       
+        for(var key in data) {
+            if(key != 'target' && key != 'type') {
+                s += ', '+key+'='+data[key];
+            }
+        }    
+        console.log(s);
+    }
+        
+    var timeline = new VCO.Timeline('timeline', 'compiled/examples/marktwain_juked.json', {});
+    
+    // Set event handlers
+    for(var i = 0; i < event_list.length; i++) {
+        timeline.on(event_list[i], log_event);
+    }
+
+    window.onresize = function(event) {
+        timeline.updateDisplay();
+    }
+    </script>
+  </body>
+</html>
