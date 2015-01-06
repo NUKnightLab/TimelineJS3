@@ -8856,7 +8856,6 @@ VCO.TimeNav = VCO.Class.extend({
 		this._markers = [];
 		
 		// Current Marker
-		this.current_marker = 0;
 		this.current_id = "";
 		
 		// TimeScale
@@ -8879,6 +8878,8 @@ VCO.TimeNav = VCO.Class.extend({
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
 		
+	    // Set default current marker
+	   
 		if (init) {
 			this.init();
 		}
@@ -8952,7 +8953,7 @@ VCO.TimeNav = VCO.Class.extend({
 
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
-		this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
+		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
 	
 	zoomOut: function(n) {
@@ -8971,7 +8972,7 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			this.options.scale_factor = new_scale;
 			//this._updateDrawTimeline(true);
-			this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
+			this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 		}
 		
 	},
@@ -9067,23 +9068,17 @@ VCO.TimeNav = VCO.Class.extend({
 			_n = n;
 		}
 		
-		this.goTo(_n, fast, css_animation);
-		
+		this.goTo(_n, fast, css_animation);		
 	},
 	
-	goTo: function(n, fast, css_animation) {
-		
+	goTo: function(n, fast, css_animation) {		
 		var self = 	this,
 			_ease = this.options.ease,
 			_duration = this.options.duration;
 		
-
-		
 		// Set Marker active state
 		this._resetMarkersActive();
 		this._markers[n].setActive(true);
-		
-		
 		
 		// Stop animation
 		if (this.animator) {
@@ -9106,11 +9101,8 @@ VCO.TimeNav = VCO.Class.extend({
 					easing: 	_ease
 				});
 			}
-			
-			
 		}
 		
-		this.current_marker = n;
 		this.current_id = this._markers[n].data.uniqueid;
 	},
 	
@@ -9220,7 +9212,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
 		
 		// Go to the current slide
-		this.goTo(this.current_marker, true);
+		this.goToId(this.current_id, true);
 	},
 	
 	_drawTimeline: function(fast) {
