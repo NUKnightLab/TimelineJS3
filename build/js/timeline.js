@@ -9132,8 +9132,8 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerClick: function(e) {
-		// Go to the current marker
-		this.goTo(e.marker_number);
+		// Go to the clicked marker
+		this.goToId(e.uniqueid);
 		this.fire("change", {uniqueid: e.uniqueid});
 	},
 	
