@@ -8832,114 +8832,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		// Data Object
-		this.data = {
-			uniqueid: 				"",
-			slides: 				[
-				{
-					uniqueid: 				"",
-					background: {			// OPTIONAL
-						url: 				null,
-						color: 				null,
-						opacity: 			50
-					},
-					date: 					null,
-					location: {
-						lat: 				-9.143962,
-						lon: 				38.731094,
-						zoom: 				13,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-					},
-					text: {
-						headline: 			"Slideshow Example",
-						text: 				"Example slideshow slide "
-					},
-					media: [
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						}
-					]
-				},
-				{
-					uniqueid: 				"",
-					background: {			// OPTIONAL
-						url: 				null,
-						color: 				null,
-						opacity: 			50
-					},
-					date: 					null,
-					location: {
-						lat: 				-9.143962,
-						lon: 				38.731094,
-						zoom: 				13,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-					},
-					text: {
-						headline: 			"YouTube",
-						text: 				"Just add a link to the video in the media field."
-					},
-					media: {
-						url: 				"http://www.youtube.com/watch?v=lIvftGgps24",
-						credit:				"",
-						caption:			"",
-						link: 				null,
-						link_target: 		null
-					}
-				}
-			]
-		};
+		this.data = {};
 		
 		//Options
 		this.options = {
@@ -10459,7 +10352,8 @@ VCO.Timeline = VCO.Class.extend({
 		};
 		
 		// Current Slide
-		this.current_slide = this.options.start_at_slide;
+		// this.current_slide = this.options.start_at_slide;
+		// no longer using this, track current slide by id only
 		
 		// Animation Objects
 		this.animator_timenav = null;
@@ -10511,11 +10405,32 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	goTo: function(n) {
+	    if(n >= 0 && n < this.config.slides.length) {
+            this.goToId(this.config.slides[n].uniqueid);
+        }
+	    /*
 		if (n != this.current_slide) {
 			this.current_slide = n;
 			this._timenav.goTo(this.current_slide);
 			this._storyslider.goTo(this.current_slide);
 		}
+		*/
+	},
+	
+	goToStart: function() {
+	    this.goTo(0);
+	},
+	
+	goToEnd: function() {
+	    this.goTo(this.config.slides.length - 1);
+	},
+	
+	goToPrev: function() {
+	    this.goTo(this._getCurrentSlideIndex() - 1);
+	},
+	
+	goToNext: function() {
+	    this.goTo(this._getCurrentSlideIndex() + 1);
 	},
 	
 	/*	Display
@@ -10791,6 +10706,11 @@ VCO.Timeline = VCO.Class.extend({
 			_n = n;
 		}
 		return _n;
+	},
+	
+	_getCurrentSlideIndex: function() {
+	    return VCO.Util.findArrayNumberByUniqueID(this.current_id, 
+	        this.config.slides, "uniqueid");
 	},
 	
 	/*	Events

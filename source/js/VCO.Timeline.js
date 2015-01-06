@@ -180,7 +180,8 @@ VCO.Timeline = VCO.Class.extend({
 		};
 		
 		// Current Slide
-		this.current_slide = this.options.start_at_slide;
+		// this.current_slide = this.options.start_at_slide;
+		// no longer using this, track current slide by id only
 		
 		// Animation Objects
 		this.animator_timenav = null;
@@ -232,11 +233,32 @@ VCO.Timeline = VCO.Class.extend({
 	},
 	
 	goTo: function(n) {
+	    if(n >= 0 && n < this.config.slides.length) {
+            this.goToId(this.config.slides[n].uniqueid);
+        }
+	    /*
 		if (n != this.current_slide) {
 			this.current_slide = n;
 			this._timenav.goTo(this.current_slide);
 			this._storyslider.goTo(this.current_slide);
 		}
+		*/
+	},
+	
+	goToStart: function() {
+	    this.goTo(0);
+	},
+	
+	goToEnd: function() {
+	    this.goTo(this.config.slides.length - 1);
+	},
+	
+	goToPrev: function() {
+	    this.goTo(this._getCurrentSlideIndex() - 1);
+	},
+	
+	goToNext: function() {
+	    this.goTo(this._getCurrentSlideIndex() + 1);
 	},
 	
 	/*	Display
@@ -512,6 +534,11 @@ VCO.Timeline = VCO.Class.extend({
 			_n = n;
 		}
 		return _n;
+	},
+	
+	_getCurrentSlideIndex: function() {
+	    return VCO.Util.findArrayNumberByUniqueID(this.current_id, 
+	        this.config.slides, "uniqueid");
 	},
 	
 	/*	Events
