@@ -114,7 +114,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
+	drawTicks: function(timescale, optimal_tick_width) {
 
 		var ticks = timescale.getTicks();
 
