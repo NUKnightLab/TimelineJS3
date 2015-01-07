@@ -32,7 +32,7 @@ timeline.on(event_name, function(data) {
 * uniqueid:  string, id of the new current slide
 * hashbookmark: string, the hash
 
-`loaded` _after story sldie and time navigator have been loaded_
+`loaded` _after story slider and time navigator have been loaded_
 
 * scale: "javascript" or "cosmological", the type of date scale
 * slides: array, the processed slide data
