@@ -50,7 +50,7 @@ VCO.StorySlider = VCO.Class.extend({
 		this._message;
 		
 		// Current Slide
-		this.current_slide = 0;
+		this.current_id = '';
 		
 		// Data Object
 		this.data = {};
@@ -109,22 +109,6 @@ VCO.StorySlider = VCO.Class.extend({
 		this._onLoaded();
 	},
 	
-	/*	Public
-	================================================== */
-	updateDisplay: function(w, h, a, l) {
-		this._updateDisplay(w, h, a, l);
-	},
-	
-	// Create a slide
-	createSlide: function(d) {
-		this._createSlide(d);
-	},
-	
-	// Create Many Slides from an array
-	createSlides: function(array) {
-		this._createSlides(array);
-	},
-	
 	/*	Create Slides
 	================================================== */
 	_createSlides: function(array) {
@@ -147,15 +131,6 @@ VCO.StorySlider = VCO.Class.extend({
 		this._slides.push(slide);
 	},
 	
-	_destroySlide: function(slide) {
-		this._removeSlide(slide);
-		for (var i = 0; i < this._slides.length; i++) {
-			if (this._slides[i] == slide) {
-				this._slides.splice(i, 1);
-			}
-		}
-	},
-	
 	_addSlide:function(slide) {
 		slide.addTo(this._el.slider_item_container);
 		slide.on('added', this._onSlideAdded, this);
@@ -167,22 +142,48 @@ VCO.StorySlider = VCO.Class.extend({
 		slide.off('added', this._onSlideAdded, this);
 		slide.off('background_change', this._onBackgroundChange);
 	},
-	
-	/*	Message
-	================================================== */
-	
-	/*	Navigation
-	================================================== */
-	goToId: function(n, fast, displayupdate) {
+
+	_destroySlide: function(n) {
+		this._removeSlide(this._slides[n]);
+		this._slides.splice(n, 1);
+	},
+		
+    _findSlideIndex: function(n) {
+        var _n = n;
 		if (typeof n == 'string' || n instanceof String) {
 			_n = VCO.Util.findArrayNumberByUniqueID(n, this._slides, "uniqueid");
-		} else {
-			_n = n;
 		}
-		this.goTo(_n, fast, displayupdate);
-		
+		return _n;
+    },
+
+	/*	Public
+	================================================== */
+	updateDisplay: function(w, h, a, l) {
+		this._updateDisplay(w, h, a, l);
 	},
 	
+	// Create a slide
+	createSlide: function(d) {
+		this._createSlide(d);
+	},
+	
+	// Create Many Slides from an array
+	createSlides: function(array) {
+		this._createSlides(array);
+	},
+	    
+	// Destroy slide by index
+	destroySlide: function(n) {
+	    this._destroySlide(n);
+	},
+	
+	// Destroy slide by id
+	destroySlideId: function(id) {
+	    this.destroySlide(this._findSlideIndex(id));
+	},
+		
+	/*	Navigation
+	================================================== */
 	goTo: function(n, fast, displayupdate) {
 		var self = this;
 		
@@ -198,11 +199,9 @@ VCO.StorySlider = VCO.Class.extend({
 			this._slides[i].setActive(false);
 		}
 		
-		if (n < this._slides.length && n >= 0) {
-			
-			
-			this.current_slide = n;
-			
+		if (n < this._slides.length && n >= 0) {			
+			this.current_id = this._slides[n].data.uniqueid;
+
 			// Stop animation
 			if (this.animator) {
 				this.animator.stop();
@@ -220,56 +219,56 @@ VCO.StorySlider = VCO.Class.extend({
 					duration: 	this.options.duration,
 					easing: 	this.options.ease,
 					complete: 	this._onSlideChange(displayupdate)
-				});
-				
+				});				
 			}
 			
 			// Set Slide Active State
-			this._slides[this.current_slide].setActive(true);
+			this._slides[n].setActive(true);
 			
 			// Update Navigation and Info
-			if (this._slides[this.current_slide + 1]) {
+			if (this._slides[n + 1]) {
 				this.showNav(this._nav.next, true);
-				this._nav.next.update(this.getNavInfo(this._slides[this.current_slide + 1]));
+				this._nav.next.update(this.getNavInfo(this._slides[n + 1]));
 			} else {
 				this.showNav(this._nav.next, false);
 			}
-			if (this._slides[this.current_slide - 1]) {
+			if (this._slides[n - 1]) {
 				this.showNav(this._nav.previous, true);
-				this._nav.previous.update(this.getNavInfo(this._slides[this.current_slide - 1]));
+				this._nav.previous.update(this.getNavInfo(this._slides[n - 1]));
 			} else {
 				this.showNav(this._nav.previous, false);
 			}
-			
-			
+							
 			// Preload Slides
 			this.preloadTimer = setTimeout(function() {
-				self.preloadSlides();
-			}, this.options.duration);
-			
+				self.preloadSlides(n);
+			}, this.options.duration);			
 		}
 	},
-	
-	preloadSlides: function() {
-		if (this._slides[this.current_slide + 1]) {
-			this._slides[this.current_slide + 1].loadMedia();
-			this._slides[this.current_slide + 1].scrollToTop();
+
+	goToId: function(id, fast, displayupdate) {
+		this.goTo(this._findSlideIndex(id), fast, displayupdate);		
+	},
+		
+	preloadSlides: function(n) {
+		if (this._slides[n + 1]) {
+			this._slides[n + 1].loadMedia();
+			this._slides[n + 1].scrollToTop();
 		}
-		if (this._slides[this.current_slide + 2]) {
-			this._slides[this.current_slide + 2].loadMedia();
-			this._slides[this.current_slide + 2].scrollToTop();
+		if (this._slides[n + 2]) {
+			this._slides[n + 2].loadMedia();
+			this._slides[n + 2].scrollToTop();
 		}
-		if (this._slides[this.current_slide - 1]) {
-			this._slides[this.current_slide - 1].loadMedia();
-			this._slides[this.current_slide - 1].scrollToTop();
+		if (this._slides[n - 1]) {
+			this._slides[n - 1].loadMedia();
+			this._slides[n - 1].scrollToTop();
 		}
-		if (this._slides[this.current_slide - 2]) {
-			this._slides[this.current_slide - 2].loadMedia();
-			this._slides[this.current_slide - 2].scrollToTop();
+		if (this._slides[n - 2]) {
+			this._slides[n - 2].loadMedia();
+			this._slides[n - 2].scrollToTop();
 		}
 	},
-	
-	
+		
 	getNavInfo: function(slide) {
 		var n = {
 			title: "",
@@ -295,18 +294,20 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	next: function() {
-		if ((this.current_slide +1) < (this._slides.length)) {
-			this.goTo(this.current_slide +1);
+	    var n = this._findSlideIndex(this.current_id);	    
+		if ((n + 1) < (this._slides.length)) {
+			this.goTo(n + 1);
 		} else {
-			this.goTo(this.current_slide);
+			this.goTo(n);
 		}
 	},
 	
 	previous: function() {
-		if (this.current_slide -1 >= 0) {
-			this.goTo(this.current_slide -1);
+	    var n = this._findSlideIndex(this.current_id);
+		if (n - 1 >= 0) {
+			this.goTo(n - 1);
 		} else {
-			this.goTo(this.current_slide);
+			this.goTo(n);
 		}
 	},
 	
@@ -402,7 +403,7 @@ VCO.StorySlider = VCO.Class.extend({
 		};
 		
 		// Go to the current slide
-		this.goTo(this.current_slide, true, true);
+		this.goToId(this.current_id, true, true);
 	},
 	
 	/*	Init
@@ -478,7 +479,8 @@ VCO.StorySlider = VCO.Class.extend({
 	/*	Events
 	================================================== */
 	_onBackgroundChange: function(e) {
-		var slide_background = this._slides[this.current_slide].getBackground();
+	    var n = this._findSlideIndex(this.current_id);
+		var slide_background = this._slides[n].getBackground();
 		this.changeBackground(e);
 		this.fire("colorchange", slide_background);
 	},
@@ -488,7 +490,7 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_onSwipeNoDirection: function(e) {
-		this.goTo(this.current_slide);
+		this.goToId(this.current_id);
 	},
 	
 	_onNavigation: function(e) {
@@ -510,10 +512,9 @@ VCO.StorySlider = VCO.Class.extend({
 		this.fire("slideAdded", this.data);
 	},
 	
-	_onSlideChange: function(displayupdate) {
-		
+	_onSlideChange: function(displayupdate) {		
 		if (!displayupdate) {
-			this.fire("change", {current_slide:this.current_slide, uniqueid:this._slides[this.current_slide].data.uniqueid});
+			this.fire("change", {uniqueid: this.current_id});
 		}
 	},
 	
