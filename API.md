@@ -15,112 +15,85 @@ timeline.on(event_name, function(data) {
 });
 ```
 
- `back_to_start`
+ `back_to_start` _when user clicks control to return to beginning of timeline_
+ 
+ `change` _when the current slide changes_
 
 * uniqueid: string, id of the new current slide
 
-Event is fired when the user clicks the control to return to the beginning of the timeline.  
-
-`change`
+`color_change` _when background of current slide changes_
 
 * uniqueid: string, id of the new current slide
 
-Event is fired when the current slide changes.
+`dataloaded` _after data has been loaded_
 
-`color_change`
-
-* uniqueid: string, id of the new current slide
-
-Event is fired when the background of the current slide changes?
-
-`dataloaded`
-
-Event is fired after data has been loaded.
-
-`hash_updated`
+`hash_updated` _when the hashbookmack in the url bar is updated_
 
 * uniqueid:  string, id of the new current slide
 * hashbookmark: string, the hash
 
-Event is fired when the hashbookmark in the url bar is updated.
-
-`loaded`
+`loaded` _after story slider and time navigator have been loaded_
 
 * scale: "javascript" or "cosmological", the type of date scale
 * slides: array, the processed slide data
 
-Event is fired after story slider and time navigator have loaded.
+`zoom_in` _when user zooms in the time navigator_
 
-`zoom_in`
-
-* zoom_level: integer, current zoom level
-
-Event is fired when user zooms in the time navigator.
-
-`zoom_out`
+`zoom_out` _when user zooms out the time navigator_
 
 * zoom_level: integer, current zoom level
 
-Fired when user zooms out the time navigator.
 
+### Navigation
 
-### Control
+`Timeline.goTo(<int index>)`
 
-`Timeline.goTo(n)`
+`Timeline.goToId(<string id>)`
 
-Go to the slide at index `n`.
-
-`Timeline.goToId(n)`
-
-Go to the slide with id `n`.
+Go to slide.
 
 `Timeline.goToNext()`
 
-Go to the next slide
-
 `Timeline.goToPrev()`
 
-Go to the previous slide
+Go to the next/previous slide
 
 `Timeline.goToStart()`
 
-Go to the first slide
-
 `Timeline.goToEnd()`
 
-Go to the last slide
+Go to the first/last slide
 
+`Timeline.remove(<int index>)`
+
+`Timeline.removeId(<string id>)`
+
+Remove slide.
+
+
+### Data Access
+
+`getData(<int index>)`
+
+`getDataId(<string id>)`
+
+Get data for slide.
+
+`getSlide(<int index>)`
+
+`getSlideId(<string id>)`
+
+Get VCO.Slide object for slide.
 
 ####TO DO?
 
 `Timeline.goToTitle()`
 
-This was mentioned, but I don't really know if this makes sense  unless there is always only one title slide.
+This was mentioned, but I don't really know if this makes sense.  I think there are ongoing discussions about title slides, so this is on hold until that is decided.
 
-`Timeline.addSlide(data, n)`
+`Timeline.add(data, n)`
 
 Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
 
-`Timeline.removeSlide(n)`
-
-Remove slide at index `n`.
-
-`Timeline.removeSlideId(n)`
-
-Remove slide with id `n`.
-
-### Data Access
-
-`getData(n)`
-
-`getDataId(n)`
-
-Get data for slide by index or id.  Slide data is stored in `Timeline.config.slides`, where config is a TimelineConfig object.
-
-`getSlide(n)`
-
-`getSlideId(n)`
-
-Get VCO.Slide object for slide by index or id.  Slide objects are stored in `Timeline._storyslider._slides`
 
 
