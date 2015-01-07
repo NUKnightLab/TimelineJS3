@@ -90,6 +90,13 @@ Go to the first slide
 
 Go to the last slide
 
+`Timeline.remove(n)`
+
+Remove slide at index `n`.
+
+`Timeline.removeId(id)`
+
+Remove slide with id `id`.
 
 ####TO DO?
 
@@ -97,17 +104,10 @@ Go to the last slide
 
 This was mentioned, but I don't really know if this makes sense  unless there is always only one title slide.
 
-`Timeline.addSlide(data, n)`
+`Timeline.add(data, n)`
 
 Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
 
-`Timeline.removeSlide(n)`
-
-Remove slide at index `n`.
-
-`Timeline.removeSlideId(n)`
-
-Remove slide with id `n`.
 
 ### Data Access
 
