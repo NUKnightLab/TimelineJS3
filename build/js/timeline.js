@@ -8381,7 +8381,7 @@ VCO.StorySlider = VCO.Class.extend({
 	
 	_removeSlide: function(slide) {
 		slide.removeFrom(this._el.slider_item_container);
-		slide.off('added', this._onSlideAdded, this);
+		slide.off('added', this._onSlideRemoved, this);
 		slide.off('background_change', this._onBackgroundChange);
 	},
 
@@ -8764,7 +8764,7 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_onSlideRemoved: function(e) {
-		this.fire("slideAdded", this.data);
+		this.fire("slideRemoved", this.data);
 	},
 	
 	_onSlideChange: function(displayupdate) {		
