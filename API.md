@@ -15,56 +15,36 @@ timeline.on(event_name, function(data) {
 });
 ```
 
- `back_to_start`
+ `back_to_start` _when user clicks control to return to beginning of timeline_
+ 
+ `change` _when the current slide changes_
 
 * uniqueid: string, id of the new current slide
 
-Event is fired when the user clicks the control to return to the beginning of the timeline.  
-
-`change`
+`color_change` _when background of current slide changes_
 
 * uniqueid: string, id of the new current slide
 
-Event is fired when the current slide changes.
+`dataloaded` _after data has been loaded_
 
-`color_change`
-
-* uniqueid: string, id of the new current slide
-
-Event is fired when the background of the current slide changes?
-
-`dataloaded`
-
-Event is fired after data has been loaded.
-
-`hash_updated`
+`hash_updated` _when the hashbookmack in the url bar is updated_
 
 * uniqueid:  string, id of the new current slide
 * hashbookmark: string, the hash
 
-Event is fired when the hashbookmark in the url bar is updated.
-
-`loaded`
+`loaded` _after story sldie and time navigator have been loaded_
 
 * scale: "javascript" or "cosmological", the type of date scale
 * slides: array, the processed slide data
 
-Event is fired after story slider and time navigator have loaded.
+`zoom_in` _when user zooms in the time navigator_
 
-`zoom_in`
-
-* zoom_level: integer, current zoom level
-
-Event is fired when user zooms in the time navigator.
-
-`zoom_out`
+`zoom_out` _when user zooms out the time navigator_
 
 * zoom_level: integer, current zoom level
 
-Fired when user zooms out the time navigator.
 
-
-### Control
+### Navigation
 
 `Timeline.goTo(<int index>)`
 
