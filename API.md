@@ -66,52 +66,44 @@ Fired when user zooms out the time navigator.
 
 ### Control
 
-`Timeline.goTo(n)`
+`Timeline.goTo(<int index>)`
 
-Go to the slide at index `n`.
+`Timeline.goToId(<string id>)`
 
-`Timeline.goToId(n)`
-
-Go to the slide with id `n`.
+Go to slide.
 
 `Timeline.goToNext()`
 
-Go to the next slide
-
 `Timeline.goToPrev()`
 
-Go to the previous slide
+Go to the next/previous slide
 
 `Timeline.goToStart()`
 
-Go to the first slide
-
 `Timeline.goToEnd()`
 
-Go to the last slide
+Go to the first/last slide
 
-`Timeline.remove(n)`
+`Timeline.remove(<int index>)`
 
-Remove slide at index `n`.
+`Timeline.removeId(<string id>)`
 
-`Timeline.removeId(id)`
-
-Remove slide with id `id`.
+Remove slide.
 
 
 ### Data Access
 
-`getData(n)`
+`getData(<int index>)`
 
-`getDataId(n)`
+`getDataId(<string id>)`
 
-Get data for slide by index or id.  Slide data is stored in `Timeline.config.slides`, where config is a TimelineConfig object.
+Get data for slide.
 
-`getSlide(n)`
+`getSlide(<int index>)`
 
-`getSlideId(n)`
+`getSlideId(<string id>)`
 
-Get VCO.Slide object for slide by index or id.  Slide objects are stored in `Timeline._storyslider._slides`
+Get VCO.Slide object for slide.
 
 ####TO DO?
 
