@@ -98,16 +98,6 @@ Remove slide at index `n`.
 
 Remove slide with id `id`.
 
-####TO DO?
-
-`Timeline.goToTitle()`
-
-This was mentioned, but I don't really know if this makes sense  unless there is always only one title slide.
-
-`Timeline.add(data, n)`
-
-Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
-
 
 ### Data Access
 
@@ -122,5 +112,16 @@ Get data for slide by index or id.  Slide data is stored in `Timeline.config.sli
 `getSlideId(n)`
 
 Get VCO.Slide object for slide by index or id.  Slide objects are stored in `Timeline._storyslider._slides`
+
+####TO DO?
+
+`Timeline.goToTitle()`
+
+This was mentioned, but I don't really know if this makes sense.  I think there are ongoing discussions about title slides, so this is on hold until that is decided.
+
+`Timeline.add(data, n)`
+
+Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
+
 
 
