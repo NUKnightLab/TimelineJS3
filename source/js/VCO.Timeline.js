@@ -278,7 +278,8 @@ VCO.Timeline = VCO.Class.extend({
         
             var slide = this.config.slides.splice(n, 1);
         
-            // TODO: update this._storyslider
+            this._storyslider.destroySlide(n);
+            this._storyslider._updateDrawSlides();            
         
             this._timenav.destroyMarker(n);
             this._timenav._updateDrawTimeline(false);

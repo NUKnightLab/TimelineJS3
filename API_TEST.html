@@ -24,20 +24,13 @@
       }
       
       #timeline {
-        position: asbolute;
-        left: 0;
-        right: 0;
-        top: 100px;
-        bottom: 0;
+        height: 600px;
        }
       #panel {
-        background: #fdfdfd;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        height: 100px;
-        padding: 4px;
+        background: #fdfdfd;;
+        height: 96px;
+        padding: 6px 4px;
+        border-top: 1px solid black;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         -ms-box-sizing: border-box;
@@ -55,28 +48,40 @@
   <body>
     <div id="timeline"></div>
     <div id="panel">
-        <div style="display: inline-block;width: 300px;">
+        <div style="display: inline-block;">
             <button id="goToStart">goToStart</button>
             <button id="goToPrev">goToPrev</button>
             <button id="goToNext">goToNext</button>
             <button id="goToEnd">goToEnd</button>
             <br>
-            <input id="goToVal" type="text"/><button id="goTo">goTo</button>
-            <br>            
-            <input id="goToIdVal" type="text" /><button id="goToId">goToId</button>
+            
+            <input id="slide_index" type="text" placeholder="slide index" style="width: 194px;" />
+            <button id="goTo" style="width: 100px;">goTo</button>
+            <button id="getData" style="width: 100px;">getData</button>
+            <button id="getSlide" style="width: 100px;">getSlide</button>
+            <button id="removeSlide" style="width: 100px;">removeSlide</button>
+            <br>   
+                     
+            <select id="slide_id"  style="width: 200px;"></select>
+            <button id="goToId" style="width: 100px;">goToId</button>
+            <button id="getDataId" style="width: 100px;">getDataId</button>
+            <button id="getSlideId" style="width: 100px;">getSlideId</button>
+            <button id="removeSlideId" style="width: 100px;">removeSlideId</button>
         </div>
-        <div style="display: inline-block;width: 250px;">
+        <!--
+        <div style="display: inline-block;">
             <em>objects are output to console...</em>
             <br>
-            <input id="getDataVal" type="text"/><button id="getData">getData</button>
+            <input id="slide_index" type="text" placeholder="slide index"/>
             <br>
-            <input id="getDataIdVal" type="text" /><button id="getDataId">getDataId</button>
-        </div>
-        <div style="display: inline-block;width: 250px;">
-            <input id="getSlideVal" type="text"/><button id="getSlide">getSlide</button>
+            
+            <input id="slide_id" type="text" placeholder="slide id" />
+                <button id="getDataId" style="width: 100px;">getDataId</button>
+                <button id="getSlideId" style="width: 100px;">getSlideId</button>
+                <button id="removeSlideId" style="width: 100px;">removeSlideId</button>
             <br>
-            <input id="getSlideIdVal" type="text" /><button id="getSlideId">getSlideId</button>
         </div>
+        -->
     </div>
     
     <!-- JavaScript-->
@@ -95,23 +100,39 @@
     $('#goToEnd').click(function(event) {
         timeline.goToEnd();
     });
+    
+    //
+    // by index
+    //
     $('#goTo').click(function(event) {
-         timeline.goTo(parseInt($('#goToVal').val())); 
+         timeline.goTo(parseInt($('#slide_index').val())); 
     });  
-    $('#goToId').click(function(event) {
-         timeline.goToId($('#goToIdVal').val()); 
-    });    
     $('#getData').click(function(event) {
-        alert(JSON.stringify(timeline.getData(parseInt($('#getDataVal').val()))));
-    });
-    $('#getDataId').click(function(event) {
-        alert(JSON.stringify(timeline.getDataId($('#getDataIdVal').val())));
+        console.log(timeline.getData(parseInt($('#slide_index').val())));
     });
     $('#getSlide').click(function(event) {
-        console.log(timeline.getSlide(parseInt($('#getSlideVal').val())));
+        console.log(timeline.getSlide(parseInt($('#slide_index').val())));
+    });
+    $('#removeSlide').click(function(event) {
+        console.log(timeline.remove(parseInt($('#slide_index').val())));
+        init_slide_menu();
+    });
+
+    //
+    // by id
+    //
+    $('#goToId').click(function(event) {
+         timeline.goToId($('#slide_id').val()); 
+    });        
+    $('#getDataId').click(function(event) {
+        console.log(timeline.getDataId($('#slide_id').val()));
     });
     $('#getSlideId').click(function(event) {
-        console.log(timeline.getSlideId($('#getSlideIdVal').val()));
+        console.log(timeline.getSlideId($('#slide_id').val()));
+    });
+    $('#removeSlideId').click(function(event) {
+        console.log(timeline.removeId($('#slide_id').val()));
+        init_slide_menu();
     });
     
     // List of events to look for
@@ -121,7 +142,7 @@
         'color_change',
         'dataloaded',
         'hash_updated',
-        'loaded',
+        // 'loaded', special handling
         'zoom_in',
         'zoom_out'
     ];
@@ -136,14 +157,35 @@
         }    
         console.log(s);
     }
+    
+    // Build slide_id menu
+    function init_slide_menu() {
+        var slides = timeline.config.slides;
+        var html = '';
+        
+        for(var i = 0, id; i < slides.length; i++) {
+            id = slides[i].uniqueid;
+            html += '<option value="'+id+'">'+id+'</option>';
+        }
+                
+        $('#slide_id').html(html);        
+    }
+    
         
     var timeline = new VCO.Timeline('timeline', 'compiled/examples/marktwain_juked.json', {});
+    
+    // Build id select elements from data
+    timeline.on('loaded', function(data) {
+        console.log('EVENT=loaded', data);
+        init_slide_menu();
+     });
     
     // Set event handlers
     for(var i = 0; i < event_list.length; i++) {
         timeline.on(event_list[i], log_event);
     }
 
+    
     window.onresize = function(event) {
         timeline.updateDisplay();
     }

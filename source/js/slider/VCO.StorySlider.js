@@ -406,6 +406,19 @@ VCO.StorySlider = VCO.Class.extend({
 		this.goToId(this.current_id, true, true);
 	},
 	
+	// Reposition and redraw slides
+    _updateDrawSlides: function() {
+	    var _layout = this.options.layout;
+	    
+		for (var i = 0; i < this._slides.length; i++) {
+			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
+			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});			
+		};
+	
+		this.goToId(this.current_id, true, false);	
+	},
+	
+	
 	/*	Init
 	================================================== */
 	_initLayout: function () {
