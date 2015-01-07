@@ -46,27 +46,27 @@ timeline.on(event_name, function(data) {
 
 ### Navigation
 
-`Timeline.goTo(<int index>)`
+`goTo(<int index>)`
 
-`Timeline.goToId(<string id>)`
+`goToId(<string id>)`
 
 Go to slide.
 
-`Timeline.goToNext()`
+`goToNext()`
 
-`Timeline.goToPrev()`
+`goToPrev()`
 
 Go to the next/previous slide
 
-`Timeline.goToStart()`
+`goToStart()`
 
-`Timeline.goToEnd()`
+`goToEnd()`
 
 Go to the first/last slide
 
-`Timeline.remove(<int index>)`
+`remove(<int index>)`
 
-`Timeline.removeId(<string id>)`
+`removeId(<string id>)`
 
 Remove slide.
 
