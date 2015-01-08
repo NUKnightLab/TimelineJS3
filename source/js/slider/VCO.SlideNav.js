@@ -28,7 +28,8 @@ VCO.SlideNav = VCO.Class.extend({
 		// Data
 		this.data = {
 			title: "Navigation",
-			description: "Description"
+			description: "Description",
+			date: "Date"
 		};
 	
 		//Options
@@ -60,7 +61,19 @@ VCO.SlideNav = VCO.Class.extend({
 	
 	/*	Update Content
 	================================================== */
-	update: function(d) {
+	update: function(slide) {
+		var d = {
+			title: "",
+			description: "",
+			date: slide.getFormattedDate()
+		};
+		
+		if (slide.data.text) {
+			if (slide.data.text.headline) {
+				d.title = slide.data.text.headline;
+			}
+		}
+
 		this._update(d);
 	},
 	
@@ -91,7 +104,7 @@ VCO.SlideNav = VCO.Class.extend({
 		
 		// Date
 		if (this.data.date != "") {
-			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.description);
+			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.date);
 		}
 	},
 	
