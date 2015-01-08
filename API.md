@@ -95,5 +95,49 @@ This was mentioned, but I don't really know if this makes sense.  I think there 
 
 Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
 
-
+####Slide data format
+```javascript
+{
+    "start_date": {
+        "year":			<string>,
+        "month":		<string>,
+        "day": 			<string>,
+        "hour": 		<string>,
+        "minute": 		<string>,
+        "second": 		<string>,
+        "millisecond": 	<string>,
+        "format": 		<string>,
+        "display_text": <string>
+    },
+    "end_date": {       // optional
+        "year":			<string>,
+        "month":		<string>,
+        "day": 			<string>,
+        "hour": 		<string>,
+        "minute": 		<string>,
+        "second": 		<string>,
+        "millisecond": 	<string>,
+        "format": 		<string>,
+        "display_text": <string>
+    },
+    "location": {       // optional
+        "icon":         <string>,   // icon url
+        "lat":          <float>,   
+        "lon":          <float>,
+        "line":         <boolean>,
+        "name":         <string>,
+        "zoom":         <int>
+    },
+    "media": {
+        "caption":      <string>,
+        "credit":       <string>,
+        "url":          <string>
+    },
+    "text": {
+        "headline":     <string>,
+        "text":         <string>
+    },
+    "uniqueid":         <string>
+};
+```
 
