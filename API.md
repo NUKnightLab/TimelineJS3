@@ -114,7 +114,7 @@ This was mentioned, but I don't really know if this makes sense.  I think there 
         "format": 		<string>,
         "display_text": <string>
     },
-    "end_date": {       // optional
+    "end_date": {                   // optional
         "year":			<string>,
         "month":		<string>,
         "day": 			<string>,
@@ -125,7 +125,7 @@ This was mentioned, but I don't really know if this makes sense.  I think there 
         "format": 		<string>,
         "display_text": <string>
     },
-    "location": {       // optional
+    "location": {                   // optional
         "icon":         <string>,   // icon url
         "lat":          <float>,   
         "lon":          <float>,
@@ -142,7 +142,7 @@ This was mentioned, but I don't really know if this makes sense.  I think there 
         "headline":     <string>,
         "text":         <string>
     },
-    "uniqueid":         <string>
+    "uniqueid":         <string>    // optional
 };
 ```
 
