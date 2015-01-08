@@ -87,9 +87,7 @@ VCO.SlideNav = VCO.Class.extend({
 		this.data = VCO.Util.mergeData(this.data, d);
 		
 		// Title
-		if (this.data.title != "") {
-			this._el.title.innerHTML		= VCO.Util.unlinkify(this.data.title);
-		}
+		this._el.title.innerHTML = VCO.Util.unlinkify(this.data.title);
 		
 		// Date
 		if (this.data.date != "") {
