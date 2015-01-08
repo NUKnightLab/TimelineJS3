@@ -181,23 +181,26 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Markers
 	================================================== */
-	_createMarkers: function(array) { 
-		for (var i = 0; i < array.length; i++) {
-			this._createMarker(array[i]);
-		};
-		
-	},
-	
-	_createMarker: function(data) {
-		var marker = new VCO.TimeMarker(data, this.options);
-		this._addMarker(marker);
-		this._markers.push(marker);
-	},
-	
 	_addMarker:function(marker) {
 		marker.addTo(this._el.marker_item_container);
 		marker.on('markerclick', this._onMarkerClick, this);
 		marker.on('added', this._onMarkerAdded, this);
+	},
+
+	_createMarker: function(data, n) {
+		var marker = new VCO.TimeMarker(data, this.options);
+		this._addMarker(marker);
+		if(n < 0) {
+		    this._markers.push(marker);
+		} else {
+		    this._markers.splice(n, 0, marker);
+		}
+	},
+
+	_createMarkers: function(array) { 
+		for (var i = 0; i < array.length; i++) {
+			this._createMarker(array[i], -1);
+		}		
 	},
 	
 	_removeMarker: function(marker) {
@@ -262,11 +265,26 @@ VCO.TimeNav = VCO.Class.extend({
 		} 
 		return _n;
 	},
+
+	/*	Public
+	================================================== */
 	
+	// Create a marker
+	createMarker: function(d, n) {
+	    this._createMarker(d, n);
+	},
+	
+	// Create many markers from an array
+	createMarkers: function(array) {
+	    this._createMarkers(array);
+	},
+	
+	// Destroy marker by index
 	destroyMarker: function(n) {
 	    this._destroyMarker(n);
 	},
 	
+	// Destroy marker by id
 	destroyMarkerId: function(id) {
 	    this.destroyMarker(this._findMarkerIndex(id));
 	},
@@ -319,7 +337,6 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerAdded: function(e) {
-
 		this.fire("dateAdded", this.data);
 	},
 	

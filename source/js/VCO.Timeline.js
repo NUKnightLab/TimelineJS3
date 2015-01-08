@@ -264,6 +264,21 @@ VCO.Timeline = VCO.Class.extend({
     /* Maniupluation
 	================================================== */
 	
+	add: function(data) {
+	    var uniqueid = this.config.addSlide(data);
+	    
+        var n = this._getSlideIndex(uniqueid);
+        var d = this.config.slides[n];
+        
+        this._storyslider.createSlide(d, n);
+        this._storyslider._updateDrawSlides();            
+        
+        this._timenav.createMarker(d, n);
+        this._timenav._updateDrawTimeline(false);	
+        
+        this.fire("added", {uniqueid: uniqueid});
+	},
+	
 	remove: function(n) {
 	    if(n >= 0  && n < this.config.slides.length 
 	    && this.config.slides.length > 1) {
@@ -276,14 +291,16 @@ VCO.Timeline = VCO.Class.extend({
                 }
             }
         
-            var slide = this.config.slides.splice(n, 1);
+            var slides = this.config.slides.splice(n, 1);
         
             this._storyslider.destroySlide(n);
             this._storyslider._updateDrawSlides();            
         
             this._timenav.destroyMarker(n);
             this._timenav._updateDrawTimeline(false);
-        }
+         
+            this.fire("removed", {uniqueid: slides[0].uniqueid});
+       }
 	},
 	
 	removeId: function(id) {

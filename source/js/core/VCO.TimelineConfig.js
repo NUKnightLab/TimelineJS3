@@ -46,12 +46,24 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     },
 
+    /* Add a slide and return the unique id 
+    */
+    addSlide: function(data) {
+        this.slides.push(data);
+        this._makeUniqueIdentifiers(this.slides); 
+        this._processDates(this.slides);    
+        
+        var uniqueid = this.slides[this.slides.length - 1].uniqueid;             
+        VCO.DateUtil.sortByDate(this.slides);
+        return uniqueid;
+    },
+
     _cleanData: function() {
         this._makeUniqueIdentifiers(this.slides); 
         this._processDates(this.slides);          
         VCO.DateUtil.sortByDate(this.slides);
     },
-
+    
     _importProperties: function(d) {
         for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
             k = this.VALID_PROPERTIES[i];
@@ -87,7 +99,7 @@ VCO.TimelineConfig = VCO.Class.extend({
             }
         }
     },
-    
+
     _processDates: function(array) {
         var dateCls = null;
         
@@ -124,10 +136,11 @@ VCO.TimelineConfig = VCO.Class.extend({
             if (typeof(array[i].start_date) == 'undefined') {
                 throw("item " + i + " is missing a start_date");
             }
-            
-            array[i].start_date = new dateCls(array[i].start_date);
-            if (typeof(array[i].end_date) != 'undefined') {
-                array[i].end_date = new dateCls(array[i].end_date);
+            if(!(array[i].start_date instanceof dateCls)) {
+                array[i].start_date = new dateCls(array[i].start_date);
+                if (typeof(array[i].end_date) != 'undefined') {
+                    array[i].end_date = new dateCls(array[i].end_date);
+                }
             }
         }
     }

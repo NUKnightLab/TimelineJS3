@@ -23,20 +23,26 @@
       
       }
       
-      #timeline {
-        height: 600px;
-       }
-      #panel {
-        background: #fdfdfd;;
-        height: 96px;
-        padding: 6px 4px;
-        border-top: 1px solid black;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -ms-box-sizing: border-box;
-        -o-box-sizing: border-box;
-        box-sizing: border-box;
-    }
+#timeline {
+    height: 540px;
+}
+#panel {
+    background: #ededed;
+    height: 156px;
+    padding: 6px 4px;
+    border-top: 1px solid black;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#panel button {
+    width: 100px;
+}
+#panel label {
+    margin-right: 4px;
+}
       
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML elements-->
@@ -49,44 +55,94 @@
     <div id="timeline"></div>
     <div id="panel">
         <div style="display: inline-block;">
-            <button id="goToStart">goToStart</button>
-            <button id="goToPrev">goToPrev</button>
-            <button id="goToNext">goToNext</button>
-            <button id="goToEnd">goToEnd</button>
-            <br>
-            
-            <input id="slide_index" type="text" placeholder="slide index" style="width: 194px;" />
-            <button id="goTo" style="width: 100px;">goTo</button>
-            <button id="getData" style="width: 100px;">getData</button>
-            <button id="getSlide" style="width: 100px;">getSlide</button>
-            <button id="removeSlide" style="width: 100px;">removeSlide</button>
-            <br>   
+            <div style="display: inline-block;width: 240px;text-align: left;">
+                <button id="goToStart">goToStart</button>
+                <button id="goToPrev">goToPrev</button>
+                <br>
+                <button id="goToNext">goToNext</button>
+                <button id="goToEnd">goToEnd</button>
+            </div>
+            <div style="display: inline-block;text-align: left;">            
+                <input id="slide_index" type="number" min="0" placeholder="slide index" style="width: 194px;" />
+                <button id="goTo">goTo</button>
+                <button id="getData">getData</button>
+                <button id="getSlide">getSlide</button>
+                <button id="removeSlide">removeSlide</button>
+                <br>   
                      
-            <select id="slide_id"  style="width: 200px;"></select>
-            <button id="goToId" style="width: 100px;">goToId</button>
-            <button id="getDataId" style="width: 100px;">getDataId</button>
-            <button id="getSlideId" style="width: 100px;">getSlideId</button>
-            <button id="removeSlideId" style="width: 100px;">removeSlideId</button>
-        </div>
-        <!--
-        <div style="display: inline-block;">
-            <em>objects are output to console...</em>
+                <select id="slide_id"></select>
+                <button id="goToId">goToId</button>
+                <button id="getDataId">getDataId</button>
+                <button id="getSlideId">getSlideId</button>
+                <button id="removeSlideId">removeSlideId</button>
+            </div>
+            
             <br>
-            <input id="slide_index" type="text" placeholder="slide index"/>
             <br>
             
-            <input id="slide_id" type="text" placeholder="slide id" />
-                <button id="getDataId" style="width: 100px;">getDataId</button>
-                <button id="getSlideId" style="width: 100px;">getSlideId</button>
-                <button id="removeSlideId" style="width: 100px;">removeSlideId</button>
+            <div style="display: inline-block;width: 480px;text-align: left;">
+                <label style="display: inline-block;width: 70px;">start date</label>
+                    <input id="start_date_y" placeholder="year" style="width: 100px;">
+                    <input id="start_date_m" placeholder="mon" style="width: 24px;">
+                    <input id="start_date_d" placeholder="day" style="width: 24px;">
+                    <input id="start_date_ft" placeholder="format" style="width: 100px;">
+                    <input id="start_date_dt" placeholder="display text" style="width: 100px;">
+                <br>
+                <label style="display: inline-block;width: 70px;">end date</label>
+                    <input id="end_date_y" placeholder="year" style="width: 100px;">
+                    <input id="end_date_m" placeholder="mon" style="width: 24px;">
+                    <input id="end_date_d" placeholder="day" style="width: 24px;">
+                    <input id="end_date_ft" placeholder="format" style="width: 100px;">
+                    <input id="end_date_dt" placeholder="display text" style="width: 100px;">
+            </div>
+            <div style="display: inline-block;">
+                <label style="display: inline-block;width: 70px;">headline</label>
+                <input type="text" id="headline" style="width: 200px;">
+                <br>
+                <label style="display: inline-block;width: 70px;">text</label>
+                <input type="text" id="text"  style="width: 200px;">           
+            </div>
             <br>
+            <div style="display: inline-block;">
+                <button id="add">add</button>
+            </div>
         </div>
-        -->
     </div>
     
     <!-- JavaScript-->
     <script src="build/js/timeline.js"></script>
     <script>
+    
+    $('#add').click(function(event) {
+        var d = {
+            "start_date": {
+                "year":         $('#start_date_y').val().trim() || "",
+                "month":        $('#start_date_m').val().trim() || "",
+                "day":          $('#start_date_d').val().trim() || "",
+                "hour": "", "minute": "", "second": "", "millisecond": "",
+                "format":       $('#start_date_ft').val().trim() || "",
+                "display_text": $('#start_date_dt').val().trim() || ""
+            },
+            "end_date": {
+                "year":         $('#end_date_y').val().trim() || "",
+                "month":        $('#end_date_m').val().trim() || "",
+                "day":          $('#end_date_d').val().trim() || "",
+                "hour": "", "minute": "", "second": "", "millisecond": "",
+                "format":       $('#end_date_ft').val().trim() || "",
+                "display_text": $('#end_date_dt').val().trim() || ""
+            },
+            "media": {
+                "caption": "", "credit": "", "url": ""
+            },
+            "text": {
+                "headline":     $('#headline').val().trim() || "",
+                "text":         $('#text').val().trim() || ""
+            },
+            "uniqueid":         ""
+        };
+        
+        timeline.add(d);
+    });
     
     $('#goToStart').click(function(event) {
         timeline.goToStart();
@@ -137,12 +193,14 @@
     
     // List of events to look for
     var event_list = [
+        // 'added', special handling
         'back_to_start',
         'change',
         'color_change',
         'dataloaded',
         'hash_updated',
         // 'loaded', special handling
+        // 'removed',  special handling
         'zoom_in',
         'zoom_out'
     ];
@@ -172,13 +230,21 @@
     }
     
         
-    var timeline = new VCO.Timeline('timeline', 'compiled/examples/marktwain_juked.json', {});
+    var timeline = new VCO.Timeline('timeline', 'compiled/examples/marktwain_test.json', {});
     
     // Build id select elements from data
     timeline.on('loaded', function(data) {
         console.log('EVENT=loaded', data);
         init_slide_menu();
      });
+    timeline.on('added', function(data) {
+        console.log('EVENT=added', data);
+        init_slide_menu();
+     });
+    timeline.on('removed', function(data) {
+        console.log('EVENT=removed', data);
+        init_slide_menu();
+    });
     
     // Set event handlers
     for(var i = 0; i < event_list.length; i++) {
