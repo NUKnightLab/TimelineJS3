@@ -78,7 +78,7 @@ Remove slide.
 
 `add(<object data>)`
 
-Add slide with data `data`.
+Add slide with data `data`.  See Slide Data Format below.
 
 ### Data Access
 
