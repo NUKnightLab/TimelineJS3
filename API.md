@@ -43,6 +43,12 @@ timeline.on(event_name, function(data) {
 
 * zoom_level: integer, current zoom level
 
+`added` _after slide has been added_
+
+`removed` _after slide has been removed_
+
+* uniqueid: string, the id of the modified slide
+
 
 ### Navigation
 
@@ -70,6 +76,9 @@ Go to the first/last slide
 
 Remove slide.
 
+`add(<object data>)`
+
+Add slide with data `data`.  See Slide Data Format below.
 
 ### Data Access
 
@@ -91,10 +100,6 @@ Get VCO.Slide object for slide.
 
 This was mentioned, but I don't really know if this makes sense.  I think there are ongoing discussions about title slides, so this is on hold until that is decided.
 
-`Timeline.add(data, n)`
-
-Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
-
 ####Slide data format
 ```javascript
 {
@@ -109,7 +114,7 @@ Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
         "format": 		<string>,
         "display_text": <string>
     },
-    "end_date": {       // optional
+    "end_date": {                   // optional
         "year":			<string>,
         "month":		<string>,
         "day": 			<string>,
@@ -120,7 +125,7 @@ Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
         "format": 		<string>,
         "display_text": <string>
     },
-    "location": {       // optional
+    "location": {                   // optional
         "icon":         <string>,   // icon url
         "lat":          <float>,   
         "lon":          <float>,
@@ -137,7 +142,7 @@ Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
         "headline":     <string>,
         "text":         <string>
     },
-    "uniqueid":         <string>
+    "uniqueid":         <string>    // optional
 };
 ```
 
