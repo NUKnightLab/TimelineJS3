@@ -417,20 +417,114 @@ VCO.Util = {
 		len = len || 2;
 		while (val.length < len) val = "0" + val;
 		return val;
+	},
+
+	makeGoogleMapsEmbedURL: function(url,api_key) {
+    var Streetview = false;
+
+    function determineMapMode(url){
+          function parseDisplayMode(display_mode, param_string) {
+            // Set the zoom param
+            if (display_mode.slice(-1) == "z") {
+                param_string["zoom"] = display_mode;
+            // Set the maptype to something other than "roadmap"
+            } else if (display_mode.slice(-1) == "m") {
+                // TODO: make this somehow interpret the correct zoom level
+                // until then fake it by using Google's default zoom level
+                param_string["zoom"] = 14;
+                param_string["maptype"] = "satellite";
+            // Set all the fun streetview params
+            } else if (display_mode.slice(-1) == "t") {
+                Streetview = true;
+                // streetview uses "location" instead of "center"
+                // "place" mode doesn't have the center param, so we may need to grab that now
+                if (mapmode == "place") {
+                    var center = url.match(regexes["place"])[3] + "," + url.match(regexes["place"])[4];
+                } else {
+                    var center = param_string["center"];
+                    delete param_string["center"];
+                }
+                // Clear out all the other params -- this is so hacky
+                param_string = {};
+                param_string["location"] = center;
+                streetview_params = display_mode.split(",");
+                for (param in param_defs["streetview"]) {
+                    var i = parseInt(param) + 1;
+                    param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                }
+
+            }
+            return param_string;
+          }
+          function determineMapModeURL(mapmode, match) {
+            var param_string = {};
+            var url_root = match[1], display_mode = match[match.length - 1];
+            for (param in param_defs[mapmode]) {
+                // skip first 2 matches, because they reflect the URL and not params
+                var i = parseInt(param)+2;
+                if (param_defs[mapmode][param] == "center") {
+                  param_string[param_defs[mapmode][param]] = match[i] + "," + match[++i];
+                } else {
+                  param_string[param_defs[mapmode][param]] = match[i];
+                }
+            }
+
+            param_string = parseDisplayMode(display_mode, param_string);
+            param_string["key"] = api_key;
+            if (Streetview == true) {
+                mapmode = "streetview";
+            } else {
+            }
+            return (url_root + "/embed/v1/" + mapmode + VCO.Util.getParamString(param_string));
+        }
+
+
+        mapmode = "view";
+        if (url.match(regexes["place"])) {
+            mapmode = "place";
+        } else if (url.match(regexes["directions"])) {
+            mapmode = "directions";
+        } else if (url.match(regexes["search"])) {
+            mapmode = "search";
+        }
+        return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
+
+    }
+
+    // These must be in the order they appear in the original URL
+    // "key" param not included since it's not in the URL structure
+    // Streetview "location" param not included since it's captured as "center"
+    var param_defs = {
+        "view": ["center"],
+        "place": ["q"],
+        "directions": ["origin", "destination", "center"],
+        "search": ["q", "center"],
+        "streetview": ["fov", "heading", "pitch"]
+    };
+
+    // Set up regex parts to make updating these easier if Google changes them
+    var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
+    var coords_regex = /@([-\d.]+),([-\d.]+)/;
+    var addy_regex = /([\w\W]+)/;
+
+    // Data doesn't seem to get used for anything
+    var data_regex = /data=[\S]*/;
+
+    // Capture the parameters that determine what map tiles to use
+    // In roadmap view, mode URLs include zoom paramater (e.g. "14z")
+    // In satellite (or "earth") view, URLs include a distance parameter (e.g. "84511m")
+    // In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
+    var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
+
+		var regexes = {
+        view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source)
+    };
+    return determineMapMode(url);
 	}
-
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* **********************************************
@@ -6153,6 +6247,7 @@ VCO.Media = VCO.Class.extend({
 		//Options
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
+			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
 			credit_height: 			0,
 			caption_height: 		0
 		};
@@ -6866,40 +6961,42 @@ VCO.Media.Instagram = VCO.Media.extend({
 ================================================== */
 
 VCO.Media.Map = VCO.Media.extend({
-    
     includes: [VCO.Events],
-    
+
     _API_KEY: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
     /*  Load the media
     ================================================== */
     _loadMedia: function() {
-        
+
         // Loading Message
         this.loadingMessage();
-        
+
         // Create Dom element
         this._el.content_item   = VCO.Dom.create("div", "vco-media-item vco-media-map", this._el.content);
         this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
-        
-        // Get Media ID
+
+        // Get Media ID (why?)
         this.media_id = this.data.url;
-        
+
         // API Call
-        this._el.content_item.innerHTML = this.media_id;
-        
+
+        this.mapframe = VCO.Dom.create("iframe", "", this._el.content_item);
+        window.stash = this;
+        this.mapframe.width       = "100%";
+        this.mapframe.height      = "100%";
+        this.mapframe.frameBorder = "0";
+        this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
+        console.log(this.mapframe.src);
         // After Loaded
         this.onLoaded();
     },
-    
-    updateMediaDisplay: function() {
-        
-    },
-    
-    _updateMediaDisplay: function() {
-        
-    }
 
-    
+    _updateMediaDisplay: function() {
+			if (this._state.loaded) {
+        var dimensions = VCO.Util.ratio.square({w:this._el.content_item.offsetWidth});
+        this._el.content_item.style.height = dimensions.h + "px";
+      }
+    }
 });
 
 
@@ -7965,6 +8062,17 @@ VCO.Slide = VCO.Class.extend({
 	scrollToTop: function() {
 		this._el.container.scrollTop = 0;
 	},
+
+	getFormattedDate: function() {
+		var date_text = "";
+		if (this.data.end_date) {
+			date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
+		}
+		if (this.data.start_date) {
+			date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+		}
+		return date_text;
+	},
 	
 	/*	Events
 	================================================== */
@@ -7973,7 +8081,6 @@ VCO.Slide = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		var date_text = "";
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
 		if (this.data.uniqueid) {
@@ -8036,14 +8143,7 @@ VCO.Slide = VCO.Class.extend({
 		// Create Text
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
-			// Add Date if available
-			if (this.data.end_date) {
-				date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
-			}
-			if (this.data.start_date) {
-				date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
-				this._text.addDateText(date_text);
-			}
+			this._text.addDateText(this.getFormattedDate());
 		}
 		
 		
@@ -8160,7 +8260,8 @@ VCO.SlideNav = VCO.Class.extend({
 		// Data
 		this.data = {
 			title: "Navigation",
-			description: "Description"
+			description: "Description",
+			date: "Date"
 		};
 	
 		//Options
@@ -8192,7 +8293,19 @@ VCO.SlideNav = VCO.Class.extend({
 	
 	/*	Update Content
 	================================================== */
-	update: function(d) {
+	update: function(slide) {
+		var d = {
+			title: "",
+			description: "",
+			date: slide.getFormattedDate()
+		};
+		
+		if (slide.data.text) {
+			if (slide.data.text.headline) {
+				d.title = slide.data.text.headline;
+			}
+		}
+
 		this._update(d);
 	},
 	
@@ -8219,13 +8332,11 @@ VCO.SlideNav = VCO.Class.extend({
 		this.data = VCO.Util.mergeData(this.data, d);
 		
 		// Title
-		if (this.data.title != "") {
-			this._el.title.innerHTML		= VCO.Util.unlinkify(this.data.title);
-		}
+		this._el.title.innerHTML = VCO.Util.unlinkify(this.data.title);
 		
 		// Date
 		if (this.data.date != "") {
-			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.description);
+			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.date);
 		}
 	},
 	
@@ -8486,13 +8597,13 @@ VCO.StorySlider = VCO.Class.extend({
 			// Update Navigation and Info
 			if (this._slides[n + 1]) {
 				this.showNav(this._nav.next, true);
-				this._nav.next.update(this.getNavInfo(this._slides[n + 1]));
+				this._nav.next.update(this._slides[n + 1]);
 			} else {
 				this.showNav(this._nav.next, false);
 			}
 			if (this._slides[n - 1]) {
 				this.showNav(this._nav.previous, true);
-				this._nav.previous.update(this.getNavInfo(this._slides[n - 1]));
+				this._nav.previous.update(this._slides[n - 1]);
 			} else {
 				this.showNav(this._nav.previous, false);
 			}
@@ -8527,30 +8638,6 @@ VCO.StorySlider = VCO.Class.extend({
 		}
 	},
 		
-	getNavInfo: function(slide) {
-		var n = {
-			title: "",
-			description: ""
-		};
-		
-		if (slide.data.text) {
-			if (slide.data.text.headline) {
-				n.title = slide.data.text.headline;
-			}
-			/*
-			// Disabling location in description for now.
-			if (slide.data.location) {
-				if (slide.data.location.name) {
-					n.description = slide.data.location.name;
-				}
-			}
-			*/
-		}
-		
-		return n;
-		
-	},
-	
 	next: function() {
 	    var n = this._findSlideIndex(this.current_id);	    
 		if ((n + 1) < (this._slides.length)) {
@@ -10395,7 +10482,6 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		
 		};
 		
