@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TimelineJS: API Test</title>
-    <meta charset="utf-8">
-    <meta name="description" content="TimelineJS Embed">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <!-- CSS-->
-    <link rel="stylesheet" href="build/css/timeline.css?v1">
-    <!--FONT-->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
-    <!-- Style-->
-    <style>
-      html, body {
-      	height:100%;
-      	width:100%;
-      	padding: 0px;
-      	margin: 0px;
-      }
-      .vco-timeline {
-      
-      }
-      
-#timeline {
-    height: 540px;
+<title>TimelineJS: API Test</title>
+<meta charset="utf-8">
+<meta name="description" content="TimelineJS Embed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<!-- CSS-->
+<link rel="stylesheet" href="build/css/timeline.css?v1">
+<!--FONT-->
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+<!-- Style-->
+<style>
+html, body {
+    height:100%;
+    width:100%;
+    padding: 0px;
+    margin: 0px;
 }
+
+#timeline_wrapper {
+    position: absolute;
+    top: 210px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 #panel {
     background: #ededed;
     height: 156px;
@@ -52,7 +54,9 @@
     -->
   </head>
   <body>
-    <div id="timeline"></div>
+    <div id="timeline_wrapper">
+        <div id="timeline"></div>
+    </div>
     <div id="panel">
         <div style="display: inline-block;">
             <div style="display: inline-block;width: 240px;text-align: left;">
@@ -170,8 +174,7 @@
         console.log(timeline.getSlide(parseInt($('#slide_index').val())));
     });
     $('#removeSlide').click(function(event) {
-        console.log(timeline.remove(parseInt($('#slide_index').val())));
-        init_slide_menu();
+        timeline.remove(parseInt($('#slide_index').val()));
     });
 
     //
@@ -187,8 +190,7 @@
         console.log(timeline.getSlideId($('#slide_id').val()));
     });
     $('#removeSlideId').click(function(event) {
-        console.log(timeline.removeId($('#slide_id').val()));
-        init_slide_menu();
+        timeline.removeId($('#slide_id').val());
     });
     
     // List of events to look for
@@ -217,10 +219,11 @@
     }
     
     // Build slide_id menu
-    function init_slide_menu() {
+    function init_slide_menu(data) {
+        console.log('EVENT='+data.type, data);
+
         var slides = timeline.config.slides;
-        var html = '';
-        
+        var html = '';      
         for(var i = 0, id; i < slides.length; i++) {
             id = slides[i].uniqueid;
             html += '<option value="'+id+'">'+id+'</option>';
@@ -228,30 +231,18 @@
                 
         $('#slide_id').html(html);        
     }
-    
-        
+            
     var timeline = new VCO.Timeline('timeline', 'compiled/examples/marktwain_test.json', {});
     
-    // Build id select elements from data
-    timeline.on('loaded', function(data) {
-        console.log('EVENT=loaded', data);
-        init_slide_menu();
-     });
-    timeline.on('added', function(data) {
-        console.log('EVENT=added', data);
-        init_slide_menu();
-     });
-    timeline.on('removed', function(data) {
-        console.log('EVENT=removed', data);
-        init_slide_menu();
-    });
-    
     // Set event handlers
+    timeline.on('loaded', init_slide_menu);
+    timeline.on('added', init_slide_menu);
+    timeline.on('removed', init_slide_menu);
+    
     for(var i = 0; i < event_list.length; i++) {
         timeline.on(event_list[i], log_event);
     }
-
-    
+ 
     window.onresize = function(event) {
         timeline.updateDisplay();
     }
