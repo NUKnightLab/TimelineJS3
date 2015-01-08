@@ -1,734 +1,266 @@
 {
-    "timeline": {
-        "slides": [
-            {
-                "start_date": {
-					"year":			"1900",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1900",
-					"month":		"06",
-					"day": 			"07",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.491711,
-                    "line": true,
-                    "lon": -91.79326,
-                    "name": "Florida, Missouri",
-                    "zoom": 12
-                },
-                "media": {
-                    "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
-                    "credit": "Vanity Fair",
-                    "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z",
-					"thumb": 	"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg"
-                },
-                "text": {
-                    "headline": "Mark Twain JSON",
-                    "text": "Samuel Langhorne Clemens (November 30, 1835 \u2013 April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the later often called \"the Great American Novel.\""
-                },
-                "type": "overview"
-            },
-            {
-                "start_date": {
-					"year":			"2000",
-					"month":		"01",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"2001",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.491711,
-                    "line": true,
-                    "lon": -91.79326,
-                    "name": "Florida, Missouri",
-                    "zoom": 12
-                },
-                "media": {
-                    "caption": "Mark Twain's birthplace, Florida, Missouri",
-                    "credit": "",
-                    "url": "https://twitter.com/MarkTwainQuote/status/441928360583643136"
-                },
-                "text": {
-                    "headline": "Florida, Missouri",
-                    "text": "Born in Florida, Missouri. Halley\u2019s comet visible from earth."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1920",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1928",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "location": {
-                    "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                    "lat": 39.501711,
-                    "line": true,
-                    "lon": -91.94326,
-                    "name": "Florida, Missouri",
-                    "zoom": 12
-                },
-                "media": {
-                    "caption": "Mark Twain's boyhood home in Hannibal, Missouri.",
-                    "credit": "",
-                    "url": "http://instagram.com/p/lEPdm4J20m/"
-                },
-                "text": {
-                    "headline": "Hannibal, Missouri",
-                    "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1910",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Flickr",
-                    "credit": "Zach Wise",
-                    "url": "https://www.flickr.com/photos/zachwise/14514563402/"
-                },
-                "text": {
-                    "headline": "",
-                    "text": ""
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1910",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1920",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
-                    "credit": null,
-                    "url": "https://www.youtube.com/watch?v=h3K3kEDEAN4"
-                },
-                "text": {
-                    "headline": "",
-                    "text": ""
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1910",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1920",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
-                    "credit": null,
-                    "url": "https://vimeo.com/105602328"
-                },
-                "text": {
-                    "headline": "Vimeo",
-                    "text": "vimeo"
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1910",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1920",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "",
-                    "credit": null,
-                    "url": "https://vimeo.com/105602328"
-                },
-                "text": {
-                    "headline": "",
-                    "text": ""
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1910",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1920",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
-                    "credit": null,
-                    "url": "https://www.youtube.com/watch?v=h3K3kEDEAN4"
-                },
-                "text": {
-                    "headline": "YouTube",
-                    "text": "YouTube"
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1918",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1919",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
-                    "credit": "Vanity Fair",
-                    "url": "spotify:track:1OT1G66Lt9EpKFWkwK8i9z"
-                },
-                "text": {
-                    "headline": "Spotify Track URI",
-                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1919",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1920",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": null,
-                    "credit": null,
-                    "url": "spotify:user:zachwise:playlist:3KqOUdFJXsEUC0DKudovj1"
-                },
-                "text": {
-                    "headline": "Spotify Playlist URI",
-                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1920",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1921",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": null,
-                    "credit": null,
-                    "url": "http://open.spotify.com/user/zachwise/playlist/3KqOUdFJXsEUC0DKudovj1"
-                },
-                "text": {
-                    "headline": "Spotify Playlist URL",
-                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1905",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1907",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "",
-                    "credit": "",
-                    "url": "https://twitter.com/zlwise/status/502535723715923968"
-                },
-                "text": {
-                    "headline": "Twitter",
-                    "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1905",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1907",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "",
-                    "credit": "Dr. Seuss",
-                    "url": "<blockquote><p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p></blockquote>"
-                },
-                "text": {
-                    "headline": "Blockquote",
-                    "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1921",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1922",
-					"month":		"",
-					"day": 			"",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": null,
-                    "credit": null,
-                    "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z"
-                },
-                "text": {
-                    "headline": "Spotify Track URL",
-                    "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1940",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url": null
-                },
-                "media": {
-                    "caption": "Mark Twain's desk when he was editor of the Territorial Enterprise. Mark Twain Territorial Enterprise Museum, Virginia City, NV.",
-                    "credit": "",
-                    "url": "http://en.wikipedia.org/wiki/Mark_Twain"
-                },
-                "text": {
-                    "headline": "Virginia City Territorial Enterprise",
-                    "text": "Travels around Nevada and California. Takes job as reporter for the Virginia City Territorial Enterprise."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url": null
-                },
-                "start_date": {
-					"year":			"1960",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "something",
-                    "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "San Francisco",
-                    "text": "Forced to leave Nevada for breaking dueling laws. Prospects in Calaveras County, settles in San Francisco. Writes for magazines and newspapers."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1963",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Wreck of USS Hornet.",
-                    "credit": "",
-                    "url": "http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "Hawaii",
-                    "text": "Takes trip to Hawaii as correspondent of the Sacramento Alta Californian. Reports on shipwreck of the Hornet. Gives first public lecture."
-                },
-                "uniqueid": ""
-            },
-            {
-                "start_date": {
-					"year":			"1930",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "",
-                    "credit": "",
-					"link": "http://knightlab.com",
-                    "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu/page1-395px-1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu.jpg"
-                },
-                "text": {
-                    "headline": "Travels",
-                    "text": "Travels as correspondent to Europe and the Holy Land on the Quaker City. Sees a picture of Olivia Langdon (Livy). Publishes The Celebrated Jumping Frog of Calaveras County, and Other Sketches. Sales are light."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url": null
-                },
-                "start_date": {
-					"year":			"1935",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "something",
-                    "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "Livy",
-                    "text": "Lectures across the United States. Meets and falls in love with Livy in Elmira, New York."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url": null
-                },
-                "start_date": {
-					"year":			"1959",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "something",
-                    "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "Married",
-                    "text": "Marries Livy in Elmira. Her father buys them a house in Buffalo, New York. Son Langdon is born."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url": null
-                },
-                "start_date": {
-					"year":			"1990",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "something",
-                    "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "Roughing It",
-                    "text": "Moves with Livy to Hartford. Publishes Roughing It. Daughter is born. Son Langdon dies."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url": null
-                },
-                "start_date": {
-					"year":			"1991",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "something",
-                    "credit": "ETC",
-                    "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "Financial",
-                    "text": "Leaves Hartford to live in Europe because of financial difficulties."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": "#000000",
-                    "opacity": 50,
-                    "url":  "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
-                },
-				"start_date": {
-					"year":			"1913",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "text": {
-                    "headline": "Livy dies",
-                    "text": "Livy dies. Begins dictating autobiography. Moves to New York City."
-                },
-                "uniqueid": ""
-            },
-            {
-                "background": {
-                    "color": null,
-                    "opacity": 50,
-                    "url": null
-                },
-                "start_date": {
-					"year":			"1994",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"6",
-					"minute": 		"45",
-					"second": 		"56",
-					"millisecond": 	"",
-					"thumbnail": 	"",
-					"format": 		""
-				},
-                "media": {
-                    "caption": "Twains house, \"Stormfield\", in Redding, Connecticut (front view)",
-                    "credit": "",
-                    "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif/lossy-page1-800px-Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif.jpg",
-					"link": "http://knightlab.com"
-                },
-                "text": {
-                    "headline": "Stormfield",
-                    "text": "Moves into Stormfield in Redding, CT. Forms the Angelfish Club for young girls."
-                },
-                "uniqueid": ""
-            }
-        ],
-        "test": "test"
-    }
+  "timeline": {
+    "slides": [
+      {
+        "media": {
+          "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "year": "1888"
+        }, 
+        "text": {
+          "headline": "Welcome to TimelineJS", 
+          "text": "<p>TimelineJS is an open-source tool that enables you to build visually-rich interactive timelines and is available in 40 languages.</p><p>You're looking at an example of one right now.</p><p>Click on the arrow to the right to learn more.</p>"
+        }
+      }, 
+      {
+        "media": {
+          "url": "/static/welcome/step3.png", 
+          "caption": "Screenshot from TimelineJS Embed Generator tool (see below)", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "year": "1851"
+        }, 
+        "text": {
+          "headline": "It's Easy to Make Your Own Timeline", 
+          "text": "The TimelineJS Embed Generator makes it easy to add a timeline to your own site. Just copy our Google Spreadsheet template, add your events as rows in the spreadsheet, and use our <a href='#make'>generator tool</a> to generate the HTML you need to add to your site."
+        }
+      }, 
+      {
+        "media": {
+          "url": "", 
+          "caption": "Screenshot from TimelineJS Embed Generator tool (see below)", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "year": "1871"
+        }, 
+        "text": {
+          "headline": "Illustrate your Timeline with photos, videos, tweets and more.", 
+          "text": "Timeline can automatically pull in photos, videos from YouTube or Vimeo, tweets, wikipedia entries, and many other media types to help tell your story."
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://youtu.be/lIvftGgps24", 
+          "caption": "Le portrait myst\u00e9rieux", 
+          "credit": "Georges M\u00e9li\u00e8s"
+        }, 
+        "start_date": {
+          "year": "1899"
+        }, 
+        "text": {
+          "headline": "YouTube video", 
+          "text": "To add a YouTube video, just add a link to it in the media field. No embedding necessary. http://youtu.be/lIvftGgps24"
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://youtu.be/7JDaOOw0MEE", 
+          "caption": "A Trip to the Moon / Le Voyage dans la lune", 
+          "credit": "Georges M\u00e9li\u00e8s"
+        }, 
+        "start_date": {
+          "year": "1902"
+        }, 
+        "text": {
+          "headline": "YouTube with no text", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://en.wikipedia.org/wiki/A_Trip_to_the_Moon", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "year": "1902"
+        }, 
+        "text": {
+          "headline": "Wikipedia", 
+          "text": "Add a link to a <a href='http://en.wikipedia.org/wiki/A_Trip_to_the_Moon' target='_blank'>Wikipedia entry</a> in the media field to show an excerpt alongside your text."
+        }
+      }, 
+      {
+        "media": {
+          "url": "<blockquote>\u201cYou have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.\u201d</blockquote>", 
+          "caption": "", 
+          "credit": "Dr. Seuss"
+        }, 
+        "start_date": {
+          "month": "2", 
+          "day": "7", 
+          "year": "1950"
+        }, 
+        "text": {
+          "headline": "Blockquote", 
+          "text": "This is an example of a blockquote. <br/>&lt;blockquote&gt;&ldquo;Just use html blockquotes in the media field.&rdquo;&lt;/blockquote&gt;"
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://www.w3schools.com/", 
+          "caption": "http://w3schools.com", 
+          "credit": "w3schools"
+        }, 
+        "start_date": {
+          "month": "2", 
+          "day": "7", 
+          "year": "1960"
+        }, 
+        "text": {
+          "headline": "Website", 
+          "text": "This is an example of a website. Just paste a link to the site in the media field."
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://www.google.com/maps?hl=en&sll=42.05083,-87.674194&sspn=0.020170947570668576,0.036220713642592585&z=15", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "18", 
+          "year": "1979"
+        }, 
+        "text": {
+          "headline": "Google Map", 
+          "text": "Google Maps are easy too. Just add the link to the map in the media field."
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://www.google.com/maps/place/Chicago,+IL/@41.8337329,-87.7321555,11z/data=!3m1!4b1!4m2!3m1!1s0x880e2c3cd0f4cbed:0xafe0a6ad09c0c000?hl=en", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "18", 
+          "year": "1980"
+        }, 
+        "text": {
+          "headline": "Google Map with no text", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://www.flickr.com/photos/zachwise/7074630607/in/photostream/", 
+          "caption": "", 
+          "credit": "Zach Wise"
+        }, 
+        "start_date": {
+          "month": "2", 
+          "day": "7", 
+          "year": "1985"
+        }, 
+        "text": {
+          "headline": "Flickr", 
+          "text": "To add a Flickr photo, just paste a link to the photo page in the media field. Example: http://www.flickr.com/photos/zachwise/7074630607/"
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://www.flickr.com/photos/zachwise/7050589957/in/photostream/", 
+          "caption": "March to work.", 
+          "credit": "Zach Wise"
+        }, 
+        "start_date": {
+          "month": "2", 
+          "day": "7", 
+          "year": "1990"
+        }, 
+        "text": {
+          "headline": "Flickr with no text", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://twitter.com/alykat/status/164184609519697920", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "2", 
+          "day": "10", 
+          "year": "2001"
+        }, 
+        "text": {
+          "headline": "A Tweet", 
+          "text": "To add a tweet, just paste a link to the tweet stats in the media field. Example: http://twitter.com/alykat/status/164184609519697920"
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://twitter.com/ArjunaSoriano/status/164181156147900416", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "12", 
+          "day": "10", 
+          "year": "2002"
+        }, 
+        "text": {
+          "headline": "Yet Another Tweet", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://vimeo.com/33211636", 
+          "caption": "", 
+          "credit": "Denis Chapon"
+        }, 
+        "start_date": {
+          "month": "8", 
+          "day": "23", 
+          "year": "2011"
+        }, 
+        "text": {
+          "headline": "Vimeo", 
+          "text": "<p>Just add a link to the video in the media field. Example: https://vimeo.com/33211636</p>"
+        }
+      }, 
+      {
+        "media": {
+          "url": "http://soundcloud.com/beastieboys/make-some-noise", 
+          "caption": "R.I.P. MCA.", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "18", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "SoundCloud ", 
+          "text": "Just add a link to the track in the media field."
+        }
+      }, 
+      {
+        "media": {
+          "url": "", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "10", 
+          "day": "01", 
+          "year": "2013"
+        }, 
+        "text": {
+          "headline": "Get started!", 
+          "text": "Use the <a href='#make'>generator form</a> to make your first timeline now."
+        }
+      }
+    ]
+  }
 }
