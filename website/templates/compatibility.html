@@ -26,6 +26,8 @@
         margin:10px;
       }
       #timeline { height: 100%;}
+      #export-json { display: none; }
+      #json-export-field { width: 95%; height: 500px; }
     </style>
 
 {% endblock %}
@@ -33,6 +35,21 @@
 {% block content %}
 
     <div id="input">Enter a google spreadsheet ID or URL: <input type="text" id="url" style="width: 500px"/> <button type="button" id="go-preview">Go</button>
+    <a href="#json-export-modal" data-toggle="modal" class="btn" type="button" id="export-json">Export TimelineJS3 JSON</a>
+    </div>
+    <div id="json-export-modal" class="modal hide fade" tabindex="-1" role="dialog" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">TimelineJS3 JSON</h3>
+      </div>
+      <div class="modal-body">
+        <p>Since TimelineJS3 is still under active development, use this with caution. The data format may change!
+        </p>
+        <textarea id="json-export-field"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
     </div>
     <div id="timeline"></div>
 {% endblock %}
@@ -61,9 +78,9 @@
     function new_timeline(url) {
         timeline = null; // TODO: actively 'destroy' an existing timeline?
         var json = VCO.ConfigFactory.fromGoogle(url);
-      
+        $("#export-json").show();
         window.factory_json = json;
-        
+        $("#json-export-field").val(JSON.stringify(json,null,"  "));
         document.getElementById('input').style.height = "40px"
         document.getElementById('timeline').style.height = (window.innerHeight - 40 + "px");
         
