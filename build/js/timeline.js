@@ -2742,12 +2742,24 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     },
 
+    /* Add a slide and return the unique id 
+    */
+    addSlide: function(data) {
+        this.slides.push(data);
+        this._makeUniqueIdentifiers(this.slides); 
+        this._processDates(this.slides);    
+        
+        var uniqueid = this.slides[this.slides.length - 1].uniqueid;             
+        VCO.DateUtil.sortByDate(this.slides);
+        return uniqueid;
+    },
+
     _cleanData: function() {
         this._makeUniqueIdentifiers(this.slides); 
         this._processDates(this.slides);          
         VCO.DateUtil.sortByDate(this.slides);
     },
-
+    
     _importProperties: function(d) {
         for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
             k = this.VALID_PROPERTIES[i];
@@ -2783,7 +2795,7 @@ VCO.TimelineConfig = VCO.Class.extend({
             }
         }
     },
-    
+
     _processDates: function(array) {
         var dateCls = null;
         
@@ -2820,10 +2832,11 @@ VCO.TimelineConfig = VCO.Class.extend({
             if (typeof(array[i].start_date) == 'undefined') {
                 throw("item " + i + " is missing a start_date");
             }
-            
-            array[i].start_date = new dateCls(array[i].start_date);
-            if (typeof(array[i].end_date) != 'undefined') {
-                array[i].end_date = new dateCls(array[i].end_date);
+            if(!(array[i].start_date instanceof dateCls)) {
+                array[i].start_date = new dateCls(array[i].start_date);
+                if (typeof(array[i].end_date) != 'undefined') {
+                    array[i].end_date = new dateCls(array[i].end_date);
+                }
             }
         }
     }
@@ -8351,34 +8364,37 @@ VCO.StorySlider = VCO.Class.extend({
 		this._onLoaded();
 	},
 	
-	/*	Create Slides
-	================================================== */
+	/* Slides
+	================================================== */	
+	_addSlide:function(slide) {
+		slide.addTo(this._el.slider_item_container);
+		slide.on('added', this._onSlideAdded, this);
+		slide.on('background_change', this._onBackgroundChange, this);
+	},
+
+	_createSlide: function(d, title_slide, n) {
+		var slide = new VCO.Slide(d, this.options, title_slide);
+		this._addSlide(slide);
+		if(n < 0) { 
+		    this._slides.push(slide);
+		} else {
+		    this._slides.splice(n, 0, slide);
+		}
+	},
+
 	_createSlides: function(array) {
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].uniqueid == "") {
 				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
 			}
 			if (i == 0) {
-				this._createSlide(array[i], true);
+				this._createSlide(array[i], true, -1);
 			} else {
-				this._createSlide(array[i], false);
-			}
-			
+				this._createSlide(array[i], false, -1);
+			}			
 		};
 	},
-	
-	_createSlide: function(d, title_slide) {
-		var slide = new VCO.Slide(d, this.options, title_slide);
-		this._addSlide(slide);
-		this._slides.push(slide);
-	},
-	
-	_addSlide:function(slide) {
-		slide.addTo(this._el.slider_item_container);
-		slide.on('added', this._onSlideAdded, this);
-		slide.on('background_change', this._onBackgroundChange, this);
-	},
-	
+		
 	_removeSlide: function(slide) {
 		slide.removeFrom(this._el.slider_item_container);
 		slide.off('added', this._onSlideRemoved, this);
@@ -8405,8 +8421,8 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	// Create a slide
-	createSlide: function(d) {
-		this._createSlide(d);
+	createSlide: function(d, n) {
+		this._createSlide(d, false, n);
 	},
 	
 	// Create Many Slides from an array
@@ -8651,7 +8667,7 @@ VCO.StorySlider = VCO.Class.extend({
 	// Reposition and redraw slides
     _updateDrawSlides: function() {
 	    var _layout = this.options.layout;
-	    
+   
 		for (var i = 0; i < this._slides.length; i++) {
 			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
 			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});			
@@ -8993,23 +9009,26 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	Markers
 	================================================== */
-	_createMarkers: function(array) { 
-		for (var i = 0; i < array.length; i++) {
-			this._createMarker(array[i]);
-		};
-		
-	},
-	
-	_createMarker: function(data) {
-		var marker = new VCO.TimeMarker(data, this.options);
-		this._addMarker(marker);
-		this._markers.push(marker);
-	},
-	
 	_addMarker:function(marker) {
 		marker.addTo(this._el.marker_item_container);
 		marker.on('markerclick', this._onMarkerClick, this);
 		marker.on('added', this._onMarkerAdded, this);
+	},
+
+	_createMarker: function(data, n) {
+		var marker = new VCO.TimeMarker(data, this.options);
+		this._addMarker(marker);
+		if(n < 0) {
+		    this._markers.push(marker);
+		} else {
+		    this._markers.splice(n, 0, marker);
+		}
+	},
+
+	_createMarkers: function(array) { 
+		for (var i = 0; i < array.length; i++) {
+			this._createMarker(array[i], -1);
+		}		
 	},
 	
 	_removeMarker: function(marker) {
@@ -9074,11 +9093,26 @@ VCO.TimeNav = VCO.Class.extend({
 		} 
 		return _n;
 	},
+
+	/*	Public
+	================================================== */
 	
+	// Create a marker
+	createMarker: function(d, n) {
+	    this._createMarker(d, n);
+	},
+	
+	// Create many markers from an array
+	createMarkers: function(array) {
+	    this._createMarkers(array);
+	},
+	
+	// Destroy marker by index
 	destroyMarker: function(n) {
 	    this._destroyMarker(n);
 	},
 	
+	// Destroy marker by id
 	destroyMarkerId: function(id) {
 	    this.destroyMarker(this._findMarkerIndex(id));
 	},
@@ -9131,7 +9165,6 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerAdded: function(e) {
-
 		this.fire("dateAdded", this.data);
 	},
 	
@@ -10451,6 +10484,21 @@ VCO.Timeline = VCO.Class.extend({
     /* Maniupluation
 	================================================== */
 	
+	add: function(data) {
+	    var uniqueid = this.config.addSlide(data);
+	    
+        var n = this._getSlideIndex(uniqueid);
+        var d = this.config.slides[n];
+        
+        this._storyslider.createSlide(d, n);
+        this._storyslider._updateDrawSlides();            
+        
+        this._timenav.createMarker(d, n);
+        this._timenav._updateDrawTimeline(false);	
+        
+        this.fire("added", {uniqueid: uniqueid});
+	},
+	
 	remove: function(n) {
 	    if(n >= 0  && n < this.config.slides.length 
 	    && this.config.slides.length > 1) {
@@ -10463,14 +10511,16 @@ VCO.Timeline = VCO.Class.extend({
                 }
             }
         
-            var slide = this.config.slides.splice(n, 1);
+            var slides = this.config.slides.splice(n, 1);
         
             this._storyslider.destroySlide(n);
             this._storyslider._updateDrawSlides();            
         
             this._timenav.destroyMarker(n);
             this._timenav._updateDrawTimeline(false);
-        }
+         
+            this.fire("removed", {uniqueid: slides[0].uniqueid});
+       }
 	},
 	
 	removeId: function(id) {

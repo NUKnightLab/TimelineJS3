@@ -109,34 +109,37 @@ VCO.StorySlider = VCO.Class.extend({
 		this._onLoaded();
 	},
 	
-	/*	Create Slides
-	================================================== */
+	/* Slides
+	================================================== */	
+	_addSlide:function(slide) {
+		slide.addTo(this._el.slider_item_container);
+		slide.on('added', this._onSlideAdded, this);
+		slide.on('background_change', this._onBackgroundChange, this);
+	},
+
+	_createSlide: function(d, title_slide, n) {
+		var slide = new VCO.Slide(d, this.options, title_slide);
+		this._addSlide(slide);
+		if(n < 0) { 
+		    this._slides.push(slide);
+		} else {
+		    this._slides.splice(n, 0, slide);
+		}
+	},
+
 	_createSlides: function(array) {
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].uniqueid == "") {
 				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
 			}
 			if (i == 0) {
-				this._createSlide(array[i], true);
+				this._createSlide(array[i], true, -1);
 			} else {
-				this._createSlide(array[i], false);
-			}
-			
+				this._createSlide(array[i], false, -1);
+			}			
 		};
 	},
-	
-	_createSlide: function(d, title_slide) {
-		var slide = new VCO.Slide(d, this.options, title_slide);
-		this._addSlide(slide);
-		this._slides.push(slide);
-	},
-	
-	_addSlide:function(slide) {
-		slide.addTo(this._el.slider_item_container);
-		slide.on('added', this._onSlideAdded, this);
-		slide.on('background_change', this._onBackgroundChange, this);
-	},
-	
+		
 	_removeSlide: function(slide) {
 		slide.removeFrom(this._el.slider_item_container);
 		slide.off('added', this._onSlideRemoved, this);
@@ -163,8 +166,8 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	// Create a slide
-	createSlide: function(d) {
-		this._createSlide(d);
+	createSlide: function(d, n) {
+		this._createSlide(d, false, n);
 	},
 	
 	// Create Many Slides from an array
@@ -385,7 +388,7 @@ VCO.StorySlider = VCO.Class.extend({
 	// Reposition and redraw slides
     _updateDrawSlides: function() {
 	    var _layout = this.options.layout;
-	    
+   
 		for (var i = 0; i < this._slides.length; i++) {
 			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
 			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});			
