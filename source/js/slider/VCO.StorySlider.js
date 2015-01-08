@@ -231,13 +231,13 @@ VCO.StorySlider = VCO.Class.extend({
 			// Update Navigation and Info
 			if (this._slides[n + 1]) {
 				this.showNav(this._nav.next, true);
-				this._nav.next.update(this.getNavInfo(this._slides[n + 1]));
+				this._nav.next.update(this._slides[n + 1]);
 			} else {
 				this.showNav(this._nav.next, false);
 			}
 			if (this._slides[n - 1]) {
 				this.showNav(this._nav.previous, true);
-				this._nav.previous.update(this.getNavInfo(this._slides[n - 1]));
+				this._nav.previous.update(this._slides[n - 1]);
 			} else {
 				this.showNav(this._nav.previous, false);
 			}
@@ -272,30 +272,6 @@ VCO.StorySlider = VCO.Class.extend({
 		}
 	},
 		
-	getNavInfo: function(slide) {
-		var n = {
-			title: "",
-			description: ""
-		};
-		
-		if (slide.data.text) {
-			if (slide.data.text.headline) {
-				n.title = slide.data.text.headline;
-			}
-			/*
-			// Disabling location in description for now.
-			if (slide.data.location) {
-				if (slide.data.location.name) {
-					n.description = slide.data.location.name;
-				}
-			}
-			*/
-		}
-		
-		return n;
-		
-	},
-	
 	next: function() {
 	    var n = this._findSlideIndex(this.current_id);	    
 		if ((n + 1) < (this._slides.length)) {

@@ -145,6 +145,17 @@ VCO.Slide = VCO.Class.extend({
 	scrollToTop: function() {
 		this._el.container.scrollTop = 0;
 	},
+
+	getFormattedDate: function() {
+		var date_text = "";
+		if (this.data.end_date) {
+			date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
+		}
+		if (this.data.start_date) {
+			date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+		}
+		return date_text;
+	},
 	
 	/*	Events
 	================================================== */
@@ -153,7 +164,6 @@ VCO.Slide = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		var date_text = "";
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
 		if (this.data.uniqueid) {
@@ -216,14 +226,7 @@ VCO.Slide = VCO.Class.extend({
 		// Create Text
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
-			// Add Date if available
-			if (this.data.end_date) {
-				date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
-			}
-			if (this.data.start_date) {
-				date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
-				this._text.addDateText(date_text);
-			}
+			this._text.addDateText(this.getFormattedDate());
 		}
 		
 		
