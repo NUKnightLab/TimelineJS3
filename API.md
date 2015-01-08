@@ -43,6 +43,12 @@ timeline.on(event_name, function(data) {
 
 * zoom_level: integer, current zoom level
 
+`added` _after slide has been added_
+
+`removed` _after slide has been removed_
+
+* uniqueid: string, the id of the modified slide
+
 
 ### Navigation
 
