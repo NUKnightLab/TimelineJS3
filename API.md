@@ -76,6 +76,9 @@ Go to the first/last slide
 
 Remove slide.
 
+`add(<object data>)`
+
+Add slide with data `data`.
 
 ### Data Access
 
@@ -96,10 +99,6 @@ Get VCO.Slide object for slide.
 `Timeline.goToTitle()`
 
 This was mentioned, but I don't really know if this makes sense.  I think there are ongoing discussions about title slides, so this is on hold until that is decided.
-
-`Timeline.add(data, n)`
-
-Add slide with data `data` at index `n`.  If `n` not provided, then add at end.
 
 ####Slide data format
 ```javascript
