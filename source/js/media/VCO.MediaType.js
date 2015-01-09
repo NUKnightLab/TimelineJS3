@@ -50,7 +50,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googlemaps",
 				name: 		"Google Map", 
-				match_str: 	/maps.google|google\.\w+\/maps/,
+				match_str: 	/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
 				cls: 		VCO.Media.Map
 			},
 			{
