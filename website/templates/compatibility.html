@@ -8,50 +8,49 @@
        padding: 0px;
        margin: 0px;
       }
-      .vco-timeline {
-      }
-      
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML elements-->
     <!--if lt IE 9
     script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
-    
     -->
-    <style type="text/css">
-      #input {
-          height: 40px;
-          background-color:#CCC;
-      }
-      #url {
-        margin:10px;
-      }
-      #timeline { height: 100%;}
-      #export-json { display: none; }
-      #json-export-field { width: 95%; height: 500px; }
-    </style>
 
 {% endblock %}
 
 {% block content %}
-
-    <div id="input">Enter a google spreadsheet ID or URL: <input type="text" id="url" style="width: 500px"/> <button type="button" id="go-preview">Go</button>
-    <a href="#json-export-modal" data-toggle="modal" class="btn" type="button" id="export-json">Export TimelineJS3 JSON</a>
+    <div class="container" id="try-js3">
+        <div class="row">
+            <div class="span4">
+                <h2>Try TimelineJS3</h2>
+                <p>To view existing timelines as TimelineJS3 projects, paste a Google Spreadsheet ID or URL in the box to the left.</p>
+            </div>
+            <div class="span8">
+                    <div id="timeline-tester">
+                    <h4>Enter spreadsheet ID or URL</h4>
+                    <p><small>example: 0AmaVMvy285_tdHBod2s3aWFvZmlwVnZWcHFaZjBfdEE</small></p>
+                    <input type="text" placeholder="Spreadsheet ID or URL" id="url"/> <button type="button" id="go-preview" class="btn">Go</button>
+                    <a href="#json-export-modal" data-toggle="" class="btn disabled" type="button" id="export-json">Export TimelineJS3 JSON</a>
+                    </div>
+                    <div id="json-export-modal" class="modal hide fade" tabindex="-1" role="dialog" >
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel">TimelineJS3 JSON</h3>
+                      </div>
+                      <div class="modal-body">
+                        <p>Since TimelineJS3 is still under active development, use this with caution. The data format is likely to change.
+                        </p>
+                        <textarea id="json-export-field" rows="15" cols="50"></textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="json-export-modal" class="modal hide fade" tabindex="-1" role="dialog" >
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">TimelineJS3 JSON</h3>
-      </div>
-      <div class="modal-body">
-        <p>Since TimelineJS3 is still under active development, use this with caution. The data format is likely to change.
-        </p>
-        <textarea id="json-export-field"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      </div>
+    <div id="timeline" class="preview">
+        <h2>Your preview will appear here.</h2>
     </div>
-    <div id="timeline"></div>
 {% endblock %}
 
 {% block scripts %}
@@ -78,16 +77,17 @@
     function new_timeline(url) {
         timeline = null; // TODO: actively 'destroy' an existing timeline?
         var json = VCO.ConfigFactory.fromGoogle(url);
-        $("#export-json").show();
+        $("#export-json").removeClass("disabled");
+        $("#export-json").attr("data-toggle", "modal");
+        $("#timeline").removeClass("preview");
         window.factory_json = json;
         $("#json-export-field").val(JSON.stringify(json,null,"  "));
-        document.getElementById('input').style.height = "40px"
+        /*document.getElementById('input').style.height = "40px"*/
         document.getElementById('timeline').style.height = (window.innerHeight - 40 + "px");
-        
+
         timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
         });
-      
-        
+
         window.onresize = function(event) {
             console.log("resize")
             document.getElementById('input').style.height = "30px"
@@ -95,7 +95,7 @@
             timeline.updateDisplay();
         }
     }
-    
+
     function getQueryParams(qs) {
       qs = qs.split("+").join(" ");
 

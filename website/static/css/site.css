@@ -87,6 +87,48 @@ h2.intro {
   margin-bottom: 10px;
 }
 
+/* Compatibility test page*/
+#try-js3 { margin-top: 40px; }
+#timeline-tester {
+    margin: 20px auto;
+    padding: 20px;
+    background: #eee;
+    border: 1px solid #ccc;
+}
+
+#timeline-tester small {
+    font-size: 12px;
+    font-family: sans-serif;
+    font-style: italic;
+}
+
+#timeline-tester input {
+    width: 89%;
+    margin-bottom: 0;
+}
+#export-json {
+    margin-top: 10px;
+}
+#json-export-field {
+    width: 95%;
+    font-family: "Courier", sans-serif;
+    font-size: 12px;
+}
+
+#timeline {
+    height: 100%;
+    border: 1px dotted #d0d0d0;
+}
+
+#timeline.preview{
+    background: #eee;
+}
+#timeline.preview h2 {
+    text-align: center;
+    color: #d0d0d0;
+    font-size: 40px;
+    margin-top: 100px;
+}
 /* Developers */
 #developers .develop {
   margin-top: 40px;
