@@ -4627,7 +4627,7 @@ VCO.Date = VCO.Class.extend({
             language = VCO.Language.fallback;
         }
 
-        format_key = format || this.data.format;
+        var format_key = format || this.data.format;
         return language.formatDate(this.data.date_obj, format_key);
 	},
 	
@@ -4690,7 +4690,7 @@ VCO.Date = VCO.Class.extend({
 		VCO.Util.mergeData(_date, this.data);
  
  		// Make strings into numbers
-		DATE_PARTS = VCO.Date.DATE_PARTS;
+		var DATE_PARTS = VCO.Date.DATE_PARTS;
  
  		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
@@ -4822,7 +4822,7 @@ VCO.BigYear = VCO.Class.extend({
             // parse short specifically to avoid timezone offset confusion
             // most browsers assume short is UTC, not local time.
             var parts = str.match(ISO8601_SHORT_PATTERN).slice(1);
-            d = { year: parts[0].replace('+','')} // year can be negative
+            var d = { year: parts[0].replace('+','')} // year can be negative
             if (parts[1]) { d['month'] = parts[1].replace('-',''); }
             if (parts[2]) { d['day'] = parts[2].replace('-',''); }
             return d;
