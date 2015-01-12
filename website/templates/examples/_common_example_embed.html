@@ -1,6 +1,6 @@
   <!-- Demo -->
   <section id="demo">
-    <div id="timeline-embed">
+    <div id="timeline-embed" style="height: 1000px">
       <div id="timeline"></div>
     </div>
   </section>
@@ -12,12 +12,23 @@
   <script src="/build/js/timeline.js"></script>
   <!-- endbuild -->
   <script>
-    document.getElementById('timeline-embed').style.height = document.body.offsetHeight + "px";
-    var timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {
+    $(document).ready(function(){
+      $("#timeline-embed").height($(document).height());
+      window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {
+      });
+
+      if ($("#timeline-embed").height() == 0) {
+        setTimeout(function(){
+            console.log("trying again. height: " + $(document).height())
+            $("#timeline-embed").height($(document).height());
+            window.timeline.updateDisplay();          
+        },500);
+        
+      }
+      window.onresize = function(event) {
+        timeline.updateDisplay();
+      }
     });
-    window.onresize = function(event) {
-      timeline.updateDisplay();
-    }
   </script>
 
 
