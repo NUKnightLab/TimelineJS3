@@ -58,7 +58,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 			tweet_status_date 	= "";
 			
 		//	TWEET CONTENT
-		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>", target="_blank";
+		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>";
 		tweetuser			= d.author_url.split("twitter.com\/")[1];
 		tweet_status_temp 	= d.html.split("<\/p>\&mdash;")[1].split("<a href=\"")[1];
 		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
