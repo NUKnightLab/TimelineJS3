@@ -61,6 +61,7 @@
 // MEDIA TYPES
 	// @codekit-prepend "media/types/VCO.Media.Blockquote.js";
 	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
+	// @codekit-prepend "media/types/VCO.Media.DocumentCloud.js";
 	// @codekit-prepend "media/types/VCO.Media.Flickr.js";
 	// @codekit-prepend "media/types/VCO.Media.GoogleDoc.js";
 	// @codekit-prepend "media/types/VCO.Media.GooglePlus.js";
