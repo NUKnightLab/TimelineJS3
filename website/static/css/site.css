@@ -103,11 +103,12 @@ h2.intro {
 }
 
 #timeline-tester input {
-    width: 89%;
+    width: 85%;
     margin-bottom: 0;
 }
 #export-json {
-    margin-top: 10px;
+    font-size: 12px;
+    float: left;
 }
 #json-export-field {
     width: 95%;
@@ -117,18 +118,31 @@ h2.intro {
 
 #timeline {
     height: 100%;
-    border: 1px dotted #d0d0d0;
 }
 
-#timeline.preview{
-    background: #eee;
+#more-fun {
+    display: none;
+    padding: 10px 0px 5px;
+    background-color: #eee;
+    border-bottom: 1px solid #ccc;
+    font-size: 12px;
+    margin-top: -4px;
 }
-#timeline.preview h2 {
-    text-align: center;
-    color: #d0d0d0;
-    font-size: 40px;
-    margin-top: 100px;
+#more-fun h5 {
+    float: left;
+    margin: 5px 40px 0 0;
 }
+#options p {
+    float: left;
+    padding: 0 5px;
+    font-weight: bold;
+}
+#preview-inputs input,
+#preview-inputs button{
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
 /* Developers */
 #developers .develop {
   margin-top: 40px;
