@@ -29,9 +29,13 @@ VCO.Media.Image = VCO.Media.extend({
 			self.onMediaLoaded();
 		});
 		
-		this._el.content_item.src			= this.data.url;
+		this._el.content_item.src			= this._transformURL(this.data.url);
 		
 		this.onLoaded();
+	},
+	
+	_transformURL: function(url) {
+        return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
 	},
 	
 	_updateMediaDisplay: function(layout) {

@@ -78,6 +78,12 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Profile
 			},
 			{
+			    type:       "documentcloud",
+			    name:       "Document Cloud",
+			    match_str:  /documentcloud.org\//,
+			    cls:        VCO.Media.DocumentCloud
+			},
+			{
 				type: 		"image",
 				name: 		"Image",
 				match_str: 	/jpg|jpeg|png|gif/i,

@@ -50,7 +50,7 @@
         fromGoogle: function(url) {
             var key = extractSpreadsheetKey(url);
             // TODO: maybe get specific worksheets?
-            var worksheet = 'od6';
+            var worksheet = '1';
             url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
             var data = VCO.ajax({
                 url: url, 

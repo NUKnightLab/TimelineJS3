@@ -2993,7 +2993,7 @@ VCO.TimelineConfig = VCO.Class.extend({
         fromGoogle: function(url) {
             var key = extractSpreadsheetKey(url);
             // TODO: maybe get specific worksheets?
-            var worksheet = 'od6';
+            var worksheet = '1';
             url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
             var data = VCO.ajax({
                 url: url, 
@@ -6108,6 +6108,12 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Profile
 			},
 			{
+			    type:       "documentcloud",
+			    name:       "Document Cloud",
+			    match_str:  /documentcloud.org\//,
+			    cls:        VCO.Media.DocumentCloud
+			},
+			{
 				type: 		"image",
 				name: 		"Image",
 				match_str: 	/jpg|jpeg|png|gif/i,
@@ -6593,6 +6599,76 @@ VCO.Media.DailyMotion = VCO.Media.extend({
 
 
 /* **********************************************
+     Begin VCO.Media.DocumentCloud.js
+********************************************** */
+
+/*	VCO.Media.DocumentCloud
+================================================== */
+
+VCO.Media.DocumentCloud = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var self = this;
+		
+		// Loading Message 
+		this.loadingMessage();
+				
+		// Create Dom elements
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-documentcloud vco-media-shadow", this._el.content);
+		this._el.content_item.id = VCO.Util.unique_ID(7)
+		
+		// Check url
+		if(this.data.url.match(/\.html$/)) {
+		    this.data.url = this._transformURL(this.data.url);
+		} else if(!(this.data.url.match(/.(json|js)$/))) {
+		    trace("DOCUMENT CLOUD IN URL BUT INVALID SUFFIX");
+		}
+		
+		// Load viewer API
+        VCO.Load.js([
+                '//s3.documentcloud.org/viewer/loader.js', 
+                '//s3.amazonaws.com/s3.documentcloud.org/viewer/viewer.js'],
+            function() {	
+	            self.createMedia();
+			}
+		);	
+	},
+	
+	// Viewer API needs js, not html
+	_transformURL: function(url) {
+        return url.replace(/(.*)\.html$/, '$1.js')
+	},
+	
+	// Update Media Display
+	_updateMediaDisplay: function() {
+        this._el.content_item.style.height = this.options.height + "px";
+		//this._el.content_item.style.width = this.options.width + "px";
+	},
+		
+	createMedia: function() {		
+		// DocumentCloud API call	
+		DV.load(this.data.url, {
+		    container: '#'+this._el.content_item.id, 
+		    showSidebar: false
+		});
+		this.onLoaded();
+	},
+	
+
+	
+	/*	Events
+	================================================== */
+
+
+	
+});
+
+
+/* **********************************************
      Begin VCO.Media.Flickr.js
 ********************************************** */
 
@@ -6874,9 +6950,13 @@ VCO.Media.Image = VCO.Media.extend({
 			self.onMediaLoaded();
 		});
 		
-		this._el.content_item.src			= this.data.url;
+		this._el.content_item.src			= this._transformURL(this.data.url);
 		
 		this.onLoaded();
+	},
+	
+	_transformURL: function(url) {
+        return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
 	},
 	
 	_updateMediaDisplay: function(layout) {
@@ -10367,6 +10447,7 @@ VCO.AxisHelper = VCO.Class.extend({
 // MEDIA TYPES
 	// @codekit-prepend "media/types/VCO.Media.Blockquote.js";
 	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
+	// @codekit-prepend "media/types/VCO.Media.DocumentCloud.js";
 	// @codekit-prepend "media/types/VCO.Media.Flickr.js";
 	// @codekit-prepend "media/types/VCO.Media.GoogleDoc.js";
 	// @codekit-prepend "media/types/VCO.Media.GooglePlus.js";
