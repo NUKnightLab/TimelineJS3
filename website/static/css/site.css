@@ -137,10 +137,35 @@ h2.intro {
     padding: 0 5px;
     font-weight: bold;
 }
+
+#try-it{
+    padding: 20px 0;
+}
+
+p.caption {
+    font-family: sans-serif;
+    font-size: 13px;
+    float: right;
+}
+
 #preview-inputs input,
 #preview-inputs button{
     margin-bottom: 0;
-    font-size: 12px;
+    font-size: 13px;
+}
+
+#preview-inputs input {
+    width: 80%;
+    min-width: 320px;
+    max-width: 600px;
+    font-family: sans-serif;
+}
+
+p.input-label {
+    margin-bottom: 0;
+    font-size: 13px;
+    font-family: sans-serif;
+    color: #757575;
 }
 
 /* Developers */
