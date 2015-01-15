@@ -15,10 +15,10 @@ VCO.TimelineConfig = VCO.Class.extend({
                 url: data,
                 dataType: 'json', //json data type
                 success: function(d){
-                    if (d && d.timeline) {
-                        self._importProperties(d.timeline);
+                    if (d && d.slides) {
+                        self._importProperties(d);
                     } else {
-                        throw("data must have a timeline property")
+                        throw("data must have a slides property")
                     }
                     self._cleanData();
                     if (callback) {
@@ -32,11 +32,11 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             });
         } else if (typeof data === 'object') {
-            if (data.timeline) {
-                this._importProperties(data.timeline);
+            if (data.slides) {
+                this._importProperties(data);
                 this._cleanData();
             } else {
-                throw("data must have a timeline property")
+                throw("data must have a slides property")
             }
             if (callback) {
                 callback(this);

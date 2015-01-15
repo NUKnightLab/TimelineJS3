@@ -62,7 +62,7 @@
             for (var i = 0; i < data.feed.entry.length; i++) {
                 slides.push(extractGoogleEntryData(data.feed.entry[i]));
             };
-            return {scale: 'javascript', timeline: {slides: slides}}
+            return {scale: 'javascript', slides: slides}
         }   
     }
 })(VCO)
