@@ -1,5 +1,16 @@
 #TimelineJS3 API
 
+TimelineJS3 exposes the events and methods listed below.
+
+Note that these methods make a distinction between an `event_index` and a `slide_index`.  An `event_index` is an index into the sorted array of `events` in the timeline data object.  A `slide_index` is index of the slide that appears in the rendered timeline.  
+
+A `title` has no `event_index` and has `slide_index` 0.  
+
+If you have a `title`, the first event has `event_index` 0 and `slide_index` 1.
+
+If you do not have a `title`, the first event has `event_index` 0 and `slide_index` 0.
+
+
 ### Events
 
 ```javascript
@@ -52,7 +63,7 @@ timeline.on(event_name, function(data) {
 
 ### Navigation
 
-`goTo(<int index>)` _go to slide at index_
+`goTo(<int slide_index>)` _go to slide at index_
 
 `goToId(<string id>)` _go to slide with id_
 
@@ -66,7 +77,7 @@ timeline.on(event_name, function(data) {
 
 ### Manipulation
 
-`remove(<int index>)` _remove event by index_
+`remove(<int event_index>)` _remove event by index_
 
 `removeId(<string id>)` _remove event by id_
 
@@ -74,11 +85,11 @@ timeline.on(event_name, function(data) {
 
 ### Data Access
 
-`getData(<int index>)` _get data for slide by index_
+`getData(<int slide_index>)` _get data for slide by index_
 
 `getDataId(<string id>)` _get data for slide by id_
 
-`getSlide(<int index>)` _get VCO.Slide object by index_
+`getSlide(<int slide_index>)` _get VCO.Slide object by index_
 
 `getSlideId(<string id>)` _get VCO.Slide object by id_
 
