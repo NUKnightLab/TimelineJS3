@@ -52,55 +52,38 @@ timeline.on(event_name, function(data) {
 
 ### Navigation
 
-`goTo(<int index>)`
+`goTo(<int index>)` _go to slide at index_
 
-`goToId(<string id>)`
+`goToId(<string id>)` _go to slide with id_
 
-Go to slide.
+`goToNext()` _go to next slide_
 
-`goToNext()`
+`goToPrev()` _go to previous slide_
 
-`goToPrev()`
+`goToStart()` _go to first slide_
 
-Go to the next/previous slide
+`goToEnd()` _go to last slide_
 
-`goToStart()`
+### Manipulation
 
-`goToEnd()`
+`remove(<int index>)` _remove event by index_
 
-Go to the first/last slide
+`removeId(<string id>)` _remove event by id_
 
-`remove(<int index>)`
-
-`removeId(<string id>)`
-
-Remove slide.
-
-`add(<object data>)`
-
-Add slide with data `data`.  See Slide Data Format below.
+`add(<object data>)` _add event with data (see event data format below)_
 
 ### Data Access
 
-`getData(<int index>)`
+`getData(<int index>)` _get data for slide by index_
 
-`getDataId(<string id>)`
+`getDataId(<string id>)` _get data for slide by id_
 
-Get data for slide.
+`getSlide(<int index>)` _get VCO.Slide object by index_
 
-`getSlide(<int index>)`
+`getSlideId(<string id>)` _get VCO.Slide object by id_
 
-`getSlideId(<string id>)`
 
-Get VCO.Slide object for slide.
-
-####TO DO?
-
-`Timeline.goToTitle()`
-
-This was mentioned, but I don't really know if this makes sense.  I think there are ongoing discussions about title slides, so this is on hold until that is decided.
-
-####Slide data format
+####Event data format
 ```javascript
 {
     "start_date": {
