@@ -7528,6 +7528,9 @@ VCO.Media.Twitter = VCO.Media.extend({
 		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
 		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
 		
+		// Open links in new window
+		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+
 		// 	TWEET CONTENT
 		tweet += tweet_text;
 		
