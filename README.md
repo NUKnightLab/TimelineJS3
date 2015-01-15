@@ -76,7 +76,19 @@ The data file should be in JSON format with the following structure
 
 ```
 {
-	"slides": [
+	"title": {
+			"media": {
+				"caption": 	"",
+				"credit": 	"",
+				"url": 		"url_to_your_media.jpg",
+				"thumb": 	"url_to_your_media.jpg"
+			},
+			"text": {
+				"headline": "Headline Goes Here",
+				"text": 	"Your slide text goes here."
+			}
+	},
+	"events": [
 		{
 			"start_date": {
 				"year":			"1900",
