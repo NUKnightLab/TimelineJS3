@@ -1,6 +1,5 @@
 {
-  "scale": "javascript",
-  "timeline": {
+    "scale": "javascript",
     "slides": [
       {
         "media": {
@@ -241,5 +240,4 @@
         }
       }
     ]
-  }
 }

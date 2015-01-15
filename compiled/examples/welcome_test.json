@@ -24,6 +24,72 @@
             }
         },
         {
+             "start_date": {
+                "year":			"1850",
+                "month":		"05",
+                "day": 			"01",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://www.documentcloud.org/documents/346266-healthcarefullplan.html",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "DocumentCloud",
+                "text": "Testing embedded DocumentCloud document"
+            }
+        },
+        {
+             "start_date": {
+                "year":			"1850",
+                "month":		"05",
+                "day": 			"02",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://www.documentcloud.org/documents/1497900-new-orleans-harbor-police-la-for-fy-2013.html",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "DocumentCloud",
+                "text": "Testing embedded DocumentCloud document"
+            }
+        },            
+        {
+             "start_date": {
+                "year":			"1850",
+                "month":		"06",
+                "day": 			"01",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "dropbox URLs should be transformed",
+                "credit": "",
+                "url": "https://www.dropbox.com/s/llahmtejgebc5h5/boombox.jpg",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "DropBox",
+                "text": "This URL should be transformed correctly."
+            }
+        },  
+        {
             "start_date": {
                 "year":			"1851",
                 "month":		"",
