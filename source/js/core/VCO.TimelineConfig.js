@@ -3,7 +3,7 @@
     to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['scale', 'slides'], // we'll only pull things in from this
+    VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
     initialize: function (data, callback) {
     // Initialize the data
@@ -15,10 +15,10 @@ VCO.TimelineConfig = VCO.Class.extend({
                 url: data,
                 dataType: 'json', //json data type
                 success: function(d){
-                    if (d && d.slides) {
+                    if (d && d.events) {
                         self._importProperties(d);
                     } else {
-                        throw("data must have a slides property")
+                        throw("data must have an events property")
                     }
                     self._cleanData();
                     if (callback) {
@@ -32,11 +32,11 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             });
         } else if (typeof data === 'object') {
-            if (data.slides) {
+            if (data.events) {
                 this._importProperties(data);
                 this._cleanData();
             } else {
-                throw("data must have a slides property")
+                throw("data must have a events property")
             }
             if (callback) {
                 callback(this);
@@ -46,22 +46,24 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     },
 
-    /* Add a slide and return the unique id 
+    /* Add an event and return the unique id 
     */
-    addSlide: function(data) {
-        this.slides.push(data);
-        this._makeUniqueIdentifiers(this.slides); 
-        this._processDates(this.slides);    
+    addEvent: function(data) {
+        var _id = (this.title) ? this.title.uniqueid : '';
+        this.events.push(data);
+        this._makeUniqueIdentifiers(_id, this.events); 
+        this._processDates(this.events);    
         
-        var uniqueid = this.slides[this.slides.length - 1].uniqueid;             
-        VCO.DateUtil.sortByDate(this.slides);
+        var uniqueid = this.events[this.events.length - 1].uniqueid;             
+        VCO.DateUtil.sortByDate(this.events);
         return uniqueid;
     },
 
     _cleanData: function() {
-        this._makeUniqueIdentifiers(this.slides); 
-        this._processDates(this.slides);          
-        VCO.DateUtil.sortByDate(this.slides);
+        var _id = (this.title) ? this.title.uniqueid : '';
+        this._makeUniqueIdentifiers(_id, this.events); 
+        this._processDates(this.events);          
+        VCO.DateUtil.sortByDate(this.events);
     },
     
     _importProperties: function(d) {
@@ -69,10 +71,15 @@ VCO.TimelineConfig = VCO.Class.extend({
             k = this.VALID_PROPERTIES[i];
             this[k] = d[k];
         }
+        
+        // Make sure title slide has unique id
+        if(this.title && !('uniqueid' in this.title)) {
+            this.title.uniqueid = '';
+        }
     },
 
-    _makeUniqueIdentifiers: function(array) {
-        var used = []
+    _makeUniqueIdentifiers: function(title_id, array) {
+        var used = [title_id];
         for (var i = 0; i < array.length; i++) {
             if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
                 array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
@@ -83,7 +90,7 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             }
         };
-        if (used.length != array.length) {
+        if (used.length != (array.length + 1)) {
             for (var i = 0; i < array.length; i++) {
                 if (!array[i].uniqueid) {
                     var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;

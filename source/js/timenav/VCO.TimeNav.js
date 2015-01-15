@@ -48,7 +48,7 @@ VCO.TimeNav = VCO.Class.extend({
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
 			marker_width_min: 		100, 			// Minimum Marker Width
-			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+			zoom_sequence:          [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
 		};
 		
 		// Animation
@@ -79,9 +79,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
-		
-	    // Set default current marker
-	   
+			   
 		if (init) {
 			this.init();
 		}
@@ -92,10 +90,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._initEvents();
 		this._initData();
 		this._updateDisplay();
-		
-		// Go to initial slide
-		//this.goTo(this.options.start_at_slide);
-		
+				
 		this._onLoaded();
 	},
 	
@@ -111,7 +106,6 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDisplay(w, h, a, l);
 	},
 	
-
 	
 	/*	TimeScale
 	================================================== */
@@ -132,7 +126,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -259,9 +253,9 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_findMarkerIndex: function(n) {	
-	    var _n = n;
+	    var _n = -1;
 		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid");
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid", _n);
 		} 
 		return _n;
 	},
@@ -294,12 +288,14 @@ VCO.TimeNav = VCO.Class.extend({
 	goTo: function(n, fast, css_animation) {		
 		var self = 	this,
 			_ease = this.options.ease,
-			_duration = this.options.duration;
+			_duration = this.options.duration,
+			_n = (n < 0) ? 0 : n; 
 		
 		// Set Marker active state
 		this._resetMarkersActive();
-		this._markers[n].setActive(true);
-		
+		if(n >= 0 && n < this._markers.length) {
+		    this._markers[n].setActive(true);
+		}
 		// Stop animation
 		if (this.animator) {
 			this.animator.stop();
@@ -307,23 +303,27 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		if (fast) {
 			this._el.slider.className = "vco-timenav-slider";
-			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+			this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
 		} else {
 			if (css_animation) {
 				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
 				this.animate_css = true;
-				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+				this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
 			} else {
 				this._el.slider.className = "vco-timenav-slider";
 				this.animator = VCO.Animate(this._el.slider, {
-					left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
+					left: 		-this._markers[_n].getLeft() + (this.options.width/2) + "px",
 					duration: 	_duration,
 					easing: 	_ease
 				});
 			}
 		}
 		
-		this.current_id = this._markers[n].data.uniqueid;
+		if(n >= 0 && n < this._markers.length) {
+		    this.current_id = this._markers[n].data.uniqueid;
+		} else {
+		    this.current_id = '';
+		}
 	},
 
 	goToId: function(id, fast, css_animation) {
@@ -448,7 +448,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
@@ -507,13 +507,11 @@ VCO.TimeNav = VCO.Class.extend({
 		// Scroll Events
 		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
 		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
-		
-		
 	},
 	
 	_initData: function() {
 		// Create Markers and then add them
-		this._createMarkers(this.data.slides);
+		this._createMarkers(this.data.events);
 		this._drawTimeline();
 	}
 	

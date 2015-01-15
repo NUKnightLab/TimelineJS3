@@ -1,7 +1,6 @@
 {
     "scale": "javascript",
-    "slides": [
-      {
+    "title": {
         "media": {
           "caption": "",
           "credit": "",
@@ -11,13 +10,9 @@
         "text": {
           "headline": "The Republican Run-Up",
           "text": "Follow the presidential caucuses and primaries as members of the Republican Party race to become the GOP's next presidential nominee."
-        },
-        "start_date": {
-          "month": "1",
-          "day": "1",
-          "year": "2012"
         }
       },
+    "events": [
       {
         "media": {
           "caption": "Rick Santorum at the Iowa State Fair before the Ages Straw Poll.",

@@ -223,54 +223,62 @@ VCO.Timeline = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
+	
+	// Goto slide with id
 	goToId: function(id) {
 		if (this.current_id != id) {
 			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
-			this.fire("change", {uniqueid:this.current_id}, this);
+			this.fire("change", {uniqueid: this.current_id}, this);
 		}
 	},
 	
+	// Goto slide n
 	goTo: function(n) {
-	    if(n >= 0 && n < this.config.slides.length) {
-            this.goToId(this.config.slides[n].uniqueid);
-        }
-	    /*
-		if (n != this.current_slide) {
-			this.current_slide = n;
-			this._timenav.goTo(this.current_slide);
-			this._storyslider.goTo(this.current_slide);
-		}
-		*/
+	    if(this.config.title) {
+	        if(n == 0) {
+	            this.goToId(this.config.title.uniqueid);
+	        } else {
+	            this.goToId(this.config.events[n - 1].uniqueid);
+	        }
+	    } else {
+	        this.goToId(this.config.events[n].uniqueid);	    
+	    }
 	},
 	
+	// Goto first slide
 	goToStart: function() {
 	    this.goTo(0);
 	},
 	
+	// Goto last slide
 	goToEnd: function() {
-	    this.goTo(this.config.slides.length - 1);
+	    var _n = this.config.events.length - 1;
+        this.goTo(this.config.title ? _n + 1 : _n);
 	},
 	
+	// Goto previous slide
 	goToPrev: function() {
 	    this.goTo(this._getSlideIndex(this.current_id) - 1);
 	},
 	
+	// Goto next slide
 	goToNext: function() {
 	    this.goTo(this._getSlideIndex(this.current_id) + 1);
 	},
 	
-    /* Maniupluation
+    /* Event maniupluation
 	================================================== */
 	
+	// Add an event
 	add: function(data) {
-	    var uniqueid = this.config.addSlide(data);
+	    var uniqueid = this.config.addEvent(data);
 	    
-        var n = this._getSlideIndex(uniqueid);
-        var d = this.config.slides[n];
+        var n = this._getEventIndex(uniqueid);
+        var d = this.config.events[n];
         
-        this._storyslider.createSlide(d, n);
+        this._storyslider.createSlide(d, this.config.title ? n+1 : n);
         this._storyslider._updateDrawSlides();            
         
         this._timenav.createMarker(d, n);
@@ -279,42 +287,47 @@ VCO.Timeline = VCO.Class.extend({
         this.fire("added", {uniqueid: uniqueid});
 	},
 	
+	// Remove an event
 	remove: function(n) {
-	    if(n >= 0  && n < this.config.slides.length 
-	    && this.config.slides.length > 1) {
-	        // If removing the current slide, nav to new one first
-            if(this.config.slides[n].uniqueid == this.current_id) {
-                if(n < this.config.slides.length - 1) {
+	    if(n >= 0  && n < this.config.events.length) {
+	        // If removing the current, nav to new one first
+            if(this.config.events[n].uniqueid == this.current_id) {
+                if(n < this.config.events.length - 1) {
                     this.goTo(n + 1);
                 } else {
                     this.goTo(n - 1);
                 }
             }
         
-            var slides = this.config.slides.splice(n, 1);
+            var event = this.config.events.splice(n, 1);
         
-            this._storyslider.destroySlide(n);
+            this._storyslider.destroySlide(this.config.title ? n+1 : n);
             this._storyslider._updateDrawSlides();            
         
             this._timenav.destroyMarker(n);
             this._timenav._updateDrawTimeline(false);
          
-            this.fire("removed", {uniqueid: slides[0].uniqueid});
+            this.fire("removed", {uniqueid: event[0].uniqueid});
        }
 	},
 	
 	removeId: function(id) {
-	    this.remove(this._getSlideIndex(id));
+	    this.remove(this._getEventIndex(id));
 	},
     
 	/* Get slide data
 	================================================== */
 
     getData: function(n) {
-        if(n >= 0 && n < this.config.slides.length) {
-            return this.config.slides[n];
+        if(this.config.title) {
+            if(n == 0) {
+                return this.config.title;
+            } else if(n > 0 && n <= this.config.events.length) {
+                return this.config.events[n - 1];
+            }
+        } else if(n >= 0 && n < this.config.events.length) {
+            return this.config.events[n];
         }
-        
         return null;
     },
 
@@ -326,10 +339,9 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 
     getSlide: function(n) {
-        if(n >= 0 && n < this.config.slides.length) {
+        if(n >= 0 && n < this._storyslider._slides.length) {
             return this._storyslider._slides[n];
-        }
-        
+        }        
         return null;
     },
 
@@ -585,8 +597,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	},
 	
-	_initEvents: function () {
-		
+	_initEvents: function () {		
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
 		
@@ -600,24 +611,26 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
-	
-	/*	Set Current Slide
+		
+	/* Get index of event by id
 	================================================== */
-	_getCurrentSlide: function(n, array) {
-		// Find Array Number
-		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, array, "uniqueid");
-		} else {
-			_n = n;
-		}
-		return _n;
-	},
+    _getEventIndex: function(id) {
+	    for(var i = 0; i < this.config.events.length; i++) {
+	        if(id == this.config.events[i].uniqueid) {
+	            return i;
+	        }
+	    }
+	    return -1;
+    },	
 	
-	/*	Get the current slide index
+	/*	Get index of slide by id
 	================================================== */
 	_getSlideIndex: function(id) {
-	    for(var i = 0; i < this.config.slides.length; i++) {
-	        if(id == this.config.slides[i].uniqueid) {
+	    if(this.config.title && this.config.title.uniqueid == id) {
+	        return 0;
+	    }
+	    for(var i = 0; i < this.config.events.length; i++) {
+	        if(id == this.config.events[i].uniqueid) {
 	            return i;
 	        }
 	    }
