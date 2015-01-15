@@ -1,6 +1,6 @@
 {
     "scale": "javascript",
-    "slides": [
+    "events": [
         {
             "start_date": {
                 "year":			"1850",

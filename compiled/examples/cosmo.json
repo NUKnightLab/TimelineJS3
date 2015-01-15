@@ -1,6 +1,6 @@
 {
     "scale": "cosmological",
-    "slides": [
+    "events": [
         {
             "start_date": {
                 "year":			"-13798000000",
