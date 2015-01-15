@@ -11026,7 +11026,7 @@ VCO.Timeline = VCO.Class.extend({
 	    }
 	    for(var i = 0; i < this.config.events.length; i++) {
 	        if(id == this.config.events[i].uniqueid) {
-	            return i;
+	            return this.config.title ? i+1 : i;
 	        }
 	    }
 	    return -1;
