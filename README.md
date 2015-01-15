@@ -76,42 +76,40 @@ The data file should be in JSON format with the following structure
 
 ```
 {
-	"timeline": {
-		"slides": [
-			{
-				"start_date": {
-					"year":			"1900",
-					"month":		"01",
-					"day": 			"05",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-                "end_date": {
-					"year":			"1900",
-					"month":		"06",
-					"day": 			"07",
-					"hour": 		"",
-					"minute": 		"",
-					"second": 		"",
-					"millisecond": 	"",
-					"format": 		""
-				},
-				"media": {
-					"caption": 	"",
-					"credit": 	"",
-					"url": 		"url_to_your_media.jpg",
-					"thumb": 	"url_to_your_media.jpg"
-				},
-				"text": {
-					"headline": "Headline Goes Here",
-					"text": 	"Your slide text goes here."
-				}
+	"slides": [
+		{
+			"start_date": {
+				"year":			"1900",
+				"month":		"01",
+				"day": 			"05",
+				"hour": 		"",
+				"minute": 		"",
+				"second": 		"",
+				"millisecond": 	"",
+				"format": 		""
+			},
+                	"end_date": {
+				"year":			"1900",
+				"month":		"06",
+				"day": 			"07",
+				"hour": 		"",
+				"minute": 		"",
+				"second": 		"",
+				"millisecond": 	"",
+				"format": 		""
+			},
+			"media": {
+				"caption": 	"",
+				"credit": 	"",
+				"url": 		"url_to_your_media.jpg",
+				"thumb": 	"url_to_your_media.jpg"
+			},
+			"text": {
+				"headline": "Headline Goes Here",
+				"text": 	"Your slide text goes here."
 			}
-		]
-	}
+		}
+	]
 }
 ```
 ## API
