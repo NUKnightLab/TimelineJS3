@@ -1,21 +1,96 @@
 <section id="compatibility" class="container">
+<h2>Test-drive Timeline3</h2>
   <div class="row">
-    <div class="span12">
-          <h2>Test-drive TimelineJS3</h2>
+    <div class="span8">
         <p>If you have existing timelines, you can enter the IDs of their spreadsheets here to see how they look and function in TimelineJS3.</p>
-        <div id="try-it" class="row">
-            <div id="preview-inputs" class="span6">
+        <p>Though there is currently no iframe embed generator for Timeline3, you can also generate a JSON file of your timeline. This will allow you to use the timeline on your own site. TODO: Write up a little how-to on this and note why there's no embed tool.</p>
+        <div id="try-it">
+            <div id="preview-inputs">
                 <p><small><strong>Spreadsheet ID or URL</strong></small></p>
                 <input type="text" placeholder="example: 0AmaVMvy285_tdHBod2s3aWFvZmlwVnZWcHFaZjBfdEE" id="url"/> <button type="button" id="go-preview" class="btn">Preview</button>
             </div>
-            <div class="span6">
-                <p><small><strong>Note on backwards compatibility</strong></small></p>
-                <p><small>TimelineJS3 is not backwards-compatible with all media. Services that have updated their URL structures, such as Google Maps, will only appear when the timeline uses the most recent structure.</small></p>
-            </div>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="note">
+            <p><small><strong>Note on backwards compatibility</strong></small></p>
+            <p><small>TimelineJS3 is not backwards-compatible with all media. Services that have updated their URL structures, such as Google Maps, will only appear when the timeline uses the most recent structure.</small></p>
+        </div>
+    </div>
         </div>
     </div>
 </div>
 <div class="row">
-
+    <div class="span12" id="timeline-wrapper" style="display:none; padding-top: 40px;">
+        <h2 id="slideshow-top">Preview</h2>
+        <div id="timeline"></div>
+    </div>
 </div>
 </section>
+
+{% block scripts %}
+    <!-- JavaScript-->
+    <!-- build:css http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/css/timeline.css -->
+    <link rel="stylesheet" href="/build/css/timeline.css">
+    <!-- endbuild -->
+    <!-- build:js http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/js/timeline-min.js -->
+    <script src="/build/js/timeline.js"></script>
+    <!-- endbuild -->
+    <script>
+    var timeline = null;
+    var button = document.getElementById('go-preview');
+    button.addEventListener('click',function(){
+      $("#timeline-wrapper").show();
+      $("#timeline-wrapper")[0].scrollIntoView( true );
+      new_timeline(document.getElementById('url').value);
+    });
+
+    document.getElementById('url').addEventListener('keyup',function(evt) {
+      if (evt.keyCode == 13) {
+        new_timeline(document.getElementById('url').value);
+      }
+    });
+
+    function new_timeline(url) {
+        timeline = null; // TODO: actively 'destroy' an existing timeline?
+        var json = VCO.ConfigFactory.fromGoogle(url);
+        $("#export-json").show();
+        $("#url").val('');
+        window.factory_json = json;
+        $("#json-export-field").val(JSON.stringify(json,null,"  "));
+        /*document.getElementById('input').style.height = "40px"*/
+        document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+
+        timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+        });
+
+        window.onresize = function(event) {
+            console.log("resize")
+            document.getElementById('input').style.height = "30px"
+            document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+            timeline.updateDisplay();
+        }
+    }
+
+    function getQueryParams(qs) {
+      qs = qs.split("+").join(" ");
+
+      var params = {}, tokens,
+          re = /[?&]?([^=]+)=([^&]*)/g;
+
+      while (tokens = re.exec(qs)) {
+          params[decodeURIComponent(tokens[1])]
+              = decodeURIComponent(tokens[2]);
+      }
+
+      return params;
+    }
+
+    var qs = getQueryParams(window.location.search);
+    if (qs.key) {
+      new_timeline(qs.key);
+    }
+
+    </script>
+
+{% endblock %}

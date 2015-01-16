@@ -68,6 +68,11 @@ footer {
   border-radius: 10px;
 }
 
+/* header */
+.logo-mark.xl {
+    margin-left: 120px;
+}
+
 /* Examples */
 #examples h3 { 
   font-size: 16px;
@@ -140,6 +145,11 @@ h2.intro {
 
 #try-it{
     padding: 20px 0;
+}
+.note {
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
 }
 
 p.caption {
