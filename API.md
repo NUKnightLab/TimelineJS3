@@ -1,5 +1,16 @@
 #TimelineJS3 API
 
+TimelineJS3 exposes the events and methods listed below.
+
+Note that these methods make a distinction between an `event_index` and a `slide_index`.  An `event_index` is an index into the sorted array of `events` in the timeline data object.  A `slide_index` is index of the slide that appears in the rendered timeline.  
+
+A `title` has no `event_index` and has `slide_index` 0.  
+
+If you have a `title`, the first event has `event_index` 0 and `slide_index` 1.
+
+If you do not have a `title`, the first event has `event_index` 0 and `slide_index` 0.
+
+
 ### Events
 
 ```javascript
@@ -52,55 +63,38 @@ timeline.on(event_name, function(data) {
 
 ### Navigation
 
-`goTo(<int index>)`
+`goTo(<int slide_index>)` _go to slide at index_
 
-`goToId(<string id>)`
+`goToId(<string id>)` _go to slide with id_
 
-Go to slide.
+`goToNext()` _go to next slide_
 
-`goToNext()`
+`goToPrev()` _go to previous slide_
 
-`goToPrev()`
+`goToStart()` _go to first slide_
 
-Go to the next/previous slide
+`goToEnd()` _go to last slide_
 
-`goToStart()`
+### Manipulation
 
-`goToEnd()`
+`remove(<int event_index>)` _remove event by index_
 
-Go to the first/last slide
+`removeId(<string id>)` _remove event by id_
 
-`remove(<int index>)`
-
-`removeId(<string id>)`
-
-Remove slide.
-
-`add(<object data>)`
-
-Add slide with data `data`.  See Slide Data Format below.
+`add(<object data>)` _add event with data (see event data format below)_
 
 ### Data Access
 
-`getData(<int index>)`
+`getData(<int slide_index>)` _get data for slide by index_
 
-`getDataId(<string id>)`
+`getDataId(<string id>)` _get data for slide by id_
 
-Get data for slide.
+`getSlide(<int slide_index>)` _get VCO.Slide object by index_
 
-`getSlide(<int index>)`
+`getSlideId(<string id>)` _get VCO.Slide object by id_
 
-`getSlideId(<string id>)`
 
-Get VCO.Slide object for slide.
-
-####TO DO?
-
-`Timeline.goToTitle()`
-
-This was mentioned, but I don't really know if this makes sense.  I think there are ongoing discussions about title slides, so this is on hold until that is decided.
-
-####Slide data format
+####Event data format
 ```javascript
 {
     "start_date": {

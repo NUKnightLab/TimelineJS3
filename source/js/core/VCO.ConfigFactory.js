@@ -56,13 +56,13 @@
                 url: url, 
                 async: false
             });
-            var slides = [];
+            var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
             for (var i = 0; i < data.feed.entry.length; i++) {
-                slides.push(extractGoogleEntryData(data.feed.entry[i]));
+                events.push(extractGoogleEntryData(data.feed.entry[i]));
             };
-            return {scale: 'javascript', timeline: {slides: slides}}
+            return {scale: 'javascript', events: events}
         }   
     }
 })(VCO)

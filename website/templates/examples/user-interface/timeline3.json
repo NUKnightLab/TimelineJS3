@@ -1,20 +1,16 @@
 {
-  "timeline": {
-    "slides": [
-      {
+    "title": {
         "media": {
           "url": "{{ static_url }}/img/examples/user-interface/input.png", 
           "caption": "From punch cards to multi touch.", 
           "credit": "Arjuna Soriano"
         }, 
-        "start_date": {
-          "year": "1600"
-        }, 
         "text": {
           "headline": "Revolutionary User Interfaces", 
           "text": "<p>The human computer interface helps to define computing at any one time. As computers have become more mainstream the interfaces have become more intimate. This is the journey of computer technology and how it has come to touch all of our lives.</p>"
         }
-      }, 
+    },      
+    "events": [
       {
         "media": {
           "url": "http://youtu.be/DiQSHiAYt98", 
@@ -328,5 +324,4 @@
         }
       }
     ]
-  }
 }

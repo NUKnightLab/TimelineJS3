@@ -28,8 +28,8 @@ VCO.Util = {
 	  return n == parseFloat(n)? !(n%2) : void 0;
 	},
 	
-	findArrayNumberByUniqueID: function(id, array, prop) {
-		var _n = 0;
+	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
+		var _n = defaultVal || 0;
 		
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].data[prop] == id) {

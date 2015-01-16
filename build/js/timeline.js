@@ -79,8 +79,8 @@ VCO.Util = {
 	  return n == parseFloat(n)? !(n%2) : void 0;
 	},
 	
-	findArrayNumberByUniqueID: function(id, array, prop) {
-		var _n = 0;
+	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
+		var _n = defaultVal || 0;
 		
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].data[prop] == id) {
@@ -2793,7 +2793,7 @@ VCO.LoadIt = (function (doc) {
     to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['scale', 'slides'], // we'll only pull things in from this
+    VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
     initialize: function (data, callback) {
     // Initialize the data
@@ -2805,10 +2805,10 @@ VCO.TimelineConfig = VCO.Class.extend({
                 url: data,
                 dataType: 'json', //json data type
                 success: function(d){
-                    if (d && d.timeline) {
-                        self._importProperties(d.timeline);
+                    if (d && d.events) {
+                        self._importProperties(d);
                     } else {
-                        throw("data must have a timeline property")
+                        throw("data must have an events property")
                     }
                     self._cleanData();
                     if (callback) {
@@ -2822,11 +2822,11 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             });
         } else if (typeof data === 'object') {
-            if (data.timeline) {
-                this._importProperties(data.timeline);
+            if (data.events) {
+                this._importProperties(data);
                 this._cleanData();
             } else {
-                throw("data must have a timeline property")
+                throw("data must have a events property")
             }
             if (callback) {
                 callback(this);
@@ -2836,22 +2836,24 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     },
 
-    /* Add a slide and return the unique id 
+    /* Add an event and return the unique id 
     */
-    addSlide: function(data) {
-        this.slides.push(data);
-        this._makeUniqueIdentifiers(this.slides); 
-        this._processDates(this.slides);    
+    addEvent: function(data) {
+        var _id = (this.title) ? this.title.uniqueid : '';
+        this.events.push(data);
+        this._makeUniqueIdentifiers(_id, this.events); 
+        this._processDates(this.events);    
         
-        var uniqueid = this.slides[this.slides.length - 1].uniqueid;             
-        VCO.DateUtil.sortByDate(this.slides);
+        var uniqueid = this.events[this.events.length - 1].uniqueid;             
+        VCO.DateUtil.sortByDate(this.events);
         return uniqueid;
     },
 
     _cleanData: function() {
-        this._makeUniqueIdentifiers(this.slides); 
-        this._processDates(this.slides);          
-        VCO.DateUtil.sortByDate(this.slides);
+        var _id = (this.title) ? this.title.uniqueid : '';
+        this._makeUniqueIdentifiers(_id, this.events); 
+        this._processDates(this.events);          
+        VCO.DateUtil.sortByDate(this.events);
     },
     
     _importProperties: function(d) {
@@ -2859,10 +2861,15 @@ VCO.TimelineConfig = VCO.Class.extend({
             k = this.VALID_PROPERTIES[i];
             this[k] = d[k];
         }
+        
+        // Make sure title slide has unique id
+        if(this.title && !('uniqueid' in this.title)) {
+            this.title.uniqueid = '';
+        }
     },
 
-    _makeUniqueIdentifiers: function(array) {
-        var used = []
+    _makeUniqueIdentifiers: function(title_id, array) {
+        var used = [title_id];
         for (var i = 0; i < array.length; i++) {
             if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
                 array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
@@ -2873,7 +2880,7 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             }
         };
-        if (used.length != array.length) {
+        if (used.length != (array.length + 1)) {
             for (var i = 0; i < array.length; i++) {
                 if (!array[i].uniqueid) {
                     var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
@@ -2999,13 +3006,13 @@ VCO.TimelineConfig = VCO.Class.extend({
                 url: url, 
                 async: false
             });
-            var slides = [];
+            var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
             for (var i = 0; i < data.feed.entry.length; i++) {
-                slides.push(extractGoogleEntryData(data.feed.entry[i]));
+                events.push(extractGoogleEntryData(data.feed.entry[i]));
             };
-            return {scale: 'javascript', timeline: {slides: slides}}
+            return {scale: 'javascript', events: events}
         }   
     }
 })(VCO)
@@ -7528,6 +7535,9 @@ VCO.Media.Twitter = VCO.Media.extend({
 		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
 		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
 		
+		// Open links in new window
+		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+
 		// 	TWEET CONTENT
 		tweet += tweet_text;
 		
@@ -8144,12 +8154,15 @@ VCO.Slide = VCO.Class.extend({
 
 	getFormattedDate: function() {
 		var date_text = "";
-		if (this.data.end_date) {
-			date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
-		}
-		if (this.data.start_date) {
-			date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
-		}
+		
+		if(!this.has.title) {
+            if (this.data.end_date) {
+                date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
+            }
+            if (this.data.start_date) {
+                date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+            }
+        }
 		return date_text;
 	},
 	
@@ -8577,12 +8590,8 @@ VCO.StorySlider = VCO.Class.extend({
 			if (array[i].uniqueid == "") {
 				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
 			}
-			if (i == 0) {
-				this._createSlide(array[i], true, -1);
-			} else {
-				this._createSlide(array[i], false, -1);
-			}			
-		};
+            this._createSlide(array[i], false, -1);
+		}
 	},
 		
 	_removeSlide: function(slide) {
@@ -8909,8 +8918,10 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_initData: function() {
-		// Create Slides and then add them
-		this._createSlides(this.data.slides);
+	    if(this.data.title) {
+	        this._createSlide(this.data.title, true, -1);
+	    }
+        this._createSlides(this.data.events);
 	},
 	
 	/*	Events
@@ -9042,7 +9053,7 @@ VCO.TimeNav = VCO.Class.extend({
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
 			marker_width_min: 		100, 			// Minimum Marker Width
-			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+			zoom_sequence:          [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
 		};
 		
 		// Animation
@@ -9073,9 +9084,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
-		
-	    // Set default current marker
-	   
+			   
 		if (init) {
 			this.init();
 		}
@@ -9086,10 +9095,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._initEvents();
 		this._initData();
 		this._updateDisplay();
-		
-		// Go to initial slide
-		//this.goTo(this.options.start_at_slide);
-		
+				
 		this._onLoaded();
 	},
 	
@@ -9105,7 +9111,6 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDisplay(w, h, a, l);
 	},
 	
-
 	
 	/*	TimeScale
 	================================================== */
@@ -9126,7 +9131,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -9253,9 +9258,9 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_findMarkerIndex: function(n) {	
-	    var _n = n;
+	    var _n = -1;
 		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid");
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid", _n);
 		} 
 		return _n;
 	},
@@ -9288,12 +9293,14 @@ VCO.TimeNav = VCO.Class.extend({
 	goTo: function(n, fast, css_animation) {		
 		var self = 	this,
 			_ease = this.options.ease,
-			_duration = this.options.duration;
+			_duration = this.options.duration,
+			_n = (n < 0) ? 0 : n; 
 		
 		// Set Marker active state
 		this._resetMarkersActive();
-		this._markers[n].setActive(true);
-		
+		if(n >= 0 && n < this._markers.length) {
+		    this._markers[n].setActive(true);
+		}
 		// Stop animation
 		if (this.animator) {
 			this.animator.stop();
@@ -9301,23 +9308,27 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		if (fast) {
 			this._el.slider.className = "vco-timenav-slider";
-			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+			this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
 		} else {
 			if (css_animation) {
 				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
 				this.animate_css = true;
-				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+				this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
 			} else {
 				this._el.slider.className = "vco-timenav-slider";
 				this.animator = VCO.Animate(this._el.slider, {
-					left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
+					left: 		-this._markers[_n].getLeft() + (this.options.width/2) + "px",
 					duration: 	_duration,
 					easing: 	_ease
 				});
 			}
 		}
 		
-		this.current_id = this._markers[n].data.uniqueid;
+		if(n >= 0 && n < this._markers.length) {
+		    this.current_id = this._markers[n].data.uniqueid;
+		} else {
+		    this.current_id = '';
+		}
 	},
 
 	goToId: function(id, fast, css_animation) {
@@ -9442,7 +9453,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
@@ -9501,13 +9512,11 @@ VCO.TimeNav = VCO.Class.extend({
 		// Scroll Events
 		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
 		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
-		
-		
 	},
 	
 	_initData: function() {
 		// Create Markers and then add them
-		this._createMarkers(this.data.slides);
+		this._createMarkers(this.data.events);
 		this._drawTimeline();
 	}
 	
@@ -10609,54 +10618,62 @@ VCO.Timeline = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
+	
+	// Goto slide with id
 	goToId: function(id) {
 		if (this.current_id != id) {
 			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
-			this.fire("change", {uniqueid:this.current_id}, this);
+			this.fire("change", {uniqueid: this.current_id}, this);
 		}
 	},
 	
+	// Goto slide n
 	goTo: function(n) {
-	    if(n >= 0 && n < this.config.slides.length) {
-            this.goToId(this.config.slides[n].uniqueid);
-        }
-	    /*
-		if (n != this.current_slide) {
-			this.current_slide = n;
-			this._timenav.goTo(this.current_slide);
-			this._storyslider.goTo(this.current_slide);
-		}
-		*/
+	    if(this.config.title) {
+	        if(n == 0) {
+	            this.goToId(this.config.title.uniqueid);
+	        } else {
+	            this.goToId(this.config.events[n - 1].uniqueid);
+	        }
+	    } else {
+	        this.goToId(this.config.events[n].uniqueid);	    
+	    }
 	},
 	
+	// Goto first slide
 	goToStart: function() {
 	    this.goTo(0);
 	},
 	
+	// Goto last slide
 	goToEnd: function() {
-	    this.goTo(this.config.slides.length - 1);
+	    var _n = this.config.events.length - 1;
+        this.goTo(this.config.title ? _n + 1 : _n);
 	},
 	
+	// Goto previous slide
 	goToPrev: function() {
 	    this.goTo(this._getSlideIndex(this.current_id) - 1);
 	},
 	
+	// Goto next slide
 	goToNext: function() {
 	    this.goTo(this._getSlideIndex(this.current_id) + 1);
 	},
 	
-    /* Maniupluation
+    /* Event maniupluation
 	================================================== */
 	
+	// Add an event
 	add: function(data) {
-	    var uniqueid = this.config.addSlide(data);
+	    var uniqueid = this.config.addEvent(data);
 	    
-        var n = this._getSlideIndex(uniqueid);
-        var d = this.config.slides[n];
+        var n = this._getEventIndex(uniqueid);
+        var d = this.config.events[n];
         
-        this._storyslider.createSlide(d, n);
+        this._storyslider.createSlide(d, this.config.title ? n+1 : n);
         this._storyslider._updateDrawSlides();            
         
         this._timenav.createMarker(d, n);
@@ -10665,42 +10682,47 @@ VCO.Timeline = VCO.Class.extend({
         this.fire("added", {uniqueid: uniqueid});
 	},
 	
+	// Remove an event
 	remove: function(n) {
-	    if(n >= 0  && n < this.config.slides.length 
-	    && this.config.slides.length > 1) {
-	        // If removing the current slide, nav to new one first
-            if(this.config.slides[n].uniqueid == this.current_id) {
-                if(n < this.config.slides.length - 1) {
+	    if(n >= 0  && n < this.config.events.length) {
+	        // If removing the current, nav to new one first
+            if(this.config.events[n].uniqueid == this.current_id) {
+                if(n < this.config.events.length - 1) {
                     this.goTo(n + 1);
                 } else {
                     this.goTo(n - 1);
                 }
             }
         
-            var slides = this.config.slides.splice(n, 1);
+            var event = this.config.events.splice(n, 1);
         
-            this._storyslider.destroySlide(n);
+            this._storyslider.destroySlide(this.config.title ? n+1 : n);
             this._storyslider._updateDrawSlides();            
         
             this._timenav.destroyMarker(n);
             this._timenav._updateDrawTimeline(false);
          
-            this.fire("removed", {uniqueid: slides[0].uniqueid});
+            this.fire("removed", {uniqueid: event[0].uniqueid});
        }
 	},
 	
 	removeId: function(id) {
-	    this.remove(this._getSlideIndex(id));
+	    this.remove(this._getEventIndex(id));
 	},
     
 	/* Get slide data
 	================================================== */
 
     getData: function(n) {
-        if(n >= 0 && n < this.config.slides.length) {
-            return this.config.slides[n];
+        if(this.config.title) {
+            if(n == 0) {
+                return this.config.title;
+            } else if(n > 0 && n <= this.config.events.length) {
+                return this.config.events[n - 1];
+            }
+        } else if(n >= 0 && n < this.config.events.length) {
+            return this.config.events[n];
         }
-        
         return null;
     },
 
@@ -10712,10 +10734,9 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 
     getSlide: function(n) {
-        if(n >= 0 && n < this.config.slides.length) {
+        if(n >= 0 && n < this._storyslider._slides.length) {
             return this._storyslider._slides[n];
-        }
-        
+        }        
         return null;
     },
 
@@ -10971,8 +10992,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	},
 	
-	_initEvents: function () {
-		
+	_initEvents: function () {		
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
 		
@@ -10986,25 +11006,27 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
-	
-	/*	Set Current Slide
+		
+	/* Get index of event by id
 	================================================== */
-	_getCurrentSlide: function(n, array) {
-		// Find Array Number
-		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, array, "uniqueid");
-		} else {
-			_n = n;
-		}
-		return _n;
-	},
+    _getEventIndex: function(id) {
+	    for(var i = 0; i < this.config.events.length; i++) {
+	        if(id == this.config.events[i].uniqueid) {
+	            return i;
+	        }
+	    }
+	    return -1;
+    },	
 	
-	/*	Get the current slide index
+	/*	Get index of slide by id
 	================================================== */
 	_getSlideIndex: function(id) {
-	    for(var i = 0; i < this.config.slides.length; i++) {
-	        if(id == this.config.slides[i].uniqueid) {
-	            return i;
+	    if(this.config.title && this.config.title.uniqueid == id) {
+	        return 0;
+	    }
+	    for(var i = 0; i < this.config.events.length; i++) {
+	        if(id == this.config.events[i].uniqueid) {
+	            return this.config.title ? i+1 : i;
 	        }
 	    }
 	    return -1;

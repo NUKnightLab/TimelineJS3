@@ -1,22 +1,17 @@
 {
-  "timeline": {
-    "slides": [
+    "title": 
       {
         "media": {
           "url": "http://youtu.be/u-yLGIH7W9Y", 
           "caption": "Writers & Creators: Kyle Humphrey & Graydon Sheppard", 
           "credit": ""
         }, 
-        "start_date": {
-          "month": "12", 
-          "day": "12", 
-          "year": "2011"
-        }, 
         "text": {
           "headline": "Sh*t People Say", 
           "text": "When &quot;Shit Girls Say&quot; was uploaded to YouTube it was picked up by Reddit, the Huffington Post, Mashable etc. In a month, it racked up over 12 million views and has spawned a meme of Sh*t People Say."
         }
       }, 
+    "events": [ 
       {
         "media": {
           "url": "http://youtu.be/u4XpeU9erbg", 
@@ -338,5 +333,4 @@
         }
       }
     ]
-  }
 }

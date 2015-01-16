@@ -132,12 +132,8 @@ VCO.StorySlider = VCO.Class.extend({
 			if (array[i].uniqueid == "") {
 				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
 			}
-			if (i == 0) {
-				this._createSlide(array[i], true, -1);
-			} else {
-				this._createSlide(array[i], false, -1);
-			}			
-		};
+            this._createSlide(array[i], false, -1);
+		}
 	},
 		
 	_removeSlide: function(slide) {
@@ -464,8 +460,10 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_initData: function() {
-		// Create Slides and then add them
-		this._createSlides(this.data.slides);
+	    if(this.data.title) {
+	        this._createSlide(this.data.title, true, -1);
+	    }
+        this._createSlides(this.data.events);
 	},
 	
 	/*	Events
