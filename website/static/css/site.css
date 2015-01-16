@@ -113,7 +113,7 @@ h2.intro {
 }
 #export-json {
     font-size: 12px;
-    float: left;
+    /*float: left;*/
 }
 #json-export-field {
     width: 95%;
@@ -150,6 +150,12 @@ h2.intro {
     background: #eee;
     border: 1px solid #ccc;
     padding: 10px 20px;
+}
+
+.json-note.alert {
+    text-align: center;
+    margin-top: 30px;
+    border-radius: 0;
 }
 
 p.caption {

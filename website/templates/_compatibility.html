@@ -14,7 +14,7 @@
     <div class="span4">
         <div class="note">
             <p><small><strong>Note on backwards compatibility</strong></small></p>
-            <p><small>TimelineJS3 is not backwards-compatible with all media. Services that have updated their URL structures, such as Google Maps, will only appear when the timeline uses the most recent structure.</small></p>
+            <p><small>Timeline3 is not backwards-compatible with all media. Services that have updated their URL structures, such as Google Maps, will only appear when the timeline uses the most recent structure.</small></p>
         </div>
     </div>
         </div>
@@ -24,6 +24,26 @@
     <div class="span12" id="timeline-wrapper" style="display:none; padding-top: 40px;">
         <h2 id="slideshow-top">Preview</h2>
         <div id="timeline"></div>
+        <div class="json-note alert alert-info">
+            <p><small>Want to embed this timeline? A Timeline3 embed generator is in the works.</small></p>
+            <p><small>For right now, you can export the JSON to use in your projects.</small> 
+            <div><a href="#json-export-modal" data-toggle="modal" class="btn btn-info" type="button" id="export-json">Export JSON for this timeline</a></div>
+        </div>
+        <div id="json-export-modal" class="modal hide fade" tabindex="-1" role="dialog" >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Timeline3 JSON</h3>
+          </div>
+          <div class="modal-body">
+            <p>Since TimelineJS3 is still under active development, use this with caution. The data format is likely to change.
+            </p>
+            <textarea id="json-export-field" rows="15" cols="50"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          </div>
+      </div>
+
     </div>
 </div>
 </section>
