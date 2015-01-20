@@ -6,25 +6,52 @@
   </section>
 
   <!-- build:css http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/css/timeline.css -->
-  <link rel="stylesheet" href="/build/css/timeline.css">
+  <link title="timeline-styles" rel="stylesheet" href="/build/css/timeline.css">
   <!-- endbuild -->
   <!-- build:js http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/js/timeline-min.js -->
   <script src="/build/js/timeline.js"></script>
   <!-- endbuild -->
+  <script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
   <script>
     $(document).ready(function(){
-      $("#timeline-embed").height($(document).height());
-      window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {
+      function createNewTimeline(){
+        $("#timeline-embed").empty();
+        $("link[title=timeline-styles]").attr({href: "/build/css/timeline.css"});
+          window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
+
+          if ($("#timeline-embed").height() == 0) {
+            setTimeout(function(){
+                console.log("trying again. height: " + $(document).height())
+                $("#timeline-embed").height($(document).height() - $(".nav-tabs").height()- 100);
+                window.timeline.updateDisplay();
+            },500);
+          }
+      }
+
+      $("#timeline-embed").height($(document).height() - $(".nav-tabs").height() - 100);
+
+      /* New timeline styles used when page loads */
+      createNewTimeline();
+      $("#new").click(function(){
+        createNewTimeline();
+        $(this).addClass("active");
+        $(this).siblings().removeClass("active");
       });
 
-      if ($("#timeline-embed").height() == 0) {
-        setTimeout(function(){
-            console.log("trying again. height: " + $(document).height())
-            $("#timeline-embed").height($(document).height());
-            window.timeline.updateDisplay();          
-        },500);
-        
-      }
+      $("#old").click(function(){
+        $("#timeline-embed").empty();
+        createStoryJS({
+            type:		'timeline',
+            width:		'100%',
+            height:		'100%',
+            source:		'timeline2.json',
+            embed_id:	'timeline-embed'			// ID of the DIV you want to load the timeline into
+        });
+        $(this).addClass("active");
+        $(this).siblings().removeClass("active");
+        $("link[title=timeline-styles]").attr({href: "http://cdn.knightlab.com/libs/timeline/latest/css/timeline.css?2.24"});
+      });
+
       window.onresize = function(event) {
         timeline.updateDisplay();
       }

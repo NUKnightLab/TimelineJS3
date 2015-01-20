@@ -19,6 +19,8 @@
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
+	<link rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
+	<link rel="stylesheet" href="http://cdn.knightlab.com/libs/blueline/latest/css/blueline.min.css">
     <!-- Style-->
     <style>
       html, body {
@@ -31,6 +33,14 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   </head>
   <body>
+    <ul class="nav nav-tabs">
+      <li class="active" id="new">
+        <a href="#">New Timeline</a>
+      </li>
+      <li id="old">
+          <a href="#">Old Timeline</a>
+      </li>
+    </ul>
     {% include "examples/_common_example_embed.html" %}
     {% include "_analytics.html" %}
 
