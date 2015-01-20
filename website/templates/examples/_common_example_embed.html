@@ -40,13 +40,16 @@
 
       $("#old").click(function(){
         $("#timeline-embed").empty();
-        createStoryJS({
-            type:		'timeline',
-            width:		'100%',
-            height:		'100%',
-            source:		'timeline2.json',
-            embed_id:	'timeline-embed'			// ID of the DIV you want to load the timeline into
-        });
+        if (!timeline_config) {
+            var timeline_config = {
+                type:		'timeline',
+                width:		'100%',
+                height:		'100%',
+                source:		'timeline2.json',
+                embed_id:	'timeline-embed'
+            }
+        }
+        createStoryJS(timeline_config);
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
         $("link[title=timeline-styles]").attr({href: "http://cdn.knightlab.com/libs/timeline/latest/css/timeline.css?2.24"});
