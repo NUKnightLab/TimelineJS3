@@ -72,4 +72,63 @@ $blueline(document).ready(function() {
     $target.collapse('show');
     navSmartScroll($target.prev());
   }
+
+  // Set up preview box
+  var timeline = null;
+  var button = document.getElementById('go-preview');
+  button.addEventListener('click',function(){
+    $("#timeline-wrapper").show();
+    $('html, body').animate({
+        scrollTop: $("#timeline-wrapper").offset().top
+    }, 2000);
+    $("#timeline-wrapper")[0].scrollIntoView( true );
+    new_timeline(document.getElementById('url').value);
+  });
+
+  document.getElementById('url').addEventListener('keyup',function(evt) {
+    if (evt.keyCode == 13) {
+      new_timeline(document.getElementById('url').value);
+    }
+  });
+
+  function new_timeline(url) {
+      timeline = null; // TODO: actively 'destroy' an existing timeline?
+      var json = VCO.ConfigFactory.fromGoogle(url);
+      $("#export-json").show();
+      $("#url").val('');
+      window.factory_json = json;
+      $("#json-export-field").val(JSON.stringify(json,null,"  "));
+      /*document.getElementById('input').style.height = "40px"*/
+      document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+
+      timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+      });
+
+      window.onresize = function(event) {
+          console.log("resize")
+          document.getElementById('input').style.height = "30px"
+          document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+          timeline.updateDisplay();
+      }
+  }
+
+  function getQueryParams(qs) {
+    qs = qs.split("+").join(" ");
+
+    var params = {}, tokens,
+        re = /[?&]?([^=]+)=([^&]*)/g;
+
+    while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])]
+            = decodeURIComponent(tokens[2]);
+    }
+
+    return params;
+  }
+
+  var qs = getQueryParams(window.location.search);
+  if (qs.key) {
+    new_timeline(qs.key);
+  }
+
 });
