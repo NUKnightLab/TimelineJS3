@@ -2,7 +2,7 @@
 
 {% block content %}
 <section id="test-drive" class="container">
-<h2>Hands-On Timeline3</h2>
+<h2>Hands-On TimelineJS 3</h2>
   <div class="row">
     <div class="span8">
         <p>
@@ -16,7 +16,7 @@
     <div class="span4">
         <div class="note">
         <p>
-          We're still working on the tools that make TimelineJS3 easy for less-technical users. If raw code gives you the willies, keep using the <a href="http://timeline.knightlab.com">original TimelineJS website</a> for now.
+          We're still working on the tools that make TimelineJS 3 easy for less-technical users. If raw code gives you the willies, keep using the <a href="http://timeline.knightlab.com">original TimelineJS website</a> for now.
         </p>
         </div>
     </div>
@@ -38,7 +38,7 @@
         <dd><strong>value:</strong> either <code>javascript</code> or <code>cosmological</code>. If no scale is specified, the default is <code>javascript</code>. The <code>cosmological</code> scale is required to handle dates in the very distant past or future. (Before Tuesday, April 20th, 271,821 BCE after Saturday, September 13 275,760 CE) For the <code>cosmological</code> scale, only the year is considered, but it's OK to have a <code>cosmological</code> timeline with years between 271,821 BCE and 275,760 CE. </dd>
       </dl>
     </p>
-    <p id="json-slide">
+    <p id="json-slide" class="jump">
       <strong><em>Slide objects</em></strong> are JSON objects with up to four keys:
       <dl>
         <dt><code>start_date</code> (required)</dt>
@@ -51,7 +51,7 @@
         <dd><strong>value:</strong> a "media" object (<a href="#json-media" data-scroll="true">see below</a>) </dd>
       </dl>
     </p>
-    <p id="json-date"><strong><em>Date objects</em></strong> are JSON objects with up to seven keys:</p>
+    <p id="json-date" class="jump"><strong><em>Date objects</em></strong> are JSON objects with up to seven keys:</p>
     <dl>
         <dt><code>year</code> (required)</dt>
         <dd><strong>value:</strong> a number. Don't use commas. BCE years should be negative numbers. Don't use the letters "BC", "BCE" or any others.</dd>
@@ -68,14 +68,14 @@
         <dt><code>millisecond</code> (optional)</dt>
         <dd><strong>value:</strong> a number</dd>
     </dl>
-    <p id="json-text"><strong><em>Text objects</em></strong> are JSON objects with up to two keys. For each slide, text objects are optional.</p>
+    <p id="json-text" class="jump"><strong><em>Text objects</em></strong> are JSON objects with up to two keys. For each slide, text objects are optional.</p>
     <dl>
         <dt><code>headline</code> (required)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
         <dt><code>text</code> (optional)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
     </dl>
-    <p id="json-media"><strong><em>Media objects</em></strong> are JSON objects with up to three keys. For each slide, media objects are optional.</p>
+    <p id="json-media" class="jump"><strong><em>Media objects</em></strong> are JSON objects with up to three keys. For each slide, media objects are optional.</p>
     <dl>
         <dt><code>url</code> (required)</dt>
         <dd><strong>value:</strong> a URL (see <a href="media-types">media types</a> below).</dd>
