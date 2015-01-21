@@ -68,17 +68,17 @@
         <dt><code>millisecond</code> (optional)</dt>
         <dd><strong>value:</strong> a number</dd>
     </dl>
-    <p id="json-text"><strong><em>Text objects</em></strong> are JSON objects with up to two keys:</p>
+    <p id="json-text"><strong><em>Text objects</em></strong> are JSON objects with up to two keys. For each slide, text objects are optional.</p>
     <dl>
         <dt><code>headline</code> (required)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
         <dt><code>text</code> (optional)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
     </dl>
-    <p id="json-media"><strong><em>Media objects</em></strong> are JSON objects with up to three keys:</p>
+    <p id="json-media"><strong><em>Media objects</em></strong> are JSON objects with up to three keys. For each slide, media objects are optional.</p>
     <dl>
-        <dt><code>url</code> (optional)</dt>
-        <dd><strong>value:</strong> a URL (see <a href="media-types">media types</a> below)</dd>
+        <dt><code>url</code> (required)</dt>
+        <dd><strong>value:</strong> a URL (see <a href="media-types">media types</a> below).</dd>
         <dt><code>caption</code> (optional)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK.</dd>
         <dt><code>credit</code> (optional)</dt>
