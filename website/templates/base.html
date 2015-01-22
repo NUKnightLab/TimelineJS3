@@ -71,54 +71,31 @@
 	{% endblock %}
 	<!-- BEGIN FOOTER -->
   <footer>
-    <div class="clearfix" id="footer">
-      <div id="footer-wrapper" class="row-fluid">           
-        <div class="span4">
-          <address itemtype="http://data-vocabulary.org/Organization" itemscope="">
-            <span title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name" itemprop="name">Knight Lab</span>
-            <span itemtype="http://data-vocabulary.org/Address" itemscope="" class="address" itemprop="address">
-              <span class="street-address" itemprop="street-address">1845 Sheridan Road<br>Fisk #109 &amp; #111</span>, 
-              <div class="address-group">
-                <span itemprop="locality">Evanston</span>, 
-                <span itemprop="region">IL</span>. <span itemprop="postal-code">60208</span><br>
-                <a class="map" target="_blank" href="https://maps.google.com/maps?q=1845+Sheridan+Road+Evanston+IL+6020&amp;hl=en&amp;ll=42.050942,-87.673511&amp;spn=0.003059,0.004898&amp;sll=42.050647,-87.674246&amp;sspn=0.012237,0.019591&amp;gl=us&amp;hnear=1845+Sheridan+Rd,+Evanston,+Cook,+Illinois+60201&amp;t=m&amp;z=18&amp;iwloc=A"><i>+</i> <span>map</span></a>
-                <span class="address-country" itemprop="country-name">United States</span>
-              </div>
-            </span>
-            <span itemtype="http://www.data-vocabulary.org/Geo/" itemscope="" class="geo" itemprop="geo">
-                Latitude: <span itemprop="latitude">42.056893</span>
-                Longitude: <span itemprop="longitude">-87.676735</span>
-            </span>
-            <span class="tel" itemprop="tel">(847) 467-4971</span>
-            <a itemprop="url" href="http://knightlab.northwestern.edu" class="url">Northwestern University Knight Lab | Advancing media innovation through exploration and experimentation.</a> 
-          </address>
-          <ul class="social">
-            <li><a target="_blank" title="follow @knightlab on twitter" href="http://www.twitter.com/knightlab"><i class="icon-twitter-sign icon-large"></i></a></li>
-            <li><a target="_blank" title="Knight Lab on Facebook" href="https://www.facebook.com/knightlab"><i class="icon-facebook-sign icon-large"></i></a></li>
-            <li><a title="email Knight Lab" href="mailto:Knightlab@northwestern.edu"><i class="icon-sign-blank icon-large iconemail"></i></a></li>
-            <li><a target="_blank" title="Knight Lab on github" href="https://github.com/NUKnightLab/"><i class="icon-github-sign icon-large"></i></a></li>
-            <li><a target="_blank" title="Knight Lab on Tumblr" href="http://knightlab.tumblr.com/"><i class="icon-sign-blank icon-large icontumblr"></i></a></li>
-          </ul>
-        </div>
-
-        <div class="span8">
-          <ul class="logos clearfix">
-            <li><a title="John S. and James L. Knight Foundation" href="http://www.knightfoundation.org/" class="knightfoundation"><span>John S. and James L. Knight Foundation</span></a></li>
-            <li><a title="National Science Foundation" href="http://www.nsf.gov/" class="nsf"><span>National Science Foundation</span></a></li>
-            <li><a title="Robert R. McCormick Foundation" href="http://www.mccormickfoundation.org/" class="mccormickfound"><span>Robert R. McCormick Foundation</span></a></li>
-            <li><a title="Northwestern University" href="http://www.northwestern.edu/" class="northwestern"><span>Northwestern University</span></a></li>
-            <li><a title="McCormick School of Engineering | Northwestern University" href="http://www.mccormick.northwestern.edu/" class="mccormick"><span>McCormick School of Engineering | Northwestern University</span></a></li>
-            <li><a title="Medill School of Journalism | Northwestern University" href="http://www.medill.northwestern.edu" class="medill"><span>Medill School of Journalism | Northwestern University</span></a></li>
-          </ul>
-          <div class="notes">
-            <p><a target="_blank" href="http://www.northwestern.edu/" title="Northwestern University">Northwestern University</a> Knight Lab is a joint initiative of the <a href="http://www.mccormick.northwestern.edu/">Robert R. McCormick School of Engineering and Applied Science</a> and the<a href="http://www.medill.northwestern.edu/"> Medill School of Journalism, Media, Integrated Marketing Communications</a>.</p>
-            <p>The Lab was launched and is sustained by a grant from the <a href="http://www.knightfoundation.org/">John S. and James L. Knight Foundation</a>, with additional support from the<a href="http://www.mccormickfoundation.org/"> Robert R. McCormick Foundation</a> and the<a href="http://www.nsf.gov/"> National Science Foundation</a>.</p>
+	  <div class="about-knightlab">
+			<div id="knightlab-logo-column">
+				<a href="http://knightlab.northwestern.edu" target="_blank"><img src="http://knightlab.northwestern.edu/wp-content/uploads/2014/12/logo_stacked.png" class="img-responsive"></a>
+				<ul class="social list-inline">
+				   <li><a href="http://www.twitter.com/knightlab" target="_blank" title="Knight Lab on Twitter"><span class="icon-twitter"></span></a></li>
+					<li><a href="https://www.facebook.com/knightlab" target="_blank" title="Knight Lab on Facebook"><span class="icon-facebook"></span></a></li>
+					<li><a href="https://github.com/NUKnightLab/" target="_blank" title="Knight Lab on GitHub"><span class="icon-github"></span></a></li>
+				</ul>
+				<address itemscope="" itemtype="http://data-vocabulary.org/Organization">
+					<span style="display:none;" itemprop="name" title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name">Knight Lab</span>
+					<span itemprop="tel" class="tel">(847) 467-4971</span>
+					<span itemprop="address" itemscope="" itemtype="http://data-vocabulary.org/Address" class="address"><span itemprop="street-address" class="street-address">1845 Sheridan Road<br>Fisk #109 &amp; #111 </span>
+				  <div class="address-group">
+					<span itemprop="locality">Evanston,</span> <span itemprop="region">IL</span> <span itemprop="postal-code">60208</span><br><a href="https://maps.google.com/maps?q=1845+Sheridan+Road+Evanston+IL+6020&amp;amp;hl=en&amp;amp;ll=42.050942,-87.673511&amp;amp;spn=0.003059,0.004898&amp;amp;sll=42.050647,-87.674246&amp;amp;sspn=0.012237,0.019591&amp;amp;gl=us&amp;amp;hnear=1845+Sheridan+Rd,+Evanston,+Cook,+Illinois+60201&amp;amp;t=m&amp;amp;z=18&amp;amp;iwloc=A" target="_blank"><i>+ </i><span>map</span></a><br><span itemprop="country-name" class="address-country">United States</span></div></span><span style="display:none;" itemprop="geo" itemscope="" itemtype="http://www.data-vocabulary.org/Geo/" class="geo">Latitude: <span itemprop="latitude">42.056893</span><br>Longitude: <span itemprop="longitude">-87.676735</span></span><a style="display:none;" href="http://knightlab.northwestern.edu" itemprop="url" class="url">Northwesten University Knight Lab | Advancing media innovation through exploration and experimentation.</a></address>
+            </div>
+			<div id="knightlab-description">
+			<p>The <a title="Northwestern University" href="http://www.northwestern.edu/" target="_blank">Northwestern University</a> Knight Lab is a team of technologists and journalists working at advancing news media innovation through exploration and experimentation.</p>
+			<p>A joint initiative of the <a href="http://www.mccormick.northwestern.edu/" target="_blank">Robert R. McCormick School of Engineering and Applied Science</a> and the<a href="http://www.medill.northwestern.edu/" target="_blank"> Medill School of Journalism, Media, Integrated Marketing Communications</a>.</p><img src="http://knightlab.northwestern.edu/wp-content/uploads/2014/12/Logos-Horizontal.png" class="img-responsive logos">
+			</div>
+		  <div class="copyright">Copyright 2015, Northwestern University
+          </div>
           </div>
         </div>
-        <div class="copyright">
-          &copy; Copyright 2013-2015 <span title="Knight Lab">Northwestern University</span>
-        </div>
-      </div><!-- end #footer-wrapper -->
+      </div>            </div>
+        </div><!-- end #footer-wrapper -->
     </div><!-- end #footer -->
     <div id="footer-outer"></div>
   </footer>

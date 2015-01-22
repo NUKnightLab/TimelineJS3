@@ -227,3 +227,160 @@ p.input-label {
 }  
 
 #font-preview-trigger { margin-left: 10px;}
+
+/* Footer */
+footer,
+#footer{
+  padding: 10px 80px 0;
+  font-size: 14px;
+  background-color: #F3F3F3;
+  border-bottom: 12px solid #520063;
+  font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+footer a,
+footer a:link,
+footer a:visited {
+  color: #666;
+  text-decoration: underline;
+  border: none;
+}
+#knightlab-logo-column {
+  width: 25%;
+  float: left;
+  margin-right: 30px;
+}
+#knightlab-description {
+  width: 65%;
+  float: left;
+  border-left: solid 1px #d0d0d0;
+  padding-left: 20px;
+}
+#footer-outer {
+  border-top: 4px solid #474748;
+  background-image: linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
+  background-image: -o-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
+  background-image: -moz-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
+  background-image: -webkit-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
+  background-image: -ms-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
+
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.14, rgb(50,33,63)),
+    color-stop(0.66, rgb(83,0,99)),
+    color-stop(0.44, rgb(83,0,99))
+    );
+  height: 14px;
+}
+.ie9 #footer-outer {
+  background-image: none;
+  background-color: #530063;
+}
+
+.about-knightlab {
+  max-width: 840px;
+  margin: auto;
+  padding-top: 60px;
+}
+
+footer .col-940 {
+  display: none;
+}
+
+footer ul {
+  list-style: none outside none;
+  margin: 0
+}
+footer ul.social {
+  text-align: center;
+  padding: 10px 0;
+  /* override blueline */
+  margin: 0 0 0 -20px;
+  float: none;
+  width: 100%;
+}
+
+footer ul.social a {
+  border: none;
+  text-decoration: none;
+}
+
+footer ul.social li{
+  float: none;
+  display: inline;
+  font-size: 24px;
+  line-height: 1.4em;
+  padding-bottom: 3px;
+  margin: 0 10px;
+}
+
+footer ul.social li a:hover{
+  text-decoration: none;
+  opacity: .9;
+}
+footer ul.logos {
+  margin-top: 25px;
+  border-left: 1px solid #CCCCCC;
+}
+footer ul.logos li{
+  display: block;
+  float: right;
+}
+footer address span.address,
+footer address span.tel {
+    padding-left: 0;
+}
+footer ul.logos li:hover{
+  opacity: .85;
+}
+footer ul.logos li a{
+  background: url("images/footer-logosheet.png") no-repeat scroll center top transparent;
+  display: block;
+  text-indent: -9999px;
+}
+footer ul.logos li a.northwestern{
+  background-position: -42px -106px;
+  height: 174px;
+  margin-bottom: 17px;
+  margin-left: 30px;
+  width: 290px;
+}
+
+footer ul.logos li a.knightfoundation{
+  background-position: 22px -283px;
+  height: 83px;
+  margin-bottom: 23px;
+  margin-top: 14px;
+  width: 383px;
+}
+footer ul.logos li a.medill{
+  background-position: -221px -385px;
+  height: 52px;
+  margin-bottom: 20px;
+  margin-left: 11px;
+  width: 111px;
+}
+footer ul.logos li a.mccormick{
+  background-position: -19px -385px;
+  float: right;
+  height: 52px;
+  margin-bottom: 20px;
+  width: 185px;
+}
+footer ul.logos li a.mccormickfound{
+  background-position: -6px -462px;
+  height: 68px;
+  margin-bottom: 51px;
+  margin-right: 34px;
+  margin-top: 23px;
+  width: 218px;
+}
+footer ul.logos li a.nsf{
+  background-position: right -448px;
+  float: right;
+  height: 84px;
+  margin: 0;
+  width: 131px;
+}
+
