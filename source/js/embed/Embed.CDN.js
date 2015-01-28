@@ -13,7 +13,7 @@ var embed_analytics = "UA-537357-20";
 
 /* REPLACE THIS WITH YOUR BASE PATH FOR TIMELINE
 ================================================== */
-//var embed_path = "http://cdn.knightlab.com/libs/timelinejs3/latest/embed/";
+//var embed_path = "http://cdn.knightlab.com/libs/timeline3/latest/embed/";
 
 /* LOAD TIMER
 ================================================== */
