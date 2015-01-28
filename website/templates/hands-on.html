@@ -87,11 +87,17 @@
     <div class="row">
       <div class="span12">
       <p>
-      Once you have your timeline data, it only takes a few lines of code to add it to your page.
+      Once you have your timeline data, it only takes a few lines of code to add it to your page. First, be sure to load the library itself. Then, instantiate a timeline instance with two arguments.
       </p>
       
-      <pre>
-        window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
+      <pre class="prettyprint lang-html">
+
+      &lt;script src="http://cdn.knightlab.com/libs/timeline3/latest/timeline.js">&lt;/script&gt;
+      &lt;script type="text/javascript"&gt;
+        // two arguments: the id of the Timeline container (no '#')
+        // and the URL to your JSON data file. In this case, a relative URL.
+        window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json');
+      &lt;/script&gt;
       </pre>
       </div>
     </div>
