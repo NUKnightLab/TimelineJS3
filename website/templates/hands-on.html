@@ -87,16 +87,23 @@
     <div class="row">
       <div class="span12">
       <p>
-      Once you have your timeline data, it only takes a few lines of code to add it to your page. First, be sure to load the library itself. Then, instantiate a timeline instance with two arguments.
+      Once you have your timeline data, it only takes a few lines of code to add it to your page. First, be sure to load the library itself (both javascript and CSS). Then, instantiate a timeline instance with two arguments.
       </p>
       
       <pre class="prettyprint lang-html">
+      &lt;link title="timeline-styles" rel="stylesheet" href="http://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
 
-      &lt;script src="http://cdn.knightlab.com/libs/timeline3/latest/timeline.js">&lt;/script&gt;
+      &lt;script src="http://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
       &lt;script type="text/javascript"&gt;
         // two arguments: the id of the Timeline container (no '#')
         // and the URL to your JSON data file. In this case, a relative URL.
         window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json');
+
+        // You may also want to ensure that the timeline redraws 
+        // when the window is resized
+        window.onresize = function(event) {
+          timeline.updateDisplay();
+        }
       &lt;/script&gt;
       </pre>
       </div>
@@ -105,8 +112,53 @@
     <div class="row">
       <div class="span12">
       <p>
-      List the various media types TJS3 supports, explain the fallback, absence of Pagepeeker, etc...
+      People have always loved how easy TimelineJS makes it to add rich media to the slides that tell your story. The new version of Timeline continues the tradition and adds a few new media types.
       </p>
+      <dl>
+        <dt>Image</dt>
+        <dd>If your URL ends in <code>jpg</code>, <code>gif</code>, <code>png</code> or <code>jpeg</code>, it will be used as the source for an image tag.</dd>
+        <dt>YouTube</dt>
+        <dd>blah blah blah</dd>
+        <dt>Vimeo</dt>
+        <dd>blah blah blah</dd>
+        <dt>DailyMotion</dt>
+        <dd>blah blah blah</dd>
+        <dt>Vine</dt>
+        <dd>blah blah blah</dd>
+        <dt>SoundCloud</dt>
+        <dd>blah blah blah</dd>
+        <dt>Twitter</dt>
+        <dd>blah blah blah</dd>
+        <dt>Google Maps</dt>
+        <dd>blah blah blah</dd>
+        <dt>Google Plus</dt>
+        <dd>blah blah blah</dd>
+        <dt>Flickr</dt>
+        <dd>blah blah blah</dd>
+        <dt>Instagram</dt>
+        <dd>blah blah blah</dd>
+        <dt>Instagram Profile</dt>
+        <dd>blah blah blah</dd>
+        <dt>DocumentCloud</dt>
+        <dd>blah blah blah</dd>
+        <dt>Image</dt>
+        <dd>blah blah blah</dd>
+        <dt>Google Doc</dt>
+        <dd>blah blah blah</dd>
+        <dt>Wikipedia</dt>
+        <dd>blah blah blah</dd>
+        <dt>Spotify</dt>
+        <dd>blah blah blah</dd>
+        <dt>iframe</dt>
+        <dd>blah blah blah</dd>
+        <dt>Storify</dt>
+        <dd>blah blah blah</dd>
+        <dt>Blockquote</dt>
+        <dd>blah blah blah</dd>
+        <dt>Website</dt>
+        <dd>blah blah blah</dd>
+
+      </dl>
       </div>
     </div>
   </div>
