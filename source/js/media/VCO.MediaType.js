@@ -26,7 +26,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"dailymotion",
 				name: 		"DailyMotion", 
-				match_str: 	"(www.)?dailymotion\.com",
+				match_str: 	"^(https?:)?\/*(www.)?dailymotion\.com",
 				cls: 		VCO.Media.DailyMotion
 			},
 			{

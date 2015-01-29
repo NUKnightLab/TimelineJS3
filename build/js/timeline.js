@@ -6063,7 +6063,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"dailymotion",
 				name: 		"DailyMotion", 
-				match_str: 	"(www.)?dailymotion\.com",
+				match_str: 	"^(https?:)?\/*(www.)?dailymotion\.com",
 				cls: 		VCO.Media.DailyMotion
 			},
 			{
@@ -6184,9 +6184,7 @@ VCO.MediaType = function(m) {
 			};
 		} else if (m.url.match(media_types[i].match_str)) {
 			media 		= media_types[i];
-			media.url 	= m.url;
 			return media;
-			break;
 		}
 	};
 	
