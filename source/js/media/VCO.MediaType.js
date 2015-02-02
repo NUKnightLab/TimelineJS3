@@ -20,7 +20,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"vimeo",
 				name: 		"Vimeo", 
-				match_str: 	"(player.)?vimeo\.com",
+				match_str: 	"^(https?:)?\/*(player.)?vimeo\.com",
 				cls: 		VCO.Media.Vimeo
 			},
 			{
@@ -32,19 +32,19 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"vine",
 				name: 		"Vine", 
-				match_str: 	"(www.)?vine\.co",
+				match_str: 	"^(https?:)?\/*(www.)?vine\.co",
 				cls: 		VCO.Media.Vine
 			},
 			{
 				type: 		"soundcloud",
 				name: 		"SoundCloud", 
-				match_str: 	"(player.)?soundcloud\.com",
+				match_str: 	"^(https?:)?\/*(player.)?soundcloud\.com",
 				cls: 		VCO.Media.SoundCloud
 			},
 			{
 				type: 		"twitter",
 				name: 		"Twitter", 
-				match_str: 	"(www.)?twitter\.com",
+				match_str: 	"^(https?:)?\/*(www.)?twitter\.com",
 				cls: 		VCO.Media.Twitter
 			},
 			{
@@ -56,13 +56,13 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googleplus",
 				name: 		"Google+", 
-				match_str: 	"plus.google",
+				match_str: 	"^(https?:)?\/*plus.google",
 				cls: 		VCO.Media.GooglePlus
 			},
 			{
 				type: 		"flickr",
 				name: 		"Flickr", 
-				match_str: 	"flickr.com/photos",
+				match_str: 	"^(https?:)?\/*flickr.com/photos",
 				cls: 		VCO.Media.Flickr
 			},
 			{
@@ -98,7 +98,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"wikipedia",
 				name: 		"Wikipedia",
-				match_str: 	"(www.)?wikipedia\.org",
+				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org",
 				cls: 		VCO.Media.Wikipedia
 			},
 			{
