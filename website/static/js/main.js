@@ -93,6 +93,9 @@ $blueline(document).ready(function() {
 
   function new_timeline(url) {
       timeline = null; // TODO: actively 'destroy' an existing timeline?
+      if (!url) {
+        url = '0Agl_Dv6iEbDadHdKcHlHcTB5bzhvbF9iTWwyMmJHdkE';
+      }
       var json = VCO.ConfigFactory.fromGoogle(url);
       $("#export-json").show();
       $("#url").val('');
