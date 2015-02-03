@@ -38,7 +38,9 @@ footer {
   #overview hgroup {
     text-align: center;
   }
-
+#intro-copy {
+    margin-top: 30px;
+}
 /* Timeline */
 #demo {
   width: 100%;
