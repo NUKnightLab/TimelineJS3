@@ -11,7 +11,7 @@
     //
     // name of the project as it will appear in the cdn and css/js banners
     //
-    "name": "timelinejs3",
+    "name": "timeline3",
     //
     // author string to appear in css/js banners
     //
@@ -168,7 +168,7 @@
     // }
     //
     "deploy": {
-        "stg": {"bucket": "timelinejs3.knilab.com", "usemin_context": {"cdn": "dev"}},
-        "prd": {"bucket": "timelinejs3.knightlab.com", "usemin_context": {"cdn": "latest"}}
+        "stg": {"bucket": "timeline3.knilab.com", "usemin_context": {"cdn": "dev"}},
+        "prd": {"bucket": "timeline3.knightlab.com", "usemin_context": {"cdn": "latest"}}
     }
 }

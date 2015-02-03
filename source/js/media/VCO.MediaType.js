@@ -14,7 +14,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"youtube",
 				name: 		"YouTube", 
-				match_str: 	"(www.)?youtube|youtu\.be",
+				match_str: 	"^(https?:)?\/*(www.)?youtube|youtu\.be",
 				cls: 		VCO.Media.YouTube
 			},
 			{
@@ -26,7 +26,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"dailymotion",
 				name: 		"DailyMotion", 
-				match_str: 	"(www.)?dailymotion\.com",
+				match_str: 	"^(https?:)?\/*(www.)?dailymotion\.com",
 				cls: 		VCO.Media.DailyMotion
 			},
 			{
@@ -86,7 +86,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"image",
 				name: 		"Image",
-				match_str: 	/jpg|jpeg|png|gif/i,
+				match_str: 	/(jpg|jpeg|png|gif)$/i,
 				cls: 		VCO.Media.Image
 			},
 			{
@@ -147,9 +147,7 @@ VCO.MediaType = function(m) {
 			};
 		} else if (m.url.match(media_types[i].match_str)) {
 			media 		= media_types[i];
-			media.url 	= m.url;
 			return media;
-			break;
 		}
 	};
 	

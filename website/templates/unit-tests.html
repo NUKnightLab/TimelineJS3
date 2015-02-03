@@ -7,7 +7,7 @@
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/g/qunit@1.14.0,underscorejs@1.6.0"></script>
 
-  <!-- build:js http://cdn.knightlab.com/libs/timelinejs3/%(cdn)s/js/timeline-min.js -->
+  <!-- build:js http://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
   <script src="/build/js/timeline.js"></script>
   <!-- endbuild -->
 
@@ -301,41 +301,7 @@
 
       module("media type tests", {});
 
-      test("URL tests", function() {
-
-        function mediaTypeEqual(url, expected) {
-          var d = VCO.MediaType({'url': url})
-          return equal(d.type,expected,expected);
-        }
-
-        mediaTypeEqual('https://www.flickr.com/photos/cleopatra69/5399251313/in/photostream','flickr')
-
-        mediaTypeEqual('http://en.wikipedia.org/wiki/Project_Gutenberg','wikipedia')
-
-        // documentcloud
-        mediaTypeEqual('http://www.documentcloud.org/documents/346266-healthcarefullplan.js','documentcloud')
-        mediaTypeEqual('https://www.documentcloud.org/documents/1497900-new-orleans-harbor-police-la-for-fy-2013.html','documentcloud')
-       
-        //Google map view
-        mediaTypeEqual('https://www.google.com/maps/@42.0563195,-87.6969445,14z', 'googlemaps');
-
-        //Google map place
-        mediaTypeEqual('https://www.google.com/maps/place/Northwestern+University+Knight+Lab/@42.050703,-87.673881,17z/data=!3m1!4b1!4m2!3m1!1s0x880fd074140e35d1:0x954a22c1989c7105','googlemaps');
-
-
-        //Google map directions
-        mediaTypeEqual('https://www.google.com/maps/dir/38325+Pepperweed+Rd,+Squaw+Valley,+CA+93675/Kings+Canyon+National+Park,+California/@36.7824144,-119.2024213,10z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x809511dce15514c5:0x907f3cccddac00b3!2m2!1d-119.165587!2d36.679918!1m5!1m1!1s0x80bfd5ee5ff1a77b:0x826483b770430f4c!2m2!1d-118.555148!2d36.887855', 'googlemaps');
-
-        //Google map search
-        mediaTypeEqual('https://www.google.com/maps/search/coffee/@36.8128212,-119.7471762,15z/data=!3m1!4b1!4m5!2m4!3m3!1scoffee!2sCalifornia+State+University,+Fresno,+5241+North+Maple+Avenue,+Fresno,+CA+93740!3s0x80945d024e7effdb:0x8a47b32280fd2166', 'googlemaps');
-
-        //Google map satellite tiles
-        mediaTypeEqual('https://www.google.com/maps/place/38325+Pepperweed+Rd,+Squaw+Valley,+CA+93675/@36.6799575,-119.1647811,347m/data=!3m1!1e3!4m2!3m1!1s0x809511dce15514c5:0x907f3cccddac00b3', 'googlemaps'); 
-
-        //Google map streetview
-        mediaTypeEqual('https://www.google.com/maps/@36.67911,-119.1649653,3a,75y,285.33h,79.9t/data=!3m4!1e1!3m2!1sQbOSCYjb9m-VnE-GcqwWEA!2e0', 'googlemaps');
-
-      });
+      
 
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {

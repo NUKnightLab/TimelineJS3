@@ -1,6 +1,6 @@
 #TimelineJS3 API
 
-TimelineJS3 exposes the events and methods listed below.
+Timeline 3 exposes the events and methods listed below.
 
 Note that these methods make a distinction between an `event_index` and a `slide_index`.  An `event_index` is an index into the sorted array of `events` in the timeline data object.  A `slide_index` is index of the slide that appears in the rendered timeline.  
 
