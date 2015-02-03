@@ -74,44 +74,54 @@ $blueline(document).ready(function() {
   }
 
   // Set up preview box
+  function do_preview(key) {
+    var url = key || document.getElementById('url').value;
+    if (url) {
+      $("#preview-required").hide();
+      $("#timeline-wrapper").show();
+      $('html, body').animate({
+          scrollTop: $("#timeline-wrapper").offset().top
+      }, 2000);
+      $("#timeline-wrapper")[0].scrollIntoView( true );
+
+      new_timeline(url);
+
+    } else {
+      $("#preview-required").show();
+    }
+  }
   var timeline = null;
   var button = document.getElementById('go-preview');
-  button.addEventListener('click',function(){
-    $("#timeline-wrapper").show();
-    $('html, body').animate({
-        scrollTop: $("#timeline-wrapper").offset().top
-    }, 2000);
-    $("#timeline-wrapper")[0].scrollIntoView( true );
-    new_timeline(document.getElementById('url').value);
-  });
+  button.addEventListener('click',do_preview);
 
   document.getElementById('url').addEventListener('keyup',function(evt) {
     if (evt.keyCode == 13) {
-      new_timeline(document.getElementById('url').value);
+      do_preview();
     }
   });
 
   function new_timeline(url) {
       timeline = null; // TODO: actively 'destroy' an existing timeline?
       if (!url) {
-        url = '0Agl_Dv6iEbDadHdKcHlHcTB5bzhvbF9iTWwyMmJHdkE';
-      }
-      var json = VCO.ConfigFactory.fromGoogle(url);
-      $("#export-json").show();
-      $("#url").val('');
-      window.factory_json = json;
-      $("#json-export-field").val(JSON.stringify(json,null,"  "));
-      /*document.getElementById('input').style.height = "40px"*/
-      document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+        throw("Should be called with a url.")
+      } else {
+        var json = VCO.ConfigFactory.fromGoogle(url);
+        $("#export-json").show();
+        $("#url").val('');
+        window.factory_json = json;
+        $("#json-export-field").val(JSON.stringify(json,null,"  "));
+        /*document.getElementById('input').style.height = "40px"*/
+        document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
 
-      timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
-      });
+        timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+        });
 
-      window.onresize = function(event) {
-          console.log("resize")
-          document.getElementById('input').style.height = "30px"
-          document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
-          timeline.updateDisplay();
+        window.onresize = function(event) {
+            console.log("resize")
+            document.getElementById('input').style.height = "30px"
+            document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+            timeline.updateDisplay();
+        }
       }
   }
 
@@ -131,7 +141,7 @@ $blueline(document).ready(function() {
 
   var qs = getQueryParams(window.location.search);
   if (qs.key) {
-    new_timeline(qs.key);
+    do_preview(qs.key);
   }
 
 });

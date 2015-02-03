@@ -70,6 +70,10 @@ footer {
   display: none;
 }
 
+#preview-required {
+  display: none;
+}
+
 #preview {
   display: none;
 }
