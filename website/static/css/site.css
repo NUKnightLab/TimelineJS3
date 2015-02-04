@@ -11,7 +11,12 @@ footer {
 /* Navbar */
 .navbar {
   font-size: 14px;
+  font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+.navbar .brand { color: #000; }
+/*.navbar h3 { margin: 0; }*/
+ .navbar .nav.pull-right>li>a { padding: 0; }
+ .navbar .nav.pull-right img { margin-top: -10px; }
 .nav-tabs {
     padding-top: 40px;
     padding-left: 60px;
