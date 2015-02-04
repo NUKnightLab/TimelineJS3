@@ -75,10 +75,17 @@ $blueline(document).ready(function() {
 
   // Set up preview box
   function do_preview(key) {
-    var url = key || document.getElementById('url').value;
+    $("#preview-required").hide();
+    $("#timeline-wrapper").hide();
+    var url = null;
+    if (key && typeof(key) == 'string') {
+      url = key;      
+    } else {
+      url = document.getElementById('url').value;
+    }
     if (url) {
-      $("#preview-required").hide();
       $("#timeline-wrapper").show();
+
       $('html, body').animate({
           scrollTop: $("#timeline-wrapper").offset().top
       }, 2000);

@@ -134,6 +134,9 @@ footer {
 
 #preview-required {
   display: none;
+  font-family: sans-serif;
+  font-size: smaller;
+  margin-top: 10px;
 }
 
 #preview {
