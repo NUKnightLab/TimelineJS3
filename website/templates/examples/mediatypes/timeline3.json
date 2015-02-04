@@ -91,8 +91,22 @@
         }, 
         "text": {
           "headline": "Twitter", 
-          "text": "To embed a Tweet, just copy the URL in the embed code."
-        },
+          "text": "To display a Tweet, just copy the URL in the embed code."
+        }
+     },
+     {
+        "media": {
+          "url": "<blockquote class='twitter-tweet' lang='en'><p>An annotated image of where the Metro-North train crashed last night. <a href='http://t.co/hHkaQYYs3B'>http://t.co/hHkaQYYs3B</a> <a href='http://t.co/fdvHbZSPmh'>pic.twitter.com/fdvHbZSPmh</a></p>&mdash; NYT Graphics (@nytgraphics) <a href='https://twitter.com/nytgraphics/status/563048860147535872'>February 4, 2015</a></blockquote><script async src='//platform.twitter.com/widgets.js' charset='utf-8'></script>", 
+          "caption": "New York Times Tweet", 
+          "credit": "New York Times"
+        }, 
+        "start_date": {
+          "year": "1906"
+        }, 
+        "text": {
+          "headline": "Twitter, Embedded", 
+          "text": "To embed a Tweet, copy the embed code provided by Twitter."
+        }
      },
      {
         "media": {
@@ -106,11 +120,11 @@
         "text": {
           "headline": "Google Maps, Coordinates", 
           "text": "To embed a Google Map with coordinates, just copy the URL of the map's page."
-        },
+        }
      },
      {
         "media": {
-          "url": "https://www.google.com/maps/search/target/@41.790573,-87.583066,13z/data=!3m1!4b1", 
+          "url": "https://www.google.com/maps/search/target/@41.8747339,-87.6481257,13z?hl=en-US", 
           "caption": "Google Maps with search results", 
           "credit": "Google Maps"
         }, 
@@ -120,7 +134,7 @@
         "text": {
           "headline": "Google Maps, Search", 
           "text": "To embed a Google Maps search result, just copy the URL of the map's page."
-        },
+        }
      },
      {
         "media": {
@@ -134,7 +148,7 @@
         "text": {
           "headline": "Google Maps, Place Marker", 
           "text": "To embed a Google Map with a place marker, just copy the URL of the map's page."
-        },
+        }
      },
      {
         "media": {
@@ -148,21 +162,21 @@
         "text": {
           "headline": "Google Maps, Directions", 
           "text": "To embed a Google Maps with directions, just copy the URL of the map's page."
-        },
+        }
      },
      {
         "media": {
-          "url": "https://plus.google.com/101172744180499639352/posts/8BTi9HAPPXE?pid=6111186472760237362&oid=101172744180499639352", 
-          "caption": "Tao butt, Neelum Valley Pakistan", 
-          "credit": "Natural Scenery of Pakistan"
+          "url": "https://lh4.googleusercontent.com/-QO1O34U4z7k/Ui4OnAkgWjI/AAAAAAAAQv4/eDSXlUlwcKs/w622-h415-no/IMG_7898.JPG", 
+          "caption": "Million Dollar Highway", 
+          "credit": "Luke Rague"
         }, 
         "start_date": {
           "year": "1911"
         }, 
         "text": {
           "headline": "Google Plus", 
-          "text": "To embed a Google Plus photo, just copy the URL of the photo's page."
-        },
+          "text": "To embed a Google Plus photo, just copy image URL."
+        }
      },
      {
         "media": {
@@ -176,7 +190,21 @@
         "text": {
           "headline": "Instagram", 
           "text": "To embed an Instagram, just copy the URL of the photo's page."
-        },
+        }
+     },
+     {
+        "media": {
+          "url": "<iframe src='http://instagram.com/lukerague/'></iframe", 
+          "caption": "Luke Rague's Instagram Account", 
+          "credit": "Instagram/Luke Rague"
+        }, 
+        "start_date": {
+          "year": "1912"
+        }, 
+        "text": {
+          "headline": "Instagram, Profile", 
+          "text": "To embed an Instagram profile, just copy the URL."
+        }
      },
      {
         "media": {
@@ -190,26 +218,12 @@
         "text": {
           "headline": "Flickr", 
           "text": "To embed a Flickr photo, just copy the URL in the embed code."
-        },
-     },
-     {
-        "media": {
-          "url": "https://flic.kr/p/r1Zx9K", 
-          "caption": "Mountains of the Alaska Range in Denali National Park, Alaska. (Short link URL)", 
-          "credit": "Daniel Leifhelt"
-        }, 
-        "start_date": {
-          "year": "1913"
-        }, 
-        "text": {
-          "headline": "Flickr", 
-          "text": "To embed a Flickr photo, just copy the URL in the embed code."
-        },
+        }
      },
      {
         "media": {
           "url": "https://www.documentcloud.org/documents/1377371-folketinget.html", 
-          "caption": "Idon't know, it's not in English", 
+          "caption": "I don't know, it's not in English", 
           "credit": "Nil Mulvad"
         }, 
         "start_date": {
@@ -218,7 +232,7 @@
         "text": {
           "headline": "Document Cloud", 
           "text": "To embed from Document CLoud, just copy the document's URL."
-        },
+        }
      },
      {
         "media": {
@@ -232,7 +246,7 @@
         "text": {
           "headline": "Image, JPG", 
           "text": "To embed a JPG, just copy the URL endig in '.jpg'."
-        },
+        }
      },
      {
         "media": {
@@ -246,7 +260,7 @@
         "text": {
           "headline": "Image, GIF", 
           "text": "To embed a GIF, just copy the URL endig in '.gif'."
-        },
+        }
      },
      {
         "media": {
@@ -260,7 +274,7 @@
         "text": {
           "headline": "Image, PNG", 
           "text": "To embed a PNG, just copy the URL endig in '.png'."
-        },
+        }
      },
      {
         "media": {
@@ -274,7 +288,7 @@
         "text": {
           "headline": "Image, JPEG", 
           "text": "To embed a JPEG, just copy the URL endig in '.jpeg'."
-        },
+        }
      },
      {
         "media": {
@@ -288,7 +302,7 @@
         "text": {
           "headline": "Google Doc, text document", 
           "text": "To embed a Google Doc, just copy the Shareable link."
-        },
+        }
      },
      {
         "media": {
@@ -302,13 +316,27 @@
         "text": {
           "headline": "Wikipedia", 
           "text": "To embed from Wikipedia, just copy the URL of the article's page."
-        },
+        }
      },
      {
         "media": {
-          "url": "https://play.spotify.com/user/spotify/playlist/7jq9hVhkNUyFLN1XivhLvK", 
-          "caption": "Totally Stress Free", 
-          "credit": "Spotify"
+          "url": "<iframe width='200' height='25' src='https://embed.spotify.com/follow/1/?uri=spotify%3Aartist%3A2iE18Oxc8YSumAU232n4rW&amp;size=basic&amp;theme=dark' scrolling='no' frameborder='0' style='border:none; overflow:hidden;' allowtransparency='true'></iframe>", 
+          "caption": "Jackson 5", 
+          "credit": "Jackson 5"
+        }, 
+        "start_date": {
+          "year": "1921"
+        }, 
+        "text": {
+          "headline": "Spotify, Artist", 
+          "text": "To embed an artist on Spotify, just copy the 'Spotify URL'."
+        }
+     },
+     {
+        "media": {
+          "url": "https://play.spotify.com/user/edvard_m/playlist/4xFSdiuP4gpR4wq2OghlOs", 
+          "caption": "Funk Soul Disco", 
+          "credit": "Edvard Brudeli Moen"
         }, 
         "start_date": {
           "year": "1921"
@@ -316,13 +344,13 @@
         "text": {
           "headline": "Spotify, Playlist", 
           "text": "To embed a Spotify playlist, just copy the 'Spotify URL'."
-        },
+        }
      },
      {
         "media": {
-          "url": "https://play.spotify.com/track/451GvHwY99NKV4zdKPRWmv", 
-          "caption": "Banana Pancakes", 
-          "credit": "Jack Johnson"
+          "url": "https://play.spotify.com/track/5SdB3onMcO9ZBoKrdvCqhR", 
+          "caption": "ABC", 
+          "credit": "Jackson 5"
         }, 
         "start_date": {
           "year": "1922"
@@ -330,7 +358,7 @@
         "text": {
           "headline": "Spotify, Track", 
           "text": "To embed a Spotify track, just copy the 'Spotify URL'."
-        },
+        }
      },
      {
         "media": {
@@ -344,7 +372,7 @@
         "text": {
           "headline": "iFrame", 
           "text": "To embed an iFrame, just copy the iFrame code."
-        },
+        }
      },
      {
         "media": {
@@ -358,7 +386,21 @@
         "text": {
           "headline": "Storify", 
           "text": "To embed a Storify, just copy URL."
-        },
+        }
+     },
+     {
+        "media": {
+          "url": "<iframe src=\"http://www.theonion.com/articles/measles-epidemic-2015-a-timeline-of-the-outbreak,37870/\"></iframe>", 
+          "caption": "Measles Epidemic 2015: A Timeline of the Outbreak", 
+          "credit": "The Onion"
+        }, 
+        "start_date": {
+          "year": "1925"
+        }, 
+        "text": {
+          "headline": "Website, in iFrame", 
+          "text": "To embed a website, just copy the URL."
+        }
      },
      {
         "media": {
@@ -370,10 +412,24 @@
           "year": "1925"
         }, 
         "text": {
-          "headline": "Website", 
+          "headline": "Website, no iFrame", 
           "text": "To embed a website, just copy the URL."
-        },
+        }
      },
+     {
+        "media": {
+          "url": "<blockquote>This is a block quote.</blockquote>", 
+          "caption": "That is a block quote.", 
+          "credit": "Galactic"
+        }, 
+        "start_date": {
+          "year": "1926"
+        }, 
+        "text": {
+          "headline": "Blockquote", 
+          "text": "To display a block quote, input text in HTML blockquote tags."
+        }
+     }
 
     ]
 }
