@@ -146,9 +146,4 @@ $blueline(document).ready(function() {
     return params;
   }
 
-  var qs = getQueryParams(window.location.search);
-  if (qs.key) {
-    do_preview(qs.key);
-  }
-
 });
