@@ -90,10 +90,10 @@ footer {
         display: inline;
     }
     .corner.banner {
-        transform: rotate(45deg);
+        transform: rotate(-45deg);
         width: 300px;
         position: absolute;
-        right: -71px;
+        left: -71px;
         top: 16px;
         font-size: 85%;
         padding: 3px 0;
@@ -448,3 +448,62 @@ footer ul.logos li a.nsf{
   width: 131px;
 }
 
+@media (max-width: 767px) {
+    #overview {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+    #overview a { margin:0 10px; }
+    .hero-unit { font-size: 16px; }
+    h2.intro {
+        font-size: 35px;
+    }
+}
+
+@media (max-width: 600px) {
+    .corner.banner { left: -95px; top: 2px; }
+}
+
+@media (max-width: 500px) {
+    .banner { margin-top: 20px; }
+    .banner-content { display: block; }
+    .banner img {
+        margin: auto;
+        display: block;
+        width: 220px;
+    }
+    #overview .banner-content h4 { display: none; }
+    .corner.banner {
+        transform: rotate(0);
+        top: 0;
+        left: 0;
+        margin-top: 0;
+        width: 100%;
+        background: #f3f3f3;
+        border: 0;
+        padding-bottom: 0;
+    }
+    h2.intro {
+        font-size: 25px;
+        margin: 10px 0;
+    }
+    .logo-mark.xl { margin-top: 25px; }
+    #overview ul {
+        margin: 20px 0;
+    }
+    #changelog,
+    #intro-copy { margin-top: 0; padding-top: 0;}
+    p.lead {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 450px) {
+    #overview ul li {
+        display: block;
+        margin: 10px 0;
+    }
+    #overview ul li a {
+        padding: 10px 15%;
+    }
+}
