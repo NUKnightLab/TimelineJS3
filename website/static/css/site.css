@@ -465,6 +465,18 @@ footer ul.logos li a.nsf{
     h2.intro {
         font-size: 35px;
     }
+    footer { padding: 10px 30px; }
+    #knightlab-logo-column,
+    #knightlab-description {
+        width: 100%;
+        float: none;
+        text-align: center;
+    }
+    #knightlab-description {
+        border-left: 0;
+        text-align: left;
+    }
+    address { display: none; }
 }
 
 @media (max-width: 600px) {
