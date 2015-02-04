@@ -38,6 +38,68 @@ footer {
   #overview hgroup {
     text-align: center;
   }
+#intro-copy {
+    margin-top: 30px;
+}
+
+#changelog ul {
+    font-size: 85%;
+}
+
+/* Experimental CSS to get rid of if we don't like it */
+    #overview { margin-top: -45px; padding-bottom: 0;}
+    #overview ul { list-style: none; margin: 30px 0; }
+    #overview ul li {
+        display: inline;
+    }
+    #overview a {
+        color: #777;
+        background: #fefefe;
+        border: 1px solid #d0d0d0;
+        padding: 10px 20px;
+        margin: 0 16px;
+        border-radius: 3px;
+        font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    #overview a:hover {
+        text-decoration: none;
+        background-color: #0f9bd1;
+        color: #fff;
+        border-color: #777;
+    }
+    h2.intro { margin-bottom: 10px; }
+    #overview h4 {
+        font-size: 14px;
+        font-weight: normal;
+        font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #777;
+        margin: 0 0 30px;
+        display: inline;
+    }
+    .banner {
+        /*background: #ccc;*/
+        background: #fff;
+        border-top: solid 1px #aaa;
+        padding: 10px 0;
+        margin: 30px 0 0 0;
+    }
+    .banner img {
+        margin-left: 20px;
+    }
+    .banner-content {
+        display: inline;
+    }
+    .corner.banner {
+        transform: rotate(-45deg);
+        width: 300px;
+        position: absolute;
+        left: -71px;
+        top: 16px;
+        font-size: 85%;
+        padding: 3px 0;
+        border-bottom: solid 1px #aaa;
+    }
+
 
 /* Timeline */
 #demo {
@@ -167,6 +229,7 @@ h2.intro {
     padding: 20px 0;
 }
 .note {
+    margin-top: 40px;
     background: #eee;
     border: 1px solid #ccc;
     padding: 10px 20px;
@@ -179,9 +242,10 @@ h2.intro {
 }
 
 p.caption {
-    font-family: sans-serif;
-    font-size: 13px;
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;    font-size: 13px;
     float: right;
+    color: #777;
+    margin: 5px 10px 20px;
 }
 
 #preview-inputs input,
@@ -388,3 +452,62 @@ footer ul.logos li a.nsf{
   width: 131px;
 }
 
+@media (max-width: 767px) {
+    #overview {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+    #overview a { margin:0 10px; }
+    .hero-unit { font-size: 16px; }
+    h2.intro {
+        font-size: 35px;
+    }
+}
+
+@media (max-width: 600px) {
+    .corner.banner { left: -95px; top: 2px; }
+}
+
+@media (max-width: 500px) {
+    .banner { margin-top: 20px; }
+    .banner-content { display: block; }
+    .banner img {
+        margin: auto;
+        display: block;
+        width: 220px;
+    }
+    #overview .banner-content h4 { display: none; }
+    .corner.banner {
+        transform: rotate(0);
+        top: 0;
+        left: 0;
+        margin-top: 0;
+        width: 100%;
+        background: #f3f3f3;
+        border: 0;
+        padding-bottom: 0;
+    }
+    h2.intro {
+        font-size: 25px;
+        margin: 10px 0;
+    }
+    .logo-mark.xl { margin-top: 25px; }
+    #overview ul {
+        margin: 20px 0;
+    }
+    #changelog,
+    #intro-copy { margin-top: 0; padding-top: 0;}
+    p.lead {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 450px) {
+    #overview ul li {
+        display: block;
+        margin: 10px 0;
+    }
+    #overview ul li a {
+        padding: 10px 15%;
+    }
+}
