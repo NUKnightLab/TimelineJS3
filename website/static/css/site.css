@@ -65,6 +65,7 @@ footer {
         margin: 0 16px;
         border-radius: 3px;
         font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        white-space: nowrap;
     }
     #overview a:hover {
         text-decoration: none;
@@ -486,6 +487,14 @@ footer ul.logos li a.nsf{
 
 @media (max-width: 600px) {
     .corner.banner { left: -95px; top: 2px; }
+    #overview ul li {
+        display: block;
+        margin: 10px 0;
+    }
+    #overview ul li a {
+        padding: 10px 15%;
+    }
+
 }
 
 @media (max-width: 500px) {
@@ -523,11 +532,4 @@ footer ul.logos li a.nsf{
 }
 
 @media (max-width: 450px) {
-    #overview ul li {
-        display: block;
-        margin: 10px 0;
-    }
-    #overview ul li a {
-        padding: 10px 15%;
-    }
 }
