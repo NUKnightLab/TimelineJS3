@@ -22,8 +22,14 @@ VCO.Media.Twitter = VCO.Media.extend({
 		// Get Media ID
 		if (this.data.url.match("status\/")) {
 			this.media_id = this.data.url.split("status\/")[1];
+			if (this.data.url.match("\">"+"/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/")){
+				this.media_id = this.media_id.split("\">"+"/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/")[0];
+			}
 		} else if (url.match("statuses\/")) {
 			this.media_id = this.data.url.split("statuses\/")[1];
+			if (this.data.url.match("\">"+"/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/")){
+				this.media_id = this.media_id.split("\">"+"/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/")[0];
+			}
 		} else {
 			this.media_id = "";
 		}

@@ -320,7 +320,7 @@
      },
      {
         "media": {
-          "url": "<iframe width='200' height='25' src='https://embed.spotify.com/follow/1/?uri=spotify%3Aartist%3A2iE18Oxc8YSumAU232n4rW&amp;size=basic&amp;theme=dark' scrolling='no' frameborder='0' style='border:none; overflow:hidden;' allowtransparency='true'></iframe>", 
+          "url": "https://play.spotify.com/artist/2iE18Oxc8YSumAU232n4rW",
           "caption": "Jackson 5", 
           "credit": "Jackson 5"
         }, 
