@@ -320,6 +320,7 @@ footer a:visited {
   color: #666;
   text-decoration: underline;
   border: none;
+  display: inline;
 }
 #knightlab-logo-column {
   width: 25%;
@@ -404,9 +405,29 @@ footer ul.logos li{
   display: block;
   float: right;
 }
+footer .contact,
+footer .copyright {
+    clear: both;
+    color: #a8a4a3;
+    font-size: 12px;
+    padding-bottom: 20px;
+    padding-top: 70px;
+    text-align: center;
+}
+footer .contact a {
+    color: #a8a4a3;
+    text-decoration: none;
+}
+
+footer address,
 footer address span.address,
 footer address span.tel {
     padding-left: 0;
+    display: inline;
+    width: auto;
+    float: none;
+    font-size: 12px;
+    color: #a8a4a3;
 }
 footer ul.logos li:hover{
   opacity: .85;
