@@ -12,9 +12,8 @@ $blueline(document).ready(function() {
   $(".navbar .nav a, [data-scroll='true']").click(function (e) {
     var $target = $(this)
       , href = $target.attr("href")
-      , hash = href.substring(href.lastIndexOf('/') + 1)
+      , hash = href.substring(href.lastIndexOf('#'))
       , $destination = $(hash);
-
     navSmartScroll($destination);
 
     return false;

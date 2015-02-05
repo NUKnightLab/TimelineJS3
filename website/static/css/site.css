@@ -67,7 +67,9 @@ footer {
         font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
         white-space: nowrap;
     }
-    #overview a:hover {
+    #overview a:hover,
+    #overview a:focus,
+    #overview a:active{
         text-decoration: none;
         background-color: #0f9bd1;
         color: #fff;
