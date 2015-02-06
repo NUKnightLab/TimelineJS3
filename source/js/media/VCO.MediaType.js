@@ -44,8 +44,14 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"twitter",
 				name: 		"Twitter", 
-				match_str: 	"^(https?:)?\/*(www.)?twitter\.com|<blockquote class='twitter-tweet' lang='[a-z][a-z]'><p>(.*?)<a href='http\:\/*t.co\/(.*?)'>http\:\/*t.co\/(.*?)<\/a>(.*?)<\/p>&mdash;(.*?)<a href='https:\/\/twitter.com\/(.*?)>(.*?)<\/a><\/blockquote><script async src='\/\/platform.twitter.com\/widgets.js' charset='utf-8'><\/script>",
+				match_str: 	"^(https?:)?\/*(www.)?twitter\.com",
 				cls: 		VCO.Media.Twitter
+			},
+			{
+				type: 		"twitterembed",
+				name: 		"TwitterEmbed", 
+				match_str: 	"<blockquote class='twitter-tweet' lang='[a-z][a-z]'><p>(.*?)<a href='http\:\/*t.co\/(.*?)'>http\:\/*t.co\/(.*?)<\/a>(.*?)<\/p>&mdash;(.*?)<a href='https:\/\/twitter.com\/(.*?)>(.*?)<\/a><\/blockquote><script async src='\/\/platform.twitter.com\/widgets.js' charset='utf-8'><\/script>",
+				cls: 		VCO.Media.TwitterEmbed
 			},
 			{
 				type: 		"googlemaps",
