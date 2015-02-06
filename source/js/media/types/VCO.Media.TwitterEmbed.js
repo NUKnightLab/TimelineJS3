@@ -2,7 +2,7 @@
 	Produces Twitter Display
 ================================================== */
 
-VCO.Media.Twitter = VCO.Media.extend({
+VCO.Media.TwitterEmbed = VCO.Media.extend({
 	
 	includes: [VCO.Events],
 	
