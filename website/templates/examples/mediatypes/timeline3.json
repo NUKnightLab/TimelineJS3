@@ -194,7 +194,7 @@
      },
      {
         "media": {
-          "url": "<iframe src='http://instagram.com/lukerague/'></iframe", 
+          "url": "http://instagram.com/lukerague/", 
           "caption": "Luke Rague's Instagram Account", 
           "credit": "Instagram/Luke Rague"
         }, 
@@ -292,7 +292,7 @@
      },
      {
         "media": {
-          "url": "https://docs.google.com/document/d/1RvKYxHuwweIP8zRrnjad-0exVoZOUsSVgDYPp0J1mzY/edit?usp=sharing", 
+          "url": "https://docs.google.com/document/d/1RvKYxHuwweIP8zRrnjad-0exVoZOUsSVgDYPp0J1mzY/view", 
           "caption": "Quotes that Luke likes.", 
           "credit": "Luke Rague"
         }, 

@@ -19,10 +19,22 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe", this._el.content);
 		
 		// Get Media ID
-		this.media_id = this.data.url;
+		if (this.data.url.match("open\?id\=")) {
+			this.media_id = this.data.url.split("open\?id\=")[1];
+			if (this.data.url.match("\&authuser\=0")) {
+				this.media_id = this.media_id("\&authuser\=0")[0];
+			};
+		} else if (this.data.url.match("\/d\/")) {
+			this.media_id = this.data.url.split("\/d\/")[1];
+			if (this.data.url.match("[^\/]*\/")) {
+				this.media_id = this.media_id("[^\/]*\/")[0];
+			};
+		} else {
+			this.media_id = "";
+		}
 		
 		// API URL
-		api_url = this.media_id;
+		api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
 		
 		// API Call
 		if (this.media_id.match(/docs.google.com/i)) {

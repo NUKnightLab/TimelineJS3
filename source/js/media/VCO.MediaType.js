@@ -44,7 +44,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"twitter",
 				name: 		"Twitter", 
-				match_str: 	"^(https?:)?\/*(www.)?twitter\.com",
+				match_str: 	"^(https?:)?\/*(www.)?twitter\.com|<blockquote class='twitter-tweet' lang='[a-z][a-z]'><p>(.*?)<a href='http\:\/*t.co\/(.*?)'>http\:\/*t.co\/(.*?)<\/a>(.*?)<\/p>&mdash;(.*?)<a href='https:\/\/twitter.com\/(.*?)>(.*?)<\/a><\/blockquote><script async src='\/\/platform.twitter.com\/widgets.js' charset='utf-8'><\/script>",
 				cls: 		VCO.Media.Twitter
 			},
 			{
@@ -74,7 +74,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"profile",
 				name: 		"Profile", 
-				match_str: 	/((instagr.am|instagram.com)(\/profiles\/|[-a-zA-Z0-9@:%_\+.~#?&\//=] +instagramprofile))|[-a-zA-Z0-9@:%_\+.~#?&//=]+\?profile/,
+				match_str: 	/((instagr.am|instagram.com)(\/profiles\/|[-a-zA-Z0-9@:%_\+.~#?&\//=] +instagramprofile))    |    [-a-zA-Z0-9@:%_\+.~#?&//=]+\?profile/,
 				cls: 		VCO.Media.Profile
 			},
 			{
@@ -92,13 +92,13 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googledocs",
 				name: 		"Google Doc",
-				match_str: 	/\b.(doc|docx|xls|xlsx|ppt|pptx|pdf|pages|ai|psd|tiff|dxf|svg|eps|ps|ttf|xps|zip|tif)\b/,
+				match_str: 	"^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
 				cls: 		VCO.Media.GoogleDoc
 			},
 			{
 				type: 		"wikipedia",
 				name: 		"Wikipedia",
-				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org",
+				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
 				cls: 		VCO.Media.Wikipedia
 			},
 			{
@@ -132,8 +132,8 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Website
 			},
 			{
-				type: 		"image",
-				name: 		"Image",
+				type: 		"imageblank",
+				name: 		"Imageblank",
 				match_str: 	"",
 				cls: 		VCO.Media.Image
 			}
