@@ -1,4 +1,4 @@
-/*	VCO.Media.Twitter
+/*	VCO.Media.TwitterEmbed
 	Produces Twitter Display
 ================================================== */
 
@@ -28,13 +28,12 @@ VCO.Media.TwitterEmbed = VCO.Media.extend({
 			this.media_id = "";
 		}
 
-		if (this.media_id.match(/\'>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/)){
-			this.media_id = this.media_id.split(/\'>(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/)[0];
+		if (this.media_id.match(/\"">(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/)){
+			this.media_id = this.media_id.split(/\"">(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/)[0];
 		}
 		
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
-		console.log(api_url);
 		
 		// API Call
 		VCO.ajax({

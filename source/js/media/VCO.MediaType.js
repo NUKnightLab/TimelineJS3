@@ -50,7 +50,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"twitterembed",
 				name: 		"TwitterEmbed", 
-				match_str: 	"<blockquote class='twitter-tweet' lang='[a-z][a-z]'><p>(.*?)<a href='http\:\/*t.co\/(.*?)'>http\:\/*t.co\/(.*?)<\/a>(.*?)<\/p>&mdash;(.*?)<a href='https:\/\/twitter.com\/(.*?)>(.*?)<\/a><\/blockquote><script async src='\/\/platform.twitter.com\/widgets.js' charset='utf-8'><\/script>",
+				match_str: 	"<blockquote class=\"twitter-tweet\"",
 				cls: 		VCO.Media.TwitterEmbed
 			},
 			{
@@ -68,19 +68,19 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"flickr",
 				name: 		"Flickr", 
-				match_str: 	"^(https?:)?\/*flickr.com/photos",
+				match_str: 	"^(https?:)?\/*(www.)?flickr.com\/photos",
 				cls: 		VCO.Media.Flickr
 			},
 			{
 				type: 		"instagram",
 				name: 		"Instagram", 
-				match_str: 	/(instagr.am|instagram.com)\/p\//,
+				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
 				cls: 		VCO.Media.Instagram
 			},
 			{
 				type: 		"profile",
 				name: 		"Profile", 
-				match_str: 	/((instagr.am|instagram.com)(\/profiles\/|[-a-zA-Z0-9@:%_\+.~#?&\//=] +instagramprofile))    |    [-a-zA-Z0-9@:%_\+.~#?&//=]+\?profile/,
+				match_str: 	/^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
 				cls: 		VCO.Media.Profile
 			},
 			{

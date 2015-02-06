@@ -30,7 +30,6 @@ VCO.Media.Twitter = VCO.Media.extend({
 		
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
-		console.log(api_url);
 		
 		// API Call
 		VCO.ajax({

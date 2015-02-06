@@ -96,20 +96,6 @@
      },
      {
         "media": {
-          "url": "<blockquote class='twitter-tweet' lang='en'><p>An annotated image of where the Metro-North train crashed last night. <a href='http://t.co/hHkaQYYs3B'>http://t.co/hHkaQYYs3B</a> <a href='http://t.co/fdvHbZSPmh'>pic.twitter.com/fdvHbZSPmh</a></p>&mdash; NYT Graphics (@nytgraphics) <a href='https://twitter.com/nytgraphics/status/563048860147535872'>February 4, 2015</a></blockquote><script async src='//platform.twitter.com/widgets.js' charset='utf-8'></script>", 
-          "caption": "New York Times Tweet", 
-          "credit": "New York Times"
-        }, 
-        "start_date": {
-          "year": "1906"
-        }, 
-        "text": {
-          "headline": "Twitter, Embedded", 
-          "text": "To embed a Tweet, copy the embed code provided by Twitter."
-        }
-     },
-     {
-        "media": {
           "url": "https://www.google.com/maps/@42.032147,-87.6689625,15z", 
           "caption": "Google Maps with coordinates", 
           "credit": "Google Maps"
