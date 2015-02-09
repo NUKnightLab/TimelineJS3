@@ -96,20 +96,6 @@
      },
      {
         "media": {
-          "url": "<blockquote class='twitter-tweet' lang='en'><p>An annotated image of where the Metro-North train crashed last night. <a href='http://t.co/hHkaQYYs3B'>http://t.co/hHkaQYYs3B</a> <a href='http://t.co/fdvHbZSPmh'>pic.twitter.com/fdvHbZSPmh</a></p>&mdash; NYT Graphics (@nytgraphics) <a href='https://twitter.com/nytgraphics/status/563048860147535872'>February 4, 2015</a></blockquote><script async src='//platform.twitter.com/widgets.js' charset='utf-8'></script>", 
-          "caption": "New York Times Tweet", 
-          "credit": "New York Times"
-        }, 
-        "start_date": {
-          "year": "1906"
-        }, 
-        "text": {
-          "headline": "Twitter, Embedded", 
-          "text": "To embed a Tweet, copy the embed code provided by Twitter."
-        }
-     },
-     {
-        "media": {
           "url": "https://www.google.com/maps/@42.032147,-87.6689625,15z", 
           "caption": "Google Maps with coordinates", 
           "credit": "Google Maps"
@@ -194,7 +180,7 @@
      },
      {
         "media": {
-          "url": "<iframe src='http://instagram.com/lukerague/'></iframe", 
+          "url": "http://instagram.com/lukerague/", 
           "caption": "Luke Rague's Instagram Account", 
           "credit": "Instagram/Luke Rague"
         }, 
@@ -292,7 +278,7 @@
      },
      {
         "media": {
-          "url": "https://docs.google.com/document/d/1RvKYxHuwweIP8zRrnjad-0exVoZOUsSVgDYPp0J1mzY/edit?usp=sharing", 
+          "url": "https://docs.google.com/document/d/1RvKYxHuwweIP8zRrnjad-0exVoZOUsSVgDYPp0J1mzY/view", 
           "caption": "Quotes that Luke likes.", 
           "credit": "Luke Rague"
         }, 
@@ -320,7 +306,7 @@
      },
      {
         "media": {
-          "url": "<iframe width='200' height='25' src='https://embed.spotify.com/follow/1/?uri=spotify%3Aartist%3A2iE18Oxc8YSumAU232n4rW&amp;size=basic&amp;theme=dark' scrolling='no' frameborder='0' style='border:none; overflow:hidden;' allowtransparency='true'></iframe>", 
+          "url": "https://play.spotify.com/artist/2iE18Oxc8YSumAU232n4rW",
           "caption": "Jackson 5", 
           "credit": "Jackson 5"
         }, 

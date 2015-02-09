@@ -48,6 +48,12 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Twitter
 			},
 			{
+				type: 		"twitterembed",
+				name: 		"TwitterEmbed", 
+				match_str: 	"<blockquote class=\"twitter-tweet\"",
+				cls: 		VCO.Media.TwitterEmbed
+			},
+			{
 				type: 		"googlemaps",
 				name: 		"Google Map", 
 				match_str: 	/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
@@ -62,19 +68,19 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"flickr",
 				name: 		"Flickr", 
-				match_str: 	"^(https?:)?\/*flickr.com/photos",
+				match_str: 	"^(https?:)?\/*(www.)?flickr.com\/photos",
 				cls: 		VCO.Media.Flickr
 			},
 			{
 				type: 		"instagram",
 				name: 		"Instagram", 
-				match_str: 	/(instagr.am|instagram.com)\/p\//,
+				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
 				cls: 		VCO.Media.Instagram
 			},
 			{
 				type: 		"profile",
 				name: 		"Profile", 
-				match_str: 	/((instagr.am|instagram.com)(\/profiles\/|[-a-zA-Z0-9@:%_\+.~#?&\//=] +instagramprofile))|[-a-zA-Z0-9@:%_\+.~#?&//=]+\?profile/,
+				match_str: 	/^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
 				cls: 		VCO.Media.Profile
 			},
 			{
@@ -92,13 +98,13 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googledocs",
 				name: 		"Google Doc",
-				match_str: 	/\b.(doc|docx|xls|xlsx|ppt|pptx|pdf|pages|ai|psd|tiff|dxf|svg|eps|ps|ttf|xps|zip|tif)\b/,
+				match_str: 	"^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
 				cls: 		VCO.Media.GoogleDoc
 			},
 			{
 				type: 		"wikipedia",
 				name: 		"Wikipedia",
-				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org",
+				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
 				cls: 		VCO.Media.Wikipedia
 			},
 			{
@@ -132,8 +138,8 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Website
 			},
 			{
-				type: 		"image",
-				name: 		"Image",
+				type: 		"imageblank",
+				name: 		"Imageblank",
 				match_str: 	"",
 				cls: 		VCO.Media.Image
 			}
