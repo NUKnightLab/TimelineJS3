@@ -103,9 +103,7 @@ VCO.SlideNav = VCO.Class.extend({
 		this._el.title.innerHTML = VCO.Util.unlinkify(this.data.title);
 		
 		// Date
-		if (this.data.date != "") {
-			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.date);
-		}
+		this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.date);
 	},
 	
 	_initLayout: function () {
