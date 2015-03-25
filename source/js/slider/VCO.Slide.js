@@ -302,6 +302,8 @@ VCO.Slide = VCO.Class.extend({
 				this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
 			} else if (!this.has.text && !this.has.headline) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
+			} else if (this.options.skinny_size) {
+				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
 				this._media.updateDisplay(content_width/2, this.options.height, layout);
 			}
