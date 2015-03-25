@@ -54,6 +54,7 @@ VCO.Media.Flickr = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d);
 		var best_size 	= this.sizes(this.options.height),
 			size 		= d.sizes.size[d.sizes.size.length - 2].source;
 			self = this;
@@ -69,6 +70,21 @@ VCO.Media.Flickr = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+	},
+	
+	_getMeta: function() {
+		var self = this,
+		api_url;
+		
+		// API URL
+		api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.data.credit_alternate = "<a href='" + self.data.url + "' target='_blank'>" + d.photo.owner.realname + "</a>";
+			self.data.caption_alternate = d.photo.title._content + " " + d.photo.description._content;
+			self.updateMeta();
+		});
 	},
 	
 	sizes: function(s) {

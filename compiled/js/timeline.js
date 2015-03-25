@@ -6258,6 +6258,10 @@ VCO.Media = VCO.Class.extend({
 				this._el.content_item.style.width = "auto";
 			}
 		},
+		
+		_getMeta: function() {
+			
+		},
 	
 	/*	Public
 	================================================== */
@@ -6324,29 +6328,44 @@ VCO.Media = VCO.Class.extend({
 	
 	showMeta: function(credit, caption) {
 		this._state.show_meta = true;
-		trace(this.data.caption_alternate);
-		trace(this.data.credit_alternate);
 		// Credit
 		if (this.data.credit && this.data.credit != "") {
 			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
 			this._el.credit.innerHTML		= this.data.credit;
 			this.options.credit_height 		= this._el.credit.offsetHeight;
-		} else if (this.data.credit_alternate) {
-			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
-			this._el.credit.innerHTML		= this.data.credit_alternate;
-			this.options.credit_height 		= this._el.credit.offsetHeight;
-		}
+		} 
 		
 		// Caption
 		if (this.data.caption && this.data.caption != "") {
 			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
 			this._el.caption.innerHTML		= this.data.caption;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
-		} else if (this.data.caption_alternate) {
+		} 
+		
+		if (!this.data.caption || !this.data.credit) {
+			this.getMeta();
+		}
+		
+	},
+	
+	getMeta: function() {
+		this._getMeta();
+	},
+	
+	updateMeta: function() {
+		if (!this.data.credit && this.data.credit_alternate) {
+			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
+			this._el.credit.innerHTML		= this.data.credit_alternate;
+			this.options.credit_height 		= this._el.credit.offsetHeight;
+		}
+		
+		if (!this.data.caption && this.data.caption_alternate) {
 			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
 			this._el.caption.innerHTML		= this.data.caption_alternate;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
 		}
+		
+		this.updateDisplay();
 	},
 	
 	onAdd: function() {
@@ -6626,6 +6645,7 @@ VCO.Media.Flickr = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d);
 		var best_size 	= this.sizes(this.options.height),
 			size 		= d.sizes.size[d.sizes.size.length - 2].source;
 			self = this;
@@ -6641,6 +6661,21 @@ VCO.Media.Flickr = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+	},
+	
+	_getMeta: function() {
+		var self = this,
+		api_url;
+		
+		// API URL
+		api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.data.credit_alternate = "<a href='" + self.data.url + "' target='_blank'>" + d.photo.owner.realname + "</a>";
+			self.data.caption_alternate = d.photo.title._content + " " + d.photo.description._content;
+			self.updateMeta();
+		});
 	},
 	
 	sizes: function(s) {
@@ -6893,31 +6928,34 @@ VCO.Media.Instagram = VCO.Media.extend({
 		// Photo
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
 		
-		// API URL
-		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
-		
-		// API Call
-		VCO.getJSON(api_url, function(d) {
-			self.createMedia(d);
-		});
-	},
-	
-	createMedia: function(d) {
-		var self = this;
-		
-		// Set source
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
-		
-		this.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
-		this.data.caption_alternate = d.title;
-		
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
 		
+		// Set source
+		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
+		
+		// API URL
+		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
+		
 		// After Loaded
 		this.onLoaded();
+	},
+	
+	_getMeta: function() {
+		var self = this,
+		api_url;
+		
+		// API URL
+		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
+			self.data.caption_alternate = d.title;
+			self.updateMeta();
+		});
 	},
 	
 	sizes: function(s) {

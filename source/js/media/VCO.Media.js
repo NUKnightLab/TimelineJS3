@@ -162,6 +162,10 @@ VCO.Media = VCO.Class.extend({
 				this._el.content_item.style.width = "auto";
 			}
 		},
+		
+		_getMeta: function() {
+			
+		},
 	
 	/*	Public
 	================================================== */
@@ -228,29 +232,44 @@ VCO.Media = VCO.Class.extend({
 	
 	showMeta: function(credit, caption) {
 		this._state.show_meta = true;
-		trace(this.data.caption_alternate);
-		trace(this.data.credit_alternate);
 		// Credit
 		if (this.data.credit && this.data.credit != "") {
 			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
 			this._el.credit.innerHTML		= this.data.credit;
 			this.options.credit_height 		= this._el.credit.offsetHeight;
-		} else if (this.data.credit_alternate) {
-			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
-			this._el.credit.innerHTML		= this.data.credit_alternate;
-			this.options.credit_height 		= this._el.credit.offsetHeight;
-		}
+		} 
 		
 		// Caption
 		if (this.data.caption && this.data.caption != "") {
 			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
 			this._el.caption.innerHTML		= this.data.caption;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
-		} else if (this.data.caption_alternate) {
+		} 
+		
+		if (!this.data.caption || !this.data.credit) {
+			this.getMeta();
+		}
+		
+	},
+	
+	getMeta: function() {
+		this._getMeta();
+	},
+	
+	updateMeta: function() {
+		if (!this.data.credit && this.data.credit_alternate) {
+			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
+			this._el.credit.innerHTML		= this.data.credit_alternate;
+			this.options.credit_height 		= this._el.credit.offsetHeight;
+		}
+		
+		if (!this.data.caption && this.data.caption_alternate) {
 			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
 			this._el.caption.innerHTML		= this.data.caption_alternate;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
 		}
+		
+		this.updateDisplay();
 	},
 	
 	onAdd: function() {
