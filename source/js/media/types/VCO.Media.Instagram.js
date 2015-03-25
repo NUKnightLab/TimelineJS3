@@ -26,16 +26,31 @@ VCO.Media.Instagram = VCO.Media.extend({
 		// Photo
 		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
 		
+		// API URL
+		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.createMedia(d);
+		});
+	},
+	
+	createMedia: function(d) {
+		var self = this;
+		trace(d);
+		// Set source
+		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
+		
+		this.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
+		this.data.caption_alternate = d.title;
+		
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
 		
-		// Set source
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
-		
+		// After Loaded
 		this.onLoaded();
-		
 	},
 	
 	sizes: function(s) {

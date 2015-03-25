@@ -70,8 +70,8 @@ VCO.Util = {
 	  return n == parseFloat(n)? !(n%2) : void 0;
 	},
 	
-	findArrayNumberByUniqueID: function(id, array, prop) {
-		var _n = 0;
+	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
+		var _n = defaultVal || 0;
 		
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].data[prop] == id) {
@@ -408,20 +408,114 @@ VCO.Util = {
 		len = len || 2;
 		while (val.length < len) val = "0" + val;
 		return val;
+	},
+
+	makeGoogleMapsEmbedURL: function(url,api_key) {
+    var Streetview = false;
+
+    function determineMapMode(url){
+          function parseDisplayMode(display_mode, param_string) {
+            // Set the zoom param
+            if (display_mode.slice(-1) == "z") {
+                param_string["zoom"] = display_mode;
+            // Set the maptype to something other than "roadmap"
+            } else if (display_mode.slice(-1) == "m") {
+                // TODO: make this somehow interpret the correct zoom level
+                // until then fake it by using Google's default zoom level
+                param_string["zoom"] = 14;
+                param_string["maptype"] = "satellite";
+            // Set all the fun streetview params
+            } else if (display_mode.slice(-1) == "t") {
+                Streetview = true;
+                // streetview uses "location" instead of "center"
+                // "place" mode doesn't have the center param, so we may need to grab that now
+                if (mapmode == "place") {
+                    var center = url.match(regexes["place"])[3] + "," + url.match(regexes["place"])[4];
+                } else {
+                    var center = param_string["center"];
+                    delete param_string["center"];
+                }
+                // Clear out all the other params -- this is so hacky
+                param_string = {};
+                param_string["location"] = center;
+                streetview_params = display_mode.split(",");
+                for (param in param_defs["streetview"]) {
+                    var i = parseInt(param) + 1;
+                    param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                }
+
+            }
+            return param_string;
+          }
+          function determineMapModeURL(mapmode, match) {
+            var param_string = {};
+            var url_root = match[1], display_mode = match[match.length - 1];
+            for (param in param_defs[mapmode]) {
+                // skip first 2 matches, because they reflect the URL and not params
+                var i = parseInt(param)+2;
+                if (param_defs[mapmode][param] == "center") {
+                  param_string[param_defs[mapmode][param]] = match[i] + "," + match[++i];
+                } else {
+                  param_string[param_defs[mapmode][param]] = match[i];
+                }
+            }
+
+            param_string = parseDisplayMode(display_mode, param_string);
+            param_string["key"] = api_key;
+            if (Streetview == true) {
+                mapmode = "streetview";
+            } else {
+            }
+            return (url_root + "/embed/v1/" + mapmode + VCO.Util.getParamString(param_string));
+        }
+
+
+        mapmode = "view";
+        if (url.match(regexes["place"])) {
+            mapmode = "place";
+        } else if (url.match(regexes["directions"])) {
+            mapmode = "directions";
+        } else if (url.match(regexes["search"])) {
+            mapmode = "search";
+        }
+        return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
+
+    }
+
+    // These must be in the order they appear in the original URL
+    // "key" param not included since it's not in the URL structure
+    // Streetview "location" param not included since it's captured as "center"
+    var param_defs = {
+        "view": ["center"],
+        "place": ["q"],
+        "directions": ["origin", "destination", "center"],
+        "search": ["q", "center"],
+        "streetview": ["fov", "heading", "pitch"]
+    };
+
+    // Set up regex parts to make updating these easier if Google changes them
+    var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
+    var coords_regex = /@([-\d.]+),([-\d.]+)/;
+    var addy_regex = /([\w\W]+)/;
+
+    // Data doesn't seem to get used for anything
+    var data_regex = /data=[\S]*/;
+
+    // Capture the parameters that determine what map tiles to use
+    // In roadmap view, mode URLs include zoom paramater (e.g. "14z")
+    // In satellite (or "earth") view, URLs include a distance parameter (e.g. "84511m")
+    // In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
+    var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
+
+		var regexes = {
+        view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source)
+    };
+    return determineMapMode(url);
 	}
-
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Expects VCO to be visible in scope
@@ -2666,7 +2760,7 @@ VCO.LoadIt = (function (doc) {
     to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['scale', 'slides'], // we'll only pull things in from this
+    VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
     initialize: function (data, callback) {
     // Initialize the data
@@ -2678,10 +2772,10 @@ VCO.TimelineConfig = VCO.Class.extend({
                 url: data,
                 dataType: 'json', //json data type
                 success: function(d){
-                    if (d && d.timeline) {
-                        self._importProperties(d.timeline);
+                    if (d && d.events) {
+                        self._importProperties(d);
                     } else {
-                        throw("data must have a timeline property")
+                        throw("data must have an events property")
                     }
                     self._cleanData();
                     if (callback) {
@@ -2695,11 +2789,11 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             });
         } else if (typeof data === 'object') {
-            if (data.timeline) {
-                this._importProperties(data.timeline);
+            if (data.events) {
+                this._importProperties(data);
                 this._cleanData();
             } else {
-                throw("data must have a timeline property")
+                throw("data must have a events property")
             }
             if (callback) {
                 callback(this);
@@ -2709,21 +2803,40 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     },
 
-    _cleanData: function() {
-        this._makeUniqueIdentifiers(this.slides); 
-        this._processDates(this.slides);          
-        VCO.DateUtil.sortByDate(this.slides);
+    /* Add an event and return the unique id 
+    */
+    addEvent: function(data) {
+        var _id = (this.title) ? this.title.uniqueid : '';
+        this.events.push(data);
+        this._makeUniqueIdentifiers(_id, this.events); 
+        this._processDates(this.events);    
+        
+        var uniqueid = this.events[this.events.length - 1].uniqueid;             
+        VCO.DateUtil.sortByDate(this.events);
+        return uniqueid;
     },
 
+    _cleanData: function() {
+        var _id = (this.title) ? this.title.uniqueid : '';
+        this._makeUniqueIdentifiers(_id, this.events); 
+        this._processDates(this.events);          
+        VCO.DateUtil.sortByDate(this.events);
+    },
+    
     _importProperties: function(d) {
         for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
             k = this.VALID_PROPERTIES[i];
             this[k] = d[k];
         }
+        
+        // Make sure title slide has unique id
+        if(this.title && !('uniqueid' in this.title)) {
+            this.title.uniqueid = '';
+        }
     },
 
-    _makeUniqueIdentifiers: function(array) {
-        var used = []
+    _makeUniqueIdentifiers: function(title_id, array) {
+        var used = [title_id];
         for (var i = 0; i < array.length; i++) {
             if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
                 array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
@@ -2734,7 +2847,7 @@ VCO.TimelineConfig = VCO.Class.extend({
                 }
             }
         };
-        if (used.length != array.length) {
+        if (used.length != (array.length + 1)) {
             for (var i = 0; i < array.length; i++) {
                 if (!array[i].uniqueid) {
                     var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
@@ -2750,7 +2863,7 @@ VCO.TimelineConfig = VCO.Class.extend({
             }
         }
     },
-    
+
     _processDates: function(array) {
         var dateCls = null;
         
@@ -2787,10 +2900,11 @@ VCO.TimelineConfig = VCO.Class.extend({
             if (typeof(array[i].start_date) == 'undefined') {
                 throw("item " + i + " is missing a start_date");
             }
-            
-            array[i].start_date = new dateCls(array[i].start_date);
-            if (typeof(array[i].end_date) != 'undefined') {
-                array[i].end_date = new dateCls(array[i].end_date);
+            if(!(array[i].start_date instanceof dateCls)) {
+                array[i].start_date = new dateCls(array[i].start_date);
+                if (typeof(array[i].end_date) != 'undefined') {
+                    array[i].end_date = new dateCls(array[i].end_date);
+                }
             }
         }
     }
@@ -2849,25 +2963,26 @@ VCO.TimelineConfig = VCO.Class.extend({
         fromGoogle: function(url) {
             var key = extractSpreadsheetKey(url);
             // TODO: maybe get specific worksheets?
-            var worksheet = 'od6';
+            var worksheet = '1';
             url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
-            var slides = [];
+            var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
             for (var i = 0; i < data.feed.entry.length; i++) {
-                slides.push(extractGoogleEntryData(data.feed.entry[i]));
+                events.push(extractGoogleEntryData(data.feed.entry[i]));
             };
-            return {scale: 'javascript', timeline: {slides: slides}}
+            return {scale: 'javascript', events: events}
         }   
     }
 })(VCO)
 
 
 VCO.Language = function(options) {
+	// borrowed from http://stackoverflow.com/a/14446414/102476
 	for (k in VCO.Language.languages.en) {
 		this[k] = VCO.Language.languages.en[k];
 	}
@@ -2879,7 +2994,7 @@ VCO.Language = function(options) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
-				var script_path = options.script_path || '';
+				var script_path = options.script_path || VCO.Timeline.source_path;
 				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;
 			}
@@ -4438,7 +4553,7 @@ VCO.Date = VCO.Class.extend({
             language = VCO.Language.fallback;
         }
 
-        format_key = format || this.data.format;
+        var format_key = format || this.data.format;
         return language.formatDate(this.data.date_obj, format_key);
 	},
 	
@@ -4501,7 +4616,7 @@ VCO.Date = VCO.Class.extend({
 		VCO.Util.mergeData(_date, this.data);
  
  		// Make strings into numbers
-		DATE_PARTS = VCO.Date.DATE_PARTS;
+		var DATE_PARTS = VCO.Date.DATE_PARTS;
  
  		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
@@ -4537,6 +4652,15 @@ VCO.Date = VCO.Class.extend({
 		}
     }
 });
+
+// offer something that can figure out the right date class to return
+VCO.Date.makeDate = function(data) {
+    var date = new VCO.Date(data);
+    if (!isNaN(date.getTime())) {
+        return date;
+    }
+    return new VCO.BigDate(data);
+}
 
 VCO.BigYear = VCO.Class.extend({
     initialize: function (year) {
@@ -4624,7 +4748,7 @@ VCO.BigYear = VCO.Class.extend({
             // parse short specifically to avoid timezone offset confusion
             // most browsers assume short is UTC, not local time.
             var parts = str.match(ISO8601_SHORT_PATTERN).slice(1);
-            d = { year: parts[0].replace('+','')} // year can be negative
+            var d = { year: parts[0].replace('+','')} // year can be negative
             if (parts[1]) { d['month'] = parts[1].replace('-',''); }
             if (parts[2]) { d['day'] = parts[2].replace('-',''); }
             return d;
@@ -5822,85 +5946,97 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"youtube",
 				name: 		"YouTube", 
-				match_str: 	"(www.)?youtube|youtu\.be",
+				match_str: 	"^(https?:)?\/*(www.)?youtube|youtu\.be",
 				cls: 		VCO.Media.YouTube
 			},
 			{
 				type: 		"vimeo",
 				name: 		"Vimeo", 
-				match_str: 	"(player.)?vimeo\.com",
+				match_str: 	"^(https?:)?\/*(player.)?vimeo\.com",
 				cls: 		VCO.Media.Vimeo
 			},
 			{
 				type: 		"dailymotion",
 				name: 		"DailyMotion", 
-				match_str: 	"(www.)?dailymotion\.com",
+				match_str: 	"^(https?:)?\/*(www.)?dailymotion\.com",
 				cls: 		VCO.Media.DailyMotion
 			},
 			{
 				type: 		"vine",
 				name: 		"Vine", 
-				match_str: 	"(www.)?vine\.co",
+				match_str: 	"^(https?:)?\/*(www.)?vine\.co",
 				cls: 		VCO.Media.Vine
 			},
 			{
 				type: 		"soundcloud",
 				name: 		"SoundCloud", 
-				match_str: 	"(player.)?soundcloud\.com",
+				match_str: 	"^(https?:)?\/*(player.)?soundcloud\.com",
 				cls: 		VCO.Media.SoundCloud
 			},
 			{
 				type: 		"twitter",
 				name: 		"Twitter", 
-				match_str: 	"(www.)?twitter\.com",
+				match_str: 	"^(https?:)?\/*(www.)?twitter\.com",
 				cls: 		VCO.Media.Twitter
+			},
+			{
+				type: 		"twitterembed",
+				name: 		"TwitterEmbed", 
+				match_str: 	"<blockquote class=\"twitter-tweet\"",
+				cls: 		VCO.Media.TwitterEmbed
 			},
 			{
 				type: 		"googlemaps",
 				name: 		"Google Map", 
-				match_str: 	"maps.google",
+				match_str: 	/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
 				cls: 		VCO.Media.Map
 			},
 			{
 				type: 		"googleplus",
 				name: 		"Google+", 
-				match_str: 	"plus.google",
+				match_str: 	"^(https?:)?\/*plus.google",
 				cls: 		VCO.Media.GooglePlus
 			},
 			{
 				type: 		"flickr",
 				name: 		"Flickr", 
-				match_str: 	"flickr.com/photos",
+				match_str: 	"^(https?:)?\/*(www.)?flickr.com\/photos",
 				cls: 		VCO.Media.Flickr
 			},
 			{
 				type: 		"instagram",
 				name: 		"Instagram", 
-				match_str: 	/(instagr.am|instagram.com)\/p\//,
+				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
 				cls: 		VCO.Media.Instagram
 			},
 			{
 				type: 		"profile",
 				name: 		"Profile", 
-				match_str: 	/((instagr.am|instagram.com)(\/profiles\/|[-a-zA-Z0-9@:%_\+.~#?&//=]+instagramprofile))|[-a-zA-Z0-9@:%_\+.~#?&//=]+\?profile/,
+				match_str: 	/^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
 				cls: 		VCO.Media.Profile
+			},
+			{
+			    type:       "documentcloud",
+			    name:       "Document Cloud",
+			    match_str:  /documentcloud.org\//,
+			    cls:        VCO.Media.DocumentCloud
 			},
 			{
 				type: 		"image",
 				name: 		"Image",
-				match_str: 	/jpg|jpeg|png|gif/i,
+				match_str: 	/(jpg|jpeg|png|gif)$/i,
 				cls: 		VCO.Media.Image
 			},
 			{
 				type: 		"googledocs",
 				name: 		"Google Doc",
-				match_str: 	/\b.(doc|docx|xls|xlsx|ppt|pptx|pdf|pages|ai|psd|tiff|dxf|svg|eps|ps|ttf|xps|zip|tif)\b/,
+				match_str: 	"^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
 				cls: 		VCO.Media.GoogleDoc
 			},
 			{
 				type: 		"wikipedia",
 				name: 		"Wikipedia",
-				match_str: 	"(www.)?wikipedia\.org",
+				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
 				cls: 		VCO.Media.Wikipedia
 			},
 			{
@@ -5934,8 +6070,8 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Website
 			},
 			{
-				type: 		"image",
-				name: 		"Image",
+				type: 		"imageblank",
+				name: 		"Imageblank",
 				match_str: 	"",
 				cls: 		VCO.Media.Image
 			}
@@ -5949,9 +6085,7 @@ VCO.MediaType = function(m) {
 			};
 		} else if (m.url.match(media_types[i].match_str)) {
 			media 		= media_types[i];
-			media.url 	= m.url;
 			return media;
-			break;
 		}
 	};
 	
@@ -6014,6 +6148,8 @@ VCO.Media = VCO.Class.extend({
 			url: 				null,
 			credit:				null,
 			caption:			null,
+			credit_alternate: 	null,
+			caption_alternate: 	null,
 			link: 				null,
 			link_target: 		null
 		};
@@ -6021,6 +6157,7 @@ VCO.Media = VCO.Class.extend({
 		//Options
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
+			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
 			credit_height: 			0,
 			caption_height: 		0
 		};
@@ -6187,10 +6324,16 @@ VCO.Media = VCO.Class.extend({
 	
 	showMeta: function(credit, caption) {
 		this._state.show_meta = true;
+		trace(this.data.caption_alternate);
+		trace(this.data.credit_alternate);
 		// Credit
 		if (this.data.credit && this.data.credit != "") {
 			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
 			this._el.credit.innerHTML		= this.data.credit;
+			this.options.credit_height 		= this._el.credit.offsetHeight;
+		} else if (this.data.credit_alternate) {
+			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
+			this._el.credit.innerHTML		= this.data.credit_alternate;
 			this.options.credit_height 		= this._el.credit.offsetHeight;
 		}
 		
@@ -6198,6 +6341,10 @@ VCO.Media = VCO.Class.extend({
 		if (this.data.caption && this.data.caption != "") {
 			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
 			this._el.caption.innerHTML		= this.data.caption;
+			this.options.caption_height 	= this._el.caption.offsetHeight;
+		} else if (this.data.caption_alternate) {
+			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
+			this._el.caption.innerHTML		= this.data.caption_alternate;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
 		}
 	},
@@ -6313,6 +6460,116 @@ VCO.Media.Blockquote = VCO.Media.extend({
 });
 
 
+/*	VCO.Media.DailyMotion
+================================================== */
+
+VCO.Media.DailyMotion = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-dailymotion", this._el.content);
+		
+		// Get Media ID
+		if (this.data.url.match("video")) {
+			this.media_id = this.data.url.split("video\/")[1].split(/[?&]/)[0];
+		} else {
+			this.media_id = this.data.url.split("embed\/")[1].split(/[?&]/)[0];
+		}
+		
+		// API URL
+		api_url = "http://www.dailymotion.com/embed/video/" + this.media_id;
+		
+		// API Call
+		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"		
+		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	// Update Media Display
+	_updateMediaDisplay: function() {
+		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+	}
+	
+});
+
+
+/*	VCO.Media.DocumentCloud
+================================================== */
+
+VCO.Media.DocumentCloud = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var self = this;
+		
+		// Loading Message 
+		this.loadingMessage();
+				
+		// Create Dom elements
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-documentcloud vco-media-shadow", this._el.content);
+		this._el.content_item.id = VCO.Util.unique_ID(7)
+		
+		// Check url
+		if(this.data.url.match(/\.html$/)) {
+		    this.data.url = this._transformURL(this.data.url);
+		} else if(!(this.data.url.match(/.(json|js)$/))) {
+		    trace("DOCUMENT CLOUD IN URL BUT INVALID SUFFIX");
+		}
+		
+		// Load viewer API
+        VCO.Load.js([
+                '//s3.documentcloud.org/viewer/loader.js', 
+                '//s3.amazonaws.com/s3.documentcloud.org/viewer/viewer.js'],
+            function() {	
+	            self.createMedia();
+			}
+		);	
+	},
+	
+	// Viewer API needs js, not html
+	_transformURL: function(url) {
+        return url.replace(/(.*)\.html$/, '$1.js')
+	},
+	
+	// Update Media Display
+	_updateMediaDisplay: function() {
+        this._el.content_item.style.height = this.options.height + "px";
+		//this._el.content_item.style.width = this.options.width + "px";
+	},
+		
+	createMedia: function() {		
+		// DocumentCloud API call	
+		DV.load(this.data.url, {
+		    container: '#'+this._el.content_item.id, 
+		    showSidebar: false
+		});
+		this.onLoaded();
+	},
+	
+
+	
+	/*	Events
+	================================================== */
+
+
+	
+});
+
+
 /*	VCO.Media.Flickr
 
 ================================================== */
@@ -6417,94 +6674,6 @@ VCO.Media.Flickr = VCO.Media.extend({
 });
 
 
-/*	VCO.Media.Instagram
-
-================================================== */
-
-VCO.Media.Instagram = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
-		// Get Media ID
-		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
-		
-		// Link
-		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
-		this._el.content_link.href 			= this.data.url;
-		this._el.content_link.target 		= "_blank";
-		
-		// Photo
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
-		
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-		
-		// Set source
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
-		
-		this.onLoaded();
-		
-	},
-	
-	sizes: function(s) {
-		var _size = "";
-		if (s <= 150) {
-			_size = "t";
-		} else if (s <= 306) {
-			_size = "m";
-		} else {
-			_size = "l";
-		}
-		
-		return _size;
-	}
-	
-	
-	
-});
-
-
-/*	VCO.Media.Profile
-
-================================================== */
-
-VCO.Media.Profile = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-profile vco-media-shadow", this._el.content);
-		this._el.content_item.src			= this.data.url;
-		
-		this.onLoaded();
-	},
-	
-	_updateMediaDisplay: function(layout) {
-		
-		
-		if(VCO.Browser.firefox) {
-			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
-		}
-	}
-	
-});
-
 /*	VCO.Media.GoogleDoc
 
 ================================================== */
@@ -6526,10 +6695,22 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe", this._el.content);
 		
 		// Get Media ID
-		this.media_id = this.data.url;
+		if (this.data.url.match("open\?id\=")) {
+			this.media_id = this.data.url.split("open\?id\=")[1];
+			if (this.data.url.match("\&authuser\=0")) {
+				this.media_id = this.media_id("\&authuser\=0")[0];
+			};
+		} else if (this.data.url.match("\/d\/")) {
+			this.media_id = this.data.url.split("\/d\/")[1];
+			if (this.data.url.match("[^\/]*\/")) {
+				this.media_id = this.media_id("[^\/]*\/")[0];
+			};
+		} else {
+			this.media_id = "";
+		}
 		
 		// API URL
-		api_url = this.media_id;
+		api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
 		
 		// API Call
 		if (this.media_id.match(/docs.google.com/i)) {
@@ -6663,9 +6844,13 @@ VCO.Media.Image = VCO.Media.extend({
 			self.onMediaLoaded();
 		});
 		
-		this._el.content_item.src			= this.data.url;
+		this._el.content_item.src			= this._transformURL(this.data.url);
 		
 		this.onLoaded();
+	},
+	
+	_transformURL: function(url) {
+        return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
 	},
 	
 	_updateMediaDisplay: function(layout) {
@@ -6676,6 +6861,175 @@ VCO.Media.Image = VCO.Media.extend({
 			this._el.content_item.style.width = "auto";
 		}
 		
+	}
+	
+});
+
+/*	VCO.Media.Instagram
+
+================================================== */
+
+VCO.Media.Instagram = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Get Media ID
+		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
+		
+		// Link
+		this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
+		this._el.content_link.href 			= this.data.url;
+		this._el.content_link.target 		= "_blank";
+		
+		// Photo
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-instagram vco-media-shadow", this._el.content_link);
+		
+		// API URL
+		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.createMedia(d);
+		});
+	},
+	
+	createMedia: function(d) {
+		var self = this;
+		trace(d);
+		// Set source
+		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
+		
+		this.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
+		this.data.caption_alternate = d.title;
+		
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
+		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	sizes: function(s) {
+		var _size = "";
+		if (s <= 150) {
+			_size = "t";
+		} else if (s <= 306) {
+			_size = "m";
+		} else {
+			_size = "l";
+		}
+		
+		return _size;
+	}
+	
+	
+	
+});
+
+
+/*  VCO.Media.Blockquote
+================================================== */
+
+VCO.Media.Map = VCO.Media.extend({
+    includes: [VCO.Events],
+
+    _API_KEY: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
+    /*  Load the media
+    ================================================== */
+    _loadMedia: function() {
+
+        // Loading Message
+        this.loadingMessage();
+
+        // Create Dom element
+        this._el.content_item   = VCO.Dom.create("div", "vco-media-item vco-media-map", this._el.content);
+        this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
+
+        // Get Media ID (why?)
+        this.media_id = this.data.url;
+
+        // API Call
+
+        this.mapframe = VCO.Dom.create("iframe", "", this._el.content_item);
+        window.stash = this;
+        this.mapframe.width       = "100%";
+        this.mapframe.height      = "100%";
+        this.mapframe.frameBorder = "0";
+        this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
+        console.log(this.mapframe.src);
+        // After Loaded
+        this.onLoaded();
+    },
+
+    _updateMediaDisplay: function() {
+			if (this._state.loaded) {
+        var dimensions = VCO.Util.ratio.square({w:this._el.content_item.offsetWidth});
+        this._el.content_item.style.height = dimensions.h + "px";
+      }
+    }
+});
+
+
+/*	VCO.Media.Profile
+
+================================================== */
+
+VCO.Media.Profile = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		// Loading Message
+		this.loadingMessage();
+		
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-profile vco-media-shadow", this._el.content);
+		this._el.content_item.src			= this.data.url;
+		
+		this.onLoaded();
+	},
+	
+	_updateMediaDisplay: function(layout) {
+		
+		
+		if(VCO.Browser.firefox) {
+			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
+		}
+	}
+	
+});
+
+/*	VCO.Media.SLider
+	Produces a Slider
+	Takes a data object and populates a dom object
+	TODO
+	Placeholder
+================================================== */
+
+VCO.Media.Slider = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		
+		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image", this._el.content);
+		this._el.content_item.src			= this.data.url;
+		
+		this.onLoaded();
 	}
 	
 });
@@ -6717,6 +7071,98 @@ VCO.Media.SoundCloud = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+	}
+	
+});
+
+
+/*	VCO.Media.Spotify
+================================================== */
+
+VCO.Media.Spotify = VCO.Media.extend({
+	
+	includes: [VCO.Events],
+	
+	/*	Load the media
+	================================================== */
+	_loadMedia: function() {
+		var api_url,
+			self = this;
+		
+		// Loading Message
+		this.loadingMessage();
+		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-spotify", this._el.content);
+		
+		// Get Media ID
+		if (this.data.url.match("open.spotify.com/track/")) {
+			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
+		} else if (this.data.url.match("spotify:track:")) {
+			this.media_id = this.data.url;
+		} else if (this.data.url.match("/playlist/")) {
+			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
+			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
+		} else if (this.data.url.match(":playlist:")) {
+			this.media_id = this.data.url;
+		}
+		
+		// API URL
+		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+				
+		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
+		this.player.width 		= "100%";
+		this.player.height 		= "100%";
+		this.player.frameBorder = "0";
+		this.player.src 		= api_url;
+		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	// Update Media Display
+	
+	_updateMediaDisplay: function(l) {
+		var _height = this.options.height,
+			_player_height = 0,
+			_player_width = 0;
+			
+		if (VCO.Browser.mobile) {
+			_height = (this.options.height/2);
+		} else {
+			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
+		}
+		
+		this._el.content_item.style.maxHeight = "none";
+		trace(_height);
+		trace(this.options.width)
+		if (_height > this.options.width) {
+			trace("height is greater")
+			_player_height = this.options.width + 80 + "px";
+			_player_width = this.options.width + "px";
+		} else {
+			trace("width is greater")
+			trace(this.options.width)
+			_player_height = _height + "px";
+			_player_width = _height - 80 + "px";
+		}
+		
+
+		this.player.style.width = _player_width;
+		this.player.style.height = _player_height;
+		
+		if (this._el.credit) {
+			this._el.credit.style.width		= _player_width;
+		}
+		if (this._el.caption) {
+			this._el.caption.style.width		= _player_width;
+		}
+	},
+	
+	
+	_stopMedia: function() {
+		// Need spotify stop code
+		
 	}
 	
 });
@@ -6955,6 +7401,9 @@ VCO.Media.Twitter = VCO.Media.extend({
 		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
 		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
 		
+		// Open links in new window
+		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+
 		// 	TWEET CONTENT
 		tweet += tweet_text;
 		
@@ -6996,104 +7445,59 @@ VCO.Media.Twitter = VCO.Media.extend({
 ================================================== */
 
 VCO.Media.Vimeo = VCO.Media.extend({
-	
+
 	includes: [VCO.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-		
+
 		// Loading Message
 		this.loadingMessage();
-		
+
 		// Create Dom element
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-vimeo vco-media-shadow", this._el.content);
-		
+
 		// Get Media ID
 		this.media_id = this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];
-		
+
 		// API URL
 		api_url = "http://player.vimeo.com/video/" + this.media_id + "?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff";
-		
+
 		this.player = VCO.Dom.create("iframe", "", this._el.content_item);
-		
+
 		// Media Loaded Event
 		this.player.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
-		
+
 		this.player.width 		= "100%";
 		this.player.height 		= "100%";
 		this.player.frameBorder = "0";
 		this.player.src 		= api_url;
-		
+
 		// After Loaded
 		this.onLoaded();
 	},
-	
+
 	// Update Media Display
 	_updateMediaDisplay: function() {
 		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-		
+
 	},
-	
+
 	_stopMedia: function() {
-		
+
 		try {
 			this.player.contentWindow.postMessage(JSON.stringify({method: "pause"}), "http://player.vimeo.com");
 		}
 		catch(err) {
 			trace(err);
 		}
-		
+
 	}
-	
-});
-
-
-/*	VCO.Media.DailyMotion
-================================================== */
-
-VCO.Media.DailyMotion = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-dailymotion", this._el.content);
-		
-		// Get Media ID
-		if (this.data.url.match("video")) {
-			this.media_id = this.data.url.split("video\/")[1].split(/[?&]/)[0];
-		} else {
-			this.media_id = this.data.url.split("embed\/")[1].split(/[?&]/)[0];
-		}
-		
-		// API URL
-		api_url = "http://www.dailymotion.com/embed/video/" + this.media_id;
-		
-		// API Call
-		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"		
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = VCO.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-	}
-	
 });
 
 
@@ -7442,121 +7846,6 @@ VCO.Media.YouTube = VCO.Media.extend({
 });
 
 
-/*	VCO.Media.SLider
-	Produces a Slider
-	Takes a data object and populates a dom object
-	TODO
-	Placeholder
-================================================== */
-
-VCO.Media.Slider = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		
-		this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image", this._el.content);
-		this._el.content_item.src			= this.data.url;
-		
-		this.onLoaded();
-	}
-	
-});
-
-/*	VCO.Media.Spotify
-================================================== */
-
-VCO.Media.Spotify = VCO.Media.extend({
-	
-	includes: [VCO.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe vco-media-spotify", this._el.content);
-		
-		// Get Media ID
-		if (this.data.url.match("open.spotify.com/track/")) {
-			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
-		} else if (this.data.url.match("spotify:track:")) {
-			this.media_id = this.data.url;
-		} else if (this.data.url.match("/playlist/")) {
-			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
-			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
-		} else if (this.data.url.match(":playlist:")) {
-			this.media_id = this.data.url;
-		}
-		
-		// API URL
-		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
-				
-		this.player = VCO.Dom.create("iframe", "vco-media-shadow", this._el.content_item);
-		this.player.width 		= "100%";
-		this.player.height 		= "100%";
-		this.player.frameBorder = "0";
-		this.player.src 		= api_url;
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	
-	_updateMediaDisplay: function(l) {
-		var _height = this.options.height,
-			_player_height = 0,
-			_player_width = 0;
-			
-		if (VCO.Browser.mobile) {
-			_height = (this.options.height/2);
-		} else {
-			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
-		}
-		
-		this._el.content_item.style.maxHeight = "none";
-		trace(_height);
-		trace(this.options.width)
-		if (_height > this.options.width) {
-			trace("height is greater")
-			_player_height = this.options.width + 80 + "px";
-			_player_width = this.options.width + "px";
-		} else {
-			trace("width is greater")
-			trace(this.options.width)
-			_player_height = _height + "px";
-			_player_width = _height - 80 + "px";
-		}
-		
-
-		this.player.style.width = _player_width;
-		this.player.style.height = _player_height;
-		
-		if (this._el.credit) {
-			this._el.credit.style.width		= _player_width;
-		}
-		if (this._el.caption) {
-			this._el.caption.style.width		= _player_width;
-		}
-	},
-	
-	
-	_stopMedia: function() {
-		// Need spotify stop code
-		
-	}
-	
-});
-
-
 /*	VCO.Slide
 	Creates a slide. Takes a data object and
 	populates the slide with content.
@@ -7704,6 +7993,20 @@ VCO.Slide = VCO.Class.extend({
 	scrollToTop: function() {
 		this._el.container.scrollTop = 0;
 	},
+
+	getFormattedDate: function() {
+		var date_text = "";
+		
+		if(!this.has.title) {
+            if (this.data.end_date) {
+                date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
+            }
+            if (this.data.start_date) {
+                date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+            }
+        }
+		return date_text;
+	},
 	
 	/*	Events
 	================================================== */
@@ -7712,7 +8015,6 @@ VCO.Slide = VCO.Class.extend({
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
-		var date_text = "";
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
 		if (this.data.uniqueid) {
@@ -7775,14 +8077,7 @@ VCO.Slide = VCO.Class.extend({
 		// Create Text
 		if (this.has.text || this.has.headline) {
 			this._text = new VCO.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
-			// Add Date if available
-			if (this.data.end_date) {
-				date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
-			}
-			if (this.data.start_date) {
-				date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
-				this._text.addDateText(date_text);
-			}
+			this._text.addDateText(this.getFormattedDate());
 		}
 		
 		
@@ -7895,7 +8190,8 @@ VCO.SlideNav = VCO.Class.extend({
 		// Data
 		this.data = {
 			title: "Navigation",
-			description: "Description"
+			description: "Description",
+			date: "Date"
 		};
 	
 		//Options
@@ -7927,7 +8223,19 @@ VCO.SlideNav = VCO.Class.extend({
 	
 	/*	Update Content
 	================================================== */
-	update: function(d) {
+	update: function(slide) {
+		var d = {
+			title: "",
+			description: "",
+			date: slide.getFormattedDate()
+		};
+		
+		if (slide.data.text) {
+			if (slide.data.text.headline) {
+				d.title = slide.data.text.headline;
+			}
+		}
+
 		this._update(d);
 	},
 	
@@ -7954,14 +8262,10 @@ VCO.SlideNav = VCO.Class.extend({
 		this.data = VCO.Util.mergeData(this.data, d);
 		
 		// Title
-		if (this.data.title != "") {
-			this._el.title.innerHTML		= VCO.Util.unlinkify(this.data.title);
-		}
+		this._el.title.innerHTML = VCO.Util.unlinkify(this.data.title);
 		
 		// Date
-		if (this.data.date != "") {
-			this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.description);
-		}
+		this._el.description.innerHTML	= VCO.Util.unlinkify(this.data.date);
 	},
 	
 	_initLayout: function () {
@@ -8036,7 +8340,7 @@ VCO.StorySlider = VCO.Class.extend({
 		this._message;
 		
 		// Current Slide
-		this.current_slide = 0;
+		this.current_id = '';
 		
 		// Data Object
 		this.data = {};
@@ -8095,6 +8399,52 @@ VCO.StorySlider = VCO.Class.extend({
 		this._onLoaded();
 	},
 	
+	/* Slides
+	================================================== */	
+	_addSlide:function(slide) {
+		slide.addTo(this._el.slider_item_container);
+		slide.on('added', this._onSlideAdded, this);
+		slide.on('background_change', this._onBackgroundChange, this);
+	},
+
+	_createSlide: function(d, title_slide, n) {
+		var slide = new VCO.Slide(d, this.options, title_slide);
+		this._addSlide(slide);
+		if(n < 0) { 
+		    this._slides.push(slide);
+		} else {
+		    this._slides.splice(n, 0, slide);
+		}
+	},
+
+	_createSlides: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].uniqueid == "") {
+				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
+			}
+            this._createSlide(array[i], false, -1);
+		}
+	},
+		
+	_removeSlide: function(slide) {
+		slide.removeFrom(this._el.slider_item_container);
+		slide.off('added', this._onSlideRemoved, this);
+		slide.off('background_change', this._onBackgroundChange);
+	},
+
+	_destroySlide: function(n) {
+		this._removeSlide(this._slides[n]);
+		this._slides.splice(n, 1);
+	},
+		
+    _findSlideIndex: function(n) {
+        var _n = n;
+		if (typeof n == 'string' || n instanceof String) {
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._slides, "uniqueid");
+		}
+		return _n;
+    },
+
 	/*	Public
 	================================================== */
 	updateDisplay: function(w, h, a, l) {
@@ -8102,73 +8452,27 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	// Create a slide
-	createSlide: function(d) {
-		this._createSlide(d);
+	createSlide: function(d, n) {
+		this._createSlide(d, false, n);
 	},
 	
 	// Create Many Slides from an array
 	createSlides: function(array) {
 		this._createSlides(array);
 	},
-	
-	/*	Create Slides
-	================================================== */
-	_createSlides: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].uniqueid == "") {
-				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
-			}
-			if (i == 0) {
-				this._createSlide(array[i], true);
-			} else {
-				this._createSlide(array[i], false);
-			}
-			
-		};
+	    
+	// Destroy slide by index
+	destroySlide: function(n) {
+	    this._destroySlide(n);
 	},
 	
-	_createSlide: function(d, title_slide) {
-		var slide = new VCO.Slide(d, this.options, title_slide);
-		this._addSlide(slide);
-		this._slides.push(slide);
+	// Destroy slide by id
+	destroySlideId: function(id) {
+	    this.destroySlide(this._findSlideIndex(id));
 	},
-	
-	_destroySlide: function(slide) {
-		this._removeSlide(slide);
-		for (var i = 0; i < this._slides.length; i++) {
-			if (this._slides[i] == slide) {
-				this._slides.splice(i, 1);
-			}
-		}
-	},
-	
-	_addSlide:function(slide) {
-		slide.addTo(this._el.slider_item_container);
-		slide.on('added', this._onSlideAdded, this);
-		slide.on('background_change', this._onBackgroundChange, this);
-	},
-	
-	_removeSlide: function(slide) {
-		slide.removeFrom(this._el.slider_item_container);
-		slide.off('added', this._onSlideAdded, this);
-		slide.off('background_change', this._onBackgroundChange);
-	},
-	
-	/*	Message
-	================================================== */
-	
+		
 	/*	Navigation
 	================================================== */
-	goToId: function(n, fast, displayupdate) {
-		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._slides, "uniqueid");
-		} else {
-			_n = n;
-		}
-		this.goTo(_n, fast, displayupdate);
-		
-	},
-	
 	goTo: function(n, fast, displayupdate) {
 		var self = this;
 		
@@ -8184,11 +8488,9 @@ VCO.StorySlider = VCO.Class.extend({
 			this._slides[i].setActive(false);
 		}
 		
-		if (n < this._slides.length && n >= 0) {
-			
-			
-			this.current_slide = n;
-			
+		if (n < this._slides.length && n >= 0) {			
+			this.current_id = this._slides[n].data.uniqueid;
+
 			// Stop animation
 			if (this.animator) {
 				this.animator.stop();
@@ -8206,93 +8508,71 @@ VCO.StorySlider = VCO.Class.extend({
 					duration: 	this.options.duration,
 					easing: 	this.options.ease,
 					complete: 	this._onSlideChange(displayupdate)
-				});
-				
+				});				
 			}
 			
 			// Set Slide Active State
-			this._slides[this.current_slide].setActive(true);
+			this._slides[n].setActive(true);
 			
 			// Update Navigation and Info
-			if (this._slides[this.current_slide + 1]) {
+			if (this._slides[n + 1]) {
 				this.showNav(this._nav.next, true);
-				this._nav.next.update(this.getNavInfo(this._slides[this.current_slide + 1]));
+				this._nav.next.update(this._slides[n + 1]);
 			} else {
 				this.showNav(this._nav.next, false);
 			}
-			if (this._slides[this.current_slide - 1]) {
+			if (this._slides[n - 1]) {
 				this.showNav(this._nav.previous, true);
-				this._nav.previous.update(this.getNavInfo(this._slides[this.current_slide - 1]));
+				this._nav.previous.update(this._slides[n - 1]);
 			} else {
 				this.showNav(this._nav.previous, false);
 			}
-			
-			
+							
 			// Preload Slides
 			this.preloadTimer = setTimeout(function() {
-				self.preloadSlides();
-			}, this.options.duration);
-			
+				self.preloadSlides(n);
+			}, this.options.duration);			
 		}
 	},
-	
-	preloadSlides: function() {
-		if (this._slides[this.current_slide + 1]) {
-			this._slides[this.current_slide + 1].loadMedia();
-			this._slides[this.current_slide + 1].scrollToTop();
+
+	goToId: function(id, fast, displayupdate) {
+		this.goTo(this._findSlideIndex(id), fast, displayupdate);		
+	},
+		
+	preloadSlides: function(n) {
+		if (this._slides[n + 1]) {
+			this._slides[n + 1].loadMedia();
+			this._slides[n + 1].scrollToTop();
 		}
-		if (this._slides[this.current_slide + 2]) {
-			this._slides[this.current_slide + 2].loadMedia();
-			this._slides[this.current_slide + 2].scrollToTop();
+		if (this._slides[n + 2]) {
+			this._slides[n + 2].loadMedia();
+			this._slides[n + 2].scrollToTop();
 		}
-		if (this._slides[this.current_slide - 1]) {
-			this._slides[this.current_slide - 1].loadMedia();
-			this._slides[this.current_slide - 1].scrollToTop();
+		if (this._slides[n - 1]) {
+			this._slides[n - 1].loadMedia();
+			this._slides[n - 1].scrollToTop();
 		}
-		if (this._slides[this.current_slide - 2]) {
-			this._slides[this.current_slide - 2].loadMedia();
-			this._slides[this.current_slide - 2].scrollToTop();
+		if (this._slides[n - 2]) {
+			this._slides[n - 2].loadMedia();
+			this._slides[n - 2].scrollToTop();
 		}
 	},
-	
-	
-	getNavInfo: function(slide) {
-		var n = {
-			title: "",
-			description: ""
-		};
 		
-		if (slide.data.text) {
-			if (slide.data.text.headline) {
-				n.title = slide.data.text.headline;
-			}
-			/*
-			// Disabling location in description for now.
-			if (slide.data.location) {
-				if (slide.data.location.name) {
-					n.description = slide.data.location.name;
-				}
-			}
-			*/
-		}
-		
-		return n;
-		
-	},
-	
 	next: function() {
-		if ((this.current_slide +1) < (this._slides.length)) {
-			this.goTo(this.current_slide +1);
+	    var n = this._findSlideIndex(this.current_id);	    
+		if ((n + 1) < (this._slides.length)) {
+			this.goTo(n + 1);
 		} else {
-			this.goTo(this.current_slide);
+			this.goTo(n);
 		}
 	},
 	
 	previous: function() {
-		if (this.current_slide -1 >= 0) {
-			this.goTo(this.current_slide -1);
+	    var n = this._findSlideIndex(this.current_id);
+		if (n - 1 >= 0) {
+			this.goTo(n - 1);
 		} else {
-			this.goTo(this.current_slide);
+			this.goTo(n);
 		}
 	},
 	
@@ -8388,8 +8668,21 @@ VCO.StorySlider = VCO.Class.extend({
 		};
 		
 		// Go to the current slide
-		this.goTo(this.current_slide, true, true);
+		this.goToId(this.current_id, true, true);
 	},
+	
+	// Reposition and redraw slides
+    _updateDrawSlides: function() {
+	    var _layout = this.options.layout;
+   
+		for (var i = 0; i < this._slides.length; i++) {
+			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
+			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});			
+		};
+	
+		this.goToId(this.current_id, true, false);	
+	},
+	
 	
 	/*	Init
 	================================================== */
@@ -8457,14 +8750,17 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_initData: function() {
-		// Create Slides and then add them
-		this._createSlides(this.data.slides);
+	    if(this.data.title) {
+	        this._createSlide(this.data.title, true, -1);
+	    }
+        this._createSlides(this.data.events);
 	},
 	
 	/*	Events
 	================================================== */
 	_onBackgroundChange: function(e) {
-		var slide_background = this._slides[this.current_slide].getBackground();
+	    var n = this._findSlideIndex(this.current_id);
+		var slide_background = this._slides[n].getBackground();
 		this.changeBackground(e);
 		this.fire("colorchange", slide_background);
 	},
@@ -8474,7 +8770,7 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_onSwipeNoDirection: function(e) {
-		this.goTo(this.current_slide);
+		this.goToId(this.current_id);
 	},
 	
 	_onNavigation: function(e) {
@@ -8493,13 +8789,12 @@ VCO.StorySlider = VCO.Class.extend({
 	},
 	
 	_onSlideRemoved: function(e) {
-		this.fire("slideAdded", this.data);
+		this.fire("slideRemoved", this.data);
 	},
 	
-	_onSlideChange: function(displayupdate) {
-		
+	_onSlideChange: function(displayupdate) {		
 		if (!displayupdate) {
-			this.fire("change", {current_slide:this.current_slide, uniqueid:this._slides[this.current_slide].data.uniqueid});
+			this.fire("change", {uniqueid: this.current_id});
 		}
 	},
 	
@@ -8572,114 +8867,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		// Data Object
-		this.data = {
-			uniqueid: 				"",
-			slides: 				[
-				{
-					uniqueid: 				"",
-					background: {			// OPTIONAL
-						url: 				null,
-						color: 				null,
-						opacity: 			50
-					},
-					date: 					null,
-					location: {
-						lat: 				-9.143962,
-						lon: 				38.731094,
-						zoom: 				13,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-					},
-					text: {
-						headline: 			"Slideshow Example",
-						text: 				"Example slideshow slide "
-					},
-					media: [
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						},
-						{
-							uniqueid: 				"",
-							text: {
-								headline: 			"Slideshow Example",
-								text: 				""
-							},
-							media: {
-								url: 				"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-								credit:				"",
-								caption:			"",
-								link: 				null,
-								link_target: 		null
-							}
-						}
-					]
-				},
-				{
-					uniqueid: 				"",
-					background: {			// OPTIONAL
-						url: 				null,
-						color: 				null,
-						opacity: 			50
-					},
-					date: 					null,
-					location: {
-						lat: 				-9.143962,
-						lon: 				38.731094,
-						zoom: 				13,
-						icon: 				"http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png"
-					},
-					text: {
-						headline: 			"YouTube",
-						text: 				"Just add a link to the video in the media field."
-					},
-					media: {
-						url: 				"http://www.youtube.com/watch?v=lIvftGgps24",
-						credit:				"",
-						caption:			"",
-						link: 				null,
-						link_target: 		null
-					}
-				}
-			]
-		};
+		this.data = {};
 		
 		//Options
 		this.options = {
@@ -8693,7 +8881,7 @@ VCO.TimeNav = VCO.Class.extend({
 			timenav_height_min: 	150, 			// Minimum timenav height
 			marker_height_min: 		30, 			// Minimum Marker Height
 			marker_width_min: 		100, 			// Minimum Marker Width
-			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+			zoom_sequence:          [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
 		};
 		
 		// Animation
@@ -8701,10 +8889,8 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Markers Array
 		this._markers = [];
-		this._marker_ticks = [];
 		
 		// Current Marker
-		this.current_marker = 0;
 		this.current_id = "";
 		
 		// TimeScale
@@ -8726,7 +8912,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
-		
+			   
 		if (init) {
 			this.init();
 		}
@@ -8737,10 +8923,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this._initEvents();
 		this._initData();
 		this._updateDisplay();
-		
-		// Go to initial slide
-		//this.goTo(this.options.start_at_slide);
-		
+				
 		this._onLoaded();
 	},
 	
@@ -8756,17 +8939,27 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDisplay(w, h, a, l);
 	},
 	
-
 	
 	/*	TimeScale
 	================================================== */
 	_getTimeScale: function() {
 		// Set Max Rows
-		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / this.options.marker_height_min);
+		var marker_height_min = 0;
+		try {
+			marker_height_min = parseInt(this.options.marker_height_min);
+		} catch(e) {
+			trace("Invalid value for marker_height_min option."); 
+			marker_height_min = 30;
+		}
+		if (marker_height_min == 0) {
+			trace("marker_height_min option must not be zero.")
+			marker_height_min = 30;
+		}
+		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / marker_height_min);
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -8789,7 +8982,7 @@ VCO.TimeNav = VCO.Class.extend({
 
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
-		this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
+		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
 	
 	zoomOut: function(n) {
@@ -8808,32 +9001,33 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			this.options.scale_factor = new_scale;
 			//this._updateDrawTimeline(true);
-			this.goTo(this.current_marker, !this._updateDrawTimeline(true), true);
+			this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 		}
 		
 	},
 	
 	/*	Markers
 	================================================== */
-	_createMarkers: function(array) { 
-		for (var i = 0; i < array.length; i++) {
-			array[i].marker_number = i;
-			this._createMarker(array[i]);
-		};
-		
-	},
-	
-	_createMarker: function(data) {
-		var marker = new VCO.TimeMarker(data, this.options);
-		this._addMarker(marker);
-		this._markers.push(marker);
-		this._marker_ticks.push(marker.getTime());
-	},
-	
 	_addMarker:function(marker) {
 		marker.addTo(this._el.marker_item_container);
 		marker.on('markerclick', this._onMarkerClick, this);
 		marker.on('added', this._onMarkerAdded, this);
+	},
+
+	_createMarker: function(data, n) {
+		var marker = new VCO.TimeMarker(data, this.options);
+		this._addMarker(marker);
+		if(n < 0) {
+		    this._markers.push(marker);
+		} else {
+		    this._markers.splice(n, 0, marker);
+		}
+	},
+
+	_createMarkers: function(array) { 
+		for (var i = 0; i < array.length; i++) {
+			this._createMarker(array[i], -1);
+		}		
 	},
 	
 	_removeMarker: function(marker) {
@@ -8841,6 +9035,11 @@ VCO.TimeNav = VCO.Class.extend({
 		//marker.off('added', this._onMarkerRemoved, this);
 	},
 	
+	_destroyMarker: function(n) {
+	    this._removeMarker(this._markers[n]);
+	    this._markers.splice(n, 1);
+	},
+		
 	_positionMarkers: function(fast) {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
@@ -8886,33 +9085,50 @@ VCO.TimeNav = VCO.Class.extend({
 		};
 	},
 	
-	/*	Navigation
-	================================================== */
-	goToId: function(n, fast, css_animation) {
+	_findMarkerIndex: function(n) {	
+	    var _n = -1;
 		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid");
-		} else {
-			_n = n;
-		}
-		
-		this.goTo(_n, fast, css_animation);
-		
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid", _n);
+		} 
+		return _n;
+	},
+
+	/*	Public
+	================================================== */
+	
+	// Create a marker
+	createMarker: function(d, n) {
+	    this._createMarker(d, n);
 	},
 	
-	goTo: function(n, fast, css_animation) {
-		
+	// Create many markers from an array
+	createMarkers: function(array) {
+	    this._createMarkers(array);
+	},
+	
+	// Destroy marker by index
+	destroyMarker: function(n) {
+	    this._destroyMarker(n);
+	},
+	
+	// Destroy marker by id
+	destroyMarkerId: function(id) {
+	    this.destroyMarker(this._findMarkerIndex(id));
+	},
+	
+	/*	Navigation
+	================================================== */	
+	goTo: function(n, fast, css_animation) {		
 		var self = 	this,
 			_ease = this.options.ease,
-			_duration = this.options.duration;
-		
-
+			_duration = this.options.duration,
+			_n = (n < 0) ? 0 : n; 
 		
 		// Set Marker active state
 		this._resetMarkersActive();
-		this._markers[n].setActive(true);
-		
-		
-		
+		if(n >= 0 && n < this._markers.length) {
+		    this._markers[n].setActive(true);
+		}
 		// Stop animation
 		if (this.animator) {
 			this.animator.stop();
@@ -8920,30 +9136,33 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		if (fast) {
 			this._el.slider.className = "vco-timenav-slider";
-			this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+			this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
 		} else {
 			if (css_animation) {
 				this._el.slider.className = "vco-timenav-slider vco-timenav-slider-animate";
 				this.animate_css = true;
-				this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width/2) + "px";
+				this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
 			} else {
 				this._el.slider.className = "vco-timenav-slider";
 				this.animator = VCO.Animate(this._el.slider, {
-					left: 		-this._markers[n].getLeft() + (this.options.width/2) + "px",
+					left: 		-this._markers[_n].getLeft() + (this.options.width/2) + "px",
 					duration: 	_duration,
 					easing: 	_ease
 				});
 			}
-			
-			
 		}
 		
-		this.current_marker = n;
-		this.current_id = this._markers[n].data.uniqueid;
+		if(n >= 0 && n < this._markers.length) {
+		    this.current_id = this._markers[n].data.uniqueid;
+		} else {
+		    this.current_id = '';
+		}
 	},
-	
-	
-	
+
+	goToId: function(id, fast, css_animation) {
+		this.goTo(this._findMarkerIndex(id), fast, css_animation);		
+	},
+		
 	/*	Events
 	================================================== */
 	_onLoaded: function() {
@@ -8951,7 +9170,6 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerAdded: function(e) {
-
 		this.fire("dateAdded", this.data);
 	},
 	
@@ -8960,8 +9178,8 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_onMarkerClick: function(e) {
-		// Go to the current marker
-		this.goTo(e.marker_number);
+		// Go to the clicked marker
+		this.goToId(e.uniqueid);
 		this.fire("change", {uniqueid: e.uniqueid});
 	},
 	
@@ -9048,12 +9266,12 @@ VCO.TimeNav = VCO.Class.extend({
 		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
 		
 		// Go to the current slide
-		this.goTo(this.current_marker, true);
+		this.goToId(this.current_id, true);
 	},
 	
 	_drawTimeline: function(fast) {
 		this.timescale = this._getTimeScale();
-		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width, this._marker_ticks);
+		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
 	},
@@ -9063,7 +9281,7 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.slides, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
+			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
 			
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
@@ -9122,13 +9340,11 @@ VCO.TimeNav = VCO.Class.extend({
 		// Scroll Events
 		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
 		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
-		
-		
 	},
 	
 	_initData: function() {
 		// Create Markers and then add them
-		this._createMarkers(this.data.slides);
+		this._createMarkers(this.data.events);
 		this._drawTimeline();
 	}
 	
@@ -9174,7 +9390,6 @@ VCO.TimeMarker = VCO.Class.extend({
 		// Data
 		this.data = {
 			uniqueid: 			"",
-			marker_number: 		0,
 			background: 		null,
 			date: {
 				year:			0,
@@ -9349,7 +9564,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
-		this.fire("markerclick", {marker_number: this.data.marker_number, uniqueid:this.data.uniqueid});
+		this.fire("markerclick", {uniqueid:this.data.uniqueid});
 	},
 	
 	/*	Private Methods
@@ -9446,6 +9661,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._screen_multiplier = screen_multiplier || 3;
         this._pixel_width = this._screen_multiplier * this._display_width;
 
+        this._group_labels = undefined;
         this._positions = [];
         this._pixels_per_milli = 0;
         
@@ -9461,6 +9677,10 @@ VCO.TimeScale = VCO.Class.extend({
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
         this._computePositionInfo(slides, max_rows);
+    },
+    
+    getGroupLabels: function() {
+        return this._group_labels;
     },
     
     getScale: function() {
@@ -9518,7 +9738,8 @@ VCO.TimeScale = VCO.Class.extend({
     _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
         default_marker_width = default_marker_width || 100;
         var lasts_in_rows = []; 
-
+        var groups = [];
+ 
         for (var i = 0; i < slides.length; i++) {
             var pos_info = { start: this.getPosition(slides[i].start_date.getTime()) }
             this._positions.push(pos_info);
@@ -9534,37 +9755,61 @@ VCO.TimeScale = VCO.Class.extend({
                 pos_info.width = default_marker_width;
                 pos_info.end = pos_info.start + default_marker_width;
             }
-        };
+            
+            if(slides[i].group) {
+                if(groups.indexOf(slides[i].group) < 0) {
+                    groups.push(slides[i].group);
+                }            
+            } 
+        }
 
-        for (var i = 0; i < this._positions.length; i++) {
-            var pos_info = this._positions[i];
-            var overlaps = []
-            for (var j = 0; j < lasts_in_rows.length; j++) {
-                overlaps.push(lasts_in_rows[j].end - pos_info.start);
-                if (overlaps[j] <= 0) {
-                    pos_info.row = j;
-                    lasts_in_rows[j] = pos_info;
-                    break;
-                }
-            };
-            if (typeof(pos_info.row) == 'undefined') {
-                if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
-                    pos_info.row = lasts_in_rows.length;
-                    lasts_in_rows.push(pos_info);
+        if(groups.length) {
+            var empty_group = false;
+            
+            for(var i = 0; i < this._positions.length; i++) {
+                var pos_info = this._positions[i];
+                if(slides[i].group) {
+                    pos_info.row = groups.indexOf(slides[i].group);
                 } else {
-                    var min_overlap = Math.min.apply(null,overlaps);
-                    var idx = overlaps.indexOf(min_overlap);
-                    pos_info.row = idx;
-                    if (pos_info.end > lasts_in_rows[idx].end) {
-                        lasts_in_rows[idx] = pos_info
-                    }
+                    empty_group = true;
+                    pos_info.row = groups.length;
                 }
             }
+            if(empty_group) {
+                groups.push("");
+            }
+            this._group_labels = groups;
+            this._number_of_rows = groups.length;
+        } else {
+            for (var i = 0; i < this._positions.length; i++) {
+                var pos_info = this._positions[i];
+                var overlaps = []
+                for (var j = 0; j < lasts_in_rows.length; j++) {
+                    overlaps.push(lasts_in_rows[j].end - pos_info.start);
+                    if (overlaps[j] <= 0) {
+                        pos_info.row = j;
+                        lasts_in_rows[j] = pos_info;
+                        break;
+                    }
+                }
+                if (typeof(pos_info.row) == 'undefined') {
+                    if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
+                        pos_info.row = lasts_in_rows.length;
+                        lasts_in_rows.push(pos_info);
+                    } else {
+                        var min_overlap = Math.min.apply(null,overlaps);
+                        var idx = overlaps.indexOf(min_overlap);
+                        pos_info.row = idx;
+                        if (pos_info.end > lasts_in_rows[idx].end) {
+                            lasts_in_rows[idx] = pos_info
+                        }
+                    }
+                }
 
-        };
+            }
 
-        this._number_of_rows = lasts_in_rows.length;
-        
+            this._number_of_rows = lasts_in_rows.length;      
+        }  
     },
 
 });
@@ -9686,7 +9931,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		return this._el.container.style.left.slice(0, -2);
 	},
 	
-	drawTicks: function(timescale, optimal_tick_width, marker_ticks) {
+	drawTicks: function(timescale, optimal_tick_width) {
 
 		var ticks = timescale.getTicks();
 
@@ -10018,25 +10263,27 @@ VCO.AxisHelper = VCO.Class.extend({
 
 // MEDIA TYPES
 	// @codekit-prepend "media/types/VCO.Media.Blockquote.js";
+	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
+	// @codekit-prepend "media/types/VCO.Media.DocumentCloud.js";
 	// @codekit-prepend "media/types/VCO.Media.Flickr.js";
-	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
-	// @codekit-prepend "media/types/VCO.Media.Profile.js";
 	// @codekit-prepend "media/types/VCO.Media.GoogleDoc.js";
 	// @codekit-prepend "media/types/VCO.Media.GooglePlus.js";
 	// @codekit-prepend "media/types/VCO.Media.IFrame.js";
 	// @codekit-prepend "media/types/VCO.Media.Image.js";
+	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
+	// @codekit-prepend "media/types/VCO.Media.Map.js";
+	// @codekit-prepend "media/types/VCO.Media.Profile.js";
+	// @codekit-prepend "media/types/VCO.Media.Slider.js";
 	// @codekit-prepend "media/types/VCO.Media.SoundCloud.js";
+	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 	// @codekit-prepend "media/types/VCO.Media.Storify.js";
 	// @codekit-prepend "media/types/VCO.Media.Text.js";
 	// @codekit-prepend "media/types/VCO.Media.Twitter.js";
 	// @codekit-prepend "media/types/VCO.Media.Vimeo.js";
-	// @codekit-prepend "media/types/VCO.Media.DailyMotion.js";
 	// @codekit-prepend "media/types/VCO.Media.Vine.js";
 	// @codekit-prepend "media/types/VCO.Media.Website.js";
 	// @codekit-prepend "media/types/VCO.Media.Wikipedia.js";
 	// @codekit-prepend "media/types/VCO.Media.YouTube.js";
-	// @codekit-prepend "media/types/VCO.Media.Slider.js";
-	// @codekit-prepend "media/types/VCO.Media.Spotify.js";
 
 // STORYSLIDER
 	// @codekit-prepend "slider/VCO.Slide.js";
@@ -10052,7 +10299,6 @@ VCO.AxisHelper = VCO.Class.extend({
 
 
 VCO.Timeline = VCO.Class.extend({
-	
 	includes: VCO.Events,
 	
 	/*	Private Methods
@@ -10133,12 +10379,12 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			api_key_flickr: 			"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			language:               	"en"		
 		};
 		
 		// Current Slide
-		this.current_slide = this.options.start_at_slide;
+		// this.current_slide = this.options.start_at_slide;
+		// no longer using this, track current slide by id only
 		
 		// Animation Objects
 		this.animator_timenav = null;
@@ -10180,22 +10426,132 @@ VCO.Timeline = VCO.Class.extend({
 	
 	/*	Navigation
 	================================================== */
-	goToId: function(n) {
-		if (this.current_id != n) {
-			this.current_id = n;
+	
+	// Goto slide with id
+	goToId: function(id) {
+		if (this.current_id != id) {
+			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
-			this.fire("change", {uniqueid:this.current_id}, this);
+			this.fire("change", {uniqueid: this.current_id}, this);
 		}
 	},
 	
+	// Goto slide n
 	goTo: function(n) {
-		if (n != this.current_slide) {
-			this.current_slide = n;
-			this._timenav.goTo(this.current_slide);
-			this._storyslider.goTo(this.current_slide);
-		}
+	    if(this.config.title) {
+	        if(n == 0) {
+	            this.goToId(this.config.title.uniqueid);
+	        } else {
+	            this.goToId(this.config.events[n - 1].uniqueid);
+	        }
+	    } else {
+	        this.goToId(this.config.events[n].uniqueid);	    
+	    }
 	},
+	
+	// Goto first slide
+	goToStart: function() {
+	    this.goTo(0);
+	},
+	
+	// Goto last slide
+	goToEnd: function() {
+	    var _n = this.config.events.length - 1;
+        this.goTo(this.config.title ? _n + 1 : _n);
+	},
+	
+	// Goto previous slide
+	goToPrev: function() {
+	    this.goTo(this._getSlideIndex(this.current_id) - 1);
+	},
+	
+	// Goto next slide
+	goToNext: function() {
+	    this.goTo(this._getSlideIndex(this.current_id) + 1);
+	},
+	
+    /* Event maniupluation
+	================================================== */
+	
+	// Add an event
+	add: function(data) {
+	    var uniqueid = this.config.addEvent(data);
+	    
+        var n = this._getEventIndex(uniqueid);
+        var d = this.config.events[n];
+        
+        this._storyslider.createSlide(d, this.config.title ? n+1 : n);
+        this._storyslider._updateDrawSlides();            
+        
+        this._timenav.createMarker(d, n);
+        this._timenav._updateDrawTimeline(false);	
+        
+        this.fire("added", {uniqueid: uniqueid});
+	},
+	
+	// Remove an event
+	remove: function(n) {
+	    if(n >= 0  && n < this.config.events.length) {
+	        // If removing the current, nav to new one first
+            if(this.config.events[n].uniqueid == this.current_id) {
+                if(n < this.config.events.length - 1) {
+                    this.goTo(n + 1);
+                } else {
+                    this.goTo(n - 1);
+                }
+            }
+        
+            var event = this.config.events.splice(n, 1);
+        
+            this._storyslider.destroySlide(this.config.title ? n+1 : n);
+            this._storyslider._updateDrawSlides();            
+        
+            this._timenav.destroyMarker(n);
+            this._timenav._updateDrawTimeline(false);
+         
+            this.fire("removed", {uniqueid: event[0].uniqueid});
+       }
+	},
+	
+	removeId: function(id) {
+	    this.remove(this._getEventIndex(id));
+	},
+    
+	/* Get slide data
+	================================================== */
+
+    getData: function(n) {
+        if(this.config.title) {
+            if(n == 0) {
+                return this.config.title;
+            } else if(n > 0 && n <= this.config.events.length) {
+                return this.config.events[n - 1];
+            }
+        } else if(n >= 0 && n < this.config.events.length) {
+            return this.config.events[n];
+        }
+        return null;
+    },
+
+    getDataId: function(id) {
+        return this.getData(this._getSlideIndex(id));
+    },
+
+	/* Get slide object
+	================================================== */
+
+    getSlide: function(n) {
+        if(n >= 0 && n < this._storyslider._slides.length) {
+            return this._storyslider._slides[n];
+        }        
+        return null;
+    },
+
+    getSlideId: function(id) {
+        return this.getSlide(this._getSlideIndex(id));
+    },
+   
 	
 	/*	Display
 	================================================== */
@@ -10444,8 +10800,7 @@ VCO.Timeline = VCO.Class.extend({
 		
 	},
 	
-	_initEvents: function () {
-		
+	_initEvents: function () {		
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
 		
@@ -10459,17 +10814,30 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
-	
-	/*	Set Current Slide
+		
+	/* Get index of event by id
 	================================================== */
-	_getCurrentSlide: function(n, array) {
-		// Find Array Number
-		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, array, "uniqueid");
-		} else {
-			_n = n;
-		}
-		return _n;
+    _getEventIndex: function(id) {
+	    for(var i = 0; i < this.config.events.length; i++) {
+	        if(id == this.config.events[i].uniqueid) {
+	            return i;
+	        }
+	    }
+	    return -1;
+    },	
+	
+	/*	Get index of slide by id
+	================================================== */
+	_getSlideIndex: function(id) {
+	    if(this.config.title && this.config.title.uniqueid == id) {
+	        return 0;
+	    }
+	    for(var i = 0; i < this.config.events.length; i++) {
+	        if(id == this.config.events[i].uniqueid) {
+	            return this.config.title ? i+1 : i;
+	        }
+	    }
+	    return -1;
 	},
 	
 	/*	Events
@@ -10560,6 +10928,13 @@ VCO.Timeline = VCO.Class.extend({
 	
 	
 });
+
+VCO.Timeline.source_path = (function() {
+    var script_tags = document.getElementsByTagName('script');
+	var src = script_tags[script_tags.length-1].src;
+	return src.substr(0,src.lastIndexOf('/'));
+})();
+
 
 
 
