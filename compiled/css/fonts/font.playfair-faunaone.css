@@ -53,7 +53,9 @@ http://www.google.com/fonts/specimen/Unica+One
 .vco-timeline ul {
   font-family: 'Fauna One', serif;
 }
-.vco-timeline .vco-media .vco-media-wikipedia h4 a {
+.vco-timeline .vco-media .vco-media-wikipedia h4 a,
+.vco-timeline .vco-media h4,
+.vco-timeline .vco-media h4 a {
   font-family: 'Fauna One', serif;
   font-weight: 400;
   font-size: 24px;

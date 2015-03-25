@@ -51,7 +51,9 @@ https://www.google.com/fonts/specimen/Megrim
 .vco-timeline ul {
   font-family: 'Roboto Slab', Georgia, serif;
 }
-.vco-timeline .vco-media .vco-media-wikipedia h4 a {
+.vco-timeline .vco-media .vco-media-wikipedia h4 a,
+.vco-timeline .vco-media h4,
+.vco-timeline .vco-media h4 a {
   font-family: 'Roboto Slab', Georgia, serif;
   font-weight: 400;
   font-size: 24px;

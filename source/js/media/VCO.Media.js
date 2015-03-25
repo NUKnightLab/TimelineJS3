@@ -62,6 +62,7 @@ VCO.Media = VCO.Class.extend({
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
+			api_key_embedly: 		"ae2da610d1454b66abdf2e6a4c44026d",
 			credit_height: 			0,
 			caption_height: 		0
 		};
