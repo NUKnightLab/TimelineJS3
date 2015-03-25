@@ -6904,7 +6904,7 @@ VCO.Media.Instagram = VCO.Media.extend({
 	
 	createMedia: function(d) {
 		var self = this;
-		trace(d);
+		
 		// Set source
 		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
 		
