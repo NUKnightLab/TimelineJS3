@@ -24,6 +24,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Hello",
             "media": {
                 "caption": "Screenshot from TimelineJS Embed Generator tool (see below)",
                 "credit": "",
@@ -46,6 +47,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Hello",
             "media": {
                 "caption": "",
                 "credit": "",
@@ -68,6 +70,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Hello",
             "media": {
                 "caption": "Le portrait mystérieux",
                 "credit": "Georges Méliès",
@@ -90,6 +93,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Goodbye",
             "media": {
                 "caption": "A Trip to the Moon / Le Voyage dans la lune",
                 "credit": "Georges Méliès",
@@ -112,6 +116,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Goodbye",
             "media": {
                 "caption": "",
                 "credit": "",
@@ -134,6 +139,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Goodbye",
             "media": {
                 "caption": "",
                 "credit": "",
@@ -166,6 +172,7 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+			"group": "Goodbye",
             "media": {
                 "caption": "",
                 "credit": "Dr. Seuss",
