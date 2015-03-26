@@ -8947,6 +8947,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// Markers Array
 		this._markers = [];
 		
+		// Groups Array
+		this._groups = [];
+		
 		// Current Marker
 		this.current_id = "";
 		
@@ -9063,6 +9066,41 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
+	/*	Groups
+	================================================== */
+	_createGroups: function() {
+		var group_labels = this.timescale.getGroupLabels();
+		for (var i = 0; i < group_labels.length; i++) {
+			this._createGroup(group_labels[i]);
+		}	
+	},
+	
+	_createGroup: function(group_name) {
+		trace(group_name);
+		this._groups.push(group_name);
+		/*
+		var group = new VCO.TimeMarker(data, this.options);
+		this._addMarker(marker);
+		if(n < 0) {
+		    this._markers.push(marker);
+		} else {
+		    this._markers.splice(n, 0, marker);
+		}
+		*/
+	},
+	
+	_positionGroups: function() {
+		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
+			group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
+			group_labels		= this.timescale.getGroupLabels();
+			
+		for (var i = 0; i < group_labels.length; i++) {
+			var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
+			trace(group_labels[i]);
+			trace(group_y)
+		}
+	},
+	
 	/*	Markers
 	================================================== */
 	_addMarker:function(marker) {
@@ -9128,6 +9166,7 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			//Position by Row
 			var row = this.timescale.getPositionInfo(i).row;
+			
 			var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
 			
 			var remainder_height = available_height - marker_y + this.options.marker_padding;
@@ -9331,6 +9370,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
+		this._positionGroups();
 	},
 	
 	_updateDrawTimeline: function(check_update) {
@@ -9354,6 +9394,7 @@ VCO.TimeNav = VCO.Class.extend({
 			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 			this._positionMarkers();
 			this._assignRowsToMarkers();
+			this._positionGroups();
 			this._updateDisplay();
 		} else {
 			this._drawTimeline(true);
@@ -9403,6 +9444,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
 		this._drawTimeline();
+		this._createGroups();
 	}
 	
 	
@@ -10415,9 +10457,9 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_position: 			"bottom", 		// timeline on top or bottom 
 			optimal_tick_width: 		60,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
-			timenav_height: 			150,
-			timenav_height_percentage: 	30,				// Overrides timenav height as a percentage of the screen
-			timenav_height_min: 		150, 			// Minimum timenav height
+			timenav_height: 			175,
+			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen
+			timenav_height_min: 		175, 			// Minimum timenav height
 			marker_height_min: 			30, 			// Minimum Marker Height
 			marker_width_min: 			100, 			// Minimum Marker Width
 			marker_padding: 			5,				// Top Bottom Marker Padding

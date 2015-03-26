@@ -155,9 +155,9 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_position: 			"bottom", 		// timeline on top or bottom 
 			optimal_tick_width: 		60,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
-			timenav_height: 			150,
-			timenav_height_percentage: 	30,				// Overrides timenav height as a percentage of the screen
-			timenav_height_min: 		150, 			// Minimum timenav height
+			timenav_height: 			175,
+			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen
+			timenav_height_min: 		175, 			// Minimum timenav height
 			marker_height_min: 			30, 			// Minimum Marker Height
 			marker_width_min: 			100, 			// Minimum Marker Width
 			marker_padding: 			5,				// Top Bottom Marker Padding
