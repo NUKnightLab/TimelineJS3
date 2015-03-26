@@ -187,16 +187,18 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_createGroup: function(group_name) {
 		trace(group_name);
-		this._groups.push(group_name);
-		/*
-		var group = new VCO.TimeMarker(data, this.options);
-		this._addMarker(marker);
-		if(n < 0) {
-		    this._markers.push(marker);
-		} else {
-		    this._markers.splice(n, 0, marker);
-		}
-		*/
+		
+		
+		var group = new VCO.TimeGroup(group_name);
+		this._addGroup(group);
+		this._groups.push(group);
+		
+		
+	},
+	
+	_addGroup:function(group) {
+		group.addTo(this._el.container);
+		
 	},
 	
 	_positionGroups: function() {
@@ -206,6 +208,8 @@ VCO.TimeNav = VCO.Class.extend({
 			
 		for (var i = 0; i < group_labels.length; i++) {
 			var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
+			trace(this._groups[i]);
+			this._groups[i].setPosition({top:group_y});
 			trace(group_labels[i]);
 			trace(group_y)
 		}
@@ -480,6 +484,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
+		this._createGroups();
 		this._positionGroups();
 	},
 	
@@ -554,7 +559,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
 		this._drawTimeline();
-		this._createGroups();
+		
 	}
 	
 	

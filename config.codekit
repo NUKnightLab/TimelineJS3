@@ -608,6 +608,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/compiled\/timeline.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/timeline.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/README.md": {
 		"enableFootnoteSupport": 0,
 		"enableSmartyPants": 1,
@@ -2222,6 +2231,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/source\/js\/timenav\/VCO.TimeGroup.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeGroup.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeGroup-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/source\/js\/timenav\/VCO.TimeMarker.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -3311,6 +3331,26 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeAxis.less",
 		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeAxis.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/timenav\/VCO.TimeGroup.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeGroup.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeGroup.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,

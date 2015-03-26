@@ -90,6 +90,7 @@
 // TIMENAV
 	// @codekit-prepend "timenav/VCO.TimeNav.js"; 
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
+	// @codekit-prepend "timenav/VCO.TimeGroup.js";
 	// @codekit-prepend "timenav/VCO.TimeScale.js";
 	// @codekit-prepend "timenav/VCO.TimeAxis.js";
 	// @codekit-prepend "timenav/VCO.AxisHelper.js";

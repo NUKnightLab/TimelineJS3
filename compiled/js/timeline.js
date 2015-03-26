@@ -9077,16 +9077,18 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_createGroup: function(group_name) {
 		trace(group_name);
-		this._groups.push(group_name);
-		/*
-		var group = new VCO.TimeMarker(data, this.options);
-		this._addMarker(marker);
-		if(n < 0) {
-		    this._markers.push(marker);
-		} else {
-		    this._markers.splice(n, 0, marker);
-		}
-		*/
+		
+		
+		var group = new VCO.TimeGroup(group_name);
+		this._addGroup(group);
+		this._groups.push(group);
+		
+		
+	},
+	
+	_addGroup:function(group) {
+		group.addTo(this._el.container);
+		
 	},
 	
 	_positionGroups: function() {
@@ -9096,6 +9098,8 @@ VCO.TimeNav = VCO.Class.extend({
 			
 		for (var i = 0; i < group_labels.length; i++) {
 			var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
+			trace(this._groups[i]);
+			this._groups[i].setPosition({top:group_y});
 			trace(group_labels[i]);
 			trace(group_y)
 		}
@@ -9370,6 +9374,7 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
+		this._createGroups();
 		this._positionGroups();
 	},
 	
@@ -9444,7 +9449,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
 		this._drawTimeline();
-		this._createGroups();
+		
 	}
 	
 	
@@ -9744,6 +9749,96 @@ VCO.TimeMarker = VCO.Class.extend({
 	
 });
 
+
+/*	VCO.TimeGroup
+	
+================================================== */
+ 
+VCO.TimeGroup = VCO.Class.extend({
+	
+	includes: [VCO.Events, VCO.DomMixins],
+	
+	_el: {},
+	
+	/*	Constructor
+	================================================== */
+	initialize: function(group_name) {
+		// DOM ELEMENTS
+		this._el = {
+			parent: {},
+			container: {},
+			message_container: {},
+			loading_icon: {},
+			message: {}
+		};
+		
+		this.group_name = group_name;
+		//Options
+		this.options = {
+			width: 					600,
+			height: 				600
+		};
+		
+		// Merge Data and Options
+		//VCO.Util.mergeData(this.data, data);
+		//VCO.Util.mergeData(this.options, options);
+		
+		this._el.container = VCO.Dom.create("div", "vco-timegroup");
+		this._el.container.innerHTML = "<h1>" + this.group_name + "</h1>";
+		
+		
+		// Animation
+		this.animator = {};
+		
+		
+		this._initLayout();
+		this._initEvents();
+	},
+	
+	/*	Public
+	================================================== */
+	
+	
+	
+	/*	Update Display
+	================================================== */
+	updateDisplay: function(w, h) {
+		
+	},
+	
+
+	/*	Events
+	================================================== */
+
+	
+	_onMouseClick: function() {
+		this.fire("clicked", this.options);
+	},
+
+	
+	/*	Private Methods
+	================================================== */
+	_initLayout: function () {
+		
+		// Create Layout
+		//this._el.message_container = VCO.Dom.create("div", "vco-message-container", this._el.container);
+		//this._el.loading_icon = VCO.Dom.create("div", this.options.message_icon_class, this._el.message_container);
+		//this._el.message = VCO.Dom.create("div", "vco-message-content", this._el.message_container);
+		
+		
+		
+	},
+	
+	_initEvents: function () {
+		VCO.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
+	},
+	
+	// Update Display
+	_updateDisplay: function(width, height, animate) {
+		
+	}
+	
+});
 
 /*  VCO.TimeScale
     Strategies for laying out the timenav
@@ -10392,6 +10487,7 @@ VCO.AxisHelper = VCO.Class.extend({
 // TIMENAV
 	// @codekit-prepend "timenav/VCO.TimeNav.js"; 
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
+	// @codekit-prepend "timenav/VCO.TimeGroup.js";
 	// @codekit-prepend "timenav/VCO.TimeScale.js";
 	// @codekit-prepend "timenav/VCO.TimeAxis.js";
 	// @codekit-prepend "timenav/VCO.AxisHelper.js";

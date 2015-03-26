@@ -1,0 +1,51 @@
+/* VCO.TimeMarker
+================================================== */
+
+.vco-timegroup {
+	height:100%;
+	width:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	cursor:pointer;
+	//background-color:#333;
+	//color:#FFF;
+	//text-align:center;
+
+	h1 {
+		color:#333;
+	}
+	
+	/* Animate Left Width and Top
+	================================================== */
+	.property-animation(left, @animation-duration, @animation-ease);
+	.property-animation(top, @animation-duration-fast, @animation-ease);
+	.property-animation(height, @animation-duration-fast, @animation-ease);
+	.property-animation(width, @animation-duration, @animation-ease);
+	.animation-timing-cubic-bezier();
+	
+}
+
+/* Skinny
+================================================== */
+.vco-skinny {
+	.vco-timegroup {
+
+	}
+}
+
+/* Mobile, iPhone
+================================================== */
+.vco-mobile {
+	.vco-timegroup {
+
+	}
+}
+
+/* Mobile, iPhone and skinny
+================================================== */
+.vco-mobile.vco-skinny {
+	.vco-timegroup {
+
+	}
+}
