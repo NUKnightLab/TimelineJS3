@@ -9374,8 +9374,8 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
-		this._createGroups();
-		this._positionGroups();
+		//this._createGroups();
+		//this._positionGroups();
 	},
 	
 	_updateDrawTimeline: function(check_update) {
@@ -9399,7 +9399,7 @@ VCO.TimeNav = VCO.Class.extend({
 			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 			this._positionMarkers();
 			this._assignRowsToMarkers();
-			this._positionGroups();
+			//this._positionGroups();
 			this._updateDisplay();
 		} else {
 			this._drawTimeline(true);
