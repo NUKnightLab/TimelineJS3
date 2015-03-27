@@ -48,8 +48,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 		 
 	},
 	
-	createMedia: function(d) {	
-		trace("create_media")	
+	createMedia: function(d) {
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",

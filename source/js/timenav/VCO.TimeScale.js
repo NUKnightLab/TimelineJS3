@@ -42,13 +42,17 @@ VCO.TimeScale = VCO.Class.extend({
         this._computePositionInfo(slides, options.max_rows);
     },
     
-    getGroupLabels: function() { /* For now, assume one row per group */
+    getGroupLabels: function() { /* 
+        return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
+            * label (the string as specified in one or more 'group' properties of events in the configuration)
+            * rows (the number of rows occupied by events associated with the label. ) 
+        */
         var label_info = [];
 		if (this._group_labels) {
 	        for (var i = 0; i < this._group_labels.length; i++) {
 	            label_info.push({
-	                label: this._group_labels[i],
-	                rows: 1
+	                rows: 1,
+                    label: this._group_labels[i]
 	            }); // later, count the real number of rows per group
 	        }
 		}

@@ -49,8 +49,15 @@ VCO.Media.Website = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
-	}
+	},
 	
+	updateMediaDisplay: function() {
+		
+	},
+	
+	_updateMediaDisplay: function() {
+		
+	}
 	
 	
 });
