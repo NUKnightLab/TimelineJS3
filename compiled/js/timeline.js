@@ -9100,13 +9100,9 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			for (var i = 0; i < group_labels.length; i++) {
 				var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
-				trace(this._groups[i]);
 			
 				this._groups[i].setRowPosition(group_y, group_height);
 				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
-			
-				trace(group_labels[i]);
-				trace(group_y)
 			}
 		}
 		
