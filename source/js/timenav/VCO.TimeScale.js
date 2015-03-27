@@ -31,8 +31,15 @@ VCO.TimeScale = VCO.Class.extend({
         this._computePositionInfo(slides, max_rows);
     },
     
-    getGroupLabels: function() {
-        return this._group_labels;
+    getGroupLabels: function() { /* For now, assume one row per group */
+        var label_info = [];
+        for (var i = 0; i < this._group_labels.length; i++) {
+            label_info.push({
+                label: this._group_labels[i],
+                rows: 1
+            }); // later, count the real number of rows per group
+        }
+        return label_info;
     },
     
     getScale: function() {
