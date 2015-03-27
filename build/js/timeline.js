@@ -6085,6 +6085,12 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Twitter
 			},
 			{
+				type: 		"twitterembed",
+				name: 		"TwitterEmbed", 
+				match_str: 	"<blockquote class=\"twitter-tweet\"",
+				cls: 		VCO.Media.TwitterEmbed
+			},
+			{
 				type: 		"googlemaps",
 				name: 		"Google Map", 
 				match_str: 	/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
@@ -6099,19 +6105,19 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"flickr",
 				name: 		"Flickr", 
-				match_str: 	"^(https?:)?\/*flickr.com/photos",
+				match_str: 	"^(https?:)?\/*(www.)?flickr.com\/photos",
 				cls: 		VCO.Media.Flickr
 			},
 			{
 				type: 		"instagram",
 				name: 		"Instagram", 
-				match_str: 	/(instagr.am|instagram.com)\/p\//,
+				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
 				cls: 		VCO.Media.Instagram
 			},
 			{
 				type: 		"profile",
 				name: 		"Profile", 
-				match_str: 	/((instagr.am|instagram.com)(\/profiles\/|[-a-zA-Z0-9@:%_\+.~#?&\//=] +instagramprofile))|[-a-zA-Z0-9@:%_\+.~#?&//=]+\?profile/,
+				match_str: 	/^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
 				cls: 		VCO.Media.Profile
 			},
 			{
@@ -6129,13 +6135,13 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"googledocs",
 				name: 		"Google Doc",
-				match_str: 	/\b.(doc|docx|xls|xlsx|ppt|pptx|pdf|pages|ai|psd|tiff|dxf|svg|eps|ps|ttf|xps|zip|tif)\b/,
+				match_str: 	"^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
 				cls: 		VCO.Media.GoogleDoc
 			},
 			{
 				type: 		"wikipedia",
 				name: 		"Wikipedia",
-				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org",
+				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
 				cls: 		VCO.Media.Wikipedia
 			},
 			{
@@ -6169,8 +6175,8 @@ VCO.MediaType = function(m) {
 				cls: 		VCO.Media.Website
 			},
 			{
-				type: 		"image",
-				name: 		"Image",
+				type: 		"imageblank",
+				name: 		"Imageblank",
 				match_str: 	"",
 				cls: 		VCO.Media.Image
 			}
@@ -6251,6 +6257,8 @@ VCO.Media = VCO.Class.extend({
 			url: 				null,
 			credit:				null,
 			caption:			null,
+			credit_alternate: 	null,
+			caption_alternate: 	null,
 			link: 				null,
 			link_target: 		null
 		};
@@ -6259,6 +6267,7 @@ VCO.Media = VCO.Class.extend({
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
+			api_key_embedly: 		"ae2da610d1454b66abdf2e6a4c44026d",
 			credit_height: 			0,
 			caption_height: 		0
 		};
@@ -6359,6 +6368,10 @@ VCO.Media = VCO.Class.extend({
 				this._el.content_item.style.width = "auto";
 			}
 		},
+		
+		_getMeta: function() {
+			
+		},
 	
 	/*	Public
 	================================================== */
@@ -6430,14 +6443,39 @@ VCO.Media = VCO.Class.extend({
 			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
 			this._el.credit.innerHTML		= this.data.credit;
 			this.options.credit_height 		= this._el.credit.offsetHeight;
-		}
+		} 
 		
 		// Caption
 		if (this.data.caption && this.data.caption != "") {
 			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
 			this._el.caption.innerHTML		= this.data.caption;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
+		} 
+		
+		if (!this.data.caption || !this.data.credit) {
+			this.getMeta();
 		}
+		
+	},
+	
+	getMeta: function() {
+		this._getMeta();
+	},
+	
+	updateMeta: function() {
+		if (!this.data.credit && this.data.credit_alternate) {
+			this._el.credit					= VCO.Dom.create("div", "vco-credit", this._el.content_container);
+			this._el.credit.innerHTML		= this.data.credit_alternate;
+			this.options.credit_height 		= this._el.credit.offsetHeight;
+		}
+		
+		if (!this.data.caption && this.data.caption_alternate) {
+			this._el.caption				= VCO.Dom.create("div", "vco-caption", this._el.content_container);
+			this._el.caption.innerHTML		= this.data.caption_alternate;
+			this.options.caption_height 	= this._el.caption.offsetHeight;
+		}
+		
+		this.updateDisplay();
 	},
 	
 	onAdd: function() {
@@ -6733,6 +6771,7 @@ VCO.Media.Flickr = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d);
 		var best_size 	= this.sizes(this.options.height),
 			size 		= d.sizes.size[d.sizes.size.length - 2].source;
 			self = this;
@@ -6748,6 +6787,21 @@ VCO.Media.Flickr = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+	},
+	
+	_getMeta: function() {
+		var self = this,
+		api_url;
+		
+		// API URL
+		api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.data.credit_alternate = "<a href='" + self.data.url + "' target='_blank'>" + d.photo.owner.realname + "</a>";
+			self.data.caption_alternate = d.photo.title._content + " " + d.photo.description._content;
+			self.updateMeta();
+		});
 	},
 	
 	sizes: function(s) {
@@ -6806,10 +6860,22 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-iframe", this._el.content);
 		
 		// Get Media ID
-		this.media_id = this.data.url;
+		if (this.data.url.match("open\?id\=")) {
+			this.media_id = this.data.url.split("open\?id\=")[1];
+			if (this.data.url.match("\&authuser\=0")) {
+				this.media_id = this.media_id("\&authuser\=0")[0];
+			};
+		} else if (this.data.url.match("\/d\/")) {
+			this.media_id = this.data.url.split("\/d\/")[1];
+			if (this.data.url.match("[^\/]*\/")) {
+				this.media_id = this.media_id("[^\/]*\/")[0];
+			};
+		} else {
+			this.media_id = "";
+		}
 		
 		// API URL
-		api_url = this.media_id;
+		api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
 		
 		// API Call
 		if (this.media_id.match(/docs.google.com/i)) {
@@ -7016,8 +7082,26 @@ VCO.Media.Instagram = VCO.Media.extend({
 		// Set source
 		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
 		
-		this.onLoaded();
+		// API URL
+		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
 		
+		// After Loaded
+		this.onLoaded();
+	},
+	
+	_getMeta: function() {
+		var self = this,
+		api_url;
+		
+		// API URL
+		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
+		
+		// API Call
+		VCO.getJSON(api_url, function(d) {
+			self.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
+			self.data.caption_alternate = d.title;
+			self.updateMeta();
+		});
 	},
 	
 	sizes: function(s) {
@@ -7688,6 +7772,8 @@ VCO.Media.Vine = VCO.Media.extend({
 ********************************************** */
 
 /*	VCO.Media.Website
+	Uses Embedly
+	http://embed.ly/docs/api/extract/endpoints/1/extract
 ================================================== */
 
 VCO.Media.Website = VCO.Media.extend({
@@ -7697,31 +7783,45 @@ VCO.Media.Website = VCO.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
+		var self = this;
 		// Loading Message
 		this.loadingMessage();
 		
-		// Create Dom element
-		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-blockquote", this._el.content);
-		this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
-		
 		// Get Media ID
-		this.media_id = this.data.url;
+		this.media_id = this.data.url.replace(/.*?:\/\//g, "");
+		// API URL
+		api_url = "http://api.embed.ly/1/extract?key=" + this.options.api_key_embedly + "&url=" + this.media_id + "&callback=?";
 		
 		// API Call
-		this._el.content_item.innerHTML = "<a target='_blank' href='" + this.media_id + "'> " + this.media_id + "</a>";
+		VCO.getJSON(api_url, function(d) {
+			self.createMedia(d);
+		});
+		
+		
+	},
+	
+	createMedia: function(d) {
+		var content = "";
+		
+		
+		content		+=	"<h4><a href='" + this.data.url + "' target='_blank'>" + d.title + "</a></h4>";
+		if (d.images) {
+			if (d.images[0]) {
+				trace(d.images[0].url);
+				content		+=	"<img src='" + d.images[0].url + "' />";
+			}
+		}
+		content		+=	"<img class='vco-media-website-icon' src='" + d.favicon_url + "' />";
+		content		+=	"<span class='vco-media-website-description'>" + d.provider_name + "</span><br/>";
+		content		+=	"<p>" + d.description + "</p>";
+		
+		// Create Dom element
+		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-website", this._el.content);
+		this._el.content_container.className = "vco-media-content-container vco-media-content-container-text";
+		this._el.content_item.innerHTML = content;
 		
 		// After Loaded
 		this.onLoaded();
-		
-	},
-	
-	
-	updateMediaDisplay: function() {
-		
-	},
-	
-	_updateMediaDisplay: function() {
-		
 	}
 	
 	
@@ -8305,6 +8405,8 @@ VCO.Slide = VCO.Class.extend({
 			if (!this.has.text && this.has.headline) {
 				this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
 			} else if (!this.has.text && !this.has.headline) {
+				this._media.updateDisplay(content_width, this.options.height, layout);
+			} else if (this.options.skinny_size) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
 				this._media.updateDisplay(content_width/2, this.options.height, layout);
@@ -9043,6 +9145,7 @@ VCO.TimeNav = VCO.Class.extend({
 			height: 				600,
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
+			has_groups: 			false,
 			optimal_tick_width: 	50,
 			scale_factor: 			2, 				// How many screen widths wide should the timeline be
 			marker_padding: 		5,
@@ -9057,6 +9160,12 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Markers Array
 		this._markers = [];
+		
+		// Groups Array
+		this._groups = [];
+		
+		// Row Height
+		this._calculated_row_height = 100;
 		
 		// Current Marker
 		this.current_id = "";
@@ -9110,7 +9219,9 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	TimeScale
 	================================================== */
-	_getTimeScale: function() {
+	_getTimeScale: function() { 
+		/* maybe the establishing config values (marker_height_min and max_rows) should be
+		separated from making a TimeScale object, which happens in another spot in this file with duplicate mapping of properties of this TimeNav into the TimeScale options object? */
 		// Set Max Rows
 		var marker_height_min = 0;
 		try {
@@ -9127,7 +9238,12 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data, {
+            display_width: this._el.container.offsetWidth,
+            screen_multiplier: this.options.scale_factor,
+            max_rows: this.max_rows
+
+		});
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -9170,6 +9286,47 @@ VCO.TimeNav = VCO.Class.extend({
 			this.options.scale_factor = new_scale;
 			//this._updateDrawTimeline(true);
 			this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
+		}
+		
+	},
+	
+	/*	Groups
+	================================================== */
+	_createGroups: function() {
+		var group_labels = this.timescale.getGroupLabels();
+		
+		if (group_labels) {
+			this.options.has_groups = true;
+			for (var i = 0; i < group_labels.length; i++) {
+				this._createGroup(group_labels[i]);
+			}
+		}
+		
+	},
+	
+	_createGroup: function(group_name) {
+		var group = new VCO.TimeGroup(group_name);
+		this._addGroup(group);
+		this._groups.push(group);
+	},
+	
+	_addGroup:function(group) {
+		group.addTo(this._el.container);
+		
+	},
+	
+	_positionGroups: function() {
+		if (this.options.has_groups){
+			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight ),
+				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
+				group_labels		= this.timescale.getGroupLabels();
+			
+			for (var i = 0; i < this._groups.length; i++) {
+				var group_y = Math.floor(i * (group_height + this.options.marker_padding));
+				
+				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2); 
+				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
+			}
 		}
 		
 	},
@@ -9226,12 +9383,9 @@ VCO.TimeNav = VCO.Class.extend({
 	_assignRowsToMarkers: function() {
 		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
 			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
-		/*	
-		if (marker_height < this.options.marker_height_min) {
-			this.timescale = this._getTimeScale();
-			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
-		}
-		*/
+			
+		this._calculated_row_height = Math.floor(available_height /this.timescale.getNumberOfRows());
+			
 		for (var i = 0; i < this._markers.length; i++) {
 			
 			// Set Height
@@ -9239,6 +9393,7 @@ VCO.TimeNav = VCO.Class.extend({
 			
 			//Position by Row
 			var row = this.timescale.getPositionInfo(i).row;
+			
 			var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
 			
 			var remainder_height = available_height - marker_y + this.options.marker_padding;
@@ -9442,6 +9597,8 @@ VCO.TimeNav = VCO.Class.extend({
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
+		this._createGroups();
+		this._positionGroups();
 	},
 	
 	_updateDrawTimeline: function(check_update) {
@@ -9449,8 +9606,14 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
-			
+			/* keep this aligned with _getTimeScale or reduce code duplication */
+			var temp_timescale = new VCO.TimeScale(this.data, {
+	            display_width: this._el.container.offsetWidth,
+	            screen_multiplier: this.options.scale_factor,
+	            max_rows: this.max_rows
+
+			});
+
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
 				do_update = true;
@@ -9465,6 +9628,7 @@ VCO.TimeNav = VCO.Class.extend({
 			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
 			this._positionMarkers();
 			this._assignRowsToMarkers();
+			this._positionGroups();
 			this._updateDisplay();
 		} else {
 			this._drawTimeline(true);
@@ -9514,6 +9678,7 @@ VCO.TimeNav = VCO.Class.extend({
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
 		this._drawTimeline();
+		
 	}
 	
 	
@@ -9819,6 +9984,114 @@ VCO.TimeMarker = VCO.Class.extend({
 
 
 /* **********************************************
+     Begin VCO.TimeGroup.js
+********************************************** */
+
+/*	VCO.TimeGroup
+	
+================================================== */
+ 
+VCO.TimeGroup = VCO.Class.extend({
+	
+	includes: [VCO.Events, VCO.DomMixins],
+	
+	_el: {},
+	
+	/*	Constructor
+	================================================== */
+	initialize: function(data) {
+		
+		// DOM ELEMENTS
+		this._el = {
+			parent: {},
+			container: {},
+			message: {}
+		};
+		
+		//Options
+		this.options = {
+			width: 					600,
+			height: 				600
+		};
+		
+		// Data
+		this.data = {
+			label: "",
+			rows: 1
+		};
+		
+		
+		this._el.container = VCO.Dom.create("div", "vco-timegroup"); 
+		
+		// Merge Data
+		VCO.Util.mergeData(this.data, data);
+		
+		// Animation
+		this.animator = {};
+		
+		
+		this._initLayout();
+		this._initEvents();
+	},
+	
+	/*	Public
+	================================================== */
+	
+	
+	
+	/*	Update Display
+	================================================== */
+	updateDisplay: function(w, h) {
+		
+	},
+	
+	setRowPosition: function(n, h) {
+		this.options.height = h * this.data.rows;
+		this.setPosition({top:n});
+		this._el.container.style.height = this.options.height + "px";
+		
+	},
+	
+	setAlternateRowColor: function(alternate) {
+		if (alternate) {
+			this._el.container.className = "vco-timegroup vco-timegroup-alternate";
+		} else {
+			this._el.container.className = "vco-timegroup";
+		}
+	},
+	
+	/*	Events
+	================================================== */
+
+	
+	_onMouseClick: function() {
+		this.fire("clicked", this.options);
+	},
+
+	
+	/*	Private Methods
+	================================================== */
+	_initLayout: function () {
+		
+		// Create Layout
+		this._el.message = VCO.Dom.create("div", "vco-timegroup-message", this._el.container);
+		this._el.message.innerHTML = this.data.label;
+		
+		
+	},
+	
+	_initEvents: function () {
+		VCO.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
+	},
+	
+	// Update Display
+	_updateDisplay: function(width, height, animate) {
+		
+	}
+	
+});
+
+/* **********************************************
      Begin VCO.TimeScale.js
 ********************************************** */
 
@@ -9830,11 +10103,22 @@ VCO.TimeMarker = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (scale, slides, display_width, screen_multiplier, max_rows) {
-        this._scale = scale || 'javascript';    // default
-        
-        this._display_width = display_width || 500; //arbitrary default
-        this._screen_multiplier = screen_multiplier || 3;
+    initialize: function (timeline_config, options) {
+        timeline_config = VCO.Util.extend({ // establish defaults
+            scale: 'javascript'
+        }, timeline_config);
+
+        var slides = timeline_config.events;
+        this._scale = timeline_config.scale;
+
+        options = VCO.Util.extend({ // establish defaults
+            display_width: 500,
+            screen_multiplier: 3,
+            max_rows: null
+        }, options);
+
+        this._display_width = options.display_width;
+        this._screen_multiplier = options.screen_multiplier;
         this._pixel_width = this._screen_multiplier * this._display_width;
 
         this._group_labels = undefined;
@@ -9852,11 +10136,21 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
-        this._computePositionInfo(slides, max_rows);
+        this._computePositionInfo(slides, options.max_rows);
     },
     
-    getGroupLabels: function() {
-        return this._group_labels;
+    getGroupLabels: function() { /* For now, assume one row per group */
+        var label_info = [];
+		if (this._group_labels) {
+	        for (var i = 0; i < this._group_labels.length; i++) {
+	            label_info.push({
+	                label: this._group_labels[i],
+	                rows: 1
+	            }); // later, count the real number of rows per group
+	        }
+		}
+        
+        return label_info;
     },
     
     getScale: function() {
@@ -9909,6 +10203,24 @@ VCO.TimeScale = VCO.Class.extend({
     
     getMinorScale: function() {
         return this._axis_helper.minor.name;
+    },
+
+    _assessGroups: function(slides) {
+        var groups = [];
+        var empty_group = false;
+        for (var i = 0; i < slides.length; i++) {
+            if(slides[i].group) {
+                if(groups.indexOf(slides[i].group) < 0) {
+                    groups.push(slides[i].group);
+                } else {
+                    empty_group = true;
+                }            
+            } 
+        };
+        if (groups.length && empty_group) {
+            groups.push('');
+        }
+        return groups;
     },
 
     _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
@@ -10481,6 +10793,7 @@ VCO.AxisHelper = VCO.Class.extend({
 // TIMENAV
 	// @codekit-prepend "timenav/VCO.TimeNav.js"; 
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
+	// @codekit-prepend "timenav/VCO.TimeGroup.js";
 	// @codekit-prepend "timenav/VCO.TimeScale.js";
 	// @codekit-prepend "timenav/VCO.TimeAxis.js";
 	// @codekit-prepend "timenav/VCO.AxisHelper.js";
@@ -10546,9 +10859,9 @@ VCO.Timeline = VCO.Class.extend({
 			timenav_position: 			"bottom", 		// timeline on top or bottom 
 			optimal_tick_width: 		60,				// optimal distance (in pixels) between ticks on axis
 			base_class: 				"",
-			timenav_height: 			150,
+			timenav_height: 			175,
 			timenav_height_percentage: 	25,				// Overrides timenav height as a percentage of the screen
-			timenav_height_min: 		150, 			// Minimum timenav height
+			timenav_height_min: 		175, 			// Minimum timenav height
 			marker_height_min: 			30, 			// Minimum Marker Height
 			marker_width_min: 			100, 			// Minimum Marker Width
 			marker_padding: 			5,				// Top Bottom Marker Padding

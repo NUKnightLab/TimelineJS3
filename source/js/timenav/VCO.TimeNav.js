@@ -116,7 +116,9 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	TimeScale
 	================================================== */
-	_getTimeScale: function() {
+	_getTimeScale: function() { 
+		/* maybe the establishing config values (marker_height_min and max_rows) should be
+		separated from making a TimeScale object, which happens in another spot in this file with duplicate mapping of properties of this TimeNav into the TimeScale options object? */
 		// Set Max Rows
 		var marker_height_min = 0;
 		try {
@@ -133,7 +135,12 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data, {
+            display_width: this._el.container.offsetWidth,
+            screen_multiplier: this.options.scale_factor,
+            max_rows: this.max_rows
+
+		});
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -496,8 +503,14 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
-			
+			/* keep this aligned with _getTimeScale or reduce code duplication */
+			var temp_timescale = new VCO.TimeScale(this.data, {
+	            display_width: this._el.container.offsetWidth,
+	            screen_multiplier: this.options.scale_factor,
+	            max_rows: this.max_rows
+
+			});
+
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
 				do_update = true;

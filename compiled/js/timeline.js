@@ -38,9 +38,7 @@ trace = function( msg ) {
 			//alert(msg);
 		}
 	}
-}
-
-/*	VCO.Util
+}/*	VCO.Util
 	Class of utilities
 ================================================== */
 
@@ -516,8 +514,6 @@ VCO.Util = {
     return determineMapMode(url);
 	}
 };
-
-
 // Expects VCO to be visible in scope
 
 ;(function(VCO){
@@ -2103,8 +2099,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 SOFTWARE.
 */
-
-
 /*	VCO.Class
 	Class powers the OOP facilities of the library.
 ================================================== */
@@ -2170,8 +2164,6 @@ VCO.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	return NewClass;
 };
-
-
 /*	VCO.Events
 	adds custom events functionality to VCO classes
 ================================================== */
@@ -2230,9 +2222,7 @@ VCO.Events = {
 
 VCO.Events.on	= VCO.Events.addEventListener;
 VCO.Events.off	= VCO.Events.removeEventListener;
-VCO.Events.fire = VCO.Events.fireEvent;
-
-/*
+VCO.Events.fire = VCO.Events.fireEvent;/*
 	Based on Leaflet Browser
 	VCO.Browser handles different browser and feature detections for internal  use.
 */
@@ -2311,9 +2301,7 @@ VCO.Events.fire = VCO.Events.fireEvent;
 		}
 	};
 
-}()); 
-
-/*	VCO.Load
+}()); /*	VCO.Load
 	Loads External Javascript and CSS
 ================================================== */
 
@@ -2753,8 +2741,6 @@ VCO.LoadIt = (function (doc) {
 
   };
 })(this.document);
-
-
 /*  VCO.TimelineConfig
     separate the configuration from the display (VCO.Timeline)
     to make testing easier
@@ -2909,8 +2895,6 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     }
 });
-
-
 /* VCO.ConfigFactory.js
  * Build TimelineConfig objects from other data sources
  */
@@ -2979,8 +2963,6 @@ VCO.TimelineConfig = VCO.Class.extend({
         }   
     }
 })(VCO)
-
-
 VCO.Language = function(options) {
 	// borrowed from http://stackoverflow.com/a/14446414/102476
 	for (k in VCO.Language.languages.en) {
@@ -3207,9 +3189,7 @@ VCO.Language.languages = {
 	}
 }
 
-VCO.Language.fallback = new VCO.Language();
-
-/*  VCO.I18NMixins
+VCO.Language.fallback = new VCO.Language();/*  VCO.I18NMixins
     assumes that its class has an options object with a VCO.Language instance    
 ================================================== */
 VCO.I18NMixins = {
@@ -3225,8 +3205,6 @@ VCO.I18NMixins = {
         return this.getLanguage()._(msg);
     }
 }
-
-
 /* The equations defined here are open source under BSD License.
  * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
  * Adapted to single time-based by
@@ -3467,9 +3445,7 @@ Math.easeInOutExpo = function (t, b, c, d) {
 	t--;
 	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
 };
-*/
-
-/*	VCO.Animate
+*//*	VCO.Animate
 	Basic animation
 ================================================== */
 
@@ -3899,8 +3875,6 @@ window.vcoanimate = (function() {
 
   return morpheus
 })();
-
-
 /*	VCO.Point
 	Inspired by Leaflet
 	VCO.Point represents a point with x and y coordinates.
@@ -3967,9 +3941,7 @@ VCO.Point.prototype = {
 				VCO.Util.formatNum(this.x) + ', ' +
 				VCO.Util.formatNum(this.y) + ')';
 	}
-};
-
-/*	VCO.DomMixins
+};/*	VCO.DomMixins
 	DOM methods used regularly
 	Assumes there is a _el.container and animator
 ================================================== */
@@ -4058,8 +4030,6 @@ VCO.DomMixins = {
 	}
 	
 };
-
-
 /*	VCO.Dom
 	Utilities for working with the DOM
 ================================================== */
@@ -4147,8 +4117,6 @@ VCO.Util.extend(VCO.Dom, {
 	TRANSLATE_OPEN: 'translate' + (VCO.Browser.webkit3d ? '3d(' : '('),
 	TRANSLATE_CLOSE: VCO.Browser.webkit3d ? ',0)' : ')'
 });
-
-
 /*	VCO.DomUtil
 	Inspired by Leaflet
 	VCO.DomUtil contains various utility functions for working with DOM
@@ -4302,9 +4270,7 @@ VCO.DomUtil = {
 	getPosition: function (el) {
 		return el._vco_pos;
 	}
-};
-
-/*	VCO.DomEvent
+};/*	VCO.DomEvent
 	Inspired by Leaflet 
 	DomEvent contains functions for working with DOM events.
 ================================================== */
@@ -4453,8 +4419,6 @@ VCO.DomEvent = {
 };
 
 
-
-
 /*	VCO.StyleSheet
 	Style Sheet Object
 ================================================== */
@@ -4504,9 +4468,7 @@ VCO.StyleSheet = VCO.Class.extend({
 		this.fire("loaded", this.data);
 	}
 	
-});
-
-/*	VCO.Date
+});/*	VCO.Date
 	Date object
 	MONTHS are 1-BASED, not 0-BASED (different from Javascript date objects)
 ================================================== */
@@ -4858,8 +4820,6 @@ VCO.BigDate = VCO.Date.extend({
     ];
 
 })(VCO.BigDate)
-
-
 /*	VCO.DateUtil
 	Utilities for parsing time
 ================================================== */
@@ -4940,9 +4900,7 @@ VCO.DateUtil = {
 		}
 	}
 	
-};
-
-/*	VCO.Draggable
+};/*	VCO.Draggable
 	VCO.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
 	TODO Enable constraints
 ================================================== */
@@ -5267,8 +5225,6 @@ VCO.Draggable = VCO.Class.extend({
 		this.fire("momentum", this.data);
 	}
 });
-
-
 /*	VCO.Swipable
 	VCO.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
 	TODO Enable constraints
@@ -5662,8 +5618,6 @@ VCO.Swipable = VCO.Class.extend({
 		this.fire("momentum", this.data);
 	}
 });
-
-
 /*	VCO.MenuBar
 	Draggable component to control size
 ================================================== */
@@ -5822,9 +5776,7 @@ VCO.MenuBar = VCO.Class.extend({
 		}
 	}
 	
-});
-
-/*	VCO.Message
+});/*	VCO.Message
 	
 ================================================== */
  
@@ -5928,9 +5880,7 @@ VCO.Message = VCO.Class.extend({
 		
 	}
 	
-});
-
-/*	VCO.MediaType
+});/*	VCO.MediaType
 	Determines the type of media the url string is.
 	returns an object with .type and .id
 	You can add new media types by adding a regex 
@@ -6092,8 +6042,6 @@ VCO.MediaType = function(m) {
 	return false;
 	
 }
-
-
 /*	VCO.Media
 	Main media template for media assets.
 	Takes a data object and populates a dom object
@@ -6438,9 +6386,7 @@ VCO.Media = VCO.Class.extend({
 		
 	}
 	
-});
-
-/*	VCO.Media.Blockquote
+});/*	VCO.Media.Blockquote
 ================================================== */
 
 VCO.Media.Blockquote = VCO.Media.extend({
@@ -6478,8 +6424,6 @@ VCO.Media.Blockquote = VCO.Media.extend({
 
 	
 });
-
-
 /*	VCO.Media.DailyMotion
 ================================================== */
 
@@ -6522,8 +6466,6 @@ VCO.Media.DailyMotion = VCO.Media.extend({
 	}
 	
 });
-
-
 /*	VCO.Media.DocumentCloud
 ================================================== */
 
@@ -6588,8 +6530,6 @@ VCO.Media.DocumentCloud = VCO.Media.extend({
 
 	
 });
-
-
 /*	VCO.Media.Flickr
 
 ================================================== */
@@ -6708,8 +6648,6 @@ VCO.Media.Flickr = VCO.Media.extend({
 	
 	
 });
-
-
 /*	VCO.Media.GoogleDoc
 
 ================================================== */
@@ -6766,8 +6704,6 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 
 	
 });
-
-
 /*	VCO.Media.GooglePlus
 ================================================== */
 
@@ -6807,8 +6743,6 @@ VCO.Media.GooglePlus = VCO.Media.extend({
 
 	
 });
-
-
 /*	VCO.Media.IFrame
 ================================================== */
 
@@ -6847,8 +6781,6 @@ VCO.Media.IFrame = VCO.Media.extend({
 	}
 	
 });
-
-
 /*	VCO.Media.Image
 	Produces image assets.
 	Takes a data object and populates a dom object
@@ -6899,9 +6831,7 @@ VCO.Media.Image = VCO.Media.extend({
 		
 	}
 	
-});
-
-/*	VCO.Media.Instagram
+});/*	VCO.Media.Instagram
 
 ================================================== */
 
@@ -6975,8 +6905,6 @@ VCO.Media.Instagram = VCO.Media.extend({
 	
 	
 });
-
-
 /*  VCO.Media.Blockquote
 ================================================== */
 
@@ -7018,8 +6946,6 @@ VCO.Media.Map = VCO.Media.extend({
       }
     }
 });
-
-
 /*	VCO.Media.Profile
 
 ================================================== */
@@ -7048,9 +6974,7 @@ VCO.Media.Profile = VCO.Media.extend({
 		}
 	}
 	
-});
-
-/*	VCO.Media.SLider
+});/*	VCO.Media.SLider
 	Produces a Slider
 	Takes a data object and populates a dom object
 	TODO
@@ -7071,9 +6995,7 @@ VCO.Media.Slider = VCO.Media.extend({
 		this.onLoaded();
 	}
 	
-});
-
-/*	VCO.Media.SoundCloud
+});/*	VCO.Media.SoundCloud
 ================================================== */
 
 VCO.Media.SoundCloud = VCO.Media.extend({
@@ -7113,8 +7035,6 @@ VCO.Media.SoundCloud = VCO.Media.extend({
 	}
 	
 });
-
-
 /*	VCO.Media.Spotify
 ================================================== */
 
@@ -7205,8 +7125,6 @@ VCO.Media.Spotify = VCO.Media.extend({
 	}
 	
 });
-
-
 /*	VCO.Media.Storify
 ================================================== */
 
@@ -7246,8 +7164,6 @@ VCO.Media.Storify = VCO.Media.extend({
 	
 	
 });
-
-
 VCO.Media.Text = VCO.Class.extend({
 	
 	includes: [VCO.Events],
@@ -7372,9 +7288,7 @@ VCO.Media.Text = VCO.Class.extend({
 		
 	}
 	
-});
-
-/*	VCO.Media.Twitter
+});/*	VCO.Media.Twitter
 	Produces Twitter Display
 ================================================== */
 
@@ -7478,8 +7392,6 @@ VCO.Media.Twitter = VCO.Media.extend({
 	
 	
 });
-
-
 /*	VCO.Media.Vimeo
 ================================================== */
 
@@ -7538,8 +7450,6 @@ VCO.Media.Vimeo = VCO.Media.extend({
 
 	}
 });
-
-
 /*	VCO.Media.Vine
 
 ================================================== */
@@ -7580,8 +7490,6 @@ VCO.Media.Vine = VCO.Media.extend({
 	}
 	
 });
-
-
 /*	VCO.Media.Website
 	Uses Embedly
 	http://embed.ly/docs/api/extract/endpoints/1/extract
@@ -7638,8 +7546,6 @@ VCO.Media.Website = VCO.Media.extend({
 	
 	
 });
-
-
 /*	VCO.Media.Wikipedia
 ================================================== */
 
@@ -7745,8 +7651,6 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 	}
 	
 });
-
-
 /*	VCO.Media.YouTube
 ================================================== */
 
@@ -7899,8 +7803,6 @@ VCO.Media.YouTube = VCO.Media.extend({
 
 	
 });
-
-
 /*	VCO.Slide
 	Creates a slide. Takes a data object and
 	populates the slide with content.
@@ -8215,8 +8117,6 @@ VCO.Slide = VCO.Class.extend({
 	}
 	
 });
-
-
 /*	VCO.SlideNav
 	encapsulate DOM display/events for the 
 	'next' and 'previous' buttons on a slide.
@@ -8343,9 +8243,7 @@ VCO.SlideNav = VCO.Class.extend({
 	}
 	
 	
-});
-
-/*	StorySlider
+});/*	StorySlider
 	is the central class of the API - it is used to create a StorySlider
 
 	Events:
@@ -8886,9 +8784,7 @@ VCO.StorySlider = VCO.Class.extend({
 	}
 	
 	
-});
-
-/*	VCO.TimeNav
+});/*	VCO.TimeNav
 	
 ================================================== */
   
@@ -9006,7 +8902,9 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	/*	TimeScale
 	================================================== */
-	_getTimeScale: function() {
+	_getTimeScale: function() { 
+		/* maybe the establishing config values (marker_height_min and max_rows) should be
+		separated from making a TimeScale object, which happens in another spot in this file with duplicate mapping of properties of this TimeNav into the TimeScale options object? */
 		// Set Max Rows
 		var marker_height_min = 0;
 		try {
@@ -9023,7 +8921,12 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this.max_rows);
+		return new VCO.TimeScale(this.data, {
+            display_width: this._el.container.offsetWidth,
+            screen_multiplier: this.options.scale_factor,
+            max_rows: this.max_rows
+
+		});
 	},
 	
 	_updateTimeScale: function(new_scale) {
@@ -9386,8 +9289,14 @@ VCO.TimeNav = VCO.Class.extend({
 		
 		// Check to see if redraw is needed
 		if (check_update) {
-			var temp_timescale = new VCO.TimeScale(this.data.scale, this.data.events, this._el.container.offsetWidth, this.options.scale_factor, this._max_rows);
-			
+			/* keep this aligned with _getTimeScale or reduce code duplication */
+			var temp_timescale = new VCO.TimeScale(this.data, {
+	            display_width: this._el.container.offsetWidth,
+	            screen_multiplier: this.options.scale_factor,
+	            max_rows: this.max_rows
+
+			});
+
 			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
 				do_update = true;
@@ -9456,9 +9365,7 @@ VCO.TimeNav = VCO.Class.extend({
 	}
 	
 	
-});
-
-/*	VCO.TimeMarker
+});/*	VCO.TimeMarker
 	
 ================================================== */
 
@@ -9751,8 +9658,6 @@ VCO.TimeMarker = VCO.Class.extend({
 	}
 	
 });
-
-
 /*	VCO.TimeGroup
 	
 ================================================== */
@@ -9855,9 +9760,7 @@ VCO.TimeGroup = VCO.Class.extend({
 		
 	}
 	
-});
-
-/*  VCO.TimeScale
+});/*  VCO.TimeScale
     Strategies for laying out the timenav
     make a new one if the slides change
 
@@ -9865,11 +9768,22 @@ VCO.TimeGroup = VCO.Class.extend({
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (scale, slides, display_width, screen_multiplier, max_rows) {
-        this._scale = scale || 'javascript';    // default
-        
-        this._display_width = display_width || 500; //arbitrary default
-        this._screen_multiplier = screen_multiplier || 3;
+    initialize: function (timeline_config, options) {
+        timeline_config = VCO.Util.extend({ // establish defaults
+            scale: 'javascript'
+        }, timeline_config);
+
+        var slides = timeline_config.events;
+        this._scale = timeline_config.scale;
+
+        options = VCO.Util.extend({ // establish defaults
+            display_width: 500,
+            screen_multiplier: 3,
+            max_rows: null
+        }, options);
+
+        this._display_width = options.display_width;
+        this._screen_multiplier = options.screen_multiplier;
         this._pixel_width = this._screen_multiplier * this._display_width;
 
         this._group_labels = undefined;
@@ -9887,7 +9801,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
-        this._computePositionInfo(slides, max_rows);
+        this._computePositionInfo(slides, options.max_rows);
     },
     
     getGroupLabels: function() { /* For now, assume one row per group */
@@ -9954,6 +9868,24 @@ VCO.TimeScale = VCO.Class.extend({
     
     getMinorScale: function() {
         return this._axis_helper.minor.name;
+    },
+
+    _assessGroups: function(slides) {
+        var groups = [];
+        var empty_group = false;
+        for (var i = 0; i < slides.length; i++) {
+            if(slides[i].group) {
+                if(groups.indexOf(slides[i].group) < 0) {
+                    groups.push(slides[i].group);
+                } else {
+                    empty_group = true;
+                }            
+            } 
+        };
+        if (groups.length && empty_group) {
+            groups.push('');
+        }
+        return groups;
     },
 
     _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
@@ -10034,8 +9966,6 @@ VCO.TimeScale = VCO.Class.extend({
     },
 
 });
-
-
 /*	VCO.TimeAxis
 	Display element for showing timescale ticks
 ================================================== */
@@ -10316,8 +10246,6 @@ VCO.TimeAxis = VCO.Class.extend({
 	}
 	
 });
-
-
 /*  VCO.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
@@ -10420,8 +10348,6 @@ VCO.AxisHelper = VCO.Class.extend({
         return helpers[helpers.length - 1]; // last resort           
     }
 })(VCO.AxisHelper);
-
-
 /*	TimelineJS
 	Designed and built by Zach Wise at KnightLab
 	
@@ -11156,8 +11082,6 @@ VCO.Timeline.source_path = (function() {
 	var src = script_tags[script_tags.length-1].src;
 	return src.substr(0,src.lastIndexOf('/'));
 })();
-
-
 
 
 

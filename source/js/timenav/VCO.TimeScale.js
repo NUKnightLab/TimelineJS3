@@ -6,11 +6,22 @@
 ================================================== */
 VCO.TimeScale = VCO.Class.extend({
     
-    initialize: function (scale, slides, display_width, screen_multiplier, max_rows) {
-        this._scale = scale || 'javascript';    // default
-        
-        this._display_width = display_width || 500; //arbitrary default
-        this._screen_multiplier = screen_multiplier || 3;
+    initialize: function (timeline_config, options) {
+        timeline_config = VCO.Util.extend({ // establish defaults
+            scale: 'javascript'
+        }, timeline_config);
+
+        var slides = timeline_config.events;
+        this._scale = timeline_config.scale;
+
+        options = VCO.Util.extend({ // establish defaults
+            display_width: 500,
+            screen_multiplier: 3,
+            max_rows: null
+        }, options);
+
+        this._display_width = options.display_width;
+        this._screen_multiplier = options.screen_multiplier;
         this._pixel_width = this._screen_multiplier * this._display_width;
 
         this._group_labels = undefined;
@@ -28,7 +39,7 @@ VCO.TimeScale = VCO.Class.extend({
         this._axis_helper = VCO.AxisHelper.getBestHelper(this);
 
         this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
-        this._computePositionInfo(slides, max_rows);
+        this._computePositionInfo(slides, options.max_rows);
     },
     
     getGroupLabels: function() { /* For now, assume one row per group */
@@ -95,6 +106,24 @@ VCO.TimeScale = VCO.Class.extend({
     
     getMinorScale: function() {
         return this._axis_helper.minor.name;
+    },
+
+    _assessGroups: function(slides) {
+        var groups = [];
+        var empty_group = false;
+        for (var i = 0; i < slides.length; i++) {
+            if(slides[i].group) {
+                if(groups.indexOf(slides[i].group) < 0) {
+                    groups.push(slides[i].group);
+                } else {
+                    empty_group = true;
+                }            
+            } 
+        };
+        if (groups.length && empty_group) {
+            groups.push('');
+        }
+        return groups;
     },
 
     _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels

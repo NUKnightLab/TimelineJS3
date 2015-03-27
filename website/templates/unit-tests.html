@@ -299,14 +299,20 @@
         equal(d.getDisplayDate(msgs),"2014")
       });
 
-      module("media type tests", {});
+      // test("TimeScale._assessGroups", function(){
+      //   var slides = [{group: 'alice'}, { group: 'bob'}, {group: 'alice'}, {group: 'carol'}];
+      //   var groups = VCO.TimeScale._assessGroups(slides);
+      //   equal(groups.length,3);
+      // });
 
-      
+
+
+
 
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
-          this.timeline_config = new VCO.TimelineConfig('examples/marktwain.json',function(){
+          this.timeline_config = new VCO.TimelineConfig('test/marktwain.json',function(){
             start();
           });
         }
@@ -314,7 +320,7 @@
 
       test("TimelineConfig", function() {
         ok(this.timeline_config,"config loaded")
-        var slides = this.timeline_config.slides;
+        var slides = this.timeline_config.events;
         var sorted = true;
         for (var i = 0; i < slides.length - 1; i++) {
           var earlier = slides[i];
@@ -328,34 +334,37 @@
 
       test("TimeScale", function() {
         ok(this.timeline_config,"test data loaded");
-        var timescale = new VCO.TimeScale(this.timeline_config.slides);
+        var timescale = new VCO.TimeScale(this.timeline_config,{display_width: 2200, screen_multiplier: 3});
         equal(timescale.getMinorScale(),'year',"timescale should be years");
         ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
         ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
-        equal(timescale.getNumberOfRows(),5,"Expecting 5 rows") // this will change if someone monkeys around with the config file!
+        equal(timescale.getNumberOfRows(),6,"Expecting 6 rows") // this will change if someone monkeys around with the config file!
         equal(timescale.getScale(),'javascript','test case uses JS dates')
+
+
       });
+
 
       module("marktwain_juked tests",{ // setup for tests that need TimelineConfig
         setup: function() {
           stop();
-          this.timeline_config = new VCO.TimelineConfig('examples/marktwain_juked.json',function(){
+          this.timeline_config = new VCO.TimelineConfig('test/marktwain_juked.json',function(){
             start();
           });
         }
       });
 
       test("TimeScale", function() {
-        var timescale = new VCO.TimeScale(this.timeline_config.slides);
+        var timescale = new VCO.TimeScale(this.timeline_config);
         equal(timescale.getNumberOfRows(),6, "expect 6 rows");
-        equal(timescale._positions.length,this.timeline_config.slides.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+this.timeline_config.slides.length+")")
+        equal(timescale._positions.length,this.timeline_config.events.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+this.timeline_config.events.length+")")
         var row_check = new Array(timescale.getNumberOfRows());
         for (var i = 0; i < row_check.length; i++) {
           row_check[i] = [];
         };
         var all_posinfos_defined = true;
         var all_posinfos
-        for (var i = 0; i < this.timeline_config.slides.length; i++) {
+        for (var i = 0; i < this.timeline_config.events.length; i++) {
           var pos_info = timescale.getPositionInfo(i);
           all_posinfos_defined = all_posinfos_defined && (typeof(pos_info) != "undefined")
           row_check[pos_info.row].push(pos_info);
@@ -370,23 +379,24 @@
           };
           ok(no_overlaps,"No overlaps in row " + i)
         };
-        equal(slides_in_rows,this.timeline_config.slides.length,"In checking rows we should have seen all slides")
+        equal(slides_in_rows,this.timeline_config.events.length,"In checking rows we should have seen all slides")
       })
 
       test("TimeScale max rows", function() {
-        var config = new VCO.TimelineConfig({timeline: { slides: 
+        var config = new VCO.TimelineConfig({ scale: 'cosmological',
+          events: 
           [
-            {start_date: 1, end_date: 1000},
-            {start_date: 100, end_date: 1500},
-            {start_date: 200, end_date: 2000},
-            {start_date: 300, end_date: 2500},
-            {start_date: 400, end_date: 2600},
-            {start_date: 500, end_date: 4000},
+            {start_date: {year: 1}, end_date: {year: 1000}},
+            {start_date: {year: 100}, end_date: {year: 1500}},
+            {start_date: {year: 200}, end_date: {year: 2000}},
+            {start_date: {year: 300}, end_date: {year: 2500}},
+            {start_date: {year: 400}, end_date: {year: 2600}},
+            {start_date: {year: 500}, end_date: {year: 4000}},
           ]
-        }})
-        var timescale = new VCO.TimeScale(config.slides,600,3,4);
+        })
+        var timescale = new VCO.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 4});
         equal(timescale.getNumberOfRows(),4,"Max rows 4 should be honored.")
-        var timescale = new VCO.TimeScale(config.slides,600,3,3);
+        var timescale = new VCO.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 3});
         equal(timescale.getNumberOfRows(),3,"Max rows 3 should be honored.")
       });
 
