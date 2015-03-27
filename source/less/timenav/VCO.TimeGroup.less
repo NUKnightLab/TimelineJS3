@@ -7,11 +7,7 @@
 	position:absolute;
 	top:0;
 	left:0;
-	cursor:pointer;
-	//background-color:lighten(@color-theme-complement,33);
-	//background-color:darken(@ui-background-color,3);
-	//background-color:@ui-background-color;
-	background-color:lighten(@ui-background-color,5);
+
 	background-color:@ui-background-color;
 	
 	display: -ms-flexbox;
@@ -21,23 +17,15 @@
 	-ms-flex-align: center;
 	-webkit-align-items: center;
 	-webkit-box-align: center;
-	//color:#FFF;
-	//text-align:center;
 
 	.vco-timegroup-message {
-		//color:darken(@ui-background-color-darker, 15);
-		color:darken(@ui-background-color-darker,5);
-		text-shadow: @color-background 0px 1px 1px;
-		margin-left:60px;
+		color:darken(@ui-background-color-darker,2);
+		text-shadow: @color-background 0px 2px 2px;
+		margin-left:80px;
 	}
 	
 	&.vco-timegroup-alternate {
-		//background-color:lighten(@color-theme-complement,10);
-		//background-color:darken(@ui-background-color,2);
 		background-color:lighten(@ui-background-color,3);
-		.vco-timegroup-message {
-			//color:darken(@ui-background-color-darker,20);
-		}
 	}
 	
 	/* Animate Left Width and Top

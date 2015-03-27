@@ -204,14 +204,14 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_positionGroups: function() {
 		if (this.options.has_groups){
-			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
+			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight ),
 				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
 				group_labels		= this.timescale.getGroupLabels();
 			
 			for (var i = 0; i < group_labels.length; i++) {
-				var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
+				var group_y = Math.floor(i * (group_height + this.options.marker_padding));
 			
-				this._groups[i].setRowPosition(group_y, group_height);
+				this._groups[i].setRowPosition(group_y, group_height + this.options.marker_padding); 
 				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
 			}
 		}
