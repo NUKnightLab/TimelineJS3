@@ -69,14 +69,16 @@ https://www.google.com/fonts/specimen/Megrim
 }
 .vco-timeline .vco-slidenav-next,
 .vco-timeline .vco-slidenav-previous,
-.vco-timeline .vco-message {
+.vco-timeline .vco-message,
+.vco-timeline .vco-timegroup-message {
   font-family: 'Megrim', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
   font-weight: 400;
   text-transform: normal;
 }
 .vco-timeline .vco-slidenav-next .vco-slidenav-title,
 .vco-timeline .vco-slidenav-previous .vco-slidenav-title,
-.vco-timeline .vco-message .vco-slidenav-title {
+.vco-timeline .vco-message .vco-slidenav-title,
+.vco-timeline .vco-timegroup-message .vco-slidenav-title {
   line-height: 1.3em !important;
 }
 .vco-timeline .vco-headline-date,

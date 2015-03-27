@@ -42,6 +42,7 @@ VCO.TimeNav = VCO.Class.extend({
 			height: 				600,
 			duration: 				1000,
 			ease: 					VCO.Ease.easeInOutQuint,
+			has_groups: 			false,
 			optimal_tick_width: 	50,
 			scale_factor: 			2, 				// How many screen widths wide should the timeline be
 			marker_padding: 		5,
@@ -180,20 +181,20 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_createGroups: function() {
 		var group_labels = this.timescale.getGroupLabels();
-		for (var i = 0; i < group_labels.length; i++) {
-			this._createGroup(group_labels[i]);
-		}	
+		
+		if (group_labels) {
+			this.options.has_groups = true;
+			for (var i = 0; i < group_labels.length; i++) {
+				this._createGroup(group_labels[i]);
+			}
+		}
+		
 	},
 	
 	_createGroup: function(group_name) {
-		trace(group_name);
-		
-		
 		var group = new VCO.TimeGroup(group_name);
 		this._addGroup(group);
 		this._groups.push(group);
-		
-		
 	},
 	
 	_addGroup:function(group) {
@@ -202,17 +203,23 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionGroups: function() {
-		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
-			group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
-			group_labels		= this.timescale.getGroupLabels();
+		if (this.options.has_groups){
+			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
+				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
+				group_labels		= this.timescale.getGroupLabels();
 			
-		for (var i = 0; i < group_labels.length; i++) {
-			var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
-			trace(this._groups[i]);
-			this._groups[i].setPosition({top:group_y});
-			trace(group_labels[i]);
-			trace(group_y)
+			for (var i = 0; i < group_labels.length; i++) {
+				var group_y = Math.floor(i * (group_height + this.options.marker_padding)) + this.options.marker_padding;
+				trace(this._groups[i]);
+			
+				this._groups[i].setRowPosition(group_y, group_height);
+				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
+			
+				trace(group_labels[i]);
+				trace(group_y)
+			}
 		}
+		
 	},
 	
 	/*	Markers
