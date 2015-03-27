@@ -9892,12 +9892,15 @@ VCO.TimeScale = VCO.Class.extend({
     
     getGroupLabels: function() { /* For now, assume one row per group */
         var label_info = [];
-        for (var i = 0; i < this._group_labels.length; i++) {
-            label_info.push({
-                label: this._group_labels[i],
-                rows: 1
-            }); // later, count the real number of rows per group
-        }
+		if (this._group_labels) {
+	        for (var i = 0; i < this._group_labels.length; i++) {
+	            label_info.push({
+	                label: this._group_labels[i],
+	                rows: 1
+	            }); // later, count the real number of rows per group
+	        }
+		}
+        
         return label_info;
     },
     
