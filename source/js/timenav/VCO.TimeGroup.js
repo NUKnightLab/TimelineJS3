@@ -10,7 +10,7 @@ VCO.TimeGroup = VCO.Class.extend({
 	
 	/*	Constructor
 	================================================== */
-	initialize: function(group_name) {
+	initialize: function(data) {
 		
 		// DOM ELEMENTS
 		this._el = {
@@ -27,12 +27,15 @@ VCO.TimeGroup = VCO.Class.extend({
 		
 		// Data
 		this.data = {
-			group_name: group_name
+			label: "",
+			rows: 1
 		};
 		
 		
 		this._el.container = VCO.Dom.create("div", "vco-timegroup"); 
 		
+		// Merge Data
+		VCO.Util.mergeData(this.data, data);
 		
 		// Animation
 		this.animator = {};
@@ -54,9 +57,9 @@ VCO.TimeGroup = VCO.Class.extend({
 	},
 	
 	setRowPosition: function(n, h) {
-		this.options.height = h;
+		this.options.height = h * this.data.rows;
 		this.setPosition({top:n});
-		this._el.container.style.height = h + "px";
+		this._el.container.style.height = this.options.height + "px";
 		
 	},
 	
@@ -83,7 +86,7 @@ VCO.TimeGroup = VCO.Class.extend({
 		
 		// Create Layout
 		this._el.message = VCO.Dom.create("div", "vco-timegroup-message", this._el.container);
-		this._el.message.innerHTML = this.data.group_name;
+		this._el.message.innerHTML = this.data.label;
 		
 		
 	},

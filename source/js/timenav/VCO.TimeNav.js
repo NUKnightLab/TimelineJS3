@@ -61,6 +61,9 @@ VCO.TimeNav = VCO.Class.extend({
 		// Groups Array
 		this._groups = [];
 		
+		// Row Height
+		this._calculated_row_height = 100;
+		
 		// Current Marker
 		this.current_id = "";
 		
@@ -208,10 +211,10 @@ VCO.TimeNav = VCO.Class.extend({
 				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
 				group_labels		= this.timescale.getGroupLabels();
 			
-			for (var i = 0; i < group_labels.length; i++) {
+			for (var i = 0; i < this._groups.length; i++) {
 				var group_y = Math.floor(i * (group_height + this.options.marker_padding));
-			
-				this._groups[i].setRowPosition(group_y, group_height + this.options.marker_padding); 
+				
+				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2); 
 				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
 			}
 		}
@@ -270,12 +273,9 @@ VCO.TimeNav = VCO.Class.extend({
 	_assignRowsToMarkers: function() {
 		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
 			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
-		/*	
-		if (marker_height < this.options.marker_height_min) {
-			this.timescale = this._getTimeScale();
-			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
-		}
-		*/
+			
+		this._calculated_row_height = Math.floor(available_height /this.timescale.getNumberOfRows());
+			
 		for (var i = 0; i < this._markers.length; i++) {
 			
 			// Set Height
