@@ -7424,8 +7424,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 		 
 	},
 	
-	createMedia: function(d) {	
-		trace("create_media")	
+	createMedia: function(d) {
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
@@ -7633,8 +7632,15 @@ VCO.Media.Website = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
-	}
+	},
 	
+	updateMediaDisplay: function() {
+		
+	},
+	
+	_updateMediaDisplay: function() {
+		
+	}
 	
 	
 });
