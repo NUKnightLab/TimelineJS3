@@ -78,6 +78,8 @@ VCO.Slide = VCO.Class.extend({
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
 		
+		trace(this.data);
+		
 		this._initLayout();
 		this._initEvents();
 		
@@ -169,6 +171,11 @@ VCO.Slide = VCO.Class.extend({
 	_initLayout: function () {
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
+		
+		if (this.has.title) {
+			this._el.container.className = "vco-slide vco-slide-titleslide";
+		}
+		
 		if (this.data.uniqueid) {
 			this._el.container.id 		= this.data.uniqueid;
 		}
