@@ -136,8 +136,28 @@ The data file should be in JSON format with the following structure
 * **`zoom_in`** fires when timeline zooms in. returns `zoom_level`
 * **`zoom_out`** fires when timeline zooms out. returns `zoom_level`
 * **`hash_updated`** fires when hash bookmark is updated returns `uniqueid` and `hashbookmark` name
-	
-## Extending Media Types
+
+## Media Types
+We support the following media types
+* Flickr
+* Instagram
+* Images
+* Vimeo
+* YouTube
+* Vine
+* Daily Motion
+* Soundcloud
+* Spotify
+* Storify
+* Document Cloud
+* Google Maps
+* Google Docs
+* iFrames
+* Blockquotes
+* Twitter
+* Website Links
+
+### Extending Media Types
 * Create a new class for the media type in `source/js/media/type`. It's easiest to duplicate an existing one and change the filename and classname.
 * Add the new file to the code-kit compile list inside the main `VCO.Timeline.js` file. Code-kit uses the following language to prepend the file to the compile `// @codekit-prepend "media/types/VCO.Media.YourMediaTypeName.js";`
 * Add a new object to the `media_types` array in `source/js/media/VCO.MediaType.js`. Make sure to have the correct class name in `cls` and use `match_str` as a regex to help timeline figure out what type of media the given url is.
