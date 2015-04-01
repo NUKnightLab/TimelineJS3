@@ -5,3 +5,4 @@ Werkzeug==0.9.6
 boto==2.32.1
 itsdangerous==0.24
 wsgiref==0.1.2
+Fabric==1.10.0
