@@ -177,7 +177,8 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			language:               	"en"		
+			language:               	"en",
+            ga_property_id:             null
 		};
 		
 		// Current Slide
@@ -612,6 +613,39 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
+
+    _ga: function(e, type) {
+		var self_ = this;
+        console.log('exec _ga');
+        console.log(e);
+        console.log(this.options.ga_property_id);
+        ga('send', type);
+        console.log('sent ga event');
+    },
+
+    _initGoogleAnalytics: function() {
+		var self_ = this;
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', self_.options.ga_property_id, 'auto');
+        console.log('created ga');
+        console.log(ga);
+        //self_.ga = ga;
+    },
+
+    _initAnalytics: function() {
+		var self_ = this;
+        if (self_.options.ga_property_id === null) { return; }
+        var events = ['zoom_in', 'zoom_out'];
+        alert('initing analytics 7');
+        self_._initGoogleAnalytics();
+        for (i=0; i < events.length; i++) {
+            var event_ = events[i];
+            self_.addEventListener(event_, function(e) {
+                self_._ga(e, event_);
+            });
+        }
+    },
 		
 	/* Get index of event by id
 	================================================== */
@@ -645,6 +679,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.fire("dataloaded");
 		this._initLayout();
 		this._initEvents();
+        this._initAnalytics();
 		this.ready = true;
 		
 	},

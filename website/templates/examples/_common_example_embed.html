@@ -17,7 +17,7 @@
       function createNewTimeline(){
         $("#timeline-embed").empty();
         $("link[title=timeline-styles]").attr({href: "/build/css/timeline.css"});
-          window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
+          window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', { "ga_property_id":"UA-62145120-1"});
 
           if ($("#timeline-embed").height() == 0) {
             setTimeout(function(){
