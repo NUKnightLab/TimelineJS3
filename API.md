@@ -61,6 +61,7 @@ timeline.on(event_name, function(data) {
 * uniqueid: string, the id of the modified slide
 
 `nav_next` fires when next button is clicked
+
 `nav_previous` fires when next button is clicked
 
 
