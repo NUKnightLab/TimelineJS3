@@ -78,8 +78,6 @@ VCO.Slide = VCO.Class.extend({
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
 		
-		trace(this.data);
-		
 		this._initLayout();
 		this._initEvents();
 		

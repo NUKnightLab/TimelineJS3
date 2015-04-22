@@ -440,7 +440,12 @@ VCO.Timeline = VCO.Class.extend({
 		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
 		
 		// Positon Menu
-		menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
+		if (this.options.timenav_position == "top") {
+			menu_position = ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (39/2) ;
+		} else {
+			menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
+		}
+		
 		
 		if (animate) {
 		
@@ -606,6 +611,8 @@ VCO.Timeline = VCO.Class.extend({
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
+		this._storyslider.on('nav_next', this._onStorySliderNext, this);
+		this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
 		
 		// Menubar Events
 		this._menubar.on('zoom_in', this._onZoomIn, this);
@@ -739,6 +746,14 @@ VCO.Timeline = VCO.Class.extend({
 	_onStorySliderLoaded: function() {
 		this._loaded.storyslider = true;
 		this._onLoaded();
+	},
+	
+	_onStorySliderNext: function(e) {
+		this.fire("nav_next", e);
+	},
+	
+	_onStorySliderPrevious: function(e) {
+		this.fire("nav_previous", e);
 	},
 		
 	_onLoaded: function() {

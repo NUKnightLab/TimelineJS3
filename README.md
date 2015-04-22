@@ -125,17 +125,7 @@ The data file should be in JSON format with the following structure
 }
 ```
 ## API
-### Methods
-* **`timelineobj.goToId("idname")`** Go to a specific ID
-
-###Events
-* **`change`** returns `uniqueid` which is the `current_id` when the current slide changes.
-* **`dataloaded`** fires when the data is loaded and TimelineJS is ready to render
-* **`loaded`** fires when TimelineJS is loaded and ready 
-* **`back_to_start`** fires when back to start button is activated. returns `uniqueid` which is the `current_id` when the current slide changes.
-* **`zoom_in`** fires when timeline zooms in. returns `zoom_level`
-* **`zoom_out`** fires when timeline zooms out. returns `zoom_level`
-* **`hash_updated`** fires when hash bookmark is updated returns `uniqueid` and `hashbookmark` name
+See API doc here: https://github.com/NUKnightLab/TimelineJS3/blob/master/API.md
 
 ## Media Types
 We support the following media types
