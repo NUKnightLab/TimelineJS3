@@ -135,6 +135,8 @@ The data file should be in JSON format with the following structure
 * **`back_to_start`** fires when back to start button is activated. returns `uniqueid` which is the `current_id` when the current slide changes.
 * **`zoom_in`** fires when timeline zooms in. returns `zoom_level`
 * **`zoom_out`** fires when timeline zooms out. returns `zoom_level`
+* **`nav_next`** fires when next button is clicked
+* **`nav_previous`** fires when next button is clicked
 * **`hash_updated`** fires when hash bookmark is updated returns `uniqueid` and `hashbookmark` name
 
 ## Media Types
