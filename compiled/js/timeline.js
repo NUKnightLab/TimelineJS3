@@ -10658,7 +10658,9 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			language:               	"en"		
+			language: 					"en",
+			ga_property_id: 			null,
+			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
 		
 		// Current Slide
@@ -11100,6 +11102,26 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
+	
+	/* Analytics
+	================================================== */
+    _initGoogleAnalytics: function() {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', this.options.ga_property_id, 'auto');
+    },
+
+    _initAnalytics: function() {
+        if (this.options.ga_property_id === null) { return; }
+        this._initGoogleAnalytics();
+        var events = this.options.track_events;
+        for (i=0; i < events.length; i++) {
+            var event_ = events[i];
+            this.addEventListener(event_, function(e) {
+                ga('send', e.type);
+            });
+        }
+    },
 		
 	/* Get index of event by id
 	================================================== */
@@ -11133,6 +11155,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.fire("dataloaded");
 		this._initLayout();
 		this._initEvents();
+        this._initAnalytics();
 		this.ready = true;
 		
 	},

@@ -57,7 +57,8 @@ html(lang="en")
 		script(src='js/timeline.js')
 		script.
 			var timeline = new VCO.Timeline('timeline', 'examples/welcome.json', {
-				theme_color: "#288EC3"
+				theme_color: "#288EC3",
+				ga_property_id: "UA-62145120-1"
 			});
 			window.onresize = function(event) {
 				timeline.updateDisplay();
