@@ -2967,7 +2967,7 @@ VCO.TimelineConfig = VCO.Class.extend({
         return key;
     }
 
-    function extractGoogleEntryData(item) {
+    function extractGoogleEntryData_V1(item) {
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
@@ -2996,12 +2996,66 @@ VCO.TimelineConfig = VCO.Class.extend({
         return d;
     }
 
+    function extractGoogleEntryData_V3(item) {
+        var item_data = {}
+        for (k in item) {
+            if (k.indexOf('gsx$') == 0) {
+                item_data[k.substr(4)] = item[k].$t;
+            }
+        }
+        var d = {
+            media: {
+                caption: item_data.mediacaption || '',
+                credit: item_data.mediacredit || '',
+                url: item_data.media || '',
+                thumb: item_data.mediathumbnail || ''
+            },
+            text: {
+                headline: item_data.headline || '',
+                text: item_data.text || ''
+            },
+            start_date: {
+                year: item_data.year,
+                month: item_data.month || '',
+                day: item_data.day || '',
+                time: item_data.time || ''
+            },
+            end_date: {
+                year: item_data.endyear || '',
+                month: item_data.endmonth || '',
+                day: item_data.endday || '',
+                time: item_data.endtime || ''
+            },
+            display_date: item_data.displaydate || ''
+        }
+        return d;
+    }
+
+    var getGoogleItemExtractor = function(data) {
+        if (typeof data.feed.entry === 'undefined' 
+                || data.feed.entry.length == 0) {
+            throw('No data entries found.');
+        }
+        var entry = data.feed.entry[0];
+        if (typeof entry.gsx$startdate !== 'undefined') {
+            return extractGoogleEntryData_V1;
+        } else if (typeof entry.gsx$year !== 'undefined') {
+            return extractGoogleEntryData_V3;
+        } else {
+            throw('Invalid data format.');
+        }
+    }
+
     VCO.ConfigFactory = {
         fromGoogle: function(url) {
             var key = extractSpreadsheetKey(url);
             // TODO: maybe get specific worksheets?
             var worksheet = '1';
             url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
+            return this.fromFeed(url);
+        },
+
+        fromFeed: function(url) {
             var data = VCO.ajax({
                 url: url, 
                 async: false
@@ -3009,11 +3063,12 @@ VCO.TimelineConfig = VCO.Class.extend({
             var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
+            var extract = getGoogleItemExtractor(data);
             for (var i = 0; i < data.feed.entry.length; i++) {
-                events.push(extractGoogleEntryData(data.feed.entry[i]));
+                events.push(extract(data.feed.entry[i]));
             };
             return {scale: 'javascript', events: events}
-        }   
+        }
     }
 })(VCO)
 
@@ -10895,13 +10950,9 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			language:               	"en",
-            ga_property_id:             null,
-            track_events:               [ 'back_to_start',
-                                          'nav_next',
-                                          'nav_previous',
-                                          'zoom_in',
-                                          'zoom_out' ]
+			language: 					"en",
+			ga_property_id: 			null,
+			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
 		
 		// Current Slide
@@ -11343,7 +11394,9 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
-
+	
+	/* Analytics
+	================================================== */
     _initGoogleAnalytics: function() {
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
@@ -11352,14 +11405,6 @@ VCO.Timeline = VCO.Class.extend({
 
     _initAnalytics: function() {
         if (this.options.ga_property_id === null) { return; }
-        /*
-        var events = [
-            'back_to_start',
-            'nav_next',
-            'nav_previous',
-            'zoom_in',
-            'zoom_out'
-        ]; */
         this._initGoogleAnalytics();
         var events = this.options.track_events;
         for (i=0; i < events.length; i++) {
