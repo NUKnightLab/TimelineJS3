@@ -3047,6 +3047,9 @@ VCO.TimelineConfig = VCO.Class.extend({
     }
 
     VCO.ConfigFactory = {
+
+        extractSpreadsheetKey: extractSpreadsheetKey,
+
         fromGoogle: function(url) {
             var key = extractSpreadsheetKey(url);
             // TODO: maybe get specific worksheets?
