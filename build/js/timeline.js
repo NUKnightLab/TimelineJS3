@@ -4760,7 +4760,7 @@ VCO.Date = VCO.Class.extend({
  		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
 			if (isNaN(parsed)) {
-                parsed = (ix == 1 || ix == 2) ? 1 : 0; // month and day have diff baselines
+                parsed = (ix == 4 || ix == 5) ? 1 : 0; // month and day have diff baselines
             }
 			_date[DATE_PARTS[ix]] = parsed;
 		}
