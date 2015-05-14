@@ -201,8 +201,8 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	_createGroup: function(group_name) {
-		var group = new VCO.TimeGroup(group_name);
+	_createGroup: function(group_label) {
+		var group = new VCO.TimeGroup(group_label);
 		this._addGroup(group);
 		this._groups.push(group);
 	},
@@ -213,19 +213,20 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionGroups: function() {
-		if (this.options.has_groups){
+		if (this.options.has_groups) {
 			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight ),
 				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
 				group_labels		= this.timescale.getGroupLabels();
 			
-			for (var i = 0; i < this._groups.length; i++) {
-				var group_y = Math.floor(i * (group_height + this.options.marker_padding));
+			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
+				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
 				
 				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2); 
 				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
+				
+				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
 			}
-		}
-		
+		}		
 	},
 	
 	/*	Markers

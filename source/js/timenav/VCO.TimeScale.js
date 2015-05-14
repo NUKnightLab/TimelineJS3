@@ -47,17 +47,7 @@ VCO.TimeScale = VCO.Class.extend({
             * label (the string as specified in one or more 'group' properties of events in the configuration)
             * rows (the number of rows occupied by events associated with the label. ) 
         */
-        var label_info = [];
-		if (this._group_labels) {
-	        for (var i = 0; i < this._group_labels.length; i++) {
-	            label_info.push({
-	                rows: 1,
-                    label: this._group_labels[i]
-	            }); // later, count the real number of rows per group
-	        }
-		}
-        
-        return label_info;
+        return (this._group_labels || []);
     },
     
     getScale: function() {
@@ -134,7 +124,9 @@ VCO.TimeScale = VCO.Class.extend({
         default_marker_width = default_marker_width || 100;
         var lasts_in_rows = []; 
         var groups = [];
- 
+        var empty_group = false;
+
+        // Set x offsets and widths; build list of groups
         for (var i = 0; i < slides.length; i++) {
             var pos_info = { start: this.getPosition(slides[i].start_date.getTime()) }
             this._positions.push(pos_info);
@@ -154,27 +146,93 @@ VCO.TimeScale = VCO.Class.extend({
             if(slides[i].group) {
                 if(groups.indexOf(slides[i].group) < 0) {
                     groups.push(slides[i].group);
+                    lasts_in_rows.push([]);
                 }            
-            } 
+            } else {
+                empty_group = true;
+            }
         }
 
-        if(groups.length) {
-            var empty_group = false;
-            
+        if(groups.length) {           
+            // Set row for each item based on group
             for(var i = 0; i < this._positions.length; i++) {
                 var pos_info = this._positions[i];
                 if(slides[i].group) {
                     pos_info.row = groups.indexOf(slides[i].group);
                 } else {
-                    empty_group = true;
                     pos_info.row = groups.length;
                 }
             }
             if(empty_group) {
                 groups.push("");
+                lasts_in_rows.push([]);
             }
-            this._group_labels = groups;
-            this._number_of_rows = groups.length;
+
+            // Minimize intra-group overlap
+            var rows_left = Math.max(0, max_rows - groups.length);
+                        
+            for(var i = 0; i < this._positions.length; i++) {
+                var pos_info = this._positions[i];
+                var overlaps = [];
+                var row = pos_info.row;
+                var group_lasts_in_rows = lasts_in_rows[row];
+                               
+                for(var j = 0; j < group_lasts_in_rows.length; j++) {
+                    overlaps.push(group_lasts_in_rows[j].end - pos_info.start);
+                    if(overlaps[j] <= 0) {
+                        pos_info.row_offset = j;
+                        group_lasts_in_rows[j] = pos_info;
+                        break;
+                    }                        
+                }
+                if (typeof(pos_info.row_offset) == 'undefined') {                   
+                    if ((!max_rows) || (rows_left > 0)) {
+                        // There is room to add another row for this group
+                        pos_info.row_offset = group_lasts_in_rows.length;
+                        group_lasts_in_rows.push(pos_info);  
+                        
+                        if(pos_info.row_offset > 0) {
+                            rows_left--;
+                        }
+                    } else {
+                        // Out of extra rows; add to group's row with minimum overlap.
+                        var min_overlap = Math.min.apply(null,overlaps);
+                        var idx = overlaps.indexOf(min_overlap);
+                        
+                        if(idx < 0) {   // first one 
+                            pos_info.row_offset = 0;   
+                            group_lasts_in_rows[0] = pos_info;                          
+                        } else {
+                            pos_info.row_offset = idx;
+                            if (pos_info.end > group_lasts_in_rows[idx].end) {
+                                group_lasts_in_rows[idx] = pos_info;                       
+                            }                                            
+                        }
+                    }                        
+                }   
+            }             
+
+            var group_offsets = []; // group i to row offset j
+
+            this._group_labels = [];
+            this._number_of_rows = 0;
+                        
+            for(var i = 0; i < groups.length; i++) {
+                group_offsets.push(this._number_of_rows);
+                this._group_labels.push({
+                    label: groups[i],
+                    rows: lasts_in_rows[i].length
+                });
+                this._number_of_rows += lasts_in_rows[i].length;
+            }
+            
+            // Reset row positions to account for groups with multiple rows
+            for(var i = 0; i < this._positions.length; i++) {
+                var pos_info = this._positions[i];
+                pos_info.row = group_offsets[pos_info.row] + pos_info.row_offset;
+                delete pos_info.row_offset
+            }
+
         } else {
             for (var i = 0; i < this._positions.length; i++) {
                 var pos_info = this._positions[i];
