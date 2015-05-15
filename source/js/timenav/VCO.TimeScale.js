@@ -120,16 +120,75 @@ VCO.TimeScale = VCO.Class.extend({
         return groups;
     },
 
-    _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
+    /*  Compute the marker row positions, minimizing the number of
+        overlaps.
+        
+        @positions = list of objects from this._positions
+        @rows_left = number of rows available (assume > 0)
+    */
+    _computeRowInfo: function(positions, rows_left) {
+        var lasts_in_row = [];
+        var n_overlaps = 0;
+        
+        for (var i = 0; i < positions.length; i++) {
+            var pos_info = positions[i];      
+            var overlaps = [];
+                       
+            // See if we can add item to an existing row without 
+            // overlapping the previous item in that row      
+            delete pos_info.row;
+             
+            for (var j = 0; j < lasts_in_row.length; j++) {
+                overlaps.push(lasts_in_row[j].end - pos_info.start);
+                if(overlaps[j] <= 0) {
+                    pos_info.row = j;
+                    lasts_in_row[j] = pos_info;
+                    break;
+                }                        
+            }
+            
+            // If we couldn't add to an existing row without overlap...
+            if (typeof(pos_info.row) == 'undefined') {                   
+                if (rows_left > 0) {
+                    // Make a new row
+                    pos_info.row = lasts_in_row.length;
+                    lasts_in_row.push(pos_info);  
+                    rows_left--;
+                } else {
+                    // Add to existing row with minimum overlap.
+                    var min_overlap = Math.min.apply(null, overlaps);
+                    var idx = overlaps.indexOf(min_overlap);                   
+                    pos_info.row = idx;
+                    if (pos_info.end > lasts_in_row[idx].end) {
+                        lasts_in_row[idx] = pos_info;                                          
+                    }
+                    n_overlaps++;
+                }                        
+            }   
+        }   
+        
+        return {n_rows: lasts_in_row.length, n_overlaps: n_overlaps};
+    },   
+
+    /*  Compute marker positions.  If using groups, this._number_of_rows
+        will never be less than the number of groups.
+        
+        @max_rows = total number of available rows
+        @default_marker_width should be in pixels
+    */
+    _computePositionInfo: function(slides, max_rows, default_marker_width) {
         default_marker_width = default_marker_width || 100;
-        var lasts_in_rows = []; 
+        
         var groups = [];
         var empty_group = false;
 
-        // Set x offsets and widths; build list of groups
+        // Set start/end/width; enumerate groups
         for (var i = 0; i < slides.length; i++) {
-            var pos_info = { start: this.getPosition(slides[i].start_date.getTime()) }
+            var pos_info = {
+                start: this.getPosition(slides[i].start_date.getTime()) 
+            };
             this._positions.push(pos_info);
+            
             if (typeof(slides[i].end_date) != 'undefined') {
                 var end_pos = this.getPosition(slides[i].end_date.getTime());
                 pos_info.width = end_pos - pos_info.start;
@@ -146,123 +205,109 @@ VCO.TimeScale = VCO.Class.extend({
             if(slides[i].group) {
                 if(groups.indexOf(slides[i].group) < 0) {
                     groups.push(slides[i].group);
-                    lasts_in_rows.push([]);
                 }            
             } else {
                 empty_group = true;
             }
         }
 
-        if(groups.length) {           
-            // Set row for each item based on group
-            for(var i = 0; i < this._positions.length; i++) {
-                var pos_info = this._positions[i];
-                if(slides[i].group) {
-                    pos_info.row = groups.indexOf(slides[i].group);
-                } else {
-                    pos_info.row = groups.length;
-                }
-            }
+        if(groups.length) {                       
             if(empty_group) {
                 groups.push("");
-                lasts_in_rows.push([]);
             }
 
-            // Minimize intra-group overlap
-            var rows_left = Math.max(0, max_rows - groups.length);
-                        
+            // Init group info
+            var group_info = [];            
+            
+            for(var i = 0; i < groups.length; i++) {
+                group_info[i] = {
+                    label: groups[i],
+                    idx: i,
+                    positions: [], 
+                    n_rows: 1,      // default
+                    n_overlaps: 0
+                };
+            }       
+                             
             for(var i = 0; i < this._positions.length; i++) {
                 var pos_info = this._positions[i];
-                var overlaps = [];
-                var row = pos_info.row;
-                var group_lasts_in_rows = lasts_in_rows[row];
-                               
-                for(var j = 0; j < group_lasts_in_rows.length; j++) {
-                    overlaps.push(group_lasts_in_rows[j].end - pos_info.start);
-                    if(overlaps[j] <= 0) {
-                        pos_info.row_offset = j;
-                        group_lasts_in_rows[j] = pos_info;
-                        break;
-                    }                        
-                }
-                if (typeof(pos_info.row_offset) == 'undefined') {                   
-                    if ((!max_rows) || (rows_left > 0)) {
-                        // There is room to add another row for this group
-                        pos_info.row_offset = group_lasts_in_rows.length;
-                        group_lasts_in_rows.push(pos_info);  
-                        
-                        if(pos_info.row_offset > 0) {
-                            rows_left--;
-                        }
-                    } else {
-                        // Out of extra rows; add to group's row with minimum overlap.
-                        var min_overlap = Math.min.apply(null,overlaps);
-                        var idx = overlaps.indexOf(min_overlap);
-                        
-                        if(idx < 0) {   // first one 
-                            pos_info.row_offset = 0;   
-                            group_lasts_in_rows[0] = pos_info;                          
-                        } else {
-                            pos_info.row_offset = idx;
-                            if (pos_info.end > group_lasts_in_rows[idx].end) {
-                                group_lasts_in_rows[idx] = pos_info;                       
-                            }                                            
-                        }
-                    }                        
+                                
+                pos_info.group = groups.indexOf(slides[i].group || "");
+                pos_info.row = 0;
+                
+                var gi = group_info[pos_info.group];
+                for(var j = gi.positions.length - 1; j >= 0; j--) {
+                    if(gi.positions[j].end > pos_info.start) {
+                        gi.n_overlaps++;
+                    }                   
                 }   
-            }             
-
-            var group_offsets = []; // group i to row offset j
-
-            this._group_labels = [];
-            this._number_of_rows = 0;
-                        
-            for(var i = 0; i < groups.length; i++) {
-                group_offsets.push(this._number_of_rows);
-                this._group_labels.push({
-                    label: groups[i],
-                    rows: lasts_in_rows[i].length
-                });
-                this._number_of_rows += lasts_in_rows[i].length;
+                
+                gi.positions.push(pos_info);                
             }
             
-            // Reset row positions to account for groups with multiple rows
-            for(var i = 0; i < this._positions.length; i++) {
-                var pos_info = this._positions[i];
-                pos_info.row = group_offsets[pos_info.row] + pos_info.row_offset;
-                delete pos_info.row_offset
-            }
+            var n_rows = groups.length; // start with 1 row per group
+          
+            while(true) {
+                // Count free rows available              
+                var rows_left = Math.max(0, max_rows - n_rows);                
+                if(!rows_left) {
+                    break;  // no free rows, nothing to do
+                }
 
+                // Sort by # overlaps, idx
+               group_info.sort(function(a, b) {
+                    if(a.n_overlaps > b.n_overlaps) {
+                        return -1;
+                    } else if(a.n_overlaps < b.n_overlaps) {
+                        return 1;
+                    } 
+                    return a.idx - b.idx;
+                });               
+                if(!group_info[0].n_overlaps) {
+                    break; // no overlaps, nothing to do
+                }
+                                                
+                // Distribute free rows among groups with overlaps
+                var n_rows = 0;
+                for(var i = 0; i < group_info.length; i++) {
+                    var gi = group_info[i];
+                    
+                    if(gi.n_overlaps && rows_left) {
+                        var res = this._computeRowInfo(gi.positions,  gi.n_rows + 1);
+                        gi.n_rows = res.n_rows;     // update group info
+                        gi.n_overlaps = res.n_overlaps; 
+                        rows_left--;                // update rows left
+                    } 
+                    
+                    n_rows += gi.n_rows;            // update rows used          
+                }
+            } 
+                        
+            // Set number of rows
+            this._number_of_rows = n_rows;
+                                
+            // Set group labels; offset row positions
+            this._group_labels = [];
+            
+            group_info.sort(function(a, b) {return a.idx - b.idx; });               
+            
+            for(var i = 0, row_offset = 0; i < group_info.length; i++) {
+                this._group_labels.push({
+                    label: group_info[i].label,
+                    rows: group_info[i].n_rows
+                });   
+                 
+                for(var j = 0; j < group_info[i].positions.length; j++) {
+                    var pos_info = group_info[i].positions[j];
+                    pos_info.row += row_offset;
+                }
+                
+                row_offset += group_info[i].n_rows;       
+            }
         } else {
-            for (var i = 0; i < this._positions.length; i++) {
-                var pos_info = this._positions[i];
-                var overlaps = []
-                for (var j = 0; j < lasts_in_rows.length; j++) {
-                    overlaps.push(lasts_in_rows[j].end - pos_info.start);
-                    if (overlaps[j] <= 0) {
-                        pos_info.row = j;
-                        lasts_in_rows[j] = pos_info;
-                        break;
-                    }
-                }
-                if (typeof(pos_info.row) == 'undefined') {
-                    if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
-                        pos_info.row = lasts_in_rows.length;
-                        lasts_in_rows.push(pos_info);
-                    } else {
-                        var min_overlap = Math.min.apply(null,overlaps);
-                        var idx = overlaps.indexOf(min_overlap);
-                        pos_info.row = idx;
-                        if (pos_info.end > lasts_in_rows[idx].end) {
-                            lasts_in_rows[idx] = pos_info
-                        }
-                    }
-                }
-
-            }
-
-            this._number_of_rows = lasts_in_rows.length;      
+            var result = this._computeRowInfo(this._positions, max_rows);  
+            this._number_of_rows = result.n_rows;    
         }  
-    },
-
+        
+    }
 });
