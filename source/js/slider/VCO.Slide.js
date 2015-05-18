@@ -285,7 +285,9 @@ VCO.Slide = VCO.Class.extend({
 		} else if (layout == "landscape") {
 			
 		} else if (this.options.width <= this.options.skinny_size) {
-			
+			content_padding_left = 50;
+			content_padding_right = 50;
+			content_width = this.options.width - content_padding_left - content_padding_right;
 		} else {
 			
 		}

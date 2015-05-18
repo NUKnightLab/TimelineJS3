@@ -108,16 +108,11 @@ VCO.Draggable = VCO.Class.extend({
 	},
 	
 	enable: function(e) {
-		// Temporarily disableing this until I have time to fix some issues.
-		//VCO.DomEvent.addListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		//VCO.DomEvent.addListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
 		
-		this.data.pos.start = 0; //VCO.Dom.getPosition(this._el.move);
+		this.data.pos.start = 0; 
 		this._el.move.style.left = this.data.pos.start.x + "px";
 		this._el.move.style.top = this.data.pos.start.y + "px";
 		this._el.move.style.position = "absolute";
-		//this._el.move.style.zIndex = "11";
-		//this._el.move.style.cursor = "move";
 	},
 	
 	disable: function() {
@@ -134,8 +129,6 @@ VCO.Draggable = VCO.Class.extend({
 	
 	updateConstraint: function(c) {
 		this.options.constraint = c;
-		
-		// Temporary until issues are fixed
 		
 	},
 	
@@ -201,7 +194,7 @@ VCO.Draggable = VCO.Class.extend({
 		}
 		
 		this.data.pos.end = VCO.Dom.getPosition(this._el.drag);
-		this.data.new_pos.x = -(this.data.pagex.start - this.data.pagex.end - this.data.pos.start.x)//-(this.data.pagex.start - this.data.pagex.end - this.data.pos.end.x);
+		this.data.new_pos.x = -(this.data.pagex.start - this.data.pagex.end - this.data.pos.start.x);
 		this.data.new_pos.y = -(this.data.pagey.start - this.data.pagey.end - this.data.pos.start.y );
 		
 		if (this.options.enable.x) {
@@ -231,6 +224,7 @@ VCO.Draggable = VCO.Class.extend({
 		
 		
 		if (VCO.Browser.touch) {
+			// Treat mobile multiplier differently
 			//this.options.momentum_multiplier = this.options.momentum_multiplier * 2;
 		}
 		
