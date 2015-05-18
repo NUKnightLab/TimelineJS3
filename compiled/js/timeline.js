@@ -195,6 +195,26 @@ VCO.Util = {
 		}
 	},
 	
+	/*	* Turns plain text links into real links
+	================================================== */
+	linkify: function(text,targets,is_touch) {
+		
+		// http://, https://, ftp://
+		var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+
+		// www. sans http:// or https://
+		var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+		// Email addresses
+		var emailAddressPattern = /(([a-zA-Z0-9_\-\.]+)@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6}))+/gim;
+		
+
+		return text
+			.replace(urlPattern, "<a target='_blank' href='$&' onclick='void(0)'>$&</a>")
+			.replace(pseudoUrlPattern, "$1<a target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
+			.replace(emailAddressPattern, "<a target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+	},
+	
 	unlinkify: function(text) {
 		if(!text) return text;
 		text = text.replace(/<a\b[^>]*>/i,"");
