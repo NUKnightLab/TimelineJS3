@@ -13,7 +13,7 @@
     "events": [
       {
         "media": {
-          "url": "http://youtu.be/DiQSHiAYt98", 
+          "url": "https://youtu.be/DiQSHiAYt98", 
           "caption": "", 
           "credit": "<a href=\"http://www.nature.com/nature/videoarchive/index.html\">Nature Video Channel</a>"
         }, 
@@ -41,7 +41,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/5/59/Arithmometre.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/5/59/Arithmometre.jpg", 
           "caption": "", 
           "credit": "By <a href=\"http://commons.wikimedia.org/wiki/File%3AArithmometre.jpg\">Ezrdr</a>, via Wikimedia Commons"
         }, 
@@ -55,7 +55,7 @@
       }, 
       {
         "media": {
-          "url": "http://youtu.be/2ypE4ZJF7qY", 
+          "url": "https://youtu.be/2ypE4ZJF7qY", 
           "caption": "The Jacquard loom is still in use today in modern factories. The punch-cards can be clearly seen being pulled to the top of the loom.", 
           "credit": "<a href='http://www.youtube.com/user/FiberMusings'>FiberMusings</a>"
         }, 
@@ -69,7 +69,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/a/a4/Analytical_Engine_%282290032530%29.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/a/a4/Analytical_Engine_%282290032530%29.jpg", 
           "caption": "This modern model of the Analytical Engine is housed at the Science Museum in London.", 
           "credit": "By <a href='http://commons.wikimedia.org/wiki/File%3AAnalytical_Engine_(2290032530).jpg'>Marcin Wichary</a> via Wikimedia Commons"
         }, 
@@ -83,7 +83,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/9/9a/Sholes_typewriter.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/9/9a/Sholes_typewriter.jpg", 
           "caption": "A prototype of the typewriter with the QWERTY layout clearly visible.", 
           "credit": "By George Iles, via Wikimedia Commons"
         }, 
@@ -97,7 +97,7 @@
       }, 
       {
         "media": {
-          "url": "http://youtu.be/UZVEp78b0XI?t=1m54s", 
+          "url": "https://youtu.be/UZVEp78b0XI?t=1m54s", 
           "caption": "A history of early IBM punch card machines and featuring a Pascal calculator.", 
           "credit": "<a href=\"http://www.youtube.com/user/clipcafe\">clipcafe</a>"
         }, 
@@ -125,7 +125,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/1/16/Classic_shot_of_the_ENIAC.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/1/16/Classic_shot_of_the_ENIAC.jpg", 
           "caption": "\"Cpl. Irwin Goldstein (foreground) sets the switches on one of the ENIAC's function tables at the Moore School of Electrical Engineering.\" (Caption via Wikimedia)", 
           "credit": "U.S. Army photo"
         }, 
@@ -139,7 +139,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/5/55/Museum_of_Science%2C_Boston%2C_MA_-_IMG_3163.JPG", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/5/55/Museum_of_Science%2C_Boston%2C_MA_-_IMG_3163.JPG", 
           "caption": "Input for the UNIVAC I was via keyboard in this massive input console.", 
           "credit": "By Daderot (Own work) [Public domain], via Wikimedia Commons"
         }, 
@@ -167,7 +167,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/7/7f/Data_General_Nova_SN_1.agr.JPG", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/7/7f/Data_General_Nova_SN_1.agr.JPG", 
           "caption": "The first Data General Nova minicomputer displayed at the Computer History Museum in Silicon Valley.", 
           "credit": "By Arnold Reinhold, via Wikimedia Commons"
         }, 
@@ -181,7 +181,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/f/f0/SRI_Douglas_Engelbart_2008.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/f/f0/SRI_Douglas_Engelbart_2008.jpg", 
           "caption": "Douglas Engelbart with the first computer mouse prototype.", 
           "credit": "By SRI International, via Wikimedia Commons"
         }, 
@@ -197,7 +197,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/5/5e/Xerox_Alto_mit_Rechner.JPG", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/5/5e/Xerox_Alto_mit_Rechner.JPG", 
           "caption": "", 
           "credit": "By Joho345, via Wikimedia Commons"
         }, 
@@ -211,7 +211,7 @@
       }, 
       {
         "media": {
-          "url": "http://www.flickr.com/photos/euthman/281712899/", 
+          "url": "//www.flickr.com/photos/euthman/281712899/", 
           "caption": "An Apple I computer on display at the Smithsonian.", 
           "credit": "<a href='http://www.flickr.com/photos/euthman/281712899/'>Ed Uthman</a> via Flickr"
         }, 
@@ -225,7 +225,7 @@
       }, 
       {
         "media": {
-          "url": "http://www.flickr.com/photos/mightyohm/5333827381/", 
+          "url": "//www.flickr.com/photos/mightyohm/5333827381/", 
           "caption": "An Apple I computer on display at the Smithsonian.", 
           "credit": "<a href='http://www.flickr.com/photos/mightyohm/5333827381/'>Jeff Keyzer</a> via Flickr"
         }, 
@@ -239,7 +239,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/a/a9/Microsoft_Windows_1.0_page1.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/a/a9/Microsoft_Windows_1.0_page1.jpg", 
           "caption": "", 
           "credit": "By Microsoft, via Wikimedia Commons"
         }, 
@@ -253,7 +253,7 @@
       }, 
       {
         "media": {
-          "url": "http://www.flickr.com/photos/mwichary/2179402603/", 
+          "url": "//www.flickr.com/photos/mwichary/2179402603/", 
           "caption": "The Original Macintosh with extra external floppy drive.", 
           "credit": "<a href='http://www.flickr.com/photos/mwichary/2179402603/'>Marcin Wichary</a> via Flickr"
         }, 
@@ -281,7 +281,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/3/35/Ipod_1G.png", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/3/35/Ipod_1G.png", 
           "caption": "The Original iPod with click wheel user interface.", 
           "credit": "By Rjcflyer@aol.com at en.wikipedia via Wikimedia Commons"
         }, 
@@ -297,7 +297,7 @@
       }, 
       {
         "media": {
-          "url": "http://upload.wikimedia.org/wikipedia/commons/4/49/IPhone_at_Macworld_%28angled_view%29.jpg", 
+          "url": "//upload.wikimedia.org/wikipedia/commons/4/49/IPhone_at_Macworld_%28angled_view%29.jpg", 
           "caption": "", 
           "credit": "By blakeburris, via <a href='http://commons.wikimedia.org/wiki/File:IPhone_at_Macworld_(angled_view).jpg'>Wikimedia Commons</a>"
         }, 
