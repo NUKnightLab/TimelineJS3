@@ -78,8 +78,6 @@ VCO.Slide = VCO.Class.extend({
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
 		
-		trace(this.data);
-		
 		this._initLayout();
 		this._initEvents();
 		
@@ -287,7 +285,9 @@ VCO.Slide = VCO.Class.extend({
 		} else if (layout == "landscape") {
 			
 		} else if (this.options.width <= this.options.skinny_size) {
-			
+			content_padding_left = 50;
+			content_padding_right = 50;
+			content_width = this.options.width - content_padding_left - content_padding_right;
 		} else {
 			
 		}
@@ -305,11 +305,12 @@ VCO.Slide = VCO.Class.extend({
 		}
 		
 		if (this._media) {
+			
 			if (!this.has.text && this.has.headline) {
 				this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
 			} else if (!this.has.text && !this.has.headline) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
-			} else if (this.options.skinny_size) {
+			} else if (this.options.width <= this.options.skinny_size) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
 				this._media.updateDisplay(content_width/2, this.options.height, layout);

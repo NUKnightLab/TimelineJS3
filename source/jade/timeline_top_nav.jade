@@ -8,7 +8,7 @@ html(lang="en")
 		meta(name='apple-touch-fullscreen', content='yes')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0')
 		// CSS
-		link(rel='stylesheet', href='css/timeline.css?v1')
+		link(rel='stylesheet', href='../css/timeline.css?v1')
 
 		//FONT
 		//link(rel='stylesheet', href='css/fonts/font.roboto-megrim.css?v1')
@@ -30,7 +30,7 @@ html(lang="en")
 		//link(rel='stylesheet', href='css/fonts/font.rufina-sintony.css?v1')
 		//link(rel='stylesheet', href='css/fonts/font.opensans-gentiumbook.css?v1')
 		//link(rel='stylesheet', href='css/fonts/font.ubuntu.css?v1')
-		link(rel='stylesheet', href='css/fonts/font.default.css?v1')
+		link(rel='stylesheet', href='../css/fonts/font.default.css?v1')
 		
 		// Style
 		style.
@@ -54,10 +54,11 @@ html(lang="en")
 
 		
 		// JavaScript
-		script(src='js/timeline.js')
+		script(src='../js/timeline.js')
 		script.
-			var timeline = new VCO.Timeline('timeline', 'examples/welcome.json', {
+			var timeline = new VCO.Timeline('timeline', 'welcome.json', {
 				theme_color: "#288EC3",
+				timenav_position:"top",
 				ga_property_id: "UA-27829802-4"
 			});
 			window.onresize = function(event) {

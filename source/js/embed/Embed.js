@@ -352,6 +352,7 @@ function createStoryJS(c, src) {
 		VCO.debug = storyjs_e_config.debug;
 		
 		var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
+        storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
 		storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
 		
 		/* TODO: not sure what to do here

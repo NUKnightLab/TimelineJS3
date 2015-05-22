@@ -81,7 +81,7 @@ function getLinkAndIframe() {
 	/* SOURCE KEY
 	================================================== */
 	if (e_source.value.match("docs.google.com")) {
-		/// wut source_key = VMM.Timeline.DataObj.model.googlespreadsheet.extractSpreadsheetKey(e_source.value);
+		source_key = VCO.ConfigFactory.extractSpreadsheetKey(e_source.value);
 	} else {
 		if (e_source.value == "") {
 			source_key	= "0Agl_Dv6iEbDadHdKcHlHcTB5bzhvbF9iTWwyMmJHdkE"

@@ -2967,7 +2967,7 @@ VCO.TimelineConfig = VCO.Class.extend({
         return key;
     }
 
-    function extractGoogleEntryData(item) {
+    function extractGoogleEntryData_V1(item) {
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
@@ -2996,12 +2996,69 @@ VCO.TimelineConfig = VCO.Class.extend({
         return d;
     }
 
+    function extractGoogleEntryData_V3(item) {
+        var item_data = {}
+        for (k in item) {
+            if (k.indexOf('gsx$') == 0) {
+                item_data[k.substr(4)] = item[k].$t;
+            }
+        }
+        var d = {
+            media: {
+                caption: item_data.mediacaption || '',
+                credit: item_data.mediacredit || '',
+                url: item_data.media || '',
+                thumb: item_data.mediathumbnail || ''
+            },
+            text: {
+                headline: item_data.headline || '',
+                text: item_data.text || ''
+            },
+            start_date: {
+                year: item_data.year,
+                month: item_data.month || '',
+                day: item_data.day || '',
+                time: item_data.time || ''
+            },
+            end_date: {
+                year: item_data.endyear || '',
+                month: item_data.endmonth || '',
+                day: item_data.endday || '',
+                time: item_data.endtime || ''
+            },
+            display_date: item_data.displaydate || ''
+        }
+        return d;
+    }
+
+    var getGoogleItemExtractor = function(data) {
+        if (typeof data.feed.entry === 'undefined' 
+                || data.feed.entry.length == 0) {
+            throw('No data entries found.');
+        }
+        var entry = data.feed.entry[0];
+        if (typeof entry.gsx$startdate !== 'undefined') {
+            return extractGoogleEntryData_V1;
+        } else if (typeof entry.gsx$year !== 'undefined') {
+            return extractGoogleEntryData_V3;
+        } else {
+            throw('Invalid data format.');
+        }
+    }
+
     VCO.ConfigFactory = {
+
+        extractSpreadsheetKey: extractSpreadsheetKey,
+
         fromGoogle: function(url) {
             var key = extractSpreadsheetKey(url);
             // TODO: maybe get specific worksheets?
             var worksheet = '1';
             url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
+            return this.fromFeed(url);
+        },
+
+        fromFeed: function(url) {
             var data = VCO.ajax({
                 url: url, 
                 async: false
@@ -3009,11 +3066,12 @@ VCO.TimelineConfig = VCO.Class.extend({
             var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
+            var extract = getGoogleItemExtractor(data);
             for (var i = 0; i < data.feed.entry.length; i++) {
-                events.push(extractGoogleEntryData(data.feed.entry[i]));
+                events.push(extract(data.feed.entry[i]));
             };
             return {scale: 'javascript', events: events}
-        }   
+        }
     }
 })(VCO)
 
@@ -4702,7 +4760,7 @@ VCO.Date = VCO.Class.extend({
  		for (var ix in DATE_PARTS) {	
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
 			if (isNaN(parsed)) {
-                parsed = (ix == 1 || ix == 2) ? 1 : 0; // month and day have diff baselines
+                parsed = (ix == 4 || ix == 5) ? 1 : 0; // month and day have diff baselines
             }
 			_date[DATE_PARTS[ix]] = parsed;
 		}
@@ -7601,8 +7659,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 		 
 	},
 	
-	createMedia: function(d) {	
-		trace("create_media")	
+	createMedia: function(d) {
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
@@ -7822,8 +7879,15 @@ VCO.Media.Website = VCO.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
-	}
+	},
 	
+	updateMediaDisplay: function() {
+		
+	},
+	
+	_updateMediaDisplay: function() {
+		
+	}
 	
 	
 });
@@ -8273,6 +8337,11 @@ VCO.Slide = VCO.Class.extend({
 	_initLayout: function () {
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-slide");
+		
+		if (this.has.title) {
+			this._el.container.className = "vco-slide vco-slide-titleslide";
+		}
+		
 		if (this.data.uniqueid) {
 			this._el.container.id 		= this.data.uniqueid;
 		}
@@ -9304,8 +9373,8 @@ VCO.TimeNav = VCO.Class.extend({
 		
 	},
 	
-	_createGroup: function(group_name) {
-		var group = new VCO.TimeGroup(group_name);
+	_createGroup: function(group_label) {
+		var group = new VCO.TimeGroup(group_label);
 		this._addGroup(group);
 		this._groups.push(group);
 	},
@@ -9316,19 +9385,20 @@ VCO.TimeNav = VCO.Class.extend({
 	},
 	
 	_positionGroups: function() {
-		if (this.options.has_groups){
+		if (this.options.has_groups) {
 			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight ),
 				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
 				group_labels		= this.timescale.getGroupLabels();
 			
-			for (var i = 0; i < this._groups.length; i++) {
-				var group_y = Math.floor(i * (group_height + this.options.marker_padding));
+			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
+				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
 				
 				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2); 
 				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
+				
+				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
 			}
-		}
-		
+		}		
 	},
 	
 	/*	Markers
@@ -10139,18 +10209,12 @@ VCO.TimeScale = VCO.Class.extend({
         this._computePositionInfo(slides, options.max_rows);
     },
     
-    getGroupLabels: function() { /* For now, assume one row per group */
-        var label_info = [];
-		if (this._group_labels) {
-	        for (var i = 0; i < this._group_labels.length; i++) {
-	            label_info.push({
-	                label: this._group_labels[i],
-	                rows: 1
-	            }); // later, count the real number of rows per group
-	        }
-		}
-        
-        return label_info;
+    getGroupLabels: function() { /* 
+        return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
+            * label (the string as specified in one or more 'group' properties of events in the configuration)
+            * rows (the number of rows occupied by events associated with the label. ) 
+        */
+        return (this._group_labels || []);
     },
     
     getScale: function() {
@@ -10223,14 +10287,75 @@ VCO.TimeScale = VCO.Class.extend({
         return groups;
     },
 
-    _computePositionInfo: function(slides, max_rows, default_marker_width) { // default_marker_width should be in pixels
+    /*  Compute the marker row positions, minimizing the number of
+        overlaps.
+        
+        @positions = list of objects from this._positions
+        @rows_left = number of rows available (assume > 0)
+    */
+    _computeRowInfo: function(positions, rows_left) {
+        var lasts_in_row = [];
+        var n_overlaps = 0;
+        
+        for (var i = 0; i < positions.length; i++) {
+            var pos_info = positions[i];      
+            var overlaps = [];
+                       
+            // See if we can add item to an existing row without 
+            // overlapping the previous item in that row      
+            delete pos_info.row;
+             
+            for (var j = 0; j < lasts_in_row.length; j++) {
+                overlaps.push(lasts_in_row[j].end - pos_info.start);
+                if(overlaps[j] <= 0) {
+                    pos_info.row = j;
+                    lasts_in_row[j] = pos_info;
+                    break;
+                }                        
+            }
+            
+            // If we couldn't add to an existing row without overlap...
+            if (typeof(pos_info.row) == 'undefined') {                   
+                if (rows_left > 0) {
+                    // Make a new row
+                    pos_info.row = lasts_in_row.length;
+                    lasts_in_row.push(pos_info);  
+                    rows_left--;
+                } else {
+                    // Add to existing row with minimum overlap.
+                    var min_overlap = Math.min.apply(null, overlaps);
+                    var idx = overlaps.indexOf(min_overlap);                   
+                    pos_info.row = idx;
+                    if (pos_info.end > lasts_in_row[idx].end) {
+                        lasts_in_row[idx] = pos_info;                                          
+                    }
+                    n_overlaps++;
+                }                        
+            }   
+        }   
+        
+        return {n_rows: lasts_in_row.length, n_overlaps: n_overlaps};
+    },   
+
+    /*  Compute marker positions.  If using groups, this._number_of_rows
+        will never be less than the number of groups.
+        
+        @max_rows = total number of available rows
+        @default_marker_width should be in pixels
+    */
+    _computePositionInfo: function(slides, max_rows, default_marker_width) {
         default_marker_width = default_marker_width || 100;
-        var lasts_in_rows = []; 
+        
         var groups = [];
- 
+        var empty_group = false;
+
+        // Set start/end/width; enumerate groups
         for (var i = 0; i < slides.length; i++) {
-            var pos_info = { start: this.getPosition(slides[i].start_date.getTime()) }
+            var pos_info = {
+                start: this.getPosition(slides[i].start_date.getTime()) 
+            };
             this._positions.push(pos_info);
+            
             if (typeof(slides[i].end_date) != 'undefined') {
                 var end_pos = this.getPosition(slides[i].end_date.getTime());
                 pos_info.width = end_pos - pos_info.start;
@@ -10248,58 +10373,110 @@ VCO.TimeScale = VCO.Class.extend({
                 if(groups.indexOf(slides[i].group) < 0) {
                     groups.push(slides[i].group);
                 }            
-            } 
+            } else {
+                empty_group = true;
+            }
         }
 
-        if(groups.length) {
-            var empty_group = false;
-            
-            for(var i = 0; i < this._positions.length; i++) {
-                var pos_info = this._positions[i];
-                if(slides[i].group) {
-                    pos_info.row = groups.indexOf(slides[i].group);
-                } else {
-                    empty_group = true;
-                    pos_info.row = groups.length;
-                }
-            }
+        if(groups.length) {                       
             if(empty_group) {
                 groups.push("");
             }
-            this._group_labels = groups;
-            this._number_of_rows = groups.length;
-        } else {
-            for (var i = 0; i < this._positions.length; i++) {
+
+            // Init group info
+            var group_info = [];            
+            
+            for(var i = 0; i < groups.length; i++) {
+                group_info[i] = {
+                    label: groups[i],
+                    idx: i,
+                    positions: [], 
+                    n_rows: 1,      // default
+                    n_overlaps: 0
+                };
+            }       
+                             
+            for(var i = 0; i < this._positions.length; i++) {
                 var pos_info = this._positions[i];
-                var overlaps = []
-                for (var j = 0; j < lasts_in_rows.length; j++) {
-                    overlaps.push(lasts_in_rows[j].end - pos_info.start);
-                    if (overlaps[j] <= 0) {
-                        pos_info.row = j;
-                        lasts_in_rows[j] = pos_info;
-                        break;
-                    }
-                }
-                if (typeof(pos_info.row) == 'undefined') {
-                    if ((!max_rows) || (lasts_in_rows.length < max_rows)) {
-                        pos_info.row = lasts_in_rows.length;
-                        lasts_in_rows.push(pos_info);
-                    } else {
-                        var min_overlap = Math.min.apply(null,overlaps);
-                        var idx = overlaps.indexOf(min_overlap);
-                        pos_info.row = idx;
-                        if (pos_info.end > lasts_in_rows[idx].end) {
-                            lasts_in_rows[idx] = pos_info
-                        }
-                    }
-                }
-
+                                
+                pos_info.group = groups.indexOf(slides[i].group || "");
+                pos_info.row = 0;
+                
+                var gi = group_info[pos_info.group];
+                for(var j = gi.positions.length - 1; j >= 0; j--) {
+                    if(gi.positions[j].end > pos_info.start) {
+                        gi.n_overlaps++;
+                    }                   
+                }   
+                
+                gi.positions.push(pos_info);                
             }
+            
+            var n_rows = groups.length; // start with 1 row per group
+          
+            while(true) {
+                // Count free rows available              
+                var rows_left = Math.max(0, max_rows - n_rows);                
+                if(!rows_left) {
+                    break;  // no free rows, nothing to do
+                }
 
-            this._number_of_rows = lasts_in_rows.length;      
+                // Sort by # overlaps, idx
+               group_info.sort(function(a, b) {
+                    if(a.n_overlaps > b.n_overlaps) {
+                        return -1;
+                    } else if(a.n_overlaps < b.n_overlaps) {
+                        return 1;
+                    } 
+                    return a.idx - b.idx;
+                });               
+                if(!group_info[0].n_overlaps) {
+                    break; // no overlaps, nothing to do
+                }
+                                                
+                // Distribute free rows among groups with overlaps
+                var n_rows = 0;
+                for(var i = 0; i < group_info.length; i++) {
+                    var gi = group_info[i];
+                    
+                    if(gi.n_overlaps && rows_left) {
+                        var res = this._computeRowInfo(gi.positions,  gi.n_rows + 1);
+                        gi.n_rows = res.n_rows;     // update group info
+                        gi.n_overlaps = res.n_overlaps; 
+                        rows_left--;                // update rows left
+                    } 
+                    
+                    n_rows += gi.n_rows;            // update rows used          
+                }
+            } 
+                        
+            // Set number of rows
+            this._number_of_rows = n_rows;
+                                
+            // Set group labels; offset row positions
+            this._group_labels = [];
+            
+            group_info.sort(function(a, b) {return a.idx - b.idx; });               
+            
+            for(var i = 0, row_offset = 0; i < group_info.length; i++) {
+                this._group_labels.push({
+                    label: group_info[i].label,
+                    rows: group_info[i].n_rows
+                });   
+                 
+                for(var j = 0; j < group_info[i].positions.length; j++) {
+                    var pos_info = group_info[i].positions[j];
+                    pos_info.row += row_offset;
+                }
+                
+                row_offset += group_info[i].n_rows;       
+            }
+        } else {
+            var result = this._computeRowInfo(this._positions, max_rows);  
+            this._number_of_rows = result.n_rows;    
         }  
-    },
-
+        
+    }
 });
 
 
@@ -10880,7 +11057,9 @@ VCO.Timeline = VCO.Class.extend({
 			slide_padding_lr: 			100, 			// padding on slide of slide
 			slide_default_fade: 		"0%", 			// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			language:               	"en"		
+			language: 					"en",
+			ga_property_id: 			null,
+			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
 		
 		// Current Slide
@@ -11142,7 +11321,12 @@ VCO.Timeline = VCO.Class.extend({
 		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
 		
 		// Positon Menu
-		menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
+		if (this.options.timenav_position == "top") {
+			menu_position = ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (39/2) ;
+		} else {
+			menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
+		}
+		
 		
 		if (animate) {
 		
@@ -11308,6 +11492,8 @@ VCO.Timeline = VCO.Class.extend({
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
+		this._storyslider.on('nav_next', this._onStorySliderNext, this);
+		this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
 		
 		// Menubar Events
 		this._menubar.on('zoom_in', this._onZoomIn, this);
@@ -11315,6 +11501,26 @@ VCO.Timeline = VCO.Class.extend({
 		this._menubar.on('back_to_start', this._onBackToStart, this);
 		
 	},
+	
+	/* Analytics
+	================================================== */
+    _initGoogleAnalytics: function() {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', this.options.ga_property_id, 'auto');
+    },
+
+    _initAnalytics: function() {
+        if (this.options.ga_property_id === null) { return; }
+        this._initGoogleAnalytics();
+        var events = this.options.track_events;
+        for (i=0; i < events.length; i++) {
+            var event_ = events[i];
+            this.addEventListener(event_, function(e) {
+                ga('send', e.type);
+            });
+        }
+    },
 		
 	/* Get index of event by id
 	================================================== */
@@ -11348,6 +11554,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.fire("dataloaded");
 		this._initLayout();
 		this._initEvents();
+        this._initAnalytics();
 		this.ready = true;
 		
 	},
@@ -11407,6 +11614,14 @@ VCO.Timeline = VCO.Class.extend({
 	_onStorySliderLoaded: function() {
 		this._loaded.storyslider = true;
 		this._onLoaded();
+	},
+	
+	_onStorySliderNext: function(e) {
+		this.fire("nav_next", e);
+	},
+	
+	_onStorySliderPrevious: function(e) {
+		this.fire("nav_previous", e);
 	},
 		
 	_onLoaded: function() {
