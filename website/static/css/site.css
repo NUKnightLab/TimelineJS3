@@ -4,26 +4,10 @@
 section {
   padding: 20px 0;
 }
-footer {
-  margin-top: 30px;
-}
 
 /* Navbar */
-.navbar {
-  font-size: 14px;
-  font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-.navbar .brand { color: #000; }
-/*.navbar h3 { margin: 0; }*/
- .navbar .nav.pull-right>li>a { padding: 0; }
- .navbar .nav.pull-right img { margin-top: -10px; }
-.nav-tabs {
-    padding-top: 40px;
-    padding-left: 60px;
-}
-.nav-tabs li {
-    padding-bottom: 0;
-}
+nav section,
+nav ul li { padding: 0; }
 
 /* Handle fixed position navbar obscuring page anchors */
 .jump:before {
@@ -38,6 +22,7 @@ footer {
 #overview {
   padding: 40px 0 50px;
   margin: 0;
+  text-align: center;
 }
 
   #overview hgroup {
@@ -52,29 +37,15 @@ footer {
 }
 
 /* Experimental CSS to get rid of if we don't like it */
-    #overview { margin-top: -45px; padding-bottom: 0;}
+    #overview { padding-bottom: 0; border-bottom: none;}
     #overview ul { list-style: none; margin: 30px 0; }
     #overview ul li {
         display: inline;
     }
     #overview a {
-        color: #777;
-        background: #fefefe;
-        border: 1px solid #d0d0d0;
-        padding: 10px 20px;
         margin: 0 16px;
-        border-radius: 3px;
-        font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        white-space: nowrap;
     }
-    #overview a:hover,
-    #overview a:focus,
-    #overview a:active{
-        text-decoration: none;
-        background-color: #0f9bd1;
-        color: #fff;
-        border-color: #777;
-    }
+
     h2.intro { margin-bottom: 10px; }
     #overview h4 {
         font-size: 14px;
@@ -89,7 +60,7 @@ footer {
         background: #fff;
         border-top: solid 1px #aaa;
         padding: 10px 0;
-        margin: 30px 0 0 0;
+        margin: 10px 0 0 0;
     }
     .banner img {
         margin-left: 20px;
@@ -102,9 +73,8 @@ footer {
         width: 300px;
         position: absolute;
         left: -71px;
-        top: 16px;
         font-size: 85%;
-        padding: 3px 0;
+        padding: 10px 0;
         border-bottom: solid 1px #aaa;
     }
 
@@ -236,9 +206,6 @@ h2.intro {
     font-weight: bold;
 }
 
-#try-it{
-    padding: 20px 0;
-}
 .note {
     margin-top: 40px;
     background: #eee;
@@ -263,10 +230,10 @@ p.caption {
 #preview-inputs button{
     margin-bottom: 0;
     font-size: 13px;
+    display: inline-block;
 }
 
 #preview-inputs input {
-    width: 80%;
     min-width: 320px;
     max-width: 600px;
     font-family: sans-serif;
@@ -307,182 +274,6 @@ p.input-label {
 
 #font-preview-trigger { margin-left: 10px;}
 
-/* Footer */
-footer,
-#footer{
-  padding: 10px 80px 0;
-  font-size: 14px;
-  background-color: #F3F3F3;
-  border-bottom: 12px solid #520063;
-  font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-footer a,
-footer a:link,
-footer a:visited {
-  color: #666;
-  text-decoration: underline;
-  border: none;
-  display: inline;
-}
-#knightlab-logo-column {
-  width: 25%;
-  float: left;
-  margin-right: 30px;
-}
-#knightlab-description {
-  width: 65%;
-  float: left;
-  border-left: solid 1px #d0d0d0;
-  padding-left: 20px;
-}
-#footer-outer {
-  border-top: 4px solid #474748;
-  background-image: linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
-  background-image: -o-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
-  background-image: -moz-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
-  background-image: -webkit-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
-  background-image: -ms-linear-gradient(top, rgb(50,33,63) 14%, rgb(83,0,99) 66%, rgb(83,0,99) 44%);
-
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.14, rgb(50,33,63)),
-    color-stop(0.66, rgb(83,0,99)),
-    color-stop(0.44, rgb(83,0,99))
-    );
-  height: 14px;
-}
-.ie9 #footer-outer {
-  background-image: none;
-  background-color: #530063;
-}
-
-.about-knightlab {
-  max-width: 840px;
-  margin: auto;
-  padding-top: 60px;
-}
-
-footer .col-940 {
-  display: none;
-}
-
-footer ul {
-  list-style: none outside none;
-  margin: 0
-}
-footer ul.social {
-  text-align: center;
-  padding: 10px 0;
-  /* override blueline */
-  margin: 0 0 0 -20px;
-  float: none;
-  width: 100%;
-}
-
-footer ul.social a {
-  border: none;
-  text-decoration: none;
-}
-
-footer ul.social li{
-  float: none;
-  display: inline;
-  font-size: 24px;
-  line-height: 1.4em;
-  padding-bottom: 3px;
-  margin: 0 10px;
-}
-
-footer ul.social li a:hover{
-  text-decoration: none;
-  opacity: .9;
-}
-footer ul.logos {
-  margin-top: 25px;
-  border-left: 1px solid #CCCCCC;
-}
-footer ul.logos li{
-  display: block;
-  float: right;
-}
-footer .contact,
-footer .copyright {
-    clear: both;
-    color: #a8a4a3;
-    font-size: 12px;
-    padding-bottom: 20px;
-    padding-top: 70px;
-    text-align: center;
-}
-footer .contact a {
-    color: #a8a4a3;
-    text-decoration: none;
-}
-
-footer address,
-footer address span.address,
-footer address span.tel {
-    padding-left: 0;
-    display: inline;
-    width: auto;
-    float: none;
-    font-size: 12px;
-    color: #a8a4a3;
-}
-footer ul.logos li:hover{
-  opacity: .85;
-}
-footer ul.logos li a{
-  background: url("images/footer-logosheet.png") no-repeat scroll center top transparent;
-  display: block;
-  text-indent: -9999px;
-}
-footer ul.logos li a.northwestern{
-  background-position: -42px -106px;
-  height: 174px;
-  margin-bottom: 17px;
-  margin-left: 30px;
-  width: 290px;
-}
-
-footer ul.logos li a.knightfoundation{
-  background-position: 22px -283px;
-  height: 83px;
-  margin-bottom: 23px;
-  margin-top: 14px;
-  width: 383px;
-}
-footer ul.logos li a.medill{
-  background-position: -221px -385px;
-  height: 52px;
-  margin-bottom: 20px;
-  margin-left: 11px;
-  width: 111px;
-}
-footer ul.logos li a.mccormick{
-  background-position: -19px -385px;
-  float: right;
-  height: 52px;
-  margin-bottom: 20px;
-  width: 185px;
-}
-footer ul.logos li a.mccormickfound{
-  background-position: -6px -462px;
-  height: 68px;
-  margin-bottom: 51px;
-  margin-right: 34px;
-  margin-top: 23px;
-  width: 218px;
-}
-footer ul.logos li a.nsf{
-  background-position: right -448px;
-  float: right;
-  height: 84px;
-  margin: 0;
-  width: 131px;
-}
 
 @media (max-width: 767px) {
     #overview {
@@ -494,7 +285,7 @@ footer ul.logos li a.nsf{
     h2.intro {
         font-size: 35px;
     }
-    footer { padding: 10px 30px; }
+    /*footer { padding: 10px 30px; }*/
     #knightlab-logo-column,
     #knightlab-description {
         width: 100%;

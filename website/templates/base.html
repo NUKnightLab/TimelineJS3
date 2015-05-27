@@ -17,7 +17,7 @@
     <!-- endbuild -->
 	<link rel="shortcut icon" href="http://cdn.knightlab.com/libs/blueline/latest/assets/logos/favicon.ico"> 
     <link href="//cloud.webtype.com/css/d4767ecb-457a-4677-8761-72f890add836.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="http://cdn.knightlab.com/libs/blueline/latest/css/blueline.min.css">
+	<link rel="stylesheet" href="//cdn.knightlab.com/libs/purpleline/latest/css/purpleline.css">
 	<link title="" rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
   <!-- Google Analytics: don't mess with this stuff -->
   <!-- named tracker notes from https://developers.google.com/analytics/devguides/collection/gajs/ -->
@@ -41,75 +41,47 @@
   <!-- End Google Analytics -->
   <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="100">
+<body>
 
-	<!-- Nav-->
+	<!-- Nav: TBD -->
 
- <!--<div class="navbar navbar-fixed-top navbar-inverse">
-    <div class="navbar-inner">
-      <div class="container-fluid">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-        <a href="#" class="brand">Timeline JS3</a>
-        <div class="nav-collapse navbar-responsive-collapse collapse" style="height: 0px;">
-          <ul class="nav">
-            <li><a href="/index.html#overview" data-scroll="true">Overview</a></li>
-            <li><a href="/index.html#test-drive" data-scroll="true">Test Drive</a></li>
-            <li><a href="/hands-on.html">Hands-On</a></li>
-          </ul>
-          <ul class="nav pull-right">
-            <li class="knightlab-tab"><a data-toggle="preheader" href="http://knightlab.northwestern.edu" title="Northwesten University Knight Lab"><span>Northwestern University Knight Lab</span></a></li>
-          </ul>
-        </div><!-- /.nav-collapse -->
-      </div>
-    </div><!-- /navbar-inner -->
-  <!--</div>-->
 	{% block content %}
 	{% endblock %}
-	<!-- BEGIN FOOTER -->
-  <footer>
-	  <div class="about-knightlab">
-			<div id="knightlab-logo-column">
-				<a href="http://knightlab.northwestern.edu" target="_blank"><img src="http://knightlab.northwestern.edu/wp-content/uploads/2014/12/logo_stacked.png" class="img-responsive"></a>
-				<ul class="social list-inline">
-				   <li><a href="http://www.twitter.com/knightlab" target="_blank" title="Knight Lab on Twitter"><span class="icon-twitter"></span></a></li>
-					<li><a href="https://www.facebook.com/knightlab" target="_blank" title="Knight Lab on Facebook"><span class="icon-facebook"></span></a></li>
-					<li><a href="https://github.com/NUKnightLab/" target="_blank" title="Knight Lab on GitHub"><span class="icon-github"></span></a></li>
-				</ul>
-            </div>
-			<div id="knightlab-description">
-			<p>The <a title="Northwestern University" href="http://www.northwestern.edu/" target="_blank">Northwestern University</a> Knight Lab is a team of technologists and journalists working at advancing news media innovation through exploration and experimentation.</p>
-			<p>A joint initiative of the <a href="http://www.mccormick.northwestern.edu/" target="_blank">Robert R. McCormick School of Engineering and Applied Science</a> and the<a href="http://www.medill.northwestern.edu/" target="_blank"> Medill School of Journalism, Media, Integrated Marketing Communications</a>.</p><img src="http://knightlab.northwestern.edu/wp-content/uploads/2014/12/Logos-Horizontal.png" class="img-responsive logos">
-			</div>
-		  <div class="contact">
-                <address itemscope="" itemtype="http://data-vocabulary.org/Organization">
-					<span style="display:none;" itemprop="name" title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name">Knight Lab</span>
-					<span itemprop="tel" class="tel">(847) 467-4971 | </span>
-                    <span itemprop="address" itemscope="" itemtype="http://data-vocabulary.org/Address" class="address"><span itemprop="street-address" class="street-address">
-                        <a href="https://maps.google.com/maps?q=1845+Sheridan+Road+Evanston+IL+6020&amp;amp;hl=en&amp;amp;ll=42.050942,-87.673511&amp;amp;spn=0.003059,0.004898&amp;amp;sll=42.050647,-87.674246&amp;amp;sspn=0.012237,0.019591&amp;amp;gl=us&amp;amp;hnear=1845+Sheridan+Rd,+Evanston,+Cook,+Illinois+60201&amp;amp;t=m&amp;amp;z=18&amp;amp;iwloc=A" target="_blank">1845 Sheridan Road Fisk #109 &amp; #111</span>, 
-                        <span itemprop="locality">Evanston,</span> 
-                        <span itemprop="region">IL</span> 
-                        <span itemprop="postal-code">60208 |</span> 
-                        <span itemprop="country-name" class="address-country">United States</span>
-                    </span>
-                    <span style="display:none;" itemprop="geo" itemscope="" itemtype="http://www.data-vocabulary.org/Geo/" class="geo">
-                        Latitude: <span itemprop="latitude">42.056893</span><br>
-                        Longitude: <span itemprop="longitude">-87.676735</span>
-                    </span>
-                    <a style="display:none;" href="http://knightlab.northwestern.edu" itemprop="url" class="url">Northwestern University Knight Lab | Advancing media innovation through exploration and experimentation.</a>
-                </address>
-                 <span class="copyright">| Copyright 2015, Northwestern University</span>
-          </div>
-          </div>
-        </div>
-      </div>            </div>
-        </div><!-- end #footer-wrapper -->
-    </div><!-- end #footer -->
+<footer>
+    <div class="about-knightlab">
+      <div id="knightlab-logo-column">
+        <a href="http://knightlab.northwestern.edu" target="_blank"><img src="http://knightlab.northwestern.edu/wp-content/uploads/2014/12/logo_stacked.png" class="img-responsive"></a>
+        <ul class="social list-inline">
+           <li><a href="http://www.twitter.com/knightlab" target="_blank" title="Knight Lab on Twitter"><span class="icon-twitter"></span></a></li>
+          <li><a href="https://www.facebook.com/knightlab" target="_blank" title="Knight Lab on Facebook"><span class="icon-facebook"></span></a></li>
+          <li><a href="https://github.com/NUKnightLab/" target="_blank" title="Knight Lab on GitHub"><span class="icon-github"></span></a></li>
+        </ul>
+      </div>
+      <div id="knightlab-description">
+        <p>The <a title="Northwestern University" href="http://www.northwestern.edu/" target="_blank">Northwestern University</a> Knight Lab is a team of technologists and journalists working at advancing news media innovation through exploration and experimentation.</p>
+        <p>A joint initiative of the <a href="http://www.mccormick.northwestern.edu/" target="_blank">Robert R. McCormick School of Engineering and Applied Science</a> and the<a href="http://www.medill.northwestern.edu/" target="_blank"> Medill School of Journalism, Media, Integrated Marketing Communications</a>.</p><img src="http://knightlab.northwestern.edu/wp-content/uploads/2014/12/Logos-Horizontal.png" class="img-responsive logos">
+      </div>
+      <div class="contact">
+        <address itemscope="" itemtype="http://data-vocabulary.org/Organization">
+          <span style="display:none;" itemprop="name" title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name">Knight Lab</span>
+          <span itemprop="tel" class="tel">(847) 467-4971 | </span>
+          <span itemprop="address" itemscope="" itemtype="http://data-vocabulary.org/Address" class="address">
+            <span itemprop="street-address" class="street-address"><a href="https://maps.google.com/maps?q=1845+Sheridan+Road+Evanston+IL+6020&hl=en&ll=42.050942,-87.673511&spn=0.003059,0.004898&sll=42.050647,-87.674246&sspn=0.012237,0.019591&gl=us&hnear=1845+Sheridan+Rd,+Evanston,+Cook,+Illinois+60201&t=m&z=18&iwloc=A" target="_blank">1845 Sheridan Road Fisk #109 & #111</span>, 
+            <span itemprop="locality">Evanston,</span> 
+            <span itemprop="region">IL</span> 
+            <span itemprop="postal-code">60208 |</span> 
+            <span itemprop="country-name" class="address-country">United States</span>
+          </span>
+          <span style="display:none;" itemprop="geo" itemscope="" itemtype="http://www.data-vocabulary.org/Geo/" class="geo">
+            Latitude: <span itemprop="latitude">42.056893</span><br>
+            Longitude: <span itemprop="longitude">-87.676735</span>
+          </span>
+          <a style="display:none;" href="http://knightlab.northwestern.edu" itemprop="url" class="url">Northwestern University Knight Lab | Advancing media innovation through exploration and experimentation.</a>
+        </address>
+        <span class="copyright">| Copyright 2015, Northwestern University</span>
+      </div>
+    </div><!-- end .about-knightlab -->
   </footer>
-  <!-- END FOOTER -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://cdn.knightlab.com/libs/blueline/latest/js/blueline.min.js"></script>
