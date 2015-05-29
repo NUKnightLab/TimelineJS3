@@ -110,6 +110,22 @@ nav ul li { padding: 0; }
   display: none;
 }
 
+.hide-options {
+    display: none;
+}
+
+.help-inline,
+.help-block {
+    font-size: 85%;
+    font-style: italic;
+    color: #999;
+}
+
+.collapse .help-inline,
+.collapse .help-block { margin-left: 20px; }
+
+.checkbox input { margin-right: 20px; }
+
 #preview-required {
   display: none;
   font-family: sans-serif;
@@ -272,7 +288,7 @@ p.input-label {
   width: 260px;
 }  
 
-#font-preview-trigger { margin-left: 10px;}
+#font-preview-trigger { margin: 20px 0 0 0;}
 
 
 @media (max-width: 767px) {

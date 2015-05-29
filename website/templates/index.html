@@ -3,11 +3,12 @@
 {% block content %}
   {% include "_overview.html" %}
   {% include "_changelog.html" %}
-  {% include "_test_drive.html" %}
+  {% include "_make.html" %}
   {% include "_examples.html" %}
 {% endblock %}
 
 {% block scripts %}
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <!-- Override -->
 <script type="text/javascript">
     var generator_embed_path = "//cdn.knightlab.com/libs/timeline3/dev/embed/index.html";
@@ -25,3 +26,5 @@
 
     </script>
 {% endblock %}
+
+

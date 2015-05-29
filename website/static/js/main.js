@@ -22,25 +22,30 @@ $blueline(document).ready(function() {
   // More Options
   $(".show-options").click(function (e) {
     $(this).hide();
-
+    $(".hide-options").show();
     $(".more-options").slideDown();
-
     return false;
   });
- 
-  $("#font-preview-trigger").popover()
- 
+
+  $(".hide-options").click(function (e) {
+    $(this).hide();
+    $(".show-options").show();
+    $(".more-options").slideUp();
+    return false;
+  });
+
+
+
   // Preview
   $("#iframe-preview-button").click(function () {
     var $embed = $("#preview");
 
     $embed.show();
-    
+
     // Need to 'reload' the iframe to get it to display correctly
     var $if = $("#preview iframe");
     $if.attr("src", $if.attr("src"));
-    
-    $("body,html").animate({scrollTop: $embed.offset().top - 60}, 250);
+    //$("body,html").animate({scrollTop: $embed.offset().top - 60}, 250);
   });
 
 
@@ -78,9 +83,9 @@ $blueline(document).ready(function() {
     $("#timeline-wrapper").hide();
     var url = null;
     if (key && typeof(key) == 'string') {
-      url = key;      
+      url = key;
     } else {
-      url = document.getElementById('url').value;
+      url = document.getElementById('embed-source-url').value;
     }
     if (url) {
       $("#timeline-wrapper").show();
@@ -97,10 +102,10 @@ $blueline(document).ready(function() {
     }
   }
   var timeline = null;
-  var button = document.getElementById('go-preview');
+  var button = document.getElementById('iframe-preview-button');
   button.addEventListener('click',do_preview);
 
-  document.getElementById('url').addEventListener('keyup',function(evt) {
+  document.getElementById('embed-source-url').addEventListener('keyup',function(evt) {
     if (evt.keyCode == 13) {
       do_preview();
     }
@@ -117,15 +122,15 @@ $blueline(document).ready(function() {
         window.factory_json = json;
         $("#json-export-field").val(JSON.stringify(json,null,"  "));
         /*document.getElementById('input').style.height = "40px"*/
-        document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+        document.getElementById('preview-embed-iframe').style.height = (window.innerHeight - 95 + "px");
 
-        timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+        timeline = new VCO.Timeline('preview-embed-iframe', new VCO.TimelineConfig(json), {
         });
 
         window.onresize = function(event) {
             console.log("resize")
             document.getElementById('input').style.height = "30px"
-            document.getElementById('timeline').style.height = (window.innerHeight - 95 + "px");
+            document.getElementById('preview-embed-iframe').style.height = (window.innerHeight - 95 + "px");
             timeline.updateDisplay();
         }
       }
