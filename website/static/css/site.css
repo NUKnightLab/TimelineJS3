@@ -293,26 +293,15 @@ p.input-label {
 
 @media (max-width: 767px) {
     #overview {
-        margin-left: -20px;
-        margin-right: -20px;
+        margin-left: 0px;
+        margin-right: 0px;
     }
     #overview a { margin:0 10px; }
     .hero-unit { font-size: 16px; }
     h2.intro {
         font-size: 35px;
     }
-    /*footer { padding: 10px 30px; }*/
-    #knightlab-logo-column,
-    #knightlab-description {
-        width: 100%;
-        float: none;
-        text-align: center;
-    }
-    #knightlab-description {
-        border-left: 0;
-        text-align: left;
-    }
-    address { display: none; }
+
 }
 
 @media (max-width: 600px) {
@@ -324,7 +313,8 @@ p.input-label {
     #overview ul li a {
         padding: 10px 15%;
     }
-
+    .step h2 { font-size: 70px; }
+    .step h4 { font-size: 1.3em; line-height: 1.4; }
 }
 
 @media (max-width: 500px) {
