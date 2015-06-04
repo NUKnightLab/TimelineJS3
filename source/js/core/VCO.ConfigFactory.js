@@ -78,6 +78,17 @@
             },
             display_date: item_data.displaydate || ''
         }
+
+        if (d.end_date.year == '') {
+            var bad_date = d.end_date;
+            delete d.end_date;
+            if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
+                var label = d.text.headline ||
+                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
+                trace(item);
+            }
+        }
+
         return d;
     }
 
