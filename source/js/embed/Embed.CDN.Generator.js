@@ -62,9 +62,9 @@ function getLinkAndIframe() {
 		e_language			= document.getElementById('embed-language'),
 		e_embed				= document.getElementById('embed_code'),
 		e_font				= document.getElementById('embed-font'),
-		e_wordpress			= document.getElementById('embed-wordpressplugin'),
+		//e_wordpress			= document.getElementById('embed-wordpressplugin'),
 		e_startatend		= document.getElementById('embed-startatend'),
-		e_hashbookmark		= document.getElementById('embed-hashbookmark'),
+		//e_hashbookmark		= document.getElementById('embed-hashbookmark'),
 		e_startzoomadjust	= document.getElementById('embed-startzoomadjust'),
 		e_startatslide		= document.getElementById('embed-startatslide'),
 		e_debug				= document.getElementById('embed-debug'),
@@ -77,7 +77,6 @@ function getLinkAndIframe() {
 		vars,
 		wp,
 		source_key;
-	
 	/* SOURCE KEY
 	================================================== */
 	if (e_source.value.match("docs.google.com")) {
@@ -98,9 +97,9 @@ function getLinkAndIframe() {
 	
 	/* HASH BOOKMARK
 	================================================== */
-	if (e_hashbookmark.checked) {
+	/*if (e_hashbookmark.checked) {
 		hash_bookmark = true;
-	}
+	}*/
 	
 	/* DEBUG
 	================================================== */
@@ -110,7 +109,7 @@ function getLinkAndIframe() {
 	
 	/* WORDPRESS
 	================================================== */
-	wp		= "[timeline ";
+	/*wp		= "[timeline ";
 	if (e_width.value > 0) {
 		wp	+= "width='" + e_width.value + "' "; 
 	}
@@ -145,7 +144,7 @@ function getLinkAndIframe() {
 	
 	wp		+= "]";
 	
-	theobj.wordpress = wp;
+	theobj.wordpress = wp;*/
 	
 	/* IFRAME AND LINK
 	================================================== */
@@ -156,9 +155,9 @@ function getLinkAndIframe() {
 	if (start_at_end) {
 		vars	+= "&start_at_end=" + start_at_end;
 	}
-	if (hash_bookmark) {
+  /*if (hash_bookmark) {
 		vars	+= "&hash_bookmark=" + hash_bookmark;
-	}
+	}*/
 	if (is_debug) {
 		vars	+= "&debug=" + is_debug;
 	}
@@ -194,13 +193,14 @@ function getLinkAndIframe() {
 	
 	theobj.iframe	= iframe;
 	theobj.link		= vars;
-	
-	if (e_wordpress.checked) {
+	/* Not yet implemented for Timeline3 */
+	/*if (e_wordpress.checked) {
 		theobj.copybox = wp;
 	} else {
 		theobj.copybox = iframe;
-	}
+	}*/
 	
+	theobj.copybox = iframe;
 	return theobj;
 };
 
@@ -208,10 +208,9 @@ function getLinkAndIframe() {
 ================================================== */
 function updateEmbedCode(element, options) {
 	
-	var e_embed		= document.getElementById('embed_code'),
-		el			= getLinkAndIframe();
-	
-	e_embed.value	= el.copybox;
+	var e_embed = document.getElementById('embed_code'),
+		el = getLinkAndIframe();
+	e_embed.value = el.copybox;
 	jQuery("#preview-embed-link").attr('href', el.link);
 	jQuery("#preview-embed-iframe").html(el.iframe);
 	jQuery("#preview-embed").css("display","block");

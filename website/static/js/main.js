@@ -79,27 +79,21 @@ $blueline(document).ready(function() {
 
   // Set up preview box
   function do_preview(key) {
-    $("#preview-required").hide();
-    $("#timeline-wrapper").hide();
-    var url = null;
+    //default URL is what's in the preview box
+    var url = document.getElementById('embed-source-url').getAttribute("placeholder");
     if (key && typeof(key) == 'string') {
       url = key;
-    } else {
+    } else if (document.getElementById('embed-source-url').value){
       url = document.getElementById('embed-source-url').value;
     }
-    if (url) {
-      $("#timeline-wrapper").show();
+    $("#timeline-wrapper").show();
 
-      $('html, body').animate({
-          scrollTop: $("#timeline-wrapper").offset().top
-      }, 2000);
-      $("#timeline-wrapper")[0].scrollIntoView( true );
+    $('html, body').animate({
+        scrollTop: $("#timeline-wrapper").offset().top
+    }, 2000);
+    $("#timeline-wrapper")[0].scrollIntoView( true );
 
-      new_timeline(url);
-
-    } else {
-      $("#preview-required").show();
-    }
+    new_timeline(url);
   }
   var timeline = null;
   var button = document.getElementById('iframe-preview-button');
