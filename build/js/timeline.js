@@ -10343,8 +10343,12 @@ VCO.TimeScale = VCO.Class.extend({
             }
             
             // If we couldn't add to an existing row without overlap...
-            if (typeof(pos_info.row) == 'undefined') {                   
-                if (rows_left > 0) {
+            if (typeof(pos_info.row) == 'undefined') {    
+                if (rows_left === null) {
+                    // Make a new row
+                    pos_info.row = lasts_in_row.length;
+                    lasts_in_row.push(pos_info);                  
+                } else if (rows_left > 0) {
                     // Make a new row
                     pos_info.row = lasts_in_row.length;
                     lasts_in_row.push(pos_info);  
