@@ -3048,6 +3048,17 @@ VCO.TimelineConfig = VCO.Class.extend({
             },
             display_date: item_data.displaydate || ''
         }
+
+        if (d.end_date.year == '') {
+            var bad_date = d.end_date;
+            delete d.end_date;
+            if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
+                var label = d.text.headline ||
+                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
+                trace(item);
+            }
+        }
+
         return d;
     }
 
@@ -10332,8 +10343,12 @@ VCO.TimeScale = VCO.Class.extend({
             }
             
             // If we couldn't add to an existing row without overlap...
-            if (typeof(pos_info.row) == 'undefined') {                   
-                if (rows_left > 0) {
+            if (typeof(pos_info.row) == 'undefined') {    
+                if (rows_left === null) {
+                    // Make a new row
+                    pos_info.row = lasts_in_row.length;
+                    lasts_in_row.push(pos_info);                  
+                } else if (rows_left > 0) {
                     // Make a new row
                     pos_info.row = lasts_in_row.length;
                     lasts_in_row.push(pos_info);  
