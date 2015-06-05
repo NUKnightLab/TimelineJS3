@@ -204,6 +204,26 @@ VCO.Util = {
 		}
 	},
 	
+	/*	* Turns plain text links into real links
+	================================================== */
+	linkify: function(text,targets,is_touch) {
+		
+		// http://, https://, ftp://
+		var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+
+		// www. sans http:// or https://
+		var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+		// Email addresses
+		var emailAddressPattern = /(([a-zA-Z0-9_\-\.]+)@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6}))+/gim;
+		
+
+		return text
+			.replace(urlPattern, "<a target='_blank' href='$&' onclick='void(0)'>$&</a>")
+			.replace(pseudoUrlPattern, "$1<a target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
+			.replace(emailAddressPattern, "<a target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+	},
+	
 	unlinkify: function(text) {
 		if(!text) return text;
 		text = text.replace(/<a\b[^>]*>/i,"");
@@ -5199,16 +5219,11 @@ VCO.Draggable = VCO.Class.extend({
 	},
 	
 	enable: function(e) {
-		// Temporarily disableing this until I have time to fix some issues.
-		//VCO.DomEvent.addListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		//VCO.DomEvent.addListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
 		
-		this.data.pos.start = 0; //VCO.Dom.getPosition(this._el.move);
+		this.data.pos.start = 0; 
 		this._el.move.style.left = this.data.pos.start.x + "px";
 		this._el.move.style.top = this.data.pos.start.y + "px";
 		this._el.move.style.position = "absolute";
-		//this._el.move.style.zIndex = "11";
-		//this._el.move.style.cursor = "move";
 	},
 	
 	disable: function() {
@@ -5225,8 +5240,6 @@ VCO.Draggable = VCO.Class.extend({
 	
 	updateConstraint: function(c) {
 		this.options.constraint = c;
-		
-		// Temporary until issues are fixed
 		
 	},
 	
@@ -5292,7 +5305,7 @@ VCO.Draggable = VCO.Class.extend({
 		}
 		
 		this.data.pos.end = VCO.Dom.getPosition(this._el.drag);
-		this.data.new_pos.x = -(this.data.pagex.start - this.data.pagex.end - this.data.pos.start.x)//-(this.data.pagex.start - this.data.pagex.end - this.data.pos.end.x);
+		this.data.new_pos.x = -(this.data.pagex.start - this.data.pagex.end - this.data.pos.start.x);
 		this.data.new_pos.y = -(this.data.pagey.start - this.data.pagey.end - this.data.pos.start.y );
 		
 		if (this.options.enable.x) {
@@ -5322,6 +5335,7 @@ VCO.Draggable = VCO.Class.extend({
 		
 		
 		if (VCO.Browser.touch) {
+			// Treat mobile multiplier differently
 			//this.options.momentum_multiplier = this.options.momentum_multiplier * 2;
 		}
 		
@@ -7589,7 +7603,7 @@ VCO.Media.Text = VCO.Class.extend({
 		if (this.data.text != "") {
 			var text_content = "";
 			
-			text_content 					+= VCO.Util.htmlify(this.data.text);
+			text_content 					+= VCO.Util.htmlify(VCO.Util.linkify(this.data.text));
 						
 			this._el.content				= VCO.Dom.create("div", "vco-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;
@@ -8453,7 +8467,9 @@ VCO.Slide = VCO.Class.extend({
 		} else if (layout == "landscape") {
 			
 		} else if (this.options.width <= this.options.skinny_size) {
-			
+			content_padding_left = 50;
+			content_padding_right = 50;
+			content_width = this.options.width - content_padding_left - content_padding_right;
 		} else {
 			
 		}
@@ -8471,11 +8487,12 @@ VCO.Slide = VCO.Class.extend({
 		}
 		
 		if (this._media) {
+			
 			if (!this.has.text && this.has.headline) {
 				this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
 			} else if (!this.has.text && !this.has.headline) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
-			} else if (this.options.skinny_size) {
+			} else if (this.options.width <= this.options.skinny_size) {
 				this._media.updateDisplay(content_width, this.options.height, layout);
 			} else {
 				this._media.updateDisplay(content_width/2, this.options.height, layout);
