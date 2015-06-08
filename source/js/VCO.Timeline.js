@@ -348,11 +348,15 @@ VCO.Timeline = VCO.Class.extend({
         return null;
     },
 
-    getSlideId: function(id) {
-        return this.getSlide(this._getSlideIndex(id));
+    getSlideById: function(id) {
+    	return this.getSlide(this._getSlideIndex(id));
     },
-   
-	
+
+    getCurrentSlide: function() {
+    	return this.getSlideById(this.current_id);
+    },
+
+
 	/*	Display
 	================================================== */
 	updateDisplay: function() {
