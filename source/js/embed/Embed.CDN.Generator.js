@@ -83,7 +83,7 @@ function getLinkAndIframe() {
 		source_key = VCO.ConfigFactory.extractSpreadsheetKey(e_source.value);
 	} else {
 		if (e_source.value == "") {
-			source_key	= "0Agl_Dv6iEbDadHdKcHlHcTB5bzhvbF9iTWwyMmJHdkE"
+			source_key	= document.getElementById('embed-source-url').getAttribute("placeholder");
 		} else {
 			source_key	= e_source.value;
 		}
@@ -210,6 +210,7 @@ function updateEmbedCode(element, options) {
 	
 	var e_embed = document.getElementById('embed_code'),
 		el = getLinkAndIframe();
+  console.log(el);
 	e_embed.value = el.copybox;
 	jQuery("#preview-embed-link").attr('href', el.link);
 	jQuery("#preview-embed-iframe").html(el.iframe);

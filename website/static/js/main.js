@@ -34,8 +34,6 @@ $blueline(document).ready(function() {
     return false;
   });
 
-
-
   // Preview
   $("#iframe-preview-button").click(function () {
     var $embed = $("#preview");
@@ -47,8 +45,6 @@ $blueline(document).ready(function() {
     $if.attr("src", $if.attr("src"));
     //$("body,html").animate({scrollTop: $embed.offset().top - 60}, 250);
   });
-
-
 
   // Embed Generator
   //updateEmbedCode();
@@ -122,8 +118,7 @@ $blueline(document).ready(function() {
         });
 
         window.onresize = function(event) {
-            console.log("resize")
-            document.getElementById('input').style.height = "30px"
+            document.getElementById('input').style.height = "30px";
             document.getElementById('preview-embed-iframe').style.height = (window.innerHeight - 95 + "px");
             timeline.updateDisplay();
         }

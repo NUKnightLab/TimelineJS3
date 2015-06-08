@@ -3,7 +3,7 @@
  */
 ;(function(VCO){
     function extractSpreadsheetKey(url) {
-        var pat = /\bkey=([_A-Za-z0-9]+)&?/i;
+        var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
         if (url.match(pat)) {
             return url.match(pat)[1];
         }
