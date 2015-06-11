@@ -514,14 +514,14 @@ VCO.Util = {
     // These must be in the order they appear in the original URL
     // "key" param not included since it's not in the URL structure
     // Streetview "location" param not included since it's captured as "center"
+    // Place "center" param ...um...
     var param_defs = {
         "view": ["center"],
-        "place": ["q"],
+        "place": ["q", "center"],
         "directions": ["origin", "destination", "center"],
         "search": ["q", "center"],
         "streetview": ["fov", "heading", "pitch"]
     };
-
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
     var coords_regex = /@([-\d.]+),([-\d.]+)/;
@@ -3046,7 +3046,9 @@ VCO.TimelineConfig = VCO.Class.extend({
                 day: item_data.endday || '',
                 time: item_data.endtime || ''
             },
-            display_date: item_data.displaydate || ''
+            display_date: item_data.displaydate || '',
+
+            type: item_data.type || ''
         }
 
         if (d.end_date.year == '') {
@@ -3090,18 +3092,28 @@ VCO.TimelineConfig = VCO.Class.extend({
         },
 
         fromFeed: function(url) {
+            var timeline_config = { 'events': [] };
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
-            var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
             var extract = getGoogleItemExtractor(data);
             for (var i = 0; i < data.feed.entry.length; i++) {
-                events.push(extract(data.feed.entry[i]));
+                var event = extract(data.feed.entry[i]);
+                var row_type = 'event';
+                if (typeof(event.type) != 'undefined') {
+                    row_type = event.type;
+                    delete event.type;
+                }
+                if (row_type == 'title') {
+                    timeline_config.title = event;
+                } else {
+                    timeline_config.events.push(event);
+                }
             };
-            return {scale: 'javascript', events: events}
+            return timeline_config;
         }
     }
 })(VCO)
@@ -7238,7 +7250,6 @@ VCO.Media.Map = VCO.Media.extend({
         this.mapframe.height      = "100%";
         this.mapframe.frameBorder = "0";
         this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
-        console.log(this.mapframe.src);
         // After Loaded
         this.onLoaded();
     },
@@ -11260,11 +11271,15 @@ VCO.Timeline = VCO.Class.extend({
         return null;
     },
 
-    getSlideId: function(id) {
-        return this.getSlide(this._getSlideIndex(id));
+    getSlideById: function(id) {
+    	return this.getSlide(this._getSlideIndex(id));
     },
-   
-	
+
+    getCurrentSlide: function() {
+    	return this.getSlideById(this.current_id);
+    },
+
+
 	/*	Display
 	================================================== */
 	updateDisplay: function() {
