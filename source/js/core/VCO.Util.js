@@ -471,7 +471,6 @@ VCO.Util = {
         "search": ["q", "center"],
         "streetview": ["fov", "heading", "pitch"]
     };
-    console.log(param_defs["place"]);
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
     var coords_regex = /@([-\d.]+),([-\d.]+)/;

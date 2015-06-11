@@ -1,3 +1,144 @@
+/* EXTRA
+================================================== */
+function getUrlVars(string) {
+  var vars = [],
+    hash,
+    hashes,
+    str = string.toString();
+
+  if (str.match('&#038;')) {
+    str = str.replace("&#038;", "&");
+  } else if (str.match('&#38;')) {
+    str = str.replace("&#38;", "&");
+  } else if (str.match('&amp;')) {
+    str = str.replace("&amp;", "&");
+  }
+  if (str.match('#')) {
+    str = str.split('#')[0];
+  }
+  hashes = str.slice(str.indexOf('?') + 1).split('&');
+
+  for(var i = 0; i < hashes.length; i++) {
+    hash = hashes[i].split('=');
+    vars.push(hash[0]);
+    vars[hash[0]] = hash[1];
+  }
+
+  return vars;
+};
+
+function getLinkAndIframe() {
+
+  var theobj        = {},
+    e_source      = document.getElementById('embed-source-url'),
+    e_width       = document.getElementById('embed-width'),
+    e_height      = document.getElementById('embed-height'),
+    e_maptype     = document.getElementById('embed-maptype'),
+    e_language      = document.getElementById('embed-language'),
+    e_embed       = document.getElementById('embed_code'),
+    e_font        = document.getElementById('embed-font'),
+    e_startatend    = document.getElementById('embed-startatend'),
+    e_startzoomadjust = document.getElementById('embed-startzoomadjust'),
+    e_startatslide    = document.getElementById('embed-startatslide'),
+    e_debug       = document.getElementById('embed-debug'),
+    e_googlemapkey    = document.getElementById('embed-googlemapkey'),
+    start_at_end    = false,
+    hash_bookmark   = false,
+    is_debug      = false,
+    iframe,
+    link,
+    vars,
+    wp,
+    source_key;
+
+  /* SOURCE KEY
+  ================================================== */
+  if (e_source.value.match("docs.google.com")) {
+    source_key = VCO.ConfigFactory.extractSpreadsheetKey(e_source.value);
+  } else {
+    if (e_source.value == "") {
+      source_key  = document.getElementById('embed-source-url').getAttribute("placeholder");
+    } else {
+      source_key  = e_source.value;
+    }
+  }
+
+  /* START AT END
+  ================================================== */
+  if (e_startatend.checked) {
+    start_at_end = true;
+  }
+
+  /* DEBUG
+  ================================================== */
+  if (e_debug.checked) {
+    is_debug = true;
+  }
+
+  /* IFRAME AND LINK
+  ================================================== */
+  vars    =  generator_embed_path + "?source=" + source_key;
+  vars    += "&font=" + e_font.value;
+  vars    += "&maptype=" + e_maptype.value;
+  vars    += "&lang=" + e_language.value;
+  if (start_at_end) {
+    vars  += "&start_at_end=" + start_at_end;
+  }
+  /*if (hash_bookmark) {
+    vars  += "&hash_bookmark=" + hash_bookmark;
+  }*/
+  if (is_debug) {
+    vars  += "&debug=" + is_debug;
+  }
+
+  if (parseInt(e_startatslide.value, 10) > 0) {
+    vars  += "&start_at_slide=" + parseInt(e_startatslide.value, 10);
+  }
+
+  if (parseInt(e_startzoomadjust.value, 10) > 0) {
+    vars  += "&start_zoom_adjust=" + parseInt(e_startzoomadjust.value, 10);
+  }
+
+  if (e_googlemapkey.value != "") {
+    vars  += "&gmap_key=" + e_googlemapkey.value;
+  }
+
+  if (e_width.value > 0) {
+    vars  += "&width=" + e_width.value;
+  }
+  if (e_height.value > 0) {
+    vars  += "&height=" + e_height.value;
+  }
+
+  iframe    = "<iframe src='" + vars + "'";
+
+  if (e_width.value > 0 || e_width.value.match("%")) {
+    iframe  += " width='" + e_width.value + "'";
+  }
+  if (e_height.value > 0 || e_height.value.match("%")) {
+    iframe  += " height='" + e_height.value + "'";
+  }
+  iframe    += " frameborder='0'></iframe>";
+
+  theobj.iframe = iframe;
+  theobj.link   = vars;
+  theobj.copybox = iframe;
+  return theobj;
+};
+
+/* EMBED GENERATOR
+================================================== */
+function updateEmbedCode(element, options) {
+  var e_embed = document.getElementById('embed_code'),
+    el = getLinkAndIframe();
+  e_embed.value = el.copybox;
+  jQuery("#preview-embed-link").attr('href', el.link);
+  jQuery("#preview-embed-iframe").html(el.iframe);
+  jQuery("#preview-embed").css("display","block");
+}
+
+
+
 // overcome Timeline's stupid jQuery loading
 var $blueline = $.noConflict();
 $blueline(document).ready(function() {
@@ -47,7 +188,7 @@ $blueline(document).ready(function() {
   });
 
   // Embed Generator
-  //updateEmbedCode();
+  updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
   $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-wordpressplugin').change(function(evt) { updateEmbedCode(evt); });
@@ -72,71 +213,4 @@ $blueline(document).ready(function() {
     $target.collapse('show');
     navSmartScroll($target.prev());
   }
-
-  // Set up preview box
-  function do_preview(key) {
-    //default URL is what's in the preview box
-    var url = document.getElementById('embed-source-url').getAttribute("placeholder");
-    if (key && typeof(key) == 'string') {
-      url = key;
-    } else if (document.getElementById('embed-source-url').value){
-      url = document.getElementById('embed-source-url').value;
-    }
-    $("#timeline-wrapper").show();
-
-    $('html, body').animate({
-        scrollTop: $("#timeline-wrapper").offset().top
-    }, 2000);
-    $("#timeline-wrapper")[0].scrollIntoView( true );
-
-    new_timeline(url);
-  }
-  var timeline = null;
-  var button = document.getElementById('iframe-preview-button');
-  button.addEventListener('click',do_preview);
-
-  document.getElementById('embed-source-url').addEventListener('keyup',function(evt) {
-    if (evt.keyCode == 13) {
-      do_preview();
-    }
-  });
-
-  function new_timeline(url) {
-      timeline = null; // TODO: actively 'destroy' an existing timeline?
-      if (!url) {
-        throw("Should be called with a url.")
-      } else {
-        var json = VCO.ConfigFactory.fromGoogle(url);
-        $("#export-json").show();
-        $("#url").val('');
-        window.factory_json = json;
-        $("#json-export-field").val(JSON.stringify(json,null,"  "));
-        /*document.getElementById('input').style.height = "40px"*/
-        document.getElementById('preview-embed-iframe').style.height = (window.innerHeight - 95 + "px");
-
-        timeline = new VCO.Timeline('preview-embed-iframe', new VCO.TimelineConfig(json), {
-        });
-
-        window.onresize = function(event) {
-            document.getElementById('input').style.height = "30px";
-            document.getElementById('preview-embed-iframe').style.height = (window.innerHeight - 95 + "px");
-            timeline.updateDisplay();
-        }
-      }
-  }
-
-  function getQueryParams(qs) {
-    qs = qs.split("+").join(" ");
-
-    var params = {}, tokens,
-        re = /[?&]?([^=]+)=([^&]*)/g;
-
-    while (tokens = re.exec(qs)) {
-        params[decodeURIComponent(tokens[1])]
-            = decodeURIComponent(tokens[2]);
-    }
-
-    return params;
-  }
-
 });
