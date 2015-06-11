@@ -22,7 +22,7 @@ VCO.Date = VCO.Class.extend({
 				date_obj:   data
 			};	        
 	    } else {
-	        this.data = data;
+	        this.data = JSON.parse(JSON.stringify(data)); // clone don't use by reference.
             this._createDateObj();            
 	    }
 	    
@@ -300,7 +300,7 @@ VCO.BigDate = VCO.Date.extend({
                 date_obj:   data
             }
         } else {
-            this.data = data;
+            this.data = JSON.parse(JSON.stringify(data));
             this._createDateObj();
         }
         
