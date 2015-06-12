@@ -144,9 +144,23 @@ VCO.TimelineConfig = VCO.Class.extend({
                 throw("item " + i + " is missing a start_date");
             }
             if(!(array[i].start_date instanceof dateCls)) {
-                array[i].start_date = new dateCls(array[i].start_date);
-                if (typeof(array[i].end_date) != 'undefined') {
-                    array[i].end_date = new dateCls(array[i].end_date);
+                var start_date = array[i].start_date;
+                array[i].start_date = new dateCls(start_date);
+
+                // eliminate redundant end dates.
+                if (typeof(array[i].end_date) != 'undefined' && !(array[i].end_date instanceof dateCls)) {
+                    var end_date = array[i].end_date;
+                    var equal = true;
+                    for (property in start_date) {
+                        equal = equal && (start_date[property] == end_date[property]);
+                    }
+                    if (equal) {
+                        trace("End date same as start date is redundant; dropping end date");
+                        delete array[i].end_date;
+                    } else {
+                        array[i].end_date = new dateCls(end_date);
+                    }
+
                 }
             }
         }
