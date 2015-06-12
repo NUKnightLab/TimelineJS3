@@ -83,7 +83,7 @@
           <div class="more-options">
             <div class="row">
             <!-- Language-->
-              <div class="small-12 medium-3 columns">
+              <div class="small-12 medium-4 columns">
                 <label name="language" for="embed-language">Language</label>
                 <select id="embed-language">
                   <option value="en">English</option>
@@ -149,7 +149,7 @@
                 </select>
             </div>
             <!-- Fonts-->
-            <div class="small-12 medium-5 columns">
+            <div class="small-12 medium-6 columns">
               <label name="fonts" for="embed-font">Fonts</label>
               <select id="embed-font">
                 <option value="Default">Default</option>
@@ -173,95 +173,35 @@
                 <option value="UnicaOne-Vollkorn">Unica One & Vollkorn</option>
               </select>
             </div>
-            <div class="small-12 medium-4 columns">
-              <button class="tiny button dropdown" href="#" onclick="return false;" id="font-preview-trigger"  data-dropdown="drop1" aria-controls="drop1" aria-expanded="false">Preview font pairs</button>
-              <ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                <li><img src='{{ static_url }}/img/make/font-options.png' alt='Font Option Preview'></li>
-              </ul>
-            </div>
           </div>
           <div class="row">
-          <!-- Map Type-->
-          <div class="small-12 medium-4 columns">
-            <label name="map-type" for="embed-maptype">Map Type</label>
-            <select id="embed-maptype">
-              <option value="toner">Stamen Maps: Toner</option>
-              <option value="toner-lines">Stamen Maps: Toner Lines</option>
-              <option value="toner-labels">Stamen Maps: Toner Labels</option>
-              <option value="watercolor">Stamen Maps: Watercolor</option>
-              <option value="sterrain">Stamen Maps: Terrain</option>
-              <option value="osm">OpenStreetMap</option>
-              <option value="TERRAIN">Google Maps: Terrain</option>
-              <option value="ROADMAP">Google Maps: Roadmap</option>
-              <option value="HYBRID">Google Maps: Hybrid</option>
-              <option value="SATELLITE">Google Maps: Satellite</option>
-            </select>
+            <!-- Map Type-->
+            <div class="small-12 columns">
+              <label name="map-type" for="embed-maptype">Map Type</label>
+              <div id="embed-maptype"><p><small>Currently all Google's base maps are supported. When creating a Google map, style it the way you would like it to appear, and then paste the resulting link into your Google Spreadsheet.</small></p></div>
             </div>
-            <div class="small-12 medium-8 columns">
-              <label>If you are using a Google map type, please enter your <a href="https://developers.google.com/places/documentation/#Authentication" target="_blank">API Key</a>.</label>
-              <input type="text" placeholder="Google Maps API Key" id="embed-googlemapkey">
             </div>
-          </div>
-          <div class="row">
-            <label>Misc</label>
-            <!-- Wordpress Plugin-->
-            <!--<div class="small-12 medium-3 columns">
-                <label class="checkbox">
-                  <input id="embed-wordpressplugin" type="checkbox" value="option1">WordPress Plugin
-                </label>
-            </div>
-            <div class="small-12 medium-9 columns">
-              <span class="help-inline">Is the embed for the <a href="https://github.com/NUKnightLab/TimelineJS-Wordpress-Plugin" target="_blank">WordPress plugin</a>?</span>
-            </div>
-          </div>-->
-          <!-- Start at End?-->
-          <div class="row">
-            <div class="small-12 medium-3 columns">
-                <label class="checkbox">
-                  <input id="embed-startatend" type="checkbox" value="option1">Start at the End?
-                </label>
-            </div>
-            <div class="small-12 medium-9 columns">
-                <span class="help-inline">The most recent event will be shown first.</span>
-            </div>
-          </div>
-          <!-- Hash Bookmarks-->
-          <!--<div class="row">
-            <div class="small-12 medium-3 columns">
-                <label class="checkbox">
-                  <input id="embed-hashbookmark" type="checkbox" value="option1">Hash Bookmarks
-                </label>
-            </div>
-            <div class="small-12 medium-9 columns">
-                <span class="help-inline">These URLs can be bookmarked so you can share or return to a specific place in the timeline. On each slide change, a # will be added to the end of the URL in the URL bar.</span>
-            </div>
-          </div>-->
-          <!-- Debug-->
-          <div class="row">
-            <div class="small-12 medium-3 columns">
-              <label class="checkbox">
-                <input id="embed-debug" type="checkbox" value="option1">Debug
-              </label>
-            </div>
-            <div class="small-12 medium-9 columns">
-                <span class="help-inline">In debug mode, the JavaScript console will display logging messages.</span>
-            </div>
-          </div>
-            <!-- Start Zoom Adjust-->
             <div class="row">
-              <div class="small-12 columns">
-                <label name="zoom-level" for="embed-startzoomadjust">Default zoom level</label>
+              <label>Misc</label>
+              <!-- Start at End?-->
+              <div class="small-12 medium-3 columns">
+                  <label class="checkbox">
+                    <input id="embed-startatend" type="checkbox" value="option1">Start at the End?
+                  </label>
+              </div>
+              <div class="small-12 medium-9 columns">
+                  <span class="help-inline">The most recent event will be shown first.</span>
               </div>
             </div>
-            <div class="row collapse">
-              <div class="small-6 medium-2 columns">
-                <span class="prefix">Zoom level</span>
+            <!-- Debug-->
+            <div class="row">
+              <div class="small-12 medium-3 columns">
+                <label class="checkbox">
+                  <input id="embed-debug" type="checkbox" value="option1">Debug
+                </label>
               </div>
-              <div class="small-6 medium-1 columns">
-                <input id="embed-startzoomadjust" type="text" value="0" placeholder="0">
-              </div>
-              <div class="small-12 medium-8 columns">
-                <p class="help-block">Equivalent to pressing the zoom in or zoom out button the specified number of times. Negative numbers zoom out.</p>
+              <div class="small-12 medium-9 columns">
+                  <span class="help-inline">In debug mode, the JavaScript console will display logging messages.</span>
               </div>
             </div>
             <!-- Start at Slide-->

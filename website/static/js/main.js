@@ -1,5 +1,5 @@
-/* EXTRA
-================================================== */
+/* Configure timeline settings from website options
+* ================================================== */
 function getUrlVars(string) {
   var vars = [],
     hash,
@@ -33,17 +33,13 @@ function getLinkAndIframe() {
     e_source      = document.getElementById('embed-source-url'),
     e_width       = document.getElementById('embed-width'),
     e_height      = document.getElementById('embed-height'),
-    e_maptype     = document.getElementById('embed-maptype'),
     e_language      = document.getElementById('embed-language'),
     e_embed       = document.getElementById('embed_code'),
     e_font        = document.getElementById('embed-font'),
     e_startatend    = document.getElementById('embed-startatend'),
-    e_startzoomadjust = document.getElementById('embed-startzoomadjust'),
     e_startatslide    = document.getElementById('embed-startatslide'),
     e_debug       = document.getElementById('embed-debug'),
-    e_googlemapkey    = document.getElementById('embed-googlemapkey'),
     start_at_end    = false,
-    hash_bookmark   = false,
     is_debug      = false,
     iframe,
     link,
@@ -63,14 +59,12 @@ function getLinkAndIframe() {
     }
   }
 
-  /* START AT END
+  /* MISC
   ================================================== */
   if (e_startatend.checked) {
     start_at_end = true;
   }
 
-  /* DEBUG
-  ================================================== */
   if (e_debug.checked) {
     is_debug = true;
   }
@@ -79,28 +73,16 @@ function getLinkAndIframe() {
   ================================================== */
   vars    =  generator_embed_path + "?source=" + source_key;
   vars    += "&font=" + e_font.value;
-  vars    += "&maptype=" + e_maptype.value;
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
     vars  += "&start_at_end=" + start_at_end;
   }
-  /*if (hash_bookmark) {
-    vars  += "&hash_bookmark=" + hash_bookmark;
-  }*/
   if (is_debug) {
     vars  += "&debug=" + is_debug;
   }
 
   if (parseInt(e_startatslide.value, 10) > 0) {
     vars  += "&start_at_slide=" + parseInt(e_startatslide.value, 10);
-  }
-
-  if (parseInt(e_startzoomadjust.value, 10) > 0) {
-    vars  += "&start_zoom_adjust=" + parseInt(e_startzoomadjust.value, 10);
-  }
-
-  if (e_googlemapkey.value != "") {
-    vars  += "&gmap_key=" + e_googlemapkey.value;
   }
 
   if (e_width.value > 0) {
@@ -191,17 +173,13 @@ $blueline(document).ready(function() {
   updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
   $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-wordpressplugin').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-font').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-height').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-maptype').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-googlemapkey').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-source-url').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-language').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-startatend').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-hashbookmark').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-startzoomadjust').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-debug').change(function(evt) { updateEmbedCode(evt); });
 
   $('.collapse').on('show',function(e) {

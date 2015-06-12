@@ -101,27 +101,7 @@ function createStoryJS(c, src) {
 				twitter:			""
 			},
 			gmap_key: 	""
-		},
-		font_presets = [
-			{ name:	"Merriweather-NewsCycle",		google:	[ 'News+Cycle:400,700:latin', 'Merriweather:400,700,900:latin' ] },
-			{ name:	"NewsCycle-Merriweather",		google:	[ 'News+Cycle:400,700:latin', 'Merriweather:300,400,700:latin' ] },
-			{ name:	"PoiretOne-Molengo",			google:	[ 'Poiret+One::latin', 'Molengo::latin' ] },
-			{ name:	"Arvo-PTSans",					google:	[ 'Arvo:400,700,400italic:latin', 'PT+Sans:400,700,400italic:latin' ] },
-			{ name:	"PTSerif-PTSans",				google:	[ 'PT+Sans:400,700,400italic:latin', 'PT+Serif:400,700,400italic:latin' ] },
-			{ name:	"PT",							google:	[ 'PT+Sans+Narrow:400,700:latin', 'PT+Sans:400,700,400italic:latin', 'PT+Serif:400,700,400italic:latin' ] },
-			{ name:	"DroidSerif-DroidSans",			google:	[ 'Droid+Sans:400,700:latin', 'Droid+Serif:400,700,400italic:latin' ] },
-			{ name:	"Lekton-Molengo",				google:	[ 'Lekton:400,700,400italic:latin', 'Molengo::latin' ] },
-			{ name:	"NixieOne-Ledger",				google:	[ 'Nixie+One::latin', 'Ledger::latin' ] },
-			{ name:	"AbrilFatface-Average",			google:	[ 'Average::latin', 'Abril+Fatface::latin' ] },
-			{ name:	"PlayfairDisplay-Muli",			google:	[ 'Playfair+Display:400,400italic:latin', 'Muli:300,400,300italic,400italic:latin' ] },
-			{ name:	"Rancho-Gudea",					google:	[ 'Rancho::latin', 'Gudea:400,700,400italic:latin' ] },
-			{ name:	"Bevan-PotanoSans",				google:	[ 'Bevan::latin', 'Pontano+Sans::latin' ] },
-			{ name:	"BreeSerif-OpenSans",			google:	[ 'Bree+Serif::latin', 'Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800:latin' ] },
-			{ name:	"SansitaOne-Kameron",			google:	[ 'Sansita+One::latin', 'Kameron:400,700:latin' ] },
-			{ name:	"Lora-Istok",					google:	[ 'Lora:400,700,400italic,700italic:latin', 'Istok+Web:400,700,400italic,700italic:latin' ] },
-			{ name:	"Pacifico-Arimo",				google:	[ 'Pacifico::latin', 'Arimo:400,700,400italic,700italic:latin' ] }
-		];
-			
+		}
 	/* BUILD CONFIG
 	================================================== */	
 	if (typeof c == 'object') {
@@ -156,7 +136,7 @@ function createStoryJS(c, src) {
 	// Check for old installs still using the old method of language
 	if (storyjs_e_config.js.match("locale")) {
 		// TODO Issue #618 better splitting
-		storyjs_e_config.lang = storyjs_e_config.js.split("locale/")[1].replace(".js", "");
+		storyjs_e_config.lang = storyjs_e_config.js.split("locale/")[1].replace(".json", "");
 		storyjs_e_config.js		= path.js + 'timeline-min.js?' + js_version;
 	}
 	
@@ -181,7 +161,7 @@ function createStoryJS(c, src) {
 	if (storyjs_e_config.lang.match("/")) {
 		path.locale = storyjs_e_config.lang;
 	} else {
-		path.locale = path.locale + storyjs_e_config.lang + ".js?" + js_version;
+		path.locale = path.locale + storyjs_e_config.lang + ".json?" + js_version;
 	}
 	
 		
@@ -211,23 +191,7 @@ function createStoryJS(c, src) {
 			path.font.css	= path.font.css + "font."+storyjs_e_config.font.toLowerCase()+".css?" + js_version;
 		}
 		LoadLib.css(path.font.css, onloaded_font_css);
-		
-		// FONT GOOGLE JS
-		for(var i = 0; i < font_presets.length; i++) {
-			if (path.font.name == font_presets[i].name) {
-				path.font.google = true;
-				WebFontConfig = {google: { families: font_presets[i].google }};
-			}
-		}
-		
-		if (path.font.google) {
-			LoadLib.js(path.font.js, onloaded_font_js);
-		} else {
-			ready.font.js		= true;
-		}
-		
-	}
-	
+  }	
 	/* Load jQuery
 	================================================== */
 	try {
