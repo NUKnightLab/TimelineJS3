@@ -81,6 +81,10 @@
             type: item_data.type || ''
         }
 
+        if (item_data.group) {
+            d.group = item_data.group;
+        }
+
         if (d.end_date.year == '') {
             var bad_date = d.end_date;
             delete d.end_date;
