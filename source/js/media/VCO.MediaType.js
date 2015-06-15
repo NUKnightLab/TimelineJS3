@@ -92,7 +92,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"image",
 				name: 		"Image",
-				match_str: 	/(jpg|jpeg|png|gif)(\?.*)$/i,
+				match_str: 	/(jpg|jpeg|png|gif)(\?.*)?$/i,
 				cls: 		VCO.Media.Image
 			},
 			{

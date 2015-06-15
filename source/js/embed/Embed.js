@@ -1,46 +1,46 @@
 //StoryJS Embed Loader
 // Provide a bootstrap method for instantiating a timeline. On page load, check the definition of these window scoped variables in this order: [url_config, timeline_config, storyjs_config, config]. As soon as one of these is found to be defined with type 'object,' it will be used to automatically instantiate a timeline.
 
-/* 	CodeKit Import
-	http://incident57.com/codekit/ 
+/*  CodeKit Import
+  http://incident57.com/codekit/ 
 ================================================== */
 // @codekit-prepend "Embed.LoadLib.js";
 
 if(typeof embed_path == 'undefined') {
-	// REPLACE WITH YOUR BASEPATH IF YOU WANT OTHERWISE IT WILL TRY AND FIGURE IT OUT
-	var _tmp_script_path = getEmbedScriptPath("timeline-embed.js");
-	var embed_path = _tmp_script_path.substr(0,_tmp_script_path.lastIndexOf('js/'))
+  // REPLACE WITH YOUR BASEPATH IF YOU WANT OTHERWISE IT WILL TRY AND FIGURE IT OUT
+  var _tmp_script_path = getEmbedScriptPath("timeline-embed.js");
+  var embed_path = _tmp_script_path.substr(0,_tmp_script_path.lastIndexOf('js/'))
 }
 
 function getEmbedScriptPath(scriptname) {
-	var scriptTags = document.getElementsByTagName('script'),
-		script_path = "",
-		script_path_end = "";
-	for(var i = 0; i < scriptTags.length; i++) {
-		if (scriptTags[i].src.match(scriptname)) {
-			script_path = scriptTags[i].src;
-		}
-	}
-	if (script_path != "") {
-		script_path_end = "/"
-	}
-	return script_path.split('?')[0].split('/').slice(0, -1).join('/') + script_path_end;
+  var scriptTags = document.getElementsByTagName('script'),
+    script_path = "",
+    script_path_end = "";
+  for(var i = 0; i < scriptTags.length; i++) {
+    if (scriptTags[i].src.match(scriptname)) {
+      script_path = scriptTags[i].src;
+    }
+  }
+  if (script_path != "") {
+    script_path_end = "/"
+  }
+  return script_path.split('?')[0].split('/').slice(0, -1).join('/') + script_path_end;
 }
 
 /* CHECK TO SEE IF A CONFIG IS ALREADY DEFINED (FOR EASY EMBED)
 ================================================== */
 (function() {
-	if (typeof url_config == 'object') {
-		createStoryJS(url_config);
-	} else if (typeof timeline_config == 'object') {
-		createStoryJS(timeline_config);
-	} else if (typeof storyjs_config == 'object') {
-		createStoryJS(storyjs_config);
-	} else if (typeof config == 'object') {
-		createStoryJS(config);
-	} else {
-		// No existing config. Call createStoryJS(your_config) manually with a config
-	}
+  if (typeof url_config == 'object') {
+    createStoryJS(url_config);
+  } else if (typeof timeline_config == 'object') {
+    createStoryJS(timeline_config);
+  } else if (typeof storyjs_config == 'object') {
+    createStoryJS(storyjs_config);
+  } else if (typeof config == 'object') {
+    createStoryJS(config);
+  } else {
+    // No existing config. Call createStoryJS(your_config) manually with a config
+  }
 })();
 
 /* CREATE StoryJS Embed
@@ -51,16 +51,12 @@ function createStoryJS(c, src) {
 	var storyjs_embedjs, t, te, x,
 		isCDN					= false,
 		js_version				= "2.24",
-		jquery_version_required	= "1.7.1",
-		jquery_version			= "",
 		ready = {
 			timeout:	"",
 			checks:		0,
 			finished:	false,
 			js:			false,
 			css:		false,
-			jquery:		false,
-			has_jquery:	false,
 			font: {
 				css:	false
 			}
@@ -69,7 +65,6 @@ function createStoryJS(c, src) {
 			base:		embed_path,
 			css:		embed_path + "css/",
 			js:			embed_path + "js/",
-			jquery:		"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 			font: {
 				google:	false,
 				css:	embed_path + "css/fonts/",
@@ -88,6 +83,7 @@ function createStoryJS(c, src) {
 			source:		'https://docs.google.com/spreadsheet/pub?key=0Agl_Dv6iEbDadFYzRjJPUGktY0NkWXFUWkVIZDNGRHc&output=html',
 			lang:		'en',
 			font:		'default',
+      start_at_end: false,
 			css:		path.css + 'timeline.css?'+js_version,
 			js:			'',
 			api_keys: {
@@ -170,38 +166,11 @@ function createStoryJS(c, src) {
 		}
 		LoadLib.css(path.font.css, onloaded_font_css);
   }	
-	/* Load jQuery
-	================================================== */
-	try {
-	    ready.has_jquery = jQuery;
-	    ready.has_jquery = true;
-		if (ready.has_jquery) {
-			var jquery_version_array = jQuery.fn.jquery.split(".");
-			var jquery_version_required_array = jquery_version_required.split(".");
-			ready.jquery = true;
-			for (i = 0; i < 2; i++) {
-				var have = jquery_version_array[i], need = parseFloat(jquery_version_required_array[i]);
-				if (have != need) {
-					ready.jquery = have > need;
-					break;
-				}
-			}
-		}
-	} catch(err) {
-	    ready.jquery = false;
-	}
-	if (!ready.jquery) {
-		LoadLib.js(path.jquery, onloaded_jquery);
-	} else {
-		onloaded_jquery();
-	}
+		LoadLib.js(storyjs_e_config.js, onloaded_js);
 	
 	/* On Loaded
 	================================================== */
 	
-	function onloaded_jquery() {
-		LoadLib.js(storyjs_e_config.js, onloaded_js);
-	}
 	function onloaded_js() {
 		ready.js = true;
 		onloaded_check();
