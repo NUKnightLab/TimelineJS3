@@ -505,14 +505,14 @@ VCO.Util = {
     // These must be in the order they appear in the original URL
     // "key" param not included since it's not in the URL structure
     // Streetview "location" param not included since it's captured as "center"
+    // Place "center" param ...um...
     var param_defs = {
         "view": ["center"],
-        "place": ["q"],
+        "place": ["q", "center"],
         "directions": ["origin", "destination", "center"],
         "search": ["q", "center"],
         "streetview": ["fov", "heading", "pitch"]
     };
-
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
     var coords_regex = /@([-\d.]+),([-\d.]+)/;
@@ -2921,9 +2921,23 @@ VCO.TimelineConfig = VCO.Class.extend({
                 throw("item " + i + " is missing a start_date");
             }
             if(!(array[i].start_date instanceof dateCls)) {
-                array[i].start_date = new dateCls(array[i].start_date);
-                if (typeof(array[i].end_date) != 'undefined') {
-                    array[i].end_date = new dateCls(array[i].end_date);
+                var start_date = array[i].start_date;
+                array[i].start_date = new dateCls(start_date);
+
+                // eliminate redundant end dates.
+                if (typeof(array[i].end_date) != 'undefined' && !(array[i].end_date instanceof dateCls)) {
+                    var end_date = array[i].end_date;
+                    var equal = true;
+                    for (property in start_date) {
+                        equal = equal && (start_date[property] == end_date[property]);
+                    }
+                    if (equal) {
+                        trace("End date same as start date is redundant; dropping end date");
+                        delete array[i].end_date;
+                    } else {
+                        array[i].end_date = new dateCls(end_date);
+                    }
+
                 }
             }
         }
@@ -2936,7 +2950,7 @@ VCO.TimelineConfig = VCO.Class.extend({
  */
 ;(function(VCO){
     function extractSpreadsheetKey(url) {
-        var pat = /\bkey=([_A-Za-z0-9]+)&?/i;
+        var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
         if (url.match(pat)) {
             return url.match(pat)[1];
         }
@@ -3009,8 +3023,21 @@ VCO.TimelineConfig = VCO.Class.extend({
                 day: item_data.endday || '',
                 time: item_data.endtime || ''
             },
-            display_date: item_data.displaydate || ''
+            display_date: item_data.displaydate || '',
+
+            type: item_data.type || ''
         }
+
+        if (d.end_date.year == '') {
+            var bad_date = d.end_date;
+            delete d.end_date;
+            if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
+                var label = d.text.headline ||
+                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
+                trace(item);
+            }
+        }
+
         return d;
     }
 
@@ -3042,18 +3069,28 @@ VCO.TimelineConfig = VCO.Class.extend({
         },
 
         fromFeed: function(url) {
+            var timeline_config = { 'events': [] };
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
-            var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
             var extract = getGoogleItemExtractor(data);
             for (var i = 0; i < data.feed.entry.length; i++) {
-                events.push(extract(data.feed.entry[i]));
+                var event = extract(data.feed.entry[i]);
+                var row_type = 'event';
+                if (typeof(event.type) != 'undefined') {
+                    row_type = event.type;
+                    delete event.type;
+                }
+                if (row_type == 'title') {
+                    timeline_config.title = event;
+                } else {
+                    timeline_config.events.push(event);
+                }
             };
-            return {scale: 'javascript', events: events}
+            return timeline_config;
         }
     }
 })(VCO)
@@ -3064,7 +3101,6 @@ VCO.Language = function(options) {
 	for (k in VCO.Language.languages.en) {
 		this[k] = VCO.Language.languages.en[k];
 	}
-
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {
@@ -3286,6 +3322,7 @@ VCO.Language.languages = {
 }
 
 VCO.Language.fallback = new VCO.Language();
+
 
 /*  VCO.I18NMixins
     assumes that its class has an options object with a VCO.Language instance    
@@ -4608,7 +4645,7 @@ VCO.Date = VCO.Class.extend({
 				date_obj:   data
 			};	        
 	    } else {
-	        this.data = data;
+	        this.data = JSON.parse(JSON.stringify(data)); // clone don't use by reference.
             this._createDateObj();            
 	    }
 	    
@@ -4886,7 +4923,7 @@ VCO.BigDate = VCO.Date.extend({
                 date_obj:   data
             }
         } else {
-            this.data = data;
+            this.data = JSON.parse(JSON.stringify(data));
             this._createDateObj();
         }
         
@@ -6096,7 +6133,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"image",
 				name: 		"Image",
-				match_str: 	/(jpg|jpeg|png|gif)$/i,
+				match_str: 	/(jpg|jpeg|png|gif)(\?.*)$/i,
 				cls: 		VCO.Media.Image
 			},
 			{
@@ -7078,7 +7115,6 @@ VCO.Media.Map = VCO.Media.extend({
         this.mapframe.height      = "100%";
         this.mapframe.frameBorder = "0";
         this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
-        console.log(this.mapframe.src);
         // After Loaded
         this.onLoaded();
     },
@@ -10107,8 +10143,12 @@ VCO.TimeScale = VCO.Class.extend({
             }
             
             // If we couldn't add to an existing row without overlap...
-            if (typeof(pos_info.row) == 'undefined') {                   
-                if (rows_left > 0) {
+            if (typeof(pos_info.row) == 'undefined') {    
+                if (rows_left === null) {
+                    // Make a new row
+                    pos_info.row = lasts_in_row.length;
+                    lasts_in_row.push(pos_info);                  
+                } else if (rows_left > 0) {
                     // Make a new row
                     pos_info.row = lasts_in_row.length;
                     lasts_in_row.push(pos_info);  
@@ -11008,11 +11048,15 @@ VCO.Timeline = VCO.Class.extend({
         return null;
     },
 
-    getSlideId: function(id) {
-        return this.getSlide(this._getSlideIndex(id));
+    getSlideById: function(id) {
+    	return this.getSlide(this._getSlideIndex(id));
     },
-   
-	
+
+    getCurrentSlide: function() {
+    	return this.getSlideById(this.current_id);
+    },
+
+
 	/*	Display
 	================================================== */
 	updateDisplay: function() {
