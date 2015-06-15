@@ -3,7 +3,7 @@
  */
 ;(function(VCO){
     function extractSpreadsheetKey(url) {
-        var pat = /\bkey=([_A-Za-z0-9]+)&?/i;
+        var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
         if (url.match(pat)) {
             return url.match(pat)[1];
         }
@@ -76,8 +76,21 @@
                 day: item_data.endday || '',
                 time: item_data.endtime || ''
             },
-            display_date: item_data.displaydate || ''
+            display_date: item_data.displaydate || '',
+
+            type: item_data.type || ''
         }
+
+        if (d.end_date.year == '') {
+            var bad_date = d.end_date;
+            delete d.end_date;
+            if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
+                var label = d.text.headline ||
+                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
+                trace(item);
+            }
+        }
+
         return d;
     }
 
@@ -109,18 +122,28 @@
         },
 
         fromFeed: function(url) {
+            var timeline_config = { 'events': [] };
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
-            var events = [];
             data = JSON.parse(data.responseText);
             window.google_data = data;
             var extract = getGoogleItemExtractor(data);
             for (var i = 0; i < data.feed.entry.length; i++) {
-                events.push(extract(data.feed.entry[i]));
+                var event = extract(data.feed.entry[i]);
+                var row_type = 'event';
+                if (typeof(event.type) != 'undefined') {
+                    row_type = event.type;
+                    delete event.type;
+                }
+                if (row_type == 'title') {
+                    timeline_config.title = event;
+                } else {
+                    timeline_config.events.push(event);
+                }
             };
-            return {scale: 'javascript', events: events}
+            return timeline_config;
         }
     }
 })(VCO)

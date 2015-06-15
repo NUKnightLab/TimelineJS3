@@ -3,7 +3,6 @@ VCO.Language = function(options) {
 	for (k in VCO.Language.languages.en) {
 		this[k] = VCO.Language.languages.en[k];
 	}
-
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
 		var code = options.language;
 		if (!(code in VCO.Language.languages)) {

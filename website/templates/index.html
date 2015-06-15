@@ -3,25 +3,22 @@
 {% block content %}
   {% include "_overview.html" %}
   {% include "_changelog.html" %}
-  {% include "_test_drive.html" %}
+  {% include "_make.html" %}
   {% include "_examples.html" %}
 {% endblock %}
 
 {% block scripts %}
-<!-- Override -->
-<script type="text/javascript">
-    var generator_embed_path = "http://cdn.knightlab.com/libs/timeline3/dev/embed/index.html";
-</script>
-<!-- build:js http://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-embed-generator.js -->
-<script type="text/javascript">
-    var generator_embed_path = "/source/embed/index.html";
-</script>    
-<script src="/build/js/timeline-embed-generator.js"></script>
-<!-- endbuild -->
-<script src="{{ static_url }}/js/main.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
+  <script type="text/javascript">
+  {% if cdn %}
+    var generator_embed_path = "//cdn.knightlab.com/libs/timeline3/{{ cdn }}/embed/index.html";
+  {% else %}
+    var generator_embed_path = "/build/embed/index.html";
+  {% endif %}
+  </script>
 
-    <script>
-
-    </script>
+  <script src="{{ static_url }}/js/main.js"></script>
 {% endblock %}
+
+

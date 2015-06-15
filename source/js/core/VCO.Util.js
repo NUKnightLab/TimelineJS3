@@ -463,14 +463,14 @@ VCO.Util = {
     // These must be in the order they appear in the original URL
     // "key" param not included since it's not in the URL structure
     // Streetview "location" param not included since it's captured as "center"
+    // Place "center" param ...um...
     var param_defs = {
         "view": ["center"],
-        "place": ["q"],
+        "place": ["q", "center"],
         "directions": ["origin", "destination", "center"],
         "search": ["q", "center"],
         "streetview": ["fov", "heading", "pitch"]
     };
-
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
     var coords_regex = /@([-\d.]+),([-\d.]+)/;

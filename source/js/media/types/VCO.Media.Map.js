@@ -27,7 +27,6 @@ VCO.Media.Map = VCO.Media.extend({
         this.mapframe.height      = "100%";
         this.mapframe.frameBorder = "0";
         this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.data.url, this.options.api_key_googlemaps);
-        console.log(this.mapframe.src);
         // After Loaded
         this.onLoaded();
     },

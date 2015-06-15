@@ -6,8 +6,6 @@
 ================================================== */
 // @codekit-prepend "Embed.LoadLib.js";
 
-var WebFontConfig;
-
 if(typeof embed_path == 'undefined') {
 	// REPLACE WITH YOUR BASEPATH IF YOU WANT OTHERWISE IT WILL TRY AND FIGURE IT OUT
 	var _tmp_script_path = getEmbedScriptPath("timeline-embed.js");
@@ -63,17 +61,14 @@ function createStoryJS(c, src) {
 			css:		false,
 			jquery:		false,
 			has_jquery:	false,
-			language:	false,
 			font: {
-				css:	false,
-				js:		false
+				css:	false
 			}
 		},
 		path = {
 			base:		embed_path,
 			css:		embed_path + "css/",
 			js:			embed_path + "js/",
-			locale:		embed_path + "js/locale/",
 			jquery:		"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 			font: {
 				google:	false,
@@ -101,27 +96,7 @@ function createStoryJS(c, src) {
 				twitter:			""
 			},
 			gmap_key: 	""
-		},
-		font_presets = [
-			{ name:	"Merriweather-NewsCycle",		google:	[ 'News+Cycle:400,700:latin', 'Merriweather:400,700,900:latin' ] },
-			{ name:	"NewsCycle-Merriweather",		google:	[ 'News+Cycle:400,700:latin', 'Merriweather:300,400,700:latin' ] },
-			{ name:	"PoiretOne-Molengo",			google:	[ 'Poiret+One::latin', 'Molengo::latin' ] },
-			{ name:	"Arvo-PTSans",					google:	[ 'Arvo:400,700,400italic:latin', 'PT+Sans:400,700,400italic:latin' ] },
-			{ name:	"PTSerif-PTSans",				google:	[ 'PT+Sans:400,700,400italic:latin', 'PT+Serif:400,700,400italic:latin' ] },
-			{ name:	"PT",							google:	[ 'PT+Sans+Narrow:400,700:latin', 'PT+Sans:400,700,400italic:latin', 'PT+Serif:400,700,400italic:latin' ] },
-			{ name:	"DroidSerif-DroidSans",			google:	[ 'Droid+Sans:400,700:latin', 'Droid+Serif:400,700,400italic:latin' ] },
-			{ name:	"Lekton-Molengo",				google:	[ 'Lekton:400,700,400italic:latin', 'Molengo::latin' ] },
-			{ name:	"NixieOne-Ledger",				google:	[ 'Nixie+One::latin', 'Ledger::latin' ] },
-			{ name:	"AbrilFatface-Average",			google:	[ 'Average::latin', 'Abril+Fatface::latin' ] },
-			{ name:	"PlayfairDisplay-Muli",			google:	[ 'Playfair+Display:400,400italic:latin', 'Muli:300,400,300italic,400italic:latin' ] },
-			{ name:	"Rancho-Gudea",					google:	[ 'Rancho::latin', 'Gudea:400,700,400italic:latin' ] },
-			{ name:	"Bevan-PotanoSans",				google:	[ 'Bevan::latin', 'Pontano+Sans::latin' ] },
-			{ name:	"BreeSerif-OpenSans",			google:	[ 'Bree+Serif::latin', 'Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800:latin' ] },
-			{ name:	"SansitaOne-Kameron",			google:	[ 'Sansita+One::latin', 'Kameron:400,700:latin' ] },
-			{ name:	"Lora-Istok",					google:	[ 'Lora:400,700,400italic,700italic:latin', 'Istok+Web:400,700,400italic,700italic:latin' ] },
-			{ name:	"Pacifico-Arimo",				google:	[ 'Pacifico::latin', 'Arimo:400,700,400italic,700italic:latin' ] }
-		];
-			
+		}
 	/* BUILD CONFIG
 	================================================== */	
 	if (typeof c == 'object') {
@@ -153,13 +128,6 @@ function createStoryJS(c, src) {
 		
 	/* DETERMINE TYPE
 	================================================== */
-	// Check for old installs still using the old method of language
-	if (storyjs_e_config.js.match("locale")) {
-		// TODO Issue #618 better splitting
-		storyjs_e_config.lang = storyjs_e_config.js.split("locale/")[1].replace(".js", "");
-		storyjs_e_config.js		= path.js + 'timeline-min.js?' + js_version;
-	}
-	
 	if (storyjs_e_config.js.match("/")) {
 		
 	} else {
@@ -175,16 +143,7 @@ function createStoryJS(c, src) {
 		
 		storyjs_e_config.id		= "storyjs-" + storyjs_e_config.type;
 	}
-	
-	/* PREPARE LANGUAGE
-	================================================== */
-	if (storyjs_e_config.lang.match("/")) {
-		path.locale = storyjs_e_config.lang;
-	} else {
-		path.locale = path.locale + storyjs_e_config.lang + ".js?" + js_version;
-	}
-	
-		
+			
 	/* PREPARE
 	================================================== */
 	createEmbedDiv();
@@ -196,7 +155,6 @@ function createStoryJS(c, src) {
 	/* Load FONT
 	================================================== */
 	if (storyjs_e_config.font == "default") {
-		ready.font.js		= true;
 		ready.font.css		= true;
 	} else {
 		// FONT CSS
@@ -211,23 +169,7 @@ function createStoryJS(c, src) {
 			path.font.css	= path.font.css + "font."+storyjs_e_config.font.toLowerCase()+".css?" + js_version;
 		}
 		LoadLib.css(path.font.css, onloaded_font_css);
-		
-		// FONT GOOGLE JS
-		for(var i = 0; i < font_presets.length; i++) {
-			if (path.font.name == font_presets[i].name) {
-				path.font.google = true;
-				WebFontConfig = {google: { families: font_presets[i].google }};
-			}
-		}
-		
-		if (path.font.google) {
-			LoadLib.js(path.font.js, onloaded_font_js);
-		} else {
-			ready.font.js		= true;
-		}
-		
-	}
-	
+  }	
 	/* Load jQuery
 	================================================== */
 	try {
@@ -262,17 +204,9 @@ function createStoryJS(c, src) {
 	}
 	function onloaded_js() {
 		ready.js = true;
-		if (storyjs_e_config.lang != "en") {
-			LoadLib.js(path.locale, onloaded_language);
-		} else {
-			ready.language = true;
-		}
 		onloaded_check();
 	}
-	function onloaded_language() {
-		ready.language = true;
-		onloaded_check();
-	}
+
 	function onloaded_css() {
 		ready.css = true;
 		onloaded_check();
@@ -281,17 +215,13 @@ function createStoryJS(c, src) {
 		ready.font.css = true;
 		onloaded_check();
 	}
-	function onloaded_font_js() {
-		ready.font.js = true;
-		onloaded_check();
-	}
 	function onloaded_check() {
 		if (ready.checks > 40) {
 			return;
 			alert("Error Loading Files");
 		} else {
 			ready.checks++;
-			if (ready.js && ready.css && ready.font.css && ready.font.js && ready.language) {
+			if (ready.js && ready.css && ready.font.css) {
 				if (!ready.finished) {
 					ready.finished = true;
 					buildEmbed();
@@ -353,6 +283,7 @@ function createStoryJS(c, src) {
 		
 		var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
         storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
+        storyjs_e_config.language = storyjs_e_config.lang;
 		storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
 		
 		/* TODO: not sure what to do here
