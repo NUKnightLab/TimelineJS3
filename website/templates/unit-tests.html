@@ -313,7 +313,7 @@
         var data = VCO.ConfigFactory.fromFeed('test/Timeline3Template.json');
         equal(7, data.events.length, "7 events in Timeline3Template (one title)");
         equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
-        equal(2011, data.events[7].start_date.year, "last non-title event is year 2011");
+        equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
       });
 
 
