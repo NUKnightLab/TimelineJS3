@@ -176,7 +176,6 @@ function createStoryJS(c, src) {
 	/* Load FONT
 	================================================== */
 	if (storyjs_e_config.font == "default") {
-		ready.font.js		= true;
 		ready.font.css		= true;
 	} else {
 		// FONT CSS
@@ -245,17 +244,13 @@ function createStoryJS(c, src) {
 		ready.font.css = true;
 		onloaded_check();
 	}
-	function onloaded_font_js() {
-		ready.font.js = true;
-		onloaded_check();
-	}
 	function onloaded_check() {
 		if (ready.checks > 40) {
 			return;
 			alert("Error Loading Files");
 		} else {
 			ready.checks++;
-			if (ready.js && ready.css && ready.font.css && ready.font.js && ready.language) {
+			if (ready.js && ready.css && ready.font.css && ready.language) {
 				if (!ready.finished) {
 					ready.finished = true;
 					buildEmbed();
