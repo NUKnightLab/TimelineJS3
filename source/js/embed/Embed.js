@@ -65,8 +65,7 @@ function createStoryJS(c, src) {
 			has_jquery:	false,
 			language:	false,
 			font: {
-				css:	false,
-				js:		false
+				css:	false
 			}
 		},
 		path = {
