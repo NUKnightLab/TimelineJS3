@@ -122,11 +122,6 @@
                 "src": "build/js/timeline-embed-cdn.js",
                 "dst": "build/js/timeline-embed-cdn.js",
                 "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
-            },
-            {
-                "src": "build/js/timeline-embed.js",
-                "dst": "build/js/timeline-embed.js",
-                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"            
             }                
         ],
         //
