@@ -51,16 +51,12 @@ function createStoryJS(c, src) {
 	var storyjs_embedjs, t, te, x,
 		isCDN					= false,
 		js_version				= "2.24",
-		jquery_version_required	= "1.7.1",
-		jquery_version			= "",
 		ready = {
 			timeout:	"",
 			checks:		0,
 			finished:	false,
 			js:			false,
 			css:		false,
-			jquery:		false,
-			has_jquery:	false,
 			font: {
 				css:	false
 			}
@@ -69,7 +65,6 @@ function createStoryJS(c, src) {
 			base:		embed_path,
 			css:		embed_path + "css/",
 			js:			embed_path + "js/",
-			jquery:		"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 			font: {
 				google:	false,
 				css:	embed_path + "css/fonts/",
@@ -170,38 +165,11 @@ function createStoryJS(c, src) {
 		}
 		LoadLib.css(path.font.css, onloaded_font_css);
   }	
-	/* Load jQuery
-	================================================== */
-	try {
-	    ready.has_jquery = jQuery;
-	    ready.has_jquery = true;
-		if (ready.has_jquery) {
-			var jquery_version_array = jQuery.fn.jquery.split(".");
-			var jquery_version_required_array = jquery_version_required.split(".");
-			ready.jquery = true;
-			for (i = 0; i < 2; i++) {
-				var have = jquery_version_array[i], need = parseFloat(jquery_version_required_array[i]);
-				if (have != need) {
-					ready.jquery = have > need;
-					break;
-				}
-			}
-		}
-	} catch(err) {
-	    ready.jquery = false;
-	}
-	if (!ready.jquery) {
-		LoadLib.js(path.jquery, onloaded_jquery);
-	} else {
-		onloaded_jquery();
-	}
+		LoadLib.js(storyjs_e_config.js, onloaded_js);
 	
 	/* On Loaded
 	================================================== */
 	
-	function onloaded_jquery() {
-		LoadLib.js(storyjs_e_config.js, onloaded_js);
-	}
 	function onloaded_js() {
 		ready.js = true;
 		onloaded_check();
