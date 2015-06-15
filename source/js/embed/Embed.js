@@ -61,7 +61,6 @@ function createStoryJS(c, src) {
 			css:		false,
 			jquery:		false,
 			has_jquery:	false,
-			language:	false,
 			font: {
 				css:	false
 			}
@@ -70,7 +69,6 @@ function createStoryJS(c, src) {
 			base:		embed_path,
 			css:		embed_path + "css/",
 			js:			embed_path + "js/",
-			locale:		embed_path + "js/locale/",
 			jquery:		"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js",
 			font: {
 				google:	false,
@@ -130,13 +128,6 @@ function createStoryJS(c, src) {
 		
 	/* DETERMINE TYPE
 	================================================== */
-	// Check for old installs still using the old method of language
-	if (storyjs_e_config.js.match("locale")) {
-		// TODO Issue #618 better splitting
-		storyjs_e_config.lang = storyjs_e_config.js.split("locale/")[1].replace(".json", "");
-		storyjs_e_config.js		= path.js + 'timeline-min.js?' + js_version;
-	}
-	
 	if (storyjs_e_config.js.match("/")) {
 		
 	} else {
@@ -152,16 +143,7 @@ function createStoryJS(c, src) {
 		
 		storyjs_e_config.id		= "storyjs-" + storyjs_e_config.type;
 	}
-	
-	/* PREPARE LANGUAGE
-	================================================== */
-	if (storyjs_e_config.lang.match("/")) {
-		path.locale = storyjs_e_config.lang;
-	} else {
-		path.locale = path.locale + storyjs_e_config.lang + ".json?" + js_version;
-	}
-	
-		
+			
 	/* PREPARE
 	================================================== */
 	createEmbedDiv();
@@ -222,17 +204,9 @@ function createStoryJS(c, src) {
 	}
 	function onloaded_js() {
 		ready.js = true;
-		if (storyjs_e_config.lang != "en") {
-			LoadLib.js(path.locale, onloaded_language);
-		} else {
-			ready.language = true;
-		}
 		onloaded_check();
 	}
-	function onloaded_language() {
-		ready.language = true;
-		onloaded_check();
-	}
+
 	function onloaded_css() {
 		ready.css = true;
 		onloaded_check();
@@ -247,7 +221,7 @@ function createStoryJS(c, src) {
 			alert("Error Loading Files");
 		} else {
 			ready.checks++;
-			if (ready.js && ready.css && ready.font.css && ready.language) {
+			if (ready.js && ready.css && ready.font.css) {
 				if (!ready.finished) {
 					ready.finished = true;
 					buildEmbed();
@@ -309,6 +283,7 @@ function createStoryJS(c, src) {
 		
 		var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
         storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
+        storyjs_e_config.language = storyjs_e_config.lang;
 		storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
 		
 		/* TODO: not sure what to do here
