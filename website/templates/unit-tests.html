@@ -289,6 +289,12 @@
         equal(msgs.formatDate(d2,'HH'),'16','padded hour (24HR after noon)');
         equal(msgs.formatDate(d,'s'),'0','second');
         equal(msgs.formatDate(d,'ss'),'00','padded second');
+
+        var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
+        d.setFullYear(-500);
+        equal(msgs.formatDate(d,'yyyy'),'500 BCE','BCE date');
+
+
       });
 
       test("VCO.Date date formatting", function() {
@@ -311,9 +317,9 @@
         var data = VCO.ConfigFactory.fromFeed('test/TimelineTemplate.json');
         equal(8, data.events.length, "8 entries in TimelineTemplate");
         var data = VCO.ConfigFactory.fromFeed('test/Timeline3Template.json');
-        equal(8, data.events.length, "8 entries in Timeline3Template");
-        equal(1905, data.events[0].start_date.year);
-        equal(2011, data.events[7].start_date.year);
+        equal(7, data.events.length, "7 events in Timeline3Template (one title)");
+        equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
+        equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
       });
 
 
