@@ -144,7 +144,7 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			mmm:  this.date.month_abbr[m],
 			mmmm: this.date.month[m],
 			yy:   String(y).slice(2),
-			yyyy: (this.use_bc && y < 0) ? year = Math.abs(y) + " " + this.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
+			yyyy: (y < 0 && this.has_negative_year_modifier()) ? Math.abs(y) : y,
 			h:    H % 12 || 12,
 			hh:   VCO.Util.pad(H % 12 || 12),
 			H:    H,
@@ -164,11 +164,32 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
 		};
 
-		return mask.replace(VCO.Language.DATE_FORMAT_TOKENS, function ($0) {
+		var formatted = mask.replace(VCO.Language.DATE_FORMAT_TOKENS, function ($0) {
 			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
 		});
 
+		return this._applyEra(formatted, y);
 }
+
+VCO.Language.prototype.has_negative_year_modifier = function() {
+	return Boolean(this.era_labels.negative_year.prefix || this.era_labels.negative_year.suffix);
+}
+
+
+VCO.Language.prototype._applyEra = function(formatted_date, original_year) {
+	// trusts that the formatted_date was property created with a non-negative year if there are 
+	// negative affixes to be applied
+	var smart_concat = function() {
+		var parts = [];
+		for (var i = 0; i < arguments.length; i++) {
+			if (arguments[i]) parts.push(arguments[i]);
+		}
+		return parts.join(' ');
+	}
+	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
+	return smart_concat(labels.prefix,formatted_date,labels.suffix);
+}
+
 
 VCO.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
@@ -186,6 +207,16 @@ VCO.Language.languages = {
 			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
 		}, 
+		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change. 
+	        positive_year: {
+	        	prefix: '', 
+	        	suffix: ''
+	        },
+	        negative_year: { // if either of these is specified, the year will be converted to positive before they are applied
+	        	prefix: '', 
+	        	suffix: 'BCE'
+	        }
+        },
 		dateformats: {
 			year: "yyyy",
 			month_short: "mmm",

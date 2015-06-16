@@ -289,6 +289,12 @@
         equal(msgs.formatDate(d2,'HH'),'16','padded hour (24HR after noon)');
         equal(msgs.formatDate(d,'s'),'0','second');
         equal(msgs.formatDate(d,'ss'),'00','padded second');
+
+        var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
+        d.setFullYear(-500);
+        equal(msgs.formatDate(d,'yyyy'),'500 BCE','BCE date');
+
+
       });
 
       test("VCO.Date date formatting", function() {
