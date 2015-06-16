@@ -216,6 +216,9 @@ VCO.Timeline = VCO.Class.extend({
 			this._applyCustomColor(this.options.theme_color);
 		}
 		
+		// Apply base class to container
+		this._el.container.className += ' vco-timeline';
+		
 		// Message
 		this.message = new VCO.Message({}, {
 			message_class: "vco-message-full"
@@ -514,15 +517,17 @@ VCO.Timeline = VCO.Class.extend({
 			// Menubar
 			this._el.menubar.style.top = menu_position + "px";
 		}
-    
-    
-    
+		
+		if (this.message) {
+			this.message.updateDisplay(this.options.width, this.options.height);
+		}
 		// Update Component Displays
 		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
 		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
     
 		// Apply class
 		this._el.container.className = display_class;
+		
 	},
   
 	// Update hashbookmark in the url bar
@@ -571,7 +576,7 @@ VCO.Timeline = VCO.Class.extend({
 	_initLayout: function () {
 		var self = this;
     
-		this._el.container.className += ' vco-timeline';
+		//this._el.container.className += ' vco-timeline';
 		this.options.base_class = this._el.container.className;
 		this._el.container.innerHTML = "";
 		// Create Layout
