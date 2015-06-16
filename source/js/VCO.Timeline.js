@@ -215,6 +215,13 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.options.theme_color) {
 			this._applyCustomColor(this.options.theme_color);
 		}
+		
+		// Message
+		this.message = new VCO.Message({}, {
+			message_class: "vco-message-full"
+		});
+		
+		this.message.addTo(this._el.container);
 
 	},
 
@@ -556,6 +563,8 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 		}
+		self.config.on('load_error', this._onError, this);
+		
 	},
   
 	// Initialize the layout
@@ -567,14 +576,14 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
-			this._el.timenav    = VCO.Dom.create('div', 'vco-timenav', this._el.container);
-			this._el.storyslider  = VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
 		} else {
-			this._el.storyslider  = VCO.Dom.create('div', 'vco-storyslider', this._el.container);
-			this._el.timenav    = VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider  	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
 		}
     
-		this._el.menubar      = VCO.Dom.create('div', 'vco-menubar', this._el.container);
+		this._el.menubar			= VCO.Dom.create('div', 'vco-menubar', this._el.container);
 
     
 		// Initial Default Layout
@@ -606,11 +615,7 @@ VCO.Timeline = VCO.Class.extend({
 			this.options.storyslider_height = (this.options.height - 1);
 		}
 		
-		// Message
-		this.message = new VCO.Message({}, {
-			message_class: "vco-message-full"
-		});
-		this.message.addTo(this._el.container);
+		
 		
 		// Update Display
 		this._updateDisplay(false, true, 2000);
@@ -687,8 +692,18 @@ VCO.Timeline = VCO.Class.extend({
 		this._initLayout();
 		this._initEvents();
 		this._initAnalytics();
+		if (this.message) {
+			this.message.hide();
+		}
+        
 		this.ready = true;
     
+	},
+	
+	_onError: function(e) {
+		if (this.message) {
+			this.message.updateMessage("<strong>Error: </strong>" + e.message);
+		}
 	},
   
 	_onColorChange: function(e) {

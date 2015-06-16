@@ -2776,172 +2776,183 @@ VCO.LoadIt = (function (doc) {
 
 
 /*  VCO.TimelineConfig
-    separate the configuration from the display (VCO.Timeline)
-    to make testing easier
+separate the configuration from the display (VCO.Timeline)
+to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-    VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
+	
+	includes: [VCO.Events],
+	VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
-    initialize: function (data, callback) {
-    // Initialize the data
-        if (typeof data === 'string') {
-            var self = this;
+	initialize: function (data, callback) {
+		// Initialize the data
+		if (typeof data === 'string') {
+			var self = this;
             
-            VCO.ajax({
-                type: 'GET',
-                url: data,
-                dataType: 'json', //json data type
-                success: function(d){
-                    if (d && d.events) {
-                        self._importProperties(d);
-                    } else {
-                        throw("data must have an events property")
-                    }
-                    self._cleanData();
-                    if (callback) {
-                        callback(self);
-                    }
-                },
-                error:function(xhr, type){
-                    trace(xhr);
-                    trace(type);
-                    throw("Configuration could not be loaded: " + type);
-                }
-            });
-        } else if (typeof data === 'object') {
-            if (data.events) {
-                this._importProperties(data);
-                this._cleanData();
-            } else {
-                throw("data must have a events property")
-            }
-            if (callback) {
-                callback(this);
-            }
-        } else {
-            throw("Invalid Argument");
-        }
-    },
+			VCO.ajax({
+				type: 'GET',
+				url: data,
+				dataType: 'json', //json data type
+				success: function(d){
+					if (d && d.events) {
+						self._importProperties(d);
+					} else {
+						this.fire("load_error", {message:"data must have an events property"});
+						throw("data must have an events property");
+					}
+					self._cleanData();
+					if (callback) {
+						callback(self);
+					}
+				},
+				error:function(xhr, type){
+					trace(xhr);
+					trace(type);
+					this.fire("load_error", {message:"Configuration could not be loaded: " + type});
+					throw("Configuration could not be loaded: " + type);
+					
+				}
+			});
+		} else if (typeof data === 'object') {
+			if (data.events) {
+				this._importProperties(data);
+				this._cleanData();
+			} else {
+				this.fire("load_error", {message:"data must have an events property"});
+				throw("data must have a events property");
+			}
+			if (callback) {
+				callback(this);
+			}
+		} else {
+			this.fire("load_error", {message:"Invalid Argument"});
+			throw("Invalid Argument");
+		}
+	},
 
-    /* Add an event and return the unique id 
-    */
-    addEvent: function(data) {
-        var _id = (this.title) ? this.title.uniqueid : '';
-        this.events.push(data);
-        this._makeUniqueIdentifiers(_id, this.events); 
-        this._processDates(this.events);    
+	/* Add an event and return the unique id 
+	*/
+	addEvent: function(data) {
+		var _id = (this.title) ? this.title.uniqueid : '';
+		this.events.push(data);
+		this._makeUniqueIdentifiers(_id, this.events); 
+		this._processDates(this.events);    
         
-        var uniqueid = this.events[this.events.length - 1].uniqueid;             
-        VCO.DateUtil.sortByDate(this.events);
-        return uniqueid;
-    },
+		var uniqueid = this.events[this.events.length - 1].uniqueid;             
+		VCO.DateUtil.sortByDate(this.events);
+		return uniqueid;
+	},
 
-    _cleanData: function() {
-        var _id = (this.title) ? this.title.uniqueid : '';
-        this._makeUniqueIdentifiers(_id, this.events); 
-        this._processDates(this.events);          
-        VCO.DateUtil.sortByDate(this.events);
-    },
+	_cleanData: function() {
+		var _id = (this.title) ? this.title.uniqueid : '';
+		this._makeUniqueIdentifiers(_id, this.events); 
+		this._processDates(this.events);          
+		VCO.DateUtil.sortByDate(this.events);
+	},
     
-    _importProperties: function(d) {
-        for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
-            k = this.VALID_PROPERTIES[i];
-            this[k] = d[k];
-        }
+	_importProperties: function(d) {
+		for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
+			k = this.VALID_PROPERTIES[i];
+			this[k] = d[k];
+		}
         
-        // Make sure title slide has unique id
-        if(this.title && !('uniqueid' in this.title)) {
-            this.title.uniqueid = '';
-        }
-    },
+		// Make sure title slide has unique id
+		if(this.title && !('uniqueid' in this.title)) {
+			this.title.uniqueid = '';
+		}
+	},
 
-    _makeUniqueIdentifiers: function(title_id, array) {
-        var used = [title_id];
-        for (var i = 0; i < array.length; i++) {
-            if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
-                array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
-                if (used.indexOf(array[i].uniqueid) != -1) {
-                    array[i].uniqueid = '';
-                } else {
-                    used.push(array[i].uniqueid);
-                }
-            }
-        };
-        if (used.length != (array.length + 1)) {
-            for (var i = 0; i < array.length; i++) {
-                if (!array[i].uniqueid) {
-                    var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
-                    if (!slug) {
-                        slug = VCO.Util.unique_ID(6);
-                    }
-                    if (used.indexOf(slug) != -1) {
-                        slug = slug + '-' + i;
-                    }
-                    used.push(slug);
-                    array[i].uniqueid = slug;
-                }
-            }
-        }
-    },
+	_makeUniqueIdentifiers: function(title_id, array) {
+		var used = [title_id];
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
+				array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
+				if (used.indexOf(array[i].uniqueid) != -1) {
+					array[i].uniqueid = '';
+				} else {
+					used.push(array[i].uniqueid);
+				}
+			}
+		};
+		if (used.length != (array.length + 1)) {
+			for (var i = 0; i < array.length; i++) {
+				if (!array[i].uniqueid) {
+					var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
+					if (!slug) {
+						slug = VCO.Util.unique_ID(6);
+					}
+					if (used.indexOf(slug) != -1) {
+						slug = slug + '-' + i;
+					}
+					used.push(slug);
+					array[i].uniqueid = slug;
+				}
+			}
+		}
+	},
 
-    _processDates: function(array) {
-        var dateCls = null;
+	_processDates: function(array) {
+		var dateCls = null;
         
-        if(!this.scale) {
-            trace("Determining scale dynamically");
+		if(!this.scale) {
+			trace("Determining scale dynamically");
             
-            this.scale = "javascript"; // default
+			this.scale = "javascript"; // default
             
-            for (var i = 0; i < array.length; i++) {
-                if (typeof(array[i].start_date) == 'undefined') {
-                    throw("item " + i + " is missing a start_date");
-                }
+			for (var i = 0; i < array.length; i++) {
+				if (typeof(array[i].start_date) == 'undefined') {
+					this.fire("load_error", {message:"item " + i + " is missing a start_date"});
+					throw("item " + i + " is missing a start_date");
+				}
                 
-                var d = new VCO.BigDate(array[i].start_date);
-                var year = d.data.date_obj.year;               
-                if(year < -271820 || year >  275759) {
-                    this.scale = "cosmological";
-                    break;
-                }
-            }
-        }
+				var d = new VCO.BigDate(array[i].start_date);
+				var year = d.data.date_obj.year;               
+				if(year < -271820 || year >  275759) {
+					this.scale = "cosmological";
+					break;
+				}
+			}
+		}
         
-        if(this.scale == 'javascript') {
-            dateCls = VCO.Date;
-            trace('using VCO.Date');
-        } else if(this.scale == 'cosmological') {
-            dateCls = VCO.BigDate;
-            trace('using VCO.BigDate');
-        } else {
-            throw ("Don't know how to process dates on scale "+this.scale);
-        }
+		if(this.scale == 'javascript') {
+			dateCls = VCO.Date;
+			trace('using VCO.Date');
+		} else if(this.scale == 'cosmological') {
+			dateCls = VCO.BigDate;
+			trace('using VCO.BigDate');
+		} else {
+			this.fire("load_error", {message:"Don't know how to process dates on scale "+this.scale});
+			throw ("Don't know how to process dates on scale "+this.scale);
+		}
             
-        for (var i = 0; i < array.length; i++) {
-            if (typeof(array[i].start_date) == 'undefined') {
-                throw("item " + i + " is missing a start_date");
-            }
-            if(!(array[i].start_date instanceof dateCls)) {
-                var start_date = array[i].start_date;
-                array[i].start_date = new dateCls(start_date);
+		for (var i = 0; i < array.length; i++) {
+			if (typeof(array[i].start_date) == 'undefined') {
+				this.fire("load_error", {message:"item " + i + " is missing a start_date"});
+				throw("item " + i + " is missing a start_date");
+				
+			}
+			if(!(array[i].start_date instanceof dateCls)) {
+				var start_date = array[i].start_date;
+				array[i].start_date = new dateCls(start_date);
 
-                // eliminate redundant end dates.
-                if (typeof(array[i].end_date) != 'undefined' && !(array[i].end_date instanceof dateCls)) {
-                    var end_date = array[i].end_date;
-                    var equal = true;
-                    for (property in start_date) {
-                        equal = equal && (start_date[property] == end_date[property]);
-                    }
-                    if (equal) {
-                        trace("End date same as start date is redundant; dropping end date");
-                        delete array[i].end_date;
-                    } else {
-                        array[i].end_date = new dateCls(end_date);
-                    }
+				// eliminate redundant end dates.
+				if (typeof(array[i].end_date) != 'undefined' && !(array[i].end_date instanceof dateCls)) {
+					var end_date = array[i].end_date;
+					var equal = true;
+					for (property in start_date) {
+						equal = equal && (start_date[property] == end_date[property]);
+					}
+					if (equal) {
+						trace("End date same as start date is redundant; dropping end date");
+						delete array[i].end_date;
+					} else {
+						array[i].end_date = new dateCls(end_date);
+					}
 
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 });
 
 
@@ -3246,7 +3257,7 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			mmm:  this.date.month_abbr[m],
 			mmmm: this.date.month[m],
 			yy:   String(y).slice(2),
-			yyyy: (this.use_bc && y < 0) ? year = Math.abs(y) + " " + this.use_bc : y,//y < 0 ? Math.abs(y) + " " + VCO.Language.date.before_common_era  : y,
+			yyyy: (y < 0 && this.has_negative_year_modifier()) ? Math.abs(y) : y,
 			h:    H % 12 || 12,
 			hh:   VCO.Util.pad(H % 12 || 12),
 			H:    H,
@@ -3266,11 +3277,32 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
 		};
 
-		return mask.replace(VCO.Language.DATE_FORMAT_TOKENS, function ($0) {
+		var formatted = mask.replace(VCO.Language.DATE_FORMAT_TOKENS, function ($0) {
 			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
 		});
 
+		return this._applyEra(formatted, y);
 }
+
+VCO.Language.prototype.has_negative_year_modifier = function() {
+	return Boolean(this.era_labels.negative_year.prefix || this.era_labels.negative_year.suffix);
+}
+
+
+VCO.Language.prototype._applyEra = function(formatted_date, original_year) {
+	// trusts that the formatted_date was property created with a non-negative year if there are 
+	// negative affixes to be applied
+	var smart_concat = function() {
+		var parts = [];
+		for (var i = 0; i < arguments.length; i++) {
+			if (arguments[i]) parts.push(arguments[i]);
+		}
+		return parts.join(' ');
+	}
+	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
+	return smart_concat(labels.prefix,formatted_date,labels.suffix);
+}
+
 
 VCO.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
@@ -3288,6 +3320,16 @@ VCO.Language.languages = {
 			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
 		}, 
+		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change. 
+	        positive_year: {
+	        	prefix: '', 
+	        	suffix: ''
+	        },
+	        negative_year: { // if either of these is specified, the year will be converted to positive before they are applied
+	        	prefix: '', 
+	        	suffix: 'BCE'
+	        }
+        },
 		dateformats: {
 			year: "yyyy",
 			month_short: "mmm",
@@ -4707,7 +4749,7 @@ VCO.Date = VCO.Class.extend({
     // Return a new VCO.Date which has been 'floored' at the given scale.
     // @scale = string value from VCO.Date.SCALES    
     floor: function(scale) { 
-        var d = new Date(this.data.date_obj);
+        var d = new Date(this.data.date_obj.getTime());
         for (var i = 0; i < VCO.Date.SCALES.length; i++) {
              // for JS dates, we iteratively apply flooring functions
             VCO.Date.SCALES[i][2](d);
@@ -10636,8 +10678,7 @@ VCO.AxisHelper = VCO.Class.extend({
         for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
             ticks.push(timescale.getDateFromTime(i).floor(option.name));
         }
-        window.ticks = ticks;
-        window.axis_helper = this;
+
         return {
             name: option.name,
             ticks: ticks
@@ -10919,6 +10960,13 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.options.theme_color) {
 			this._applyCustomColor(this.options.theme_color);
 		}
+		
+		// Message
+		this.message = new VCO.Message({}, {
+			message_class: "vco-message-full"
+		});
+		
+		this.message.addTo(this._el.container);
 
 	},
 
@@ -11260,6 +11308,8 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 		}
+		self.config.on('load_error', this._onError, this);
+		
 	},
   
 	// Initialize the layout
@@ -11271,14 +11321,14 @@ VCO.Timeline = VCO.Class.extend({
 		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
-			this._el.timenav    = VCO.Dom.create('div', 'vco-timenav', this._el.container);
-			this._el.storyslider  = VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
 		} else {
-			this._el.storyslider  = VCO.Dom.create('div', 'vco-storyslider', this._el.container);
-			this._el.timenav    = VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider  	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
 		}
     
-		this._el.menubar      = VCO.Dom.create('div', 'vco-menubar', this._el.container);
+		this._el.menubar			= VCO.Dom.create('div', 'vco-menubar', this._el.container);
 
     
 		// Initial Default Layout
@@ -11310,11 +11360,7 @@ VCO.Timeline = VCO.Class.extend({
 			this.options.storyslider_height = (this.options.height - 1);
 		}
 		
-		// Message
-		this.message = new VCO.Message({}, {
-			message_class: "vco-message-full"
-		});
-		this.message.addTo(this._el.container);
+		
 		
 		// Update Display
 		this._updateDisplay(false, true, 2000);
@@ -11391,8 +11437,18 @@ VCO.Timeline = VCO.Class.extend({
 		this._initLayout();
 		this._initEvents();
 		this._initAnalytics();
+		if (this.message) {
+			this.message.hide();
+		}
+        
 		this.ready = true;
     
+	},
+	
+	_onError: function(e) {
+		if (this.message) {
+			this.message.updateMessage("<strong>Error: </strong>" + e.message);
+		}
 	},
   
 	_onColorChange: function(e) {
