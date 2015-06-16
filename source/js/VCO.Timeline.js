@@ -132,6 +132,9 @@ VCO.Timeline = VCO.Class.extend({
 
 		// TimeNav
 		this._timenav = {};
+		
+		// Message
+		this.message = {};
 
 		// Menu Bar
 		this._menubar = {};
@@ -455,6 +458,7 @@ VCO.Timeline = VCO.Class.extend({
 		if (animate) {
     
 			// Animate TimeNav
+			
 			/*
 			if (this.animator_timenav) {
 			this.animator_timenav.stop();
@@ -469,10 +473,9 @@ VCO.Timeline = VCO.Class.extend({
 			}
 			});
 			*/
+			
 			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-      
-      
-      
+			
 			// Animate StorySlider
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
@@ -602,8 +605,13 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			this.options.storyslider_height = (this.options.height - 1);
 		}
-    
-    
+		
+		// Message
+		this.message = new VCO.Message({}, {
+			message_class: "vco-message-full"
+		});
+		this.message.addTo(this._el.container);
+		
 		// Update Display
 		this._updateDisplay(false, true, 2000);
     
@@ -751,7 +759,7 @@ VCO.Timeline = VCO.Class.extend({
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.config);
-      
+			
 			// Go to proper slide
 			if (this.options.hash_bookmark && window.location.hash != "") {
 				this.goToId(window.location.hash.replace("#event-", ""));
@@ -766,11 +774,10 @@ VCO.Timeline = VCO.Class.extend({
 					this._updateHashBookmark(this.current_id);
 				}
 			}
-      
+			
 		}
 	}
-  
-  
+
 });
 
 VCO.Timeline.source_path = (function() {
