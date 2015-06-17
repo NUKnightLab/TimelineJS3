@@ -29,59 +29,58 @@ nav ul li { padding: 0; }
     font-size: 85%;
 }
 
-/* Experimental CSS to get rid of if we don't like it */
-    #overview {
-        padding: 20px 0 0 0;
-        border-bottom: 1px solid #999;
-        margin: 0;
-        text-align: center;
-    }
-    #overview ul { list-style: none; margin: 30px 0 0; display: inline-block;}
-    #overview ul li {
-        margin-left: 0;
-        display: inline;
-    }
-    #overview a {
-        margin: 0 16px;
-    }
+#overview {
+    padding: 20px 0 0 0;
+    border-bottom: 1px solid #999;
+    margin: 0;
+    text-align: center;
+}
+#overview ul { list-style: none; margin: 30px 0 0; display: inline-block;}
+#overview ul li {
+    margin-left: 0;
+    display: inline;
+}
+#overview a {
+    margin: 0 16px;
+}
 
-    h2.intro { margin-bottom: 10px; }
-    #overview h4 {
-        font-size: 14px;
-        font-weight: normal;
-        font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        color: #777;
-        margin: 0 0 30px;
-        display: inline;
-    }
-    .banner {
-        /*background: #ccc;*/
-        background: #fff;
-        border-top: solid 1px #aaa;
-        padding: 10px 0;
-        margin: 10px 0 0 0;
-    }
-    .banner img {
-        margin-left: 20px;
-    }
-    .banner-content {
-        display: inline;
-    }
-    .corner.banner {
-        transform: rotate(45deg);
-        width: 300px;
-        position: absolute;
-        right: -71px;
-        top: 40px;
-        font-size: 85%;
-        padding: 10px 0;
-        border-bottom: solid 1px #aaa;
-    }
-    .corner.logo {
-      position: absolute;
-      left: 20px;
-      top: 20px;
-  }
+h2.intro { margin-bottom: 10px; }
+#overview h4 {
+    font-size: 14px;
+    font-weight: normal;
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #777;
+    margin: 0 0 30px;
+    display: inline;
+}
+.banner {
+    /*background: #ccc;*/
+    background: #fff;
+    border-top: solid 1px #aaa;
+    padding: 10px 0;
+    margin: 10px 0 0 0;
+}
+.banner img {
+    margin-left: 20px;
+}
+.banner-content {
+    display: inline;
+}
+.corner.banner {
+    transform: rotate(45deg);
+    width: 300px;
+    position: absolute;
+    right: -71px;
+    top: 40px;
+    font-size: 85%;
+    padding: 10px 0;
+    border-bottom: solid 1px #aaa;
+}
+.corner.logo {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
 
 /* Timeline */
 #demo {
@@ -174,6 +173,18 @@ h2.intro {
 
 #examples img {
   margin-bottom: 10px;
+}
+
+.tabs {
+  margin: 20px 20px 0 20px !important;
+}
+
+li.not-tab {
+  float: right;
+  margin-top: 15px;
+  font-family: sans-serif;
+  font-size: 12px;
+  list-style: none;
 }
 
 /* Compatibility test page*/
