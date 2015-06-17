@@ -12382,6 +12382,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/website\/static\/img\/make\/publish_to_web_button_small.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 20784,
+		"inputAbbreviatedPath": "\/website\/static\/img\/make\/publish_to_web_button_small.png",
+		"outputAbbreviatedPath": "\/website\/static\/img\/make\/publish_to_web_button_small.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/website\/static\/img\/make\/publish_to_web_small.png": {
 		"fileType": 32768,
 		"ignore": 0,

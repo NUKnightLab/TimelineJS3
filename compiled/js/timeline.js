@@ -10879,7 +10879,9 @@ VCO.Timeline = VCO.Class.extend({
 		this._timenav = {};
 		
 		// Message
-		this.message = {};
+		this.message = new VCO.Message({}, {
+			message_class: "vco-message-full"
+		});
 
 		// Menu Bar
 		this._menubar = {};
@@ -10964,11 +10966,7 @@ VCO.Timeline = VCO.Class.extend({
 		// Apply base class to container
 		this._el.container.className += ' vco-timeline';
 		
-		// Message
-		this.message = new VCO.Message({}, {
-			message_class: "vco-message-full"
-		});
-		
+		// Add Message to DOM
 		this.message.addTo(this._el.container);
 
 	},
