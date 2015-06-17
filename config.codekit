@@ -8181,6 +8181,17 @@
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0
 		},
+	"\/source\/jade\/sizes.jade": {
+		"compileDebug": 1,
+		"fileType": 512,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/jade\/sizes.jade",
+		"outputAbbreviatedPath": "\/compiled\/examples\/sizes.html",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0
+		},
 	"\/source\/jade\/timeline.jade": {
 		"compileDebug": 1,
 		"fileType": 512,
