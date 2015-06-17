@@ -30,6 +30,10 @@
 			margin-top: 7.5px;
 			margin-bottom: 7.5px;
 			text-shadow: 1px 1px 1px #FFF;
+			
+			strong {
+				text-transform: uppercase;
+			}
 		}
 		.vco-loading-icon {
 			width: 30px;
@@ -59,11 +63,11 @@
 	}
 }
 .vco-message-full {
-	.translucent-background(#333, 0.80);
+	.translucent-background(#FFF, 0.80);
 	[class^="vco-icon-"], [class*=" vco-icon-"] {
 		//width: 48px;
 		//height: 48px;
-		color:#FFF;
+		color:#666;
 		font-size:72px;
 	}
 	.vco-message-container {
@@ -71,9 +75,9 @@
 			font-size: 22px;
 			line-height: 22px;
 			text-shadow: none;
-			color:#FFF;
+			color:#666;
 			text-transform: none;
-			font-weight: bold;
+			font-weight: normal;
 			.vco-button {
 				display:inline-block;
 				cursor:pointer;

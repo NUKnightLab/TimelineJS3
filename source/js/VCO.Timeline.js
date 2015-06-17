@@ -132,6 +132,9 @@ VCO.Timeline = VCO.Class.extend({
 
 		// TimeNav
 		this._timenav = {};
+		
+		// Message
+		this.message = {};
 
 		// Menu Bar
 		this._menubar = {};
@@ -212,6 +215,16 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.options.theme_color) {
 			this._applyCustomColor(this.options.theme_color);
 		}
+		
+		// Apply base class to container
+		this._el.container.className += ' vco-timeline';
+		
+		// Message
+		this.message = new VCO.Message({}, {
+			message_class: "vco-message-full"
+		});
+		
+		this.message.addTo(this._el.container);
 
 	},
 
@@ -455,6 +468,7 @@ VCO.Timeline = VCO.Class.extend({
 		if (animate) {
     
 			// Animate TimeNav
+			
 			/*
 			if (this.animator_timenav) {
 			this.animator_timenav.stop();
@@ -469,10 +483,9 @@ VCO.Timeline = VCO.Class.extend({
 			}
 			});
 			*/
+			
 			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-      
-      
-      
+			
 			// Animate StorySlider
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
@@ -504,15 +517,17 @@ VCO.Timeline = VCO.Class.extend({
 			// Menubar
 			this._el.menubar.style.top = menu_position + "px";
 		}
-    
-    
-    
+		
+		if (this.message) {
+			this.message.updateDisplay(this.options.width, this.options.height);
+		}
 		// Update Component Displays
 		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
 		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
     
 		// Apply class
 		this._el.container.className = display_class;
+		
 	},
   
 	// Update hashbookmark in the url bar
@@ -553,25 +568,27 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
 		}
+		self.config.on('load_error', this._onError, this);
+		
 	},
   
 	// Initialize the layout
 	_initLayout: function () {
 		var self = this;
     
-		this._el.container.className += ' vco-timeline';
+		//this._el.container.className += ' vco-timeline';
 		this.options.base_class = this._el.container.className;
 		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
-			this._el.timenav    = VCO.Dom.create('div', 'vco-timenav', this._el.container);
-			this._el.storyslider  = VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
 		} else {
-			this._el.storyslider  = VCO.Dom.create('div', 'vco-storyslider', this._el.container);
-			this._el.timenav    = VCO.Dom.create('div', 'vco-timenav', this._el.container);
+			this._el.storyslider  	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
+			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
 		}
     
-		this._el.menubar      = VCO.Dom.create('div', 'vco-menubar', this._el.container);
+		this._el.menubar			= VCO.Dom.create('div', 'vco-menubar', this._el.container);
 
     
 		// Initial Default Layout
@@ -602,8 +619,9 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			this.options.storyslider_height = (this.options.height - 1);
 		}
-    
-    
+		
+		
+		
 		// Update Display
 		this._updateDisplay(false, true, 2000);
     
@@ -679,8 +697,18 @@ VCO.Timeline = VCO.Class.extend({
 		this._initLayout();
 		this._initEvents();
 		this._initAnalytics();
+		if (this.message) {
+			this.message.hide();
+		}
+        
 		this.ready = true;
     
+	},
+	
+	_onError: function(e) {
+		if (this.message) {
+			this.message.updateMessage("<strong>Error: </strong>" + e.message);
+		}
 	},
   
 	_onColorChange: function(e) {
@@ -751,7 +779,7 @@ VCO.Timeline = VCO.Class.extend({
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.config);
-      
+			
 			// Go to proper slide
 			if (this.options.hash_bookmark && window.location.hash != "") {
 				this.goToId(window.location.hash.replace("#event-", ""));
@@ -766,11 +794,10 @@ VCO.Timeline = VCO.Class.extend({
 					this._updateHashBookmark(this.current_id);
 				}
 			}
-      
+			
 		}
 	}
-  
-  
+
 });
 
 VCO.Timeline.source_path = (function() {
