@@ -21,7 +21,7 @@
     <meta name="apple-touch-fullscreen" content="yes">
 	<link rel="shortcut icon" href="//cdn.knightlab.com/libs/blueline/latest/assets/logos/favicon.ico"> 
 	<link rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
-	<link rel="stylesheet" href="//cdn.knightlab.com/libs/blueline/latest/css/blueline.min.css">
+	<link rel="stylesheet" href="//cdn.knightlab.com/libs/purpleline/latest/css/purpleline.min.css">
     <!-- Style-->
     <style>
       html, body {
@@ -34,16 +34,18 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   </head>
   <body>
-    <ul class="nav nav-tabs">
-      <li class="active" id="new">
+    <ul class="tabs">
+      <li class="tab-title active" id="new">
         <a href="#">New Timeline</a>
       </li>
-      <li id="old">
+      <li class="tab-title" id="old">
           <a href="#">Old Timeline</a>
       </li>
+      <li class="not-tab"><a href="timeline3.knightlab.com">Return to main TimelineJS 3 page</a></li>
     </ul>
-    {% include "examples/_common_example_embed.html" %}
-    {% include "_analytics.html" %}
-
+    <div class="tabs-content">
+      {% include "examples/_common_example_embed.html" %}
+      {% include "_analytics.html" %}
+    </div>
   </body>
 </html>

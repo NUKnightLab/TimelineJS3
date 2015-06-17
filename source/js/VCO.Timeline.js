@@ -149,42 +149,42 @@ VCO.Timeline = VCO.Class.extend({
 		this.config = null;
 
 		this.options = {
-			script_path:        "",
-			height:           this._el.container.offsetHeight,
-			width:            this._el.container.offsetWidth,
-			theme_color:        false,
-			hash_bookmark:        false,
-			default_bg_color:       {r:255, g:255, b:255},
-			scale_factor:         2,        // How many screen widths wide should the timeline be
-			layout:           "landscape",  // portrait or landscape
-			timenav_position:       "bottom",     // timeline on top or bottom 
-			optimal_tick_width:     60,       // optimal distance (in pixels) between ticks on axis
-			base_class:         "",
-			timenav_height:       175,
-			timenav_height_percentage:  25,       // Overrides timenav height as a percentage of the screen
-			timenav_height_min:     175,      // Minimum timenav height
-			marker_height_min:      30,       // Minimum Marker Height
-			marker_width_min:       100,      // Minimum Marker Width
-			marker_padding:       5,        // Top Bottom Marker Padding
-			start_at_slide:       0,
-			start_at_end: false,
-			menubar_height:       0,
-			skinny_size:        650,
-			relative_date:        false,      // Use momentjs to show a relative date from the slide.text.date.created_time field
-			use_bc:           false,      // Use declared suffix on dates earlier than 0
+			script_path: 				"",
+			height: 					this._el.container.offsetHeight,
+			width: 						this._el.container.offsetWidth,
+			theme_color: 				false,
+			hash_bookmark: 				false,
+			default_bg_color: 			{r:255, g:255, b:255},
+			scale_factor: 				2,						// How many screen widths wide should the timeline be
+			layout: 					"landscape",			// portrait or landscape
+			timenav_position: 			"bottom",				// timeline on top or bottom 
+			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
+			base_class: 				"",
+			timenav_height: 			175,
+			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
+			timenav_height_min: 		175,					// Minimum timenav height
+			marker_height_min: 			30,						// Minimum Marker Height
+			marker_width_min: 			100,					// Minimum Marker Width
+			marker_padding: 			5,						// Top Bottom Marker Padding
+			start_at_slide: 			0,
+			start_at_end: 				false,
+			menubar_height: 			0,
+			skinny_size: 				650,
+			relative_date: 				false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
+			use_bc: 					false,					// Use declared suffix on dates earlier than 0
 			// animation
-			duration:           1000,
-			ease:             VCO.Ease.easeInOutQuint,
+			duration: 					1000,
+			ease: 						VCO.Ease.easeInOutQuint,
 			// interaction
-			dragging:           true,
-			trackResize:        true,
-			map_type:           "stamen:toner-lite",
-			slide_padding_lr:       100,      // padding on slide of slide
-			slide_default_fade:     "0%",       // landscape fade
-			zoom_sequence:        [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-			language:           "en",
-			ga_property_id:       null,
-			track_events:         ['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
+			dragging: 					true,
+			trackResize: 				true,
+			map_type: 					"stamen:toner-lite",
+			slide_padding_lr: 			100,					// padding on slide of slide
+			slide_default_fade: 		"0%",					// landscape fade
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+			language: 					"en",
+			ga_property_id: 			null,
+			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
 
 		// Current Slide
