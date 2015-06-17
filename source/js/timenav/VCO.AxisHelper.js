@@ -36,8 +36,7 @@ VCO.AxisHelper = VCO.Class.extend({
         for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
             ticks.push(timescale.getDateFromTime(i).floor(option.name));
         }
-        window.ticks = ticks;
-        window.axis_helper = this;
+
         return {
             name: option.name,
             ticks: ticks

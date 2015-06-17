@@ -80,7 +80,7 @@ VCO.Date = VCO.Class.extend({
     // Return a new VCO.Date which has been 'floored' at the given scale.
     // @scale = string value from VCO.Date.SCALES    
     floor: function(scale) { 
-        var d = new Date(this.data.date_obj);
+        var d = new Date(this.data.date_obj.getTime());
         for (var i = 0; i < VCO.Date.SCALES.length; i++) {
              // for JS dates, we iteratively apply flooring functions
             VCO.Date.SCALES[i][2](d);
