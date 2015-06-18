@@ -2,12 +2,15 @@
 
 {% block content %}
 
-<section id="test-drive">
+<section>
   <h3 id="add-javascript">Add Javascript to your page</h3>
   <div class="row">
     <div class="small-12 columns">
     <p>
-    Once you have your timeline data, it only takes a few lines of code to add it to your page. First, be sure to load the library itself (both javascript and CSS). Then, instantiate a timeline instance with two arguments.
+      Most of our users are happy to use the embeddable timeframes created in our <a href="/index.html#make">simple authoring tool</a>. However, if you want to substantially customize the visual presentation of your timeline, or integrate it with other parts of your page, you will need to understand some more technical details.
+    </p>
+    <p>
+      Below is the simplest
     </p>
 
     <pre class="prettyprint lang-html">
@@ -19,7 +22,7 @@
       // and the URL to your JSON data file. In this case, a relative URL.
       window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json');
 
-      // You may also want to ensure that the timeline redraws 
+      // You probably also want to ensure that the timeline redraws 
       // when the window is resized
       window.onresize = function(event) {
         timeline.updateDisplay();
