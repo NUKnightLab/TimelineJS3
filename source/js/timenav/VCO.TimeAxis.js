@@ -233,12 +233,15 @@ VCO.TimeAxis = VCO.Class.extend({
 					if (show >= fraction_of_array) {
 						show = 1;
 						tick.tick_text.style.opacity = 1;
+						tick.tick.className = "vco-timeaxis-tick";
 					} else {
 						show++;
 						tick.tick_text.style.opacity = 0;
+						tick.tick.className = "vco-timeaxis-tick vco-timeaxis-tick-hidden";
 					}
 				} else {
 					tick.tick_text.style.opacity = 1;
+					tick.tick.className = "vco-timeaxis-tick";
 				}
 				
 			};
