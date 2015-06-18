@@ -177,7 +177,7 @@ VCO.Timeline = VCO.Class.extend({
 			ease: 						VCO.Ease.easeInOutQuint,
 			// interaction
 			dragging: 					true,
-			trackResize: 				true,
+			trackResize: 				true, 
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100,					// padding on slide of slide
 			slide_default_fade: 		"0%",					// landscape fade

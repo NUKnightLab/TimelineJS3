@@ -3269,9 +3269,9 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			l:    VCO.Util.pad(L, 3),
 			L:    VCO.Util.pad(L > 99 ? Math.round(L / 10) : L),
 			t:    H < 12 ? "a"  : "p",
-			tt:   H < 12 ? "am" : "pm",
+			tt:   H < 12 ? "<span class='vco-timeaxis-timesuffix'>am</span>" : "<span class='vco-timeaxis-timesuffix'>pm</span>",
 			T:    H < 12 ? "A"  : "P",
-			TT:   H < 12 ? "AM" : "PM",
+			TT:   H < 12 ? "<span class='vco-timeaxis-timesuffix'>AM</span>" : "<span class='vco-timeaxis-timesuffix'>PM</span>",
 			Z:    utc ? "UTC" : (String(js_date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
 			o:    (o > 0 ? "-" : "+") + VCO.Util.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
 			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
@@ -3292,15 +3292,12 @@ VCO.Language.prototype.has_negative_year_modifier = function() {
 VCO.Language.prototype._applyEra = function(formatted_date, original_year) {
 	// trusts that the formatted_date was property created with a non-negative year if there are 
 	// negative affixes to be applied
-	var smart_concat = function() {
-		var parts = [];
-		for (var i = 0; i < arguments.length; i++) {
-			if (arguments[i]) parts.push(arguments[i]);
-		}
-		return parts.join(' ');
-	}
 	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
-	return smart_concat(labels.prefix,formatted_date,labels.suffix);
+	var result = '';
+	if (labels.prefix) { result += '<span>' + labels.prefix + '</span> ' }
+	result += formatted_date;
+	if (labels.suffix) { result += ' <span>' + labels.suffix + '</span>' }
+	return result;
 }
 
 
@@ -10922,7 +10919,7 @@ VCO.Timeline = VCO.Class.extend({
 			ease: 						VCO.Ease.easeInOutQuint,
 			// interaction
 			dragging: 					true,
-			trackResize: 				true,
+			trackResize: 				true, 
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100,					// padding on slide of slide
 			slide_default_fade: 		"0%",					// landscape fade
