@@ -1,6 +1,6 @@
 <h1>Contributing to TimelineJS</h1>
 
-TimelineJS is open source software. Knight Lab appreciates contributions to the code and to the translations that support publising timelines in other languages.
+TimelineJS is open source software. Knight Lab appreciates contributions to the code and to the translations that support publishing timelines in other languages.
 
 Please be aware that TimelineJS is designed to make digital storytelling simple. Historically, we've chosen not to pursue certain features which **could** be added to TimelineJS because we felt that they diverged from our design principles. If you have ambitious ideas for changes, you should start a conversation about the idea in [GitHub issues](https://github.com/NUKnightLab/TimelineJS3/issues) using the "feature proposal" label. 
 
@@ -23,7 +23,7 @@ Once the requirements are installed, here are things to know:
 
 * ALWAYS edit code in the [/source/](https://github.com/NUKnightLab/TimelineJS3/tree/master/source) directory. Pull requests which only have changes to code in the `/build/` or `/compiled/` directory are incorrect and will not be accepted.
 * use the `fab build` command to compile your changes for testing.
-* use the `fab serve` command to run a local web server which mimics the official documentation web site and provides a way to load your updated javascript for testing. The URL for your local test environment is http://localhost:5000/ You can use the [test drive form](http://localhost:5000/#test-drive) with Google Spreadsheets to see how your changes are working.
+* use the `fab serve` command to run a local web server which mimics the official documentation web site and provides a way to load your updated javascript for testing. The URL for your local test environment is http://localhost:5000/ You can use the [make a timeline form](http://localhost:5000/#make) with Google Spreadsheets to see how your changes are working. **Remember:** you must execute `fab build` after you change javascript to see your changes on your local server. It is **not** automatic.
 * You may also want to make sure that the [examples](http://localhost:5000/#examples) still work as expected after you change code.
 * Don't break the unit tests. Consider adding test code for your changes. We're still working out our unit testing methodology, but before you submit pull requests, you should check http://localhost:5000/unit-tests.html and http://localhost:5000/mediatype-tests.html and verify that you haven't broken any of the tests with your changes.
 
