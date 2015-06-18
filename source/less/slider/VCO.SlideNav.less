@@ -34,19 +34,22 @@
 			
 		}
 		small {
-			
+			display:block;
 		}
 	}
 	.vco-slidenav-title {
 		margin-top:10px;
-		font-size: @base-font-size;
-		line-height: @base-font-size;
 		font-size: @base-font-size-small;
 		line-height: @base-font-size-small;
 		//font-weight: bold;
 	}
 	.vco-slidenav-description {
 		font-size: @base-font-size-small;
+		margin-top:5px;
+		.opacity(0);
+		small {
+			display:none;
+		}
 	}
 	
 }
@@ -113,8 +116,11 @@
 /* NAVIGATION HOVER
 ================================================== */
 .vco-slidenav-previous:hover, .vco-slidenav-next:hover {
-	.vco-slidenav-title, .vco-slidenav-description {
+	.vco-slidenav-title {
 		.opacity(100);
+	}
+	.vco-slidenav-description {
+		.opacity(50);
 	}
 }
 .vco-slidenav-next:hover {
