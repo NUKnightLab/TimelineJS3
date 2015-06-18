@@ -124,6 +124,15 @@
 					line-height:@minor-ticks-font-size - @tick-padding;
 					margin-left:(@minor-ticks-width/2);
 				}
+				
+				&.vco-timeaxis-tick-hidden {
+					.vco-timeaxis-tick-text {
+						opacity:0 !important;
+					}
+					&:before {
+						opacity:0.33;
+					}
+				}
 			}
 		}
 		
