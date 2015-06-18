@@ -43,8 +43,9 @@
 </head>
 <body>
 
-	<!-- Nav: TBD -->
-
+  {% block nav %}
+    {% include "_nav.html" %}
+  {% endblock %}
 	{% block content %}
 	{% endblock %}
 <footer>
