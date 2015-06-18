@@ -102,6 +102,14 @@
 					white-space: normal;
 					padding-left:2px;
 					padding:right:2px;
+					span {
+						//display:none;
+						display:block;
+						font-size:9px;
+						line-height:9px;
+						margin-top:-2px;
+						color:lighten(@minor-ticks-color,15);
+					}
 				}
 				&:before {
 					font-size:@minor-ticks-font-size - @tick-padding;
