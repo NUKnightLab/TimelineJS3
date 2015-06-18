@@ -24,6 +24,8 @@
 		height:@axis-height;
 		.vco-timeaxis-major, .vco-timeaxis-minor {
 			opacity:0;
+			position:absolute;
+			
 			.vco-timeaxis-tick {
 				position:absolute;
 				display:block;
@@ -68,6 +70,8 @@
 		}
 		
 		.vco-timeaxis-major {
+			z-index:1;
+			background-color:@color-background;
 			.vco-timeaxis-tick {
 				font-size:@major-ticks-font-size;
 				line-height:@major-ticks-font-size + @tick-padding;
@@ -91,6 +95,7 @@
 		}
 		
 		.vco-timeaxis-minor {
+			
 			.vco-timeaxis-tick {
 				font-size:@minor-ticks-font-size;
 				line-height:@minor-ticks-font-size + @tick-padding;
@@ -110,7 +115,7 @@
 						margin-top:-2px;
 						color:lighten(@minor-ticks-color,15);
 						&.vco-timeaxis-timesuffix {
-							display:none;
+							//display:none;
 						}
 					}
 				}
