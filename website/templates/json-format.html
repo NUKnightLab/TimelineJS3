@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+     <!-- Add the class "sticky" to "top-bar" to make the navbar sticky. -->
+     <nav class="top-bar" data-topbar role="navigation">
+       <div class="row">
+        <ul class="title-area">
+          <li class="name">
+            <h1><a href="//timeline3.knightlab.com">TimelineJS 3</a></h1>
+          </li>
+          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul class="right">
+            <li class="logo"><a href="//knightlab.northwestern.edu/" alt="Northwestern University Knight Lab"><img width="130" src="//cdn.knightlab.com/libs/purpleline/latest/img/logos/logo_horizontal_NOtagline_383x91_transparent_NOpadding.png"></a></li>
+          </ul>
+          <!-- Left Nav Section -->
+          <ul class="left">
+            <li><a href="//timeline3.knightlab.com">Overview</a></li>
+            <li><a href="//timeline3.knightlab.com#test-drive">Test Drive</a></li>
+            <li><a href="//timeline3.knightlab.com#examples">Examples</a></li>
+            <li class="active"><a href="//timeline3.knightlab.com/hands-on.html">Hands-On</a></li>
+          </ul>
+        </section>
+      </div>
+    </nav>
+<section id="json-format-documentation">
+  <div class="row">
+    <div class="small-12 columns">
+        <h2>TimelineJS 3 JSON data format</h2>
+        <p>
+          Every timeline needs data about the events it is to show. Most people are happy to just <a href="/index.html#make">use a Google spreadsheet</a> to configure their Timeline, but if you want to write 
+          code to dynamically create or update your timeline, you'll need to understand how to format the data.
+        </p>
+        <p>
+          If you just want to dive in, you can probably copy from one of our examples (like the one about <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/website/templates/examples/houston/timeline3.json">Whitney Houston</a>). Otherwise, complete documentation is below.
+        </p>
+        <p>
+          After you have worked out how to create JSON data for a Timeline, you'll also need to <a href="instantiate-a-timeline.html">put it on the page.</a>
+        </p>
+    <p>
+      The TimelineJS 3 JSON format consists of a single JSON object with up to three keys:
+      <dl>
+        <dt><code>events</code> (required)</dt>
+        <dd><strong>value:</strong> a JSON list of "slide" objects (<a href="#json-slide" data-scroll="true">see below</a>)</dd>
+        <dt><code>title</code> (optional)</dt>
+        <dd><strong>value:</strong> a "slide" object (<a href="#json-slide" data-scroll="true">see below</a>)</dd>
+        <dt><code>scale</code> (optional)</dt>
+        <dd><strong>value:</strong> either <code>javascript</code> or <code>cosmological</code>. If no scale is specified, the default is <code>javascript</code>. The <code>cosmological</code> scale is required to handle dates in the very distant past or future. (Before Tuesday, April 20th, 271,821 BCE after Saturday, September 13 275,760 CE) For the <code>cosmological</code> scale, only the year is considered, but it's OK to have a <code>cosmological</code> timeline with years between 271,821 BCE and 275,760 CE. </dd>
+      </dl>
+    </p>
+    <p id="json-slide" class="jump">
+      <strong><em>Slide objects</em></strong> are JSON objects with up to four keys:
+      <dl>
+        <dt><code>start_date</code> (required)</dt>
+        <dd><strong>value:</strong> a "date" object (<a href="#json-date" data-scroll="true">see below</a>)</dd>
+        <dt><code>end_date</code> (optional)</dt>
+        <dd><strong>value:</strong> a "date" object (<a href="#json-date" data-scroll="true">see below</a>)</dd>
+        <dt><code>text</code> (optional but recommended)</dt>
+        <dd><strong>value:</strong> a "text" object (<a href="#json-text" data-scroll="true">see below</a>) </dd>
+        <dt><code>media</code> (optional)</dt>
+        <dd><strong>value:</strong> a "media" object (<a href="#json-media" data-scroll="true">see below</a>) </dd>
+      </dl>
+    </p>
+    <p id="json-date" class="jump"><strong><em>Date objects</em></strong> are JSON objects with up to seven keys:</p>
+    <dl>
+        <dt><code>year</code> (required)</dt>
+        <dd><strong>value:</strong> a number. Don't use commas. BCE years should be negative numbers. Don't use the letters "BC", "BCE" or any others.</dd>
+        <dt><code>month</code> (optional)</dt>
+        <dd><strong>value:</strong> a number from 1-12 (Javascript experts don't outsmart yourselves: Timeline corrects for Javascript's strange use of "0" for "January", etc.)</dd>
+        <dt><code>day</code> (optional)</dt>
+        <dd><strong>value:</strong> a number</dd>
+        <dt><code>hour</code> (optional)</dt>
+        <dd><strong>value:</strong> a number</dd>
+        <dt><code>minute</code> (optional)</dt>
+        <dd><strong>value:</strong> a number</dd>
+        <dt><code>second</code> (optional)</dt>
+        <dd><strong>value:</strong> a number</dd>
+        <dt><code>millisecond</code> (optional)</dt>
+        <dd><strong>value:</strong> a number</dd>
+    </dl>
+    <p id="json-text" class="jump"><strong><em>Text objects</em></strong> are JSON objects with up to two keys. For each slide, text objects are optional.</p>
+    <dl>
+        <dt><code>headline</code> (required)</dt>
+        <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
+        <dt><code>text</code> (optional)</dt>
+        <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
+    </dl>
+    <p id="json-media" class="jump"><strong><em>Media objects</em></strong> are JSON objects with up to three keys. For each slide, media objects are optional.</p>
+    <dl>
+        <dt><code>url</code> (required)</dt>
+        <dd><strong>value:</strong> a URL (see <a href="/media-types.html">media type documentation</a>).</dd>
+        <dt><code>caption</code> (optional)</dt>
+        <dd><strong>value:</strong> any text. HTML markup is OK.</dd>
+        <dt><code>credit</code> (optional)</dt>
+        <dd><strong>value:</strong> any text. HTML markup is OK.</dd>
+    </dl>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
