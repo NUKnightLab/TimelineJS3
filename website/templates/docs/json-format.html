@@ -29,7 +29,7 @@
     <p id="json-slide" class="jump">
       <strong><em>Slide objects</em></strong> are JSON objects with up to four keys:
       <dl>
-        <dt><code>start_date</code> (required)</dt>
+        <dt><code>start_date</code> (required, except for 'title' slides)</dt>
         <dd><strong>value:</strong> a "date" object (<a href="#json-date" data-scroll="true">see below</a>)</dd>
         <dt><code>end_date</code> (optional)</dt>
         <dd><strong>value:</strong> a "date" object (<a href="#json-date" data-scroll="true">see below</a>)</dd>
@@ -50,11 +50,11 @@
         <dt><code>day</code> (optional)</dt>
         <dd><strong>value:</strong> a number</dd>
         <dt><code>hour</code> (optional)</dt>
-        <dd><strong>value:</strong> a number</dd>
+        <dd><strong>value:</strong> a number from 0-23.</dd>
         <dt><code>minute</code> (optional)</dt>
-        <dd><strong>value:</strong> a number</dd>
+        <dd><strong>value:</strong> a number from 0-59</dd>
         <dt><code>second</code> (optional)</dt>
-        <dd><strong>value:</strong> a number</dd>
+        <dd><strong>value:</strong> a number from 0-59</dd>
         <dt><code>millisecond</code> (optional)</dt>
         <dd><strong>value:</strong> a number</dd>
     </dl>
@@ -68,7 +68,7 @@
     <p id="json-media" class="jump"><strong><em>Media objects</em></strong> are JSON objects with up to three keys. For each slide, media objects are optional.</p>
     <dl>
         <dt><code>url</code> (required)</dt>
-        <dd><strong>value:</strong> a URL (see <a href="media-types.html">media type documentation</a>).</dd>
+        <dd><strong>value:</strong> in most cases, a URL (see <a href="media-types.html">media type documentation</a> for complete details).</dd>
         <dt><code>caption</code> (optional)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK.</dd>
         <dt><code>credit</code> (optional)</dt>
