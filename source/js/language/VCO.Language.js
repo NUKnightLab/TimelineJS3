@@ -156,9 +156,9 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			l:    VCO.Util.pad(L, 3),
 			L:    VCO.Util.pad(L > 99 ? Math.round(L / 10) : L),
 			t:    H < 12 ? "a"  : "p",
-			tt:   H < 12 ? "am" : "pm",
+			tt:   H < 12 ? "<span class='vco-timeaxis-timesuffix'>am</span>" : "<span class='vco-timeaxis-timesuffix'>pm</span>",
 			T:    H < 12 ? "A"  : "P",
-			TT:   H < 12 ? "AM" : "PM",
+			TT:   H < 12 ? "<span class='vco-timeaxis-timesuffix'>AM</span>" : "<span class='vco-timeaxis-timesuffix'>PM</span>",
 			Z:    utc ? "UTC" : (String(js_date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
 			o:    (o > 0 ? "-" : "+") + VCO.Util.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
 			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
