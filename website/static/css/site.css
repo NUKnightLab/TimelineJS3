@@ -283,7 +283,13 @@ p.input-label {
     font-family: sans-serif;
     color: #757575;
 }
-
+#tips-and-tricks {
+    margin-top: 20px;
+}
+/*purpleline override*/
+#tips-and-tricks ol li {
+    margin-top: 10px;
+}
 /* Developers */
 #developers .develop {
   margin-top: 40px;
