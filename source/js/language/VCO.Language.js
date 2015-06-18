@@ -179,15 +179,12 @@ VCO.Language.prototype.has_negative_year_modifier = function() {
 VCO.Language.prototype._applyEra = function(formatted_date, original_year) {
 	// trusts that the formatted_date was property created with a non-negative year if there are 
 	// negative affixes to be applied
-	var smart_concat = function() {
-		var parts = [];
-		for (var i = 0; i < arguments.length; i++) {
-			if (arguments[i]) parts.push(arguments[i]);
-		}
-		return parts.join(' ');
-	}
 	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
-	return smart_concat(labels.prefix,formatted_date,labels.suffix);
+	var result = '';
+	if (labels.prefix) { result += '<span>' + labels.prefix + '</span> ' }
+	result += formatted_date;
+	if (labels.suffix) { result += ' <span>' + labels.suffix + '</span>' }
+	return result;
 }
 
 
