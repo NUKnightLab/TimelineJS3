@@ -210,9 +210,9 @@ VCO.Util = {
 		
 
 		return text
-			.replace(urlPattern, "<a target='_blank' href='$&' onclick='void(0)'>$&</a>")
-			.replace(pseudoUrlPattern, "$1<a target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
-			.replace(emailAddressPattern, "<a target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+			.replace(urlPattern, "<a class='vco-makelink' target='_blank' href='$&' onclick='void(0)'>$&</a>")
+			.replace(pseudoUrlPattern, "$1<a class='vco-makelink' target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
+			.replace(emailAddressPattern, "<a class='vco-makelink' target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
 	},
 	
 	unlinkify: function(text) {
@@ -7606,7 +7606,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
 		
 		// Open links in new window
-		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+		tweet_text = tweet_text.replace(/<a href/ig, '<a class="vco-makelink" target="_blank" href');
 
 		// 	TWEET CONTENT
 		tweet += tweet_text;
@@ -10978,6 +10978,10 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Apply base class to container
 		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
 		
 		// Add Message to DOM
 		this.message.addTo(this._el.container);

@@ -24,7 +24,7 @@
       	width:100%;
       	margin-bottom:50px;
       	margin-left:50px;
-      	border: 1px solid #999;
+      	//border: 1px solid #999;
       }
       #timeline0 {
       	width:800px;
@@ -69,11 +69,11 @@
     <!-- JavaScript-->
     <script src="../js/timeline.js"></script>
     <script>
-      var timeline_00 = new VCO.Timeline('timeline0', 'marktwain.json');
-      var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json');
-      var timeline_02 = new VCO.Timeline('timeline2', 'marktwain.json');
-      var timeline_03 = new VCO.Timeline('timeline3', 'marktwain.json');
-      var timeline_04 = new VCO.Timeline('timeline4', 'marktwain.json');
+      var timeline_00 = new VCO.Timeline('timeline0', 'marktwain.json', {is_embed:true});
+      var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json', {is_embed:true});
+      var timeline_02 = new VCO.Timeline('timeline2', 'marktwain.json', {is_embed:true});
+      var timeline_03 = new VCO.Timeline('timeline3', 'marktwain.json', {is_embed:true});
+      var timeline_04 = new VCO.Timeline('timeline4', 'marktwain.json', {is_embed:true});
       window.onresize = function(event) {
       	timeline_00.updateDisplay();
       	timeline_01.updateDisplay();

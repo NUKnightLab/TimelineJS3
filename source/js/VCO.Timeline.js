@@ -222,6 +222,10 @@ VCO.Timeline = VCO.Class.extend({
 		// Apply base class to container
 		this._el.container.className += ' vco-timeline';
 		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
+		
 		// Add Message to DOM
 		this.message.addTo(this._el.container);
 
