@@ -314,40 +314,25 @@ p.input-label {
 
 
 @media (max-width: 767px) {
+    body { font-size: 14px; }
     #overview {
         margin-left: 0px;
         margin-right: 0px;
     }
     #overview a { margin:0 10px; }
-    .hero-unit { font-size: 16px; }
+    /* purpleline override */
+    h1.logo-mark.xl {
+        font-size: 55px!important;
+    }
+    /* purpleline override */
+    button.large,
+    .button.large {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    }
     h2.intro {
-        font-size: 35px;
+        font-size: 30px;
     }
-
-}
-
-@media (max-width: 600px) {
-    .corner.banner { left: -95px; top: 2px; }
-    #overview ul li {
-        display: block;
-        margin: 10px 0;
-    }
-    #overview ul li a {
-        padding: 10px 15%;
-    }
-    .step h2 { font-size: 70px; }
-    .step h4 { font-size: 1.3em; line-height: 1.4; }
-}
-
-@media (max-width: 500px) {
-    .banner { margin-top: 20px; }
-    .banner-content { display: block; }
-    .banner img {
-        margin: auto;
-        display: block;
-        width: 220px;
-    }
-    #overview .banner-content h4 { display: none; }
     .corner.banner {
         transform: rotate(0);
         top: 0;
@@ -358,19 +343,46 @@ p.input-label {
         border: 0;
         padding-bottom: 0;
     }
+    .corner.logo { display: none; }
+    .sub-nav .logo { display: inline-block; }
+}
+
+@media (max-width: 600px) {
+    #overview ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .step h2 { font-size: 70px; }
+    .step h4 { font-size: 1.3em; line-height: 1.4; }
+}
+
+@media (max-width: 500px) {
+    #overview { margin-bottom: 20px; }
+    .banner { margin-top: 20px; }
+    .banner-content { display: block; }
+    .banner img {
+        margin: auto;
+        display: block;
+        width: 220px;
+    }
+    #overview .banner-content h4 { display: none; }
     h2.intro {
         font-size: 25px;
         margin: 10px 0;
     }
     .logo-mark.xl { margin-top: 25px; }
     #overview ul {
-        margin: 20px 0;
+        margin: 10px 0 0 0;
     }
     #changelog,
     #intro-copy { margin-top: 0; padding-top: 0;}
     p.lead {
         font-size: 16px;
     }
+    #overview .sub-nav li { display: none; }
+    #overview .sub-nav li:last-child { display: block; }
+    #overview a.button { margin-top: 10px; }
 }
 
 @media (max-width: 380px) {
