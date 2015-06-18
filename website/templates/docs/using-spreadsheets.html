@@ -1,22 +1,5 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% block content %}
-    <section class="row">
-      <div class="small-12 medium-8 columns">
-      <h1>Using the new TimelineJS</h1>
-      <p>TimelineJS is an open-source tool that enables anyone to build visually rich, interactive timelines. Beginners can <a href="#spreadsheet-walkthrough">create a timeline using nothing more than a Google spreadsheet</a>. Experts can use their JSON skills to <a href="#using-json">create custom installations</a> while keeping TimelineJS's core functionality.</p>
-      <h2>Embed media in your timeline</h2>
-      <p>TimelineJS can pull in media from a variety of sources and has built-in support for Twitter, Instagram, Flickr, Google Maps, DropBox, DocumentCloud, Wikipedia, SoundCloud, Storify, iframes, major video sites (YouTube, Vimeo, etc.) and more. <a href="#mediatypes">Read more about the media types TimelineJS works with.</a></p>
-      </div>
-      <div class="small-12 medium-4 columns panel" id="tips-and-tricks">
-        <h4>Tips & tricks</h4>
-        <ol>
-          <li>Keep it short. We recommend not having more than 20 slides for a reader to click through.</li>
-          <li>Pick stories that have a strong chronological narrative. It does not work well for stories that need to jump around in the timeline.</li>
-          <li>Write each event as a part of a larger narrative.</li>
-          <li>Include events that build up to major occurrences — not just the major events.</li>
-        </ol>
-      </div>
-    </section>
     <section id="spreadsheet-walkthrough" class="row">
       <div class="small-12 columns">
         <h2>Making a timeline from a Google Spreadsheet</h2>
@@ -35,11 +18,12 @@
         <ol>
           <li>Go to the File menu of your Google spreadsheet and select "Publish to the Web." In the window that pops up make sure you are under Link (it should place you there by default), then make sure that "Automatically republish when changes are made" is checked and that "Entire Document" is selected.</li>
           <li>Copy the link.</li>
-          <li><a href="http://timeline3.knightlab.com/#make">Open the TimelineJS 3 site</a>. Paste your copied link into the "Google spreadsheet URL" box. There you are also given some styling options to play around with if you desire.
+          <li><a href="/index.html#make-step-3">Open the TimelineJS 3 site</a>. Paste your copied link into the "Google spreadsheet URL" box. There you are also given some styling options to play around with if you desire.
           <li>Copy the embed code displayed and paste it on your site wherever you'd like it to appear.</li>
           </ol>
         </p>
         <p>Congratulations! You should be well on your way to creating a simple timeline and playing within the Google spreadsheet boundaries. If you have any specific questions, <a href="mailto:support@knightlab.zendesk.com">please email us</a>.</p>
       </div>
     </section>
+
 {% endblock %}
