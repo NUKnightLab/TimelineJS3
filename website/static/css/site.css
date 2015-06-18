@@ -129,6 +129,12 @@ h2.intro { margin-bottom: 10px; }
 
 .checkbox input { margin-right: 20px; }
 
+#embed-source-url-note {
+  margin-top: -12px;
+  margin-bottom: 20px;
+
+}
+
 #preview-required {
   display: none;
   font-family: sans-serif;
