@@ -10909,6 +10909,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			is_embed: 					false,
 			theme_color: 				false,
 			hash_bookmark: 				false,
 			default_bg_color: 			{r:255, g:255, b:255},
