@@ -35,8 +35,9 @@
 				//.animation-timing-cubic-bezier();
 				.vco-timeaxis-tick-text {
 					display:inline-block;
-					width:100%;
+					//width:100%;
 					white-space: nowrap;
+
 					text-overflow: ellipsis;
 					overflow:hidden;
 				}
@@ -73,6 +74,7 @@
 				color:@major-ticks-color;
 				width:@major-ticks-width;
 				margin-left:-(@major-ticks-width/2);
+				
 				&:before {
 					border-color:@major-ticks-line-color;
 					//border-left: 2px solid @major-ticks-line-color;
@@ -80,6 +82,10 @@
 					line-height:@major-ticks-font-size + (@tick-padding*3);
 					margin-bottom:@tick-padding;
 					margin-left:(@major-ticks-width/2);
+				}
+				
+				.vco-timeaxis-tick-text {
+					background-color:@color-background;
 				}
 			}
 		}
@@ -93,10 +99,9 @@
 				margin-left:-(@minor-ticks-width/2);
 				.vco-timeaxis-tick-text {
 					opacity:0;
-					//overflow:hidden;
-					//padding-left:5px;
-					//padding-right:5px;
-					//width:@minor-ticks-width - 5;
+					white-space: normal;
+					padding-left:2px;
+					padding:right:2px;
 				}
 				&:before {
 					font-size:@minor-ticks-font-size - @tick-padding;
