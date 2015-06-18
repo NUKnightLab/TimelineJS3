@@ -32,6 +32,7 @@ VCO.TimeScale = VCO.Class.extend({
         // TODO: should _latest be the end date if there is one?
         this._latest = slides[slides.length - 1].start_date.getTime();
         this._span_in_millis = this._latest - this._earliest;
+        if (this._span_in_millis <= 0) throw new Error("earliest event time is before or same as latest.")
         this._average = (this._span_in_millis)/slides.length;
 
         this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
@@ -215,7 +216,10 @@ VCO.TimeScale = VCO.Class.extend({
             }
         }
 
-        if(groups.length) {                       
+        if(!(groups.length)) {                       
+            var result = this._computeRowInfo(this._positions, max_rows);  
+            this._number_of_rows = result.n_rows;    
+        } else {
             if(empty_group) {
                 groups.push("");
             }
@@ -308,9 +312,6 @@ VCO.TimeScale = VCO.Class.extend({
                 
                 row_offset += group_info[i].n_rows;       
             }
-        } else {
-            var result = this._computeRowInfo(this._positions, max_rows);  
-            this._number_of_rows = result.n_rows;    
         }  
         
     }

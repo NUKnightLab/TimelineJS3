@@ -47,6 +47,7 @@
     }
 
     function extractGoogleEntryData_V3(item) {
+
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
@@ -67,19 +68,26 @@
             start_date: {
                 year: item_data.year,
                 month: item_data.month || '',
-                day: item_data.day || '',
-                time: item_data.time || ''
+                day: item_data.day || ''
             },
             end_date: {
                 year: item_data.endyear || '',
                 month: item_data.endmonth || '',
-                day: item_data.endday || '',
-                time: item_data.endtime || ''
+                day: item_data.endday || ''
             },
             display_date: item_data.displaydate || '',
 
             type: item_data.type || ''
         }
+
+        if (item_data.time) {
+            VCO.Util.extend(d.start_date,VCO.DateUtil.parseTime(item_data.time));
+        }
+
+        if (item_data.endtime) {
+            VCO.Util.extend(d.end_date,VCO.DateUtil.parseTime(item_data.endtime));
+        }
+
 
         if (item_data.group) {
             d.group = item_data.group;

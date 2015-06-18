@@ -1,12 +1,17 @@
-    <h3 id="media-types">Media Types</h3>
+{% extends "base.html" %}
+
+{% block content %}
+<section id="test-drive">
     <div class="row">
+    <h3 id="media-types">Media Types</h3>
       <div class="small-12 columns">
       <p>
       People have always loved how easy TimelineJS makes it to add rich media to the slides that tell your story. The new version of Timeline continues the tradition and adds a few new media types.
       </p>
       <dl>
         <dt>Image</dt>
-        <dd>If your URL ends in <code>jpg</code>, <code>gif</code>, <code>png</code> or <code>jpeg</code>, it will be used as the source for an image tag.</dd>
+        <dd>If your URL ends in <code>jpg</code>, <code>gif</code>, <code>png</code> or <code>jpeg</code>, it will be used as the source for an image tag. It should also work if there is a <a href="https://en.wikipedia.org/wiki/Query_string">query string</a> after the extension, perhaps specifying dynamic width and height values.
+        </dd>
 
         <dt>Online Videos</dt>
         <dd>Use the URL for the page of the video for <a href="http://vimeo.com">Vimeo</a>, <a href="http://DailyMotion.com">DailyMotion</a>, <a href="http://Vine.co">Vine</a>, and <a href="http://youtube.com/">YouTube</a>. Timeline honors <a href="http://youtubetime.com/">Youtube start-at time parameters</a>.</dd>
@@ -27,7 +32,7 @@
         <dd>Use the URL for the <a href="http://www.instagram.com">Instagram</a> photo's page.</dd>
         
         <dt>Flickr</dt>
-        <dd>Use the URL for the <a href="http://www.flickr.com">Flickr</a> photo's page. Note: The shortened link, provided in the share menu, does <i>not</i> work.</dd>
+        <dd>Use the URL for the <a href="http://www.flickr.com">Flickr</a> photo's page. Note: The shortened link  provided in the share menu  (e.g. <code>https://flic.kr/p/sv3VN6</code>) does <i>not</i> work.</dd>
 
 {#      
            <dt>Instagram Profile</dt> <!-- this one seemed kinda uncertain -->
@@ -67,3 +72,6 @@
       </dl>
       </div>
     </div>
+</section>
+{% endblock %}
+

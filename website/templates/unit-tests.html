@@ -236,6 +236,41 @@
         equal(VCO.DateUtil.findBestFormat({'second': 1},'short'),"time_short","Expect a different format key for short (explicit)")
       })
 
+      test("VCO.DateUtil.parseTime", function(){
+
+        var test_date = function(time_str,expected_hour, expected_minute, expected_second, expected_milli) {
+          try {
+            var parsed = VCO.DateUtil.parseTime(time_str);
+            equal(parsed.hour,expected_hour,time_str + " expected hour " + expected_hour);
+            equal(parsed.minute,expected_minute,time_str + " expected minute " + expected_minute);
+            equal(parsed.second,expected_second,time_str + " expected second " + expected_second);
+            equal(parsed.millisecond,expected_milli,time_str + " expected milli " + expected_milli);
+          } catch(e) {
+            ok(false, "Failure testing " + time_str + " got " + e);
+          }
+
+          
+        }
+        test_date('11:30:40.5', 11, 30, 40, 500);
+
+
+        test_date('11:30', 11, 30, null, null);
+        test_date('11.30', 11, 30, null, null);
+        test_date('1130', 11, 30, null, null);
+        test_date('11.30pm', 23, 30, null, null);
+        test_date('11:30 pm', 23, 30, null, null);
+        test_date('1130 pm', 23, 30, null, null);
+        test_date('11:30:40', 11, 30, 40, null);
+        test_date('23:30:40', 23, 30, 40, null);
+        test_date('11:30:40 pm', 23, 30, 40, null);
+        test_date('11:30:40pm', 23, 30, 40, null);
+        throws(function() {VCO.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
+        throws(function() {VCO.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
+
+
+
+      });
+
       test("VCO.Language",function() {
         var msgs = new VCO.Language();
         equal(msgs.name,"English","English is default");
@@ -292,7 +327,7 @@
 
         var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
         d.setFullYear(-500);
-        equal(msgs.formatDate(d,'yyyy'),'500 BCE','BCE date');
+        equal(msgs.formatDate(d,'yyyy'),'500 <span>BCE</span>','BCE date');
 
 
       });
