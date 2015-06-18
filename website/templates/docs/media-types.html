@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section id="test-drive">
+<section>
     <div class="row">
     <h3 id="media-types">Media Types</h3>
       <div class="small-12 columns">
       <p>
-      People have always loved how easy TimelineJS makes it to add rich media to the slides that tell your story. The new version of Timeline continues the tradition and adds a few new media types.
+      People have always loved how easy TimelineJS makes it to add rich media to the slides that tell your story. The new version of Timeline continues the tradition and adds a few new media types. 
       </p>
       <dl>
         <dt>Image</dt>
@@ -69,6 +69,8 @@
         <dt>Blockquote</dt>
         <dd>Instead of a URL, you can use <code>&lt;blockquote&gt;</code> tags around whatever text you want to quote.</dd>
         
+        <dt>Embedly</dt>
+        <dd>If TimelineJS doesn't recognize your media URL, it will try to use <a href="http://embed.ly/">Embed.ly</a> to get the best thing to include on your slide.</dd>
       </dl>
       </div>
     </div>
