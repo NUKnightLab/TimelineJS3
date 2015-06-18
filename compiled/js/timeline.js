@@ -210,9 +210,9 @@ VCO.Util = {
 		
 
 		return text
-			.replace(urlPattern, "<a target='_blank' href='$&' onclick='void(0)'>$&</a>")
-			.replace(pseudoUrlPattern, "$1<a target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
-			.replace(emailAddressPattern, "<a target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+			.replace(urlPattern, "<a class='vco-makelink' target='_blank' href='$&' onclick='void(0)'>$&</a>")
+			.replace(pseudoUrlPattern, "$1<a class='vco-makelink' target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
+			.replace(emailAddressPattern, "<a class='vco-makelink' target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
 	},
 	
 	unlinkify: function(text) {
@@ -3221,6 +3221,15 @@ VCO.Language.prototype.formatBigYear = function(bigyear, format_name) {
 VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 	// ultimately we probably want this to work with VCO.Date instead of (in addition to?) JS Date
 	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
+	var self = this;
+	var formatPeriod = function(fmt, value) {
+		var formats = self.period_labels[fmt];
+		if (formats) {
+			var fmt = (value < 12) ? formats[0] : formats[1];
+		}
+		return "<span class='vco-timeaxis-timesuffix'>" + fmt + "</span>"; 
+	}
+
 	var utc = false, 
 		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
 		timezoneClip = /[^-+\dA-Z]/g;
@@ -3268,10 +3277,10 @@ VCO.Language.prototype.formatJSDate = function(js_date, format_name) {
 			ss:   VCO.Util.pad(s),
 			l:    VCO.Util.pad(L, 3),
 			L:    VCO.Util.pad(L > 99 ? Math.round(L / 10) : L),
-			t:    H < 12 ? "a"  : "p",
-			tt:   H < 12 ? "<span class='vco-timeaxis-timesuffix'>am</span>" : "<span class='vco-timeaxis-timesuffix'>pm</span>",
-			T:    H < 12 ? "A"  : "P",
-			TT:   H < 12 ? "<span class='vco-timeaxis-timesuffix'>AM</span>" : "<span class='vco-timeaxis-timesuffix'>PM</span>",
+			t:    formatPeriod('t',H),
+			tt:   formatPeriod('tt',H),
+			T:    formatPeriod('T',H),
+			TT:   formatPeriod('TT',H),
 			Z:    utc ? "UTC" : (String(js_date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
 			o:    (o > 0 ? "-" : "+") + VCO.Util.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
 			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
@@ -3327,6 +3336,12 @@ VCO.Language.languages = {
 	        	suffix: 'BCE'
 	        }
         },
+        period_labels: {  // use of t/tt/T/TT legacy of original Timeline date format
+			t: ['a', 'p'],
+			tt: ['am', 'pm'],
+			T: ['A', 'P'],
+			TT: ['AM', 'PM']
+		},
 		dateformats: {
 			year: "yyyy",
 			month_short: "mmm",
@@ -7591,7 +7606,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
 		
 		// Open links in new window
-		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+		tweet_text = tweet_text.replace(/<a href/ig, '<a class="vco-makelink" target="_blank" href');
 
 		// 	TWEET CONTENT
 		tweet += tweet_text;
@@ -10894,6 +10909,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			is_embed: 					false,
 			theme_color: 				false,
 			hash_bookmark: 				false,
 			default_bg_color: 			{r:255, g:255, b:255},
@@ -10962,6 +10978,10 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Apply base class to container
 		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
 		
 		// Add Message to DOM
 		this.message.addTo(this._el.container);

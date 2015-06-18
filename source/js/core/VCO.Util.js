@@ -168,9 +168,9 @@ VCO.Util = {
 		
 
 		return text
-			.replace(urlPattern, "<a target='_blank' href='$&' onclick='void(0)'>$&</a>")
-			.replace(pseudoUrlPattern, "$1<a target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
-			.replace(emailAddressPattern, "<a target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+			.replace(urlPattern, "<a class='vco-makelink' target='_blank' href='$&' onclick='void(0)'>$&</a>")
+			.replace(pseudoUrlPattern, "$1<a class='vco-makelink' target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
+			.replace(emailAddressPattern, "<a class='vco-makelink' target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
 	},
 	
 	unlinkify: function(text) {

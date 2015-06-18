@@ -1,6 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400,700|Playfair+Display+SC);
-@import url(http://fonts.googleapis.com/css?family=Fauna+One);
-@import url(http://fonts.googleapis.com/css?family=Unica+One);
 /*	Font Playfair & Fauna One & Unica One
 
 https://www.google.com/fonts/specimen/Playfair+Display
@@ -21,6 +18,9 @@ http://www.google.com/fonts/specimen/Unica+One
 ================================================== */
 /* GFX
 ================================================== */
+@import url(//fonts.googleapis.com/css?family=Playfair+Display:400,700|Playfair+Display+SC);
+@import url(//fonts.googleapis.com/css?family=Fauna+One);
+@import url(//fonts.googleapis.com/css?family=Unica+One);
 /*	Font Base
 ----------------------------------------------------- */
 .vco-timeline {

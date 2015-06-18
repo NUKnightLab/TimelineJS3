@@ -1,5 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Megrim);
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300);
 /*	Font Roboto Slab & Megrim
 
 http://www.google.com/fonts/specimen/Vollkorn
@@ -19,6 +17,8 @@ https://www.google.com/fonts/specimen/Megrim
 ================================================== */
 /* GFX
 ================================================== */
+@import url(//fonts.googleapis.com/css?family=Megrim);
+@import url(//fonts.googleapis.com/css?family=Roboto+Slab:400,300);
 /*	Font Base
 ----------------------------------------------------- */
 .vco-timeline {

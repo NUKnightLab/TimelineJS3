@@ -152,6 +152,7 @@ VCO.Timeline = VCO.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			is_embed: 					false,
 			theme_color: 				false,
 			hash_bookmark: 				false,
 			default_bg_color: 			{r:255, g:255, b:255},
@@ -220,6 +221,10 @@ VCO.Timeline = VCO.Class.extend({
 		
 		// Apply base class to container
 		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
 		
 		// Add Message to DOM
 		this.message.addTo(this._el.container);
