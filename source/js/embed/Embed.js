@@ -77,7 +77,7 @@ function createStoryJS(c, src) {
 			type:		'timeline',
 			id:			'storyjs',
 			embed_id:	'timeline-embed',
-			embed:		true,
+			is_embed:		true,
 			width:		'100%',
 			height:		'100%',
 			source:		'https://docs.google.com/spreadsheet/pub?key=0Agl_Dv6iEbDadFYzRjJPUGktY0NkWXFUWkVIZDNGRHc&output=html',
@@ -253,6 +253,9 @@ function createStoryJS(c, src) {
 		var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
         storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
         storyjs_e_config.language = storyjs_e_config.lang;
+        if (storyjs_e_config.width == '100%') {
+        	storyjs_e_config.is_full_embed = true;
+        }
 		storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
 		
 		/* TODO: not sure what to do here
