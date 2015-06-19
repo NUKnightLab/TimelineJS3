@@ -87,6 +87,26 @@
 
       });
 
+      test("VCO.Util.linkify", function() {
+        var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
+        var linked = VCO.Util.linkify(text);
+        ok(linked.startsWith('This is some text with a URL in it <a'), "should start the same and then have a link");
+        ok(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/), "should have an href");
+        ok(linked.match(/>knightlab.northwestern.edu<\/a>/), "should have an href " + linked);
+
+        text = "This is some text with www.google.com in it";
+        var linked = VCO.Util.linkify(text);
+        ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
+        ok(linked.match(/href=['"]http:\/\/www.google.com['"]/), "should have an href");
+        ok(linked.match(/>www.google.com<\/a>/), "should have the right link text");
+
+        text = "This is some text with support@knightlab.zendesk.com in it";
+        var linked = VCO.Util.linkify(text);
+        ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
+        ok(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/), "should have an href " + linked);
+        ok(linked.match(/>support@knightlab.zendesk.com<\/a>/), "should have the right link text " + linked);
+
+      })
 
       test("VCO.Date", function() {
         var refdate = VCO.Date.makeDate({year: 2000, month: 6, day: 21});
