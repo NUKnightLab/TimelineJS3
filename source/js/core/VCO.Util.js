@@ -171,7 +171,7 @@ VCO.Util = {
 		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
 
 		// www. sans http:// or https://
-		var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+		var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
 
 		// Email addresses
 		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
