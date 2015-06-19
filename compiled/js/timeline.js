@@ -10984,6 +10984,7 @@ VCO.Timeline = VCO.Class.extend({
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
+			is_full_embed: 				false,
 			theme_color: 				false,
 			hash_bookmark: 				false,
 			default_bg_color: 			{r:255, g:255, b:255},
@@ -11055,6 +11056,10 @@ VCO.Timeline = VCO.Class.extend({
 		
 		if (this.options.is_embed) {
 			this._el.container.className += ' vco-timeline-embed';
+		}
+		
+		if (this.options.is_full_embed) {
+			this._el.container.className += ' vco-timeline-full-embed';
 		}
 		
 		// Add Message to DOM

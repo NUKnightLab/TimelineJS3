@@ -121,10 +121,8 @@ function updateEmbedCode(element, options) {
 
 
 
-// overcome Timeline's stupid jQuery loading
-var $blueline = $.noConflict();
-$blueline(document).ready(function() {
-  var $ = $blueline;
+var $ = jQuery;
+$(document).ready(function() {
   function navSmartScroll($destination) {
     var offset = $(".navbar").height() || 0,
         scrollTop = $destination.offset().top - 30;
