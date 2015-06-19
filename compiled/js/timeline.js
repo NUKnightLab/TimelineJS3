@@ -3005,6 +3005,7 @@ VCO.TimelineConfig = VCO.Class.extend({
     }
 
     function extractGoogleEntryData_V3(item) {
+
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
@@ -3025,19 +3026,26 @@ VCO.TimelineConfig = VCO.Class.extend({
             start_date: {
                 year: item_data.year,
                 month: item_data.month || '',
-                day: item_data.day || '',
-                time: item_data.time || ''
+                day: item_data.day || ''
             },
             end_date: {
                 year: item_data.endyear || '',
                 month: item_data.endmonth || '',
-                day: item_data.endday || '',
-                time: item_data.endtime || ''
+                day: item_data.endday || ''
             },
             display_date: item_data.displaydate || '',
 
             type: item_data.type || ''
         }
+
+        if (item_data.time) {
+            VCO.Util.extend(d.start_date,VCO.DateUtil.parseTime(item_data.time));
+        }
+
+        if (item_data.endtime) {
+            VCO.Util.extend(d.end_date,VCO.DateUtil.parseTime(item_data.endtime));
+        }
+
 
         if (item_data.group) {
             d.group = item_data.group;
@@ -5075,6 +5083,61 @@ VCO.DateUtil = {
 		return "";
 	},
 	
+	parseTime: function(time_str) {
+		var parsed = {
+			hour: null, minute: null, second: null, millisecond: null // conform to keys in VCO.Date
+		}
+		var period = null;
+		var match = time_str.match(/(\s*[AaPp]\.?[Mm]\.?\s*)$/);
+		if (match) {
+			period = VCO.Util.trim(match[0]);
+			time_str = VCO.Util.trim(time_str.substring(0,time_str.lastIndexOf(period)));
+		}
+
+		var parts = [];
+		var no_separators = time_str.match(/^\s*(\d{1,2})(\d{2})\s*$/);
+		if (no_separators) {
+			parts = no_separators.slice(1);
+		} else {
+			parts = time_str.split(':');
+			if (parts.length == 1) {
+				parts = time_str.split('.');
+			}
+		}
+
+		if (parts.length > 4) { throw new Error("Invalid time: misuse of : or . as separator.");}
+
+		parsed.hour = parseInt(parts[0]);
+
+		if (period && period.toLowerCase()[0] == 'p') {
+			parsed.hour += 12;
+		}
+
+
+		if (isNaN(parsed.hour) || parsed.hour < 0 || parsed.hour > 23) {
+			throw new Error("Invalid time (hour)");
+		}
+
+		if (parts.length > 1) {
+			parsed.minute = parseInt(parts[1]);
+			if (isNaN(parsed.minute)) { throw new Error("Invalid time (minute)"); }
+		}
+
+		if (parts.length > 2) {
+			var sec_parts = parts[2].split(/[\.,]/);
+			parts = sec_parts.concat(parts.slice(3)) // deal with various methods of specifying fractional seconds
+			if (parts.length > 2) { throw new Error("Invalid time (seconds and fractional seconds)")}
+			parsed.second = parseInt(parts[0]);
+			if (isNaN(parsed.second)) { throw new Error("Invalid time (second)")}
+			if (parts.length == 2) {
+				var frac_secs = parseInt(parts[1]);
+				if (isNaN(frac_secs)) { throw new Error("Invalid time (fractional seconds)")}
+				parsed.millisecond = 100 * frac_secs;
+			}
+		}
+
+		return parsed;
+	},
 	best_dateformats: {
 		base: {
 			millisecond: 1,
@@ -9845,8 +9908,10 @@ VCO.TimeMarker = VCO.Class.extend({
 			
 			if (w > this.options.marker_width_min) {
 				this._el.content_container.style.width = w + "px";
+				this._el.content_container.className = "vco-timemarker-content-container vco-timemarker-content-container-long";
 			} else {
 				this._el.content_container.style.width = this.options.marker_width_min + "px";
+				this._el.content_container.className = "vco-timemarker-content-container";
 			}
 		}
 		
@@ -10085,6 +10150,7 @@ VCO.TimeScale = VCO.Class.extend({
         // TODO: should _latest be the end date if there is one?
         this._latest = slides[slides.length - 1].start_date.getTime();
         this._span_in_millis = this._latest - this._earliest;
+        if (this._span_in_millis <= 0) throw new Error("earliest event time is before or same as latest.")
         this._average = (this._span_in_millis)/slides.length;
 
         this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
@@ -10268,7 +10334,10 @@ VCO.TimeScale = VCO.Class.extend({
             }
         }
 
-        if(groups.length) {                       
+        if(!(groups.length)) {                       
+            var result = this._computeRowInfo(this._positions, max_rows);  
+            this._number_of_rows = result.n_rows;    
+        } else {
             if(empty_group) {
                 groups.push("");
             }
@@ -10361,9 +10430,6 @@ VCO.TimeScale = VCO.Class.extend({
                 
                 row_offset += group_info[i].n_rows;       
             }
-        } else {
-            var result = this._computeRowInfo(this._positions, max_rows);  
-            this._number_of_rows = result.n_rows;    
         }  
         
     }

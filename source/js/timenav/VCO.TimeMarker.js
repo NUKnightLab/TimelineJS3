@@ -191,8 +191,10 @@ VCO.TimeMarker = VCO.Class.extend({
 			
 			if (w > this.options.marker_width_min) {
 				this._el.content_container.style.width = w + "px";
+				this._el.content_container.className = "vco-timemarker-content-container vco-timemarker-content-container-long";
 			} else {
 				this._el.content_container.style.width = this.options.marker_width_min + "px";
+				this._el.content_container.className = "vco-timemarker-content-container";
 			}
 		}
 		
