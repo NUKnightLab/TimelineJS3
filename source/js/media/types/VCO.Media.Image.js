@@ -10,18 +10,23 @@ VCO.Media.Image = VCO.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var self = this;
+		var self = this,
+			image_class = "vco-media-item vco-media-image vco-media-shadow";
 		// Loading Message
 		this.loadingMessage();
+		
+		if (this.data.url.match(".png")) {
+			image_class = "vco-media-item vco-media-image"
+		}
 		
 		// Link
 		if (this.data.link) {
 			this._el.content_link 				= VCO.Dom.create("a", "", this._el.content);
 			this._el.content_link.href 			= this.data.link;
 			this._el.content_link.target 		= "_blank";
-			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content_link);
+			this._el.content_item				= VCO.Dom.create("img", image_class, this._el.content_link);
 		} else {
-			this._el.content_item				= VCO.Dom.create("img", "vco-media-item vco-media-image vco-media-shadow", this._el.content);
+			this._el.content_item				= VCO.Dom.create("img", image_class, this._el.content);
 		}
 		
 		// Media Loaded Event
