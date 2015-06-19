@@ -29,11 +29,16 @@
                 "name": "Florida, Missouri",
                 "zoom": 12
             },
+            "background": {
+                "color": "#999999",
+                "opacity": 50,
+                "url": null
+            },
             "media": {
                 "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
                 "credit": "Vanity Fair",
-                "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z",
-                "thumb": 	"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg"
+                "url": "http://knightlab.northwestern.edu/wp-content/uploads/2013/03/Northwestern_University_KnightLab_Logo1.png",
+                "thumb": 	"http://knightlab.northwestern.edu/wp-content/uploads/2013/03/Northwestern_University_KnightLab_Logo1.png"
             },
             "text": {
                 "headline": "Mark Twain JSON",
