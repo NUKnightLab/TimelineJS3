@@ -20,13 +20,25 @@
 		bottom:2px;
 		left:0px;
 		font-size:10px;
+		line-height:10px;
+		font-family:@font-sanserif !important;
 		//height:100%;
 		//background-color: @color-background;
 		background-color: fadeout(@color-background, 15%);
 		padding:3px;
+		
+		/*
+		right:-26px;
+		top:30px;
+		transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-webkit-transform: rotate(90deg);
+		background-color: fadeout(@ui-background-color, 15%);
+		*/
 		a {
-			color:darken(@ui-background-color,15);
-			margin-left:10px;
+			
+			color:@brand-color;
+			//margin-left:10px;
 			&:hover {
 				color:@color-dark;
 				text-decoration: none;
@@ -42,7 +54,7 @@
 			width: 8px;
 			margin-right:3px;
 			background-color: #c34528;
-			background-color:darken(@ui-background-color,15);
+			background-color:@brand-color;
 			transform: rotate(45deg);
 			-ms-transform: rotate(45deg);
 			-webkit-transform: rotate(45deg);

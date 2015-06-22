@@ -7675,6 +7675,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d)
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
@@ -11007,7 +11008,6 @@ VCO.Timeline = VCO.Class.extend({
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
 			is_full_embed: 				false,
-			theme_color: 				false,
 			hash_bookmark: 				false,
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
@@ -11067,10 +11067,6 @@ VCO.Timeline = VCO.Class.extend({
 
 		} else {
 			self._loadLanguage(data);
-		}
-
-		if (this.options.theme_color) {
-			this._applyCustomColor(this.options.theme_color);
 		}
 		
 		// Apply base class to container
@@ -11396,28 +11392,7 @@ VCO.Timeline = VCO.Class.extend({
 		window.location.hash = "#" + "event-" + id.toString();
 		this.fire("hash_updated", {uniqueid:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
-  
-	// Customize Color
-	_applyCustomColor: function(color) {
-		var rgb = VCO.Util.hexToRgb(color);
-    
-		var background_selectors = ".vco-timemarker.vco-timemarker-active .vco-timemarker-content-container,"
-		background_selectors  += ".vco-timemarker.vco-timemarker-active .vco-timemarker-timespan .vco-timemarker-timespan-content,"
-		background_selectors  += ".vco-timemarker.vco-timemarker-with-end.vco-timemarker-active .vco-timemarker-line-left:after,"
-		background_selectors  += ".vco-timemarker.vco-timemarker-with-end.vco-timemarker-active .vco-timemarker-line-right:after,";
-		background_selectors  += ".vco-timemarker.vco-timemarker-active .vco-timemarker-line-left:after,";
-		background_selectors  += ".vco-timemarker.vco-timemarker-active .vco-timemarker-line-right:after,";
-		background_selectors  += ".vco-menubar-button:hover";
-    
-		this._style_sheet.addRule(background_selectors, "background-color:" + color + " !important;");
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-active .vco-timemarker-timespan", "background-color:rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",.15) !important;");
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-with-end.vco-timemarker-active .vco-timemarker-timespan:after", "background-color:rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",.5) !important;");
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-active .vco-timemarker-line-left, .vco-timemarker.vco-timemarker-active .vco-timemarker-line-right", "border-color:" + color + " !important;");
-		this._style_sheet.addRule('.vco-timemarker.vco-timemarker-active .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-media-container [class^=vco-icon-], .vco-timemarker.vco-timemarker-active .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-media-container [class*=" vco-icon-"]', "color:rgba(255,255,255,.7) !important;");
-    
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-active .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-text h2.vco-headline.vco-headline-fadeout:after", " background: linear-gradient(to bottom, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",.15) 0px, " + color + " 80%) repeat scroll 0% 0% transparent !important;");
-	},
-  
+	
 	/*  Init
 	================================================== */
 	// Initialize the data
