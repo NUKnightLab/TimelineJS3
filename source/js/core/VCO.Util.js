@@ -405,6 +405,7 @@ VCO.Util = {
 	},
 
 	makeGoogleMapsEmbedURL: function(url,api_key) {
+    // Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
     var Streetview = false;
 
     function determineMapMode(url){
@@ -435,7 +436,13 @@ VCO.Util = {
                 streetview_params = display_mode.split(",");
                 for (param in param_defs["streetview"]) {
                     var i = parseInt(param) + 1;
-                    param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                    if (param_defs["streetview"][param] == "pitch" && streetview_params[i] == "90t"){
+                      // Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
+                      // https://developers.google.com/maps/documentation/javascript/streetview
+                      param_string[param_defs["streetview"][param]] = 0;
+                    } else {
+                      param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                    }
                 }
 
             }
@@ -490,7 +497,7 @@ VCO.Util = {
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
     var coords_regex = /@([-\d.]+),([-\d.]+)/;
-    var addy_regex = /([\w\W]+)/;
+    var address_regex = /([\w\W]+)/;
 
     // Data doesn't seem to get used for anything
     var data_regex = /data=[\S]*/;
@@ -503,9 +510,9 @@ VCO.Util = {
 
 		var regexes = {
         view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source)
+        place: new RegExp(root_url_regex.source + "/place/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        directions: new RegExp(root_url_regex.source + "/dir/" + address_regex.source + "/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        search: new RegExp(root_url_regex.source + "/search/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source)
     };
     return determineMapMode(url);
 	}
