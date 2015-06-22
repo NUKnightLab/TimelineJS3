@@ -149,43 +149,18 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDrawTimeline();
 	},
 	
-	zoomIn: function(n) {
-		var new_scale = 1;
-		for (var i = 0; i < this.options.zoom_sequence.length; i++) {
-			
-			if (this.options.scale_factor == this.options.zoom_sequence[i]) {
-				if (this.options.scale_factor == this.options.zoom_sequence[this.options.zoom_sequence.length - 1]) {
-					new_scale = this.options.scale_factor;
-				} else {
-					new_scale = this.options.zoom_sequence[i + 1];
-				}
-			}
-		};
-
+	zoomIn: function() { // move the the next "higher" scale factor
+		var new_scale = VCO.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
 	
-	zoomOut: function(n) {
-		if (this.options.scale_factor > 0) {
-			var new_scale = 1;
-			for (var i = 0; i < this.options.zoom_sequence.length; i++) {
-			
-				if (this.options.scale_factor == this.options.zoom_sequence[i]) {
-					if (this.options.scale_factor == this.options.zoom_sequence[0]) {
-						new_scale = this.options.zoom_sequence[0];
-					} else {
-						new_scale = this.options.zoom_sequence[i -1];
-					}
-				}
-			};
-			
-			this.options.scale_factor = new_scale;
-			//this._updateDrawTimeline(true);
-			this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
-		}
-		
+	zoomOut: function() { // move the the next "lower" scale factor
+		var new_scale = VCO.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+		this.options.scale_factor = new_scale;
+		//this._updateDrawTimeline(true);
+		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
 	
 	/*	Groups

@@ -56,7 +56,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Date Format Lookup, map VCO.Date.SCALES names to...
 		this.dateformat_lookup = {
-	        millisecond: 1,     // ...VCO.Language.<code>.dateformats
+	        millisecond: 'time_short',     // ...VCO.Language.<code>.dateformats
 	        second: 'time_short',
 	        minute: 'time_no_seconds_short',
 	        hour: 'time_no_minutes_short',
