@@ -7675,6 +7675,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d)
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
