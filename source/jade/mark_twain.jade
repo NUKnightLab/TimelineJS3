@@ -10,7 +10,7 @@ html(lang="en")
 		// CSS
 		link(rel='stylesheet', href='../css/timeline.css?v1')
 		//FONT
-		link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;subset=latin,latin')
+		link(rel='stylesheet', href='../css/fonts/font.roboto-megrim.css?v1')
 		
 		// Style
 		style.
@@ -37,7 +37,8 @@ html(lang="en")
 		script(src='../js/timeline.js')
 		script.
 			var timeline = new VCO.Timeline('timeline', 'marktwain_juked.json', {
-				ga_property_id: "UA-27829802-4"
+				ga_property_id: "UA-27829802-4",
+				is_embed:true
 			});
 			window.onresize = function(event) {
 				timeline.updateDisplay();

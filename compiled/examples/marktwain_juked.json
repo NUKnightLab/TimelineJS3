@@ -151,17 +151,10 @@
                 "millisecond":  "",
                 "format":       ""
             },
-            "location": {
-                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                "lat": 39.710083,
-                "line": true,
-                "lon": -91.357441,
-                "zoom": 12
-            },
             "media": {
                 "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                 "credit": null,
-                "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
+                "url": "https://twitter.com/mattmansfield/status/613042417298731008"
             },
             "text": {
                 "headline": "",

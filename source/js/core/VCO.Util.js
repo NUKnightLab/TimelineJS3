@@ -404,6 +404,32 @@ VCO.Util = {
 		return val;
 	},
 
+    findNextGreater: function(list, current, default_value) {
+        // given a sorted list and a current value which *might* be in the list, 
+        // return the next greatest value if the current value is >= the last item in the list, return default, 
+        // or if default is undefined, return input value
+        for (var i = 0; i < list.length; i++) {
+            if (current < list[i]) {
+                return list[i];
+            }
+        }
+
+        return (default_value) ? default_value : current;
+    },
+
+    findNextLesser: function(list, current, default_value) {
+        // given a sorted list and a current value which *might* be in the list, 
+        // return the next lesser value if the current value is <= the last item in the list, return default, 
+        // or if default is undefined, return input value
+        for (var i = list.length - 1; i >= 0; i--) {
+            if (current > list[i]) {
+                return list[i];
+            }
+        }
+
+        return (default_value) ? default_value : current;
+    },
+    
 	makeGoogleMapsEmbedURL: function(url,api_key) {
     // Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
     var Streetview = false;

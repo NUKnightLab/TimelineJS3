@@ -199,20 +199,36 @@ VCO.Util = {
 	================================================== */
 	linkify: function(text,targets,is_touch) {
 		
+        var make_link = function(url, link_text, prefix) {
+            if (!prefix) {
+                prefix = "";
+            }
+            var MAX_LINK_TEXT_LENGTH = 30;
+            if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
+                link_text = link_text.substring(0,MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
+            }
+            return prefix + "<a class='vco-makelink' target='_blank' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
+        }
 		// http://, https://, ftp://
-		var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
 
 		// www. sans http:// or https://
-		var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+		var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
 
 		// Email addresses
-		var emailAddressPattern = /(([a-zA-Z0-9_\-\.]+)@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6}))+/gim;
+		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
 		
 
 		return text
-			.replace(urlPattern, "<a class='vco-makelink' target='_blank' href='$&' onclick='void(0)'>$&</a>")
-			.replace(pseudoUrlPattern, "$1<a class='vco-makelink' target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
-			.replace(emailAddressPattern, "<a class='vco-makelink' target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+			.replace(urlPattern, function(match, url_sans_protocol, offset, string) {
+                return make_link(match, url_sans_protocol);
+            })
+			.replace(pseudoUrlPattern, function(match, beforePseudo, pseudoUrl, offset, string) {
+                return make_link('http://' + pseudoUrl, pseudoUrl, beforePseudo);
+            })
+			.replace(emailAddressPattern, function(match, email, offset, string) {
+                return make_link('mailto:' + email, email);
+            });
 	},
 	
 	unlinkify: function(text) {
@@ -7096,7 +7112,7 @@ VCO.Media.Image = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		if (this.data.url.match(".png")) {
+		if (this.data.url.match(/.png(\?.*)?$/)) {
 			image_class = "vco-media-item vco-media-image"
 		}
 		
@@ -7659,6 +7675,7 @@ VCO.Media.Twitter = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d)
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
@@ -9160,7 +9177,8 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_container: {},
 			marker_item_container: {},
 			timeaxis: {},
-			timeaxis_background: {}
+			timeaxis_background: {},
+			attribution: {}
 		};
 		
 		this.collapsed = false;
@@ -9679,6 +9697,7 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_initLayout: function () {
 		// Create Layout
+		this._el.attribution 				= VCO.Dom.create('div', 'vco-attribution', this._el.container);
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
 		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider', this._el.container);
 		this._el.slider_background			= VCO.Dom.create('div', 'vco-timenav-slider-background', this._el.slider);
@@ -9687,6 +9706,10 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.slider);
 		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
+		
+		
+		// Knight Lab Logo
+		this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='vco-knightlab-logo'></span>Timeline JS</a>"
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis, this.options);
@@ -10985,7 +11008,6 @@ VCO.Timeline = VCO.Class.extend({
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
 			is_full_embed: 				false,
-			theme_color: 				false,
 			hash_bookmark: 				false,
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
@@ -11045,10 +11067,6 @@ VCO.Timeline = VCO.Class.extend({
 
 		} else {
 			self._loadLanguage(data);
-		}
-
-		if (this.options.theme_color) {
-			this._applyCustomColor(this.options.theme_color);
 		}
 		
 		// Apply base class to container
@@ -11374,28 +11392,7 @@ VCO.Timeline = VCO.Class.extend({
 		window.location.hash = "#" + "event-" + id.toString();
 		this.fire("hash_updated", {uniqueid:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
-  
-	// Customize Color
-	_applyCustomColor: function(color) {
-		var rgb = VCO.Util.hexToRgb(color);
-    
-		var background_selectors = ".vco-timemarker.vco-timemarker-active .vco-timemarker-content-container,"
-		background_selectors  += ".vco-timemarker.vco-timemarker-active .vco-timemarker-timespan .vco-timemarker-timespan-content,"
-		background_selectors  += ".vco-timemarker.vco-timemarker-with-end.vco-timemarker-active .vco-timemarker-line-left:after,"
-		background_selectors  += ".vco-timemarker.vco-timemarker-with-end.vco-timemarker-active .vco-timemarker-line-right:after,";
-		background_selectors  += ".vco-timemarker.vco-timemarker-active .vco-timemarker-line-left:after,";
-		background_selectors  += ".vco-timemarker.vco-timemarker-active .vco-timemarker-line-right:after,";
-		background_selectors  += ".vco-menubar-button:hover";
-    
-		this._style_sheet.addRule(background_selectors, "background-color:" + color + " !important;");
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-active .vco-timemarker-timespan", "background-color:rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",.15) !important;");
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-with-end.vco-timemarker-active .vco-timemarker-timespan:after", "background-color:rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",.5) !important;");
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-active .vco-timemarker-line-left, .vco-timemarker.vco-timemarker-active .vco-timemarker-line-right", "border-color:" + color + " !important;");
-		this._style_sheet.addRule('.vco-timemarker.vco-timemarker-active .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-media-container [class^=vco-icon-], .vco-timemarker.vco-timemarker-active .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-media-container [class*=" vco-icon-"]', "color:rgba(255,255,255,.7) !important;");
-    
-		this._style_sheet.addRule(".vco-timemarker.vco-timemarker-active .vco-timemarker-content-container .vco-timemarker-content .vco-timemarker-text h2.vco-headline.vco-headline-fadeout:after", " background: linear-gradient(to bottom, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",.15) 0px, " + color + " 80%) repeat scroll 0% 0% transparent !important;");
-	},
-  
+	
 	/*  Init
 	================================================== */
 	// Initialize the data
