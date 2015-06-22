@@ -15,7 +15,7 @@ VCO.Media.Image = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		if (this.data.url.match(".png")) {
+		if (this.data.url.match(/.png(\?.*)?$/)) {
 			image_class = "vco-media-item vco-media-image"
 		}
 		
