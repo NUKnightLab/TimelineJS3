@@ -199,20 +199,36 @@ VCO.Util = {
 	================================================== */
 	linkify: function(text,targets,is_touch) {
 		
+        var make_link = function(url, link_text, prefix) {
+            if (!prefix) {
+                prefix = "";
+            }
+            var MAX_LINK_TEXT_LENGTH = 30;
+            if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
+                link_text = link_text.substring(0,MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
+            }
+            return prefix + "<a class='vco-makelink' target='_blank' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
+        }
 		// http://, https://, ftp://
-		var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
 
 		// www. sans http:// or https://
-		var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+		var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
 
 		// Email addresses
-		var emailAddressPattern = /(([a-zA-Z0-9_\-\.]+)@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6}))+/gim;
+		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
 		
 
 		return text
-			.replace(urlPattern, "<a class='vco-makelink' target='_blank' href='$&' onclick='void(0)'>$&</a>")
-			.replace(pseudoUrlPattern, "$1<a class='vco-makelink' target='_blank' onclick='void(0)' href='http://$2'>$2</a>")
-			.replace(emailAddressPattern, "<a class='vco-makelink' target='_blank' onclick='void(0)' href='mailto:$1'>$1</a>");
+			.replace(urlPattern, function(match, url_sans_protocol, offset, string) {
+                return make_link(match, url_sans_protocol);
+            })
+			.replace(pseudoUrlPattern, function(match, beforePseudo, pseudoUrl, offset, string) {
+                return make_link('http://' + pseudoUrl, pseudoUrl, beforePseudo);
+            })
+			.replace(emailAddressPattern, function(match, email, offset, string) {
+                return make_link('mailto:' + email, email);
+            });
 	},
 	
 	unlinkify: function(text) {
@@ -7096,7 +7112,7 @@ VCO.Media.Image = VCO.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 		
-		if (this.data.url.match(".png")) {
+		if (this.data.url.match(/.png(\?.*)?$/)) {
 			image_class = "vco-media-item vco-media-image"
 		}
 		
@@ -9160,7 +9176,8 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_container: {},
 			marker_item_container: {},
 			timeaxis: {},
-			timeaxis_background: {}
+			timeaxis_background: {},
+			attribution: {}
 		};
 		
 		this.collapsed = false;
@@ -9679,6 +9696,7 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_initLayout: function () {
 		// Create Layout
+		this._el.attribution 				= VCO.Dom.create('div', 'vco-attribution', this._el.container);
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
 		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider', this._el.container);
 		this._el.slider_background			= VCO.Dom.create('div', 'vco-timenav-slider-background', this._el.slider);
@@ -9687,6 +9705,10 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.slider);
 		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
+		
+		
+		// Knight Lab Logo
+		this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='vco-knightlab-logo'></span>Timeline JS</a>"
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis, this.options);

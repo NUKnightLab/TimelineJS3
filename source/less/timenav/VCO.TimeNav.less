@@ -12,6 +12,43 @@
 	//border-top: 1px solid #e3e3e3;
 	//box-shadow: inset 10px 10px 5px 0px rgba(0,0,0,0.75);
 	//.box-shadow(inset -7px 0px 7px rgba(0,0,0,.30));
+	
+	.vco-attribution {
+		cursor: pointer;
+		z-index:9;
+		position:absolute;
+		bottom:2px;
+		left:0px;
+		font-size:10px;
+		//height:100%;
+		//background-color: @color-background;
+		background-color: fadeout(@color-background, 15%);
+		padding:3px;
+		a {
+			color:darken(@ui-background-color,15);
+			margin-left:10px;
+			&:hover {
+				color:@color-dark;
+				text-decoration: none;
+				.vco-knightlab-logo {
+					background-color: #c34528;
+				}
+			}
+		}
+		.vco-knightlab-logo {
+			display: inline-block;
+			vertical-align: middle;
+			height: 8px;
+			width: 8px;
+			margin-right:3px;
+			background-color: #c34528;
+			background-color:darken(@ui-background-color,15);
+			transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+		}
+		
+	}
 	.vco-timenav-line {
 		position: absolute;
 		top: 0;

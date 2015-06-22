@@ -22,7 +22,8 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_container: {},
 			marker_item_container: {},
 			timeaxis: {},
-			timeaxis_background: {}
+			timeaxis_background: {},
+			attribution: {}
 		};
 		
 		this.collapsed = false;
@@ -541,6 +542,7 @@ VCO.TimeNav = VCO.Class.extend({
 	================================================== */
 	_initLayout: function () {
 		// Create Layout
+		this._el.attribution 				= VCO.Dom.create('div', 'vco-attribution', this._el.container);
 		this._el.line						= VCO.Dom.create('div', 'vco-timenav-line', this._el.container);
 		this._el.slider						= VCO.Dom.create('div', 'vco-timenav-slider', this._el.container);
 		this._el.slider_background			= VCO.Dom.create('div', 'vco-timenav-slider-background', this._el.slider);
@@ -549,6 +551,10 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.slider);
 		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
+		
+		
+		// Knight Lab Logo
+		this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='vco-knightlab-logo'></span>Timeline JS</a>"
 		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis, this.options);
