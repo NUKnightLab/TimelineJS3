@@ -6068,6 +6068,25 @@ VCO.MenuBar = VCO.Class.extend({
 		*/
 	},
 		
+	toogleZoomIn: function(show) {
+		if (show) {
+			this._el.button_zoomin.className = "vco-menubar-button";
+			this._el.button_zoomout.className = "vco-menubar-button";
+		} else {
+			this._el.button_zoomin.className = "vco-menubar-button vco-menubar-button-inactive";
+			this._el.button_zoomout.className = "vco-menubar-button";
+		}
+	},
+	
+	toogleZoomOut: function(show) {
+		if (show) {
+			this._el.button_zoomout.className = "vco-menubar-button";
+			this._el.button_zoomin.className = "vco-menubar-button";
+		} else {
+			this._el.button_zoomout.className = "vco-menubar-button vco-menubar-button-inactive";
+			this._el.button_zoomin.className = "vco-menubar-button";
+		}
+	},
 	
 	setSticky: function(y) {
 		this.options.menubar_default_y = y;
@@ -9497,6 +9516,11 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	zoomIn: function() { // move the the next "higher" scale factor
 		var new_scale = VCO.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
+		if (new_scale == this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
+			this.fire("zoomtoggle", {zoom:"in", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"in", show:true});
+		}
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
@@ -9504,6 +9528,11 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	zoomOut: function() { // move the the next "lower" scale factor
 		var new_scale = VCO.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+		if (new_scale == this.options.zoom_sequence[0]) {
+			this.fire("zoomtoggle", {zoom:"out", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"out", show:true});
+		}
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
@@ -11641,7 +11670,8 @@ VCO.Timeline = VCO.Class.extend({
 	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
-    
+		this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
@@ -11674,7 +11704,16 @@ VCO.Timeline = VCO.Class.extend({
 			});
 		}
 	},
-    
+	
+	_onZoomToggle: function(e) {
+		if (e.zoom == "in") {
+			this._menubar.toogleZoomIn(e.show);
+		} else if (e.zoom == "out") {
+			this._menubar.toogleZoomOut(e.show);
+		}
+		
+	},
+	
 	/* Get index of event by id
 	================================================== */
 	_getEventIndex: function(id) {

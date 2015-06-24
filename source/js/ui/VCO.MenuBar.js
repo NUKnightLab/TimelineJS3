@@ -82,6 +82,25 @@ VCO.MenuBar = VCO.Class.extend({
 		*/
 	},
 		
+	toogleZoomIn: function(show) {
+		if (show) {
+			this._el.button_zoomin.className = "vco-menubar-button";
+			this._el.button_zoomout.className = "vco-menubar-button";
+		} else {
+			this._el.button_zoomin.className = "vco-menubar-button vco-menubar-button-inactive";
+			this._el.button_zoomout.className = "vco-menubar-button";
+		}
+	},
+	
+	toogleZoomOut: function(show) {
+		if (show) {
+			this._el.button_zoomout.className = "vco-menubar-button";
+			this._el.button_zoomin.className = "vco-menubar-button";
+		} else {
+			this._el.button_zoomout.className = "vco-menubar-button vco-menubar-button-inactive";
+			this._el.button_zoomin.className = "vco-menubar-button";
+		}
+	},
 	
 	setSticky: function(y) {
 		this.options.menubar_default_y = y;

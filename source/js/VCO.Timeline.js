@@ -612,7 +612,8 @@ VCO.Timeline = VCO.Class.extend({
 	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
-    
+		this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
@@ -645,7 +646,16 @@ VCO.Timeline = VCO.Class.extend({
 			});
 		}
 	},
-    
+	
+	_onZoomToggle: function(e) {
+		if (e.zoom == "in") {
+			this._menubar.toogleZoomIn(e.show);
+		} else if (e.zoom == "out") {
+			this._menubar.toogleZoomOut(e.show);
+		}
+		
+	},
+	
 	/* Get index of event by id
 	================================================== */
 	_getEventIndex: function(id) {

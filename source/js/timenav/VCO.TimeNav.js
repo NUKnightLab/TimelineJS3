@@ -151,6 +151,11 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	zoomIn: function() { // move the the next "higher" scale factor
 		var new_scale = VCO.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
+		if (new_scale == this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
+			this.fire("zoomtoggle", {zoom:"in", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"in", show:true});
+		}
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
@@ -158,6 +163,11 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	zoomOut: function() { // move the the next "lower" scale factor
 		var new_scale = VCO.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+		if (new_scale == this.options.zoom_sequence[0]) {
+			this.fire("zoomtoggle", {zoom:"out", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"out", show:true});
+		}
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
