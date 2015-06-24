@@ -184,7 +184,7 @@ VCO.Timeline = VCO.Class.extend({
 			slide_default_fade: 		"0%",					// landscape fade
 			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
 			language: 					"en",
-			ga_property_id: 			null,
+			ga_property_id: 			"UA-27829802-4",
 			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
 
