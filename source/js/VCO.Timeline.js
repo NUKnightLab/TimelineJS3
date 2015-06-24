@@ -637,11 +637,12 @@ VCO.Timeline = VCO.Class.extend({
 	_initAnalytics: function() {
 		if (this.options.ga_property_id === null) { return; }
 		this._initGoogleAnalytics();
+        ga('send', 'pageview');
 		var events = this.options.track_events;
 		for (i=0; i < events.length; i++) {
 			var event_ = events[i];
 			this.addEventListener(event_, function(e) {
-				ga('send', e.type);
+				ga('send', 'event', e.type, 'clicked');
 			});
 		}
 	},
