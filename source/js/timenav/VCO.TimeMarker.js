@@ -214,6 +214,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		this.setPosition({top:n});
 		this._el.timespan.style.height = remainder + "px";
 		
+		if (remainder < 56) {
+			VCO.DomUtil.removeClass(this._el.content_container, "vco-timemarker-content-container-small");
+			trace(remainder)
+		}
 	},
 	
 	/*	Events

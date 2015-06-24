@@ -446,7 +446,34 @@ VCO.Util = {
 		return val;
 	},
 
+    findNextGreater: function(list, current, default_value) {
+        // given a sorted list and a current value which *might* be in the list, 
+        // return the next greatest value if the current value is >= the last item in the list, return default, 
+        // or if default is undefined, return input value
+        for (var i = 0; i < list.length; i++) {
+            if (current < list[i]) {
+                return list[i];
+            }
+        }
+
+        return (default_value) ? default_value : current;
+    },
+
+    findNextLesser: function(list, current, default_value) {
+        // given a sorted list and a current value which *might* be in the list, 
+        // return the next lesser value if the current value is <= the last item in the list, return default, 
+        // or if default is undefined, return input value
+        for (var i = list.length - 1; i >= 0; i--) {
+            if (current > list[i]) {
+                return list[i];
+            }
+        }
+
+        return (default_value) ? default_value : current;
+    },
+    
 	makeGoogleMapsEmbedURL: function(url,api_key) {
+    // Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
     var Streetview = false;
 
     function determineMapMode(url){
@@ -477,7 +504,13 @@ VCO.Util = {
                 streetview_params = display_mode.split(",");
                 for (param in param_defs["streetview"]) {
                     var i = parseInt(param) + 1;
-                    param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                    if (param_defs["streetview"][param] == "pitch" && streetview_params[i] == "90t"){
+                      // Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
+                      // https://developers.google.com/maps/documentation/javascript/streetview
+                      param_string[param_defs["streetview"][param]] = 0;
+                    } else {
+                      param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+                    }
                 }
 
             }
@@ -532,7 +565,7 @@ VCO.Util = {
     // Set up regex parts to make updating these easier if Google changes them
     var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
     var coords_regex = /@([-\d.]+),([-\d.]+)/;
-    var addy_regex = /([\w\W]+)/;
+    var address_regex = /([\w\W]+)/;
 
     // Data doesn't seem to get used for anything
     var data_regex = /data=[\S]*/;
@@ -545,9 +578,9 @@ VCO.Util = {
 
 		var regexes = {
         view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        place: new RegExp(root_url_regex.source + "/place/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        directions: new RegExp(root_url_regex.source + "/dir/" + addy_regex.source + "/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        search: new RegExp(root_url_regex.source + "/search/" + addy_regex.source + "/" + coords_regex.source + display_mode_regex.source)
+        place: new RegExp(root_url_regex.source + "/place/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        directions: new RegExp(root_url_regex.source + "/dir/" + address_regex.source + "/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+        search: new RegExp(root_url_regex.source + "/search/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source)
     };
     return determineMapMode(url);
 	}
@@ -7675,7 +7708,6 @@ VCO.Media.Twitter = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
-		trace(d)
 		var tweet				= "",
 			tweet_text			= "",
 			tweetuser			= "",
@@ -9304,43 +9336,18 @@ VCO.TimeNav = VCO.Class.extend({
 		this._updateDrawTimeline();
 	},
 	
-	zoomIn: function(n) {
-		var new_scale = 1;
-		for (var i = 0; i < this.options.zoom_sequence.length; i++) {
-			
-			if (this.options.scale_factor == this.options.zoom_sequence[i]) {
-				if (this.options.scale_factor == this.options.zoom_sequence[this.options.zoom_sequence.length - 1]) {
-					new_scale = this.options.scale_factor;
-				} else {
-					new_scale = this.options.zoom_sequence[i + 1];
-				}
-			}
-		};
-
+	zoomIn: function() { // move the the next "higher" scale factor
+		var new_scale = VCO.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
 	
-	zoomOut: function(n) {
-		if (this.options.scale_factor > 0) {
-			var new_scale = 1;
-			for (var i = 0; i < this.options.zoom_sequence.length; i++) {
-			
-				if (this.options.scale_factor == this.options.zoom_sequence[i]) {
-					if (this.options.scale_factor == this.options.zoom_sequence[0]) {
-						new_scale = this.options.zoom_sequence[0];
-					} else {
-						new_scale = this.options.zoom_sequence[i -1];
-					}
-				}
-			};
-			
-			this.options.scale_factor = new_scale;
-			//this._updateDrawTimeline(true);
-			this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
-		}
-		
+	zoomOut: function() { // move the the next "lower" scale factor
+		var new_scale = VCO.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+		this.options.scale_factor = new_scale;
+		//this._updateDrawTimeline(true);
+		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
 	
 	/*	Groups
@@ -9959,6 +9966,10 @@ VCO.TimeMarker = VCO.Class.extend({
 		this.setPosition({top:n});
 		this._el.timespan.style.height = remainder + "px";
 		
+		if (remainder < 56) {
+			VCO.DomUtil.removeClass(this._el.content_container, "vco-timemarker-content-container-small");
+			trace(remainder)
+		}
 	},
 	
 	/*	Events
@@ -10528,7 +10539,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Date Format Lookup, map VCO.Date.SCALES names to...
 		this.dateformat_lookup = {
-	        millisecond: 1,     // ...VCO.Language.<code>.dateformats
+	        millisecond: 'time_short',     // ...VCO.Language.<code>.dateformats
 	        second: 'time_short',
 	        minute: 'time_no_seconds_short',
 	        hour: 'time_no_minutes_short',
