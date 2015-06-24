@@ -68,6 +68,7 @@ h2.intro { margin-bottom: 10px; }
 }
 .corner.banner {
     transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
     width: 300px;
     position: absolute;
     right: -71px;
@@ -348,6 +349,7 @@ p.input-label {
     }
     .corner.banner {
         transform: rotate(0);
+        -webkit-transform: rotate(0);
         top: 0;
         left: 0;
         margin-top: 0;
@@ -405,9 +407,9 @@ p.input-label {
         margin-left: 30px;
     }
     h2.intro { font-size: 20px; }
-    #overview ul li a { padding: 10px 25%; }
+    #overview ul li a { padding: 10px 0; }
     .banner img { margin-left: 25px; }
-    p.lead { font-size: 14px; line-height: 27px; }
+    p.lead { font-size: 1rem; line-height: 27px; }
     p small,
     #changelog ul{ font-size: 100%; line-height: 26px; }
     p.caption { border-bottom: 1px solid #d0d0d0; padding-bottom: 10px; }

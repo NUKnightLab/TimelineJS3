@@ -108,6 +108,29 @@
 
       })
 
+      test("VCO.Util.findNextGreater", function() {
+        var l = [1, 5, 10, 20, 35];
+        equal(VCO.Util.findNextGreater(l,1),5, "5 is next greatest after 1");
+        equal(VCO.Util.findNextGreater(l,5),10, "10 is next greatest after 5");
+        equal(VCO.Util.findNextGreater(l,10),20, "20 is next greatest after 10");
+        equal(VCO.Util.findNextGreater(l,15),20, "correctly handle a curr val which isn't in the list");
+        equal(VCO.Util.findNextGreater(l,35),35, "handle value at end of list");
+        equal(VCO.Util.findNextGreater(l,40),40, "handle value greater than max in list");
+        equal(VCO.Util.findNextGreater(l,40, 35),35, "handle greater than max in list with default");
+
+        equal(VCO.Util.findNextLesser(l,1),1, "1 is least");
+        equal(VCO.Util.findNextLesser(l,5),1, "1 is least after 5");
+        equal(VCO.Util.findNextLesser(l,10),5, "20 is next greatest after 10");
+        equal(VCO.Util.findNextLesser(l,15),10, "10 is less than 15 (which isn't in list)");
+        equal(VCO.Util.findNextLesser(l,35),20, "20 less than 35");
+        equal(VCO.Util.findNextLesser(l,40),35, "35 is less than 40");
+        equal(VCO.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
+        equal(VCO.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
+
+
+
+      })
+
       test("VCO.Date", function() {
         var refdate = VCO.Date.makeDate({year: 2000, month: 6, day: 21});
         var jsdate = new Date();
