@@ -5,17 +5,30 @@
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
         <h2>Making a timeline from a Google Spreadsheet</h2>
         <p>You can create a simple timeline in a few short minutes using our <a href="https://drive.google.com/previewtemplate?id=1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ&mode=public">Google spreadsheet template</a>, and this quick guide explaining the basic process.</p>
+        <p>
+          Basically, each row in the spreadsheet represents one event in your TimelineJS. Optionally, you can make one of them a "title slide" that doesn't have a specific date. A title slide row is exactly the same as any other row, except that you can leave the date blank, and you must put the word <code>title</code> in the <strong>Type column</strong> (<strong>P</strong>).
+        </p>
         <h4>Working with dates</h4>
-        <p>The first four spreadsheet columns (<strong>A-D</strong>) are the date of your timeline entry. You can just enter the year, or you can get down to details such as month, day and even time of an event.</p>
-        <p>You have the option to add end dates (columns <strong>E-H</strong>). Again, you can just enter the year, or you can get as detailed as you like. End dates will cause TimelineJS to display spans of time (a.k.a. eras) in the bottom portion of the timeline.</p>
+        <p>The first four spreadsheet columns (<strong>A-D</strong>) are the date of your timeline entry. You can just enter the year, or you can get down to details such as month, day and even time of an event. You <em>must</em> enter at least the year, except for a 'title' slide.</p>
+        <p>You have the option to add end dates (columns <strong>E-H</strong>). Again, you can just enter the year, or you can get as detailed as you like. End dates will cause TimelineJS to display spans of time (a.k.a. eras) in the bottom portion of the timeline. If your event doesn't have an "end date", leave these blank&mdash;you don't need to repeat the start date.</p>
+        <p>
+          If you need more flexibility about how dates are shown in a slide, you can use column <strong>I</strong> to specify a "display date," which will override any decisions TimelineJS makes about how to show the date. This can be helpful if the actual date is not known, but you need to specify the date so that TimelineJS know how to display it relative to other events. The display date is used on the slide where it is specified, and on labels for the "next" and "previous" buttons which lead to that slide.
+        </p>
         <h4>Adding content</h4>
         <p>Columns <strong>J</strong> and <strong>K</strong> of the spreadsheet contain the headline and the body text that will be displayed on each slide of your timeline.</p>
         <h4>Adding media (optional)</h4>
         <p>TimelineJS can pull in media from a variety of sources and has built-in support for Twitter, Instagram, Flickr, Google Maps, DropBox, DocumentCloud, Wikipedia, SoundCloud, Storify, iframes, major video sites (YouTube, Vimeo, etc.) and more. <a href="media-types.html">Read more about the media types TimelineJS works with.</a></p>
-        <p>You have the option to add media to your slides in columns <strong>L-O</strong>. Under the <strong>Media</strong> column (<strong>L</strong>) enter the link (URL) to the media you wish to display. TimelineJS supports multiple media types and <a href="media-types.html">we have a guide to help you format each link</a>. In the next column (<strong>M</strong>), you can credit the media's original source, and in column <strong>N</strong> write a short caption.</p>
+        <p>You have the option to add media to your slides in columns <strong>L-O</strong>. Under the <strong>Media</strong> column (<strong>L</strong>) enter the link (URL) to the media you wish to display. TimelineJS supports multiple <a href="media-types.html">media types</a>. In the next column (<strong>M</strong>), you can credit the media's original source, and in column <strong>N</strong> you can include a short caption.</p>
         <p>Markers for slides that contain media show a small icon representing the type of media used. If you'd like, you can show a thumbnail of the media there, instead. Simply add the URL of the image you'd like to use to column <strong>O</strong>.</p>
-        <h4>Ordering slides</h4>
-        <p>Each timeline has the option for an introductory title slide. Simply type "title" into the <strong>Type</strong> column (<strong>P</strong>) of the slide you wish to display first. This slide will have no date displayed. Using the <strong>Group</strong> column (<strong>Q</strong>), you can organize your slides by groups (formerly known as "tags"). This allows you to display the headlines from your slides in labeled rows along the bottom left portion of the timeline.</p>
+        <h4>Title slides</h4>
+        <p>
+          Each timeline has the option for an introductory title slide. Simply type "title" into the <strong>Type</strong> column (<strong>P</strong>) of the slide you wish to display first. This slide will have no date displayed. You should only have one row with "title" in the Type column..
+        </p>
+        <h4>Organizing slides</h4>
+        <p>
+          TimelineJS automatically orders slides according to their start date, and always puts the title slide first, no matter how the rows in your spreadsheet are ordered. If you need to have two slides with exactly the same start date, then the row which appears first in the spreadsheet will be shown first in the timeline.
+        </p>
+        <p>Using the <strong>Group</strong> column (<strong>Q</strong>), you can organize your slides by groups (formerly known as "tags"). You can put any values you want in the Group column. Events with the same group will be put in the same row or adjacent rows, and TimelineJS will use the text from the Group colum as a label at the left edge of the row(s) containing those events. The group text will also be displayed on each slide. If you like, you can have a mix of slides in groups and slides with a blank value in the Group column.</p>
         <h4>Publishing your Timeline</h4>
         <p>Now that you have your spreadsheet set up, you can turn it into a timeline in a couple easy steps.</p> 
         <ol>
