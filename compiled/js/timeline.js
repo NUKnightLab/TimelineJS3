@@ -9968,7 +9968,6 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 		if (remainder < 56) {
 			VCO.DomUtil.removeClass(this._el.content_container, "vco-timemarker-content-container-small");
-			trace(remainder)
 		}
 	},
 	
