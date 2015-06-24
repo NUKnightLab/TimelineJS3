@@ -10223,6 +10223,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/source\/js\/media\/types\/VCO.Media.GoogleMap.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.GoogleMap.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.GoogleMap-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/source\/js\/media\/types\/VCO.Media.GooglePlus.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -10262,17 +10273,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Instagram.js",
 		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Instagram-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/media\/types\/VCO.Media.Map.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Map.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Map-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
