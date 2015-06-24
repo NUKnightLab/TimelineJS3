@@ -173,13 +173,6 @@
                 "millisecond":  "",
                 "format":       ""
             },
-            "location": {
-                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                "lat": 39.710083,
-                "line": true,
-                "lon": -91.357441,
-                "zoom": 12
-            },
             "media": {
                 "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                 "credit": null,
@@ -476,11 +469,6 @@
             "uniqueid": ""
         },
         {
-            "background": {
-                "color": "#000000",
-                "opacity": 50,
-                "url": null
-            },
             "start_date": {
                 "year":         "1900",
                 "month":        "01",
@@ -491,16 +479,10 @@
                 "millisecond":  "",
                 "format":       ""
             },
-            "location": {
-                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                "lat": 40.714353,
-                "lon": -74.005973,
-                "zoom": 11
-            },
             "media": {
                 "caption": "something",
                 "credit": "ETC",
-                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+                "url": "https://www.google.com/maps/place/Medill+School+of+Journalism,+Media,+Integrated+Marketing+Communications+Office+of+Dean/@42.0509363,-87.6737809,18z/data=!4m2!3m1!1s0x0000000000000000:0x683bff755fbf8f0c"
             },
             "text": {
                 "headline": "Livy dies",
