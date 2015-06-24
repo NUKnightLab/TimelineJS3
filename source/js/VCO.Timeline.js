@@ -68,7 +68,7 @@ http://incident57.com/codekit/
 	// @codekit-prepend "media/types/VCO.Media.IFrame.js";
 	// @codekit-prepend "media/types/VCO.Media.Image.js";
 	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
-	// @codekit-prepend "media/types/VCO.Media.Map.js";
+	// @codekit-prepend "media/types/VCO.Media.GoogleMap.js";
 	// @codekit-prepend "media/types/VCO.Media.Profile.js";
 	// @codekit-prepend "media/types/VCO.Media.Slider.js";
 	// @codekit-prepend "media/types/VCO.Media.SoundCloud.js";
@@ -182,7 +182,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100,					// padding on slide of slide
 			slide_default_fade: 		"0%",					// landscape fade
-			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
 			language: 					"en",
 			ga_property_id: 			null,
 			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
@@ -612,7 +612,8 @@ VCO.Timeline = VCO.Class.extend({
 	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
-    
+		this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
@@ -646,7 +647,16 @@ VCO.Timeline = VCO.Class.extend({
 			});
 		}
 	},
-    
+	
+	_onZoomToggle: function(e) {
+		if (e.zoom == "in") {
+			this._menubar.toogleZoomIn(e.show);
+		} else if (e.zoom == "out") {
+			this._menubar.toogleZoomOut(e.show);
+		}
+		
+	},
+	
 	/* Get index of event by id
 	================================================== */
 	_getEventIndex: function(id) {

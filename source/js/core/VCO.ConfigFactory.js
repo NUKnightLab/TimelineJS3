@@ -103,6 +103,14 @@
             }
         }
 
+        if (item_data.background) {
+            if (item_data.background.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
+                d['background'] = { 'url': item_data.background }
+            } else { // for now we'll trust it's a color
+                d['background'] = { 'color': item_data.background }
+            }
+        }
+
         return d;
     }
 

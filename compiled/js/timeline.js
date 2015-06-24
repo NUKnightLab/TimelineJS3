@@ -297,6 +297,9 @@ VCO.Util = {
 	
 	hexToRgb: function(hex) {
 	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        if (VCO.Util.css_named_colors[hex.toLowerCase()]) {
+            hex = VCO.Util.css_named_colors[hex.toLowerCase()];
+        }
 	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
 	        return r + r + g + g + b + b;
@@ -309,7 +312,149 @@ VCO.Util = {
 	        b: parseInt(result[3], 16)
 	    } : null;
 	},
-	
+    css_named_colors: {
+        "aliceblue": "#f0f8ff",
+        "antiquewhite": "#faebd7",
+        "aqua": "#00ffff",
+        "aquamarine": "#7fffd4",
+        "azure": "#f0ffff",
+        "beige": "#f5f5dc",
+        "bisque": "#ffe4c4",
+        "black": "#000000",
+        "blanchedalmond": "#ffebcd",
+        "blue": "#0000ff",
+        "blueviolet": "#8a2be2",
+        "brown": "#a52a2a",
+        "burlywood": "#deb887",
+        "cadetblue": "#5f9ea0",
+        "chartreuse": "#7fff00",
+        "chocolate": "#d2691e",
+        "coral": "#ff7f50",
+        "cornflowerblue": "#6495ed",
+        "cornsilk": "#fff8dc",
+        "crimson": "#dc143c",
+        "cyan": "#00ffff",
+        "darkblue": "#00008b",
+        "darkcyan": "#008b8b",
+        "darkgoldenrod": "#b8860b",
+        "darkgray": "#a9a9a9",
+        "darkgreen": "#006400",
+        "darkkhaki": "#bdb76b",
+        "darkmagenta": "#8b008b",
+        "darkolivegreen": "#556b2f",
+        "darkorange": "#ff8c00",
+        "darkorchid": "#9932cc",
+        "darkred": "#8b0000",
+        "darksalmon": "#e9967a",
+        "darkseagreen": "#8fbc8f",
+        "darkslateblue": "#483d8b",
+        "darkslategray": "#2f4f4f",
+        "darkturquoise": "#00ced1",
+        "darkviolet": "#9400d3",
+        "deeppink": "#ff1493",
+        "deepskyblue": "#00bfff",
+        "dimgray": "#696969",
+        "dodgerblue": "#1e90ff",
+        "firebrick": "#b22222",
+        "floralwhite": "#fffaf0",
+        "forestgreen": "#228b22",
+        "fuchsia": "#ff00ff",
+        "gainsboro": "#dcdcdc",
+        "ghostwhite": "#f8f8ff",
+        "gold": "#ffd700",
+        "goldenrod": "#daa520",
+        "gray": "#808080",
+        "green": "#008000",
+        "greenyellow": "#adff2f",
+        "honeydew": "#f0fff0",
+        "hotpink": "#ff69b4",
+        "indianred": "#cd5c5c",
+        "indigo": "#4b0082",
+        "ivory": "#fffff0",
+        "khaki": "#f0e68c",
+        "lavender": "#e6e6fa",
+        "lavenderblush": "#fff0f5",
+        "lawngreen": "#7cfc00",
+        "lemonchiffon": "#fffacd",
+        "lightblue": "#add8e6",
+        "lightcoral": "#f08080",
+        "lightcyan": "#e0ffff",
+        "lightgoldenrodyellow": "#fafad2",
+        "lightgray": "#d3d3d3",
+        "lightgreen": "#90ee90",
+        "lightpink": "#ffb6c1",
+        "lightsalmon": "#ffa07a",
+        "lightseagreen": "#20b2aa",
+        "lightskyblue": "#87cefa",
+        "lightslategray": "#778899",
+        "lightsteelblue": "#b0c4de",
+        "lightyellow": "#ffffe0",
+        "lime": "#00ff00",
+        "limegreen": "#32cd32",
+        "linen": "#faf0e6",
+        "magenta": "#ff00ff",
+        "maroon": "#800000",
+        "mediumaquamarine": "#66cdaa",
+        "mediumblue": "#0000cd",
+        "mediumorchid": "#ba55d3",
+        "mediumpurple": "#9370db",
+        "mediumseagreen": "#3cb371",
+        "mediumslateblue": "#7b68ee",
+        "mediumspringgreen": "#00fa9a",
+        "mediumturquoise": "#48d1cc",
+        "mediumvioletred": "#c71585",
+        "midnightblue": "#191970",
+        "mintcream": "#f5fffa",
+        "mistyrose": "#ffe4e1",
+        "moccasin": "#ffe4b5",
+        "navajowhite": "#ffdead",
+        "navy": "#000080",
+        "oldlace": "#fdf5e6",
+        "olive": "#808000",
+        "olivedrab": "#6b8e23",
+        "orange": "#ffa500",
+        "orangered": "#ff4500",
+        "orchid": "#da70d6",
+        "palegoldenrod": "#eee8aa",
+        "palegreen": "#98fb98",
+        "paleturquoise": "#afeeee",
+        "palevioletred": "#db7093",
+        "papayawhip": "#ffefd5",
+        "peachpuff": "#ffdab9",
+        "peru": "#cd853f",
+        "pink": "#ffc0cb",
+        "plum": "#dda0dd",
+        "powderblue": "#b0e0e6",
+        "purple": "#800080",
+        "rebeccapurple": "#663399",
+        "red": "#ff0000",
+        "rosybrown": "#bc8f8f",
+        "royalblue": "#4169e1",
+        "saddlebrown": "#8b4513",
+        "salmon": "#fa8072",
+        "sandybrown": "#f4a460",
+        "seagreen": "#2e8b57",
+        "seashell": "#fff5ee",
+        "sienna": "#a0522d",
+        "silver": "#c0c0c0",
+        "skyblue": "#87ceeb",
+        "slateblue": "#6a5acd",
+        "slategray": "#708090",
+        "snow": "#fffafa",
+        "springgreen": "#00ff7f",
+        "steelblue": "#4682b4",
+        "tan": "#d2b48c",
+        "teal": "#008080",
+        "thistle": "#d8bfd8",
+        "tomato": "#ff6347",
+        "turquoise": "#40e0d0",
+        "violet": "#ee82ee",
+        "wheat": "#f5deb3",
+        "white": "#ffffff",
+        "whitesmoke": "#f5f5f5",
+        "yellow": "#ffff00",
+        "yellowgreen": "#9acd32"
+    },
 	ratio: {
 		square: function(size) {
 			var s = {
@@ -470,120 +615,7 @@ VCO.Util = {
         }
 
         return (default_value) ? default_value : current;
-    },
-    
-	makeGoogleMapsEmbedURL: function(url,api_key) {
-    // Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
-    var Streetview = false;
-
-    function determineMapMode(url){
-          function parseDisplayMode(display_mode, param_string) {
-            // Set the zoom param
-            if (display_mode.slice(-1) == "z") {
-                param_string["zoom"] = display_mode;
-            // Set the maptype to something other than "roadmap"
-            } else if (display_mode.slice(-1) == "m") {
-                // TODO: make this somehow interpret the correct zoom level
-                // until then fake it by using Google's default zoom level
-                param_string["zoom"] = 14;
-                param_string["maptype"] = "satellite";
-            // Set all the fun streetview params
-            } else if (display_mode.slice(-1) == "t") {
-                Streetview = true;
-                // streetview uses "location" instead of "center"
-                // "place" mode doesn't have the center param, so we may need to grab that now
-                if (mapmode == "place") {
-                    var center = url.match(regexes["place"])[3] + "," + url.match(regexes["place"])[4];
-                } else {
-                    var center = param_string["center"];
-                    delete param_string["center"];
-                }
-                // Clear out all the other params -- this is so hacky
-                param_string = {};
-                param_string["location"] = center;
-                streetview_params = display_mode.split(",");
-                for (param in param_defs["streetview"]) {
-                    var i = parseInt(param) + 1;
-                    if (param_defs["streetview"][param] == "pitch" && streetview_params[i] == "90t"){
-                      // Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
-                      // https://developers.google.com/maps/documentation/javascript/streetview
-                      param_string[param_defs["streetview"][param]] = 0;
-                    } else {
-                      param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
-                    }
-                }
-
-            }
-            return param_string;
-          }
-          function determineMapModeURL(mapmode, match) {
-            var param_string = {};
-            var url_root = match[1], display_mode = match[match.length - 1];
-            for (param in param_defs[mapmode]) {
-                // skip first 2 matches, because they reflect the URL and not params
-                var i = parseInt(param)+2;
-                if (param_defs[mapmode][param] == "center") {
-                  param_string[param_defs[mapmode][param]] = match[i] + "," + match[++i];
-                } else {
-                  param_string[param_defs[mapmode][param]] = match[i];
-                }
-            }
-
-            param_string = parseDisplayMode(display_mode, param_string);
-            param_string["key"] = api_key;
-            if (Streetview == true) {
-                mapmode = "streetview";
-            } else {
-            }
-            return (url_root + "/embed/v1/" + mapmode + VCO.Util.getParamString(param_string));
-        }
-
-
-        mapmode = "view";
-        if (url.match(regexes["place"])) {
-            mapmode = "place";
-        } else if (url.match(regexes["directions"])) {
-            mapmode = "directions";
-        } else if (url.match(regexes["search"])) {
-            mapmode = "search";
-        }
-        return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
-
     }
-
-    // These must be in the order they appear in the original URL
-    // "key" param not included since it's not in the URL structure
-    // Streetview "location" param not included since it's captured as "center"
-    // Place "center" param ...um...
-    var param_defs = {
-        "view": ["center"],
-        "place": ["q", "center"],
-        "directions": ["origin", "destination", "center"],
-        "search": ["q", "center"],
-        "streetview": ["fov", "heading", "pitch"]
-    };
-    // Set up regex parts to make updating these easier if Google changes them
-    var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
-    var coords_regex = /@([-\d.]+),([-\d.]+)/;
-    var address_regex = /([\w\W]+)/;
-
-    // Data doesn't seem to get used for anything
-    var data_regex = /data=[\S]*/;
-
-    // Capture the parameters that determine what map tiles to use
-    // In roadmap view, mode URLs include zoom paramater (e.g. "14z")
-    // In satellite (or "earth") view, URLs include a distance parameter (e.g. "84511m")
-    // In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
-    var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
-
-		var regexes = {
-        view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        place: new RegExp(root_url_regex.source + "/place/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        directions: new RegExp(root_url_regex.source + "/dir/" + address_regex.source + "/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-        search: new RegExp(root_url_regex.source + "/search/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source)
-    };
-    return determineMapMode(url);
-	}
 };
 
 
@@ -3107,6 +3139,14 @@ VCO.TimelineConfig = VCO.Class.extend({
                 var label = d.text.headline ||
                 trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
                 trace(item);
+            }
+        }
+
+        if (item_data.background) {
+            if (item_data.background.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
+                d['background'] = { 'url': item_data.background }
+            } else { // for now we'll trust it's a color
+                d['background'] = { 'color': item_data.background }
             }
         }
 
@@ -6028,6 +6068,25 @@ VCO.MenuBar = VCO.Class.extend({
 		*/
 	},
 		
+	toogleZoomIn: function(show) {
+		if (show) {
+			this._el.button_zoomin.className = "vco-menubar-button";
+			this._el.button_zoomout.className = "vco-menubar-button";
+		} else {
+			this._el.button_zoomin.className = "vco-menubar-button vco-menubar-button-inactive";
+			this._el.button_zoomout.className = "vco-menubar-button";
+		}
+	},
+	
+	toogleZoomOut: function(show) {
+		if (show) {
+			this._el.button_zoomout.className = "vco-menubar-button";
+			this._el.button_zoomin.className = "vco-menubar-button";
+		} else {
+			this._el.button_zoomout.className = "vco-menubar-button vco-menubar-button-inactive";
+			this._el.button_zoomin.className = "vco-menubar-button";
+		}
+	},
 	
 	setSticky: function(y) {
 		this.options.menubar_default_y = y;
@@ -6269,7 +6328,7 @@ VCO.MediaType = function(m) {
 				type: 		"googlemaps",
 				name: 		"Google Map", 
 				match_str: 	/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
-				cls: 		VCO.Media.Map
+				cls: 		VCO.Media.GoogleMap
 			},
 			{
 				type: 		"googleplus",
@@ -7265,7 +7324,7 @@ VCO.Media.Instagram = VCO.Media.extend({
 /*  VCO.Media.Map
 ================================================== */
 
-VCO.Media.Map = VCO.Media.extend({
+VCO.Media.GoogleMap = VCO.Media.extend({
 	includes: [VCO.Events],
 
 	_API_KEY: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
@@ -7288,7 +7347,8 @@ VCO.Media.Map = VCO.Media.extend({
 		this.mapframe.width       = "100%";
 		this.mapframe.height      = "100%";
 		this.mapframe.frameBorder = "0";
-		this.mapframe.src         = VCO.Util.makeGoogleMapsEmbedURL(this.media_id, this.options.api_key_googlemaps);
+		this.mapframe.src         = this.makeGoogleMapsEmbedURL(this.media_id, this.options.api_key_googlemaps);
+		
 		
 		// After Loaded
 		this.onLoaded();
@@ -7299,7 +7359,121 @@ VCO.Media.Map = VCO.Media.extend({
 			var dimensions = VCO.Util.ratio.square({w:this._el.content_item.offsetWidth});
 			this._el.content_item.style.height = dimensions.h + "px";
 		}
+	},
+	
+	makeGoogleMapsEmbedURL: function(url,api_key) {
+		// Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
+		var Streetview = false;
+
+		function determineMapMode(url){
+			function parseDisplayMode(display_mode, param_string) {
+				// Set the zoom param
+				if (display_mode.slice(-1) == "z") {
+					param_string["zoom"] = display_mode;
+					// Set the maptype to something other than "roadmap"
+				} else if (display_mode.slice(-1) == "m") {
+					// TODO: make this somehow interpret the correct zoom level
+					// until then fake it by using Google's default zoom level
+					param_string["zoom"] = 14;
+					param_string["maptype"] = "satellite";
+					// Set all the fun streetview params
+				} else if (display_mode.slice(-1) == "t") {
+					Streetview = true;
+					// streetview uses "location" instead of "center"
+					// "place" mode doesn't have the center param, so we may need to grab that now
+					if (mapmode == "place") {
+						var center = url.match(regexes["place"])[3] + "," + url.match(regexes["place"])[4];
+					} else {
+						var center = param_string["center"];
+						delete param_string["center"];
+					}
+					// Clear out all the other params -- this is so hacky
+					param_string = {};
+					param_string["location"] = center;
+					streetview_params = display_mode.split(",");
+					for (param in param_defs["streetview"]) {
+						var i = parseInt(param) + 1;
+						if (param_defs["streetview"][param] == "pitch" && streetview_params[i] == "90t"){
+							// Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
+							// https://developers.google.com/maps/documentation/javascript/streetview
+							param_string[param_defs["streetview"][param]] = 0;
+						} else {
+							param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
+						}
+					}
+
+				}
+				return param_string;
+			}
+			function determineMapModeURL(mapmode, match) {
+				var param_string = {};
+				var url_root = match[1], display_mode = match[match.length - 1];
+				for (param in param_defs[mapmode]) {
+					// skip first 2 matches, because they reflect the URL and not params
+					var i = parseInt(param)+2;
+					if (param_defs[mapmode][param] == "center") {
+						param_string[param_defs[mapmode][param]] = match[i] + "," + match[++i];
+					} else {
+						param_string[param_defs[mapmode][param]] = match[i];
+					}
+				}
+
+				param_string = parseDisplayMode(display_mode, param_string);
+				param_string["key"] = api_key;
+				if (Streetview == true) {
+					mapmode = "streetview";
+				} else {
+				}
+				return (url_root + "/embed/v1/" + mapmode + VCO.Util.getParamString(param_string));
+			}
+
+
+			mapmode = "view";
+			if (url.match(regexes["place"])) {
+				mapmode = "place";
+			} else if (url.match(regexes["directions"])) {
+				mapmode = "directions";
+			} else if (url.match(regexes["search"])) {
+				mapmode = "search";
+			}
+			return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
+
+		}
+
+		// These must be in the order they appear in the original URL
+		// "key" param not included since it's not in the URL structure
+		// Streetview "location" param not included since it's captured as "center"
+		// Place "center" param ...um...
+		var param_defs = {
+			"view": ["center"],
+			"place": ["q", "center"],
+			"directions": ["origin", "destination", "center"],
+			"search": ["q", "center"],
+			"streetview": ["fov", "heading", "pitch"]
+		};
+		// Set up regex parts to make updating these easier if Google changes them
+		var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
+		var coords_regex = /@([-\d.]+),([-\d.]+)/;
+		var address_regex = /([\w\W]+)/;
+
+		// Data doesn't seem to get used for anything
+		var data_regex = /data=[\S]*/;
+
+		// Capture the parameters that determine what map tiles to use
+		// In roadmap view, mode URLs include zoom paramater (e.g. "14z")
+		// In satellite (or "earth") view, URLs include a distance parameter (e.g. "84511m")
+		// In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
+		var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
+
+		var regexes = {
+			view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+			place: new RegExp(root_url_regex.source + "/place/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+			directions: new RegExp(root_url_regex.source + "/dir/" + address_regex.source + "/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
+			search: new RegExp(root_url_regex.source + "/search/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source)
+		};
+		return determineMapMode(url);
 	}
+   
 });
 
 
@@ -8955,6 +9129,10 @@ VCO.StorySlider = VCO.Class.extend({
 			
 		if (bg.color_value) {
 			bg_color		= VCO.Util.hexToRgb(bg.color_value);
+			if (!bg_color) {
+				trace("Invalid color value " + bg.color_value);
+				bg_color = this.options.default_bg_color;	
+			}
 		} else {
 			bg_color = this.options.default_bg_color;
 		}
@@ -9338,6 +9516,11 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	zoomIn: function() { // move the the next "higher" scale factor
 		var new_scale = VCO.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
+		if (new_scale == this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
+			this.fire("zoomtoggle", {zoom:"in", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"in", show:true});
+		}
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
@@ -9345,6 +9528,11 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	zoomOut: function() { // move the the next "lower" scale factor
 		var new_scale = VCO.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+		if (new_scale == this.options.zoom_sequence[0]) {
+			this.fire("zoomtoggle", {zoom:"out", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"out", show:true});
+		}
 		this.options.scale_factor = new_scale;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
@@ -10938,7 +11126,7 @@ http://incident57.com/codekit/
 	// @codekit-prepend "media/types/VCO.Media.IFrame.js";
 	// @codekit-prepend "media/types/VCO.Media.Image.js";
 	// @codekit-prepend "media/types/VCO.Media.Instagram.js";
-	// @codekit-prepend "media/types/VCO.Media.Map.js";
+	// @codekit-prepend "media/types/VCO.Media.GoogleMap.js";
 	// @codekit-prepend "media/types/VCO.Media.Profile.js";
 	// @codekit-prepend "media/types/VCO.Media.Slider.js";
 	// @codekit-prepend "media/types/VCO.Media.SoundCloud.js";
@@ -11052,7 +11240,7 @@ VCO.Timeline = VCO.Class.extend({
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100,					// padding on slide of slide
 			slide_default_fade: 		"0%",					// landscape fade
-			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
 			language: 					"en",
 			ga_property_id: 			null,
 			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
@@ -11482,7 +11670,8 @@ VCO.Timeline = VCO.Class.extend({
 	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
-    
+		this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
@@ -11515,7 +11704,16 @@ VCO.Timeline = VCO.Class.extend({
 			});
 		}
 	},
-    
+	
+	_onZoomToggle: function(e) {
+		if (e.zoom == "in") {
+			this._menubar.toogleZoomIn(e.show);
+		} else if (e.zoom == "out") {
+			this._menubar.toogleZoomOut(e.show);
+		}
+		
+	},
+	
 	/* Get index of event by id
 	================================================== */
 	_getEventIndex: function(id) {

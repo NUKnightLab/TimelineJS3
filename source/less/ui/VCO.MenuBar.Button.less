@@ -18,9 +18,16 @@
 		
 	}
 	
+	&.vco-menubar-button-inactive {
+		opacity:0.33;
+	}
 	&:hover {
 		background:@color-foreground;
 		color:@color-background;
+		&.vco-menubar-button-inactive {
+			color:darken(@marker-color,15);
+			background-color:fadeout(@ui-background-color, 10%);
+		}
 	}
 }
 
