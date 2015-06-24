@@ -311,6 +311,10 @@ VCO.StorySlider = VCO.Class.extend({
 			
 		if (bg.color_value) {
 			bg_color		= VCO.Util.hexToRgb(bg.color_value);
+			if (!bg_color) {
+				trace("Invalid color value " + bg.color_value);
+				bg_color = this.options.default_bg_color;	
+			}
 		} else {
 			bg_color = this.options.default_bg_color;
 		}
