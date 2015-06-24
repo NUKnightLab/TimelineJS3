@@ -3410,6 +3410,7 @@ VCO.Language.languages = {
 			time_no_seconds_short: "h:MM TT",
 			time_no_minutes_short: "h TT",
 			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
+			time_milliseconds: "l",
 			full_long: "mmm d',' yyyy 'at' h:MM TT",
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
 		},
@@ -5189,7 +5190,7 @@ VCO.DateUtil = {
 	},
 	best_dateformats: {
 		base: {
-			millisecond: 1,
+			millisecond: 'time_short',
 			second: 'time',
 			minute: 'time_no_seconds_small_date',
 			hour: 'time_no_seconds_small_date',
@@ -5207,7 +5208,7 @@ VCO.DateUtil = {
 		},
 		
 		short: {
-			millisecond: 1,
+			millisecond: 'time_short',
 			second: 'time_short',
 			minute: 'time_no_seconds_short',
 			hour: 'time_no_minutes_short',
@@ -10538,7 +10539,7 @@ VCO.TimeAxis = VCO.Class.extend({
 		
 		// Date Format Lookup, map VCO.Date.SCALES names to...
 		this.dateformat_lookup = {
-	        millisecond: 'time_short',     // ...VCO.Language.<code>.dateformats
+	        millisecond: 'time_milliseconds',     // ...VCO.Language.<code>.dateformats
 	        second: 'time_short',
 	        minute: 'time_no_seconds_short',
 	        hour: 'time_no_minutes_short',

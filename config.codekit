@@ -379,6 +379,26 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
+	"\/compiled\/examples\/milliseconds.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/examples\/milliseconds.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/compiled\/examples\/milliseconds.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/examples\/milliseconds.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/compiled\/examples\/milliseconds-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/compiled\/examples\/multiple_timeline.html": {
 		"fileType": 8192,
 		"ignore": 1,
@@ -8175,6 +8195,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/jade\/mark_twain_error.jade",
 		"outputAbbreviatedPath": "\/compiled\/examples\/mark_twain_error.html",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0
+		},
+	"\/source\/jade\/milliseconds.jade": {
+		"compileDebug": 1,
+		"fileType": 512,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/jade\/milliseconds.jade",
+		"outputAbbreviatedPath": "\/compiled\/examples\/milliseconds.html",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0

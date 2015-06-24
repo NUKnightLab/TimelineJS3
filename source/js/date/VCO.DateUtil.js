@@ -97,7 +97,7 @@ VCO.DateUtil = {
 	},
 	best_dateformats: {
 		base: {
-			millisecond: 1,
+			millisecond: 'time_short',
 			second: 'time',
 			minute: 'time_no_seconds_small_date',
 			hour: 'time_no_seconds_small_date',
@@ -115,7 +115,7 @@ VCO.DateUtil = {
 		},
 		
 		short: {
-			millisecond: 1,
+			millisecond: 'time_short',
 			second: 'time_short',
 			minute: 'time_no_seconds_short',
 			hour: 'time_no_minutes_short',

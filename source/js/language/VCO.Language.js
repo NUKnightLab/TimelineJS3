@@ -240,6 +240,7 @@ VCO.Language.languages = {
 			time_no_seconds_short: "h:MM TT",
 			time_no_minutes_short: "h TT",
 			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
+			time_milliseconds: "l",
 			full_long: "mmm d',' yyyy 'at' h:MM TT",
 			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
 		},
