@@ -26,6 +26,7 @@ VCO.Media.GoogleMap = VCO.Media.extend({
 		this.mapframe.frameBorder = "0";
 		this.mapframe.src         = this.makeGoogleMapsEmbedURL(this.media_id, this.options.api_key_googlemaps);
 		
+		
 		// After Loaded
 		this.onLoaded();
 	},
@@ -149,4 +150,5 @@ VCO.Media.GoogleMap = VCO.Media.extend({
 		};
 		return determineMapMode(url);
 	}
+   
 });
