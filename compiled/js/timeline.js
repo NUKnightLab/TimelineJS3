@@ -9909,6 +9909,12 @@ VCO.TimeMarker = VCO.Class.extend({
 			this._el.content.className = "vco-timemarker-content";
 		}
 		
+		if (h <= 56) {
+			VCO.DomUtil.addClass(this._el.content_container, "vco-timemarker-content-container-small");
+		} else {
+			VCO.DomUtil.removeClass(this._el.content_container, "vco-timemarker-content-container-small");
+		}
+		
 		// Handle number of lines visible vertically
 		
 		if (VCO.Browser.webkit) {

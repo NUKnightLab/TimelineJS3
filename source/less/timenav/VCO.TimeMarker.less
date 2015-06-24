@@ -117,7 +117,9 @@
 		width:100px;
 		overflow:hidden;
 		z-index:6;
-		&:hover { z-index: 9; }
+		&:hover {
+			z-index: 9;
+		}
 		.property-animation(height, @animation-duration-fast, @animation-ease);
 		.property-animation(width, @animation-duration, @animation-ease);
 		.animation-timing-cubic-bezier();
@@ -212,6 +214,7 @@
 						font-size:@marker-icon-size/2;
 					}
 				}
+				
 			}
 			
 		}
@@ -223,8 +226,6 @@
 	/* Hover State
 	================================================== */
 	&:hover {
-		//z-index:10;
-		
 		
 		.vco-timemarker-timespan {
 			background-color: fadeout(@marker-text-color, 85%);
@@ -247,8 +248,12 @@
 		.vco-timemarker-content-container {
 			background-color: darken(@marker-color,15);
 			border-color: darken(@marker-color,25);
-			height:56px !important;
 			.property-animation(height, @animation-duration-fast/2, @animation-ease);
+			
+			&.vco-timemarker-content-container-small {
+				height:56px !important;
+			}
+			
 			.vco-timemarker-content {
 				
 				.vco-timemarker-text {
