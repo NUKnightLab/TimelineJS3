@@ -121,7 +121,7 @@
 			z-index: 9;
 		}
 		.property-animation(height, @animation-duration-fast, @animation-ease);
-		.property-animation(width, @animation-duration, @animation-ease);
+		.property-animation(width, @animation-duration-fast, @animation-ease);
 		.animation-timing-cubic-bezier();
 		box-sizing: border-box;
 		border: 1px solid @marker-outline-color;
@@ -249,14 +249,18 @@
 			background-color: darken(@marker-color,15);
 			border-color: darken(@marker-color,25);
 			.property-animation(height, @animation-duration-fast/2, @animation-ease);
-			
+			.property-animation(width, @animation-duration-fast/2, @animation-ease);
 			&.vco-timemarker-content-container-small {
-				height:56px !important;
+				//height:56px !important;
+				width:200px;
+				//min-width:100px;
 				.vco-timemarker-content {
 					.vco-timemarker-text {
 						h2.vco-headline {
-							-webkit-line-clamp:4 !important;
-							white-space: normal !important;
+							//line-clamp:3 !important;
+							//-webkit-line-clamp:3 !important;
+							//white-space: normal !important;
+							
 						}
 					}
 				}
