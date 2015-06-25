@@ -75,8 +75,8 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 					wiki.text	+= "<p>" + wiki.text_array[i+1];
 				}
 			}
-			
-			content		=	"<h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
+			content		=	"<span class='vco-icon-wikipedia'></span>";
+			content		+=	"<h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
 			content		+=	"<span class='wiki-source'>" + this._('wikipedia') + "</span>";
 			content		+=	wiki.text;
 			
