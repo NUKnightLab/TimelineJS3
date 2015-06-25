@@ -163,6 +163,7 @@ VCO.Timeline = VCO.Class.extend({
 			base_class: 				"",
 			timenav_height: 			175,
 			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
+			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
 			timenav_height_min: 		175,					// Minimum timenav height
 			marker_height_min: 			30,						// Minimum Marker Height
 			marker_width_min: 			100,					// Minimum Marker Width
@@ -438,7 +439,7 @@ VCO.Timeline = VCO.Class.extend({
 		if (VCO.Browser.mobile) {
 			display_class += " vco-mobile";
 			// Set TimeNav Height
-			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, 40);
+			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, this.options.timenav_mobile_height_percentage);
 		} else {
 			// Set TimeNav Height
 			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
