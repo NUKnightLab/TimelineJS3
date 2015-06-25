@@ -8181,8 +8181,8 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 				}
 			}
 			content		=	"<span class='vco-icon-wikipedia'></span>";
-			content		+=	"<h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
-			content		+=	"<span class='wiki-source'>" + this._('wikipedia') + "</span>";
+			content		+=	"<div class='vco-wikipedia-title'><h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
+			content		+=	"<span class='vco-wikipedia-source'>" + this._('wikipedia') + "</span></div>";
 			content		+=	wiki.text;
 			
 			if (wiki.extract.match("REDIRECT")) {
