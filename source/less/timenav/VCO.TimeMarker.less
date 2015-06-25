@@ -303,7 +303,8 @@
 						h2.vco-headline {
 							&.vco-headline-fadeout {
 								&:after {
-									.marker-text-fade(@color-theme,80%);
+									//.marker-text-fade(@color-theme,80%);
+									.marker-text-fade(@color-background,80%);
 								}
 							}
 							
@@ -372,7 +373,7 @@
 						&.vco-headline-fadeout {
 							&:after {
 								//.marker-text-fade(@color-theme,80%);
-								.marker-text-fade(@color-foreground,80%);
+								.marker-text-fade(@color-background,80%);
 							}
 						}
 						
