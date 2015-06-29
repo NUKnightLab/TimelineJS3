@@ -20,11 +20,7 @@ If you are ready for your newly deployed version to be automatically available t
 ```
   fab stage_latest
 ```
-If you do this separately from `fab stage`, you will be asked which previous version should be copied into the `latest` directory in the `cdn` repository. If, as is common, you do them both at once, then fab carries the newly assigned version and doesn't ask. That is, executing:
-```
-  fab stage stage_latest
-```
-is a simple and efficient way to "release" a new version of the code and make it available for users who follow the default path for embedding timelines.
+If you do this separately from `fab stage`, you will be asked which previous version should be copied into the `latest` directory in the `cdn` repository. If, as is common, you do them both at once, then fab carries the newly assigned version and doesn't ask. That is, executing `fab stage stage_latest` is a simple and efficient way to "release" a new version of the code and make it available for users who follow the default path for embedding timelines.
 
 If you are working on changes which are still being actively tested, but you wish to deploy them for testing from the development website or otherwise publish them, execute:
 ```
