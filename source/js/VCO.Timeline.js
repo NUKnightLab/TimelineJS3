@@ -351,7 +351,7 @@ VCO.Timeline = VCO.Class.extend({
 		return null;
 	},
 
-	getDataId: function(id) {
+	getDataById: function(id) {
 		return this.getData(this._getSlideIndex(id));
 	},
 
