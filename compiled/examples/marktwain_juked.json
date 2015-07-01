@@ -1,4 +1,14 @@
 {
+    "title": {
+            "text": {
+                "headline": "Mark Twain JSON",
+                "text":     "Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910),[1] better known by his pen name Mark Twain, was an American author and humorist."
+            },
+            "media": {
+                "url": "https://en.wikipedia.org/wiki/Mark_Twain",
+                "thumb":    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg/153px-Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg"
+            }
+    },
     "events": [
         {
             "start_date": {
@@ -20,14 +30,6 @@
                 "second": 		"56",
                 "millisecond": 	"",
                 "format": 		""
-            },
-            "location": {
-                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                "lat": 39.491711,
-                "line": true,
-                "lon": -91.79326,
-                "name": "Florida, Missouri",
-                "zoom": 12
             },
             "media": {
                 "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
