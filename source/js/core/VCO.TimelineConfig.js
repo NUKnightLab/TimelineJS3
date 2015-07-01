@@ -69,7 +69,8 @@ VCO.TimelineConfig = VCO.Class.extend({
 	_cleanData: function() {
 		var _id = (this.title) ? this.title.uniqueid : '';
 		this._makeUniqueIdentifiers(_id, this.events); 
-		this._processDates(this.events);          
+		this._processDates(this.events);
+		this._cleanGroups(this.events)          ;
 		VCO.DateUtil.sortByDate(this.events);
 	},
     
@@ -175,5 +176,13 @@ VCO.TimelineConfig = VCO.Class.extend({
 				}
 			}
 		}
+	},
+
+	_cleanGroups: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].group) {
+				array[i].group = VCO.Util.trim(array[i].group);
+			}
+		};
 	}
 });
