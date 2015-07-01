@@ -37,12 +37,15 @@
             text: {
                 headline: item_data.headline || '',
                 text: item_data.text || ''
-            }
+            },
+            group: item_data.tag || ''
         }
         d['start_date'] = VCO.Date.parseDate(item_data.startdate);
         if (item.enddate) {
             d['end_date'] = VCO.Date.parseDate(item.enddate);
         }
+
+
         return d;
     }
 
