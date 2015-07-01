@@ -8130,10 +8130,9 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 		api_language	 = this.data.url.split("//")[1].split(".wikipedia")[0];
 		
 		// API URL
-		api_url = "http://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
-		
+		api_url = "http://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts|pageimages&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
+
 		// API Call
-		
 		VCO.ajax({
 			type: 'GET',
 			url: api_url,
@@ -8152,22 +8151,25 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
+		trace(d);
 		var wiki = "";
 		
 		if (d.query) {
-			var content,
+			var content = "",
 				wiki = {
 					entry: {},
 					title: "",
 					text: "",
 					extract: "",
 					paragraphs: 1,
+					page_image: "",
 					text_array: []
 				};
 			
 			wiki.entry		 = VCO.Util.getObjectAttributeByIndex(d.query.pages, 0);
 			wiki.extract	 = wiki.entry.extract;
 			wiki.title		 = wiki.entry.title;
+			wiki.page_image	 = wiki.entry.thumbnail;
 			
 			if (wiki.extract.match("<p>")) {
 				wiki.text_array = wiki.extract.split("<p>");
@@ -8180,9 +8182,16 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 					wiki.text	+= "<p>" + wiki.text_array[i+1];
 				}
 			}
-			content		=	"<span class='vco-icon-wikipedia'></span>";
+
+			
+			content		+=	"<span class='vco-icon-wikipedia'></span>";
 			content		+=	"<div class='vco-wikipedia-title'><h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
 			content		+=	"<span class='vco-wikipedia-source'>" + this._('wikipedia') + "</span></div>";
+			
+			if (wiki.page_image) {
+				//content 	+= 	"<img class='vco-wikipedia-pageimage' src='" + wiki.page_image.source +"'>";
+			}
+
 			content		+=	wiki.text;
 			
 			if (wiki.extract.match("REDIRECT")) {
