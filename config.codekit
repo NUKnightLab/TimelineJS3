@@ -10660,14 +10660,14 @@
 		},
 	"\/source\/js\/VCO.Timeline.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/js\/VCO.Timeline.js",
-		"outputAbbreviatedPath": "\/compiled\/js\/timeline.js",
+		"outputAbbreviatedPath": "\/source\/js\/min\/VCO.Timeline-min.js",
 		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 1,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
 		},
 	"\/source\/js\/VCO.Timeline.Min.js": {
 		"fileType": 64,
