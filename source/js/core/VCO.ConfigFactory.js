@@ -38,7 +38,8 @@
                 headline: item_data.headline || '',
                 text: item_data.text || ''
             },
-            group: item_data.tag || ''
+            group: item_data.tag || '',
+            type: item_data.type || ''
         }
         d['start_date'] = VCO.Date.parseDate(item_data.startdate);
         if (item.enddate) {
