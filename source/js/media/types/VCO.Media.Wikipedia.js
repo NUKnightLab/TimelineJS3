@@ -46,7 +46,6 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
-		trace(d);
 		var wiki = "";
 		
 		if (d.query) {
