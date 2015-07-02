@@ -2927,7 +2927,8 @@ VCO.TimelineConfig = VCO.Class.extend({
 	_cleanData: function() {
 		var _id = (this.title) ? this.title.uniqueid : '';
 		this._makeUniqueIdentifiers(_id, this.events); 
-		this._processDates(this.events);          
+		this._processDates(this.events);
+		this._cleanGroups(this.events)          ;
 		VCO.DateUtil.sortByDate(this.events);
 	},
     
@@ -3033,6 +3034,14 @@ VCO.TimelineConfig = VCO.Class.extend({
 				}
 			}
 		}
+	},
+
+	_cleanGroups: function(array) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].group) {
+				array[i].group = VCO.Util.trim(array[i].group);
+			}
+		};
 	}
 });
 
@@ -3076,12 +3085,16 @@ VCO.TimelineConfig = VCO.Class.extend({
             text: {
                 headline: item_data.headline || '',
                 text: item_data.text || ''
-            }
+            },
+            group: item_data.tag || '',
+            type: item_data.type || ''
         }
         d['start_date'] = VCO.Date.parseDate(item_data.startdate);
         if (item.enddate) {
             d['end_date'] = VCO.Date.parseDate(item.enddate);
         }
+
+
         return d;
     }
 
@@ -8151,7 +8164,6 @@ VCO.Media.Wikipedia = VCO.Media.extend({
 	},
 	
 	createMedia: function(d) {
-		trace(d);
 		var wiki = "";
 		
 		if (d.query) {
@@ -11418,7 +11430,7 @@ VCO.Timeline = VCO.Class.extend({
 		return null;
 	},
 
-	getDataId: function(id) {
+	getDataById: function(id) {
 		return this.getData(this._getSlideIndex(id));
 	},
 
