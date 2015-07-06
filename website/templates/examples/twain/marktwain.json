@@ -1,38 +1,40 @@
 {
+    "title": {
+            "text": {
+                "headline": "Mark Twain JSON",
+                "text":     "Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910),[1] better known by his pen name Mark Twain, was an American author and humorist."
+            },
+            "media": {
+                "url": "https://en.wikipedia.org/wiki/Mark_Twain",
+                "thumb":    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg/153px-Mark_Twain%2C_Brady-Handy_photo_portrait%2C_Feb_7%2C_1871%2C_cropped.jpg"
+            }
+    },
     "events": [
         {
             "start_date": {
                 "year":			"1900",
                 "month":		"01",
                 "day": 			"05",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
                 "millisecond": 	"",
                 "format": 		""
             },
             "end_date": {
-                "year":			"1900",
-                "month":		"06",
-                "day": 			"07",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
+                "year":			"1902",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
                 "millisecond": 	"",
                 "format": 		""
-            },
-            "location": {
-                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
-                "lat": 39.491711,
-                "line": true,
-                "lon": -91.79326,
-                "name": "Florida, Missouri",
-                "zoom": 12
             },
             "media": {
                 "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
                 "credit": "Vanity Fair",
-                "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z",
+                "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg",
                 "thumb": 	"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg"
             },
             "text": {
@@ -45,20 +47,10 @@
             "start_date": {
                 "year":			"2000",
                 "month":		"01",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"2001",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
                 "millisecond": 	"",
                 "format": 		""
             },
@@ -86,19 +78,19 @@
                 "year":			"1920",
                 "month":		"01",
                 "day": 			"05",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
                 "millisecond": 	"",
                 "format": 		""
             },
             "end_date": {
-                "year":			"1928",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
+                "year":			"1923",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
                 "millisecond": 	"",
                 "format": 		""
             },
@@ -113,7 +105,7 @@
             "media": {
                 "caption": "Mark Twain's boyhood home in Hannibal, Missouri.",
                 "credit": "",
-                "url": "https://instagram.com/p/0nsIGKIbb7/"
+                "url": "http://instagram.com/p/lEPdm4J20m/"
             },
             "text": {
                 "headline": "Hannibal, Missouri",
@@ -123,19 +115,26 @@
         },
         {
             "start_date": {
-                "year":			"1910",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
+                "year":         "1900",
+                "month":        "01",
+                "day":          "06",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 39.710083,
+                "line": true,
+                "lon": -91.357441,
+                "zoom": 12
             },
             "media": {
-                "caption": "Flickr",
-                "credit": "Zach Wise",
-                "url": "https://www.flickr.com/photos/zachwise/14514563402/"
+                "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                "credit": null,
+                "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
             },
             "text": {
                 "headline": "",
@@ -145,29 +144,19 @@
         },
         {
             "start_date": {
-                "year":			"1910",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1920",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
+                "year":         "1900",
+                "month":        "01",
+                "day":          "06",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
             },
             "media": {
                 "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                 "credit": null,
-                "url": "https://www.youtube.com/watch?v=h3K3kEDEAN4"
+                "url": "https://twitter.com/mattmansfield/status/613042417298731008"
             },
             "text": {
                 "headline": "",
@@ -177,61 +166,19 @@
         },
         {
             "start_date": {
-                "year":			"1910",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1920",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
+                "year":         "1900",
+                "month":        "01",
+                "day":          "06",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
             },
             "media": {
                 "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
                 "credit": null,
-                "url": "https://vimeo.com/105602328"
-            },
-            "text": {
-                "headline": "Vimeo",
-                "text": "vimeo"
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1910",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1920",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": "",
-                "credit": null,
-                "url": "https://vimeo.com/105602328"
+                "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
             },
             "text": {
                 "headline": "",
@@ -241,7 +188,7 @@
         },
         {
             "start_date": {
-                "year":			"1910",
+                "year":			"1915",
                 "month":		"01",
                 "day": 			"05",
                 "hour": 		"6",
@@ -250,234 +197,41 @@
                 "millisecond": 	"",
                 "format": 		""
             },
-            "end_date": {
-                "year":			"1920",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
-                "credit": null,
-                "url": "https://www.youtube.com/watch?v=h3K3kEDEAN4"
-            },
-            "text": {
-                "headline": "YouTube",
-                "text": "YouTube"
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1918",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1919",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
-                "credit": "Vanity Fair",
-                "url": "spotify:track:1OT1G66Lt9EpKFWkwK8i9z"
-            },
-            "text": {
-                "headline": "Spotify Track URI",
-                "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1919",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1920",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 40.714353,
+                "line": true,
+                "lon": -74.005973,
+                "zoom": 11
             },
             "media": {
                 "caption": null,
                 "credit": null,
-                "url": "spotify:user:zachwise:playlist:3KqOUdFJXsEUC0DKudovj1"
+                "url": "https://vine.co/v/bjHh0zHdgZT"
             },
             "text": {
-                "headline": "Spotify Playlist URI",
+                "headline": "Itinerant Printer",
                 "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
             },
             "uniqueid": ""
         },
         {
             "start_date": {
-                "year":			"1920",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
+                "year":         "1900",
+                "month":        "01",
+                "day":          "20",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
             },
-            "end_date": {
-                "year":			"1921",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": null,
-                "credit": null,
-                "url": "http://open.spotify.com/user/zachwise/playlist/3KqOUdFJXsEUC0DKudovj1"
-            },
-            "text": {
-                "headline": "Spotify Playlist URL",
-                "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1905",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1907",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": "",
-                "credit": "",
-                "url": "https://twitter.com/zlwise/status/502535723715923968"
-            },
-            "text": {
-                "headline": "Twitter",
-                "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1905",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1907",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": "",
-                "credit": "Dr. Seuss",
-                "url": "<blockquote><p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p></blockquote>"
-            },
-            "text": {
-                "headline": "Blockquote",
-                "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1921",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1922",
-                "month":		"",
-                "day": 			"",
-                "hour": 		"",
-                "minute": 		"",
-                "second": 		"",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "media": {
-                "caption": null,
-                "credit": null,
-                "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z"
-            },
-            "text": {
-                "headline": "Spotify Track URL",
-                "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
-            },
-            "uniqueid": ""
-        },
-        {
-            "start_date": {
-                "year":			"1940",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "background": {
-                "color": "#000000",
-                "opacity": 50,
-                "url": null
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 39.309514,
+                "line": true,
+                "lon": -119.649979,
+                "zoom": 11
             },
             "media": {
                 "caption": "Mark Twain's desk when he was editor of the Territorial Enterprise. Mark Twain Territorial Enterprise Museum, Virginia City, NV.",
@@ -506,11 +260,17 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 37.774929,
+                "line": true,
+                "lon": -122.419416,
+                "zoom": 11
+            },
             "media": {
                 "caption": "something",
                 "credit": "ETC",
-                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-                "link": "http://knightlab.com"
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
             },
             "text": {
                 "headline": "San Francisco",
@@ -529,11 +289,17 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 19.896766,
+                "line": true,
+                "lon": -155.582782,
+                "zoom": 11
+            },
             "media": {
                 "caption": "Wreck of USS Hornet.",
                 "credit": "",
-                "url": "http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg",
-                "link": "http://knightlab.com"
+                "url": "http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg"
             },
             "text": {
                 "headline": "Hawaii",
@@ -552,10 +318,16 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 54.525961,
+                "line": true,
+                "lon": 15.255119,
+                "zoom": 11
+            },
             "media": {
                 "caption": "",
                 "credit": "",
-                "link": "http://knightlab.com",
                 "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu/page1-395px-1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu.jpg"
             },
             "text": {
@@ -580,11 +352,17 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 42.089796,
+                "line": true,
+                "lon": -76.807734,
+                "zoom": 11
+            },
             "media": {
                 "caption": "something",
                 "credit": "ETC",
-                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-                "link": "http://knightlab.com"
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
             },
             "text": {
                 "headline": "Livy",
@@ -608,11 +386,16 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 42.886447,
+                "lon": -78.878369,
+                "zoom": 11
+            },
             "media": {
                 "caption": "something",
                 "credit": "ETC",
-                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-                "link": "http://knightlab.com"
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
             },
             "text": {
                 "headline": "Married",
@@ -636,11 +419,17 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 41.763711,
+                "line": true,
+                "lon": -72.685093,
+                "zoom": 11
+            },
             "media": {
                 "caption": "something",
                 "credit": "ETC",
-                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-                "link": "http://knightlab.com"
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
             },
             "text": {
                 "headline": "Roughing It",
@@ -664,11 +453,16 @@
                 "millisecond": 	"",
                 "format": 		""
             },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 54.525961,
+                "lon": 15.255119,
+                "zoom": 11
+            },
             "media": {
                 "caption": "something",
                 "credit": "ETC",
-                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
-                "link": "http://knightlab.com"
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
             },
             "text": {
                 "headline": "Financial",
@@ -677,20 +471,20 @@
             "uniqueid": ""
         },
         {
-            "background": {
-                "color": "#000000",
-                "opacity": 50,
-                "url":  "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
-            },
             "start_date": {
-                "year":			"1913",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
+                "year":         "1900",
+                "month":        "01",
+                "day":          "10",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "https://www.google.com/maps/place/Medill+School+of+Journalism,+Media,+Integrated+Marketing+Communications+Office+of+Dean/@42.0509363,-87.6737809,18z/data=!4m2!3m1!1s0x0000000000000000:0x683bff755fbf8f0c"
             },
             "text": {
                 "headline": "Livy dies",
@@ -705,25 +499,19 @@
                 "url": null
             },
             "start_date": {
-                "year":			"1994",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
+                "year":			"2014",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
                 "millisecond": 	"",
                 "thumbnail": 	"",
                 "format": 		""
             },
-            "media": {
-                "caption": "Twains house, \"Stormfield\", in Redding, Connecticut (front view)",
-                "credit": "",
-                "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif/lossy-page1-800px-Mark_Twain%27s_house%2C_front_view._-_NARA_-_516527.tif.jpg",
-                "link": "http://knightlab.com"
-            },
             "text": {
-                "headline": "Stormfield",
-                "text": "Moves into Stormfield in Redding, CT. Forms the Angelfish Club for young girls."
+                "headline": "Get started!",
+                "text": ""
             },
             "uniqueid": ""
         }
