@@ -32,7 +32,7 @@ VCO.TimeScale = VCO.Class.extend({
         // TODO: should _latest be the end date if there is one?
         this._latest = slides[slides.length - 1].start_date.getTime();
         this._span_in_millis = this._latest - this._earliest;
-        if (this._span_in_millis <= 0) throw new Error("earliest event time is before or same as latest.")
+        if (this._span_in_millis < 0) throw new Error("earliest event time is before latest. Events should be sorted.")
         this._average = (this._span_in_millis)/slides.length;
 
         this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
