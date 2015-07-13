@@ -183,7 +183,7 @@ VCO.TimeAxis = VCO.Class.extend({
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
-					display_text:ts_tick.getDisplayDate(this.getLanguage(), dateformat),
+					display_date:ts_tick.getDisplayDate(this.getLanguage(), dateformat),
 					date:ts_tick
 				});
 			}
@@ -226,7 +226,7 @@ VCO.TimeAxis = VCO.Class.extend({
 				
 				// Poition Ticks
 				tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-				tick.tick_text.innerHTML = tick.display_text;
+				tick.tick_text.innerHTML = tick.display_date;
 				
 				// Handle density of ticks
 				if (fraction_of_array > 1) {

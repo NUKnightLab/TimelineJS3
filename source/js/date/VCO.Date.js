@@ -34,8 +34,8 @@ VCO.Date = VCO.Class.extend({
 	},
 	
 	getDisplayDate: function(language, format) {
-	    if (this.data.display_text) {
-	        return this.data.display_text;
+	    if (this.data.display_date) {
+	        return this.data.display_date;
 	    }	    
         if (!language) {
             language = VCO.Language.fallback;
