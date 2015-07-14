@@ -488,9 +488,16 @@ VCO.Util = {
 		
 		return vars;
 	},
-
+    /**
+     * Remove any leading or trailing whitespace from the given string.
+     * If `str` is undefined or does not have a `replace` function, return
+     * an empty string.
+     */
 	trim: function(str) {
-		return str.replace(/^\s+|\s+$/g, '');
+        if (str && typeof(str.replace) == 'function') {
+            return str.replace(/^\s+|\s+$/g, '');
+        }
+        return "";
 	},
 
 	slugify: function(str) {
