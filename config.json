@@ -132,6 +132,20 @@
         //      @src: source file/directory
         //      @regex: regular expression to match files (if @src is directory)
         "banner": [
+            {
+                "src": "build",
+                "regex": "(js|css)/.*\\.(css|js)$",
+                "template": [
+                    "/*",
+                    "    TimelineJS - ver. %(version)s - %(date)s",
+                    "    Copyright (c) 2012-2015 Northwestern University",
+                    "    a project of the Northwestern University Knight Lab, originally created by Zach Wise",
+                    "    https://github.com/NUKnightLab/TimelineJS3",
+                    "    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.",
+                    "    If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.",
+                    "*/"
+                ]
+            }
         ]
     },
     //
