@@ -57,7 +57,9 @@ VCO.Media.Website = VCO.Media.extend({
 				content		+=	"<img src='" + d.images[0].url + "' />";
 			}
 		}
-		content		+=	"<img class='vco-media-website-icon' src='" + d.favicon_url + "' />";
+		if (d.favicon_url) {
+			content		+=	"<img class='vco-media-website-icon' src='" + d.favicon_url + "' />";
+		}
 		content		+=	"<span class='vco-media-website-description'>" + d.provider_name + "</span><br/>";
 		content		+=	"<p>" + d.description + "</p>";
 		
