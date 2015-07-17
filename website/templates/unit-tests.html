@@ -157,7 +157,7 @@
         var bigdate = VCO.Date.makeDate({year: 1000000});
         ok(!isNaN(bigdate.getTime()),"big dates are cosmological"); 
         
-        var cdate = VCO.Date.makeDate({year: 2014, display_text: "hello"});
+        var cdate = VCO.Date.makeDate({year: 2014, display_date: "hello"});
         equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')       
       });
 
