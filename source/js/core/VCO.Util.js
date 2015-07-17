@@ -179,6 +179,14 @@ VCO.Util = {
 
 		return text
 			.replace(urlPattern, function(match, url_sans_protocol, offset, string) {
+                // Javascript doesn't support negative lookbehind assertions, so 
+                // we need to handle risk of matching URLs in legit hrefs
+                if (offset > 0) {
+                    var prechar = string[offset-1];
+                    if (prechar == '"' || prechar == "'" || prechar == "=") {
+                        return match;
+                    }
+                }
                 return make_link(match, url_sans_protocol);
             })
 			.replace(pseudoUrlPattern, function(match, beforePseudo, pseudoUrl, offset, string) {
