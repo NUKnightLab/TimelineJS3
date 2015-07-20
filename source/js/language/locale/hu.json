@@ -68,7 +68,7 @@
         "time_no_seconds_small_date": "HH:MM '<br/><small>'yyyy. mmmm d.'</small>'", 
         "month": "yyyy. mmmm", 
         "time_no_seconds_short": "HH:MM", 
-        "time_short": "HH:MM:SS", 
+        "time_short": "HH:MM:ss", 
         "year": "yyyy", 
         "full_long_small_date": "HH:MM '<br/><small>yyyy. mmm d.'</small>'"
     }
