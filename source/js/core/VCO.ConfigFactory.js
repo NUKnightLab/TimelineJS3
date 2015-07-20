@@ -32,7 +32,7 @@
                 caption: item_data.mediacaption || '',
                 credit: item_data.mediacredit || '',
                 url: item_data.media || '',
-                thumb: ''
+                thumb: item_data.mediathumbnail || ''
             },
             text: {
                 headline: item_data.headline || '',
