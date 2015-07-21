@@ -11,54 +11,13 @@
   <!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
   <script src="/build/js/timeline.js"></script>
   <!-- endbuild -->
-  <script type="text/javascript" src="//cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
   <script>
     $(document).ready(function(){
-      function createNewTimeline(){
-        $("#timeline-embed").empty();
-        $("link[title=timeline-styles]").attr({href: "/build/css/timeline.css"});
-          window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
-
-          if ($("#timeline-embed").height() == 0) {
-            setTimeout(function(){
-                console.log("trying again. height: " + $(document).height())
-                $("#timeline-embed").height($(document).height() - $(".nav-tabs").height()- 100);
-                window.timeline.updateDisplay();
-            },500);
-          }
-      }
-
-      $("#timeline-embed").height($(document).height() - $(".nav-tabs").height() - 100);
-
-      /* New timeline styles used when page loads */
-      createNewTimeline();
-      $("#new").click(function(){
-        createNewTimeline();
-        $(this).addClass("active");
-        $(this).siblings().removeClass("active");
-      });
-
-      $("#old").click(function(){
-        $("#timeline-embed").empty();
-        if (!timeline_config) {
-            var timeline_config = {
-                type:		'timeline',
-                width:		'100%',
-                height:		'100%',
-                source:		'timeline2.json',
-                embed_id:	'timeline-embed'
-            }
+        window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
+        window.onresize = function(event) {
+          timeline.updateDisplay();
         }
-        createStoryJS(timeline_config);
-        $(this).addClass("active");
-        $(this).siblings().removeClass("active");
-        $("link[title=timeline-styles]").attr({href: "//cdn.knightlab.com/libs/timeline/latest/css/timeline.css?2.24"});
       });
-
-      window.onresize = function(event) {
-        timeline.updateDisplay();
-      }
-    });
   </script>
 
 
