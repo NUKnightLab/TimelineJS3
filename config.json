@@ -64,8 +64,8 @@
                 "opt": "--clean-css=--s0"
             },
             {
-                "src": "source/less/VCO.Timeline.Dark.less",
-                "dst": "build/css/timeline.dark.css",
+                "src": "source/less/themes/dark/VCO.Theme.Dark.less",
+                "dst": "build/css/themes/timeline.theme.dark.css",
                 "opt": "--clean-css=--s0"
             },
             {
