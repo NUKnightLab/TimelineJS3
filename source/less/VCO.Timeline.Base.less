@@ -1,5 +1,5 @@
 /*!
-	StoryMap
+	Timeline JS 3 
 	
 	Designed and built by Zach Wise for the Northwestern University Knight Lab
 	
@@ -9,9 +9,8 @@
 
 */
 
-/* Includes
+/* Includes 
 ================================================== */
-@import "Variables.Dark.less"; 			// Variables (easy way to make style changes) 
 
 @import "core/Mixins.less"; 		// Less shortcuts and functions
 @import "core/Reset.less"; 			// CSS Reset
@@ -50,10 +49,11 @@
 @import "media/types/VCO.Media.YouTube.less";
 @import "media/types/VCO.Media.IFrame.less";
 @import "media/types/VCO.Media.Wikipedia.less";
-
+@import "media/types/VCO.Media.Website.less";
 
 /* Timeline
 ================================================== */
+
 .vco-timeline {
 	width:100%;
 	height:100%;
@@ -63,6 +63,23 @@
 	position: relative;
 	.user-select(none);
 	background-color:@color-background;
+	color:@color-text;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	
+	&.vco-timeline-embed {
+		box-sizing:border-box;
+		border-top: 1px solid darken(@ui-background-color-darker, 10);
+		border-bottom: 1px solid darken(@ui-background-color-darker, 10);
+		border-radius: 0;
+	}
+	
+	&.vco-timeline-full-embed {
+		box-sizing:border-box;
+		border: 1px solid darken(@ui-background-color-darker, 10);
+		border-radius: 8px;
+	}
 }
 
 /* Portrait
