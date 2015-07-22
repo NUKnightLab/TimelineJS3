@@ -258,11 +258,17 @@ function createStoryJS(c, src) {
         }
 		storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
 		
-		/* TODO: not sure what to do here
-		if (isCDN) {
-			VMM.bindEvent(global, onHeadline, "HEADLINE");
+		var handle_resize = function(event) { storyjs_embed.updateDisplay(); }
+		if (window.onresize && typeof(window.onresize == 'function') {
+			var _onresize = window.onresize;
+			window.onresize = function(event) {
+				_onresize(event);
+				handle_resize(event);
+			}
+		} else {
+			window.onresize = handle_resize;
 		}
-		*/
+
 	}
 		
 }
