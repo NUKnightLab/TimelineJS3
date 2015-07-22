@@ -13,7 +13,9 @@
   <!-- endbuild -->
   <script>
     $(document).ready(function(){
+        $("#timeline-embed").height($(document).height());
         window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
+
         window.onresize = function(event) {
           timeline.updateDisplay();
         }
