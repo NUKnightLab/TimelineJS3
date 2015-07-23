@@ -199,13 +199,20 @@ VCO.Language.prototype._applyEra = function(formatted_date, original_year) {
 
 VCO.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
-VCO.Language.languages = {
+VCO.Language.languages = { 
+/*
+	This represents the canonical list of message keys which translation files should handle. The existence of the 'en.json' file should not mislead you.
+	It is provided more as a starting point for someone who wants to provide a 
+	new translation since the form for non-default languages (JSON not JS) is slightly different from what appears below. Also, those files have some message keys grandfathered in from TimelineJS2 which we'd rather not have to
+	get "re-translated" if we use them.
+*/
 	en: {
 		name: 					"English",
 		lang: 					"en",
 		messages: {
 			loading: 			"Loading",
-			wikipedia: 			"From Wikipedia, the free encyclopedia"
+			wikipedia: 			"From Wikipedia, the free encyclopedia",
+			error: 				"Error"
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
