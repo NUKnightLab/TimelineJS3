@@ -115,6 +115,15 @@ VCO.Media = VCO.Class.extend({
 		this.message.updateMessage(this._('loading') + " " + this.options.media_name);
 	},
 
+	errorMessage: function(msg) {
+		if (msg) {
+			msg = this._('error') + ": " + msg;
+		} else {
+			msg = this._('error');
+		}
+		this.message.updateMessage(msg);
+	},
+
 	updateMediaDisplay: function(layout) {
 		if (this._state.loaded) {
 			
