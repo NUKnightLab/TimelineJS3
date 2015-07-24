@@ -160,7 +160,7 @@ VCO.Timeline = VCO.Class.extend({
 			layout: 					"landscape",			// portrait or landscape
 			timenav_position: 			"bottom",				// timeline on top or bottom 
 			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
-			base_class: 				"",
+			base_class: 				"vco-timeline", 		// removing vco-timeline will break all default stylesheets...
 			timenav_height: 			175,
 			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
 			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
@@ -569,8 +569,6 @@ VCO.Timeline = VCO.Class.extend({
 	_initLayout: function () {
 		var self = this;
     
-		//this._el.container.className += ' vco-timeline';
-		this.options.base_class = this._el.container.className;
 		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
