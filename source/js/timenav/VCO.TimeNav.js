@@ -295,7 +295,7 @@ VCO.TimeNav = VCO.Class.extend({
 	_findMarkerIndex: function(n) {	
 	    var _n = -1;
 		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid", _n);
+			_n = VCO.Util.findArrayNumberByunique_id(n, this._markers, "unique_id", _n);
 		} 
 		return _n;
 	},
@@ -360,7 +360,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		
 		if(n >= 0 && n < this._markers.length) {
-		    this.current_id = this._markers[n].data.uniqueid;
+		    this.current_id = this._markers[n].data.unique_id;
 		} else {
 		    this.current_id = '';
 		}
@@ -386,8 +386,8 @@ VCO.TimeNav = VCO.Class.extend({
 	
 	_onMarkerClick: function(e) {
 		// Go to the clicked marker
-		this.goToId(e.uniqueid);
-		this.fire("change", {uniqueid: e.uniqueid});
+		this.goToId(e.unique_id);
+		this.fire("change", {unique_id: e.unique_id});
 	},
 	
 	_onMouseScroll: function(e) {

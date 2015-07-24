@@ -19,8 +19,8 @@ VCO.Util = {
 	
 	setOptions: function (obj, options) {
 		obj.options = VCO.Util.extend({}, obj.options, options);
-		if (obj.options.uniqueid === "") {
-			obj.options.uniqueid = VCO.Util.unique_ID(6);
+		if (obj.options.unique_id === "") {
+			obj.options.unique_id = VCO.Util.unique_ID(6);
 		}
 	},
 	
@@ -28,7 +28,7 @@ VCO.Util = {
 	  return n == parseFloat(n)? !(n%2) : void 0;
 	},
 	
-	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
+	findArrayNumberByunique_id: function(id, array, prop, defaultVal) {
 		var _n = defaultVal || 0;
 		
 		for (var i = 0; i < array.length; i++) {
@@ -72,8 +72,8 @@ VCO.Util = {
 	
 	setData: function (obj, data) {
 		obj.data = VCO.Util.extend({}, obj.data, data);
-		if (obj.data.uniqueid === "") {
-			obj.data.uniqueid = VCO.Util.unique_ID(6);
+		if (obj.data.unique_id === "") {
+			obj.data.unique_id = VCO.Util.unique_ID(6);
 		}
 	},
 	

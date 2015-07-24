@@ -250,7 +250,7 @@ VCO.Timeline = VCO.Class.extend({
 			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
-			this.fire("change", {uniqueid: this.current_id}, this);
+			this.fire("change", {unique_id: this.current_id}, this);
 		}
 	},
   
@@ -258,12 +258,12 @@ VCO.Timeline = VCO.Class.extend({
 	goTo: function(n) {
 		if(this.config.title) {
 			if(n == 0) {
-				this.goToId(this.config.title.uniqueid);
+				this.goToId(this.config.title.unique_id);
 			} else {
-				this.goToId(this.config.events[n - 1].uniqueid);
+				this.goToId(this.config.events[n - 1].unique_id);
 			}
 		} else {
-			this.goToId(this.config.events[n].uniqueid);      
+			this.goToId(this.config.events[n].unique_id);      
 		}
 	},
   
@@ -293,9 +293,9 @@ VCO.Timeline = VCO.Class.extend({
   
 	// Add an event
 	add: function(data) {
-		var uniqueid = this.config.addEvent(data);
+		var unique_id = this.config.addEvent(data);
       
-		var n = this._getEventIndex(uniqueid);
+		var n = this._getEventIndex(unique_id);
 		var d = this.config.events[n];
         
 		this._storyslider.createSlide(d, this.config.title ? n+1 : n);
@@ -304,14 +304,14 @@ VCO.Timeline = VCO.Class.extend({
 		this._timenav.createMarker(d, n);
 		this._timenav._updateDrawTimeline(false); 
         
-		this.fire("added", {uniqueid: uniqueid});
+		this.fire("added", {unique_id: unique_id});
 	},
   
 	// Remove an event
 	remove: function(n) {
 		if(n >= 0  && n < this.config.events.length) {
 			// If removing the current, nav to new one first
-			if(this.config.events[n].uniqueid == this.current_id) {
+			if(this.config.events[n].unique_id == this.current_id) {
 				if(n < this.config.events.length - 1) {
 					this.goTo(n + 1);
 				} else {
@@ -327,7 +327,7 @@ VCO.Timeline = VCO.Class.extend({
 			this._timenav.destroyMarker(n);
 			this._timenav._updateDrawTimeline(false);
          
-			this.fire("removed", {uniqueid: event[0].uniqueid});
+			this.fire("removed", {unique_id: event[0].unique_id});
 		}
 	},
   
@@ -547,7 +547,7 @@ VCO.Timeline = VCO.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		window.location.hash = "#" + "event-" + id.toString();
-		this.fire("hash_updated", {uniqueid:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
+		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 	
 	/*  Init
@@ -670,7 +670,7 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	_getEventIndex: function(id) {
 		for(var i = 0; i < this.config.events.length; i++) {
-			if(id == this.config.events[i].uniqueid) {
+			if(id == this.config.events[i].unique_id) {
 				return i;
 			}
 		}
@@ -680,11 +680,11 @@ VCO.Timeline = VCO.Class.extend({
 	/*  Get index of slide by id
 	================================================== */
 	_getSlideIndex: function(id) {
-		if(this.config.title && this.config.title.uniqueid == id) {
+		if(this.config.title && this.config.title.unique_id == id) {
 			return 0;
 		}
 		for(var i = 0; i < this.config.events.length; i++) {
-			if(id == this.config.events[i].uniqueid) {
+			if(id == this.config.events[i].unique_id) {
 				return this.config.title ? i+1 : i;
 			}
 		}
@@ -714,7 +714,7 @@ VCO.Timeline = VCO.Class.extend({
 	},
   
 	_onColorChange: function(e) {
-		this.fire("color_change", {uniqueid:this.current_id}, this);
+		this.fire("color_change", {unique_id:this.current_id}, this);
 		if (e.color || e.image) {
       
 		} else {
@@ -723,23 +723,23 @@ VCO.Timeline = VCO.Class.extend({
 	},
   
 	_onSlideChange: function(e) {
-		if (this.current_id != e.uniqueid) {
-			this.current_id = e.uniqueid;
+		if (this.current_id != e.unique_id) {
+			this.current_id = e.unique_id;
 			this._timenav.goToId(this.current_id);
 			this._onChange(e);
 		}
 	},
   
 	_onTimeNavChange: function(e) {
-		if (this.current_id != e.uniqueid) {
-			this.current_id = e.uniqueid;
+		if (this.current_id != e.unique_id) {
+			this.current_id = e.unique_id;
 			this._storyslider.goToId(this.current_id);
 			this._onChange(e);
 		}
 	},
   
 	_onChange: function(e) {
-		this.fire("change", {uniqueid:this.current_id}, this);
+		this.fire("change", {unique_id:this.current_id}, this);
 		if (this.options.hash_bookmark) {
 			this._updateHashBookmark(this.current_id);
 		}
@@ -747,7 +747,7 @@ VCO.Timeline = VCO.Class.extend({
   
 	_onBackToStart: function(e) {
 		this._storyslider.goTo(0);
-		this.fire("back_to_start", {uniqueid:this.current_id}, this);
+		this.fire("back_to_start", {unique_id:this.current_id}, this);
 	},
   
 	_onZoomIn: function(e) {

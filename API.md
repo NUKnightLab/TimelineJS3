@@ -30,17 +30,17 @@ timeline.on(event_name, function(data) {
  
  `change` _when the current slide changes_
 
-* uniqueid: string, id of the new current slide
+* unique_id: string, id of the new current slide
 
 `color_change` _when background of current slide changes_
 
-* uniqueid: string, id of the new current slide
+* unique_id: string, id of the new current slide
 
 `dataloaded` _after data has been loaded_
 
 `hash_updated` _when the hashbookmack in the url bar is updated_
 
-* uniqueid:  string, id of the new current slide
+* unique_id:  string, id of the new current slide
 * hashbookmark: string, the hash
 
 `loaded` _after story slider and time navigator have been loaded_
@@ -58,7 +58,7 @@ timeline.on(event_name, function(data) {
 
 `removed` _after slide has been removed_
 
-* uniqueid: string, the id of the modified slide
+* unique_id: string, the id of the modified slide
 
 `nav_next` fires when next button is clicked
 
@@ -140,7 +140,7 @@ timeline.on(event_name, function(data) {
         "headline":     <string>,
         "text":         <string>
     },
-    "uniqueid":         <string>    // optional
+    "unique_id":         <string>    // optional
 };
 ```
 

@@ -48,7 +48,7 @@ VCO.Media = VCO.Class.extend({
 	
 		// Data
 		this.data = {
-			uniqueid: 			null,
+			unique_id: 			null,
 			url: 				null,
 			credit:				null,
 			caption:			null,
@@ -75,8 +75,8 @@ VCO.Media = VCO.Class.extend({
 		
 		this._el.container = VCO.Dom.create("div", "vco-media");
 		
-		if (this.data.uniqueid) {
-			this._el.container.id = this.data.uniqueid;
+		if (this.data.unique_id) {
+			this._el.container.id = this.data.unique_id;
 		}
 		
 		

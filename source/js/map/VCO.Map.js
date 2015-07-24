@@ -72,7 +72,7 @@ VCO.Map = VCO.Class.extend({
 	
 		// Data
 		this.data = {
-			uniqueid: 			"",
+			unique_id: 			"",
 			slides: 				[{test:"yes"}, {test:"yes"}, {test:"yes"}]
 		};
 	
