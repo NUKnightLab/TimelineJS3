@@ -82,10 +82,10 @@ The data file should be in JSON format with the following structure
 {
 	"title": {
 			"media": {
-				"caption": 	"",
-				"credit": 	"",
-				"url": 		"url_to_your_media.jpg",
-				"thumb": 	"url_to_your_media.jpg"
+				"caption": 	    "",
+				"credit": 	    "",
+				"url": 		    "url_to_your_media.jpg",
+				"thumbnail":    "url_to_your_media.jpg"
 			},
 			"text": {
 				"headline": "Headline Goes Here",
@@ -115,10 +115,10 @@ The data file should be in JSON format with the following structure
 				"format": 		""
 			},
 			"media": {
-				"caption": 	"",
-				"credit": 	"",
-				"url": 		"url_to_your_media.jpg",
-				"thumb": 	"url_to_your_media.jpg"
+				"caption": 	    "",
+				"credit": 	    "",
+				"url": 		    "url_to_your_media.jpg",
+				"thumbnail": 	"url_to_your_media.jpg"
 			},
 			"text": {
 				"headline": "Headline Goes Here",

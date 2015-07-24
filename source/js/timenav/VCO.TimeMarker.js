@@ -253,9 +253,9 @@ VCO.TimeMarker = VCO.Class.extend({
 		if (this.data.media) {
 			this._el.media_container	= VCO.Dom.create("div", "vco-timemarker-media-container", this._el.content);
 			
-			if (this.data.media.thumb && this.data.media.thumb != "") {
+			if (this.data.media.thumbnail && this.data.media.thumbnail != "") {
 				this._el.media				= VCO.Dom.create("img", "vco-timemarker-media", this._el.media_container);
-				this._el.media.src			= this.data.media.thumb;
+				this._el.media.src			= this.data.media.thumbnail;
 				
 			} else {
 				var media_type = VCO.MediaType(this.data.media).type;

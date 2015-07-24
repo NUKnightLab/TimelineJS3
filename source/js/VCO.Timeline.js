@@ -263,50 +263,50 @@ VCO.Timeline = VCO.Class.extend({
 				this.goToId(this.config.events[n - 1].unique_id);
 			}
 		} else {
-			this.goToId(this.config.events[n].unique_id);      
+			this.goToId(this.config.events[n].unique_id);
 		}
 	},
-  
+
 	// Goto first slide
 	goToStart: function() {
 		this.goTo(0);
 	},
-  
+
 	// Goto last slide
 	goToEnd: function() {
 		var _n = this.config.events.length - 1;
 		this.goTo(this.config.title ? _n + 1 : _n);
 	},
-  
+
 	// Goto previous slide
 	goToPrev: function() {
 		this.goTo(this._getSlideIndex(this.current_id) - 1);
 	},
-  
+
 	// Goto next slide
 	goToNext: function() {
 		this.goTo(this._getSlideIndex(this.current_id) + 1);
 	},
-  
+
 	/* Event maniupluation
 	================================================== */
-  
+
 	// Add an event
 	add: function(data) {
 		var unique_id = this.config.addEvent(data);
-      
+
 		var n = this._getEventIndex(unique_id);
 		var d = this.config.events[n];
-        
+
 		this._storyslider.createSlide(d, this.config.title ? n+1 : n);
-		this._storyslider._updateDrawSlides();            
-        
+		this._storyslider._updateDrawSlides();
+
 		this._timenav.createMarker(d, n);
-		this._timenav._updateDrawTimeline(false); 
-        
+		this._timenav._updateDrawTimeline(false);
+
 		this.fire("added", {unique_id: unique_id});
 	},
-  
+
 	// Remove an event
 	remove: function(n) {
 		if(n >= 0  && n < this.config.events.length) {
