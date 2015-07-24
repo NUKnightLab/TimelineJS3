@@ -382,6 +382,16 @@ VCO.Timeline = VCO.Class.extend({
 		}
 	},
   
+  	/*
+  		Compute the height of the navigation section of the Timeline, taking into account
+  		the possibility of an explicit height or height percentage, but also honoring the
+  		`timenav_height_min` option value. If `timenav_height` is specified it takes precedence over `timenav_height_percentage` but in either case, if the resultant pixel height is less than `options.timenav_height_min` then the value of `options.timenav_height_min` will be returned. (A minor adjustment is made to the returned value to account for marker padding.)
+
+  		Arguments:
+  		@timenav_height (optional): an integer value for the desired height in pixels
+  		@timenav_height_percentage (optional): an integer between 1 and 100
+
+  	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
 		var height = 0;
     
