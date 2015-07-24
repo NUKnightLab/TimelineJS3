@@ -46,229 +46,230 @@ function getEmbedScriptPath(scriptname) {
 /* CREATE StoryJS Embed
 ================================================== */
 function createStoryJS(c, src) {
-	/* VARS
-	================================================== */
-	var storyjs_embedjs, t, te, x,
-		isCDN					= false,
-		js_version				= "2.24",
-		ready = {
-			timeout:	"",
-			checks:		0,
-			finished:	false,
-			js:			false,
-			css:		false,
-			font: {
-				css:	false
-			}
-		},
-		path = {
-			base:		embed_path,
-			css:		embed_path + "css/",
-			js:			embed_path + "js/",
-			font: {
-				google:	false,
-				css:	embed_path + "css/fonts/",
-				js:		"//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"
-			}
-		},
-		storyjs_e_config = {
-			version:	js_version,
-			debug:		false,
-			type:		'timeline',
-			id:			'storyjs',
-			embed_id:	'timeline-embed',
-			is_embed:		true,
-			width:		'100%',
-			height:		'100%',
-			source:		'https://docs.google.com/spreadsheet/pub?key=0Agl_Dv6iEbDadFYzRjJPUGktY0NkWXFUWkVIZDNGRHc&output=html',
-			lang:		'en',
-			font:		'default',
+  /* VARS
+  ================================================== */
+  var storyjs_embedjs, t, te, x,
+    isCDN         = false,
+    js_version        = "2.24",
+    ready = {
+      timeout:  "",
+      checks:   0,
+      finished: false,
+      js:     false,
+      css:    false,
+      font: {
+        css:  false
+      }
+    },
+    path = {
+      base:   embed_path,
+      css:    embed_path + "css/",
+      js:     embed_path + "js/",
+      font: {
+        google: false,
+        css:  embed_path + "css/fonts/",
+        js:   "//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"
+      }
+    },
+    storyjs_e_config = {
+      version:  js_version,
+      debug:    false,
+      type:   'timeline',
+      id:     'storyjs',
+      embed_id: 'timeline-embed',
+      is_embed:   true,
+      width:    '100%',
+      height:   '100%',
+      source:   'https://docs.google.com/spreadsheet/pub?key=0Agl_Dv6iEbDadFYzRjJPUGktY0NkWXFUWkVIZDNGRHc&output=html',
+      lang:   'en',
+      font:   'default',
       start_at_end: false,
-			css:		path.css + 'timeline.css?'+js_version,
-			js:			'',
-			api_keys: {
-				google:				"",
-				flickr:				"",
-				twitter:			""
-			},
-			gmap_key: 	""
-		}
-	/* BUILD CONFIG
-	================================================== */	
-	if (typeof c == 'object') {
-		for (x in c) {
-			if (Object.prototype.hasOwnProperty.call(c, x)) {
-				storyjs_e_config[x] = c[x];
-			}
-		}
-	}
-		
-	if (typeof src != 'undefined') {
-		storyjs_e_config.source = src;
-	}
-		
-	/* CDN VERSION?
-	================================================== */
-	if (typeof url_config == 'object') {
-		isCDN = true;
-			
-		/* IS THE SOURCE GOOGLE SPREADSHEET WITH JUST THE KEY?
-		================================================== */
-		if (storyjs_e_config.source.match("docs.google.com") || storyjs_e_config.source.match("json") || storyjs_e_config.source.match("storify") ) {
-				
-		} else {
-			storyjs_e_config.source = "https://docs.google.com/spreadsheet/pub?key=" + storyjs_e_config.source + "&output=html";
-		}
-			
-	}
-		
-	/* DETERMINE TYPE
-	================================================== */
-	if (storyjs_e_config.js.match("/")) {
-		
-	} else {
-		storyjs_e_config.css	= path.css + storyjs_e_config.type + ".css?" + js_version;
-		
-		// Use unminified js file if in debug mode
-		storyjs_e_config.js		= path.js  + storyjs_e_config.type;
-		if (storyjs_e_config.debug) {
-			storyjs_e_config.js	+= ".js?"  + js_version;
-		} else {
-			storyjs_e_config.js	+= "-min.js?"  + js_version;
-		}
-		
-		storyjs_e_config.id		= "storyjs-" + storyjs_e_config.type;
-	}
-			
-	/* PREPARE
-	================================================== */
-	createEmbedDiv();
-	
-	/* Load CSS
-	================================================== */
-	LoadLib.css(storyjs_e_config.css, onloaded_css);
-	
-	/* Load FONT
-	================================================== */
-	if (storyjs_e_config.font == "default") {
-		ready.font.css		= true;
-	} else {
-		// FONT CSS
-		var fn;
-		if (storyjs_e_config.font.match("/")) {
-			// TODO Issue #618 better splitting
-			fn				= storyjs_e_config.font.split(".css")[0].split("/");
-			path.font.name	= fn[fn.length -1];
-			path.font.css	= storyjs_e_config.font;
-		} else {
-			path.font.name	= storyjs_e_config.font;
-			path.font.css	= path.font.css + "font."+storyjs_e_config.font.toLowerCase()+".css?" + js_version;
-		}
-		LoadLib.css(path.font.css, onloaded_font_css);
-  }	
-		LoadLib.js(storyjs_e_config.js, onloaded_js);
-	
-	/* On Loaded
-	================================================== */
-	
-	function onloaded_js() {
-		ready.js = true;
-		onloaded_check();
-	}
+      timenav_position: 'bottom',
+      css:    path.css + 'timeline.css?'+js_version,
+      js:     '',
+      api_keys: {
+        google:       "",
+        flickr:       "",
+        twitter:      ""
+      },
+      gmap_key:   ""
+    }
+  /* BUILD CONFIG
+  ================================================== */
+  if (typeof c == 'object') {
+    for (x in c) {
+      if (Object.prototype.hasOwnProperty.call(c, x)) {
+        storyjs_e_config[x] = c[x];
+      }
+    }
+  }
+    
+  if (typeof src != 'undefined') {
+    storyjs_e_config.source = src;
+  }
+    
+  /* CDN VERSION?
+  ================================================== */
+  if (typeof url_config == 'object') {
+    isCDN = true;
+      
+    /* IS THE SOURCE GOOGLE SPREADSHEET WITH JUST THE KEY?
+    ================================================== */
+    if (storyjs_e_config.source.match("docs.google.com") || storyjs_e_config.source.match("json") || storyjs_e_config.source.match("storify") ) {
+        
+    } else {
+      storyjs_e_config.source = "https://docs.google.com/spreadsheet/pub?key=" + storyjs_e_config.source + "&output=html";
+    }
+      
+  }
+    
+  /* DETERMINE TYPE
+  ================================================== */
+  if (storyjs_e_config.js.match("/")) {
+    
+  } else {
+    storyjs_e_config.css  = path.css + storyjs_e_config.type + ".css?" + js_version;
+    
+    // Use unminified js file if in debug mode
+    storyjs_e_config.js   = path.js  + storyjs_e_config.type;
+    if (storyjs_e_config.debug) {
+      storyjs_e_config.js += ".js?"  + js_version;
+    } else {
+      storyjs_e_config.js += "-min.js?"  + js_version;
+    }
+    
+    storyjs_e_config.id   = "storyjs-" + storyjs_e_config.type;
+  }
+      
+  /* PREPARE
+  ================================================== */
+  createEmbedDiv();
+  
+  /* Load CSS
+  ================================================== */
+  LoadLib.css(storyjs_e_config.css, onloaded_css);
+  
+  /* Load FONT
+  ================================================== */
+  if (storyjs_e_config.font == "default") {
+    ready.font.css    = true;
+  } else {
+    // FONT CSS
+    var fn;
+    if (storyjs_e_config.font.match("/")) {
+      // TODO Issue #618 better splitting
+      fn        = storyjs_e_config.font.split(".css")[0].split("/");
+      path.font.name  = fn[fn.length -1];
+      path.font.css = storyjs_e_config.font;
+    } else {
+      path.font.name  = storyjs_e_config.font;
+      path.font.css = path.font.css + "font."+storyjs_e_config.font.toLowerCase()+".css?" + js_version;
+    }
+    LoadLib.css(path.font.css, onloaded_font_css);
+  } 
+    LoadLib.js(storyjs_e_config.js, onloaded_js);
+  
+  /* On Loaded
+  ================================================== */
+  
+  function onloaded_js() {
+    ready.js = true;
+    onloaded_check();
+  }
 
-	function onloaded_css() {
-		ready.css = true;
-		onloaded_check();
-	}
-	function onloaded_font_css() {
-		ready.font.css = true;
-		onloaded_check();
-	}
-	function onloaded_check() {
-		if (ready.checks > 40) {
-			return;
-			alert("Error Loading Files");
-		} else {
-			ready.checks++;
-			if (ready.js && ready.css && ready.font.css) {
-				if (!ready.finished) {
-					ready.finished = true;
-					buildEmbed();
-				}
-			} else {
-				ready.timeout = setTimeout('onloaded_check_again();', 250);
-			}
-		}
-	};
-	this.onloaded_check_again = function() {
-		onloaded_check();
-	};
-	
-	/* Build Timeline
-	================================================== */
-	function createEmbedDiv() {
-		var embed_classname	= "storyjs-embed";
-		
-		t = document.createElement('div');
-		
-		if (storyjs_e_config.embed_id != "") {
-			te = document.getElementById(storyjs_e_config.embed_id);
-		} else {
-			te = document.getElementById("timeline-embed");
-		}
-		
-		te.appendChild(t);
-		t.setAttribute("id", storyjs_e_config.id);
-		
-		if (storyjs_e_config.width.toString().match("%") ) {
-			te.style.width = storyjs_e_config.width.split("%")[0] + "%";
-		} else {
-			storyjs_e_config.width = storyjs_e_config.width - 2;
-			te.style.width = (storyjs_e_config.width) + 'px';
-		}
-		
-		if (storyjs_e_config.height.toString().match("%")) {
-			te.style.height = storyjs_e_config.height;
-			embed_classname	+= " full-embed";
-			te.style.height = storyjs_e_config.height.split("%")[0] + "%";
-			
-		} else if (storyjs_e_config.width.toString().match("%")) {
-			embed_classname	+= " full-embed";
-			storyjs_e_config.height = storyjs_e_config.height - 16;
-			te.style.height = (storyjs_e_config.height) + 'px';
-		}else {
-			embed_classname	+= " sized-embed";
-			storyjs_e_config.height = storyjs_e_config.height - 16;
-			te.style.height = (storyjs_e_config.height) + 'px';
-		}
-		
-		te.setAttribute("class", embed_classname);
-		te.setAttribute("className", embed_classname); 
-		t.style.position = 'relative';
-	}
-	
-	function buildEmbed() {
-		VCO.debug = storyjs_e_config.debug;
-		
-		var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
+  function onloaded_css() {
+    ready.css = true;
+    onloaded_check();
+  }
+  function onloaded_font_css() {
+    ready.font.css = true;
+    onloaded_check();
+  }
+  function onloaded_check() {
+    if (ready.checks > 40) {
+      return;
+      alert("Error Loading Files");
+    } else {
+      ready.checks++;
+      if (ready.js && ready.css && ready.font.css) {
+        if (!ready.finished) {
+          ready.finished = true;
+          buildEmbed();
+        }
+      } else {
+        ready.timeout = setTimeout('onloaded_check_again();', 250);
+      }
+    }
+  };
+  this.onloaded_check_again = function() {
+    onloaded_check();
+  };
+  
+  /* Build Timeline
+  ================================================== */
+  function createEmbedDiv() {
+    var embed_classname = "storyjs-embed";
+    
+    t = document.createElement('div');
+    
+    if (storyjs_e_config.embed_id != "") {
+      te = document.getElementById(storyjs_e_config.embed_id);
+    } else {
+      te = document.getElementById("timeline-embed");
+    }
+    
+    te.appendChild(t);
+    t.setAttribute("id", storyjs_e_config.id);
+    
+    if (storyjs_e_config.width.toString().match("%") ) {
+      te.style.width = storyjs_e_config.width.split("%")[0] + "%";
+    } else {
+      storyjs_e_config.width = storyjs_e_config.width - 2;
+      te.style.width = (storyjs_e_config.width) + 'px';
+    }
+    
+    if (storyjs_e_config.height.toString().match("%")) {
+      te.style.height = storyjs_e_config.height;
+      embed_classname += " full-embed";
+      te.style.height = storyjs_e_config.height.split("%")[0] + "%";
+      
+    } else if (storyjs_e_config.width.toString().match("%")) {
+      embed_classname += " full-embed";
+      storyjs_e_config.height = storyjs_e_config.height - 16;
+      te.style.height = (storyjs_e_config.height) + 'px';
+    }else {
+      embed_classname += " sized-embed";
+      storyjs_e_config.height = storyjs_e_config.height - 16;
+      te.style.height = (storyjs_e_config.height) + 'px';
+    }
+    
+    te.setAttribute("class", embed_classname);
+    te.setAttribute("className", embed_classname); 
+    t.style.position = 'relative';
+  }
+  
+  function buildEmbed() {
+    VCO.debug = storyjs_e_config.debug;
+    
+    var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
         storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
         storyjs_e_config.language = storyjs_e_config.lang;
         if (storyjs_e_config.width == '100%') {
-        	storyjs_e_config.is_full_embed = true;
+          storyjs_e_config.is_full_embed = true;
         }
-		storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
-		
-		var handle_resize = function(event) { storyjs_embed.updateDisplay(); }
-		if (window.onresize && typeof(window.onresize == 'function')) {
-			var _onresize = window.onresize;
-			window.onresize = function(event) {
-				_onresize(event);
-				handle_resize(event);
-			}
-		} else {
-			window.onresize = handle_resize;
-		}
+    storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
+    
+    var handle_resize = function(event) { storyjs_embed.updateDisplay(); }
+    if (window.onresize && typeof(window.onresize == 'function')) {
+      var _onresize = window.onresize;
+      window.onresize = function(event) {
+        _onresize(event);
+        handle_resize(event);
+      }
+    } else {
+      window.onresize = handle_resize;
+    }
 
-	}
-		
+  }
+    
 }

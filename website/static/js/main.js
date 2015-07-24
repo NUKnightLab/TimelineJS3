@@ -37,8 +37,10 @@ function getLinkAndIframe() {
     e_embed       = document.getElementById('embed_code'),
     e_font        = document.getElementById('embed-font'),
     e_startatend    = document.getElementById('embed-startatend'),
+    e_timenav_top = document.getElementById('embed-timenavtop'),
     e_startatslide    = document.getElementById('embed-startatslide'),
     e_debug       = document.getElementById('embed-debug'),
+    timenav_position = "bottom",
     start_at_end    = false,
     is_debug      = false,
     iframe,
@@ -65,6 +67,10 @@ function getLinkAndIframe() {
     start_at_end = true;
   }
 
+  if (e_timenav_top.checked) {
+    timenav_position = "top";
+  }
+
   if (e_debug.checked) {
     is_debug = true;
   }
@@ -76,6 +82,9 @@ function getLinkAndIframe() {
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
     vars  += "&start_at_end=" + start_at_end;
+  }
+  if (timenav_position == "top") {
+    vars += "&timenav_position=" + timenav_position;
   }
   if (is_debug) {
     vars  += "&debug=" + is_debug;
@@ -177,6 +186,7 @@ $(document).ready(function() {
   $('#embed-source-url').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-language').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-startatend').change(function(evt) { updateEmbedCode(evt); });
+  $('#embed-timenavtop').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-debug').change(function(evt) { updateEmbedCode(evt); });
 
