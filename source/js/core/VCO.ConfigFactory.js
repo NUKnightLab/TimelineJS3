@@ -55,7 +55,7 @@
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
-                item_data[k.substr(4)] = item[k].$t;
+                item_data[k.substr(4)] = VCO.Util.trim(item[k].$t);
             }
         }
         var d = {
