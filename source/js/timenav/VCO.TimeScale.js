@@ -35,7 +35,7 @@ VCO.TimeScale = VCO.Class.extend({
         if (this._span_in_millis < 0) {
             throw new Error("earliest event time is before latest. Events should be sorted.")
         } else if (this._span_in_millis == 0) {
-            this._span_in_millis = this._pixel_width;
+            this._span_in_millis = this._computeDefaultSpan(timeline_config);
         }
         this._average = (this._span_in_millis)/slides.length;
 
@@ -47,6 +47,30 @@ VCO.TimeScale = VCO.Class.extend({
         this._computePositionInfo(slides, options.max_rows);
     },
     
+    _computeDefaultSpan: function(timeline_config) {
+        // this gets called when all events are at the same instant, 
+        // or maybe when the span_in_millis is > 0 but still below a desired threshold 
+        if (timeline_config.scale == 'javascript') {
+            var formats = {}
+            for (var i = 0; i < timeline_config.events.length; i++) {
+                var fmt = timeline_config.events[i].start_date.findBestFormat();
+                formats[fmt] = (formats[fmt]) ? formats[fmt] + 1 : 1;
+            };
+
+            for (var i = VCO.Date.SCALES.length - 1; i >= 0; i--) {
+                if (formats.hasOwnProperty(VCO.Date.SCALES[i][0])) {
+                    var scale = VCO.Date.SCALES[VCO.Date.SCALES.length - 1]; // default
+                    if (VCO.Date.SCALES[i+1]) {
+                        scale = VCO.Date.SCALES[i+1]; // one larger than the largest in our data
+                    }
+                    return scale[1]
+                }
+            };
+            return 365 * 24 * 60 * 60 * 1000; // default to a year?
+        }
+
+        return 200000; // what is the right handling for cosmo dates?
+    },
     getGroupLabels: function() { /* 
         return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
             * label (the string as specified in one or more 'group' properties of events in the configuration)

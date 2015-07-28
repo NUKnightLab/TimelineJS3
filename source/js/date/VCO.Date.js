@@ -130,17 +130,39 @@ VCO.Date = VCO.Class.extend({
         this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
 	},
 
+    /*  Find Best Format
+     * this may not work with 'cosmologic' dates, or with VCO.Date if we 
+     * support constructing them based on JS Date and time
+    ================================================== */
+    findBestFormat: function(variant) {
+        var eval_array = VCO.Date.DATE_PARTS,
+            format = "";
+        
+        for (var i = 0; i < eval_array.length; i++) {
+            if ( this.data[eval_array[i]]) {
+                if (variant) {
+                    if (!(variant in VCO.Date.BEST_DATEFORMATS)) {
+                        variant = 'short'; // legacy
+                    }
+                } else {
+                    variant = 'base'
+                }
+                return VCO.Date.BEST_DATEFORMATS[variant][eval_array[i]];       
+            }
+        };
+        return "";
+    },
     _setFormat: function(format, format_short) {
 		if (format) {
 			this.data.format = format;
 		} else if (!this.data.format) {
-			this.data.format = VCO.DateUtil.findBestFormat(this.data);
+			this.data.format = this.findBestFormat();
 		}
 		
 		if (format_short) {
 			this.data.format_short = format_short;
 		} else if (!this.data.format_short) {
-			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
+			this.data.format_short = this.findBestFormat(true);
 		}
     }
 });
@@ -284,6 +306,45 @@ VCO.BigYear = VCO.Class.extend({
         }
         return parsed;
     }
+
+    cls.BEST_DATEFORMATS = {
+        base: {
+            millisecond: 'time_short',
+            second: 'time',
+            minute: 'time_no_seconds_small_date',
+            hour: 'time_no_seconds_small_date',
+            day: 'full',
+            month: 'month',
+            year: 'year',
+            decade: 'year',
+            century: 'year',
+            millennium: 'year',
+            age: 'fallback',
+            epoch: 'fallback',
+            era: 'fallback',
+            eon: 'fallback',
+            eon2: 'fallback'
+        },
+        
+        short: {
+            millisecond: 'time_short',
+            second: 'time_short',
+            minute: 'time_no_seconds_short',
+            hour: 'time_no_minutes_short',
+            day: 'full_short',
+            month: 'month_short',
+            year: 'year',
+            decade: 'year',
+            century: 'year',
+            millennium: 'year',
+            age: 'fallback',
+            epoch: 'fallback',
+            era: 'fallback',
+            eon: 'fallback',
+            eon2: 'fallback'
+        }
+    }
+
 
 })(VCO.Date)
 
