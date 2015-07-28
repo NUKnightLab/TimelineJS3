@@ -125,7 +125,7 @@ function updateEmbedCode(element, options) {
   e_embed.value = el.copybox;
   jQuery("#preview-embed-link").attr('href', el.link);
   jQuery("#preview-embed-iframe").html(el.iframe);
-  jQuery("#preview-embed").css("display","block");
+  //jQuery("#preview-embed").css("display","block");
 }
 
 
@@ -134,7 +134,7 @@ var $ = jQuery;
 $(document).ready(function() {
   function navSmartScroll($destination) {
     var offset = $(".navbar").height() || 0,
-        scrollTop = $destination.offset().top - 30;
+        scrollTop = $destination.offset().top;
     $("body,html").animate({scrollTop: scrollTop}, 350);
   }
 
@@ -144,6 +144,11 @@ $(document).ready(function() {
       , href = $target.attr("href")
       , hash = href.substring(href.lastIndexOf('#'))
       , $destination = $(hash);
+    // fix for unpredictable scrolling behaviour on #preview-embed
+    if ($destination.css("display") == "none") {
+      $destination.css("display", "block");
+      $destination = $destination.parent();
+    }
     navSmartScroll($destination);
 
     return false;
