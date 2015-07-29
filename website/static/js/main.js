@@ -207,9 +207,9 @@ $(document).ready(function() {
     $("ul#embed-font").hide();
     updateEmbedCode(evt);
   });
-  $("#embed-font-dropdown a").on("click", function(evt){
+  $("#embed-font-dropdown a, #font-pair-preview").on("click", function(evt){
       evt.preventDefault();
-      $("ul#embed-font").show();
+      $("ul#embed-font").toggle();
   });
   $('.collapse').on('show',function(e) {
     window.location.hash = "show-" + $(this).attr('id');
