@@ -35,7 +35,7 @@ function getLinkAndIframe() {
     e_height      = document.getElementById('embed-height'),
     e_language      = document.getElementById('embed-language'),
     e_embed       = document.getElementById('embed_code'),
-    e_font        = document.getElementById('embed-font'),
+    e_font        = document.getElementById('embed-font-active'),
     e_startatend    = document.getElementById('embed-startatend'),
     e_timenav_top = document.getElementById('embed-timenavtop'),
     e_startatslide    = document.getElementById('embed-startatslide'),
@@ -78,7 +78,7 @@ function getLinkAndIframe() {
   /* IFRAME AND LINK
   ================================================== */
   vars    =  generator_embed_path + "?source=" + source_key;
-  vars    += "&font=" + e_font.value;
+  vars    += "&font=" + e_font.dataset.value;
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
     vars  += "&start_at_end=" + start_at_end;
@@ -125,7 +125,9 @@ function updateEmbedCode(element, options) {
   e_embed.value = el.copybox;
   jQuery("#preview-embed-link").attr('href', el.link);
   jQuery("#preview-embed-iframe").html(el.iframe);
-  //jQuery("#preview-embed").css("display","block");
+  if (jQuery("#preview-embed").css("display") == "none"){
+    jQuery("#preview-embed").css("display","block");
+  }
 }
 
 
@@ -185,7 +187,6 @@ $(document).ready(function() {
   updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
   $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-font').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-height').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-maptype').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-source-url').change(function(evt) { updateEmbedCode(evt); });
@@ -194,7 +195,22 @@ $(document).ready(function() {
   $('#embed-timenavtop').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-debug').change(function(evt) { updateEmbedCode(evt); });
-
+  $("#embed-font li").on("click", function(evt){
+    var currentFont = document.getElementById("embed-font-active");
+    currentFont.removeChild(currentFont.firstChild);
+    currentFont.removeAttribute("id");
+    $(this).attr("id", "embed-font-active")
+           .prepend('<i class="fa fa-check"></i>');
+    var fontPair = $(this).data("value");
+    $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
+                           .attr("alt", fontPair );
+    $("ul#embed-font").hide();
+    updateEmbedCode(evt);
+  });
+  $("#embed-font-dropdown a").on("click", function(evt){
+      evt.preventDefault();
+      $("ul#embed-font").show();
+  });
   $('.collapse').on('show',function(e) {
     window.location.hash = "show-" + $(this).attr('id');
   })

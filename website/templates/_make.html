@@ -158,33 +158,30 @@
             </div>
             <!-- Fonts-->
             <div class="small-12 medium-5 columns">
-              <label name="fonts" for="embed-font">Fonts</label>
-              <select id="embed-font">
-                <option value="Default">Default</option>
-                <option value="Abril-DroidSans">Abril Fatface & Droid Sans</option>
-                <option value="Amatic-Andika">Amatic & Andika</option>
-                <option value="Bitter-Raleway">Bitter & Raleway</option>
-                <option value="Clicker-Garamond">Clicker & Garamond</option>
-                <option value="Dancing-Ledger">Dancing & Ledger</option>
-                <option value="Fjalla-Average">Fjalla & Average</option>
-                <option value="Georgia-Helvetica">Georgia & Helvetica</option>
-                <option value="Lustria-Lato">Lustria & Lato</option>
-                <option value="Medula-Lato">Medula One & Lato</option>
-                <option value="OldStandard">Old Standard</option>
-                <option value="OpenSans-GentiumBook">Open Sans & Gentium Book Basic</option>
-                <option value="Playfair-FaunaOne">Playfair & Fauna One</option>
-                <option value="Playfair">Playfair SC & Playfair</option>
-                <option value="PT">PT Sans & PT Serif & PT Sans Narrow</option>
-                <option value="Roboto-Megrim">Roboto Slab & Megrim</option>
-                <option value="Rufina-Sintony">Rufina & Sintony</option>
-                <option value="Ubuntu">Ubuntu</option>
-                <option value="UnicaOne-Vollkorn">Unica One & Vollkorn</option>
-              </select>
-            </div>
-            <div class="small-12 medium-3 columns">
-              <button href="#" data-dropdown="font-preview" aria-controls="font-preview" aria-expanded="false" class="button tiny dropdown" id="font-preview-trigger">Preview fonts</button><br>
-              <ul id="font-preview" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                <li><img src="static/img/make/font-options.png"></li>
+              <ul id="embed-font-dropdown">
+                <li>
+                  <label name="fonts" for="embed-font">Fonts (<a href="#">change</a>)</label>
+                  <p><img id="font-pair-preview" src="static/img/make/default.png" /></p>
+                  <ul id="embed-font">
+                    <li data-value="Default" id="embed-font-active"><i class="fa fa-check"></i> <img src="static/img/make/default.png"/></li>
+                    <li data-value="Abril-DroidSans"><img src="static/img/make/abril-droidsans.png"/></li>
+                    <li data-value="Amatic-Andika" checked><img src="static/img/make/amatic-andika.png"/></li>
+                    <li data-value="Bitter-Raleway"><img src="static/img/make/bitter-raleway.png"/></li>
+                    <li data-value="Clicker-Garamond"><img src="static/img/make/clicker-garamond.png"/></li>
+                    <li data-value="Dancing-Ledger"><img src="static/img/make/dancing-ledger.png"/></li>
+                    <li data-value="Fjalla-Average"><img src="static/img/make/fjalla-average.png"/></li>
+                    <li data-value="Georgia-Helvetica"><img src="static/img/make/georgia-helvetica.png"/></li>
+                    <li data-value="Lustria-Lato"><img src="static/img/make/lustria-lato.png"/></li>
+                    <li data-value="Medula-Lato"><img src="static/img/make/medula-lato.png"/></li>
+                    <li data-value="OldStandard"><img src="static/img/make/oldstandard.png"/></li>
+                    <li data-value="OpenSans-GentiumBook"><img src="static/img/make/opensans-gentiumbook.png"/></li>
+                    <li data-value="Playfair-FaunaOne"><img src="static/img/make/playfair-faunaone.png"/></li>
+                    <li data-value="Playfair"><img src="static/img/make/playfair.png"/></li>
+                    <li data-value="PT"><img src="static/img/make/pt.png"/></li>
+                    <li data-value="Roboto-Megrim"><img src="static/img/make/roboto-megrim.png"/></li>
+                    <li data-value="Rufina-Sintony"><img src="static/img/make/rufina-sintony.png"/></li>
+                    <li data-value="UnicaOne-Vollkorn"><img src="static/img/make/unicaone-vollkorn.png"/></li>
+                  </ul>
               </ul>
             </div>
           </div>
@@ -269,7 +266,7 @@
   </div>
 
   <!-- Preview -->
-  <div id="preview" class="small-11 columns offset-1">
+  <div id="preview" class="row">
     <div id="preview-embed">
       <h2>Preview</h2>
       <div id="preview-embed-iframe"></div>

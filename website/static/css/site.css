@@ -135,6 +135,33 @@ h2.intro { margin-bottom: 10px; }
   margin-bottom: 20px;
 
 }
+ul#embed-font-dropdown,
+ul#embed-font {
+    list-style-type:none;
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+ul#embed-font{
+    display:none;
+    position:absolute;
+    width: 90%;
+    top: 50px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+    background-color: #FAFAFA;
+    z-index: 10;
+    padding: 10px 25px;
+}
+ul#embed-font li img {
+    max-width: 60%;
+}
+ul#embed-font-dropdown > li > p {
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0px;
+}
 
 #preview-required {
   display: none;
