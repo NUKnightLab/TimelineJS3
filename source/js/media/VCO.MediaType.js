@@ -131,12 +131,12 @@ VCO.MediaType = function(m) {
 				match_str: 	"blockquote",
 				cls: 		VCO.Media.Blockquote
 			},
-			{
-				type: 		"website",
-				name: 		"Website",
-				match_str: 	"http://",
-				cls: 		VCO.Media.Website
-			},
+			// {
+			// 	type: 		"website",
+			// 	name: 		"Website",
+			// 	match_str: 	"https?://",
+			// 	cls: 		VCO.Media.Website
+			// },
 			{
 				type: 		"imageblank",
 				name: 		"Imageblank",

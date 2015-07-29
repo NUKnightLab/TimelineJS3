@@ -17,29 +17,6 @@ VCO.DateUtil = {
 		});
 	},
 	
-	/*	Find Best Format
-	 * this may not work with 'cosmologic' dates, or with VCO.Date if we 
-	 * support constructing them based on JS Date and time
-	================================================== */
-	findBestFormat: function(data, variant) {
-		var eval_array = VCO.Date.DATE_PARTS,
-			format = "";
-		
-		for (var i = 0; i < eval_array.length; i++) {
-			if ( data[eval_array[i]]) {
-				if (variant) {
-					if (!(variant in VCO.DateUtil.best_dateformats)) {
-						variant = 'short'; // legacy
-					}
-				} else {
-					variant = 'base'
-				}
-				return VCO.DateUtil.best_dateformats[variant][eval_array[i]];		
-			}
-		};
-		return "";
-	},
-	
 	parseTime: function(time_str) {
 		var parsed = {
 			hour: null, minute: null, second: null, millisecond: null // conform to keys in VCO.Date
@@ -94,43 +71,6 @@ VCO.DateUtil = {
 		}
 
 		return parsed;
-	},
-	best_dateformats: {
-		base: {
-			millisecond: 'time_short',
-			second: 'time',
-			minute: 'time_no_seconds_small_date',
-			hour: 'time_no_seconds_small_date',
-			day: 'full',
-			month: 'month',
-			year: 'year',
-			decade: 'year',
-			century: 'year',
-			millennium: 'year',
-			age: 'fallback',
-			epoch: 'fallback',
-			era: 'fallback',
-			eon: 'fallback',
-			eon2: 'fallback'
-		},
-		
-		short: {
-			millisecond: 'time_short',
-			second: 'time_short',
-			minute: 'time_no_seconds_short',
-			hour: 'time_no_minutes_short',
-			day: 'full_short',
-			month: 'month_short',
-			year: 'year',
-			decade: 'year',
-			century: 'year',
-			millennium: 'year',
-			age: 'fallback',
-			epoch: 'fallback',
-			era: 'fallback',
-			eon: 'fallback',
-			eon2: 'fallback'
-		}
 	}
 	
 };
