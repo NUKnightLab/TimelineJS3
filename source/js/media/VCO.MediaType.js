@@ -134,7 +134,7 @@ VCO.MediaType = function(m) {
 			{
 				type: 		"website",
 				name: 		"Website",
-				match_str: 	"http://",
+				match_str: 	"https?://",
 				cls: 		VCO.Media.Website
 			},
 			{
