@@ -183,6 +183,14 @@ $(document).ready(function() {
     //$("body,html").animate({scrollTop: $embed.offset().top - 60}, 250);
   });
 
+  // Device preview
+  $('#device-preview-mode span').on("click", function(){
+    $("#preview-embed-iframe").removeClass();
+    $("#preview-embed-iframe").addClass($(this).data("size"));
+    $(this).siblings().removeClass("active");
+    $(this).addClass("active");
+  });
+
   // Embed Generator
   updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });

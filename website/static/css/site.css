@@ -177,17 +177,46 @@ ul#embed-font-dropdown > li > p {
 #preview-embed {
   display: none;
 }
-
+#device-preview-mode {
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+}
+#device-preview-mode span {
+    transition: background-color 300ms ease-out;
+    background-color: #DDDDDD;
+    border: 1px solid #b1b1b1;
+    padding: 5px 10px;
+    margin: 0 4px;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 1px 0px;
+    cursor: pointer;
+}
+#device-preview-mode span.active,
+#device-preview-mode span:hover,
+#device-preview-mode span:focus {
+    background-color: #bcbcbc;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2) inset, 0pt -10px 10pt rgba(0, 0, 0, 0.075) inset;
+}
 #preview-embed-iframe {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s;
+  width: 100%;
 }
-
+#preview-embed-iframe.desktop-view {
+    width: 100%;
+}
+#preview-embed-iframe.tablet-view {
+    width: 768px;
+}
+#preview-embed-iframe.mobile-view {
+    width: 380px;
+}
 /* header */
 .logo-mark.xl {
     margin-left: 65px;
