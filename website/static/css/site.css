@@ -180,6 +180,7 @@ ul#embed-font-dropdown > li > p {
 #device-preview-mode {
     font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 13px;
+    margin-top: 40px;
 }
 #device-preview-mode span {
     transition: background-color 300ms ease-out;
