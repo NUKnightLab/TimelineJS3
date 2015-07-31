@@ -102,9 +102,9 @@ timeline.on(event_name, function(data) {
 ```javascript
 {
     "start_date": {
-        "year":			<string>,
-        "month":		<string>,
-        "day": 			<string>,
+        "year":			<string>, // all events must have a year. 
+        "month":		<string>, // other attributes are optional
+        "day": 			<string>, 
         "hour": 		<string>,
         "minute": 		<string>,
         "second": 		<string>,
