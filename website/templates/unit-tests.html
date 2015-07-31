@@ -152,7 +152,7 @@
         ok(jsdate.isAfter(refdate),"any new date should be after refdate");
 
         var smalldate = VCO.Date.makeDate({year: 2015});
-        ok(!isNaN(smalldate.getTime()),"small dates are javascript");
+        ok(!isNaN(smalldate.getTime()),"small dates are human");
 
         var bigdate = VCO.Date.makeDate({year: 1000000});
         ok(!isNaN(bigdate.getTime()),"big dates are cosmological"); 
@@ -445,7 +445,7 @@
         ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
         ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
         equal(timescale.getNumberOfRows(),6,"Expecting 6 rows") // this will change if someone monkeys around with the config file!
-        equal(timescale.getScale(),'javascript','test case uses JS dates')
+        equal(timescale.getScale(),'human','test case uses human dates')
 
 
       });
