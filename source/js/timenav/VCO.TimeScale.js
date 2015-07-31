@@ -8,7 +8,7 @@ VCO.TimeScale = VCO.Class.extend({
     
     initialize: function (timeline_config, options) {
         timeline_config = VCO.Util.extend({ // establish defaults
-            scale: 'javascript'
+            scale: 'human'
         }, timeline_config);
 
         var slides = timeline_config.events;
@@ -50,7 +50,7 @@ VCO.TimeScale = VCO.Class.extend({
     _computeDefaultSpan: function(timeline_config) {
         // this gets called when all events are at the same instant, 
         // or maybe when the span_in_millis is > 0 but still below a desired threshold 
-        if (timeline_config.scale == 'javascript') {
+        if (timeline_config.scale == 'human') {
             var formats = {}
             for (var i = 0; i < timeline_config.events.length; i++) {
                 var fmt = timeline_config.events[i].start_date.findBestFormat();
@@ -114,7 +114,7 @@ VCO.TimeScale = VCO.Class.extend({
     },
 
     getDateFromTime: function(t) {
-        if(this._scale == 'javascript') {
+        if(this._scale == 'human') {
             return new VCO.Date(t);
         } else if(this._scale == 'cosmological') {
             return new VCO.BigDate(new VCO.BigYear(t));

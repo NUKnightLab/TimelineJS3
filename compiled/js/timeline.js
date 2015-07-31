@@ -2994,7 +2994,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 		if(!this.scale) {
 			trace("Determining scale dynamically");
             
-			this.scale = "javascript"; // default
+			this.scale = "human"; // default
             
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
@@ -3011,7 +3011,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 			}
 		}
         
-		if(this.scale == 'javascript') {
+		if(this.scale == 'human') {
 			dateCls = VCO.Date;
 			trace('using VCO.Date');
 		} else if(this.scale == 'cosmological') {
@@ -4811,7 +4811,7 @@ VCO.StyleSheet = VCO.Class.extend({
 ================================================== */
 
 //
-// Class for javascript dates
+// Class for human dates
 //
 
 VCO.Date = VCO.Class.extend({
@@ -4990,7 +4990,7 @@ VCO.BigYear = VCO.Class.extend({
 
 (function(cls){
     
-    // javascript scales
+    // human scales
     cls.SCALES = [ // ( name, units_per_tick, flooring function )
         ['millisecond',1, function(d) { }],
         ['second',1000, function(d) { d.setMilliseconds(0);}],
@@ -10424,7 +10424,7 @@ VCO.TimeScale = VCO.Class.extend({
     
     initialize: function (timeline_config, options) {
         timeline_config = VCO.Util.extend({ // establish defaults
-            scale: 'javascript'
+            scale: 'human'
         }, timeline_config);
 
         var slides = timeline_config.events;
@@ -10502,7 +10502,7 @@ VCO.TimeScale = VCO.Class.extend({
     },
 
     getDateFromTime: function(t) {
-        if(this._scale == 'javascript') {
+        if(this._scale == 'human') {
             return new VCO.Date(t);
         } else if(this._scale == 'cosmological') {
             return new VCO.BigDate(new VCO.BigYear(t));
@@ -11085,7 +11085,7 @@ VCO.AxisHelper = VCO.Class.extend({
         }
     };
     
-    setHelpers('javascript', VCO.Date.SCALES);
+    setHelpers('human', VCO.Date.SCALES);
     setHelpers('cosmological', VCO.BigDate.SCALES);
     
     cls.HELPERS = HELPERS;

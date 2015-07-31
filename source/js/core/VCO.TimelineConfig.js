@@ -121,7 +121,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 		if(!this.scale) {
 			trace("Determining scale dynamically");
             
-			this.scale = "javascript"; // default
+			this.scale = "human"; // default
             
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
@@ -138,7 +138,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 			}
 		}
         
-		if(this.scale == 'javascript') {
+		if(this.scale == 'human') {
 			dateCls = VCO.Date;
 			trace('using VCO.Date');
 		} else if(this.scale == 'cosmological') {

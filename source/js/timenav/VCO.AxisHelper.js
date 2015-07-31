@@ -64,7 +64,7 @@ VCO.AxisHelper = VCO.Class.extend({
         }
     };
     
-    setHelpers('javascript', VCO.Date.SCALES);
+    setHelpers('human', VCO.Date.SCALES);
     setHelpers('cosmological', VCO.BigDate.SCALES);
     
     cls.HELPERS = HELPERS;

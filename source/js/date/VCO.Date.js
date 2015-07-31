@@ -4,7 +4,7 @@
 ================================================== */
 
 //
-// Class for javascript dates
+// Class for human dates
 //
 
 VCO.Date = VCO.Class.extend({
@@ -205,7 +205,7 @@ VCO.BigYear = VCO.Class.extend({
 
 (function(cls){
     
-    // javascript scales
+    // human scales
     cls.SCALES = [ // ( name, units_per_tick, flooring function )
         ['millisecond',1, function(d) { }],
         ['second',1000, function(d) { d.setMilliseconds(0);}],

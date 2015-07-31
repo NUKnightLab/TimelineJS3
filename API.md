@@ -45,7 +45,7 @@ timeline.on(event_name, function(data) {
 
 `loaded` _after story slider and time navigator have been loaded_
 
-* scale: "javascript" or "cosmological", the type of date scale
+* scale: "human" or "cosmological", the type of date scale
 * slides: array, the processed slide data
 
 `zoom_in` _when user zooms in the time navigator_
