@@ -158,7 +158,11 @@
         ok(!isNaN(bigdate.getTime()),"big dates are cosmological"); 
         
         var cdate = VCO.Date.makeDate({year: 2014, display_date: "hello"});
-        equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')       
+        equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')
+
+        var date = VCO.Date.makeDate({year: 75});
+        equal(date.getDisplayDate(), "75", "handle years in the first century CE correctly")
+
       });
 
       test("VCO.Date.parseDate", function() {
@@ -182,6 +186,14 @@
         ok(!(d.month), 'year only date has no month');
         ok(!(d.day), 'year only date has no day');
 
+
+      });
+
+      test("VCO.Date.findBestFormat", function() {
+        var date = new VCO.Date({'year': 1975, month: 7})
+        equal(date.findBestFormat(),"month","Expect a format key")
+        equal(date.findBestFormat(true),"month_short","Expect a different format key for short (legacy)")
+        equal(date.findBestFormat('short'),"month_short","Expect a different format key for short (explicit)")
 
       });
 
@@ -286,9 +298,6 @@
         equal(ary[2],c,"C should sort third")
 
 
-        equal(VCO.DateUtil.findBestFormat({'second': 1}),"time","Expect a format key")
-        equal(VCO.DateUtil.findBestFormat({'second': 1},true),"time_short","Expect a different format key for short (legacy)")
-        equal(VCO.DateUtil.findBestFormat({'second': 1},'short'),"time_short","Expect a different format key for short (explicit)")
       })
 
       test("VCO.DateUtil.parseTime", function(){
