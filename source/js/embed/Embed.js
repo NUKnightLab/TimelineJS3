@@ -251,13 +251,12 @@ function createStoryJS(c, src) {
   function buildEmbed() {
     VCO.debug = storyjs_e_config.debug;
     
-    var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
-        storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
-        storyjs_e_config.language = storyjs_e_config.lang;
-        if (storyjs_e_config.width == '100%') {
-          storyjs_e_config.is_full_embed = true;
-        }
-    storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
+    storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
+    storyjs_e_config.language = storyjs_e_config.lang;
+    if (storyjs_e_config.width == '100%') {
+      storyjs_e_config.is_full_embed = true;
+    }
+    VCO.ConfigFactory.makeTimeline('timeline-embed', storyjs_e_config.source, storyjs_e_config, 'timeline');
     
   }
     
