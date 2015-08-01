@@ -565,6 +565,8 @@ VCO.Timeline = VCO.Class.extend({
 			self._onDataLoaded();
 		} else {
 			self.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
+			// should we set 'self.ready'? if not, it won't resize, but most resizing would only work 
+			// if more setup happens
 		}
 	},
   
