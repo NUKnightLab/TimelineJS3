@@ -4,7 +4,7 @@
  
 VCO.Message = VCO.Class.extend({
 	
-	includes: [VCO.Events, VCO.DomMixins],
+	includes: [VCO.Events, VCO.DomMixins, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -63,8 +63,7 @@ VCO.Message = VCO.Class.extend({
 	
 	_updateMessage: function(t) {
 		if (!t) {
-			var lang = this.options.language || VCO.Language.fallback;
-			this._el.message.innerHTML = lang._('loading');
+			this._el.message.innerHTML = this._('loading');
 		} else {
 			this._el.message.innerHTML = t;
 		}
