@@ -200,7 +200,11 @@ VCO.Timeline = VCO.Class.extend({
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
 
-		
+		window.addEventListener("resize", function(e){ 
+			self.updateDisplay(); 
+		})
+
+
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {

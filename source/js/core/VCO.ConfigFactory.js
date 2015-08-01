@@ -190,6 +190,20 @@
 
     }
 
+    var makeConfig = function(url, callback) {
+        var key = parseGoogleSpreadsheetURL(url);  
+
+        if (key) {
+            var json = jsonFromGoogleURL(url);
+            callback(new VCO.TimelineConfig(json));
+        } else {
+            VCO.getJSON(url, function(data){
+                callback(new VCO.TimelineConfig(data));
+
+            });
+        }
+    }
+
     VCO.ConfigFactory = {
         // export for unit testing and use by authoring tool
         parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
@@ -209,21 +223,23 @@
          * the only argument. This should be the main public interface to getting configs
          * from any kind of URL, Google or direct JSON.
          */
-
-        makeConfig: function(url, callback) {
-            var key = parseGoogleSpreadsheetURL(url);  
-
-            if (key) {
-                var json = jsonFromGoogleURL(url);
-                callback(new VCO.TimelineConfig(json));
-            } else {
-                VCO.getJSON(url, function(data){
-                    callback(new VCO.TimelineConfig(data));
-
-                });
-            }
-
+        makeConfig: makeConfig,
+        /**
+         * Handle a common case where the callback to makeConfig would basically just create a timeline.
+         * Use this if you need your data fetched, as an alternative to Timeline's former support for passing 
+         * a URL to the VCO.Timeline constructor
+         * If you want to have a reference to the given timeline, pass a string as the 'export_name' parameter. The 
+         * created timeline will be assigned to a window-scoped variable of the same name.
+         */
+        makeTimeline: function(element, url, options, export_name) {
+            makeConfig(url, function(config) {
+                var timeline = new VCO.Timeline(element, config, options);
+                if (export_name) {
+                    window[export_name] = timeline;
+                }
+            })
         }
+
 
     }
 })(VCO)

@@ -251,27 +251,14 @@ function createStoryJS(c, src) {
   function buildEmbed() {
     VCO.debug = storyjs_e_config.debug;
     
-      storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
-      storyjs_e_config.language = storyjs_e_config.lang;
-      if (storyjs_e_config.width == '100%') {
-        storyjs_e_config.is_full_embed = true;
-      }
-
-    VCO.ConfigFactory.makeConfig(storyjs_e_config.source,function(config){
-      window.storyjs_embed = new VCO.Timeline('timeline-embed', config, storyjs_e_config);
-      
-      var handle_resize = function(event) { storyjs_embed.updateDisplay(); }
-      if (window.onresize && typeof(window.onresize == 'function')) {
-        var _onresize = window.onresize;
-        window.onresize = function(event) {
-          _onresize(event);
-          handle_resize(event);
+    var json = VCO.ConfigFactory.fromGoogle(storyjs_e_config.source);
+        storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
+        storyjs_e_config.language = storyjs_e_config.lang;
+        if (storyjs_e_config.width == '100%') {
+          storyjs_e_config.is_full_embed = true;
         }
-      } else {
-        window.onresize = handle_resize;
-      }
-    })
-
+    storyjs_embed = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(json), storyjs_e_config);
+    
   }
     
 }

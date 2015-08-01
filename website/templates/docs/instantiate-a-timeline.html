@@ -32,17 +32,16 @@
     &lt;!-- 2 --&gt;
     &lt;script src="//cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
 
+    &lt;div id='timeline-embed' style="width: 100%; height: 600px"&gt;&lt;/div&gt;
+
     &lt;!-- 3 --&gt;
     &lt;script type="text/javascript"&gt;
-      // two arguments: the id of the Timeline container (no '#')
-      // and the URL to your JSON data file. In this case, a relative URL.
-      window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json');
-
-      // You probably also want to ensure that the timeline redraws 
-      // when the window is resized. We may eventually make this the default behavior.
-      window.onresize = function(event) {
-        timeline.updateDisplay();
-      }
+      // two arguments: the id of the Timeline container (no '#') 
+      // and the URL to your JSON data file or Google spreadsheet.
+      // the id must refer to an element "above" the makeTimeline command in the page, 
+      // and the element must have CSS styling to give it width and height
+      VCO.ConfigFactory.makeTimeline('timeline-embed', 
+        'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
     &lt;/script&gt;</pre>
 
     </div>
@@ -52,20 +51,14 @@
       Programmers often want to create a Timeline based on a dynamic process. If you are not loading JSON for a Timeline directly from a URL, here's what you need to know.
     </p>
     <p>
-      Unlike the original version of TimelineJS, you can't just pass a javascript object to the <code>VCO.Timeline</code> constructor. Instead, pass an instance of <code>VCO.TimelineConfig</code>. Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look more like this.
+      Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.
       <pre class="prettyprint lang-html">
       &lt;!-- 3 --&gt;
       &lt;script type="text/javascript"&gt;
         var timeline_json = make_the_json(); // you write this part
         // two arguments: the id of the Timeline container (no '#')
         // and the TimelineConfig object
-        window.timeline = new VCO.Timeline('timeline-embed', new VCO.TimelineConfig(timeline_json));
-
-        // You probably also want to ensure that the timeline redraws 
-        // when the window is resized. We may eventually make this the default behavior.
-        window.onresize = function(event) {
-          timeline.updateDisplay();
-        }
+        window.timeline = new VCO.Timeline('timeline-embed', timeline_json);
       &lt;/script&gt;</pre>
 
     </p>
@@ -106,6 +99,7 @@
           <li>font.unicaone-vollkorn.css</li>
         </ul></p>
     </div>
+    <p>You can <a href="http://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN. You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a> If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">our LESS files on GitHub</a>.</p>
   </div>
 </section>
 {% endblock %}
