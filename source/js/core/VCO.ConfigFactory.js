@@ -2,19 +2,40 @@
  * Build TimelineConfig objects from other data sources
  */
 ;(function(VCO){
-    function extractSpreadsheetKey(url) {
+    /*
+     * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
+
+     If `url` is actually a string with no `/` characters, then it's assumed to be an ID
+     already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented.
+
+     If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
+     */
+    function parseGoogleSpreadsheetURL(url) {
+        parts = {
+            key: null,
+            worksheet: 1
+        }
+        // key as url parameter (old-fashioned)
         var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
         if (url.match(pat)) {
-            return url.match(pat)[1];
-        }
-        var key = null;
-        if (url.match("docs.google.com/spreadsheets/d/")) {
+            parts.key = url.match(pat)[1];
+            // can we get a worksheet from this form?
+        } else if (url.match("docs.google.com/spreadsheets/d/")) {
             var pos = url.indexOf("docs.google.com/spreadsheets/d/") + "docs.google.com/spreadsheets/d/".length;
             var tail = url.substr(pos);
-            key = tail.split('/')[0]
+            parts.key = tail.split('/')[0]
+            if (url.match("?gid=(\d+)")) {
+                parts.worksheet = url.match("?gid=(\d+)")[1];
+            }
+        } else if (url.indexOf('/') == -1) {
+            parts.key = url;
         }
-        if (!key) { key = url}
-        return key;
+
+        if (parts.key) {
+            return parts;
+        } else {
+            return null;
+        }
     }
 
     function extractGoogleEntryData_V1(item) {
@@ -133,26 +154,18 @@
         }
     }
 
-    VCO.ConfigFactory = {
-
-        extractSpreadsheetKey: extractSpreadsheetKey,
-
-        fromGoogle: function(url) {
-            var key = extractSpreadsheetKey(url);
+    var configFromGoogleURL = function(url) {
             // TODO: maybe get specific worksheets?
-            var worksheet = '1';
-            url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
-            return this.fromFeed(url);
-        },
+            var ss_parts = parseGoogleSpreadsheetURL(url);  
+            url = "https://spreadsheets.google.com/feeds/list/" + ss_parts.key + "/" + ss_parts.worksheet + "/public/values?alt=json";
 
-        fromFeed: function(url) {
             var timeline_config = { 'events': [] };
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
             data = JSON.parse(data.responseText);
-            window.google_data = data;
+
             var extract = getGoogleItemExtractor(data);
             for (var i = 0; i < data.feed.entry.length; i++) {
                 var event = extract(data.feed.entry[i]);
@@ -169,5 +182,59 @@
             };
             return timeline_config;
         }
+
+
+    VCO.ConfigFactory = {
+        // export for unit testing and use by authoring tool
+        parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
+
+        fromGoogle: function(url) {
+            console.log("VCO.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use VCO.ConfigFactory.makeConfig(url,callback)")
+            return configFromGoogleURL(url);
+
+        },
+
+        fromFeed: function(url) {
+            var timeline_config = { 'events': [] };
+            var data = VCO.ajax({
+                url: url, 
+                async: false
+            });
+            data = JSON.parse(data.responseText);
+            
+            var extract = getGoogleItemExtractor(data);
+            for (var i = 0; i < data.feed.entry.length; i++) {
+                var event = extract(data.feed.entry[i]);
+                var row_type = 'event';
+                if (typeof(event.type) != 'undefined') {
+                    row_type = event.type;
+                    delete event.type;
+                }
+                if (row_type == 'title') {
+                    timeline_config.title = event;
+                } else {
+                    timeline_config.events.push(event);
+                }
+            };
+            return timeline_config;
+        },
+
+        /*
+         * Given a URL to a Timeline data source, read the data, create a TimelineConfig
+         * object, and call the given `callback` function passing the created config as
+         * the only argument. This should be the main public interface to getting configs
+         * from any kind of URL, Google or direct JSON.
+         */
+
+        makeConfig: function(url, callback) {
+            var key = parseGoogleSpreadsheetURL(url);  
+
+            if (key) {
+                var config = configFromGoogleURL(url);
+                callback(config);
+
+            }
+        }
+
     }
 })(VCO)

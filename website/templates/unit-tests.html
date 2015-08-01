@@ -413,16 +413,21 @@
 
 
       test("VCO.ConfigFactory", function() {
-        var data = VCO.ConfigFactory.fromFeed('test/TimelineTemplate.json');
-        equal(7, data.events.length, "7 entries in TimelineTemplate");
+        var data = VCO.ConfigFactory.fromFeed('test/GoogleSpreadsheetFeedLegacyFormat.json');
+        equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
         ok(data.title, "There should be a title.")
-        var data = VCO.ConfigFactory.fromFeed('test/Timeline3Template.json');
-        equal(7, data.events.length, "7 events in Timeline3Template (one title)");
+        var data = VCO.ConfigFactory.fromFeed('test/GoogleSpreadsheetFeedTJS3Format.json');
+        equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
         ok(data.title, "There should be a title.")
         equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
         equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
       });
 
+      test("VCO.ConfigFactory.parseGoogleSpreadsheetURL", function() {
+        var key = '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI';
+        var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(key);
+        equal(key, parts.key, "Bare sheet ID should come back in key")
+      });
 
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig
         setup: function() {
