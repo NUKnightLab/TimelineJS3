@@ -4,7 +4,7 @@ to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
 	
-	includes: [VCO.Events],
+	includes: [],
 	VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
 	initialize: function (data, callback) {
@@ -20,7 +20,6 @@ VCO.TimelineConfig = VCO.Class.extend({
 					if (d && d.events) {
 						self._importProperties(d);
 					} else {
-						this.fire("load_error", {message:"data must have an events property"});
 						throw("data must have an events property");
 					}
 					self._cleanData();
@@ -31,7 +30,6 @@ VCO.TimelineConfig = VCO.Class.extend({
 				error:function(xhr, type){
 					trace(xhr);
 					trace(type);
-					this.fire("load_error", {message:"Configuration could not be loaded: " + type});
 					throw("Configuration could not be loaded: " + type);
 					
 				}
@@ -41,14 +39,12 @@ VCO.TimelineConfig = VCO.Class.extend({
 				this._importProperties(data);
 				this._cleanData();
 			} else {
-				this.fire("load_error", {message:"data must have an events property"});
 				throw("data must have a events property");
 			}
 			if (callback) {
 				callback(this);
 			}
 		} else {
-			this.fire("load_error", {message:"Invalid Argument"});
 			throw("Invalid Argument");
 		}
 	},
@@ -125,7 +121,6 @@ VCO.TimelineConfig = VCO.Class.extend({
             
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
-					this.fire("load_error", {message:"item " + i + " is missing a start_date"});
 					throw("item " + i + " is missing a start_date");
 				}
                 
@@ -145,13 +140,11 @@ VCO.TimelineConfig = VCO.Class.extend({
 			dateCls = VCO.BigDate;
 			trace('using VCO.BigDate');
 		} else {
-			this.fire("load_error", {message:"Don't know how to process dates on scale "+this.scale});
 			throw ("Don't know how to process dates on scale "+this.scale);
 		}
             
 		for (var i = 0; i < array.length; i++) {
 			if (typeof(array[i].start_date) == 'undefined') {
-				this.fire("load_error", {message:"item " + i + " is missing a start_date"});
 				throw("item " + i + " is missing a start_date");
 				
 			}
