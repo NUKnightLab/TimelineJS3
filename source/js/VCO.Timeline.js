@@ -97,7 +97,7 @@ http://incident57.com/codekit/
 
 
 VCO.Timeline = VCO.Class.extend({
-	includes: VCO.Events,
+	includes: [VCO.Events, VCO.I18NMixins],
 
 	/*  Private Methods
 	================================================== */
@@ -145,7 +145,6 @@ VCO.Timeline = VCO.Class.extend({
 		this._loaded = {storyslider:false, timenav:false};
 
 		// Data Object
-		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
 		this.config = null;
 
 		this.options = {
@@ -201,6 +200,7 @@ VCO.Timeline = VCO.Class.extend({
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
 
+		
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {
@@ -557,12 +557,15 @@ VCO.Timeline = VCO.Class.extend({
 		var self = this;
 		if (VCO.TimelineConfig == data.constructor) {
 			self.config = data;
+		} else {
+			self.config = new VCO.TimelineConfig(data);
+		}
+		self.config.validate();
+		if (self.config.isValid()) {
 			self._onDataLoaded();
 		} else {
-			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+			self.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
 		}
-		self.config.on('load_error', this._onError, this);
-		
 	},
   
 	// Initialize the layout
@@ -617,7 +620,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._updateDisplay(false, true, 2000);
     
 	},
-  
+  	/* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
@@ -707,9 +710,12 @@ VCO.Timeline = VCO.Class.extend({
     
 	},
 	
-	_onError: function(e) {
+	showMessage: function(msg) {
 		if (this.message) {
-			this.message.updateMessage("<strong>Error: </strong>" + e.message);
+			this.message.updateMessage(msg);
+		} else {
+			trace("No message display available.")
+			trace(msg);
 		}
 	},
   

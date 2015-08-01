@@ -5,50 +5,48 @@ to make testing easier
 VCO.TimelineConfig = VCO.Class.extend({
 	
 	includes: [],
+	messages: {
+		errors: [],
+		warnings: []
+	},
 	VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
-	initialize: function (data, callback) {
+	initialize: function (data) {
 		// Initialize the data
-		if (typeof data === 'string') {
-			var self = this;
-            
-			VCO.ajax({
-				type: 'GET',
-				url: data,
-				dataType: 'json', //json data type
-				success: function(d){
-					if (d && d.events) {
-						self._importProperties(d);
-					} else {
-						throw("data must have an events property");
-					}
-					self._cleanData();
-					if (callback) {
-						callback(self);
-					}
-				},
-				error:function(xhr, type){
-					trace(xhr);
-					trace(type);
-					throw("Configuration could not be loaded: " + type);
-					
-				}
-			});
-		} else if (typeof data === 'object') {
-			if (data.events) {
-				this._importProperties(data);
-				this._cleanData();
-			} else {
-				throw("data must have a events property");
-			}
-			if (callback) {
-				callback(this);
-			}
+		if (typeof data === 'object' && data.events) {
+			this._importProperties(data);
+			this._cleanData();
 		} else {
-			throw("Invalid Argument");
+			this.logError("Argument to TimelineConfig should be a JSON object conforming to the TimelineJS3 JSON specification.");
 		}
 	},
-
+	logError: function(msg) {
+		trace(msg);
+		this.messages.errors.push(msg);
+	},
+	/*
+	 * Return any accumulated error messages. If `sep` is passed, it should be a string which will be used to join all messages, resulting in a string return value. Otherwise,
+	 * errors will be returned as an array.
+	 */
+	getErrors: function(sep) {
+		if (sep) {
+			return this.messages.errors.join(sep);
+		} else {
+			return this.messages.errors;
+		}
+	},
+	/*
+	 * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
+	 * such that after this is called, one can test `this.isValid()` to see if everything is OK.
+	 */
+	validate: function() {
+		if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
+			this.logError("Timeline configuration has no events.")
+		}
+	},
+	isValid: function() {
+		return this.messages.errors.length == 0;
+	},
 	/* Add an event and return the unique id 
 	*/
 	addEvent: function(data) {
@@ -121,14 +119,14 @@ VCO.TimelineConfig = VCO.Class.extend({
             
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
-					throw("item " + i + " is missing a start_date");
-				}
-                
-				var d = new VCO.BigDate(array[i].start_date);
-				var year = d.data.date_obj.year;               
-				if(year < -271820 || year >  275759) {
-					this.scale = "cosmological";
-					break;
+					this.logError("item " + i + " is missing a start_date");
+				} else {
+					var d = new VCO.BigDate(array[i].start_date);
+					var year = d.data.date_obj.year;               
+					if(year < -271820 || year >  275759) {
+						this.scale = "cosmological";
+						break;
+					}
 				}
 			}
 		}
@@ -140,13 +138,12 @@ VCO.TimelineConfig = VCO.Class.extend({
 			dateCls = VCO.BigDate;
 			trace('using VCO.BigDate');
 		} else {
-			throw ("Don't know how to process dates on scale "+this.scale);
+			this.logError("Don't know how to process dates on scale "+this.scale);
 		}
             
 		for (var i = 0; i < array.length; i++) {
 			if (typeof(array[i].start_date) == 'undefined') {
-				throw("item " + i + " is missing a start_date");
-				
+				this.logError("item " + i + " is missing a start_date");
 			}
 			if(!(array[i].start_date instanceof dateCls)) {
 				var start_date = array[i].start_date;
