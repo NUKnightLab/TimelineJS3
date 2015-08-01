@@ -120,6 +120,8 @@ VCO.TimelineConfig = VCO.Class.extend({
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
 					this.logError("item " + i + " is missing a start_date");
+				} else if (typeof(array[i].start_date.year) == 'undefined' || !(array[i].start_date.year.match(/^\s*\-?\d+\s*$/))) {
+					this.logError("item " + i + " is has invalid start_date.");
 				} else {
 					var d = new VCO.BigDate(array[i].start_date);
 					var year = d.data.date_obj.year;               
