@@ -420,10 +420,10 @@
       }
 
       test("VCO.ConfigFactory", function() {
-        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineConfig(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
+        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
         equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
         ok(data.title, "There should be a title.")
-        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineConfig(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
+        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
         equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
         ok(data.title, "There should be a title.")
         equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");

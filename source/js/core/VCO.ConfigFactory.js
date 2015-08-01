@@ -159,7 +159,7 @@
 
     }
 
-    var configFromGoogleURL = function(url) {
+    var jsonFromGoogleURL = function(url) {
         var url = buildGoogleFeedURL(parseGoogleSpreadsheetURL(url));
             var timeline_config = { 'events': [] };
             var data = VCO.ajax({
@@ -167,10 +167,10 @@
                 async: false
             });
             data = JSON.parse(data.responseText);
-            return googleFeedJSONtoTimelineConfig(data);
+            return googleFeedJSONtoTimelineJSON(data);
         }
 
-    var googleFeedJSONtoTimelineConfig = function(data) {
+    var googleFeedJSONtoTimelineJSON = function(data) {
         var timeline_config = { 'events': [] }
         var extract = getGoogleItemExtractor(data);
         for (var i = 0; i < data.feed.entry.length; i++) {
@@ -194,12 +194,12 @@
         // export for unit testing and use by authoring tool
         parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
         // export for unit testing
-        googleFeedJSONtoTimelineConfig: googleFeedJSONtoTimelineConfig,
+        googleFeedJSONtoTimelineJSON: googleFeedJSONtoTimelineJSON,
 
 
         fromGoogle: function(url) {
             console.log("VCO.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use VCO.ConfigFactory.makeConfig(url,callback)")
-            return configFromGoogleURL(url);
+            return jsonFromGoogleURL(url);
 
         },
 
@@ -214,10 +214,15 @@
             var key = parseGoogleSpreadsheetURL(url);  
 
             if (key) {
-                var config = configFromGoogleURL(url);
-                callback(config);
+                var json = jsonFromGoogleURL(url);
+                callback(new VCO.TimelineConfig(json));
+            } else {
+                VCO.getJSON(url, function(data){
+                    callback(new VCO.TimelineConfig(data));
 
+                });
             }
+
         }
 
     }
