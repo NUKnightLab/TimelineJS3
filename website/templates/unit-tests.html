@@ -411,12 +411,19 @@
       // });
 
 
+      function asyncJSON(url) {
+            var data = VCO.ajax({
+                url: url, 
+                async: false
+            });
+            return JSON.parse(data.responseText);
+      }
 
       test("VCO.ConfigFactory", function() {
-        var data = VCO.ConfigFactory.fromFeed('test/GoogleSpreadsheetFeedLegacyFormat.json');
+        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineConfig(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
         equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
         ok(data.title, "There should be a title.")
-        var data = VCO.ConfigFactory.fromFeed('test/GoogleSpreadsheetFeedTJS3Format.json');
+        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineConfig(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
         equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
         ok(data.title, "There should be a title.")
         equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
@@ -427,6 +434,20 @@
         var key = '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI';
         var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(key);
         equal(key, parts.key, "Bare sheet ID should come back in key")
+
+        var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml'
+        var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
+        var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(url);
+        equal(key, parts.key, "new-ish url format should get the right key")
+
+        var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml?gid=2066744085'
+        var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
+        var worksheet = '2066744085';
+        var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(url);
+        equal(key, parts.key, "new-ish url format should get the right key")
+        equal(worksheet, parts.worksheet, "new-ish url format should get the right worksheet")
+
+
       });
 
       module("marktwain.json tests",{ // setup for tests that need TimelineConfig

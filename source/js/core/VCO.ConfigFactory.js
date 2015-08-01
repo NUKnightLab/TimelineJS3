@@ -13,7 +13,7 @@
     function parseGoogleSpreadsheetURL(url) {
         parts = {
             key: null,
-            worksheet: 1
+            worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
         }
         // key as url parameter (old-fashioned)
         var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
@@ -24,8 +24,8 @@
             var pos = url.indexOf("docs.google.com/spreadsheets/d/") + "docs.google.com/spreadsheets/d/".length;
             var tail = url.substr(pos);
             parts.key = tail.split('/')[0]
-            if (url.match("?gid=(\d+)")) {
-                parts.worksheet = url.match("?gid=(\d+)")[1];
+            if (url.match(/\?gid=(\d+)/)) {
+                parts.worksheet = url.match(/\?gid=(\d+)/)[1];
             }
         } else if (url.indexOf('/') == -1) {
             parts.key = url;
@@ -154,69 +154,53 @@
         }
     }
 
-    var configFromGoogleURL = function(url) {
-            // TODO: maybe get specific worksheets?
-            var ss_parts = parseGoogleSpreadsheetURL(url);  
-            url = "https://spreadsheets.google.com/feeds/list/" + ss_parts.key + "/" + ss_parts.worksheet + "/public/values?alt=json";
+    var buildGoogleFeedURL = function(parts) {
+        return "https://spreadsheets.google.com/feeds/list/" + parts.key + "/1/public/values?alt=json";
 
+    }
+
+    var configFromGoogleURL = function(url) {
+        var url = buildGoogleFeedURL(parseGoogleSpreadsheetURL(url));
             var timeline_config = { 'events': [] };
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
             data = JSON.parse(data.responseText);
-
-            var extract = getGoogleItemExtractor(data);
-            for (var i = 0; i < data.feed.entry.length; i++) {
-                var event = extract(data.feed.entry[i]);
-                var row_type = 'event';
-                if (typeof(event.type) != 'undefined') {
-                    row_type = event.type;
-                    delete event.type;
-                }
-                if (row_type == 'title') {
-                    timeline_config.title = event;
-                } else {
-                    timeline_config.events.push(event);
-                }
-            };
-            return timeline_config;
+            return googleFeedJSONtoTimelineConfig(data);
         }
 
+    var googleFeedJSONtoTimelineConfig = function(data) {
+        var timeline_config = { 'events': [] }
+        var extract = getGoogleItemExtractor(data);
+        for (var i = 0; i < data.feed.entry.length; i++) {
+            var event = extract(data.feed.entry[i]);
+            var row_type = 'event';
+            if (typeof(event.type) != 'undefined') {
+                row_type = event.type;
+                delete event.type;
+            }
+            if (row_type == 'title') {
+                timeline_config.title = event;
+            } else {
+                timeline_config.events.push(event);
+            }
+        };
+        return timeline_config;
+
+    }
 
     VCO.ConfigFactory = {
         // export for unit testing and use by authoring tool
         parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
+        // export for unit testing
+        googleFeedJSONtoTimelineConfig: googleFeedJSONtoTimelineConfig,
+
 
         fromGoogle: function(url) {
             console.log("VCO.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use VCO.ConfigFactory.makeConfig(url,callback)")
             return configFromGoogleURL(url);
 
-        },
-
-        fromFeed: function(url) {
-            var timeline_config = { 'events': [] };
-            var data = VCO.ajax({
-                url: url, 
-                async: false
-            });
-            data = JSON.parse(data.responseText);
-            
-            var extract = getGoogleItemExtractor(data);
-            for (var i = 0; i < data.feed.entry.length; i++) {
-                var event = extract(data.feed.entry[i]);
-                var row_type = 'event';
-                if (typeof(event.type) != 'undefined') {
-                    row_type = event.type;
-                    delete event.type;
-                }
-                if (row_type == 'title') {
-                    timeline_config.title = event;
-                } else {
-                    timeline_config.events.push(event);
-                }
-            };
-            return timeline_config;
         },
 
         /*
