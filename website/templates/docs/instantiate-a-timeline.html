@@ -64,6 +64,24 @@
     </p>
     </div>
     <div class="small-12 columns">
+      <h3 id="options">Configuring TimelineJS options</h3>
+      <p><code>VCO.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options you would like to configure. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
+      <pre class="prettyprint lang-html">
+        &lt;script type="text/javascript"&gt;
+          var additionalOptions = {
+            start_at_end: true,
+            default_bg_color: {r:0, g:0, b:0},
+            timenav_height: 250
+          }
+
+          timeline = new VCO.Timeline('timeline-embed',
+          'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+          additionalOptions);
+        &lt;/script&gt;
+      </pre>
+
+    </div>
+    <div class="small-12 columns">
     <h3 id="custom-fonts">Using custom fonts</h3>
     <p>Timeline offers several pre-selected font sets. When you use our simple tool, the fonts get included for you, but if you're using the methods on this page, you'll have to load them yourself.</p>
     <p>

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <div class="row">
+      <div class="small-12 columns">
+      <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+      <h2 id="options">TimelineJS options</h2>
+      <p>When you create a timeline manually by calling <code>VCO.Timeline</code>, you may pass in an optional third parameter which contains a variety of presentation options.</p>
+      <dl>
+        <dt><code>script_path</code></dt>
+        <dd>
+          <p><strong>default value:</strong> ""</p>
+        </dd>
+
+        <dt><code>height</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>this._el.container.offsetHeight</code></p>
+          <p>The height of the timeline.</p>
+        </dd>
+
+        <dt><code>width</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>this._el.container.offsetWidth</code></p>
+          <p>The width of the timeline.</p>
+        </dd>
+
+        <dt><code>is_embed</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>false</code></p>
+        </dd>
+
+        <dt><code>is_full_embed</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>false</code></p>
+        </dd>
+
+        <dt><code>hash_bookmark</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>false</code></p>
+        </dd>
+
+        <dt><code>default_bg_color</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>{r:255, g:255, b:255}</code></p>
+          <p>RGB values to use for slide backgrounds.</p>
+        </dd>
+
+        <dt><code>scale_factor</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 2</p>
+          <p>How many screen widths wide the timeline should be.</p>
+        </dd>
+
+        <dt><code>layout</code></dt>
+        <dd>
+          <p><strong>default value:</strong> "landscape"</p>
+          <p>Portrait or landscape layout.</p>
+        </dd>
+
+        <dt><code>timenav_position</code></dt>
+        <dd>
+          <p><strong>default value:</strong> "bottom"</p>
+          <p>Display the timeline nav on the top or bottom.</p>
+        </dd>
+
+        <dt><code>optimal_tick_width</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 100</p>
+          <p>optimal distance (in pixels) between ticks on axis</p>
+        </dd>
+
+        <dt><code>base_class</code></dt>
+          <dd>
+          <p><strong>default value:</strong> "vco-timeline"</p>
+          <p>Removing the vco-timeline base class will disable all default stylesheets.</p>
+        </dd>
+
+        <dt><code>timenav_height</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 150</p>
+          <p>The height in pixels the timeline nav should be.</p>
+        </dd>
+
+        <dt><code>timenav_height_percentage</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 25</p>
+          <p>Specify the timeline nav height as a percentage of the screen instead of in pixels. Overrides <code>timenav_height</code>.</p>
+        </dd>
+
+        <dt><code>timenav_mobile_height_percentage</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 40</p>
+          <p>Specify the timeline nav height as a percentage of a mobile device screen.</p>
+        </dd>
+
+
+        <dt><code>timenav_height_min</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 150</p>
+          <p>The minimum timeline nav height (in pixels).</p>
+        </dd>
+
+        <dt><code>marker_height_min</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 30</p>
+          <p>The mininum marker height (in pixels).</p>
+        </dd>
+
+        <dt><code>marker_width_min</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 100</p>
+          <p>The minimum marker width (in pixels).</p>
+        </dd>
+
+        <dt><code>marker_padding</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 5</p>
+          <p>Top and bottom padding (in pixels) for markers.</p>
+        </dd>
+
+        <dt><code>start_at_slide</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 0</p>
+          <p>The first slide to display when the timeline is loaded.</p>
+        </dd>
+
+        <dt><code>start_at_end</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>false</code></p>
+          <p>If true, loads timeline on last slide.</p>
+        </dd>
+
+        <dt><code>menubar_height</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 0</p>
+        </dd>
+
+        <dt><code>skinny_size</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 650</p>
+          <p>The breakpoint for narrow screen styles.</p>
+        </dd>
+
+        <dt><code>medium_size</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 800</p>
+          <p>The breakpoint for medium screen styles.</p>
+        </dd>
+
+        <dt><code>relative_date</code></dt>
+        <dd>
+          <p><strong>default value:</strong> false</p>
+          <p>Use <a href="http://momentjs.com/">Moment.js</a> to show a relative date from the <code>slide.text.date.created_time</code> field.</p>
+        </dd>
+
+        <dt><code>use_bc</code></dt>
+        <dd>
+          <p><strong>default value:</strong> false</p>
+          <p>Use declared suffix on dates earlier than 0.</p>
+        </dd>
+
+        <dt><code>duration</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 1000</p>
+          <p>Animation duration (in milliseconds).</p>
+        </dd>
+
+        <dt><code>ease</code></dt>
+        <dd>
+          <p><strong>default value:</strong> <code>VCO.Ease.easeInOutQuint</code></p>
+        </dd>
+
+        <dt><code>dragging</code></dt>
+        <dd>
+          <p><strong>default value:</strong> true</p>
+        </dd>
+
+        <dt><code>trackResize</code></dt>
+        <dd>
+          <p><strong>default value:</strong> true</p>
+        </dd>
+
+        <dt><code>slide_padding_lr</code></dt>
+        <dd>
+          <p><strong>default value:</strong> 100</p>
+          <p>Padding (in pixels) on the left and right of each slide.</p>
+        </dd>
+
+        <dt><code>slide_default_fade</code></dt>
+        <dd>
+          <p><strong>default value:</strong> "0%"</p>
+        </dd>
+
+        <dt><code>zoom_sequence</code></dt>
+        <dd>
+          <p><strong>default value:</strong> [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</p>
+          <p>Array of Fibonacci numbers for TimeNav zoom levels</p>
+        </dd>
+
+        <dt><code>language</code></dt>
+        <dd>
+          <p><strong>default value:</strong> "en"</p>
+        </dd>
+
+        <dt><code>ga_property_id</code></dt>
+        <dd>
+          <p><strong>default value:</strong> null</p>
+          <p>Google Analytics ID.</p>
+        </dd>
+
+        <dt><code>track_events</code></dt>
+        <dd>
+          <p><strong>default value:</strong> ['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]</p>
+        </dd>
+      </dl>
+{% endblock %}
