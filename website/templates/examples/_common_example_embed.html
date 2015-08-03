@@ -13,7 +13,7 @@
     $(document).ready(function(){
         var embed = document.getElementById('timeline-embed');
         embed.style.height = getComputedStyle(document.body).height;
-        window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
+        VCO.ConfigFactory.makeTimeline('timeline-embed', 'timeline3.json', {}, 'timeline');
       });
   </script>
 
