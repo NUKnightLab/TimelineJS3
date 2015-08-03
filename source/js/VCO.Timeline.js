@@ -171,6 +171,7 @@ VCO.Timeline = VCO.Class.extend({
 			start_at_end: 				false,
 			menubar_height: 			0,
 			skinny_size: 				650,
+			medium_size: 				800,
 			relative_date: 				false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
 			use_bc: 					false,					// Use declared suffix on dates earlier than 0
 			// animation
@@ -440,11 +441,15 @@ VCO.Timeline = VCO.Class.extend({
     
 		// Check if skinny
 		if (this.options.width <= this.options.skinny_size) {
+			display_class += " vco-skinny";
 			this.options.layout = "portrait";
+		} else if (this.options.width <= this.options.medium_size) {
+			display_class += " vco-medium";
+			this.options.layout = "landscape";
 		} else {
 			this.options.layout = "landscape";
 		}
-    
+
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
@@ -461,8 +466,6 @@ VCO.Timeline = VCO.Class.extend({
     
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-      
-			display_class += " vco-skinny";
 			// Portrait
 			display_class += " vco-layout-portrait";
 
