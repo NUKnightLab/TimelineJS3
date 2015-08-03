@@ -8394,17 +8394,6 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.ConfigFactory.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.ConfigFactory.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.ConfigFactory-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
 	"\/source\/js\/core\/VCO.Events.js": {
 		"fileType": 64,
 		"ignore": 1,
