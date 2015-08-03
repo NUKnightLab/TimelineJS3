@@ -582,7 +582,7 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.config.isValid()) {
 			this._onDataLoaded();
 		} else {
-			this.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors(';'));
 			// should we set 'self.ready'? if not, it won't resize, 
 			// but most resizing would only work 
 			// if more setup happens
