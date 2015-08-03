@@ -259,6 +259,35 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
+	"\/compiled\/examples\/dark_theme_example.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/examples\/dark_theme_example.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/compiled\/examples\/error_message_test.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/examples\/error_message_test.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/compiled\/examples\/error_message_test.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/examples\/error_message_test.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/compiled\/examples\/error_message_test-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/compiled\/examples\/google_spreadsheet.html": {
 		"fileType": 8192,
 		"ignore": 1,
@@ -335,24 +364,6 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/compiled\/examples\/mark_twain_dark.html": {
-		"fileType": 8192,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/examples\/mark_twain_dark.html",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
-	"\/compiled\/examples\/mark_twain_error.html": {
-		"fileType": 8192,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/examples\/mark_twain_error.html",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
 	"\/compiled\/examples\/marktwain.json": {
 		"fileType": 524288,
 		"ignore": 1,
@@ -360,17 +371,6 @@
 		"inputAbbreviatedPath": "\/compiled\/examples\/marktwain.json",
 		"orderOutput": 0,
 		"outputAbbreviatedPath": "\/compiled\/examples\/marktwain-min.json",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1
-		},
-	"\/compiled\/examples\/marktwain_error.json": {
-		"fileType": 524288,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/examples\/marktwain_error.json",
-		"orderOutput": 0,
-		"outputAbbreviatedPath": "\/compiled\/examples\/marktwain_error-min.json",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
@@ -8216,6 +8216,28 @@
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0
 		},
+	"\/source\/jade\/dark_theme_example.jade": {
+		"compileDebug": 1,
+		"fileType": 512,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/jade\/dark_theme_example.jade",
+		"outputAbbreviatedPath": "\/compiled\/examples\/dark_theme_example.html",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0
+		},
+	"\/source\/jade\/error_message_test.jade": {
+		"compileDebug": 1,
+		"fileType": 512,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/jade\/error_message_test.jade",
+		"outputAbbreviatedPath": "\/compiled\/examples\/error_message_test.html",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0
+		},
 	"\/source\/jade\/google_spreadsheet.jade": {
 		"compileDebug": 1,
 		"fileType": 512,
@@ -8256,28 +8278,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/source\/jade\/mark_twain.jade",
 		"outputAbbreviatedPath": "\/compiled\/examples\/mark_twain.html",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 1,
-		"outputStyle": 0
-		},
-	"\/source\/jade\/mark_twain_dark.jade": {
-		"compileDebug": 1,
-		"fileType": 512,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/jade\/mark_twain_dark.jade",
-		"outputAbbreviatedPath": "\/compiled\/examples\/mark_twain_dark.html",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 1,
-		"outputStyle": 0
-		},
-	"\/source\/jade\/mark_twain_error.jade": {
-		"compileDebug": 1,
-		"fileType": 512,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/jade\/mark_twain_error.jade",
-		"outputAbbreviatedPath": "\/compiled\/examples\/mark_twain_error.html",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0
