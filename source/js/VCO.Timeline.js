@@ -574,7 +574,7 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			this.setConfig(new VCO.TimelineConfig(data));
 		}
-	},
+	}, 
  
 	setConfig: function(config) {
 		this.config = config;
