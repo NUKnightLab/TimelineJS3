@@ -27,7 +27,7 @@
             if (url.match(/\?gid=(\d+)/)) {
                 parts.worksheet = url.match(/\?gid=(\d+)/)[1];
             }
-        } else if (url.indexOf('/') == -1) {
+        } else if (url.match(/^\b[-_A-Za-z0-9]+$/)) {
             parts.key = url;
         }
 
