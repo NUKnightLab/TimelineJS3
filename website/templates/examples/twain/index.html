@@ -50,7 +50,7 @@
       function createNewTimeline(){
         $("#timeline-embed").empty();
         $("link[title=timeline-styles]").attr({href: "/build/css/timeline.css"});
-          VCO.ConfigFactory.makeTimeline('timeline-embed', '/examples/twain/marktwain.json', {}, 'timeline');
+          window.timeline = new VCO.Timeline('timeline-embed', '/examples/twain/marktwain.json', {});
 
           if ($("#timeline-embed").height() == 0) {
             setTimeout(function(){

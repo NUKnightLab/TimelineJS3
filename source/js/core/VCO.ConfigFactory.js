@@ -223,22 +223,5 @@
          * from any kind of URL, Google or direct JSON.
          */
         makeConfig: makeConfig,
-        /**
-         * Handle a common case where the callback to makeConfig would basically just create a timeline.
-         * Use this if you need your data fetched, as an alternative to Timeline's former support for passing a URL to the VCO.Timeline constructor.
-         * The value for 'url' should be a URL pointing to a Google Spreadsheet or a JSON file, or alternatively, just a Google Spreadsheet key (a string of only digits, letters and the '-' and '_' characters.)
-         * If you want to have a reference to the given timeline, pass a string as the 'export_name' parameter. The created timeline will be assigned to a window-scoped 
-         * variable of the same name.
-         */
-        makeTimeline: function(element, url, options, export_name) {
-            makeConfig(url, function(config) {
-                var timeline = new VCO.Timeline(element, config, options);
-                if (export_name) {
-                    window[export_name] = timeline;
-                }
-            })
-        }
-
-
     }
 })(VCO)
