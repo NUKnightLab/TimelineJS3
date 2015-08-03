@@ -14,10 +14,6 @@
         var embed = document.getElementById('timeline-embed');
         embed.style.height = getComputedStyle(document.body).height;
         window.timeline = new VCO.Timeline('timeline-embed', 'timeline3.json', {});
-
-        window.onresize = function(event) {
-          timeline.updateDisplay();
-        }
       });
   </script>
 
