@@ -204,6 +204,21 @@ VCO.Timeline = VCO.Class.extend({
 			self.updateDisplay(); 
 		})
 
+		// Apply base class to container
+		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
+		
+		if (this.options.is_full_embed) {
+			this._el.container.className += ' vco-timeline-full-embed';
+		}
+		
+		// Add Message to DOM
+		this.message.addTo(this._el.container);
+
+
 
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
@@ -220,20 +235,6 @@ VCO.Timeline = VCO.Class.extend({
 			self._loadLanguage(data);
 		}
 		
-		// Apply base class to container
-		this._el.container.className += ' vco-timeline';
-		
-		if (this.options.is_embed) {
-			this._el.container.className += ' vco-timeline-embed';
-		}
-		
-		if (this.options.is_full_embed) {
-			this._el.container.className += ' vco-timeline-full-embed';
-		}
-		
-		// Add Message to DOM
-		this.message.addTo(this._el.container);
-
 	},
 
 	/*  Load Language
@@ -559,17 +560,28 @@ VCO.Timeline = VCO.Class.extend({
 	// Initialize the data
 	_initData: function(data) {
 		var self = this;
-		if (VCO.TimelineConfig == data.constructor) {
-			self.config = data;
+
+		if (typeof data == 'string') {
+			var self = this;
+			VCO.ConfigFactory.makeConfig(data, function(config) {
+				self.setConfig(config);
+			});
+		} else if (VCO.TimelineConfig == data.constructor) {
+			this.setConfig(data);
 		} else {
-			self.config = new VCO.TimelineConfig(data);
+			this.setConfig(new VCO.TimelineConfig(data));
 		}
-		self.config.validate();
-		if (self.config.isValid()) {
-			self._onDataLoaded();
+	},
+
+	setConfig: function(config) {
+		this.config = config;
+		this.config.validate();
+		if (this.config.isValid()) {
+			this._onDataLoaded();
 		} else {
-			self.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
-			// should we set 'self.ready'? if not, it won't resize, but most resizing would only work 
+			this.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
+			// should we set 'self.ready'? if not, it won't resize, 
+			// but most resizing would only work 
 			// if more setup happens
 		}
 	},
