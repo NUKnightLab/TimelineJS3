@@ -5,8 +5,7 @@
     /*
      * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
 
-     If `url` is actually a string with no `/` characters, then it's assumed to be an ID
-     already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented.
+     If `url` is actually a string which is only letters, numbers, '-' and '_', then it's assumed to be an ID already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented. 
 
      If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
      */
@@ -226,10 +225,10 @@
         makeConfig: makeConfig,
         /**
          * Handle a common case where the callback to makeConfig would basically just create a timeline.
-         * Use this if you need your data fetched, as an alternative to Timeline's former support for passing 
-         * a URL to the VCO.Timeline constructor
-         * If you want to have a reference to the given timeline, pass a string as the 'export_name' parameter. The 
-         * created timeline will be assigned to a window-scoped variable of the same name.
+         * Use this if you need your data fetched, as an alternative to Timeline's former support for passing a URL to the VCO.Timeline constructor.
+         * The value for 'url' should be a URL pointing to a Google Spreadsheet or a JSON file, or alternatively, just a Google Spreadsheet key (a string of only digits, letters and the '-' and '_' characters.)
+         * If you want to have a reference to the given timeline, pass a string as the 'export_name' parameter. The created timeline will be assigned to a window-scoped 
+         * variable of the same name.
          */
         makeTimeline: function(element, url, options, export_name) {
             makeConfig(url, function(config) {
