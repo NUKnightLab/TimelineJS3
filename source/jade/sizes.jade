@@ -10,7 +10,7 @@ html(lang="en")
 		// CSS
 		link(rel='stylesheet', href='../css/timeline.css?v1')
 		//FONT
-		link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;subset=latin,latin')
+		link(rel='stylesheet', href='../css/fonts/font.default.css?v1')
 		// Style
 		style.
 			html, body {
@@ -71,10 +71,3 @@ html(lang="en")
 			var timeline_02 = new VCO.Timeline('timeline2', 'marktwain.json', {is_embed:true});
 			var timeline_03 = new VCO.Timeline('timeline3', 'marktwain.json', {is_embed:true});
 			var timeline_04 = new VCO.Timeline('timeline4', 'marktwain.json', {is_embed:true});
-			window.onresize = function(event) {
-				timeline_00.updateDisplay();
-				timeline_01.updateDisplay();
-				timeline_02.updateDisplay();
-				timeline_03.updateDisplay();
-				timeline_04.updateDisplay();
-			}

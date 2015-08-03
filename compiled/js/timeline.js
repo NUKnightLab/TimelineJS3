@@ -3060,8 +3060,7 @@ VCO.TimelineConfig = VCO.Class.extend({
     /*
      * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
 
-     If `url` is actually a string with no `/` characters, then it's assumed to be an ID
-     already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented.
+     If `url` is actually a string which is only letters, numbers, '-' and '_', then it's assumed to be an ID already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented. 
 
      If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
      */
@@ -3279,23 +3278,6 @@ VCO.TimelineConfig = VCO.Class.extend({
          * from any kind of URL, Google or direct JSON.
          */
         makeConfig: makeConfig,
-        /**
-         * Handle a common case where the callback to makeConfig would basically just create a timeline.
-         * Use this if you need your data fetched, as an alternative to Timeline's former support for passing 
-         * a URL to the VCO.Timeline constructor
-         * If you want to have a reference to the given timeline, pass a string as the 'export_name' parameter. The 
-         * created timeline will be assigned to a window-scoped variable of the same name.
-         */
-        makeTimeline: function(element, url, options, export_name) {
-            makeConfig(url, function(config) {
-                var timeline = new VCO.Timeline(element, config, options);
-                if (export_name) {
-                    window[export_name] = timeline;
-                }
-            })
-        }
-
-
     }
 })(VCO)
 
@@ -11434,6 +11416,21 @@ VCO.Timeline = VCO.Class.extend({
 			self.updateDisplay(); 
 		})
 
+		// Apply base class to container
+		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
+		
+		if (this.options.is_full_embed) {
+			this._el.container.className += ' vco-timeline-full-embed';
+		}
+		
+		// Add Message to DOM
+		this.message.addTo(this._el.container);
+
+
 
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
@@ -11450,20 +11447,6 @@ VCO.Timeline = VCO.Class.extend({
 			self._loadLanguage(data);
 		}
 		
-		// Apply base class to container
-		this._el.container.className += ' vco-timeline';
-		
-		if (this.options.is_embed) {
-			this._el.container.className += ' vco-timeline-embed';
-		}
-		
-		if (this.options.is_full_embed) {
-			this._el.container.className += ' vco-timeline-full-embed';
-		}
-		
-		// Add Message to DOM
-		this.message.addTo(this._el.container);
-
 	},
 
 	/*  Load Language
@@ -11673,7 +11656,7 @@ VCO.Timeline = VCO.Class.extend({
 			display_class += " vco-skinny";
 			this.options.layout = "portrait";
 		} else if (this.options.width <= this.options.medium_size) {
-			display_class += " vco-medium";
+			display_class += " vco-medium"; 
 			this.options.layout = "landscape";
 		} else {
 			this.options.layout = "landscape";
@@ -11791,17 +11774,28 @@ VCO.Timeline = VCO.Class.extend({
 	// Initialize the data
 	_initData: function(data) {
 		var self = this;
-		if (VCO.TimelineConfig == data.constructor) {
-			self.config = data;
+
+		if (typeof data == 'string') {
+			var self = this;
+			VCO.ConfigFactory.makeConfig(data, function(config) {
+				self.setConfig(config);
+			});
+		} else if (VCO.TimelineConfig == data.constructor) {
+			this.setConfig(data);
 		} else {
-			self.config = new VCO.TimelineConfig(data);
+			this.setConfig(new VCO.TimelineConfig(data));
 		}
-		self.config.validate();
-		if (self.config.isValid()) {
-			self._onDataLoaded();
+	},
+ 
+	setConfig: function(config) {
+		this.config = config;
+		this.config.validate();
+		if (this.config.isValid()) {
+			this._onDataLoaded();
 		} else {
-			self.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
-			// should we set 'self.ready'? if not, it won't resize, but most resizing would only work 
+			this.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
+			// should we set 'self.ready'? if not, it won't resize, 
+			// but most resizing would only work 
 			// if more setup happens
 		}
 	},

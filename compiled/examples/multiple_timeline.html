@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Multiple Timelines Example</title>
+    <title>TimelineJS Multiple Timelines Example</title>
     <meta charset="utf-8">
     <meta name="description" content="TimelineJS Embed">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,18 +10,18 @@
     <!-- CSS-->
     <link rel="stylesheet" href="../css/timeline.css?v1">
     <!--FONT-->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+    <link rel="stylesheet" href="../css/fonts/font.default.css?v1">
     <!-- Style-->
     <style>
       html, body {
-       height:100%;
-       width:100%;
-       padding: 0px;
-       margin: 0px;
+      	height:100%;
+      	width:100%;
+      	padding: 0px;
+      	margin: 0px;
       }
       #timeline1, #timeline2, #timeline3 {
-       height:600px;
-       width:100%;
+      	height:600px;
+      	width:100%;
       }
       
       
@@ -43,11 +43,6 @@
       var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json');
       var timeline_02 = new VCO.Timeline('timeline2', 'years.json');
       var timeline_03 = new VCO.Timeline('timeline3', 'science.json');
-      window.onresize = function(event) {
-       timeline_01.updateDisplay();
-       timeline_02.updateDisplay();
-       timeline_03.updateDisplay();
-      }
     </script>
   </body>
 </html>

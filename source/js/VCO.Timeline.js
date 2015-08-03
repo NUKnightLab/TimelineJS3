@@ -445,7 +445,7 @@ VCO.Timeline = VCO.Class.extend({
 			display_class += " vco-skinny";
 			this.options.layout = "portrait";
 		} else if (this.options.width <= this.options.medium_size) {
-			display_class += " vco-medium";
+			display_class += " vco-medium"; 
 			this.options.layout = "landscape";
 		} else {
 			this.options.layout = "landscape";
@@ -575,7 +575,7 @@ VCO.Timeline = VCO.Class.extend({
 			this.setConfig(new VCO.TimelineConfig(data));
 		}
 	},
-
+ 
 	setConfig: function(config) {
 		this.config = config;
 		this.config.validate();

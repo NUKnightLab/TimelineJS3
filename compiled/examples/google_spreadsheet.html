@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TimelineJS</title>
+    <title>Mark Twain Example</title>
     <meta charset="utf-8">
     <meta name="description" content="TimelineJS Embed">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,7 +10,7 @@
     <!-- CSS-->
     <link rel="stylesheet" href="../css/timeline.css?v1">
     <!--FONT-->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+    <link rel="stylesheet" href="../css/fonts/font.default.css?v1">
     <!-- Style-->
     <style>
       html, body {
@@ -35,12 +35,10 @@
     <!-- JavaScript-->
     <script src="../js/timeline.js"></script>
     <script>
-      var timeline = new VCO.Timeline('timeline', 'welcome_test.json', {
-      	
+      var timeline = new VCO.Timeline('timeline', '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI', {
+      	ga_property_id: "UA-27829802-4",
+      	is_embed:true
       });
-      window.onresize = function(event) {
-      	timeline.updateDisplay();
-      }
     </script>
   </body>
 </html>

@@ -10,8 +10,7 @@
     <!-- CSS-->
     <link rel="stylesheet" href="../css/timeline.css?v1">
     <!--FONT-->
-    <!--link(rel='stylesheet', href='../css/fonts/font.roboto-megrim.css?v1')-->
-    <link rel="stylesheet" href="../css/fonts/font.knightlab.css?v1">
+    <link rel="stylesheet" href="../css/fonts/font.default.css?v1">
     <!-- Style-->
     <style>
       html, body {
@@ -36,10 +35,10 @@
     <!-- JavaScript-->
     <script src="../js/timeline.js"></script>
     <script>
-      VCO.ConfigFactory.makeTimeline('timeline', 'marktwain_juked.json', {
+      var timeline = new VCO.Timeline('timeline', 'marktwain_juked.json', {
       	ga_property_id: "UA-27829802-4",
       	is_embed:true
-      }, timeline);
+      });
     </script>
   </body>
 </html>
