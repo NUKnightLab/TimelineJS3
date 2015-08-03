@@ -256,7 +256,7 @@ function createStoryJS(c, src) {
     if (storyjs_e_config.width == '100%') {
       storyjs_e_config.is_full_embed = true;
     }
-    VCO.ConfigFactory.makeTimeline('timeline-embed', storyjs_e_config.source, storyjs_e_config, 'timeline');
+    window.timeline = new VCO.Timeline('timeline-embed', storyjs_e_config.source, storyjs_e_config);
     
   }
     

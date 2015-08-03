@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
 	head
-		title TimelineJS Multiple Timelines Example
+		title Mark Twain Example
 		meta(charset='utf-8')
 		meta(name='description', content='TimelineJS Embed')
 		meta(name='apple-mobile-web-app-capable', content='yes')
@@ -19,25 +19,23 @@ html(lang="en")
 				padding: 0px;
 				margin: 0px;
 			}
-			#timeline1, #timeline2, #timeline3 {
-				height:600px;
-				width:100%;
+			.vco-timeline {
+				
 			}
-
 
 		// HTML5 shim, for IE6-8 support of HTML elements
 		//if lt IE 9
 			script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
 
 	body
-		div#timeline1
-		div#timeline2
-		div#timeline3
-		div#timeline4
+
+		div#timeline
+
 		
 		// JavaScript
 		script(src='../js/timeline.js')
 		script.
-			var timeline_01 = new VCO.Timeline('timeline1', 'marktwain.json');
-			var timeline_02 = new VCO.Timeline('timeline2', 'years.json');
-			var timeline_03 = new VCO.Timeline('timeline3', 'science.json');
+			var timeline = new VCO.Timeline('timeline', '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI', {
+				ga_property_id: "UA-27829802-4",
+				is_embed:true
+			});

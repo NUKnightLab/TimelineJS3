@@ -10,7 +10,7 @@ html(lang="en")
 		// CSS
 		link(rel='stylesheet', href='../css/timeline.css?v1')
 		//FONT
-		link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;subset=latin,latin')
+		link(rel='stylesheet', href='../css/fonts/font.default.css?v1')
 		// Style
 		style.
 			html, body {
@@ -41,8 +41,3 @@ html(lang="en")
 			var timeline_01 = new VCO.Timeline('timeline1', 'wedding.json');
 			var timeline_02 = new VCO.Timeline('timeline2', 'years.json');
 			var timeline_03 = new VCO.Timeline('timeline3', 'science.json');
-			window.onresize = function(event) {
-				timeline_01.updateDisplay();
-				timeline_02.updateDisplay();
-				timeline_03.updateDisplay();
-			}

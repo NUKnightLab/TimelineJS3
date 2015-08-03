@@ -171,6 +171,7 @@ VCO.Timeline = VCO.Class.extend({
 			start_at_end: 				false,
 			menubar_height: 			0,
 			skinny_size: 				650,
+			medium_size: 				800,
 			relative_date: 				false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
 			use_bc: 					false,					// Use declared suffix on dates earlier than 0
 			// animation
@@ -204,6 +205,21 @@ VCO.Timeline = VCO.Class.extend({
 			self.updateDisplay(); 
 		})
 
+		// Apply base class to container
+		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
+		
+		if (this.options.is_full_embed) {
+			this._el.container.className += ' vco-timeline-full-embed';
+		}
+		
+		// Add Message to DOM
+		this.message.addTo(this._el.container);
+
+
 
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
@@ -220,20 +236,6 @@ VCO.Timeline = VCO.Class.extend({
 			self._loadLanguage(data);
 		}
 		
-		// Apply base class to container
-		this._el.container.className += ' vco-timeline';
-		
-		if (this.options.is_embed) {
-			this._el.container.className += ' vco-timeline-embed';
-		}
-		
-		if (this.options.is_full_embed) {
-			this._el.container.className += ' vco-timeline-full-embed';
-		}
-		
-		// Add Message to DOM
-		this.message.addTo(this._el.container);
-
 	},
 
 	/*  Load Language
@@ -440,11 +442,15 @@ VCO.Timeline = VCO.Class.extend({
     
 		// Check if skinny
 		if (this.options.width <= this.options.skinny_size) {
+			display_class += " vco-skinny";
 			this.options.layout = "portrait";
+		} else if (this.options.width <= this.options.medium_size) {
+			display_class += " vco-medium"; 
+			this.options.layout = "landscape";
 		} else {
 			this.options.layout = "landscape";
 		}
-    
+
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
@@ -461,8 +467,6 @@ VCO.Timeline = VCO.Class.extend({
     
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-      
-			display_class += " vco-skinny";
 			// Portrait
 			display_class += " vco-layout-portrait";
 
@@ -559,17 +563,28 @@ VCO.Timeline = VCO.Class.extend({
 	// Initialize the data
 	_initData: function(data) {
 		var self = this;
-		if (VCO.TimelineConfig == data.constructor) {
-			self.config = data;
+
+		if (typeof data == 'string') {
+			var self = this;
+			VCO.ConfigFactory.makeConfig(data, function(config) {
+				self.setConfig(config);
+			});
+		} else if (VCO.TimelineConfig == data.constructor) {
+			this.setConfig(data);
 		} else {
-			self.config = new VCO.TimelineConfig(data);
+			this.setConfig(new VCO.TimelineConfig(data));
 		}
-		self.config.validate();
-		if (self.config.isValid()) {
-			self._onDataLoaded();
+	}, 
+ 
+	setConfig: function(config) {
+		this.config = config;
+		this.config.validate();
+		if (this.config.isValid()) {
+			this._onDataLoaded();
 		} else {
-			self.showMessage("<strong>"+ self._('error') +":</strong> " + self.config.getErrors(';'));
-			// should we set 'self.ready'? if not, it won't resize, but most resizing would only work 
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors(';'));
+			// should we set 'self.ready'? if not, it won't resize, 
+			// but most resizing would only work 
 			// if more setup happens
 		}
 	},

@@ -38,10 +38,6 @@ html(lang="en")
 		script(src='../js/timeline.js')
 		script.
 			var timeline = new VCO.Timeline('timeline', 'welcome.json', {
-				theme_color: "#288EC3",
 				timenav_position:"top",
 				ga_property_id: "UA-27829802-4"
 			});
-			window.onresize = function(event) {
-				timeline.updateDisplay();
-			}

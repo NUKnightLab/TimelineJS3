@@ -2877,55 +2877,49 @@ to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
 	
-	includes: [VCO.Events],
+	includes: [],
+	messages: {
+		errors: [],
+		warnings: []
+	},
 	VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 
-	initialize: function (data, callback) {
+	initialize: function (data) {
 		// Initialize the data
-		if (typeof data === 'string') {
-			var self = this;
-            
-			VCO.ajax({
-				type: 'GET',
-				url: data,
-				dataType: 'json', //json data type
-				success: function(d){
-					if (d && d.events) {
-						self._importProperties(d);
-					} else {
-						this.fire("load_error", {message:"data must have an events property"});
-						throw("data must have an events property");
-					}
-					self._cleanData();
-					if (callback) {
-						callback(self);
-					}
-				},
-				error:function(xhr, type){
-					trace(xhr);
-					trace(type);
-					this.fire("load_error", {message:"Configuration could not be loaded: " + type});
-					throw("Configuration could not be loaded: " + type);
-					
-				}
-			});
-		} else if (typeof data === 'object') {
-			if (data.events) {
-				this._importProperties(data);
-				this._cleanData();
-			} else {
-				this.fire("load_error", {message:"data must have an events property"});
-				throw("data must have a events property");
-			}
-			if (callback) {
-				callback(this);
-			}
+		if (typeof data === 'object' && data.events) {
+			this._importProperties(data);
+			this._cleanData();
 		} else {
-			this.fire("load_error", {message:"Invalid Argument"});
-			throw("Invalid Argument");
+			this.logError("Argument to TimelineConfig should be a JSON object conforming to the TimelineJS3 JSON specification.");
 		}
 	},
-
+	logError: function(msg) {
+		trace(msg);
+		this.messages.errors.push(msg);
+	},
+	/*
+	 * Return any accumulated error messages. If `sep` is passed, it should be a string which will be used to join all messages, resulting in a string return value. Otherwise,
+	 * errors will be returned as an array.
+	 */
+	getErrors: function(sep) {
+		if (sep) {
+			return this.messages.errors.join(sep);
+		} else {
+			return this.messages.errors;
+		}
+	},
+	/*
+	 * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
+	 * such that after this is called, one can test `this.isValid()` to see if everything is OK.
+	 */
+	validate: function() {
+		if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
+			this.logError("Timeline configuration has no events.")
+		}
+	},
+	isValid: function() {
+		return this.messages.errors.length == 0;
+	},
 	/* Add an event and return the unique id 
 	*/
 	addEvent: function(data) {
@@ -2998,15 +2992,16 @@ VCO.TimelineConfig = VCO.Class.extend({
             
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
-					this.fire("load_error", {message:"item " + i + " is missing a start_date"});
-					throw("item " + i + " is missing a start_date");
-				}
-                
-				var d = new VCO.BigDate(array[i].start_date);
-				var year = d.data.date_obj.year;               
-				if(year < -271820 || year >  275759) {
-					this.scale = "cosmological";
-					break;
+					this.logError("item " + i + " is missing a start_date");
+				} else if (typeof(array[i].start_date.year) == 'undefined' || !(array[i].start_date.year.match(/^\s*\-?\d+\s*$/))) {
+					this.logError("item " + i + " is has invalid start_date.");
+				} else {
+					var d = new VCO.BigDate(array[i].start_date);
+					var year = d.data.date_obj.year;               
+					if(year < -271820 || year >  275759) {
+						this.scale = "cosmological";
+						break;
+					}
 				}
 			}
 		}
@@ -3018,15 +3013,12 @@ VCO.TimelineConfig = VCO.Class.extend({
 			dateCls = VCO.BigDate;
 			trace('using VCO.BigDate');
 		} else {
-			this.fire("load_error", {message:"Don't know how to process dates on scale "+this.scale});
-			throw ("Don't know how to process dates on scale "+this.scale);
+			this.logError("Don't know how to process dates on scale "+this.scale);
 		}
             
 		for (var i = 0; i < array.length; i++) {
 			if (typeof(array[i].start_date) == 'undefined') {
-				this.fire("load_error", {message:"item " + i + " is missing a start_date"});
-				throw("item " + i + " is missing a start_date");
-				
+				this.logError("item " + i + " is missing a start_date");
 			}
 			if(!(array[i].start_date instanceof dateCls)) {
 				var start_date = array[i].start_date;
@@ -3065,19 +3057,39 @@ VCO.TimelineConfig = VCO.Class.extend({
  * Build TimelineConfig objects from other data sources
  */
 ;(function(VCO){
-    function extractSpreadsheetKey(url) {
+    /*
+     * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
+
+     If `url` is actually a string which is only letters, numbers, '-' and '_', then it's assumed to be an ID already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented. 
+
+     If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
+     */
+    function parseGoogleSpreadsheetURL(url) {
+        parts = {
+            key: null,
+            worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
+        }
+        // key as url parameter (old-fashioned)
         var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
         if (url.match(pat)) {
-            return url.match(pat)[1];
-        }
-        var key = null;
-        if (url.match("docs.google.com/spreadsheets/d/")) {
+            parts.key = url.match(pat)[1];
+            // can we get a worksheet from this form?
+        } else if (url.match("docs.google.com/spreadsheets/d/")) {
             var pos = url.indexOf("docs.google.com/spreadsheets/d/") + "docs.google.com/spreadsheets/d/".length;
             var tail = url.substr(pos);
-            key = tail.split('/')[0]
+            parts.key = tail.split('/')[0]
+            if (url.match(/\?gid=(\d+)/)) {
+                parts.worksheet = url.match(/\?gid=(\d+)/)[1];
+            }
+        } else if (url.match(/^\b[-_A-Za-z0-9]+$/)) {
+            parts.key = url;
         }
-        if (!key) { key = url}
-        return key;
+
+        if (parts.key) {
+            return parts;
+        } else {
+            return null;
+        }
     }
 
     function extractGoogleEntryData_V1(item) {
@@ -3118,7 +3130,7 @@ VCO.TimelineConfig = VCO.Class.extend({
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
-                item_data[k.substr(4)] = item[k].$t;
+                item_data[k.substr(4)] = VCO.Util.trim(item[k].$t);
             }
         }
         var d = {
@@ -3196,42 +3208,76 @@ VCO.TimelineConfig = VCO.Class.extend({
         }
     }
 
-    VCO.ConfigFactory = {
+    var buildGoogleFeedURL = function(parts) {
+        return "https://spreadsheets.google.com/feeds/list/" + parts.key + "/1/public/values?alt=json";
 
-        extractSpreadsheetKey: extractSpreadsheetKey,
+    }
 
-        fromGoogle: function(url) {
-            var key = extractSpreadsheetKey(url);
-            // TODO: maybe get specific worksheets?
-            var worksheet = '1';
-            url = "https://spreadsheets.google.com/feeds/list/" + key + "/" + worksheet + "/public/values?alt=json";
-            return this.fromFeed(url);
-        },
-
-        fromFeed: function(url) {
+    var jsonFromGoogleURL = function(url) {
+        var url = buildGoogleFeedURL(parseGoogleSpreadsheetURL(url));
             var timeline_config = { 'events': [] };
             var data = VCO.ajax({
                 url: url, 
                 async: false
             });
             data = JSON.parse(data.responseText);
-            window.google_data = data;
-            var extract = getGoogleItemExtractor(data);
-            for (var i = 0; i < data.feed.entry.length; i++) {
-                var event = extract(data.feed.entry[i]);
-                var row_type = 'event';
-                if (typeof(event.type) != 'undefined') {
-                    row_type = event.type;
-                    delete event.type;
-                }
-                if (row_type == 'title') {
-                    timeline_config.title = event;
-                } else {
-                    timeline_config.events.push(event);
-                }
-            };
-            return timeline_config;
+            return googleFeedJSONtoTimelineJSON(data);
         }
+
+    var googleFeedJSONtoTimelineJSON = function(data) {
+        var timeline_config = { 'events': [] }
+        var extract = getGoogleItemExtractor(data);
+        for (var i = 0; i < data.feed.entry.length; i++) {
+            var event = extract(data.feed.entry[i]);
+            var row_type = 'event';
+            if (typeof(event.type) != 'undefined') {
+                row_type = event.type;
+                delete event.type;
+            }
+            if (row_type == 'title') {
+                timeline_config.title = event;
+            } else {
+                timeline_config.events.push(event);
+            }
+        };
+        return timeline_config;
+
+    }
+
+    var makeConfig = function(url, callback) {
+        var key = parseGoogleSpreadsheetURL(url);  
+
+        if (key) {
+            var json = jsonFromGoogleURL(url);
+            callback(new VCO.TimelineConfig(json));
+        } else {
+            VCO.getJSON(url, function(data){
+                callback(new VCO.TimelineConfig(data));
+
+            });
+        }
+    }
+
+    VCO.ConfigFactory = {
+        // export for unit testing and use by authoring tool
+        parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
+        // export for unit testing
+        googleFeedJSONtoTimelineJSON: googleFeedJSONtoTimelineJSON,
+
+
+        fromGoogle: function(url) {
+            console.log("VCO.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use VCO.ConfigFactory.makeConfig(url,callback)")
+            return jsonFromGoogleURL(url);
+
+        },
+
+        /*
+         * Given a URL to a Timeline data source, read the data, create a TimelineConfig
+         * object, and call the given `callback` function passing the created config as
+         * the only argument. This should be the main public interface to getting configs
+         * from any kind of URL, Google or direct JSON.
+         */
+        makeConfig: makeConfig,
     }
 })(VCO)
 
@@ -3437,13 +3483,20 @@ VCO.Language.prototype._applyEra = function(formatted_date, original_year) {
 
 VCO.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
-VCO.Language.languages = {
+VCO.Language.languages = { 
+/*
+	This represents the canonical list of message keys which translation files should handle. The existence of the 'en.json' file should not mislead you.
+	It is provided more as a starting point for someone who wants to provide a 
+	new translation since the form for non-default languages (JSON not JS) is slightly different from what appears below. Also, those files have some message keys grandfathered in from TimelineJS2 which we'd rather not have to
+	get "re-translated" if we use them.
+*/
 	en: {
 		name: 					"English",
 		lang: 					"en",
 		messages: {
 			loading: 			"Loading",
-			wikipedia: 			"From Wikipedia, the free encyclopedia"
+			wikipedia: 			"From Wikipedia, the free encyclopedia",
+			error: 				"Error"
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -4935,19 +4988,45 @@ VCO.Date = VCO.Class.extend({
 	_createDateObj: function() {
 	    var _date = this._getDateData();          
         this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
+        if (this.data.date_obj.getFullYear() != _date.year) {
+            // Javascript has stupid defaults for two-digit years
+            this.data.date_obj.setFullYear(_date.year);
+        }
 	},
 
+    /*  Find Best Format
+     * this may not work with 'cosmologic' dates, or with VCO.Date if we 
+     * support constructing them based on JS Date and time
+    ================================================== */
+    findBestFormat: function(variant) {
+        var eval_array = VCO.Date.DATE_PARTS,
+            format = "";
+        
+        for (var i = 0; i < eval_array.length; i++) {
+            if ( this.data[eval_array[i]]) {
+                if (variant) {
+                    if (!(variant in VCO.Date.BEST_DATEFORMATS)) {
+                        variant = 'short'; // legacy
+                    }
+                } else {
+                    variant = 'base'
+                }
+                return VCO.Date.BEST_DATEFORMATS[variant][eval_array[i]];       
+            }
+        };
+        return "";
+    },
     _setFormat: function(format, format_short) {
 		if (format) {
 			this.data.format = format;
 		} else if (!this.data.format) {
-			this.data.format = VCO.DateUtil.findBestFormat(this.data);
+			this.data.format = this.findBestFormat();
 		}
 		
 		if (format_short) {
 			this.data.format_short = format_short;
 		} else if (!this.data.format_short) {
-			this.data.format_short = VCO.DateUtil.findBestFormat(this.data, true);
+			this.data.format_short = this.findBestFormat(true);
 		}
     }
 });
@@ -5092,6 +5171,45 @@ VCO.BigYear = VCO.Class.extend({
         return parsed;
     }
 
+    cls.BEST_DATEFORMATS = {
+        base: {
+            millisecond: 'time_short',
+            second: 'time',
+            minute: 'time_no_seconds_small_date',
+            hour: 'time_no_seconds_small_date',
+            day: 'full',
+            month: 'month',
+            year: 'year',
+            decade: 'year',
+            century: 'year',
+            millennium: 'year',
+            age: 'fallback',
+            epoch: 'fallback',
+            era: 'fallback',
+            eon: 'fallback',
+            eon2: 'fallback'
+        },
+        
+        short: {
+            millisecond: 'time_short',
+            second: 'time_short',
+            minute: 'time_no_seconds_short',
+            hour: 'time_no_minutes_short',
+            day: 'full_short',
+            month: 'month_short',
+            year: 'year',
+            decade: 'year',
+            century: 'year',
+            millennium: 'year',
+            age: 'fallback',
+            epoch: 'fallback',
+            era: 'fallback',
+            eon: 'fallback',
+            eon2: 'fallback'
+        }
+    }
+
+
 })(VCO.Date)
 
 
@@ -5178,29 +5296,6 @@ VCO.DateUtil = {
 		});
 	},
 	
-	/*	Find Best Format
-	 * this may not work with 'cosmologic' dates, or with VCO.Date if we 
-	 * support constructing them based on JS Date and time
-	================================================== */
-	findBestFormat: function(data, variant) {
-		var eval_array = VCO.Date.DATE_PARTS,
-			format = "";
-		
-		for (var i = 0; i < eval_array.length; i++) {
-			if ( data[eval_array[i]]) {
-				if (variant) {
-					if (!(variant in VCO.DateUtil.best_dateformats)) {
-						variant = 'short'; // legacy
-					}
-				} else {
-					variant = 'base'
-				}
-				return VCO.DateUtil.best_dateformats[variant][eval_array[i]];		
-			}
-		};
-		return "";
-	},
-	
 	parseTime: function(time_str) {
 		var parsed = {
 			hour: null, minute: null, second: null, millisecond: null // conform to keys in VCO.Date
@@ -5255,43 +5350,6 @@ VCO.DateUtil = {
 		}
 
 		return parsed;
-	},
-	best_dateformats: {
-		base: {
-			millisecond: 'time_short',
-			second: 'time',
-			minute: 'time_no_seconds_small_date',
-			hour: 'time_no_seconds_small_date',
-			day: 'full',
-			month: 'month',
-			year: 'year',
-			decade: 'year',
-			century: 'year',
-			millennium: 'year',
-			age: 'fallback',
-			epoch: 'fallback',
-			era: 'fallback',
-			eon: 'fallback',
-			eon2: 'fallback'
-		},
-		
-		short: {
-			millisecond: 'time_short',
-			second: 'time_short',
-			minute: 'time_no_seconds_short',
-			hour: 'time_no_minutes_short',
-			day: 'full_short',
-			month: 'month_short',
-			year: 'year',
-			decade: 'year',
-			century: 'year',
-			millennium: 'year',
-			age: 'fallback',
-			epoch: 'fallback',
-			era: 'fallback',
-			eon: 'fallback',
-			eon2: 'fallback'
-		}
 	}
 	
 };
@@ -6197,7 +6255,7 @@ VCO.MenuBar = VCO.Class.extend({
  
 VCO.Message = VCO.Class.extend({
 	
-	includes: [VCO.Events, VCO.DomMixins],
+	includes: [VCO.Events, VCO.DomMixins, VCO.I18NMixins],
 	
 	_el: {},
 	
@@ -6256,8 +6314,7 @@ VCO.Message = VCO.Class.extend({
 	
 	_updateMessage: function(t) {
 		if (!t) {
-			var lang = this.options.language || VCO.Language.fallback;
-			this._el.message.innerHTML = lang._('loading');
+			this._el.message.innerHTML = this._('loading');
 		} else {
 			this._el.message.innerHTML = t;
 		}
@@ -6430,12 +6487,12 @@ VCO.MediaType = function(m) {
 				match_str: 	"blockquote",
 				cls: 		VCO.Media.Blockquote
 			},
-			{
-				type: 		"website",
-				name: 		"Website",
-				match_str: 	"http://",
-				cls: 		VCO.Media.Website
-			},
+			// {
+			// 	type: 		"website",
+			// 	name: 		"Website",
+			// 	match_str: 	"https?://",
+			// 	cls: 		VCO.Media.Website
+			// },
 			{
 				type: 		"imageblank",
 				name: 		"Imageblank",
@@ -6525,7 +6582,7 @@ VCO.Media = VCO.Class.extend({
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
 			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
-			api_key_embedly: 		"ae2da610d1454b66abdf2e6a4c44026d",
+			api_key_embedly: 		"", // ae2da610d1454b66abdf2e6a4c44026d
 			credit_height: 			0,
 			caption_height: 		0
 		};
@@ -6576,6 +6633,15 @@ VCO.Media = VCO.Class.extend({
 	
 	loadingMessage: function() {
 		this.message.updateMessage(this._('loading') + " " + this.options.media_name);
+	},
+
+	errorMessage: function(msg) {
+		if (msg) {
+			msg = this._('error') + ": " + msg;
+		} else {
+			msg = this._('error');
+		}
+		this.message.updateMessage(msg);
 	},
 
 	updateMediaDisplay: function(layout) {
@@ -7088,7 +7154,7 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var api_url,
+		var url,
 			self = this;
 		
 		// Loading Message
@@ -7101,26 +7167,19 @@ VCO.Media.GoogleDoc = VCO.Media.extend({
 		if (this.data.url.match("open\?id\=")) {
 			this.media_id = this.data.url.split("open\?id\=")[1];
 			if (this.data.url.match("\&authuser\=0")) {
-				this.media_id = this.media_id("\&authuser\=0")[0];
+				url = this.media_id.match("\&authuser\=0")[0];
 			};
-		} else if (this.data.url.match("\/d\/")) {
-			this.media_id = this.data.url.split("\/d\/")[1];
-			if (this.data.url.match("[^\/]*\/")) {
-				this.media_id = this.media_id("[^\/]*\/")[0];
-			};
+		} else if (this.data.url.match(/file\/d\/([^/]*)\/?/)) {
+			var doc_id = this.data.url.match(/file\/d\/([^/]*)\/?/)[1];
+			url = 'https://drive.google.com/file/d/' + doc_id + '/preview'
 		} else {
-			this.media_id = "";
+			url = this.data.url;
 		}
 		
-		// API URL
-		api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
+		// this URL makes something suitable for an img src but what if it's not an image?
+		// api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
 		
-		// API Call
-		if (this.media_id.match(/docs.google.com/i)) {
-			this._el.content_item.innerHTML	=	"<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + this.media_id + "&amp;embedded=true'></iframe>";
-		} else {
-			this._el.content_item.innerHTML	=	"<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + "http://docs.google.com/viewer?url=" + this.media_id + "&amp;embedded=true'></iframe>";
-		}
+		this._el.content_item.innerHTML	=	"<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>";
 		
 		// After Loaded
 		this.onLoaded();
@@ -10448,7 +10507,11 @@ VCO.TimeScale = VCO.Class.extend({
         // TODO: should _latest be the end date if there is one?
         this._latest = slides[slides.length - 1].start_date.getTime();
         this._span_in_millis = this._latest - this._earliest;
-        if (this._span_in_millis < 0) throw new Error("earliest event time is before latest. Events should be sorted.")
+        if (this._span_in_millis < 0) {
+            throw new Error("earliest event time is before latest. Events should be sorted.")
+        } else if (this._span_in_millis == 0) {
+            this._span_in_millis = this._computeDefaultSpan(timeline_config);
+        }
         this._average = (this._span_in_millis)/slides.length;
 
         this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
@@ -10459,6 +10522,30 @@ VCO.TimeScale = VCO.Class.extend({
         this._computePositionInfo(slides, options.max_rows);
     },
     
+    _computeDefaultSpan: function(timeline_config) {
+        // this gets called when all events are at the same instant, 
+        // or maybe when the span_in_millis is > 0 but still below a desired threshold 
+        if (timeline_config.scale == 'human') {
+            var formats = {}
+            for (var i = 0; i < timeline_config.events.length; i++) {
+                var fmt = timeline_config.events[i].start_date.findBestFormat();
+                formats[fmt] = (formats[fmt]) ? formats[fmt] + 1 : 1;
+            };
+
+            for (var i = VCO.Date.SCALES.length - 1; i >= 0; i--) {
+                if (formats.hasOwnProperty(VCO.Date.SCALES[i][0])) {
+                    var scale = VCO.Date.SCALES[VCO.Date.SCALES.length - 1]; // default
+                    if (VCO.Date.SCALES[i+1]) {
+                        scale = VCO.Date.SCALES[i+1]; // one larger than the largest in our data
+                    }
+                    return scale[1]
+                }
+            };
+            return 365 * 24 * 60 * 60 * 1000; // default to a year?
+        }
+
+        return 200000; // what is the right handling for cosmo dates?
+    },
     getGroupLabels: function() { /* 
         return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
             * label (the string as specified in one or more 'group' properties of events in the configuration)
@@ -11221,7 +11308,7 @@ http://incident57.com/codekit/
 
 
 VCO.Timeline = VCO.Class.extend({
-	includes: VCO.Events,
+	includes: [VCO.Events, VCO.I18NMixins],
 
 	/*  Private Methods
 	================================================== */
@@ -11269,7 +11356,6 @@ VCO.Timeline = VCO.Class.extend({
 		this._loaded = {storyslider:false, timenav:false};
 
 		// Data Object
-		// Test Data compiled from http://www.pbs.org/marktwain/learnmore/chronology.html
 		this.config = null;
 
 		this.options = {
@@ -11284,7 +11370,7 @@ VCO.Timeline = VCO.Class.extend({
 			layout: 					"landscape",			// portrait or landscape
 			timenav_position: 			"bottom",				// timeline on top or bottom 
 			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
-			base_class: 				"",
+			base_class: 				"vco-timeline", 		// removing vco-timeline will break all default stylesheets...
 			timenav_height: 			175,
 			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
 			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
@@ -11296,6 +11382,7 @@ VCO.Timeline = VCO.Class.extend({
 			start_at_end: 				false,
 			menubar_height: 			0,
 			skinny_size: 				650,
+			medium_size: 				800,
 			relative_date: 				false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
 			use_bc: 					false,					// Use declared suffix on dates earlier than 0
 			// animation
@@ -11325,6 +11412,26 @@ VCO.Timeline = VCO.Class.extend({
 		// Merge Options
 		VCO.Util.mergeData(this.options, options);
 
+		window.addEventListener("resize", function(e){ 
+			self.updateDisplay(); 
+		})
+
+		// Apply base class to container
+		this._el.container.className += ' vco-timeline';
+		
+		if (this.options.is_embed) {
+			this._el.container.className += ' vco-timeline-embed';
+		}
+		
+		if (this.options.is_full_embed) {
+			this._el.container.className += ' vco-timeline-full-embed';
+		}
+		
+		// Add Message to DOM
+		this.message.addTo(this._el.container);
+
+
+
 		// Use Relative Date Calculations
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {
@@ -11340,20 +11447,6 @@ VCO.Timeline = VCO.Class.extend({
 			self._loadLanguage(data);
 		}
 		
-		// Apply base class to container
-		this._el.container.className += ' vco-timeline';
-		
-		if (this.options.is_embed) {
-			this._el.container.className += ' vco-timeline-embed';
-		}
-		
-		if (this.options.is_full_embed) {
-			this._el.container.className += ' vco-timeline-full-embed';
-		}
-		
-		// Add Message to DOM
-		this.message.addTo(this._el.container);
-
 	},
 
 	/*  Load Language
@@ -11506,6 +11599,16 @@ VCO.Timeline = VCO.Class.extend({
 		}
 	},
   
+  	/*
+  		Compute the height of the navigation section of the Timeline, taking into account
+  		the possibility of an explicit height or height percentage, but also honoring the
+  		`timenav_height_min` option value. If `timenav_height` is specified it takes precedence over `timenav_height_percentage` but in either case, if the resultant pixel height is less than `options.timenav_height_min` then the value of `options.timenav_height_min` will be returned. (A minor adjustment is made to the returned value to account for marker padding.)
+
+  		Arguments:
+  		@timenav_height (optional): an integer value for the desired height in pixels
+  		@timenav_height_percentage (optional): an integer between 1 and 100
+
+  	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
 		var height = 0;
     
@@ -11550,11 +11653,15 @@ VCO.Timeline = VCO.Class.extend({
     
 		// Check if skinny
 		if (this.options.width <= this.options.skinny_size) {
+			display_class += " vco-skinny";
 			this.options.layout = "portrait";
+		} else if (this.options.width <= this.options.medium_size) {
+			display_class += " vco-medium"; 
+			this.options.layout = "landscape";
 		} else {
 			this.options.layout = "landscape";
 		}
-    
+
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
@@ -11571,8 +11678,6 @@ VCO.Timeline = VCO.Class.extend({
     
 		// LAYOUT
 		if (this.options.layout == "portrait") {
-      
-			display_class += " vco-skinny";
 			// Portrait
 			display_class += " vco-layout-portrait";
 
@@ -11669,22 +11774,36 @@ VCO.Timeline = VCO.Class.extend({
 	// Initialize the data
 	_initData: function(data) {
 		var self = this;
-		if (VCO.TimelineConfig == data.constructor) {
-			self.config = data;
-			self._onDataLoaded();
+
+		if (typeof data == 'string') {
+			var self = this;
+			VCO.ConfigFactory.makeConfig(data, function(config) {
+				self.setConfig(config);
+			});
+		} else if (VCO.TimelineConfig == data.constructor) {
+			this.setConfig(data);
 		} else {
-			self.config = new VCO.TimelineConfig(data,function() {self._onDataLoaded()});
+			this.setConfig(new VCO.TimelineConfig(data));
 		}
-		self.config.on('load_error', this._onError, this);
-		
+	}, 
+ 
+	setConfig: function(config) {
+		this.config = config;
+		this.config.validate();
+		if (this.config.isValid()) {
+			this._onDataLoaded();
+		} else {
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors(';'));
+			// should we set 'self.ready'? if not, it won't resize, 
+			// but most resizing would only work 
+			// if more setup happens
+		}
 	},
   
 	// Initialize the layout
 	_initLayout: function () {
 		var self = this;
     
-		//this._el.container.className += ' vco-timeline';
-		this.options.base_class = this._el.container.className;
 		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
@@ -11733,7 +11852,7 @@ VCO.Timeline = VCO.Class.extend({
 		this._updateDisplay(false, true, 2000);
     
 	},
-  
+  	/* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
@@ -11823,9 +11942,12 @@ VCO.Timeline = VCO.Class.extend({
     
 	},
 	
-	_onError: function(e) {
+	showMessage: function(msg) {
 		if (this.message) {
-			this.message.updateMessage("<strong>Error: </strong>" + e.message);
+			this.message.updateMessage(msg);
+		} else {
+			trace("No message display available.")
+			trace(msg);
 		}
 	},
   
