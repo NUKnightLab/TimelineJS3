@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TimelineJS3: Cosmological Scale</title>
+    <title>Milliseconds</title>
     <meta charset="utf-8">
     <meta name="description" content="TimelineJS Embed">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <!-- CSS-->
-    <link rel="stylesheet" href="css/timeline.css?v1">
+    <link rel="stylesheet" href="../css/timeline.css?v1">
     <!--FONT-->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+    <link rel="stylesheet" href="../css/fonts/font.default.css?v1">
     <!-- Style-->
     <style>
       html, body {
-       height:100%;
-       width:100%;
-       padding: 0px;
-       margin: 0px;
+      	height:100%;
+      	width:100%;
+      	padding: 0px;
+      	margin: 0px;
       }
       .vco-timeline {
+      	
       }
       
     </style>
@@ -32,13 +33,11 @@
   <body>
     <div id="timeline"></div>
     <!-- JavaScript-->
-    <script src="js/timeline.js"></script>
+    <script src="../js/timeline.js"></script>
     <script>
-      var timeline = new VCO.Timeline('timeline', 'examples/cosmo.json', {
+      var timeline = new VCO.Timeline('timeline', 'cosmological.json', {
+      	ga_property_id: "UA-27829802-4"
       });
-      window.onresize = function(event) {
-       timeline.updateDisplay();
-      }
     </script>
   </body>
 </html>
