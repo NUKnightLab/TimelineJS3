@@ -254,7 +254,7 @@
     			display: -webkit-flex; /* Safari */
 				display: flex;
 				flex-direction:column-reverse;
-
+				-webkit-flex-direction:column-reverse; /* Safari */
 				position:static;
 				height:auto;
 				padding-left:50px;
@@ -304,6 +304,7 @@
 			.vco-slide-content-container {
 				.vco-slide-content {
 					flex-direction:column;
+					-webkit-flex-direction:column; /* Safari */
 					.vco-media {
 						border-top: none;
 						padding-top:0px;
