@@ -92,6 +92,7 @@ h2.intro { margin-bottom: 10px; }
 }
 
 /* Steps */
+.step .small-10 h4 span { display: none; color: #999; }
 .step {
     padding-top: 20px;
     padding-bottom: 40px;
@@ -421,6 +422,14 @@ p.input-label {
     }
     .corner.logo { display: none; }
     .sub-nav .logo { display: inline-block; }
+    #preview-embed .help-block,
+    #device-preview-mode {
+        display: none;
+    }
+    #changelog ul {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
 }
 
 @media (max-width: 600px) {
@@ -459,6 +468,15 @@ p.input-label {
     #overview .sub-nav li { display: none; }
     #overview .sub-nav li:last-child { display: block; }
     #overview a.button { margin-top: 10px; }
+    .step {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .step .small-2,
+    .step img { display: none; }
+    .step .small-10 { width: 100%; }
+    .step .small-10 h4 span { display: inline; }
+
 }
 
 @media (max-width: 380px) {
@@ -478,5 +496,4 @@ p.input-label {
     #preview-inputs button { margin: 10px auto; }
     #examples .span2 { text-align: center; }
     #examples img { margin: 10px auto; }
-
 }

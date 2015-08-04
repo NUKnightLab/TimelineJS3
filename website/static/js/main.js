@@ -89,7 +89,7 @@ function getLinkAndIframe() {
   if (is_debug) {
     vars  += "&debug=" + is_debug;
   }
-
+  // TODO: Make this start at end if startatslide > # of slides
   if (parseInt(e_startatslide.value, 10) > 0) {
     vars  += "&start_at_slide=" + parseInt(e_startatslide.value, 10);
   }
