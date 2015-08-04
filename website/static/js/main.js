@@ -52,7 +52,8 @@ function getLinkAndIframe() {
   /* SOURCE KEY
   ================================================== */
   if (e_source.value.match("docs.google.com")) {
-    source_key = VCO.ConfigFactory.extractSpreadsheetKey(e_source.value);
+    var obj = VCO.ConfigFactory.extractSpreadsheetKey(e_source.value);
+    source_key = obj.key;
   } else {
     if (e_source.value == "") {
       source_key  = document.getElementById('embed-source-url').getAttribute("placeholder");
