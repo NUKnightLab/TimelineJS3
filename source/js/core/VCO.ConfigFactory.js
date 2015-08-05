@@ -44,9 +44,6 @@
                 item_data[k.substr(4)] = item[k].$t;
             }
         }
-        if (!item_data.startdate) {
-            throw("All items must have a start date column.")
-        }
         var d = {
             media: {
                 caption: item_data.mediacaption || '',
@@ -61,9 +58,11 @@
             group: item_data.tag || '',
             type: item_data.type || ''
         }
-        d['start_date'] = VCO.Date.parseDate(item_data.startdate);
-        if (item.enddate) {
-            d['end_date'] = VCO.Date.parseDate(item.enddate);
+        if (item_data.startdate) {
+            d['start_date'] = VCO.Date.parseDate(item_data.startdate);
+        }
+        if (item_data.enddate) {
+            d['end_date'] = VCO.Date.parseDate(item_data.enddate);
         }
 
 
@@ -170,19 +169,26 @@
         }
 
     var googleFeedJSONtoTimelineJSON = function(data) {
-        var timeline_config = { 'events': [] }
+        var timeline_config = { 'events': [], 'errors': [] }
         var extract = getGoogleItemExtractor(data);
         for (var i = 0; i < data.feed.entry.length; i++) {
-            var event = extract(data.feed.entry[i]);
-            var row_type = 'event';
-            if (typeof(event.type) != 'undefined') {
-                row_type = event.type;
-                delete event.type;
-            }
-            if (row_type == 'title') {
-                timeline_config.title = event;
-            } else {
-                timeline_config.events.push(event);
+            try {
+                var event = extract(data.feed.entry[i]);
+                var row_type = 'event';
+                if (typeof(event.type) != 'undefined') {
+                    row_type = event.type;
+                    delete event.type;
+                }
+                if (row_type == 'title') {
+                    timeline_config.title = event;
+                } else {
+                    timeline_config.events.push(event);
+                }
+            } catch(e) {
+                if (e.message) {
+                    e = e.message;
+                }
+                timeline_config.errors.push(e + " ["+ i +"]");
             }
         };
         return timeline_config;
@@ -194,7 +200,13 @@
 
         if (key) {
             var json = jsonFromGoogleURL(url);
-            callback(new VCO.TimelineConfig(json));
+            var tc = new VCO.TimelineConfig(json);
+            if (json.errors) {
+                for (var i = 0; i < json.errors.length; i++) {
+                    tc.logError(json.errors[i]);
+                };
+            }
+            callback(tc);
         } else {
             VCO.getJSON(url, function(data){
                 callback(new VCO.TimelineConfig(data));
