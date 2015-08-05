@@ -5,6 +5,9 @@ to make testing easier
 VCO.TimelineConfig = VCO.Class.extend({
 	
 	includes: [],
+	title: null,
+	scale: null,
+	events: [],
 	messages: {
 		errors: [],
 		warnings: []
@@ -16,8 +19,6 @@ VCO.TimelineConfig = VCO.Class.extend({
 		if (typeof data === 'object' && data.events) {
 			this._importProperties(data);
 			this._cleanData();
-		} else {
-			this.logError("Argument to TimelineConfig should be a JSON object conforming to the TimelineJS3 JSON specification.");
 		}
 	},
 	logError: function(msg) {
