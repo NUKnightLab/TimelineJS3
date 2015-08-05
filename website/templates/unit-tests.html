@@ -328,6 +328,8 @@
         test_date('23:30:40', 23, 30, 40, null);
         test_date('11:30:40 pm', 23, 30, 40, null);
         test_date('11:30:40pm', 23, 30, 40, null);
+        test_date("12:33 PM", 12, 33, null, null);
+        test_date("12:33 a.m.", 0, 33, null, null);
         throws(function() {VCO.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
         throws(function() {VCO.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
 

@@ -43,13 +43,15 @@ VCO.DateUtil = {
 
 		parsed.hour = parseInt(parts[0]);
 
-		if (period && period.toLowerCase()[0] == 'p') {
+		if (period && period.toLowerCase()[0] == 'p' && parsed.hour != 12) {
 			parsed.hour += 12;
+		} else if (period && period.toLowerCase()[0] == 'a' && parsed.hour == 12) {
+			parsed.hour = 0;
 		}
 
 
 		if (isNaN(parsed.hour) || parsed.hour < 0 || parsed.hour > 23) {
-			throw new Error("Invalid time (hour)");
+			throw new Error("Invalid time (hour) " + parsed.hour);
 		}
 
 		if (parts.length > 1) {
