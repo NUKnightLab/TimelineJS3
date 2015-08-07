@@ -43,6 +43,13 @@
         <dt><code>display_date</code> (optional)</dt>
         <dd><strong>value:</strong> a string which will be used when Timeline displays the date for this. If used, override's display_date values set on the start or end date for this event, which is useful if you want to control how the two dates relate to each other.</dd>
 
+        <dt><code>background</code> (optional)</dt>
+        <dd><strong>value:</strong> a javascript object. The object can have these properties:
+        <ul>
+            <li><code>url</code>: the fully-qualified URL pointing to an image which will be used as the background</li>
+            <li><code>color</code>: a CSS color, in hexadecimal (e.g. <code>#0f9bd1</code>) or a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_keywords">CSS color keyword</a>.</li>
+        </ul></dd>
+
       </dl>
     </p>
     <p id="json-date" class="jump"><strong><em>Date objects</em></strong> are JSON objects with the following properties:</p>
