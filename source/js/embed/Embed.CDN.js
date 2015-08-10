@@ -3,7 +3,7 @@
 */  
 
 /* 	CodeKit Import
-	http://incident57.com/codekit/
+	https://incident57.com/codekit/
 ================================================== */
 // @codekit-append "Embed.js";
 

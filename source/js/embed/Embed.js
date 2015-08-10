@@ -2,7 +2,7 @@
 // Provide a bootstrap method for instantiating a timeline. On page load, check the definition of these window scoped variables in this order: [url_config, timeline_config, storyjs_config, config]. As soon as one of these is found to be defined with type 'object,' it will be used to automatically instantiate a timeline.
 
 /*  CodeKit Import
-  http://incident57.com/codekit/ 
+  https://incident57.com/codekit/ 
 ================================================== */
 // @codekit-prepend "Embed.LoadLib.js";
 
