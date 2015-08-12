@@ -3,7 +3,7 @@
 ================================================== */
 
 VCO.Util = {
-	
+
 	extend: function (/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
 		var sources = Array.prototype.slice.call(arguments, 1);
 		for (var j = 0, len = sources.length, src; j < len; j++) {
@@ -16,30 +16,30 @@ VCO.Util = {
 		}
 		return dest;
 	},
-	
+
 	setOptions: function (obj, options) {
 		obj.options = VCO.Util.extend({}, obj.options, options);
 		if (obj.options.uniqueid === "") {
 			obj.options.uniqueid = VCO.Util.unique_ID(6);
 		}
 	},
-	
+
 	isEven: function(n) {
 	  return n == parseFloat(n)? !(n%2) : void 0;
 	},
-	
+
 	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
 		var _n = defaultVal || 0;
-		
+
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].data[prop] == id) {
 				_n = i;
 			}
 		};
-		
+
 		return _n;
 	},
-	
+
 	convertUnixTime: function(str) {
 		var _date, _months, _year, _month, _day, _time, _date_array = [],
 			_date_str = {
@@ -49,13 +49,13 @@ VCO.Util = {
 				date_array:[],
 				full_array:[]
 			};
-			
+
 		_date_str.ymd = str.split(" ")[0];
 		_date_str.time = str.split(" ")[1];
 		_date_str.date_array = _date_str.ymd.split("-");
 		_date_str.time_array = _date_str.time.split(":");
 		_date_str.full_array = _date_str.date_array.concat(_date_str.time_array)
-		
+
 		for(var i = 0; i < _date_str.full_array.length; i++) {
 			_date_array.push( parseInt(_date_str.full_array[i]) )
 		}
@@ -66,17 +66,17 @@ VCO.Util = {
 		_month = _months[_date.getMonth()];
 		_day = _date.getDate();
 		_time = _month + ', ' + _day + ' ' + _year;
-		
+
 		return _time;
 	},
-	
+
 	setData: function (obj, data) {
 		obj.data = VCO.Util.extend({}, obj.data, data);
 		if (obj.data.uniqueid === "") {
 			obj.data.uniqueid = VCO.Util.unique_ID(6);
 		}
 	},
-	
+
 	mergeData: function(data_main, data_to_merge) {
 		var x;
 		for (x in data_to_merge) {
@@ -86,39 +86,39 @@ VCO.Util = {
 		}
 		return data_main;
 	},
-	
+
 	stamp: (function () {
 		var lastId = 0, key = '_vco_id';
-		
+
 
 		return function (/*Object*/ obj) {
 			obj[key] = obj[key] || ++lastId;
 			return obj[key];
 		};
 	}()),
-	
+
 	isArray: (function () {
 	    // Use compiler's own isArray when available
 	    if (Array.isArray) {
 	        return Array.isArray;
 	    }
- 
+
 	    // Retain references to variables for performance
 	    // optimization
 	    var objectToStringFn = Object.prototype.toString,
 	        arrayToStringResult = objectToStringFn.call([]);
- 
+
 	    return function (subject) {
 	        return objectToStringFn.call(subject) === arrayToStringResult;
 	    };
 	}()),
-	
+
     getRandomNumber: function(range) {
    		return Math.floor(Math.random() * range);
    	},
-		
+
 	unique_ID: function(size, prefix) {
-		
+
 		var getRandomNumber = function(range) {
 			return Math.floor(Math.random() * range);
 		};
@@ -135,28 +135,28 @@ VCO.Util = {
 			}
 			return str;
 		};
-		
+
 		if (prefix) {
 			return prefix + "-" + randomID(size);
 		} else {
 			return "vco-" + randomID(size);
 		}
 	},
-	
+
 	htmlify: function(str) {
 		//if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
 		if (str.match(/<p>[\s\S]*?<\/p>/)) {
-			
+
 			return str;
 		} else {
 			return "<p>" + str + "</p>";
 		}
 	},
-	
+
 	/*	* Turns plain text links into real links
 	================================================== */
 	linkify: function(text,targets,is_touch) {
-		
+
         var make_link = function(url, link_text, prefix) {
             if (!prefix) {
                 prefix = "";
@@ -175,11 +175,11 @@ VCO.Util = {
 
 		// Email addresses
 		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
-		
+
 
 		return text
 			.replace(urlPattern, function(match, url_sans_protocol, offset, string) {
-                // Javascript doesn't support negative lookbehind assertions, so 
+                // Javascript doesn't support negative lookbehind assertions, so
                 // we need to handle risk of matching URLs in legit hrefs
                 if (offset > 0) {
                     var prechar = string[offset-1];
@@ -196,14 +196,14 @@ VCO.Util = {
                 return make_link('mailto:' + email, email);
             });
 	},
-	
+
 	unlinkify: function(text) {
 		if(!text) return text;
 		text = text.replace(/<a\b[^>]*>/i,"");
 		text = text.replace(/<\/a>/i, "");
 		return text;
 	},
-	
+
 	getParamString: function (obj) {
 		var params = [];
 		for (var i in obj) {
@@ -213,16 +213,16 @@ VCO.Util = {
 		}
 		return '?' + params.join('&');
 	},
-	
+
 	formatNum: function (num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
 	},
-	
+
 	falseFn: function () {
 		return false;
 	},
-	
+
 	requestAnimFrame: (function () {
 		function timeoutDefer(callback) {
 			window.setTimeout(callback, 1000 / 60);
@@ -244,13 +244,13 @@ VCO.Util = {
 			}
 		};
 	}()),
-	
+
 	bind: function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
 		return function () {
 			return fn.apply(obj, arguments);
 		};
 	},
-	
+
 	template: function (str, data) {
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
@@ -260,7 +260,7 @@ VCO.Util = {
 			return value;
 		});
 	},
-	
+
 	hexToRgb: function(hex) {
 	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         if (VCO.Util.css_named_colors[hex.toLowerCase()]) {
@@ -436,7 +436,7 @@ VCO.Util = {
 			}
 			return s;
 		},
-		
+
 		r16_9: function(size) {
 			if (size.w !== null && size.w !== "") {
 				return Math.round((size.w / 16) * 9);
@@ -467,33 +467,33 @@ VCO.Util = {
 		} else {
 			return "";
 		}
-		
+
 	},
 	getUrlVars: function(string) {
 		var str,
 			vars = [],
 			hash,
 			hashes;
-		
+
 		str = string.toString();
-		
-		if (str.match('&#038;')) { 
+
+		if (str.match('&#038;')) {
 			str = str.replace("&#038;", "&");
 		} else if (str.match('&#38;')) {
 			str = str.replace("&#38;", "&");
 		} else if (str.match('&amp;')) {
 			str = str.replace("&amp;", "&");
 		}
-		
+
 		hashes = str.slice(str.indexOf('?') + 1).split('&');
-		
+
 		for(var i = 0; i < hashes.length; i++) {
 			hash = hashes[i].split('=');
 			vars.push(hash[0]);
 			vars[hash[0]] = hash[1];
 		}
-		
-		
+
+
 		return vars;
 	},
     /**
@@ -565,8 +565,8 @@ VCO.Util = {
 	},
 
     findNextGreater: function(list, current, default_value) {
-        // given a sorted list and a current value which *might* be in the list, 
-        // return the next greatest value if the current value is >= the last item in the list, return default, 
+        // given a sorted list and a current value which *might* be in the list,
+        // return the next greatest value if the current value is >= the last item in the list, return default,
         // or if default is undefined, return input value
         for (var i = 0; i < list.length; i++) {
             if (current < list[i]) {
@@ -578,8 +578,8 @@ VCO.Util = {
     },
 
     findNextLesser: function(list, current, default_value) {
-        // given a sorted list and a current value which *might* be in the list, 
-        // return the next lesser value if the current value is <= the last item in the list, return default, 
+        // given a sorted list and a current value which *might* be in the list,
+        // return the next lesser value if the current value is <= the last item in the list, return default,
         // or if default is undefined, return input value
         for (var i = list.length - 1; i >= 0; i--) {
             if (current > list[i]) {
@@ -588,5 +588,21 @@ VCO.Util = {
         }
 
         return (default_value) ? default_value : current;
-    }
+    },
+
+	isEmptyObject: function(o) {
+		var properties = []
+		if (Object.keys) {
+			properties = Object.keys(o);
+		} else { // all this to support IE 8
+		    for (var p in o) if (Object.prototype.hasOwnProperty.call(o,p)) properties.push(p);
+		}
+		for (var i = 0; i < properties.length; i++) {
+			var k = properties[i];
+			if (o[k] != null && typeof o[k] != "string") return false;
+			if (VCO.Util.trim(o[k]).length != 0) return false;
+		}
+		return true; 
+	}
+
 };

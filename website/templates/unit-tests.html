@@ -138,10 +138,21 @@
         equal(VCO.Util.findNextLesser(l,40),35, "35 is less than 40");
         equal(VCO.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
         equal(VCO.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
-
-
-
       })
+
+      test("VCO.Util.isEmptyObject", function() {
+          o = {}
+          ok(VCO.Util.isEmptyObject(o),"no keys should be empty");
+          o.foo = "  ";
+          ok(VCO.Util.isEmptyObject(o),"empty string should be empty");
+          o.bar = "";
+          ok(VCO.Util.isEmptyObject(o),"2 empty strings should be empty");
+          o.baz = null;
+          ok(VCO.Util.isEmptyObject(o),"add null, still should be empty");
+          o.foo = "  not empty  ";
+          equal(VCO.Util.isEmptyObject(o), false, "adding a string ")
+      })
+
 
       test("VCO.Date", function() {
         var refdate = VCO.Date.makeDate({year: 2000, month: 6, day: 21});
@@ -155,8 +166,8 @@
         ok(!isNaN(smalldate.getTime()),"small dates are human");
 
         var bigdate = VCO.Date.makeDate({year: 1000000});
-        ok(!isNaN(bigdate.getTime()),"big dates are cosmological"); 
-        
+        ok(!isNaN(bigdate.getTime()),"big dates are cosmological");
+
         var cdate = VCO.Date.makeDate({year: 2014, display_date: "hello"});
         equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')
 
@@ -313,7 +324,7 @@
             ok(false, "Failure testing " + time_str + " got " + e);
           }
 
-          
+
         }
         test_date('11:30:40.5', 11, 30, 40, 500);
 
@@ -356,7 +367,7 @@
 
         equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
 
-        equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat") 
+        equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat")
       })
 
       test( "VCO.Language test non-english", function( ) {
@@ -387,7 +398,7 @@
         equal(msgs.formatDate(d,'HH'),'04','padded hour (24HR)');
         equal(msgs.formatDate(d,'M'),'5','minute');
         equal(msgs.formatDate(d,'MM'),'05','padded minute');
-        var d2 = new Date(d.getTime()+(1000*60*60*12)); 
+        var d2 = new Date(d.getTime()+(1000*60*60*12));
         equal(msgs.formatDate(d2,'H'),'16','hour (24HR after noon)');
         equal(msgs.formatDate(d2,'HH'),'16','padded hour (24HR after noon)');
         equal(msgs.formatDate(d,'s'),'0','second');
@@ -402,9 +413,9 @@
 
       test("VCO.Date date formatting", function() {
         var msgs = VCO.Language.default;
-        var d = VCO.Date.makeDate({year: '2014', month: '1', day: '1' }) 
+        var d = VCO.Date.makeDate({year: '2014', month: '1', day: '1' })
         equal(d.getDisplayDate(msgs),"January 1, 2014")
-        var d = VCO.Date.makeDate({year: '2014'}) 
+        var d = VCO.Date.makeDate({year: '2014'})
         equal(d.getDisplayDate(msgs),"2014")
       });
 
@@ -417,7 +428,7 @@
 
       function asyncJSON(url) {
             var data = VCO.ajax({
-                url: url, 
+                url: url,
                 async: false
             });
             return JSON.parse(data.responseText);
@@ -461,7 +472,7 @@
             start();
           });
         }
-      });        
+      });
 
       test("TimelineConfig", function() {
         ok(this.timeline_config,"config loaded")
@@ -529,7 +540,7 @@
 
       test("TimeScale max rows", function() {
         var config = new VCO.TimelineConfig({ scale: 'cosmological',
-          events: 
+          events:
           [
             {start_date: {year: 1}, end_date: {year: 1000}},
             {start_date: {year: 100}, end_date: {year: 1500}},

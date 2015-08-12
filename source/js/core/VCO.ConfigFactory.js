@@ -5,7 +5,7 @@
     /*
      * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
 
-     If `url` is actually a string which is only letters, numbers, '-' and '_', then it's assumed to be an ID already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented. 
+     If `url` is actually a string which is only letters, numbers, '-' and '_', then it's assumed to be an ID already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented.
 
      If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
      */
@@ -44,6 +44,7 @@
                 item_data[k.substr(4)] = item[k].$t;
             }
         }
+        if (VCO.Util.isEmptyObject(item_data)) return null;
         var d = {
             media: {
                 caption: item_data.mediacaption || '',
@@ -77,6 +78,7 @@
                 item_data[k.substr(4)] = VCO.Util.trim(item[k].$t);
             }
         }
+        if (VCO.Util.isEmptyObject(item_data)) return null;
         var d = {
             media: {
                 caption: item_data.mediacaption || '',
@@ -138,7 +140,7 @@
     }
 
     var getGoogleItemExtractor = function(data) {
-        if (typeof data.feed.entry === 'undefined' 
+        if (typeof data.feed.entry === 'undefined'
                 || data.feed.entry.length == 0) {
             throw('No data entries found.');
         }
@@ -161,7 +163,7 @@
         var url = buildGoogleFeedURL(parseGoogleSpreadsheetURL(url));
             var timeline_config = { 'events': [] };
             var data = VCO.ajax({
-                url: url, 
+                url: url,
                 async: false
             });
             data = JSON.parse(data.responseText);
@@ -174,15 +176,17 @@
         for (var i = 0; i < data.feed.entry.length; i++) {
             try {
                 var event = extract(data.feed.entry[i]);
-                var row_type = 'event';
-                if (typeof(event.type) != 'undefined') {
-                    row_type = event.type;
-                    delete event.type;
-                }
-                if (row_type == 'title') {
-                    timeline_config.title = event;
-                } else {
-                    timeline_config.events.push(event);
+                if (event) { // blank rows return null
+                  var row_type = 'event';
+                  if (typeof(event.type) != 'undefined') {
+                      row_type = event.type;
+                      delete event.type;
+                  }
+                  if (row_type == 'title') {
+                      timeline_config.title = event;
+                  } else {
+                      timeline_config.events.push(event);
+                  }
                 }
             } catch(e) {
                 if (e.message) {
@@ -196,7 +200,7 @@
     }
 
     var makeConfig = function(url, callback) {
-        var key = parseGoogleSpreadsheetURL(url);  
+        var key = parseGoogleSpreadsheetURL(url);
 
         if (key) {
             var json = jsonFromGoogleURL(url);
