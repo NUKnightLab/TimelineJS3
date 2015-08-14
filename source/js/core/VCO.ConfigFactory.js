@@ -72,6 +72,12 @@
 
     function extractGoogleEntryData_V3(item) {
 
+        function clean_integer(s) {
+            if (s) {
+                return s.replace(/[\s,]+/g,''); // doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
+            }
+        }
+
         var item_data = {}
         for (k in item) {
             if (k.indexOf('gsx$') == 0) {
@@ -91,14 +97,14 @@
                 text: item_data.text || ''
             },
             start_date: {
-                year: item_data.year,
-                month: item_data.month || '',
-                day: item_data.day || ''
+                year: clean_integer(item_data.year),
+                month: clean_integer(item_data.month) || '',
+                day: clean_integer(item_data.day) || ''
             },
             end_date: {
-                year: item_data.endyear || '',
-                month: item_data.endmonth || '',
-                day: item_data.endday || ''
+                year: clean_integer(item_data.endyear) || '',
+                month: clean_integer(item_data.endmonth) || '',
+                day: clean_integer(item_data.endday) || ''
             },
             display_date: item_data.displaydate || '',
 
