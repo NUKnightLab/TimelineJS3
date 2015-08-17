@@ -207,7 +207,11 @@ VCO.Media = VCO.Class.extend({
 	},
 	
 	loadErrorDisplay: function(message) {
-		this._el.content.removeChild(this._el.content_item);
+		try {
+			this._el.content.removeChild(this._el.content_item);
+		} catch(e) {
+			// if this._el.content_item isn't a child of this._el then just keep truckin
+		}
 		this._el.content_item	= VCO.Dom.create("div", "vco-media-item vco-media-loaderror", this._el.content);
 		this._el.content_item.innerHTML = "<div class='vco-icon-" + this.options.media_type + "'></div><p>" + message + "</p>";
 		
