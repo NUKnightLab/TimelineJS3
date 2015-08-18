@@ -787,6 +787,10 @@ VCO.Timeline = VCO.Class.extend({
 	    this._timenav.zoomOut();
 	},
 
+	setZoom: function(level) {
+	    this._timenav.setZoom(level);
+	},
+	
 	_onZoomIn: function(e) {
 		this._timenav.zoomIn();
 		this.fire("zoom_in", {zoom_level:this._timenav.options.scale_factor}, this);
