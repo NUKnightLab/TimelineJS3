@@ -777,6 +777,16 @@ VCO.Timeline = VCO.Class.extend({
 		this.fire("back_to_start", {uniqueid:this.current_id}, this);
 	},
 
+	/**
+	 * Zoom in and zoom out should be part of the public API.
+	 */
+	zoomIn: function() {
+	    this._timenav.zoomIn();
+	},
+	zoomOut: function() {
+	    this._timenav.zoomOut();
+	},
+
 	_onZoomIn: function(e) {
 		this._timenav.zoomIn();
 		this.fire("zoom_in", {zoom_level:this._timenav.options.scale_factor}, this);
