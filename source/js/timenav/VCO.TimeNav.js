@@ -1,13 +1,13 @@
 /*	VCO.TimeNav
-
+	
 ================================================== */
-
+  
 VCO.TimeNav = VCO.Class.extend({
-
+	
 	includes: [VCO.Events, VCO.DomMixins],
-
+	
 	_el: {},
-
+	
 	/*	Constructor
 	================================================== */
 	initialize: function (elem, data, options, init) {
@@ -25,18 +25,18 @@ VCO.TimeNav = VCO.Class.extend({
 			timeaxis_background: {},
 			attribution: {}
 		};
-
+		
 		this.collapsed = false;
-
+		
 		if (typeof elem === 'object') {
 			this._el.container = elem;
 		} else {
 			this._el.container = VCO.Dom.get(elem);
 		}
-
+		
 		// Data Object
 		this.data = {};
-
+		
 		//Options
 		this.options = {
 			width: 					600,
@@ -52,72 +52,72 @@ VCO.TimeNav = VCO.Class.extend({
 			marker_width_min: 		100, 			// Minimum Marker Width
 			zoom_sequence:          [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
 		};
-
+		
 		// Animation
 		this.animator = null;
-
+		
 		// Markers Array
 		this._markers = [];
-
+		
 		// Groups Array
 		this._groups = [];
-
+		
 		// Row Height
 		this._calculated_row_height = 100;
-
+		
 		// Current Marker
 		this.current_id = "";
-
+		
 		// TimeScale
 		this.timescale = {};
-
+		
 		// TimeAxis
 		this.timeaxis = {};
 		this.axishelper = {};
-
+		
 		// Max Rows
 		this.max_rows = 6;
-
+		
 		// Animate CSS
 		this.animate_css = false;
-
+		
 		// Swipe Object
 		this._swipable;
-
+		
 		// Merge Data and Options
 		VCO.Util.mergeData(this.options, options);
 		VCO.Util.mergeData(this.data, data);
-
+			   
 		if (init) {
 			this.init();
 		}
 	},
-
+	
 	init: function() {
 		this._initLayout();
 		this._initEvents();
 		this._initData();
 		this._updateDisplay();
-
+				
 		this._onLoaded();
 	},
-
+	
 	/*	Public
 	================================================== */
 	positionMarkers: function() {
 		this._positionMarkers();
 	},
-
+	
 	/*	Update Display
 	================================================== */
 	updateDisplay: function(w, h, a, l) {
 		this._updateDisplay(w, h, a, l);
 	},
-
-
+	
+	
 	/*	TimeScale
 	================================================== */
-	_getTimeScale: function() {
+	_getTimeScale: function() { 
 		/* maybe the establishing config values (marker_height_min and max_rows) should be
 		separated from making a TimeScale object, which happens in another spot in this file with duplicate mapping of properties of this TimeNav into the TimeScale options object? */
 		// Set Max Rows
@@ -125,7 +125,7 @@ VCO.TimeNav = VCO.Class.extend({
 		try {
 			marker_height_min = parseInt(this.options.marker_height_min);
 		} catch(e) {
-			trace("Invalid value for marker_height_min option.");
+			trace("Invalid value for marker_height_min option."); 
 			marker_height_min = 30;
 		}
 		if (marker_height_min == 0) {
@@ -143,12 +143,12 @@ VCO.TimeNav = VCO.Class.extend({
 
 		});
 	},
-
+	
 	_updateTimeScale: function(new_scale) {
 		this.options.scale_factor = new_scale;
 		this._updateDrawTimeline();
 	},
-
+	
 	zoomIn: function() { // move the the next "higher" scale factor
 		var new_scale = VCO.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
 		if (new_scale == this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
@@ -158,7 +158,7 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		this.setZoomFactor(new_scale);
 	},
-
+	
 	zoomOut: function() { // move the the next "lower" scale factor
 		var new_scale = VCO.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
 		if (new_scale == this.options.zoom_sequence[0]) {
@@ -183,49 +183,49 @@ VCO.TimeNav = VCO.Class.extend({
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 	},
-
+	
 	/*	Groups
 	================================================== */
 	_createGroups: function() {
 		var group_labels = this.timescale.getGroupLabels();
-
+		
 		if (group_labels) {
 			this.options.has_groups = true;
 			for (var i = 0; i < group_labels.length; i++) {
 				this._createGroup(group_labels[i]);
 			}
 		}
-
+		
 	},
-
+	
 	_createGroup: function(group_label) {
 		var group = new VCO.TimeGroup(group_label);
 		this._addGroup(group);
 		this._groups.push(group);
 	},
-
+	
 	_addGroup:function(group) {
 		group.addTo(this._el.container);
-
+		
 	},
-
+	
 	_positionGroups: function() {
 		if (this.options.has_groups) {
 			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight ),
 				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
 				group_labels		= this.timescale.getGroupLabels();
-
+			
 			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
 				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
-
-				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2);
+				
+				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2); 
 				this._groups[i].setAlternateRowColor(VCO.Util.isEven(i));
-
+				
 				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
 			}
-		}
+		}		
 	},
-
+	
 	/*	Markers
 	================================================== */
 	_addMarker:function(marker) {
@@ -244,22 +244,22 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 	},
 
-	_createMarkers: function(array) {
+	_createMarkers: function(array) { 
 		for (var i = 0; i < array.length; i++) {
 			this._createMarker(array[i], -1);
-		}
+		}		
 	},
-
+	
 	_removeMarker: function(marker) {
 		marker.removeFrom(this._el.marker_item_container);
 		//marker.off('added', this._onMarkerRemoved, this);
 	},
-
+	
 	_destroyMarker: function(n) {
 	    this._removeMarker(this._markers[n]);
 	    this._markers.splice(n, 1);
 	},
-
+		
 	_positionMarkers: function(fast) {
 		// POSITION X
 		for (var i = 0; i < this._markers.length; i++) {
@@ -272,76 +272,76 @@ VCO.TimeNav = VCO.Class.extend({
 			this._markers[i].setPosition({left:pos.start});
 			this._markers[i].setWidth(pos.width);
 		};
-
+		
 	},
-
+	
 	_assignRowsToMarkers: function() {
 		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
 			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
-
+			
 		this._calculated_row_height = Math.floor(available_height /this.timescale.getNumberOfRows());
-
+			
 		for (var i = 0; i < this._markers.length; i++) {
-
+			
 			// Set Height
 			this._markers[i].setHeight(marker_height);
-
+			
 			//Position by Row
 			var row = this.timescale.getPositionInfo(i).row;
-
+			
 			var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
-
+			
 			var remainder_height = available_height - marker_y + this.options.marker_padding;
 			this._markers[i].setRowPosition(marker_y, remainder_height);
 		};
-
+		
 	},
-
+	
 	_resetMarkersActive: function() {
 		for (var i = 0; i < this._markers.length; i++) {
 			this._markers[i].setActive(false);
 		};
 	},
-
-	_findMarkerIndex: function(n) {
+	
+	_findMarkerIndex: function(n) {	
 	    var _n = -1;
 		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "uniqueid", _n);
-		}
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._markers, "unique_id", _n);
+		} 
 		return _n;
 	},
 
 	/*	Public
 	================================================== */
-
+	
 	// Create a marker
 	createMarker: function(d, n) {
 	    this._createMarker(d, n);
 	},
-
+	
 	// Create many markers from an array
 	createMarkers: function(array) {
 	    this._createMarkers(array);
 	},
-
+	
 	// Destroy marker by index
 	destroyMarker: function(n) {
 	    this._destroyMarker(n);
 	},
-
+	
 	// Destroy marker by id
 	destroyMarkerId: function(id) {
 	    this.destroyMarker(this._findMarkerIndex(id));
 	},
-
+	
 	/*	Navigation
-	================================================== */
-	goTo: function(n, fast, css_animation) {
+	================================================== */	
+	goTo: function(n, fast, css_animation) {		
 		var self = 	this,
 			_ease = this.options.ease,
 			_duration = this.options.duration,
-			_n = (n < 0) ? 0 : n;
-
+			_n = (n < 0) ? 0 : n; 
+		
 		// Set Marker active state
 		this._resetMarkersActive();
 		if(n >= 0 && n < this._markers.length) {
@@ -351,7 +351,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (this.animator) {
 			this.animator.stop();
 		}
-
+		
 		if (fast) {
 			this._el.slider.className = "vco-timenav-slider";
 			this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
@@ -369,40 +369,40 @@ VCO.TimeNav = VCO.Class.extend({
 				});
 			}
 		}
-
+		
 		if(n >= 0 && n < this._markers.length) {
-		    this.current_id = this._markers[n].data.uniqueid;
+		    this.current_id = this._markers[n].data.unique_id;
 		} else {
 		    this.current_id = '';
 		}
 	},
 
 	goToId: function(id, fast, css_animation) {
-		this.goTo(this._findMarkerIndex(id), fast, css_animation);
+		this.goTo(this._findMarkerIndex(id), fast, css_animation);		
 	},
-
+		
 	/*	Events
 	================================================== */
 	_onLoaded: function() {
 		this.fire("loaded", this.data);
 	},
-
+	
 	_onMarkerAdded: function(e) {
 		this.fire("dateAdded", this.data);
 	},
-
+	
 	_onMarkerRemoved: function(e) {
 		this.fire("dateRemoved", this.data);
 	},
-
+	
 	_onMarkerClick: function(e) {
 		// Go to the clicked marker
-		this.goToId(e.uniqueid);
-		this.fire("change", {uniqueid: e.uniqueid});
+		this.goToId(e.unique_id);
+		this.fire("change", {unique_id: e.unique_id});
 	},
-
+	
 	_onMouseScroll: function(e) {
-
+		
 		var delta		= 0,
 			scroll_to	= 0,
 			constraint 	= {
@@ -415,7 +415,7 @@ VCO.TimeNav = VCO.Class.extend({
 		if (e.originalEvent) {
 			e = e.originalEvent;
 		}
-
+		
 		// Webkit and browsers able to differntiate between up/down and left/right scrolling
 		if (typeof e.wheelDeltaX != 'undefined' ) {
 			delta = e.wheelDeltaY/6;
@@ -434,36 +434,36 @@ VCO.TimeNav = VCO.Class.extend({
 		}
 		// Stop from scrolling too far
 		scroll_to = parseInt(this._el.slider.style.left.replace("px", "")) + delta;
-
-
+		
+		
 		if (scroll_to > constraint.left) {
 			scroll_to = constraint.left;
 		} else if (scroll_to < constraint.right) {
 			scroll_to = constraint.right;
 		}
-
+		
 		if (this.animate_css) {
 			this._el.slider.className = "vco-timenav-slider";
 			this.animate_css = false;
 		}
-
+		
 		this._el.slider.style.left = scroll_to + "px";
-
+		
 	},
-
+	
 	_onDragMove: function(e) {
 		if (this.animate_css) {
 			this._el.slider.className = "vco-timenav-slider";
 			this.animate_css = false;
 		}
-
+		
 	},
-
+	
 	/*	Private Methods
 	================================================== */
 	// Update Display
 	_updateDisplay: function(width, height, animate) {
-
+		
 		if (width) {
 			this.options.width = width;
 		}
@@ -471,22 +471,22 @@ VCO.TimeNav = VCO.Class.extend({
 			this.options.height = height;
 			this.timescale = this._getTimeScale();
 		}
-
+		
 		// Size Markers
 		this._assignRowsToMarkers();
-
+		
 		// Size swipable area
 		this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
 		this._el.slider_background.style.left = -(this.options.width/2) + "px";
 		this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
-
+		
 		// Update Swipable constraint
 		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
-
+		
 		// Go to the current slide
 		this.goToId(this.current_id, true);
 	},
-
+	
 	_drawTimeline: function(fast) {
 		this.timescale = this._getTimeScale();
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
@@ -495,10 +495,10 @@ VCO.TimeNav = VCO.Class.extend({
 		this._createGroups();
 		this._positionGroups();
 	},
-
+	
 	_updateDrawTimeline: function(check_update) {
 		var do_update = false;
-
+		
 		// Check to see if redraw is needed
 		if (check_update) {
 			/* keep this aligned with _getTimeScale or reduce code duplication */
@@ -509,14 +509,14 @@ VCO.TimeNav = VCO.Class.extend({
 
 			});
 
-			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale()
+			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() 
 			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
 				do_update = true;
 			}
 		} else {
 			do_update = true;
 		}
-
+		
 		// Perform update or redraw
 		if (do_update) {
 			this.timescale = this._getTimeScale();
@@ -528,12 +528,12 @@ VCO.TimeNav = VCO.Class.extend({
 		} else {
 			this._drawTimeline(true);
 		}
-
+		
 		return do_update;
-
+		
 	},
-
-
+	
+	
 	/*	Init
 	================================================== */
 	_initLayout: function () {
@@ -547,14 +547,14 @@ VCO.TimeNav = VCO.Class.extend({
 		this._el.marker_item_container		= VCO.Dom.create('div', 'vco-timenav-item-container', this._el.marker_container);
 		this._el.timeaxis 					= VCO.Dom.create('div', 'vco-timeaxis', this._el.slider);
 		this._el.timeaxis_background 		= VCO.Dom.create('div', 'vco-timeaxis-background', this._el.container);
-
-
+		
+		
 		// Knight Lab Logo
 		this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='vco-knightlab-logo'></span>Timeline JS</a>"
-
+		
 		// Time Axis
 		this.timeaxis = new VCO.TimeAxis(this._el.timeaxis, this.options);
-
+		
 		// Swipable
 		this._swipable = new VCO.Swipable(this._el.slider_background, this._el.slider, {
 			enable: {x:true, y:false},
@@ -562,24 +562,24 @@ VCO.TimeNav = VCO.Class.extend({
 			snap: 	false
 		});
 		this._swipable.enable();
-
+		
 	},
-
+	
 	_initEvents: function () {
 		// Drag Events
 		this._swipable.on('dragmove', this._onDragMove, this);
-
+		
 		// Scroll Events
 		VCO.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
 		VCO.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
 	},
-
+	
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
 		this._drawTimeline();
-
+		
 	}
-
-
+	
+	
 });

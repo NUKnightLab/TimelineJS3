@@ -55,6 +55,7 @@
         "loading": "cargando", 
         "contract_timeline": "Reducir la cronología", 
         "return_to_title": "Volver al título", 
+        "swipe_nav": "Desliza para ver", 
         "wikipedia": "Desde Wikipedia, la enciclopedia libre", 
         "loading_content": "cargando", 
         "expand_timeline": "Expandir la cronología", 
@@ -68,7 +69,7 @@
         "time_no_seconds_small_date": "'<small>'d mmmm yyyy'</small>' HH:MM", 
         "month": "mmmm yyyy", 
         "time_no_seconds_short": "HH:MM", 
-        "time_short": "HH:MM:SS", 
+        "time_short": "HH:MM:ss", 
         "year": "yyyy", 
         "full_long_small_date": "HH:MM'<br/><small>d mmm yyyy'</small>'"
     }

@@ -129,8 +129,8 @@ VCO.StorySlider = VCO.Class.extend({
 
 	_createSlides: function(array) {
 		for (var i = 0; i < array.length; i++) {
-			if (array[i].uniqueid == "") {
-				array[i].uniqueid = VCO.Util.unique_ID(6, "vco-slide");
+			if (array[i].unique_id == "") {
+				array[i].unique_id = VCO.Util.unique_ID(6, "vco-slide");
 			}
             this._createSlide(array[i], false, -1);
 		}
@@ -150,7 +150,7 @@ VCO.StorySlider = VCO.Class.extend({
     _findSlideIndex: function(n) {
         var _n = n;
 		if (typeof n == 'string' || n instanceof String) {
-			_n = VCO.Util.findArrayNumberByUniqueID(n, this._slides, "uniqueid");
+			_n = VCO.Util.findArrayNumberByUniqueID(n, this._slides, "unique_id");
 		}
 		return _n;
     },
@@ -199,7 +199,7 @@ VCO.StorySlider = VCO.Class.extend({
 		}
 		
 		if (n < this._slides.length && n >= 0) {			
-			this.current_id = this._slides[n].data.uniqueid;
+			this.current_id = this._slides[n].data.unique_id;
 
 			// Stop animation
 			if (this.animator) {
@@ -508,7 +508,7 @@ VCO.StorySlider = VCO.Class.extend({
 	
 	_onSlideChange: function(displayupdate) {		
 		if (!displayupdate) {
-			this.fire("change", {uniqueid: this.current_id});
+			this.fire("change", {unique_id: this.current_id});
 		}
 	},
 	

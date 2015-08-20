@@ -47,7 +47,7 @@ VCO.Slide = VCO.Class.extend({
 		
 		// Data
 		this.data = {
-			uniqueid: 				null,
+			unique_id: 				null,
 			background: 			null,
 			start_date: 			null,
 			end_date: 				null,
@@ -178,8 +178,8 @@ VCO.Slide = VCO.Class.extend({
 			this._el.container.className = "vco-slide vco-slide-titleslide";
 		}
 		
-		if (this.data.uniqueid) {
-			this._el.container.id 		= this.data.uniqueid;
+		if (this.data.unique_id) {
+			this._el.container.id 		= this.data.unique_id;
 		}
 		this._el.scroll_container 		= VCO.Dom.create("div", "vco-slide-scrollable-container", this._el.container);
 		this._el.content_container		= VCO.Dom.create("div", "vco-slide-content-container", this._el.scroll_container);

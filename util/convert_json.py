@@ -82,7 +82,7 @@ The data file should be in JSON format with the following structure
                     "caption":  "",
                     "credit":   "",
                     "url":      "url_to_your_media.jpg",
-                    "thumb":    "url_to_your_media.jpg"
+                    "thumbnail":    "url_to_your_media.jpg"
                 },
                 "text": {
                     "headline": "Headline Goes Here",

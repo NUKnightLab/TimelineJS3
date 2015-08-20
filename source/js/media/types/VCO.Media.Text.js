@@ -13,7 +13,7 @@ VCO.Media.Text = VCO.Class.extend({
 	
 	// Data
 	data: {
-		uniqueid: 			"",
+		unique_id: 			"",
 		headline: 			"headline",
 		text: 				"text"
 	},
@@ -33,7 +33,7 @@ VCO.Media.Text = VCO.Class.extend({
 		VCO.Util.mergeData(this.options, options);
 		
 		this._el.container = VCO.Dom.create("div", "vco-text");
-		this._el.container.id = this.data.uniqueid;
+		this._el.container.id = this.data.unique_id;
 		
 		this._initLayout();
 		

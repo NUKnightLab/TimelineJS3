@@ -36,7 +36,7 @@ VCO.TimeMarker = VCO.Class.extend({
 		
 		// Data
 		this.data = {
-			uniqueid: 			"",
+			unique_id: 			"",
 			background: 		null,
 			date: {
 				year:			0,
@@ -222,7 +222,7 @@ VCO.TimeMarker = VCO.Class.extend({
 	/*	Events
 	================================================== */
 	_onMarkerClick: function(e) {
-		this.fire("markerclick", {uniqueid:this.data.uniqueid});
+		this.fire("markerclick", {unique_id:this.data.unique_id});
 	},
 	
 	/*	Private Methods
@@ -231,8 +231,8 @@ VCO.TimeMarker = VCO.Class.extend({
 		//trace(this.data)
 		// Create Layout
 		this._el.container 				= VCO.Dom.create("div", "vco-timemarker");
-		if (this.data.uniqueid) {
-			this._el.container.id 		= this.data.uniqueid + "-marker";
+		if (this.data.unique_id) {
+			this._el.container.id 		= this.data.unique_id + "-marker";
 		}
 		
 		if (this.data.end_date) {
@@ -253,9 +253,9 @@ VCO.TimeMarker = VCO.Class.extend({
 		if (this.data.media) {
 			this._el.media_container	= VCO.Dom.create("div", "vco-timemarker-media-container", this._el.content);
 			
-			if (this.data.media.thumb && this.data.media.thumb != "") {
+			if (this.data.media.thumbnail && this.data.media.thumbnail != "") {
 				this._el.media				= VCO.Dom.create("img", "vco-timemarker-media", this._el.media_container);
-				this._el.media.src			= this.data.media.thumb;
+				this._el.media.src			= this.data.media.thumbnail;
 				
 			} else {
 				var media_type = VCO.MediaType(this.data.media).type;

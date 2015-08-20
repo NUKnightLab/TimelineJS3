@@ -142,7 +142,7 @@ html, body {
                 "headline":     $('#headline').val().trim() || "",
                 "text":         $('#text').val().trim() || ""
             },
-            "uniqueid":         ""
+            "unique_id":         ""
         };
 
         timeline.add(d);
@@ -225,7 +225,7 @@ html, body {
         var slides = timeline.config.slides;
         var html = '';
         for(var i = 0, id; i < slides.length; i++) {
-            id = slides[i].uniqueid;
+            id = slides[i].unique_id;
             html += '<option value="'+id+'">'+id+'</option>';
         }
 

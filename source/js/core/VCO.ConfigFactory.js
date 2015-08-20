@@ -50,7 +50,7 @@
                 caption: item_data.mediacaption || '',
                 credit: item_data.mediacredit || '',
                 url: item_data.media || '',
-                thumb: item_data.mediathumbnail || ''
+                thumbnail: item_data.mediathumbnail || ''
             },
             text: {
                 headline: item_data.headline || '',
@@ -90,7 +90,7 @@
                 caption: item_data.mediacaption || '',
                 credit: item_data.mediacredit || '',
                 url: item_data.media || '',
-                thumb: item_data.mediathumbnail || ''
+                thumbnail: item_data.mediathumbnail || ''
             },
             text: {
                 headline: item_data.headline || '',

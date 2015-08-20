@@ -1,15 +1,15 @@
 /*  TimelineJS
 Designed and built by Zach Wise at KnightLab
-
+  
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at https://mozilla.org/MPL/2.0/.
-
+  
 ================================================== */
-/*
+/* 
 TODO
-
-*/
+  
+*/ 
 
 /*  Required Files
 CodeKit Import
@@ -43,7 +43,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "dom/VCO.DomUtil.js";
 	// @codekit-prepend "dom/VCO.DomEvent.js";
 	// @codekit-prepend "dom/VCO.StyleSheet.js";
-
+  
 // Date
 	// @codekit-prepend "date/VCO.Date.js";
 	// @codekit-prepend "date/VCO.DateUtil.js";
@@ -88,7 +88,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "slider/VCO.StorySlider.js";
 
 // TIMENAV
-	// @codekit-prepend "timenav/VCO.TimeNav.js";
+	// @codekit-prepend "timenav/VCO.TimeNav.js"; 
 	// @codekit-prepend "timenav/VCO.TimeMarker.js";
 	// @codekit-prepend "timenav/VCO.TimeGroup.js";
 	// @codekit-prepend "timenav/VCO.TimeScale.js";
@@ -132,7 +132,7 @@ VCO.Timeline = VCO.Class.extend({
 
 		// TimeNav
 		this._timenav = {};
-
+		
 		// Message
 		this.message = new VCO.Message({}, {
 			message_class: "vco-message-full"
@@ -157,7 +157,7 @@ VCO.Timeline = VCO.Class.extend({
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
 			layout: 					"landscape",			// portrait or landscape
-			timenav_position: 			"bottom",				// timeline on top or bottom
+			timenav_position: 			"bottom",				// timeline on top or bottom 
 			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
 			base_class: 				"vco-timeline", 		// removing vco-timeline will break all default stylesheets...
 			timenav_height: 			175,
@@ -179,7 +179,7 @@ VCO.Timeline = VCO.Class.extend({
 			ease: 						VCO.Ease.easeInOutQuint,
 			// interaction
 			dragging: 					true,
-			trackResize: 				true,
+			trackResize: 				true, 
 			map_type: 					"stamen:toner-lite",
 			slide_padding_lr: 			100,					// padding on slide of slide
 			slide_default_fade: 		"0%",					// landscape fade
@@ -235,7 +235,7 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			self._loadLanguage(data);
 		}
-
+		
 	},
 
 	/*  Load Language
@@ -246,30 +246,30 @@ VCO.Timeline = VCO.Class.extend({
 		this._initData(data);
 	},
 
-
+  
 	/*  Navigation
 	================================================== */
-
+  
 	// Goto slide with id
 	goToId: function(id) {
 		if (this.current_id != id) {
 			this.current_id = id;
 			this._timenav.goToId(this.current_id);
 			this._storyslider.goToId(this.current_id, false, true);
-			this.fire("change", {uniqueid: this.current_id}, this);
+			this.fire("change", {unique_id: this.current_id}, this);
 		}
 	},
-
+  
 	// Goto slide n
 	goTo: function(n) {
 		if(this.config.title) {
 			if(n == 0) {
-				this.goToId(this.config.title.uniqueid);
+				this.goToId(this.config.title.unique_id);
 			} else {
-				this.goToId(this.config.events[n - 1].uniqueid);
+				this.goToId(this.config.events[n - 1].unique_id);
 			}
 		} else {
-			this.goToId(this.config.events[n].uniqueid);
+			this.goToId(this.config.events[n].unique_id);
 		}
 	},
 
@@ -299,9 +299,9 @@ VCO.Timeline = VCO.Class.extend({
 
 	// Add an event
 	add: function(data) {
-		var uniqueid = this.config.addEvent(data);
+		var unique_id = this.config.addEvent(data);
 
-		var n = this._getEventIndex(uniqueid);
+		var n = this._getEventIndex(unique_id);
 		var d = this.config.events[n];
 
 		this._storyslider.createSlide(d, this.config.title ? n+1 : n);
@@ -310,37 +310,37 @@ VCO.Timeline = VCO.Class.extend({
 		this._timenav.createMarker(d, n);
 		this._timenav._updateDrawTimeline(false);
 
-		this.fire("added", {uniqueid: uniqueid});
+		this.fire("added", {unique_id: unique_id});
 	},
 
 	// Remove an event
 	remove: function(n) {
 		if(n >= 0  && n < this.config.events.length) {
 			// If removing the current, nav to new one first
-			if(this.config.events[n].uniqueid == this.current_id) {
+			if(this.config.events[n].unique_id == this.current_id) {
 				if(n < this.config.events.length - 1) {
 					this.goTo(n + 1);
 				} else {
 					this.goTo(n - 1);
 				}
 			}
-
+        
 			var event = this.config.events.splice(n, 1);
-
+        
 			this._storyslider.destroySlide(this.config.title ? n+1 : n);
-			this._storyslider._updateDrawSlides();
-
+			this._storyslider._updateDrawSlides();            
+        
 			this._timenav.destroyMarker(n);
 			this._timenav._updateDrawTimeline(false);
-
-			this.fire("removed", {uniqueid: event[0].uniqueid});
+         
+			this.fire("removed", {unique_id: event[0].unique_id});
 		}
 	},
-
+  
 	removeId: function(id) {
 		this.remove(this._getEventIndex(id));
 	},
-
+    
 	/* Get slide data
 	================================================== */
 
@@ -367,7 +367,7 @@ VCO.Timeline = VCO.Class.extend({
 	getSlide: function(n) {
 		if(n >= 0 && n < this._storyslider._slides.length) {
 			return this._storyslider._slides[n];
-		}
+		}        
 		return null;
 	},
 
@@ -387,7 +387,7 @@ VCO.Timeline = VCO.Class.extend({
 			this._updateDisplay();
 		}
 	},
-
+  
   	/*
   		Compute the height of the navigation section of the Timeline, taking into account
   		the possibility of an explicit height or height percentage, but also honoring the
@@ -400,7 +400,7 @@ VCO.Timeline = VCO.Class.extend({
   	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
 		var height = 0;
-
+    
 		if (timenav_height) {
 			height = timenav_height;
 		} else {
@@ -410,36 +410,36 @@ VCO.Timeline = VCO.Class.extend({
 				} else {
 					height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
 				}
-
+        
 			}
 		}
 		if (height < this.options.timenav_height_min) {
 			height = this.options.timenav_height_min;
 		}
-
+    
 		height = height - (this.options.marker_padding * 2);
-
+    
 		return height;
 	},
-
+  
 	/*  Private Methods
 	================================================== */
-
+  
 	// Update View
 	_updateDisplay: function(timenav_height, animate, d) {
 		var duration    = this.options.duration,
 		display_class   = this.options.base_class,
 		menu_position   = 0,
 		self      = this;
-
+    
 		if (d) {
 			duration = d;
 		}
-
+    
 		// Update width and height
 		this.options.width = this._el.container.offsetWidth;
 		this.options.height = this._el.container.offsetHeight;
-
+    
 		// Check if skinny
 		if (this.options.width <= this.options.skinny_size) {
 			display_class += " vco-skinny";
@@ -450,12 +450,12 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			this.options.layout = "landscape";
 		}
-
+    
 		// Detect Mobile and Update Orientation on Touch devices
 		if (VCO.Browser.touch) {
 			this.options.layout = VCO.Browser.orientation();
-		}
-
+		} 
+    
 		if (VCO.Browser.mobile) {
 			display_class += " vco-mobile";
 			// Set TimeNav Height
@@ -464,7 +464,7 @@ VCO.Timeline = VCO.Class.extend({
 			// Set TimeNav Height
 			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
 		}
-
+    
 		// LAYOUT
 		if (this.options.layout == "portrait") {
 			// Portrait
@@ -473,29 +473,29 @@ VCO.Timeline = VCO.Class.extend({
 		} else {
 			// Landscape
 			display_class += " vco-layout-landscape";
-
+      
 		}
-
+    
 		// Set StorySlider Height
 		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
-
+    
 		// Positon Menu
 		if (this.options.timenav_position == "top") {
 			menu_position = ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (39/2) ;
 		} else {
 			menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
 		}
-
-
+    
+    
 		if (animate) {
-
+    
 			// Animate TimeNav
-
+			
 			/*
 			if (this.animator_timenav) {
 			this.animator_timenav.stop();
 			}
-
+    
 			this.animator_timenav = VCO.Animate(this._el.timenav, {
 			height:   (this.options.timenav_height) + "px",
 			duration:   duration/4,
@@ -505,9 +505,9 @@ VCO.Timeline = VCO.Class.extend({
 			}
 			});
 			*/
-
+			
 			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-
+			
 			// Animate StorySlider
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
@@ -517,47 +517,47 @@ VCO.Timeline = VCO.Class.extend({
 				duration:   duration/2,
 				easing:   VCO.Ease.easeOutStrong
 			});
-
+      
 			// Animate Menubar
 			if (this.animator_menubar) {
 				this.animator_menubar.stop();
 			}
-
+      
 			this.animator_menubar = VCO.Animate(this._el.menubar, {
 				top:  menu_position + "px",
 				duration:   duration/2,
 				easing:   VCO.Ease.easeOutStrong
 			});
-
+    
 		} else {
 			// TimeNav
 			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-
+    
 			// StorySlider
 			this._el.storyslider.style.height = this.options.storyslider_height + "px";
-
+      
 			// Menubar
 			this._el.menubar.style.top = menu_position + "px";
 		}
-
+		
 		if (this.message) {
 			this.message.updateDisplay(this.options.width, this.options.height);
 		}
 		// Update Component Displays
 		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
 		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
-
+    
 		// Apply class
 		this._el.container.className = display_class;
-
+		
 	},
-
+  
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		window.location.hash = "#" + "event-" + id.toString();
-		this.fire("hash_updated", {uniqueid:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
+		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
-
+	
 	/*  Init
 	================================================== */
 	// Initialize the data
@@ -575,7 +575,7 @@ VCO.Timeline = VCO.Class.extend({
 			this.setConfig(new VCO.TimelineConfig(data));
 		}
 	},
-
+		
 	setConfig: function(config) {
 		this.config = config;
 		this.config.validate();
@@ -588,11 +588,11 @@ VCO.Timeline = VCO.Class.extend({
 			// if more setup happens
 		}
 	},
-
+  
 	// Initialize the layout
 	_initLayout: function () {
 		var self = this;
-
+    
 		this._el.container.innerHTML = "";
 		// Create Layout
 		if (this.options.timenav_position == "top") {
@@ -602,64 +602,64 @@ VCO.Timeline = VCO.Class.extend({
 			this._el.storyslider  	= VCO.Dom.create('div', 'vco-storyslider', this._el.container);
 			this._el.timenav		= VCO.Dom.create('div', 'vco-timenav', this._el.container);
 		}
-
+    
 		this._el.menubar			= VCO.Dom.create('div', 'vco-menubar', this._el.container);
 
-
+    
 		// Initial Default Layout
 		this.options.width        = this._el.container.offsetWidth;
 		this.options.height       = this._el.container.offsetHeight;
 		this._el.storyslider.style.top  = "1px";
-
+    
 		// Set TimeNav Height
 		this.options.timenav_height = this._calculateTimeNavHeight();
-
+    
 		// Create TimeNav
 		this._timenav = new VCO.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
-
+    
 		// Create StorySlider
 		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.config, this.options);
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
 		this._storyslider.init();
-
+    
 		// Create Menu Bar
 		this._menubar = new VCO.MenuBar(this._el.menubar, this._el.container, this.options);
-
+    
 		// LAYOUT
 		if (this.options.layout == "portrait") {
 			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
 		} else {
 			this.options.storyslider_height = (this.options.height - 1);
 		}
-
-
-
+		
+		
+		
 		// Update Display
 		this._updateDisplay(false, true, 2000);
-
+    
 	},
   	/* Depends upon _initLayout because these events are on things the layout initializes */
-	_initEvents: function () {
+	_initEvents: function () {    
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
 		this._timenav.on('zoomtoggle', this._onZoomToggle, this);
-
+		
 		// StorySlider Events
 		this._storyslider.on('change', this._onSlideChange, this);
 		this._storyslider.on('colorchange', this._onColorChange, this);
 		this._storyslider.on('nav_next', this._onStorySliderNext, this);
 		this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
-
+    
 		// Menubar Events
 		this._menubar.on('zoom_in', this._onZoomIn, this);
 		this._menubar.on('zoom_out', this._onZoomOut, this);
 		this._menubar.on('back_to_start', this._onBackToStart, this);
-
+    
 	},
-
+  
 	/* Analytics
 	================================================== */
 	_initGoogleAnalytics: function() {
@@ -680,44 +680,44 @@ VCO.Timeline = VCO.Class.extend({
 			});
 		}
 	},
-
+	
 	_onZoomToggle: function(e) {
 		if (e.zoom == "in") {
 			this._menubar.toogleZoomIn(e.show);
 		} else if (e.zoom == "out") {
 			this._menubar.toogleZoomOut(e.show);
 		}
-
+		
 	},
-
+	
 	/* Get index of event by id
 	================================================== */
 	_getEventIndex: function(id) {
 		for(var i = 0; i < this.config.events.length; i++) {
-			if(id == this.config.events[i].uniqueid) {
+			if(id == this.config.events[i].unique_id) {
 				return i;
 			}
 		}
 		return -1;
-	},
-
+	},  
+  
 	/*  Get index of slide by id
 	================================================== */
 	_getSlideIndex: function(id) {
-		if(this.config.title && this.config.title.uniqueid == id) {
+		if(this.config.title && this.config.title.unique_id == id) {
 			return 0;
 		}
 		for(var i = 0; i < this.config.events.length; i++) {
-			if(id == this.config.events[i].uniqueid) {
+			if(id == this.config.events[i].unique_id) {
 				return this.config.title ? i+1 : i;
 			}
 		}
 		return -1;
 	},
-
+  
 	/*  Events
 	================================================== */
-
+  
 	_onDataLoaded: function(e) {
 		this.fire("dataloaded");
 		this._initLayout();
@@ -726,11 +726,11 @@ VCO.Timeline = VCO.Class.extend({
 		if (this.message) {
 			this.message.hide();
 		}
-
+        
 		this.ready = true;
-
+    
 	},
-
+	
 	showMessage: function(msg) {
 		if (this.message) {
 			this.message.updateMessage(msg);
@@ -739,44 +739,44 @@ VCO.Timeline = VCO.Class.extend({
 			trace(msg);
 		}
 	},
-
+  
 	_onColorChange: function(e) {
-		this.fire("color_change", {uniqueid:this.current_id}, this);
+		this.fire("color_change", {unique_id:this.current_id}, this);
 		if (e.color || e.image) {
-
+      
 		} else {
-
+      
 		}
 	},
-
+  
 	_onSlideChange: function(e) {
-		if (this.current_id != e.uniqueid) {
-			this.current_id = e.uniqueid;
+		if (this.current_id != e.unique_id) {
+			this.current_id = e.unique_id;
 			this._timenav.goToId(this.current_id);
 			this._onChange(e);
 		}
 	},
-
+  
 	_onTimeNavChange: function(e) {
-		if (this.current_id != e.uniqueid) {
-			this.current_id = e.uniqueid;
+		if (this.current_id != e.unique_id) {
+			this.current_id = e.unique_id;
 			this._storyslider.goToId(this.current_id);
 			this._onChange(e);
 		}
 	},
-
+  
 	_onChange: function(e) {
-		this.fire("change", {uniqueid:this.current_id}, this);
+		this.fire("change", {unique_id:this.current_id}, this);
 		if (this.options.hash_bookmark) {
 			this._updateHashBookmark(this.current_id);
 		}
 	},
-
+  
 	_onBackToStart: function(e) {
 		this._storyslider.goTo(0);
-		this.fire("back_to_start", {uniqueid:this.current_id}, this);
+		this.fire("back_to_start", {unique_id:this.current_id}, this);
 	},
-
+  
 	/**
 	 * Zoom in and zoom out should be part of the public API.
 	 */
@@ -795,34 +795,34 @@ VCO.Timeline = VCO.Class.extend({
 		this._timenav.zoomIn();
 		this.fire("zoom_in", {zoom_level:this._timenav.options.scale_factor}, this);
 	},
-
+  
 	_onZoomOut: function(e) {
 		this._timenav.zoomOut();
 		this.fire("zoom_out", {zoom_level:this._timenav.options.scale_factor}, this);
 	},
-
+  
 	_onTimeNavLoaded: function() {
 		this._loaded.timenav = true;
 		this._onLoaded();
 	},
-
+  
 	_onStorySliderLoaded: function() {
 		this._loaded.storyslider = true;
 		this._onLoaded();
 	},
-
+  
 	_onStorySliderNext: function(e) {
 		this.fire("nav_next", e);
 	},
-
+  
 	_onStorySliderPrevious: function(e) {
 		this.fire("nav_previous", e);
 	},
-
+    
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.config);
-
+			
 			// Go to proper slide
 			if (this.options.hash_bookmark && window.location.hash != "") {
 				this.goToId(window.location.hash.replace("#event-", ""));
@@ -837,7 +837,7 @@ VCO.Timeline = VCO.Class.extend({
 					this._updateHashBookmark(this.current_id);
 				}
 			}
-
+			
 		}
 	}
 

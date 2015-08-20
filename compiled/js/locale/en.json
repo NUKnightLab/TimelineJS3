@@ -53,6 +53,7 @@
     }, 
     "messages": {
         "loading": "Loading", 
+        "error": "Error",
         "contract_timeline": "Contract Timeline", 
         "return_to_title": "Return to Title", 
         "wikipedia": "From Wikipedia, the free encyclopedia", 
@@ -71,5 +72,21 @@
         "time_short": "h:MM:ss TT", 
         "year": "yyyy", 
         "full_long_small_date": "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
-    }
+    },
+    "era_labels": { // specify prefix or suffix to apply to formatted date. Blanks mean no change. 
+        "positive_year": {
+            "prefix": "", 
+            "suffix": ""
+        },
+        "negative_year": { // if either of these is specified, the year will be converted to positive before they are applied
+            "prefix": "", 
+            "suffix": "BCE"
+        }
+    },
+    "period_labels": {  // use of t/tt/T/TT legacy of original Timeline date format
+        "t": ["a", "p"],
+        "tt": ["am", "pm"],
+        "T": ["A", "P"],
+        "TT": ["AM", "PM"]
+    },
 }

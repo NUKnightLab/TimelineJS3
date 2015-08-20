@@ -51,19 +51,19 @@ VCO.TimelineConfig = VCO.Class.extend({
 	/* Add an event and return the unique id 
 	*/
 	addEvent: function(data) {
-		var _id = (this.title) ? this.title.uniqueid : '';
+		var _id = (this.title) ? this.title.unique_id : '';
 		this.events.push(data);
-		this._makeUniqueIdentifiers(_id, this.events); 
+		this._makeunique_identifiers(_id, this.events); 
 		this._processDates(this.events);    
         
-		var uniqueid = this.events[this.events.length - 1].uniqueid;             
+		var unique_id = this.events[this.events.length - 1].unique_id;             
 		VCO.DateUtil.sortByDate(this.events);
-		return uniqueid;
+		return unique_id;
 	},
 
 	_cleanData: function() {
-		var _id = (this.title) ? this.title.uniqueid : '';
-		this._makeUniqueIdentifiers(_id, this.events); 
+		var _id = (this.title) ? this.title.unique_id : '';
+		this._makeunique_identifiers(_id, this.events); 
 		this._processDates(this.events);
 		this._cleanGroups(this.events)          ;
 		VCO.DateUtil.sortByDate(this.events);
@@ -76,26 +76,26 @@ VCO.TimelineConfig = VCO.Class.extend({
 		}
         
 		// Make sure title slide has unique id
-		if(this.title && !('uniqueid' in this.title)) {
-			this.title.uniqueid = '';
+		if(this.title && !('unique_id' in this.title)) {
+			this.title.unique_id = '';
 		}
 	},
 
-	_makeUniqueIdentifiers: function(title_id, array) {
+	_makeunique_identifiers: function(title_id, array) {
 		var used = [title_id];
 		for (var i = 0; i < array.length; i++) {
-			if (array[i].uniqueid && array[i].uniqueid.replace(/\s+/,'').length > 0) {
-				array[i].uniqueid = VCO.Util.slugify(array[i].uniqueid); // enforce valid
-				if (used.indexOf(array[i].uniqueid) != -1) {
-					array[i].uniqueid = '';
+			if (array[i].unique_id && array[i].unique_id.replace(/\s+/,'').length > 0) {
+				array[i].unique_id = VCO.Util.slugify(array[i].unique_id); // enforce valid
+				if (used.indexOf(array[i].unique_id) != -1) {
+					array[i].unique_id = '';
 				} else {
-					used.push(array[i].uniqueid);
+					used.push(array[i].unique_id);
 				}
 			}
 		};
 		if (used.length != (array.length + 1)) {
 			for (var i = 0; i < array.length; i++) {
-				if (!array[i].uniqueid) {
+				if (!array[i].unique_id) {
 					var slug = (array[i].text) ? VCO.Util.slugify(array[i].text.headline) : null;
 					if (!slug) {
 						slug = VCO.Util.unique_ID(6);
@@ -104,7 +104,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 						slug = slug + '-' + i;
 					}
 					used.push(slug);
-					array[i].uniqueid = slug;
+					array[i].unique_id = slug;
 				}
 			}
 		}
