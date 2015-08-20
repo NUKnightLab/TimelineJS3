@@ -12,24 +12,9 @@
     "events": [
         {
             "start_date": {
-                "year":			"1900",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
-            },
-            "end_date": {
-                "year":			"1902",
-                "month":		"01",
-                "day": 			"05",
-                "hour": 		"6",
-                "minute": 		"45",
-                "second": 		"56",
-                "millisecond": 	"",
-                "format": 		""
+                "year":			"1908",
+                "month":		"05",
+                "day": 			"13"
             },
             "media": {
                 "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
