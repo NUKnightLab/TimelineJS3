@@ -1,7 +1,6 @@
 {
     "title": {
             "text": {
-                "headline": "Mark Twain JSON",
                 "text":     "Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910),[1] better known by his pen name Mark Twain, was an American author and humorist."
             },
             "media": {
@@ -23,7 +22,6 @@
                 "thumbnail": 	"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg"
             },
             "text": {
-                "headline": "Mark Twain JSON",
                 "text": "Samuel Langhorne Clemens (November 30, 1835 \u2013 April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the later often called \"the Great American Novel.\""
             },
             "type": "overview"
@@ -117,7 +115,7 @@
                 "zoom": 12
             },
             "media": {
-                "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                "caption": "a Youtube video",
                 "credit": null,
                 "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
             },
@@ -139,7 +137,7 @@
                 "format":       ""
             },
             "media": {
-                "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                "caption": "a tweet",
                 "credit": null,
                 "url": "https://twitter.com/mattmansfield/status/613042417298731008"
             },
@@ -161,7 +159,7 @@
                 "format":       ""
             },
             "media": {
-                "caption": "Hannibal Gazette. Begins work as a journeyman printer with the Hannibal Gazette. Publishes first sketches.",
+                "caption": "another youtube video",
                 "credit": null,
                 "url": "http://www.youtube.com/watch?v=C-nTpGMMVjY"
             },

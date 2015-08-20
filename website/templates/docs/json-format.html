@@ -7,7 +7,7 @@
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
         <h2>TimelineJS 3 JSON data format</h2>
         <p>
-          Every timeline needs data about the events it is to show. Most people are happy to just <a href="/index.html#make">use a Google spreadsheet</a> to configure their Timeline, but if you want to write 
+          Every timeline needs data about the events it is to show. Most people are happy to just <a href="/index.html#make">use a Google spreadsheet</a> to configure their Timeline, but if you want to write
           code to dynamically create or update your timeline, you'll need to understand how to format the data.
         </p>
         <p>
@@ -73,10 +73,10 @@
     </dl>
     <p id="json-text" class="jump"><strong><em>Text objects</em></strong> are JSON objects with the following properties. For each slide, text objects are optional.</p>
     <dl>
-        <dt><code>headline</code> (required)</dt>
-        <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
+        <dt><code>headline</code> (optional)</dt>
+        <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK.</dd>
         <dt><code>text</code> (optional)</dt>
-        <dd><strong>value:</strong> any text. HTML markup is OK. Blank is also OK, but the key must be present in the JSON object.</dd>
+        <dd><strong>value:</strong> any text. HTML markup is OK. Blank is OK.</dd>
     </dl>
     <p id="json-media" class="jump"><strong><em>Media objects</em></strong> are JSON objects with the following properties. For each slide, media objects are optional.</p>
     <dl>
@@ -86,9 +86,11 @@
         <dd><strong>value:</strong> any text. HTML markup is OK.</dd>
         <dt><code>credit</code> (optional)</dt>
         <dd><strong>value:</strong> any text. HTML markup is OK.</dd>
+        <dt><code>thumbnail</code> (optional)</dt>
+        <dd><strong>value:</strong> a URL for an image to use in the timenav marker for this event.
+            If omitted, Timeline will use an icon based on the type of media. Not relevant for  <code>title</code> slides, because they do not have a marker.</dd>
     </dl>
     </div>
   </div>
 </section>
 {% endblock %}
-

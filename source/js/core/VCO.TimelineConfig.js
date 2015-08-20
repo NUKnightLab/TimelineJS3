@@ -53,7 +53,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 	addEvent: function(data) {
 		var _id = (this.title) ? this.title.unique_id : '';
 		this.events.push(data);
-		this._makeUniqueIdentifiers(_id, this.events); 
+		this._makeUniqueIdentifiers(_id, this.events);
 		this._processDates(this.events);
 
 		var unique_id = this.events[this.events.length - 1].unique_id;
@@ -65,7 +65,10 @@ VCO.TimelineConfig = VCO.Class.extend({
 		var _id = (this.title) ? this.title.unique_id : '';
 		this._makeUniqueIdentifiers(_id, this.events);
 		this._processDates(this.events);
-		this._cleanGroups(this.events)          ;
+		this._tidyFields(this.title);
+		for (var i = 0; i < this.events.length; i++) {
+			this._tidyFields(this.events[i])
+		}
 		VCO.DateUtil.sortByDate(this.events);
 	},
 
@@ -171,11 +174,21 @@ VCO.TimelineConfig = VCO.Class.extend({
 		}
 	},
 
-	_cleanGroups: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].group) {
-				array[i].group = VCO.Util.trim(array[i].group);
-			}
-		};
+	_tidyFields: function(slide) {
+
+		function fillIn(obj,key,default_value) {
+			if (!default_value) default_value = '';
+			if (!obj.hasOwnProperty(key)) { obj[key] = default_value }
+		}
+
+		if (slide.group) {
+			slide.group = VCO.Util.trim(slide.group);
+		}
+
+		if (!slide.text) {
+			slide.text = {};
+		}
+		fillIn(slide.text,'text');
+		fillIn(slide.text,'headline');
 	}
 });
