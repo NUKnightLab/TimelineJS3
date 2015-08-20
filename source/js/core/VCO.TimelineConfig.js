@@ -53,7 +53,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 	addEvent: function(data) {
 		var _id = (this.title) ? this.title.unique_id : '';
 		this.events.push(data);
-		this.__makeUniqueIdentifiers_identifiers(_id, this.events); 
+		this._makeUniqueIdentifiers(_id, this.events); 
 		this._processDates(this.events);
 
 		var unique_id = this.events[this.events.length - 1].unique_id;
@@ -63,7 +63,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 
 	_cleanData: function() {
 		var _id = (this.title) ? this.title.unique_id : '';
-		this.__makeUniqueIdentifiers_identifiers(_id, this.events);
+		this._makeUniqueIdentifiers(_id, this.events);
 		this._processDates(this.events);
 		this._cleanGroups(this.events)          ;
 		VCO.DateUtil.sortByDate(this.events);
@@ -81,7 +81,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 		}
 	},
 
-	__makeUniqueIdentifiers_identifiers: function(title_id, array) {
+	_makeUniqueIdentifiers: function(title_id, array) {
 		var used = [title_id];
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].unique_id && array[i].unique_id.replace(/\s+/,'').length > 0) {
