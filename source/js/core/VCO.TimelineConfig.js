@@ -3,7 +3,7 @@ separate the configuration from the display (VCO.Timeline)
 to make testing easier
 ================================================== */
 VCO.TimelineConfig = VCO.Class.extend({
-	
+
 	includes: [],
 	title: null,
 	scale: null,
@@ -48,40 +48,40 @@ VCO.TimelineConfig = VCO.Class.extend({
 	isValid: function() {
 		return this.messages.errors.length == 0;
 	},
-	/* Add an event and return the unique id 
+	/* Add an event and return the unique id
 	*/
 	addEvent: function(data) {
 		var _id = (this.title) ? this.title.unique_id : '';
 		this.events.push(data);
-		this._makeunique_identifiers(_id, this.events); 
-		this._processDates(this.events);    
-        
-		var unique_id = this.events[this.events.length - 1].unique_id;             
+		this.__makeUniqueIdentifiers_identifiers(_id, this.events); 
+		this._processDates(this.events);
+
+		var unique_id = this.events[this.events.length - 1].unique_id;
 		VCO.DateUtil.sortByDate(this.events);
 		return unique_id;
 	},
 
 	_cleanData: function() {
 		var _id = (this.title) ? this.title.unique_id : '';
-		this._makeunique_identifiers(_id, this.events); 
+		this.__makeUniqueIdentifiers_identifiers(_id, this.events);
 		this._processDates(this.events);
 		this._cleanGroups(this.events)          ;
 		VCO.DateUtil.sortByDate(this.events);
 	},
-    
+
 	_importProperties: function(d) {
 		for (var i = 0; i < this.VALID_PROPERTIES.length; i++) {
 			k = this.VALID_PROPERTIES[i];
 			this[k] = d[k];
 		}
-        
+
 		// Make sure title slide has unique id
 		if(this.title && !('unique_id' in this.title)) {
 			this.title.unique_id = '';
 		}
 	},
 
-	_makeunique_identifiers: function(title_id, array) {
+	__makeUniqueIdentifiers_identifiers: function(title_id, array) {
 		var used = [title_id];
 		for (var i = 0; i < array.length; i++) {
 			if (array[i].unique_id && array[i].unique_id.replace(/\s+/,'').length > 0) {
@@ -112,12 +112,12 @@ VCO.TimelineConfig = VCO.Class.extend({
 
 	_processDates: function(array) {
 		var dateCls = null;
-        
+
 		if(!this.scale) {
 			trace("Determining scale dynamically");
-            
+
 			this.scale = "human"; // default
-            
+
 			for (var i = 0; i < array.length; i++) {
 				if (typeof(array[i].start_date) == 'undefined') {
 					this.logError("item " + i + " is missing a start_date");
@@ -125,7 +125,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 					this.logError("item " + i + " is has invalid start_date.");
 				} else {
 					var d = new VCO.BigDate(array[i].start_date);
-					var year = d.data.date_obj.year;               
+					var year = d.data.date_obj.year;
 					if(year < -271820 || year >  275759) {
 						this.scale = "cosmological";
 						break;
@@ -133,7 +133,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 				}
 			}
 		}
-        
+
 		if(this.scale == 'human') {
 			dateCls = VCO.Date;
 			trace('using VCO.Date');
@@ -143,7 +143,7 @@ VCO.TimelineConfig = VCO.Class.extend({
 		} else {
 			this.logError("Don't know how to process dates on scale "+this.scale);
 		}
-            
+
 		for (var i = 0; i < array.length; i++) {
 			if (typeof(array[i].start_date) == 'undefined') {
 				this.logError("item " + i + " is missing a start_date");
