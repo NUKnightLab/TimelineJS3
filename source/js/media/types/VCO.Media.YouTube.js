@@ -95,7 +95,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 			});
 		} else {
 			this.timer = setTimeout(function() {
-				self.createPlayer();
+				self.createMedia();
 			}, 1000);
 		}
 	},
