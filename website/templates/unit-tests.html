@@ -3,9 +3,10 @@
 <head>
     <title>Unit Tests</title>
 
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/qunit/1.14.0/qunit.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css" />
 
-    <script type="text/javascript" src="//cdn.jsdelivr.net/g/qunit@1.14.0,underscorejs@1.6.0"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/g/underscorejs@1.6.0"></script>
+    <script type="text/javascript" src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
   <!-- build:js http://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
   <script src="/build/js/timeline.js"></script>
@@ -35,28 +36,28 @@
         return true;
       }
 
-      module("VCO.Util tests",{});
-      test("VCO.Util", function() {
+      QUnit.module("VCO.Util tests",{});
+      QUnit.test("VCO.Util", function(assert) {
         var test = [
           [0,1],
           [2,3],
           [5,7]
         ];
-        equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
+        assert.equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
 
         var test = [
           [0,5],
           [2,8],
           [9,10]
         ];
-        equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
+        assert.equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
 
         var test = [
           [0,3],
           [5,8],
           [9,10]
         ];
-        equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
+        assert.equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
 
         var test = [
           [0,3],
@@ -64,7 +65,7 @@
           [4,9],
           [15,20]
         ];
-        equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
+        assert.equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
 
         var test = [
           [0,5],
@@ -72,7 +73,7 @@
           [4,9],
           [15,20]
         ];
-        equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
+        assert.equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
 
         var test = [
           [0,5],
@@ -83,287 +84,287 @@
           [24,28],
 
         ];
-        equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
+        assert.equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
 
-        equal(VCO.Util.trim(null),'', "null gets zero length string");
-        equal(VCO.Util.trim(' bob '), 'bob');
-        equal(VCO.Util.trim('bob '), 'bob');
-        equal(VCO.Util.trim('bob'), 'bob');
-        ok(VCO.Util.trim('bob'), "trimming a non-empty string returns a true value")
-        ok(!(VCO.Util.trim('')), "trimming an empty string returns a false value")
+        assert.equal(VCO.Util.trim(null),'', "null gets zero length string");
+        assert.equal(VCO.Util.trim(' bob '), 'bob');
+        assert.equal(VCO.Util.trim('bob '), 'bob');
+        assert.equal(VCO.Util.trim('bob'), 'bob');
+        assert.ok(VCO.Util.trim('bob'), "trimming a non-empty string returns a true value")
+        assert.ok(!(VCO.Util.trim('')), "trimming an empty string returns a false value")
       });
 
-      test("VCO.Util.linkify", function() {
+      QUnit.test("VCO.Util.linkify", function(assert) {
         var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
         var linked = VCO.Util.linkify(text);
-        ok(linked.startsWith('This is some text with a URL in it <a'), "should start the same and then have a link -> " + linked);
-        ok(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/), "should have an href -> " + linked);
-        ok(linked.match(/>knightlab.northwestern.edu<\/a>/), "should have an href " + linked);
+        assert.ok(linked.startsWith('This is some text with a URL in it <a'), "should start the same and then have a link -> " + linked);
+        assert.ok(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/), "should have an href -> " + linked);
+        assert.ok(linked.match(/>knightlab.northwestern.edu<\/a>/), "should have an href " + linked);
 
         text = "This is some text with www.google.com in it";
         var linked = VCO.Util.linkify(text);
-        ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
-        ok(linked.match(/href=['"]http:\/\/www.google.com['"]/), "should have an href");
-        ok(linked.match(/>www.google.com<\/a>/), "should have the right link text");
+        assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
+        assert.ok(linked.match(/href=['"]http:\/\/www.google.com['"]/), "should have an href");
+        assert.ok(linked.match(/>www.google.com<\/a>/), "should have the right link text");
 
         text = "This is some text with support@knightlab.zendesk.com in it";
         var linked = VCO.Util.linkify(text);
-        ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
-        ok(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/), "should have an href " + linked);
-        ok(linked.match(/>support@knightlab.zendesk.com<\/a>/), "should have the right link text " + linked);
+        assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
+        assert.ok(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/), "should have an href " + linked);
+        assert.ok(linked.match(/>support@knightlab.zendesk.com<\/a>/), "should have the right link text " + linked);
 
         text = "This is text which already has <a href='http://google.com'>a link</a> in it."
         var not_linked = VCO.Util.linkify(text);
-        equal(not_linked,text,'linkify should not have changed anything.')
+        assert.equal(not_linked,text,'linkify should not have changed anything.')
 
         text = 'This is text which already has <a href="http://google.com">a link</a> in it.'
         var not_linked = VCO.Util.linkify(text);
-        equal(not_linked,text,'linkify should not have changed anything.')
+        assert.equal(not_linked,text,'linkify should not have changed anything.')
 
         text = 'This is text which already has <a href=http://google.com>a link</a> in it.'
         var not_linked = VCO.Util.linkify(text);
-        equal(not_linked,text,'linkify should not have changed anything.')
+        assert.equal(not_linked,text,'linkify should not have changed anything.')
 
       })
 
-      test("VCO.Util.findNextGreater", function() {
+      QUnit.test("VCO.Util.findNextGreater", function(assert) {
         var l = [1, 5, 10, 20, 35];
-        equal(VCO.Util.findNextGreater(l,1),5, "5 is next greatest after 1");
-        equal(VCO.Util.findNextGreater(l,5),10, "10 is next greatest after 5");
-        equal(VCO.Util.findNextGreater(l,10),20, "20 is next greatest after 10");
-        equal(VCO.Util.findNextGreater(l,15),20, "correctly handle a curr val which isn't in the list");
-        equal(VCO.Util.findNextGreater(l,35),35, "handle value at end of list");
-        equal(VCO.Util.findNextGreater(l,40),40, "handle value greater than max in list");
-        equal(VCO.Util.findNextGreater(l,40, 35),35, "handle greater than max in list with default");
+        assert.equal(VCO.Util.findNextGreater(l,1),5, "5 is next greatest after 1");
+        assert.equal(VCO.Util.findNextGreater(l,5),10, "10 is next greatest after 5");
+        assert.equal(VCO.Util.findNextGreater(l,10),20, "20 is next greatest after 10");
+        assert.equal(VCO.Util.findNextGreater(l,15),20, "correctly handle a curr val which isn't in the list");
+        assert.equal(VCO.Util.findNextGreater(l,35),35, "handle value at end of list");
+        assert.equal(VCO.Util.findNextGreater(l,40),40, "handle value greater than max in list");
+        assert.equal(VCO.Util.findNextGreater(l,40, 35),35, "handle greater than max in list with default");
 
-        equal(VCO.Util.findNextLesser(l,1),1, "1 is least");
-        equal(VCO.Util.findNextLesser(l,5),1, "1 is least after 5");
-        equal(VCO.Util.findNextLesser(l,10),5, "20 is next greatest after 10");
-        equal(VCO.Util.findNextLesser(l,15),10, "10 is less than 15 (which isn't in list)");
-        equal(VCO.Util.findNextLesser(l,35),20, "20 less than 35");
-        equal(VCO.Util.findNextLesser(l,40),35, "35 is less than 40");
-        equal(VCO.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
-        equal(VCO.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
+        assert.equal(VCO.Util.findNextLesser(l,1),1, "1 is least");
+        assert.equal(VCO.Util.findNextLesser(l,5),1, "1 is least after 5");
+        assert.equal(VCO.Util.findNextLesser(l,10),5, "20 is next greatest after 10");
+        assert.equal(VCO.Util.findNextLesser(l,15),10, "10 is less than 15 (which isn't in list)");
+        assert.equal(VCO.Util.findNextLesser(l,35),20, "20 less than 35");
+        assert.equal(VCO.Util.findNextLesser(l,40),35, "35 is less than 40");
+        assert.equal(VCO.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
+        assert.equal(VCO.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
       })
 
-      test("VCO.Util.isEmptyObject", function() {
+      QUnit.test("VCO.Util.isEmptyObject", function(assert) {
           o = {}
-          ok(VCO.Util.isEmptyObject(o),"no keys should be empty");
+          assert.ok(VCO.Util.isEmptyObject(o),"no keys should be empty");
           o.foo = "  ";
-          ok(VCO.Util.isEmptyObject(o),"empty string should be empty");
+          assert.ok(VCO.Util.isEmptyObject(o),"empty string should be empty");
           o.bar = "";
-          ok(VCO.Util.isEmptyObject(o),"2 empty strings should be empty");
+          assert.ok(VCO.Util.isEmptyObject(o),"2 empty strings should be empty");
           o.baz = null;
-          ok(VCO.Util.isEmptyObject(o),"add null, still should be empty");
+          assert.ok(VCO.Util.isEmptyObject(o),"add null, still should be empty");
           o.foo = "  not empty  ";
-          equal(VCO.Util.isEmptyObject(o), false, "adding a string ")
+          assert.equal(VCO.Util.isEmptyObject(o), false, "adding a string ")
       })
 
-      test("VCO.Util.parseYouTubeTime", function() {
-          equal(VCO.Util.parseYouTubeTime('5s'),5,"parse seconds only")
-          equal(VCO.Util.parseYouTubeTime('1m5s'),65,"parse m/s")
-          equal(VCO.Util.parseYouTubeTime('2h4m5s'),7445,"parse h/m/s")
-          equal(VCO.Util.parseYouTubeTime('5m'),300,"parse minutes only")
-          equal(VCO.Util.parseYouTubeTime('1h'),3600,"parse hours only")
-          equal(VCO.Util.parseYouTubeTime(''),0,"handle empty string")
-          equal(VCO.Util.parseYouTubeTime(null),0,"handle empty string")
-          equal(VCO.Util.parseYouTubeTime('4:55'),0,"handle malformed string")
-          equal(VCO.Util.parseYouTubeTime(5),5,"handle number")
+      QUnit.test("VCO.Util.parseYouTubeTime", function(assert) {
+          assert.equal(VCO.Util.parseYouTubeTime('5s'),5,"parse seconds only")
+          assert.equal(VCO.Util.parseYouTubeTime('1m5s'),65,"parse m/s")
+          assert.equal(VCO.Util.parseYouTubeTime('2h4m5s'),7445,"parse h/m/s")
+          assert.equal(VCO.Util.parseYouTubeTime('5m'),300,"parse minutes only")
+          assert.equal(VCO.Util.parseYouTubeTime('1h'),3600,"parse hours only")
+          assert.equal(VCO.Util.parseYouTubeTime(''),0,"handle empty string")
+          assert.equal(VCO.Util.parseYouTubeTime(null),0,"handle empty string")
+          assert.equal(VCO.Util.parseYouTubeTime('4:55'),0,"handle malformed string")
+          assert.equal(VCO.Util.parseYouTubeTime(5),5,"handle number")
       });
 
-      test("VCO.Util.ensureUniqueKey", function() {
+      QUnit.test("VCO.Util.ensureUniqueKey", function(assert) {
           var o = { foo: 1, bar: 2 }
-          ok(!(VCO.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
-          equal(VCO.Util.ensureUniqueKey(o, 'baz'), 'baz', "not in there, give it back");
-          equal(VCO.Util.ensureUniqueKey(o, 'foo'), 'foo-2', "treat existing as 1-based");
+          assert.ok(!(VCO.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
+          assert.equal(VCO.Util.ensureUniqueKey(o, 'baz'), 'baz', "not in there, give it back");
+          assert.equal(VCO.Util.ensureUniqueKey(o, 'foo'), 'foo-2', "treat existing as 1-based");
           o['foo-2'] = 3;
-          ok(!(VCO.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
+          assert.ok(!(VCO.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
           var random = VCO.Util.ensureUniqueKey(o, '');
-          ok(VCO.Util.trim(random), "Should get a non-empty string");
-          ok(!(random in o), "empty string should get non-empty unique");
+          assert.ok(VCO.Util.trim(random), "Should get a non-empty string");
+          assert.ok(!(random in o), "empty string should get non-empty unique");
       });
 
 
-      module("VCO.Date tests",{});
+      QUnit.module("VCO.Date tests",{});
 
-      test("VCO.Date", function() {
+      QUnit.test("VCO.Date", function(assert) {
         var refdate = VCO.Date.makeDate({year: 2000, month: 6, day: 21});
         var jsdate = new Date();
-        throws(function() { refdate.isBefore(jsdate) }, "Don't allow comparison with JS Dates");
+        throws(function(assert) { refdate.isBefore(jsdate) }, "Don't allow comparison with JS Dates");
         jsdate = VCO.Date.makeDate(new Date());
-        ok(refdate.isBefore(jsdate),"refdate should be before any new date");
-        ok(jsdate.isAfter(refdate),"any new date should be after refdate");
+        assert.ok(refdate.isBefore(jsdate),"refdate should be before any new date");
+        assert.ok(jsdate.isAfter(refdate),"any new date should be after refdate");
 
         var smalldate = VCO.Date.makeDate({year: 2015});
-        ok(!isNaN(smalldate.getTime()),"small dates are human");
+        assert.ok(!isNaN(smalldate.getTime()),"small dates are human");
 
         var bigdate = VCO.Date.makeDate({year: 1000000});
-        ok(!isNaN(bigdate.getTime()),"big dates are cosmological");
+        assert.ok(!isNaN(bigdate.getTime()),"big dates are cosmological");
 
         var cdate = VCO.Date.makeDate({year: 2014, display_date: "hello"});
-        equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')
+        assert.equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')
 
         var date = VCO.Date.makeDate({year: 75});
-        equal(date.getDisplayDate(), "75", "handle years in the first century CE correctly")
+        assert.equal(date.getDisplayDate(), "75", "handle years in the first century CE correctly")
 
       });
 
-      test("VCO.Date.parseDate", function() {
+      QUnit.test("VCO.Date.parseDate", function(assert) {
         var d = VCO.Date.parseDate('2014-08-20');
-        equal(d.year,'2014','three part date gets year 2014');
-        equal(d.month,'08', 'three part date gets month 08');
-        equal(d.day,'20', 'three part date gets day 20');
+        assert.equal(d.year,'2014','three part date gets year 2014');
+        assert.equal(d.month,'08', 'three part date gets month 08');
+        assert.equal(d.day,'20', 'three part date gets day 20');
 
         var d = VCO.Date.parseDate('2014-08');
-        equal(d.year,'2014','two part date gets year 2014');
-        equal(d.month,'08','two part date gets month 08');
-        ok(!(d.day), 'two-part date has no day');
+        assert.equal(d.year,'2014','two part date gets year 2014');
+        assert.equal(d.month,'08','two part date gets month 08');
+        assert.ok(!(d.day), 'two-part date has no day');
 
         var d = VCO.Date.parseDate('2014');
-        equal(d.year,'2014','year-only date gets 2014');
-        ok(!(d.month), 'year only date has no month');
-        ok(!(d.day), 'year only date has no day');
+        assert.equal(d.year,'2014','year-only date gets 2014');
+        assert.ok(!(d.month), 'year only date has no month');
+        assert.ok(!(d.day), 'year only date has no day');
 
         var d = VCO.Date.parseDate('-6');
-        equal(d.year,'-6','year-only date gets -6 (BC ok)');
-        ok(!(d.month), 'year only date has no month');
-        ok(!(d.day), 'year only date has no day');
+        assert.equal(d.year,'-6','year-only date gets -6 (BC ok)');
+        assert.ok(!(d.month), 'year only date has no month');
+        assert.ok(!(d.day), 'year only date has no day');
 
 
       });
 
-      test("VCO.Date.findBestFormat", function() {
+      QUnit.test("VCO.Date.findBestFormat", function(assert) {
         var date = new VCO.Date({'year': 1975, month: 7})
-        equal(date.findBestFormat(),"month","Expect a format key")
-        equal(date.findBestFormat(true),"month_short","Expect a different format key for short (legacy)")
-        equal(date.findBestFormat('short'),"month_short","Expect a different format key for short (explicit)")
+        assert.equal(date.findBestFormat(),"month","Expect a format key")
+        assert.equal(date.findBestFormat(true),"month_short","Expect a different format key for short (legacy)")
+        assert.equal(date.findBestFormat('short'),"month_short","Expect a different format key for short (explicit)")
 
       });
 
-      test("VCO.Date.floor", function() {
-        throws(function() { VCO.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
+      QUnit.test("VCO.Date.floor", function(assert) {
+        throws(function(assert) { VCO.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
           var d = VCO.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
           var floored = d.floor('millisecond');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year','month','date','hours','minutes','seconds','milliseconds']), 'millisecond rounding doesnt change others')
-          equal(date_obj.getTime(), d.getTime(), 'rounds to millisecond')
+          assert.ok(date_parts_match(d,floored,['year','month','date','hours','minutes','seconds','milliseconds']), 'millisecond rounding doesnt change others')
+          assert.equal(date_obj.getTime(), d.getTime(), 'rounds to millisecond')
 
           var floored = d.floor('second');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year','month','date','hours','minutes', 'seconds']), 'second rounding doesnt change others')
-          equal(date_obj.getMilliseconds(),0,'seconds round to 0 millis ' + floored)
+          assert.ok(date_parts_match(d,floored,['year','month','date','hours','minutes', 'seconds']), 'second rounding doesnt change others')
+          assert.equal(date_obj.getMilliseconds(),0,'seconds round to 0 millis ' + floored)
 
           var floored = d.floor('minute');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year','month','date','hours','minutes']), 'minute rounding doesnt change others')
-          equal(date_obj.getMilliseconds(),0,'minutes round to 0 millis ' + floored)
-          equal(date_obj.getSeconds(),0,'minutes round to 0 seconds ' + floored)
+          assert.ok(date_parts_match(d,floored,['year','month','date','hours','minutes']), 'minute rounding doesnt change others')
+          assert.equal(date_obj.getMilliseconds(),0,'minutes round to 0 millis ' + floored)
+          assert.equal(date_obj.getSeconds(),0,'minutes round to 0 seconds ' + floored)
 
           var floored = d.floor('hour');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year','month','date','hours']), 'hour rounding doesnt change others')
-          equal(date_obj.getMilliseconds(),0,'hours round to 0 millis ' + floored)
-          equal(date_obj.getSeconds(),0,'hours round to 0 seconds ' + floored)
-          equal(date_obj.getMinutes(),0,'hours round to 0 minutes ' + floored)
+          assert.ok(date_parts_match(d,floored,['year','month','date','hours']), 'hour rounding doesnt change others')
+          assert.equal(date_obj.getMilliseconds(),0,'hours round to 0 millis ' + floored)
+          assert.equal(date_obj.getSeconds(),0,'hours round to 0 seconds ' + floored)
+          assert.equal(date_obj.getMinutes(),0,'hours round to 0 minutes ' + floored)
 
           var floored = d.floor('day');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year','month','date']), 'day rounding doesnt change others')
-          equal(date_obj.getMilliseconds(),0,'days round to 0 millis ' + floored)
-          equal(date_obj.getSeconds(),0,'days round to 0 seconds ' + floored)
-          equal(date_obj.getMinutes(),0,'days round to 0 minutes ' + floored)
-          equal(date_obj.getHours(),0,'days round to 0 hours ' + floored)
+          assert.ok(date_parts_match(d,floored,['year','month','date']), 'day rounding doesnt change others')
+          assert.equal(date_obj.getMilliseconds(),0,'days round to 0 millis ' + floored)
+          assert.equal(date_obj.getSeconds(),0,'days round to 0 seconds ' + floored)
+          assert.equal(date_obj.getMinutes(),0,'days round to 0 minutes ' + floored)
+          assert.equal(date_obj.getHours(),0,'days round to 0 hours ' + floored)
 
           var floored = d.floor('month');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year','month']), 'month rounding doesnt change others')
-          equal(date_obj.getMilliseconds(),0,'months round to 0 millis ' + floored)
-          equal(date_obj.getSeconds(),0,'months round to 0 seconds ' + floored)
-          equal(date_obj.getMinutes(),0,'months round to 0 minutes ' + floored)
-          equal(date_obj.getHours(),0,'months round to 0 hours ' + floored)
-          equal(date_obj.getDate(),1,'months round to day 1 ' + floored)
+          assert.ok(date_parts_match(d,floored,['year','month']), 'month rounding doesnt change others')
+          assert.equal(date_obj.getMilliseconds(),0,'months round to 0 millis ' + floored)
+          assert.equal(date_obj.getSeconds(),0,'months round to 0 seconds ' + floored)
+          assert.equal(date_obj.getMinutes(),0,'months round to 0 minutes ' + floored)
+          assert.equal(date_obj.getHours(),0,'months round to 0 hours ' + floored)
+          assert.equal(date_obj.getDate(),1,'months round to day 1 ' + floored)
 
           var floored = d.floor('year');
           var date_obj = floored.data.date_obj;
-          ok(date_parts_match(d,floored,['year']), 'year rounding doesnt change others')
-          equal(date_obj.getMilliseconds(),0,'years round to 0 millis ' + floored)
-          equal(date_obj.getSeconds(),0,'years round to 0 seconds ' + floored)
-          equal(date_obj.getMinutes(),0,'years round to 0 minutes ' + floored)
-          equal(date_obj.getHours(),0,'years round to 0 hours ' + floored)
-          equal(date_obj.getDate(),1,'years round to day 1 ' + floored)
-          equal(date_obj.getMonth(),0,'years round to month 0 ' + floored)
+          assert.ok(date_parts_match(d,floored,['year']), 'year rounding doesnt change others')
+          assert.equal(date_obj.getMilliseconds(),0,'years round to 0 millis ' + floored)
+          assert.equal(date_obj.getSeconds(),0,'years round to 0 seconds ' + floored)
+          assert.equal(date_obj.getMinutes(),0,'years round to 0 minutes ' + floored)
+          assert.equal(date_obj.getHours(),0,'years round to 0 hours ' + floored)
+          assert.equal(date_obj.getDate(),1,'years round to day 1 ' + floored)
+          assert.equal(date_obj.getMonth(),0,'years round to month 0 ' + floored)
 
           var floored = d.floor('decade');
           var date_obj = floored.data.date_obj;
-          equal(date_obj.getYear(),110, "decade should round to 2010 " + floored)
+          assert.equal(date_obj.getYear(),110, "decade should round to 2010 " + floored)
 
           var floored = d.floor('century');
           var date_obj = floored.data.date_obj;
-          equal(date_obj.getYear(),100, "century should round to 2000 " + floored)
+          assert.equal(date_obj.getYear(),100, "century should round to 2000 " + floored)
 
           var floored = d.floor('millennium');
           var date_obj = floored.data.date_obj;
-          equal(date_obj.getYear(),100, "Should round to 2000 " + floored)
+          assert.equal(date_obj.getYear(),100, "Should round to 2000 " + floored)
 
           var early_ce = VCO.Date.makeDate(-59149708181438); // 8/14/95 (90 not 1995)
           var floored = early_ce.floor('decade');
-          equal(floored.getTime(),-59326970400000,'Early floored dates should not go into the 20th Century')
+          assert.equal(floored.getTime(),-59326970400000,'Early floored dates should not go into the 20th Century')
 
           var age_scale = VCO.Date.makeDate({year: 1500000});
-          throws(function() {
+          throws(function(assert) {
             age_scale.floor('year');
           },/invalid scale/,'year not valid scale for cosmo');
-          equal(age_scale.floor('age').getTime(),1000000,'Should floor to 1M years');
+          assert.equal(age_scale.floor('age').getTime(),1000000,'Should floor to 1M years');
 
       });
 
-      test("VCO.Date date formatting", function() {
+      QUnit.test("VCO.Date date formatting", function(assert) {
         var msgs = VCO.Language.default;
         var d = VCO.Date.makeDate({year: '2014', month: '1', day: '1' })
-        equal(d.getDisplayDate(msgs),"January 1, 2014")
+        assert.equal(d.getDisplayDate(msgs),"January 1, 2014")
         var d = VCO.Date.makeDate({year: '2014'})
-        equal(d.getDisplayDate(msgs),"2014")
+        assert.equal(d.getDisplayDate(msgs),"2014")
       });
 
 
-      module("VCO.DateUtil tests",{});
-      test("VCO.DateUtil", function() {
+      QUnit.module("VCO.DateUtil tests",{});
+      QUnit.test("VCO.DateUtil", function(assert) {
         var a = {start_date: VCO.Date.makeDate({year: 1999})} // will break when we have start dates
         var b = {start_date: VCO.Date.makeDate({year: 2000})}
         var c = {start_date: VCO.Date.makeDate({year: 2001})}
 
         var ary = [c,b,a]
         VCO.DateUtil.sortByDate(ary);
-        equal(ary[0],a,"A should sort first")
-        equal(ary[1],b,"B should sort second")
-        equal(ary[2],c,"C should sort third")
+        assert.equal(ary[0],a,"A should sort first")
+        assert.equal(ary[1],b,"B should sort second")
+        assert.equal(ary[2],c,"C should sort third")
 
         ary = [b,a,c];
         VCO.DateUtil.sortByDate(ary);
-        equal(ary[0],a,"A should sort first")
-        equal(ary[1],b,"B should sort second")
-        equal(ary[2],c,"C should sort third")
+        assert.equal(ary[0],a,"A should sort first")
+        assert.equal(ary[1],b,"B should sort second")
+        assert.equal(ary[2],c,"C should sort third")
 
         ary = [b,c,a]
         VCO.DateUtil.sortByDate(ary);
-        equal(ary[0],a,"A should sort first")
-        equal(ary[1],b,"B should sort second")
-        equal(ary[2],c,"C should sort third")
+        assert.equal(ary[0],a,"A should sort first")
+        assert.equal(ary[1],b,"B should sort second")
+        assert.equal(ary[2],c,"C should sort third")
 
 
       })
 
-      test("VCO.DateUtil.parseTime", function(){
+      QUnit.test("VCO.DateUtil.parseTime", function(assert){
 
         var test_date = function(time_str,expected_hour, expected_minute, expected_second, expected_milli) {
           try {
             var parsed = VCO.DateUtil.parseTime(time_str);
-            equal(parsed.hour,expected_hour,time_str + " expected hour " + expected_hour);
-            equal(parsed.minute,expected_minute,time_str + " expected minute " + expected_minute);
-            equal(parsed.second,expected_second,time_str + " expected second " + expected_second);
-            equal(parsed.millisecond,expected_milli,time_str + " expected milli " + expected_milli);
+            assert.equal(parsed.hour,expected_hour,time_str + " expected hour " + expected_hour);
+            assert.equal(parsed.minute,expected_minute,time_str + " expected minute " + expected_minute);
+            assert.equal(parsed.second,expected_second,time_str + " expected second " + expected_second);
+            assert.equal(parsed.millisecond,expected_milli,time_str + " expected milli " + expected_milli);
           } catch(e) {
-            ok(false, "Failure testing " + time_str + " got " + e);
+            assert.ok(false, "Failure testing " + time_str + " got " + e);
           }
 
 
@@ -385,79 +386,79 @@
         test_date("1233", 12, 33, null, null);
         test_date("12:33 a.m.", 0, 33, null, null);
         test_date("0033", 0, 33, null, null);
-        throws(function() {VCO.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
-        throws(function() {VCO.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
+        throws(function(assert) {VCO.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
+        throws(function(assert) {VCO.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
 
 
 
       });
 
-      module("VCO.Language tests",{});
-      test("VCO.Language",function() {
+      QUnit.module("VCO.Language tests",{});
+      QUnit.test("VCO.Language",function(assert) {
         var msgs = new VCO.Language();
-        equal(msgs.name,"English","English is default");
-        equal(msgs.lang,"en","en is default");
-        equal(msgs._('loading'),"Loading","get a message");
-        equal(msgs._('foobar'),"foobar","invalid keys should pass through");
+        assert.equal(msgs.name,"English","English is default");
+        assert.equal(msgs.lang,"en","en is default");
+        assert.equal(msgs._('loading'),"Loading","get a message");
+        assert.equal(msgs._('foobar'),"foobar","invalid keys should pass through");
 
         var msgs = VCO.Language.fallback;
-        equal(msgs.name,"English","English is default");
-        equal(msgs.lang,"en","en is default");
-        equal(msgs._('loading'),"Loading","get a message");
-        equal(msgs._('foobar'),"foobar","invalid keys should pass through");
+        assert.equal(msgs.name,"English","English is default");
+        assert.equal(msgs.lang,"en","en is default");
+        assert.equal(msgs._('loading'),"Loading","get a message");
+        assert.equal(msgs._('foobar'),"foobar","invalid keys should pass through");
 
-        equal(VCO.Language.formatNumber(18.54,'%.1f and some other stuff'), "18.5 and some other stuff", "check rounding and replacement")
+        assert.equal(VCO.Language.formatNumber(18.54,'%.1f and some other stuff'), "18.5 and some other stuff", "check rounding and replacement")
 
-        equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
+        assert.equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
 
-        equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat")
+        assert.equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat")
       })
 
-      test( "VCO.Language test non-english", function( ) {
+      QUnit.test( "VCO.Language test non-english", function(assert) {
           var msgs = new VCO.Language({language: 'pl'});
-          equal(msgs.name,"English","English is default and polish doesn't have one");
-          equal(msgs.lang,"pl","should have gotten 'pl'");
-          equal(msgs._('loading'),"\u0141adowanie","get a message for loading");
-          equal(msgs._('foobar'),"foobar","invalid keys should pass through");
+          assert.equal(msgs.name,"English","English is default and polish doesn't have one");
+          assert.equal(msgs.lang,"pl","should have gotten 'pl'");
+          assert.equal(msgs._('loading'),"\u0141adowanie","get a message for loading");
+          assert.equal(msgs._('foobar'),"foobar","invalid keys should pass through");
       });
 
 
-      test("VCO.Language date formatting", function() {
+      QUnit.test("VCO.Language date formatting", function(assert) {
         var msgs = VCO.Language.fallback;
         var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
-        equal(msgs.formatDate(d,'d'),'7','short day');
-        equal(msgs.formatDate(d,'dd'),'07','padded day');
-        equal(msgs.formatDate(d,'ddd'),'Thurs.','short day of week');
-        equal(msgs.formatDate(d,'dddd'),'Thursday','full day of week');
-        equal(msgs.formatDate(d,'m'),'8','month number');
-        equal(msgs.formatDate(d,'mm'),'08','padded month number');
-        equal(msgs.formatDate(d,'mmm'),'Aug.','short month name');
-        equal(msgs.formatDate(d,'mmmm'),'August','long month name');
-        equal(msgs.formatDate(d,'yy'),'14','short year');
-        equal(msgs.formatDate(d,'yyyy'),'2014','long year');
-        equal(msgs.formatDate(d,'h'),'4','hour');
-        equal(msgs.formatDate(d,'hh'),'04','padded hour');
-        equal(msgs.formatDate(d,'H'),'4','hour (24HR)');
-        equal(msgs.formatDate(d,'HH'),'04','padded hour (24HR)');
-        equal(msgs.formatDate(d,'M'),'5','minute');
-        equal(msgs.formatDate(d,'MM'),'05','padded minute');
+        assert.equal(msgs.formatDate(d,'d'),'7','short day');
+        assert.equal(msgs.formatDate(d,'dd'),'07','padded day');
+        assert.equal(msgs.formatDate(d,'ddd'),'Thurs.','short day of week');
+        assert.equal(msgs.formatDate(d,'dddd'),'Thursday','full day of week');
+        assert.equal(msgs.formatDate(d,'m'),'8','month number');
+        assert.equal(msgs.formatDate(d,'mm'),'08','padded month number');
+        assert.equal(msgs.formatDate(d,'mmm'),'Aug.','short month name');
+        assert.equal(msgs.formatDate(d,'mmmm'),'August','long month name');
+        assert.equal(msgs.formatDate(d,'yy'),'14','short year');
+        assert.equal(msgs.formatDate(d,'yyyy'),'2014','long year');
+        assert.equal(msgs.formatDate(d,'h'),'4','hour');
+        assert.equal(msgs.formatDate(d,'hh'),'04','padded hour');
+        assert.equal(msgs.formatDate(d,'H'),'4','hour (24HR)');
+        assert.equal(msgs.formatDate(d,'HH'),'04','padded hour (24HR)');
+        assert.equal(msgs.formatDate(d,'M'),'5','minute');
+        assert.equal(msgs.formatDate(d,'MM'),'05','padded minute');
         var d2 = new Date(d.getTime()+(1000*60*60*12));
-        equal(msgs.formatDate(d2,'H'),'16','hour (24HR after noon)');
-        equal(msgs.formatDate(d2,'HH'),'16','padded hour (24HR after noon)');
-        equal(msgs.formatDate(d,'s'),'0','second');
-        equal(msgs.formatDate(d,'ss'),'00','padded second');
+        assert.equal(msgs.formatDate(d2,'H'),'16','hour (24HR after noon)');
+        assert.equal(msgs.formatDate(d2,'HH'),'16','padded hour (24HR after noon)');
+        assert.equal(msgs.formatDate(d,'s'),'0','second');
+        assert.equal(msgs.formatDate(d,'ss'),'00','padded second');
 
         var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
         d.setFullYear(-500);
-        equal(msgs.formatDate(d,'yyyy'),'500 <span>BCE</span>','BCE date');
+        assert.equal(msgs.formatDate(d,'yyyy'),'500 <span>BCE</span>','BCE date');
 
 
       });
 
-      // test("TimeScale._assessGroups", function(){
+      // QUnit.test("TimeScale._assessGroups", function(assert){
       //   var slides = [{group: 'alice'}, { group: 'bob'}, {group: 'alice'}, {group: 'carol'}];
       //   var groups = VCO.TimeScale._assessGroups(slides);
-      //   equal(groups.length,3);
+      //   assert.equal(groups.length,3);
       // });
 
 
@@ -469,114 +470,116 @@
             return JSON.parse(data.responseText);
       }
 
-      module("VCO.ConfigFactory tests",{});
+      QUnit.module("VCO.ConfigFactory tests",{});
 
-      test("VCO.ConfigFactory", function() {
+      QUnit.test("VCO.ConfigFactory", function(assert) {
         var data = VCO.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
-        equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
-        ok(data.title, "There should be a title.")
+        assert.equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
+        assert.ok(data.title, "There should be a title.")
         var data = VCO.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
-        equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
-        ok(data.title, "There should be a title.")
-        equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
-        equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
+        assert.equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
+        assert.ok(data.title, "There should be a title.")
+        assert.equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
+        assert.equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
       });
 
-      test("VCO.ConfigFactory.parseGoogleSpreadsheetURL", function() {
+      QUnit.test("VCO.ConfigFactory.parseGoogleSpreadsheetURL", function(assert) {
         var key = '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI';
         var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(key);
-        equal(key, parts.key, "Bare sheet ID should come back in key")
+        assert.equal(key, parts.key, "Bare sheet ID should come back in key")
 
         var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml'
         var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
         var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(url);
-        equal(key, parts.key, "new-ish url format should get the right key")
+        assert.equal(key, parts.key, "new-ish url format should get the right key")
 
         var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml?gid=2066744085'
         var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
         var worksheet = '2066744085';
         var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(url);
-        equal(key, parts.key, "new-ish url format should get the right key")
-        equal(worksheet, parts.worksheet, "new-ish url format should get the right worksheet")
+        assert.equal(key, parts.key, "new-ish url format should get the right key")
+        assert.equal(worksheet, parts.worksheet, "new-ish url format should get the right worksheet")
 
 
       });
 
-      module("user-interface JSON tests",{ // setup for tests that need TimelineConfig
-        setup: function() {
-          stop();
-          this.timeline_config = VCO.ConfigFactory.makeConfig('/examples/user-interface/timeline3.jsonn',function(){
-            start();
+      QUnit.module("user-interface JSON tests", {});
+
+      QUnit.test("TimelineConfig for user-interface", function(assert) {
+
+        var done = assert.async();
+        VCO.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json',function(config){
+            assert.ok((typeof(config) != undefined) ,"config loaded")
+            console.log(config," is null? ")
+            window.stash = config;
+            assert.ok((typeof(config.events) != undefined ),"config has events")
+            var slides = config.events;
+            var sorted = true;
+            for (var i = 0; i < slides.length - 1; i++) {
+              var earlier = slides[i];
+              var later = slides[i+1];
+              sorted = sorted && (earlier.start_date.data.date_obj <= later.start_date.data.date_obj);
+            };
+            assert.ok(sorted,"dates are sorted");
+            done();
+        });
+
+      });
+
+
+
+      QUnit.test("TimeScale", function(assert) {
+          var done = assert.async();
+          VCO.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json',function(config){
+              assert.ok(config,"test data loaded");
+              var timescale = new VCO.TimeScale(config,{display_width: 2200, screen_multiplier: 3});
+              assert.equal(timescale.getMinorScale(),'year',"timescale should be years");
+              assert.ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
+              assert.ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
+              assert.equal(timescale.getNumberOfRows(),3,"Expecting 3 rows") // this will change if someone monkeys around with the config file!
+              assert.equal(timescale.getScale(),'human','test case uses human dates')
+              done();
           });
-        }
-      });
-
-      test("TimelineConfig", function() {
-        ok(this.timeline_config,"config loaded")
-        var slides = this.timeline_config.events;
-        var sorted = true;
-        for (var i = 0; i < slides.length - 1; i++) {
-          var earlier = slides[i];
-          var later = slides[i+1];
-          sorted = sorted && (earlier.start_date.data.date_obj <= later.start_date.data.date_obj);
-        };
-        ok(sorted,"dates are sorted");
-      });
-
-
-
-      test("TimeScale", function() {
-        ok(this.timeline_config,"test data loaded");
-        var timescale = new VCO.TimeScale(this.timeline_config,{display_width: 2200, screen_multiplier: 3});
-        equal(timescale.getMinorScale(),'year',"timescale should be years");
-        ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
-        ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
-        equal(timescale.getNumberOfRows(),6,"Expecting 6 rows") // this will change if someone monkeys around with the config file!
-        equal(timescale.getScale(),'human','test case uses human dates')
 
 
       });
 
 
-      module("marktwain.json tests",{ // setup for tests that need TimelineConfig
-        setup: function() {
-          stop();
+      QUnit.module("marktwain.json tests",{});
+
+      QUnit.test("TimeScale", function(assert) {
+          var done = assert.async();
           VCO.ConfigFactory.makeConfig('/examples/twain/marktwain.json',function(config){
-            this.timeline_config = config;
-            start();
+              var timescale = new VCO.TimeScale(config);
+              assert.equal(timescale.getNumberOfRows(),5, "expect 5 rows");
+              assert.equal(timescale._positions.length,config.events.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+config.events.length+")")
+              var row_check = new Array(timescale.getNumberOfRows());
+              for (var i = 0; i < row_check.length; i++) {
+                row_check[i] = [];
+              };
+              var all_posinfos_defined = true;
+
+              for (var i = 0; i < config.events.length; i++) {
+                var pos_info = timescale.getPositionInfo(i);
+                all_posinfos_defined = all_posinfos_defined && (typeof(pos_info) != "undefined")
+                row_check[pos_info.row].push(pos_info);
+              };
+              assert.ok(all_posinfos_defined,"There should be a pos_info for every idx");
+              var slides_in_rows = 0;
+              for (var i = 0; i < timescale.getNumberOfRows(); i++) {
+                slides_in_rows += row_check[i].length;
+                var no_overlaps = true;
+                for (var j = 1; j < row_check[i].length; j++) {
+                  no_overlaps = no_overlaps && (row_check[i][j-1].end < row_check[i][j].start);
+                };
+                assert.ok(no_overlaps,"No overlaps in row " + i)
+              };
+              assert.equal(slides_in_rows,config.events.length,"In checking rows we should have seen all slides")
+              done();
           });
-        }
-      });
-
-      test("TimeScale", function() {
-        var timescale = new VCO.TimeScale(this.timeline_config);
-        equal(timescale.getNumberOfRows(),6, "expect 6 rows");
-        equal(timescale._positions.length,this.timeline_config.events.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+this.timeline_config.events.length+")")
-        var row_check = new Array(timescale.getNumberOfRows());
-        for (var i = 0; i < row_check.length; i++) {
-          row_check[i] = [];
-        };
-        var all_posinfos_defined = true;
-
-        for (var i = 0; i < this.timeline_config.events.length; i++) {
-          var pos_info = timescale.getPositionInfo(i);
-          all_posinfos_defined = all_posinfos_defined && (typeof(pos_info) != "undefined")
-          row_check[pos_info.row].push(pos_info);
-        };
-        ok(all_posinfos_defined,"There should be a pos_info for every idx");
-        var slides_in_rows = 0;
-        for (var i = 0; i < timescale.getNumberOfRows(); i++) {
-          slides_in_rows += row_check[i].length;
-          var no_overlaps = true;
-          for (var j = 1; j < row_check[i].length; j++) {
-            no_overlaps = no_overlaps && (row_check[i][j-1].end < row_check[i][j].start);
-          };
-          ok(no_overlaps,"No overlaps in row " + i)
-        };
-        equal(slides_in_rows,this.timeline_config.events.length,"In checking rows we should have seen all slides")
       })
 
-      test("TimeScale max rows", function() {
+      QUnit.test("TimeScale max rows", function(assert) {
         var config = new VCO.TimelineConfig({ scale: 'cosmological',
           events:
           [
@@ -589,9 +592,9 @@
           ]
         })
         var timescale = new VCO.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 4});
-        equal(timescale.getNumberOfRows(),4,"Max rows 4 should be honored.")
+        assert.equal(timescale.getNumberOfRows(),4,"Max rows 4 should be honored.")
         var timescale = new VCO.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 3});
-        equal(timescale.getNumberOfRows(),3,"Max rows 3 should be honored.")
+        assert.equal(timescale.getNumberOfRows(),3,"Max rows 3 should be honored.")
       });
 
 

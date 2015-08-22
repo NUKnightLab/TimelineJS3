@@ -5,37 +5,36 @@ to make testing easier
 VCO.TimelineConfig = VCO.Class.extend({
 
 	includes: [],
-	title: null,
-	scale: null,
-	events: [],
-	event_dict: {}, // despite name, all slides (events + title) indexed by slide.unique_id
-	messages: {
-		errors: [],
-		warnings: []
-	},
-	VALID_PROPERTIES: ['scale', 'title', 'events'], // we'll only pull things in from this
 	initialize: function (data) {
+		this.title = '';
+		this.scale = '';
+		this.events = [];
+		this.event_dict = {}; // despite name, all slides (events + title) indexed by slide.unique_id
+		this.messages = {
+			errors: [],
+			warnings: []
+		};
+
 		// Initialize the data
 		if (typeof data === 'object' && data.events) {
 			this.scale = data.scale;
+			this.events = [];
 			this._ensureValidScale(data.events);
 
 			if (data.title) {
 				var title_id = this._assignID(data.title);
+				this._tidyFields(data.title);
 				this.title = data.title;
 				this.event_dict[title_id] = this.title;
 			}
 			for (var i = 0; i < data.events.length; i++) {
-				console.log(i);
-				var id = this.addEvent(data.events[i], true);
-				console.log(i, id);
-				// try {
-				// 	this.addEvent(data.events[i], true);
-				// } catch (e) {
-				// 	this.logError("Event " + i + ": " + e);
-				// }
+				try {
+					this.addEvent(data.events[i], true);
+				} catch (e) {
+					this.logError("Event " + i + ": " + e);
+				}
 			}
-			// VCO.DateUtil.sortByDate(this.events);
+			VCO.DateUtil.sortByDate(this.events);
 
 
 		}
