@@ -16,7 +16,7 @@ VCO.DateUtil = {
 			return 0;
 		});
 	},
-	
+
 	parseTime: function(time_str) {
 		var parsed = {
 			hour: null, minute: null, second: null, millisecond: null // conform to keys in VCO.Date
@@ -73,6 +73,12 @@ VCO.DateUtil = {
 		}
 
 		return parsed;
+	},
+
+	SCALE_DATE_CLASSES: {
+		human: VCO.Date,
+		cosmological: VCO.BigDate
 	}
-	
+
+
 };
