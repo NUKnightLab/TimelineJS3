@@ -2,7 +2,9 @@
   <div id="timeline-embed">
     <div id="timeline"></div>
   </div>
-
+  <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
+  <link rel="stylesheet" href="/build/css/font.knightlab.css">
+  <!-- endbuild -->
   <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
   <link title="timeline-styles" rel="stylesheet" href="/build/css/timeline.css">
   <!-- endbuild -->
@@ -17,7 +19,7 @@
         window.addEventListener('resize', function() {
           var embed = document.getElementById('timeline-embed');
           embed.style.height = getComputedStyle(document.body).height;
-          timeline.updateDisplay();          
+          timeline.updateDisplay();
         })
       });
   </script>
