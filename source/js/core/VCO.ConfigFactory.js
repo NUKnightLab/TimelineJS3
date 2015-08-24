@@ -112,11 +112,11 @@
         }
 
         if (item_data.time) {
-            VCO.Util.extend(d.start_date,VCO.DateUtil.parseTime(item_data.time));
+            VCO.Util.mergeData(d.start_date,VCO.DateUtil.parseTime(item_data.time));
         }
 
         if (item_data.endtime) {
-            VCO.Util.extend(d.end_date,VCO.DateUtil.parseTime(item_data.endtime));
+            VCO.Util.mergeData(d.end_date,VCO.DateUtil.parseTime(item_data.endtime));
         }
 
 

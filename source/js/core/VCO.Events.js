@@ -39,7 +39,7 @@ VCO.Events = {
 			return this;
 		}
 
-		var event = VCO.Util.extend({
+		var event = VCO.Util.mergeData({
 			type: type,
 			target: this
 		}, data);

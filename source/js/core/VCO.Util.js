@@ -3,25 +3,24 @@
 ================================================== */
 
 VCO.Util = {
+	mergeData: function(data_main, data_to_merge) {
+		var x;
+		for (x in data_to_merge) {
+			if (Object.prototype.hasOwnProperty.call(data_to_merge, x)) {
+				data_main[x] = data_to_merge[x];
+			}
+		}
+		return data_main;
+	},
 
+	// like VCO.Util.mergeData but takes an arbitrarily long list of sources to merge.
 	extend: function (/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
 		var sources = Array.prototype.slice.call(arguments, 1);
 		for (var j = 0, len = sources.length, src; j < len; j++) {
 			src = sources[j] || {};
-			for (var i in src) {
-				if (src.hasOwnProperty(i)) {
-					dest[i] = src[i];
-				}
-			}
+			VCO.Util.mergeData(dest, src);
 		}
 		return dest;
-	},
-
-	setOptions: function (obj, options) {
-		obj.options = VCO.Util.extend({}, obj.options, options);
-		if (obj.options.unique_id === "") {
-			obj.options.unique_id = VCO.Util.unique_ID(6);
-		}
 	},
 
 	isEven: function(n) {
@@ -75,16 +74,6 @@ VCO.Util = {
 		if (obj.data.unique_id === "") {
 			obj.data.unique_id = VCO.Util.unique_ID(6);
 		}
-	},
-
-	mergeData: function(data_main, data_to_merge) {
-		var x;
-		for (x in data_to_merge) {
-			if (Object.prototype.hasOwnProperty.call(data_to_merge, x)) {
-				data_main[x] = data_to_merge[x];
-			}
-		}
-		return data_main;
 	},
 
 	stamp: (function () {
