@@ -630,5 +630,13 @@ VCO.Util = {
 			return s;
 		}
 		return 0;
+	},
+	/**
+	 * Try to make seamless the process of interpreting a URL to a web page which embeds an image for sharing purposes
+	 * as a direct image link. Some services have predictable transformations we can use rather than explain to people
+	 * this subtlety.
+	 */
+	transformImageURL: function(url) {
+		return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
 	}
 };

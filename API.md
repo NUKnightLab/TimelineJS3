@@ -134,7 +134,8 @@ timeline.on(event_name, function(data) {
     "media": {
         "caption":      <string>,
         "credit":       <string>,
-        "url":          <string>
+        "url":          <string>,
+        "thumbnail":    <string>
     },
     "text": {
         "headline":     <string>,
