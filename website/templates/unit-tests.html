@@ -94,6 +94,26 @@
         assert.ok(!(VCO.Util.trim('')), "trimming an empty string returns a false value")
       });
 
+      QUnit.test("VCO.Util color tools", function(assert){
+         assert.ok(VCO.Util.rgbToHex({r: 255, g: 255, b: 255}).match(/^#ffffff$/i), "RGB white is Hex white");
+         assert.ok(VCO.Util.rgbToHex('rgb(218,112,214)').match(/^#DA70D6$/i), "colors convert correctly from rgb string");
+         var rgb = VCO.Util.hexToRgb('#DA70D6');
+         assert.equal(rgb.r,218,"test hexToRgb red")
+         assert.equal(rgb.g,112,"test hexToRgb green")
+         assert.equal(rgb.b,214,"test hexToRgb blue")
+         throws(function(assert) { VCO.Util.rgbToHex("malformed string") }, "make sure bad values throw exceptions 1");
+         throws(function(assert) { VCO.Util.rgbToHex("rgb(218,112)") }, "make sure bad values throw exceptions 2");
+         throws(function(assert) { VCO.Util.rgbToHex({r: 255, g: 255, c: 255}) }, "make sure bad values throw exceptions 3");
+         var from_name = VCO.Util.hexToRgb('bisque');
+         var from_hex = VCO.Util.hexToRgb('#ffe4c4');
+         assert.equal(from_name.r, from_hex.r, "named colors should work too... red")
+         assert.equal(from_name.g, from_hex.g, "named colors should work too... green")
+         assert.equal(from_name.b, from_hex.b, "named colors should work too... blue")
+         assert.equal(VCO.Util.colorObjToHex(from_name), VCO.Util.colorObjToHex(from_hex), "objects to hexes");
+         assert.ok(VCO.Util.colorObjToHex(from_name).match(/^#ffe4c4$/i), "objects to hexes")
+         assert.ok(VCO.Util.colorObjToHex(from_hex).match(/^#ffe4c4$/i), "objects to hexes")
+      });
+
       QUnit.test("VCO.Util.linkify", function(assert) {
         var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
         var linked = VCO.Util.linkify(text);

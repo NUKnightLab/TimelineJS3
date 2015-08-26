@@ -290,6 +290,30 @@ VCO.Util = {
 	        b: parseInt(result[3], 16)
 	    } : null;
 	},
+	// given an object with r, g, and b keys, or a string of the form 'rgb(mm,nn,ll)', return a CSS hex string including the leading '#' character
+	rgbToHex: function(rgb) {
+		var r,g,b;
+		if (typeof(rgb) == 'object') {
+			r = rgb.r;
+			g = rgb.g;
+			b = rgb.b;
+		} else if (typeof(rgb.match) == 'function'){
+			var parts = rgb.match(/^rgb\((\d+),(\d+),(\d+)\)$/);
+			if (parts) {
+				r = parts[1];
+				g = parts[2];
+				b = parts[3];
+			}
+		}
+		if (!r || !b || !g) {
+			throw "Invalid RGB argument";
+		}
+		return "#" + parseInt(r,10).toString(16) + parseInt(g,10).toString(16) + parseInt(b,10).toString(16);
+	},
+	colorObjToHex: function(o) {
+		var parts = [o.r, o.g, o.b];
+		return VCO.Util.rgbToHex("rgb(" + parts.join(',') + ")")
+	},
     css_named_colors: {
         "aliceblue": "#f0f8ff",
         "antiquewhite": "#faebd7",
