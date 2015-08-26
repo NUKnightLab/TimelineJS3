@@ -5,6 +5,25 @@ section {
   padding: 20px 0;
 }
 
+/* purpleline fixes */
+/* should be incorporated into purpleline core */
+table {
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+th,
+td {
+    padding: 0.5625em 0.625em;
+}
+
+table code {
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #ce4d28;
+}
+
 /* Navbar */
 nav section,
 nav ul li { padding: 0; }
