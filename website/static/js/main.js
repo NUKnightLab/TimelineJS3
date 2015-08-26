@@ -29,20 +29,21 @@ function getUrlVars(string) {
 
 function getLinkAndIframe() {
 
-  var theobj        = {},
-    e_source      = document.getElementById('embed-source-url'),
-    e_width       = document.getElementById('embed-width'),
-    e_height      = document.getElementById('embed-height'),
-    e_language      = document.getElementById('embed-language'),
-    e_embed       = document.getElementById('embed_code'),
-    e_font        = document.getElementById('embed-font-active'),
-    e_startatend    = document.getElementById('embed-startatend'),
+  var theobj = {},
+    e_source = document.getElementById('embed-source-url'),
+    e_width = document.getElementById('embed-width'),
+    e_height = document.getElementById('embed-height'),
+    e_language = document.getElementById('embed-language'),
+    e_embed = document.getElementById('embed_code'),
+    e_font = document.getElementById('embed-font-active'),
+    e_startatend = document.getElementById('embed-startatend'),
     e_timenav_top = document.getElementById('embed-timenavtop'),
-    e_startatslide    = document.getElementById('embed-startatslide'),
-    e_debug       = document.getElementById('embed-debug'),
+    e_startatslide = document.getElementById('embed-startatslide'),
+    e_debug = document.getElementById('embed-debug'),
+    initial_zoom = document.getElementById('embed-initialzoom'),
     timenav_position = "bottom",
-    start_at_end    = false,
-    is_debug      = false,
+    start_at_end = false,
+    is_debug = false,
     iframe,
     link,
     vars,
@@ -89,6 +90,9 @@ function getLinkAndIframe() {
   }
   if (is_debug) {
     vars  += "&debug=" + is_debug;
+  }
+  if (initial_zoom) {
+    vars += "&initial_zoom=" + initial_zoom.value;
   }
   // TODO: Make this start at end if startatslide > # of slides
   if (parseInt(e_startatslide.value, 10) > 0) {
@@ -203,7 +207,8 @@ $(document).ready(function() {
   $('#embed-startatend').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-timenavtop').change(function(evt) { updateEmbedCode(evt); });
   $('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-debug').change(function(evt) { updateEmbedCode(evt); });
+  $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
+  $('#embed-initialzoom').change(function(evt) { updateEmbedCode(evt); });
   $("#embed-font li").on("click", function(evt){
     var currentFont = document.getElementById("embed-font-active");
     currentFont.removeChild(currentFont.firstChild);

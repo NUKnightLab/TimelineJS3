@@ -620,6 +620,12 @@ VCO.Timeline = VCO.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
+    // intial_zoom cannot be applied before the timenav has been created
+    if (this.options.initial_zoom) {
+      // at this point, this.options refers to the merged set of options
+      this.setZoom(this.options.initial_zoom);
+    }
+
 		// Create StorySlider
 		this._storyslider = new VCO.StorySlider(this._el.storyslider, this.config, this.options);
 		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
@@ -636,12 +642,11 @@ VCO.Timeline = VCO.Class.extend({
 		}
 
 
-
 		// Update Display
 		this._updateDisplay(false, true, 2000);
 
 	},
-  	/* Depends upon _initLayout because these events are on things the layout initializes */
+  /* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
