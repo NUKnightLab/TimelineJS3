@@ -24,6 +24,25 @@ table code {
     color: #ce4d28;
 }
 
+.label {
+    padding: 3px 5px 2px
+}
+
+#tips-and-tricks ol li {
+    margin-top: 10px;
+}
+@media screen and (max-width: 767px) {
+    h1.logo-mark.xl {
+        font-size: 55px!important;
+    }
+    button.large,
+    .button.large {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    }
+}
+/* end purpleline fixes */
+
 /* Navbar */
 nav section,
 nav ul li { padding: 0; }
@@ -347,12 +366,6 @@ p.caption {
     margin: 5px 10px 20px;
 }
 
-p.breadcrumb {
-    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px;
-    margin: 10px 0 20px 0;
-}
-
 #preview-inputs input,
 #preview-inputs button{
     margin-bottom: 0;
@@ -375,10 +388,43 @@ p.input-label {
 #tips-and-tricks {
     margin-top: 20px;
 }
-/*purpleline override*/
-#tips-and-tricks ol li {
-    margin-top: 10px;
+
+/* documentation pages */
+p.breadcrumb {
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    margin: 10px 0 20px 0;
 }
+
+.question {
+    /*border-bottom: 1px solid #eee;*/
+    margin-bottom: 40px;
+}
+.question p:first-child {
+    margin-bottom: 0.7rem;
+    font-weight: bold;
+}
+.question p:first-child::before {
+    content: "Q: ";
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ce4d28;
+    font-weight: bold;
+    font-style: normal;
+}
+.question p:last-child {
+    padding-left: 25px;
+    color: #555;
+}
+.question p:last-child::before {
+    content: "A: ";
+    margin-left: -25px;
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ce4d28;
+    font-weight: bold;
+    font-style: normal;
+}
+
+
 /* Developers */
 #developers .develop {
   margin-top: 40px;
@@ -415,16 +461,7 @@ p.input-label {
         margin-right: 0px;
     }
     #overview a { margin:0 10px; }
-    /* purpleline override */
-    h1.logo-mark.xl {
-        font-size: 55px!important;
-    }
-    /* purpleline override */
-    button.large,
-    .button.large {
-    font-size: 1rem;
-    padding: 1rem 2rem;
-    }
+
     h2.intro {
         font-size: 30px;
     }
