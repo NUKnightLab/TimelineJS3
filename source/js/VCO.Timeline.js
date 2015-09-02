@@ -153,7 +153,7 @@ VCO.Timeline = VCO.Class.extend({
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
 			is_full_embed: 				false,
-			hash_bookmark: 				false,
+			hash_bookmark: 				true,
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
 			layout: 					"landscape",			// portrait or landscape
@@ -554,7 +554,8 @@ VCO.Timeline = VCO.Class.extend({
 
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
-		window.location.hash = "#" + "event-" + id.toString();
+		var hash = "#" + "event-" + id.toString();
+    window.history.replaceState(null, "Browsing TimelineJS", hash);
 		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 
@@ -772,7 +773,7 @@ VCO.Timeline = VCO.Class.extend({
 
 	_onChange: function(e) {
 		this.fire("change", {unique_id:this.current_id}, this);
-		if (this.options.hash_bookmark) {
+		if (this.options.hash_bookmark && this.current_id) {
 			this._updateHashBookmark(this.current_id);
 		}
 	},
@@ -827,7 +828,6 @@ VCO.Timeline = VCO.Class.extend({
 	_onLoaded: function() {
 		if (this._loaded.storyslider && this._loaded.timenav) {
 			this.fire("loaded", this.config);
-
 			// Go to proper slide
 			if (this.options.hash_bookmark && window.location.hash != "") {
 				this.goToId(window.location.hash.replace("#event-", ""));
@@ -837,8 +837,7 @@ VCO.Timeline = VCO.Class.extend({
 				} else {
 					this.goTo(this.options.start_at_slide);
 				}
-				this.current_id = this._timenav.current_id;
-				if (this.options.hash_bookmark) {
+				if (this.options.hash_bookmark ) {
 					this._updateHashBookmark(this.current_id);
 				}
 			}
