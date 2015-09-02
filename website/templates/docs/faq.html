@@ -7,19 +7,31 @@
     <div class="small-12 medium-10 columns">
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
       <h2 id="faq">Frequently Asked Questions</h2>
-      <p class="breadcrumb">Jump to: <a href="#media">Media</a> | <a href="#timeline-settings">Settings</a> | <a href="date-time">Dates and times</a> | <a href="#data">Data and privacy</a> | <a href="#licensing">Licensing</a></p>
-      <h6 class="label" id="media">Working with media</h6>
+      <p id="jump-nav" class="breadcrumb">Jump to: </p>
+      <h6 class="label" id="media" data-short="Media">Working with media</h6>
+
       <div class="question">
-        <p id="clickable-media">Can I make images clickable?</p>
-        <p></p>
+        <p id="clickable-media">Can I make media images clickable?</p>
+        <p>
+          No. Many of TimelineJS's media types are interactive, and so would not be able to handle a link, and other of TimelineJS's media types have
+          terms of service which require a link back to the source of the media. As an alternative, consider using HTML to add links in the caption, credit,
+          or text for the slide.
+        </p>
       </div>
 
       <div class="question">
-        <p>How can I format text (add line breaks, bullet points, bold/italics)?</p>
-        <p></p>
-      </div>
+        <p id="text-formatting">How can I format text (add line breaks, bold, italics)?</p>
+        <p>TimelineJS's text fields (headline, text, caption, and credit) all accept HTML markup. A full tutorial on HTML is outside the scope of this
+          FAQ, but here are a few basics:
+        </p>
+        <ul>
+          <li>Wrap paragraphs in <code>&lt;p&gt;&lt;/p&gt;</code> tags to create line breaks.</li>
+          <li>Wrap text in <code>&lt;b&gt;&lt;/b&gt;</code> tags for <b>bold</b> text and <code>&lt;i&gt;&lt;/i&gt;</code> for <i>italics</i></li>
+        </ul>
 
-      <h6 class="label" id="timeline-settings">TimelineJS settings</h6>
+      </div>
+<!--
+      <h6 class="label" data-short="Settings" id="timeline-settings">TimelineJS settings</h6>
       <div class="question">
         <p>What are eras?</p>
         <p></p>
@@ -29,33 +41,61 @@
         <p>Question TBD</p>
         <p></p>
       </div>
+ -->
+      <h6 class="label" data-short="Dates and times" id="date-time">Date and time formatting</h6>
 
-      <h6 class="label" id="date-time">Date and time formatting</h6>
       <div class="question">
-        <p>How do I create very ancient dates?</p>
-        <p></p>
+        <p id="entering-bce-dates">How do I enter <em>BCE</em> dates?</p>
+        <p>
+          To enter dates before the <a href="https://en.wikipedia.org/wiki/Common_Era">common era</a>, just use a negative value for the year. Of course,
+          you can also enter month and date if you need them.
+        </p>
       </div>
 
       <div class="question">
-        <p>Question TBD</p>
-        <p></p>
+        <p id="entering-cosmological-dates">How do I create very ancient dates?</p>
+        <p>Generally, you don't have to think about it -- just enter the dates you want. Timeline can handle dates literally to the beginning of time.
+          For dates more than about 250,000 years ago, only the year is usable. Support for those older dates is still relatively new, so
+          if anything seems off, visit our <a href="http://knightlab.zendesk.com">tech support site.</a>
+        </p>
       </div>
 
       <h6 class="label" id="data">Data and privacy</h6>
       <div class="question">
-        <p>Who can access the data in my Google spreadsheet?</p>
-        <p></p>
+        <p id="google-spreadsheet-visibility">Who can access the data in my Google spreadsheet?</p>
+        <p>
+          You must make the data public to the web to use TimelineJS with a Google Spreadsheet as the data source. Normally, the data is still
+          only visible to people who know the link, so if you publish a timeline privately, outsiders are unlikely to see the data. However,
+          it is still public, so you must decide if that is acceptable.
+        </p>
       </div>
 
       <div class="question">
-        <p>Will my spreadsheet get picked up by search engines?</p>
-        <p></p>
+        <p id="advanced-privacy">Privacy is very important to me. How should I use TimelineJS?</p>
+        <p>
+          If you want complete control over who can see the information in your timeline, you cannot use Google Spreadsheets, and you cannot use our
+          standard <code>iframe</code> embed code. Instead, you must use <a href="/docs/json-format.html">JSON format</a> for the data
+          and <a href="/docs/instantiate-a-timeline.html">instantiate the timeline</a> directly using javascript. You can then use standard web server
+          security measures to control who has access to your timeline and the data used to create it.
+        </p>
+      </div>
+
+      <div class="question">
+        <p id="are-spreadsheets-indexed">Will my spreadsheet get picked up by search engines?</p>
+        <p>
+          Under normal circumstances, Google tells search engines not to index spreadsheets which are published to the web. Of course, if the page is
+          public on the web, it is possible that a search engine will disregard those instructions.
+        </p>
       </div>
 
       <h6 class="label" id="licensing">Licensing</h6>
       <div class="question">
-        <p>Is TimelineJS free for commercial use?</p>
-        <p>TimelineJS is released under the <a href="https://www.mozilla.org/en-US/MPL/2.0/">Mozilla Public License (MPL), version 2.0</a>. That means that TimelineJS is free to "use, reproduce, make available, modify, display, perform, distribute" or otherwise employ. You don't need our permission to publish stories with TimelineJS and you don't need to pay us any fees or arrange any further license beyond the MPL. To read more about what you can do with TimelineJS, read our <a href="/docs/license.html">license page</a>.</p>
+        <p id="commercial-use">Is TimelineJS free for commercial use?</p>
+        <p>TimelineJS is released under the <a href="https://www.mozilla.org/en-US/MPL/2.0/">Mozilla Public License (MPL), version 2.0</a>.
+          That means that TimelineJS is free to "use, reproduce, make available, modify, display, perform, distribute" or otherwise employ.
+          You don't need our permission to publish stories with TimelineJS and you don't need to pay us any fees or arrange any further license beyond the MPL.
+          To read more about what you can do with TimelineJS, read our <a href="/docs/license.html">license page</a>.
+        </p>
       </div>
     </div>
   </div>
@@ -70,7 +110,20 @@ jQuery(document).ready(function() {
     jQuery(this).click(function(){
       window.location.hash = "#" + this.id;
     })
+  });
+ // <a href="#media">Media</a> | <a href="#timeline-settings">Settings</a> | <a href="date-time">Dates and times</a> | <a href="#data">Data and privacy</a> | <a href="#licensing">Licensing</a>
+  var sections = []
+  jQuery('h6.label').each(function() {
+    var text = jQuery(this).data('short') || jQuery(this).text();
+    var hash = jQuery(this).attr('id');
+
+    if (sections.length > 0) {
+      sections.push(' | ');
+    }
+    sections.push(jQuery("<a href='#"+ hash +"'>" + text + "</a>"));
   })
+  jQuery("#jump-nav").append(sections);
+
 })
 </script>
 

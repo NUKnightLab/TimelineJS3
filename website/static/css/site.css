@@ -139,7 +139,7 @@ h2.intro { margin-bottom: 10px; }
 }
 .step.last { border: none; }
 
-  
+
   .step h2 {
     margin-top: 0;
     margin-bottom: 0;
@@ -264,7 +264,7 @@ ul#embed-font-dropdown > li > p {
 }
 
 /* Examples */
-#examples h3 { 
+#examples h3 {
   font-size: 16px;
   line-height: 1.3em;
 }
@@ -274,7 +274,7 @@ h2.intro {
   max-width: 900px;
   padding: 0 20px;
 }
-#examples .row { 
+#examples .row {
   margin-bottom: 20px;
 }
 
@@ -411,11 +411,11 @@ p.breadcrumb {
     font-weight: bold;
     font-style: normal;
 }
-.question p:last-child {
+.question p:nth-child(2) {
     padding-left: 25px;
     color: #555;
 }
-.question p:last-child::before {
+.question p:nth-child(2)::before {
     content: "A: ";
     margin-left: -25px;
     font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -446,10 +446,10 @@ p.breadcrumb {
     text-align: center;
     color: red;
   }
-  
+
 #mc-embedded-subscribe-form .input-large {
   width: 260px;
-}  
+}
 
 #font-preview-trigger { margin: 20px 0 0 0;}
 
