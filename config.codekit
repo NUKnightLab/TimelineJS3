@@ -1,6 +1,6 @@
 {
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
-"creatorBuild": "19033",
+"creatorBuild": "19051",
 "files": {
 	"\/API.md": {
 		"criticStyle": 0,
@@ -235,6 +235,15 @@
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/compiled\/css\/timeline.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/compiled\/embed\/index.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/embed\/index.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -579,6 +588,17 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
+	"\/compiled\/js\/locale\/be.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/js\/locale\/be.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/compiled\/js\/locale\/be-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/compiled\/js\/locale\/bg.json": {
 		"fileType": 524288,
 		"ignore": 1,
@@ -766,6 +786,28 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
+	"\/compiled\/js\/locale\/fy.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/js\/locale\/fy.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/compiled\/js\/locale\/fy-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/compiled\/js\/locale\/ga.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/js\/locale\/ga.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/compiled\/js\/locale\/ga-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/compiled\/js\/locale\/gl.json": {
 		"fileType": 524288,
 		"ignore": 1,
@@ -784,6 +826,17 @@
 		"inputAbbreviatedPath": "\/compiled\/js\/locale\/he.json",
 		"orderOutput": 0,
 		"outputAbbreviatedPath": "\/compiled\/js\/locale\/he-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/compiled\/js\/locale\/hi.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/js\/locale\/hi.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/compiled\/js\/locale\/hi-min.json",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
@@ -1194,6 +1247,28 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
+		},
+	"\/compiled\/js\/timeline-embed-cdn.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/js\/timeline-embed-cdn.js",
+		"outputAbbreviatedPath": "\/compiled\/js\/min\/timeline-embed-cdn-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/compiled\/js\/timeline-embed.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/compiled\/js\/timeline-embed.js",
+		"outputAbbreviatedPath": "\/compiled\/js\/min\/timeline-embed-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
 		},
 	"\/compiled\/js\/timeline-min.js": {
 		"fileType": 64,
@@ -9349,919 +9424,6 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/map\/leaflet\/extentions\/VCO.Leaflet.MiniMap.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/extentions\/VCO.Leaflet.MiniMap.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/extentions\/min\/VCO.Leaflet.MiniMap-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/extentions\/VCO.Leaflet.TileLayer.Zoomify.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/extentions\/VCO.Leaflet.TileLayer.Zoomify.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/extentions\/min\/VCO.Leaflet.TileLayer.Zoomify-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Attribution.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Attribution.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/min\/Control.Attribution-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/min\/Control-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Layers.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Layers.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/min\/Control.Layers-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Scale.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Scale.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/min\/Control.Scale-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Zoom.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/Control.Zoom.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/control\/min\/Control.Zoom-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/core\/Browser.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/Browser.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/min\/Browser-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/core\/Class.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/Class.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/min\/Class-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/core\/Events.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/Events.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/min\/Events-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/core\/Handler.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/Handler.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/min\/Handler-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/core\/Util.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/Util.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/core\/min\/Util-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomEvent.DoubleTap.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomEvent.DoubleTap.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/DomEvent.DoubleTap-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomEvent.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomEvent.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/DomEvent-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomEvent.Pointer.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomEvent.Pointer.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/DomEvent.Pointer-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomUtil.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/DomUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/DomUtil-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/Draggable.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/Draggable.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/Draggable-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/PosAnimation.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/PosAnimation.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/PosAnimation-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/dom\/PosAnimation.Timer.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/PosAnimation.Timer.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/dom\/min\/PosAnimation.Timer-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.EPSG3395.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.EPSG3395.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/min\/CRS.EPSG3395-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.EPSG3857.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.EPSG3857.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/min\/CRS.EPSG3857-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.EPSG4326.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.EPSG4326.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/min\/CRS.EPSG4326-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/min\/CRS-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.Simple.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/CRS.Simple.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/crs\/min\/CRS.Simple-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/LatLng.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/LatLng.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/min\/LatLng-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/LatLngBounds.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/LatLngBounds.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/min\/LatLngBounds-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/min\/Projection-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.LonLat.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.LonLat.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/min\/Projection.LonLat-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.Mercator.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.Mercator.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/min\/Projection.Mercator-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.SphericalMercator.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/Projection.SphericalMercator.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geo\/projection\/min\/Projection.SphericalMercator-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/Bounds.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/Bounds.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/min\/Bounds-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/LineUtil.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/LineUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/min\/LineUtil-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/Point.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/Point.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/min\/Point-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/PolyUtil.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/PolyUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/min\/PolyUtil-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/Transformation.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/Transformation.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/geometry\/min\/Transformation-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/FeatureGroup.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/FeatureGroup.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/min\/FeatureGroup-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/GeoJSON.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/GeoJSON.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/min\/GeoJSON-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/ImageOverlay.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/ImageOverlay.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/min\/ImageOverlay-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/LayerGroup.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/LayerGroup.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/min\/LayerGroup-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/DivIcon.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/DivIcon.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/min\/DivIcon-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Icon.Default.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Icon.Default.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/min\/Icon.Default-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Icon.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Icon.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/min\/Icon-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Marker.Drag.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Marker.Drag.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/min\/Marker.Drag-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Marker.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Marker.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/min\/Marker-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Marker.Popup.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/Marker.Popup.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/marker\/min\/Marker.Popup-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/Popup.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/Popup.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/min\/Popup-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.Anim.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.Anim.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/min\/TileLayer.Anim-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.Canvas.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.Canvas.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/min\/TileLayer.Canvas-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/min\/TileLayer-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.WMS.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/TileLayer.WMS.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/tile\/min\/TileLayer.WMS-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Circle.Canvas.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Circle.Canvas.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/min\/Circle.Canvas-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/CircleMarker.Canvas.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/CircleMarker.Canvas.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/min\/CircleMarker.Canvas-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Path.Canvas.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Path.Canvas.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/min\/Path.Canvas-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Polygon.Canvas.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Polygon.Canvas.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/min\/Polygon.Canvas-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Polyline.Canvas.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/Polyline.Canvas.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/canvas\/min\/Polyline.Canvas-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Circle.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Circle.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Circle-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/CircleMarker.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/CircleMarker.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/CircleMarker-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/MultiPoly.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/MultiPoly.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/MultiPoly-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Path-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.Popup.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.Popup.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Path.Popup-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.SVG.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.SVG.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Path.SVG-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.VML.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Path.VML.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Path.VML-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Polygon.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Polygon.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Polygon-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Polyline.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Polyline.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Polyline-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Rectangle.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/Rectangle.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/layer\/vector\/min\/Rectangle-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/Leaflet.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/Leaflet.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/min\/Leaflet-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/anim\/Map.PanAnimation.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/anim\/Map.PanAnimation.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/anim\/min\/Map.PanAnimation-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/anim\/Map.ZoomAnimation.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/anim\/Map.ZoomAnimation.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/anim\/min\/Map.ZoomAnimation-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/ext\/Map.Geolocation.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/ext\/Map.Geolocation.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/ext\/min\/Map.Geolocation-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.BoxZoom.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.BoxZoom.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.BoxZoom-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.DoubleClickZoom.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.DoubleClickZoom.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.DoubleClickZoom-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.Drag.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.Drag.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.Drag-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.Keyboard.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.Keyboard.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.Keyboard-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.ScrollWheelZoom.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.ScrollWheelZoom.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.ScrollWheelZoom-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.Tap.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.Tap.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.Tap-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.TouchZoom.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/Map.TouchZoom.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/handler\/min\/Map.TouchZoom-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/leaflet-src\/map\/Map.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/Map.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/leaflet-src\/map\/min\/Map-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/VCO.Map.Leaflet.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/VCO.Map.Leaflet.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/min\/VCO.Map.Leaflet-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/leaflet\/VCO.MapMarker.Leaflet.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/leaflet\/VCO.MapMarker.Leaflet.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/leaflet\/min\/VCO.MapMarker.Leaflet-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/tile\/VCO.TileLayer.Mapbox.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/tile\/VCO.TileLayer.Mapbox.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/tile\/min\/VCO.TileLayer.Mapbox-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/tile\/VCO.TileLayer.Stamen.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/tile\/VCO.TileLayer.Stamen.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/tile\/min\/VCO.TileLayer.Stamen-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/VCO.Map.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/VCO.Map.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/min\/VCO.Map-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/map\/VCO.MapMarker.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/map\/VCO.MapMarker.js",
-		"outputAbbreviatedPath": "\/source\/js\/map\/min\/VCO.MapMarker-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
 	"\/source\/js\/media\/types\/VCO.Media.Blockquote.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -12434,10 +11596,6 @@
 			}
 		},
 	"jsLintFlags2": {
-		"ass": {
-			"active": 0,
-			"flagValue": -1
-			},
 		"bitwise": {
 			"active": 0,
 			"flagValue": -1
@@ -12446,15 +11604,7 @@
 			"active": 1,
 			"flagValue": -1
 			},
-		"closure": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"continue": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"debug": {
+		"couch": {
 			"active": 0,
 			"flagValue": -1
 			},
@@ -12462,75 +11612,27 @@
 			"active": 0,
 			"flagValue": -1
 			},
-		"eqeq": {
+		"es6": {
 			"active": 0,
 			"flagValue": -1
 			},
-		"evil": {
+		"eval": {
 			"active": 0,
 			"flagValue": -1
 			},
-		"forin": {
+		"for": {
 			"active": 0,
 			"flagValue": -1
-			},
-		"indent": {
-			"active": 0,
-			"flagValue": 4
 			},
 		"maxlen": {
 			"active": 0,
 			"flagValue": 150
 			},
-		"newcap": {
-			"active": 0,
-			"flagValue": -1
-			},
 		"node": {
 			"active": 0,
 			"flagValue": -1
 			},
-		"nomen": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"plusplus": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"properties": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"regexp": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"rhino": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"sloppy": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"stupid": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"sub": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"todo": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"unparam": {
-			"active": 0,
-			"flagValue": -1
-			},
-		"vars": {
+		"this": {
 			"active": 0,
 			"flagValue": -1
 			},

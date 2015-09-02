@@ -60,7 +60,7 @@ VCO.StorySlider = VCO.Class.extend({
 			layout: 				"portrait",
 			width: 					600,
 			height: 				600,
-			default_bg_color: 		{r:256, g:256, b:256},
+			default_bg_color: 		{r:255, g:255, b:255},
 			slide_padding_lr: 		40, 			// padding on slide of slide
 			start_at_slide: 		1,
 			slide_default_fade: 	"0%", 			// landscape fade
@@ -300,35 +300,34 @@ VCO.StorySlider = VCO.Class.extend({
 		}
 	},
 	
+
+
 	changeBackground: function(bg) {
-		
 		var bg_color = {r:256, g:256, b:256},
-			bg_color_rgb,
-			bg_percent_start 	= this.options.slide_default_fade,
-			bg_percent_end 		= "15%",
-			bg_alpha_end 		= "0.87",
-			bg_css 				= "";
+			bg_color_rgb;
 			
-		if (bg.color_value) {
-			bg_color		= VCO.Util.hexToRgb(bg.color_value);
+		if (bg.color_value && bg.color_value != "") {
+			bg_color = VCO.Util.hexToRgb(bg.color_value);
 			if (!bg_color) {
 				trace("Invalid color value " + bg.color_value);
 				bg_color = this.options.default_bg_color;	
 			}
 		} else {
 			bg_color = this.options.default_bg_color;
+			bg.color_value = "rgb(" + this.options.default_bg_color.r + " , " + this.options.default_bg_color.g + ", " + this.options.default_bg_color.b + ")";
 		}
 		
 		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;
 		this._el.background.style.backgroundImage = "none";
 		
+
 		if (bg.color_value) {
 			this._el.background.style.backgroundColor = bg.color_value;
 		} else {
 			this._el.background.style.backgroundColor = "transparent";
 		}
 		
-		if (bg_color.r < 255 && bg_color.g < 255 && bg_color.b < 255 || bg.image) {
+		if (bg_color.r < 255 || bg_color.g < 255 || bg_color.b < 255 || bg.image) {
 			this._nav.next.setColor(true);
 			this._nav.previous.setColor(true);
 		} else {
@@ -336,7 +335,6 @@ VCO.StorySlider = VCO.Class.extend({
 			this._nav.previous.setColor(false);
 		}
 	},
-	
 	/*	Private Methods
 	================================================== */
 	

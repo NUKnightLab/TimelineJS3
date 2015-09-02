@@ -306,7 +306,7 @@ VCO.Util = {
 			}
 		}
 		if (!r || !b || !g) {
-			throw "Invalid RGB argument";
+			//throw "Invalid RGB argument";
 		}
 		return "#" + parseInt(r,10).toString(16) + parseInt(g,10).toString(16) + parseInt(b,10).toString(16);
 	},
