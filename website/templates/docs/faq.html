@@ -10,7 +10,7 @@
       <p class="breadcrumb">Jump to: <a href="#media">Media</a> | <a href="#timeline-settings">Settings</a> | <a href="date-time">Dates and times</a> | <a href="#data">Data and privacy</a> | <a href="#licensing">Licensing</a></p>
       <h6 class="label" id="media">Working with media</h6>
       <div class="question">
-        <p>Can I make images clickable?</p>
+        <p id="clickable-media">Can I make images clickable?</p>
         <p></p>
       </div>
 
@@ -60,4 +60,18 @@
     </div>
   </div>
 </section>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+
+jQuery(document).ready(function() {
+  jQuery("p[id]").each(function(){
+    jQuery(this).css('cursor','pointer');
+    jQuery(this).click(function(){
+      window.location.hash = "#" + this.id;
+    })
+  })
+})
+</script>
+
 {% endblock %}
