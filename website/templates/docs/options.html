@@ -53,7 +53,19 @@
           <tr>
             <td><code>scale_factor</code></td>
             <td>2</td>
-            <td>How many screen widths wide the timeline should be.</td>
+            <td>How many screen widths wide the timeline should be at first presentation.</td>
+          </tr>
+          <tr>
+            <td><code>initial_zoom</code></td>
+            <td></td>
+            <td>The position in the `zoom_sequence` series used to scale the Timeline when it is first created. Takes precedence over `scale_factor.`</td>
+          </tr>
+          <tr>
+            <td><code>zoom_sequence</code></td>
+            <td>[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</td>
+            <td>Array of Fibonacci numbers for TimeNav zoom levels. Each value is a `scale_factor,` which means that at any given level, the full timeline
+            would require that many screens to display all events.
+            </td>
           </tr>
           <tr>
             <td><code>layout</code></td>
@@ -174,11 +186,6 @@
             <td><code>slide_default_fade</code></td>
             <td>"0%"</td>
             <td></td>
-          </tr>
-          <tr>
-            <td><code>zoom_sequence</code></td>
-            <td>[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</td>
-            <td>Array of Fibonacci numbers for TimeNav zoom levels</td>
           </tr>
           <tr>
             <td><code>language</code></td>
