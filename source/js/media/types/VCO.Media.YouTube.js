@@ -41,7 +41,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 
 
 		// API Call
-		VCO.Load.js('https://www.youtube.com/player_api', function() {
+		VCO.Load.js('https://www.youtube.com/iframe_api', function() {
 			self.createMedia();
 		});
 
@@ -57,7 +57,9 @@ VCO.Media.YouTube = VCO.Media.extend({
 	_stopMedia: function() {
 		if (this.youtube_loaded) {
 			try {
-				this.player.pauseVideo();
+			    if(this.player.getPlayerState() == YT.PlayerState.PLAYING) {
+			        this.player.pauseVideo();
+			    }
 			}
 			catch(err) {
 				trace(err);
@@ -110,7 +112,10 @@ VCO.Media.YouTube = VCO.Media.extend({
 	},
 
 	onStateChange: function(e) {
-
+        if(e.data == YT.PlayerState.ENDED) {
+            e.target.seekTo(0);
+            e.target.pauseVideo();
+        }				
 	}
 
 
