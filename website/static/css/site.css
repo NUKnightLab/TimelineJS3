@@ -411,7 +411,8 @@ p.breadcrumb {
     font-weight: bold;
     font-style: normal;
 }
-.question p:nth-child(2) {
+.question p:nth-child(1n+2),
+.question ul {
     padding-left: 25px;
     color: #555;
 }
