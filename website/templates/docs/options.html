@@ -43,12 +43,13 @@
           <tr>
             <td><code>hash_bookmark</code></td>
             <td><code>false</code></td>
-            <td></td>
+            <td>If set to <code>true</code>, TimelineJS will update the browser URL each time a slide advances, so that people can link directly to specific slides.</td>
           </tr>
           <tr>
             <td><code>default_bg_color</code></td>
-            <td><code>{r:255, g:255, b:255}</code></td>
-            <td>RGB values to use for slide backgrounds.</td>
+            <td><code>white</code></td>
+            <td>RGB values to use for slide backgrounds. Specify as hex code, CSS named color, or a Javascript object with <code>r</code>, <code>g</code>, and <code>b</code> properties from 0-255.
+            </td>
           </tr>
           <tr>
             <td><code>scale_factor</code></td>
@@ -58,13 +59,13 @@
           <tr>
             <td><code>initial_zoom</code></td>
             <td></td>
-            <td>The position in the `zoom_sequence` series used to scale the Timeline when it is first created. Takes precedence over `scale_factor.`</td>
+            <td>The position in the <code>zoom_sequence</code> series used to scale the Timeline when it is first created. Takes precedence over <code>scale_factor</code>.</td>
           </tr>
           <tr>
             <td><code>zoom_sequence</code></td>
             <td>[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</td>
-            <td>Array of Fibonacci numbers for TimeNav zoom levels. Each value is a `scale_factor,` which means that at any given level, the full timeline
-            would require that many screens to display all events.
+            <td>Array of values for TimeNav zoom levels. Each value is a <code>scale_factor</code>,  which means that at any given level, the full timeline
+            would require that many screens to display all events. 
             </td>
           </tr>
           <tr>

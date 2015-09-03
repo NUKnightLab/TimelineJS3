@@ -7,7 +7,44 @@
     <div class="small-12 medium-10 columns">
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
       <h2 id="faq">Frequently Asked Questions</h2>
-      <p id="jump-nav" class="breadcrumb">Jump to: </p>
+      <p id="jump-nav" class="breadcrumb">Jump to: <!-- links dynamically added based on h6.label elements --></p>
+
+      <!-- ====================== -->
+      <!-- Style and Presentation -->
+      <!-- ====================== -->
+      <h6 class="label" id="styling" data-short="Styling">Style and Presentation</h6>
+      <div class="question">
+        <p id="styling-overview">
+          What are my options for changing how my Timeline looks?
+        </p>
+        <p>
+          First, make sure you know everything you can do in the <a href="/docs/using-spreadsheets.html">spreadsheet configuration</a>, like background colors and images.
+          Also, check out the <a href="/#make-step-3">optional settings</a> part of "step 3" of the authoring tool. You can change the fonts,
+          the position of the timeline navigation, and the initial zoom level. If you still want to do more, there are some <a href="/docs/options.html">configuration options</a> available. Most of those are for fine tuning, but
+          some of them may be helpful.
+        </p>
+      </div>
+      <div class="question">
+        <p id="custom-css">
+          There aren't enough options. I want more control over the [font size/color/etc]. Can I change things using CSS?
+        </p>
+        <p>
+          Because there are so many details to the styling, this is not exactly simple, but, if you have some technical capacity, you can override
+          TimelineJS's <abbr title="Cascading Style Sheets">CSS</abbr> rules and have complete control
+          over the look of the timeline. You will need to be able to <a href="/docs/instantiate-a-timeline.html">instantiate the Timeline</a> in javascript on your own page.
+          (There is no way to override the CSS using the <code>iframe</code> embed.) Then, either in <code>&lt;style&gt;</code> tags in that page, or in an external
+          stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. The basis of TimelineJS's styles are in
+          <a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/source/less">these files</a>, which use the <a href="http://lesscss.org/">Less CSS preprocessor</a>.
+        </p>
+
+
+
+      </div>
+
+
+      <!-- ===== -->
+      <!-- Media -->
+      <!-- ===== -->
       <h6 class="label" id="media" data-short="Media">Working with media</h6>
 
       <div class="question">
@@ -30,6 +67,10 @@
         </ul>
 
       </div>
+
+      <!-- ======== -->
+      <!-- Settings -->
+      <!-- ======== -->
 <!--
       <h6 class="label" data-short="Settings" id="timeline-settings">TimelineJS settings</h6>
       <div class="question">
@@ -42,6 +83,10 @@
         <p></p>
       </div>
  -->
+
+      <!-- =============== -->
+      <!-- Dates and times -->
+      <!-- =============== -->
       <h6 class="label" data-short="Dates and times" id="date-time">Date and time formatting</h6>
 
       <div class="question">
@@ -60,6 +105,9 @@
         </p>
       </div>
 
+      <!-- ================ -->
+      <!-- Data and privacy -->
+      <!-- ================ -->
       <h6 class="label" id="data">Data and privacy</h6>
       <div class="question">
         <p id="google-spreadsheet-visibility">Who can access the data in my Google spreadsheet?</p>
@@ -88,6 +136,9 @@
         </p>
       </div>
 
+      <!-- ========= -->
+      <!-- Licensing -->
+      <!-- ========= -->
       <h6 class="label" id="licensing">Licensing</h6>
       <div class="question">
         <p id="commercial-use">Is TimelineJS free for commercial use?</p>
@@ -105,15 +156,17 @@
 <script type="text/javascript">
 
 jQuery(document).ready(function() {
-  jQuery("p[id]").each(function(){
+  // make permalinks function for each question
+  jQuery("div.question > p[id]").each(function(){
     jQuery(this).css('cursor','pointer');
     jQuery(this).click(function(){
       window.location.hash = "#" + this.id;
     })
   });
- // <a href="#media">Media</a> | <a href="#timeline-settings">Settings</a> | <a href="date-time">Dates and times</a> | <a href="#data">Data and privacy</a> | <a href="#licensing">Licensing</a>
+
+  // set up the top level links to major sections
   var sections = []
-  jQuery('h6.label').each(function() {
+  jQuery('h6.label[id]').each(function() {
     var text = jQuery(this).data('short') || jQuery(this).text();
     var hash = jQuery(this).attr('id');
 
