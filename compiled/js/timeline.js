@@ -11523,6 +11523,15 @@ VCO.Timeline = VCO.Class.extend({
 		this.animator_menubar = null;
 
 		// Merge Options
+		if (typeof(options.default_bg_color) == "string") {
+			var parsed = VCO.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
+			if (parsed) {
+				options.default_bg_color = parsed;
+			} else {
+				delete options.default_bg_color
+				trace("Invalid default background color. Ignoring.");
+			}
+		}
 		VCO.Util.mergeData(this.options, options);
 
 		window.addEventListener("resize", function(e){
