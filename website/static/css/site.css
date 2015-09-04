@@ -401,11 +401,13 @@ p.breadcrumb {
     margin-bottom: 40px;
 }
 .question p:first-child {
+    padding-left: 25px;
     margin-bottom: 0.7rem;
     font-weight: bold;
 }
 .question p:first-child::before {
     content: "Q: ";
+    margin-left: -25px;
     font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #ce4d28;
     font-weight: bold;

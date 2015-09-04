@@ -103,8 +103,9 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	initialize: function (elem, data, options) {
 		var self = this;
+		if (!options) { options = {}};
 		// Version
-		this.version = "0.0.20";
+		this.version = "3.2.6";
 
 		// Ready
 		this.ready = false;
@@ -199,6 +200,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.animator_menubar = null;
 
 		// Merge Options
+
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = VCO.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
 			if (parsed) {
