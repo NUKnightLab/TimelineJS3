@@ -300,7 +300,7 @@ VCO.StorySlider = VCO.Class.extend({
 		}
 	},
 	
-
+ 
 
 	changeBackground: function(bg) {
 		var bg_color = {r:256, g:256, b:256},
@@ -314,7 +314,7 @@ VCO.StorySlider = VCO.Class.extend({
 			}
 		} else {
 			bg_color = this.options.default_bg_color;
-			bg.color_value = "rgb(" + this.options.default_bg_color.r + " , " + this.options.default_bg_color.g + ", " + this.options.default_bg_color.b + ")";
+			bg.color_value = "rgb(" + bg_color.r + " , " + bg_color.g + ", " + bg_color.b + ")";
 		}
 		
 		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;

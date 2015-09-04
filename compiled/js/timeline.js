@@ -8513,7 +8513,7 @@ VCO.Media.YouTube = VCO.Media.extend({
 
 
 		// API Call
-		VCO.Load.js('https://www.youtube.com/player_api', function() {
+		VCO.Load.js('https://www.youtube.com/iframe_api', function() {
 			self.createMedia();
 		});
 
@@ -8529,7 +8529,9 @@ VCO.Media.YouTube = VCO.Media.extend({
 	_stopMedia: function() {
 		if (this.youtube_loaded) {
 			try {
-				this.player.pauseVideo();
+			    if(this.player.getPlayerState() == YT.PlayerState.PLAYING) {
+			        this.player.pauseVideo();
+			    }
 			}
 			catch(err) {
 				trace(err);
@@ -8582,7 +8584,10 @@ VCO.Media.YouTube = VCO.Media.extend({
 	},
 
 	onStateChange: function(e) {
-
+        if(e.data == YT.PlayerState.ENDED) {
+            e.target.seekTo(0);
+            e.target.pauseVideo();
+        }				
 	}
 
 
@@ -9347,7 +9352,7 @@ VCO.StorySlider = VCO.Class.extend({
 		}
 	},
 	
-
+ 
 
 	changeBackground: function(bg) {
 		var bg_color = {r:256, g:256, b:256},
@@ -9361,7 +9366,7 @@ VCO.StorySlider = VCO.Class.extend({
 			}
 		} else {
 			bg_color = this.options.default_bg_color;
-			bg.color_value = "rgb(" + this.options.default_bg_color.r + " , " + this.options.default_bg_color.g + ", " + this.options.default_bg_color.b + ")";
+			bg.color_value = "rgb(" + bg_color.r + " , " + bg_color.g + ", " + bg_color.b + ")";
 		}
 		
 		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;
@@ -11427,8 +11432,9 @@ VCO.Timeline = VCO.Class.extend({
 	================================================== */
 	initialize: function (elem, data, options) {
 		var self = this;
+		if (!options) { options = {}};
 		// Version
-		this.version = "0.0.20";
+		this.version = "3.2.6";
 
 		// Ready
 		this.ready = false;
@@ -11523,6 +11529,7 @@ VCO.Timeline = VCO.Class.extend({
 		this.animator_menubar = null;
 
 		// Merge Options
+
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = VCO.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
 			if (parsed) {
