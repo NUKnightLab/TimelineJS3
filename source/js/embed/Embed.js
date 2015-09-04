@@ -248,14 +248,14 @@ function createStoryJS(c, src) {
   }
 
   function buildEmbed() {
-    VCO.debug = storyjs_e_config.debug;
+    TL.debug = storyjs_e_config.debug;
 
     storyjs_e_config['ga_property_id'] = 'UA-27829802-4';
     storyjs_e_config.language = storyjs_e_config.lang;
     if (storyjs_e_config.width == '100%') {
       storyjs_e_config.is_full_embed = true;
     }
-    window.timeline = new VCO.Timeline('timeline-embed', storyjs_e_config.source, storyjs_e_config);
+    window.timeline = new TL.Timeline('timeline-embed', storyjs_e_config.source, storyjs_e_config);
 
   }
 

@@ -24,13 +24,13 @@ Include the JS file at the bootom of the page right before the `</body>` closes.
 After you include the timeline.js file, create an instance of timeline and link to your timeline data file and include any config options you want to use.
 ```
 <script>
-	var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
+	var timeline = new TL.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
 </script>
 ```
 To handle browser resizing include a `window.onresize` event handler telling timeline to update it's display
 ```
 <script>
-	var timeline = new VCO.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
+	var timeline = new TL.Timeline('id_of_your_timeline_div', 'your_data_file.json', options);
 	window.onresize = function(event) {
 		timeline.updateDisplay();
 	}
@@ -63,7 +63,7 @@ TODO: Need to document this in a better format
 		use_bc: 					false, 			// Use declared suffix on dates earlier than 0
 		// animation
 		duration: 					1000,
-		ease: 						VCO.Ease.easeInOutQuint,
+		ease: 						TL.Ease.easeInOutQuint,
 		// interaction
 		dragging: 					true,
 		trackResize: 				true,
@@ -153,7 +153,7 @@ We support the following media types
 
 ### Extending Media Types
 * Create a new class for the media type in `source/js/media/type`. It's easiest to duplicate an existing one and change the filename and classname.
-* Add the new file to the code-kit compile list inside the main `VCO.Timeline.js` file. Code-kit uses the following language to prepend the file to the compile `// @codekit-prepend "media/types/VCO.Media.YourMediaTypeName.js";`
-* Add a new object to the `media_types` array in `source/js/media/VCO.MediaType.js`. Make sure to have the correct class name in `cls` and use `match_str` as a regex to help timeline figure out what type of media the given url is.
-* If you want icons for the media to show up in the Timeline, then you will also need to add an icon class to `source/less/icons/Icons.less` that has the name `.vco-icon-yourmediatypename`. 
+* Add the new file to the code-kit compile list inside the main `TL.Timeline.js` file. Code-kit uses the following language to prepend the file to the compile `// @codekit-prepend "media/types/TL.Media.YourMediaTypeName.js";`
+* Add a new object to the `media_types` array in `source/js/media/TL.MediaType.js`. Make sure to have the correct class name in `cls` and use `match_str` as a regex to help timeline figure out what type of media the given url is.
+* If you want icons for the media to show up in the Timeline, then you will also need to add an icon class to `source/less/icons/Icons.less` that has the name `.tl-icon-yourmediatypename`. 
 

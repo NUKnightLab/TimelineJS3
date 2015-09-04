@@ -1,0 +1,166 @@
+/* TL.TimeAxis
+================================================== */
+.tl-timeaxis-background {
+	height:@axis-height;
+	width:100%;
+	position:absolute;
+	bottom:0;
+	left:0;
+	background-color:@color-background;
+	border-top: 1px solid darken(@ui-background-color,5);
+	z-index:2;
+}
+.tl-timeaxis {
+	height:@axis-height;
+	width:100%;
+	position:absolute;
+	bottom:0;
+	left:0;
+	z-index:3;
+		
+	.tl-timeaxis-content-container {
+		position:relative;
+		bottom:0;
+		height:@axis-height;
+		.tl-timeaxis-major, .tl-timeaxis-minor {
+			opacity:0;
+			position:absolute;
+			
+			.tl-timeaxis-tick {
+				position:absolute;
+				display:block;
+				top:0;
+				left:0;
+				text-align: center;
+				font-weight:normal;
+				//.property-animation(opacity, @animation-duration, @animation-ease);
+				//.animation-timing-cubic-bezier();
+				.tl-timeaxis-tick-text {
+					display:inline-block;
+					//width:100%;
+					white-space: nowrap;
+
+					text-overflow: ellipsis;
+					overflow:hidden;
+				}
+				&:before {
+					content: "|";
+					display:block;
+					color:@color-background;
+					width:1px;
+					overflow:hidden;
+					border-left: 1px solid @minor-ticks-line-color;
+					text-align:center;
+				}
+			}
+			
+			&.tl-timeaxis-animate {
+				.tl-timeaxis-tick {
+					.property-animation(all, @animation-duration, @animation-ease);
+					.animation-timing-cubic-bezier();
+				}
+			}
+			
+			&.tl-timeaxis-animate-opacity {
+				.tl-timeaxis-tick {
+					.property-animation(opacity, @animation-duration, @animation-ease);
+					.animation-timing-cubic-bezier();
+				}
+			}
+		}
+		
+		.tl-timeaxis-major {
+			z-index:1;
+			background-color:@color-background;
+			.tl-timeaxis-tick {
+				font-size:@major-ticks-font-size;
+				line-height:@major-ticks-font-size + @tick-padding;
+				color:@major-ticks-color;
+				width:@major-ticks-width;
+				margin-left:-(@major-ticks-width/2);
+				
+				&:before {
+					border-color:@major-ticks-line-color;
+					//border-left: 2px solid @major-ticks-line-color;
+					font-size:@major-ticks-font-size + (@tick-padding*3);
+					line-height:@major-ticks-font-size + (@tick-padding*3);
+					margin-bottom:@tick-padding;
+					margin-left:(@major-ticks-width/2);
+				}
+				
+				.tl-timeaxis-tick-text {
+					
+				}
+			}
+		}
+		
+		.tl-timeaxis-minor {
+			
+			.tl-timeaxis-tick {
+				font-size:@minor-ticks-font-size;
+				line-height:@minor-ticks-font-size + @tick-padding;
+				color:@minor-ticks-color;
+				width:@minor-ticks-width;
+				margin-left:-(@minor-ticks-width/2);
+				.tl-timeaxis-tick-text {
+					opacity:0;
+					white-space: normal;
+					padding-left:2px;
+					padding:right:2px;
+					span {
+						//display:none;
+						display:block;
+						font-size:9px;
+						line-height:9px;
+						margin-top:-2px;
+						color:lighten(@minor-ticks-color,15);
+						&.tl-timeaxis-timesuffix {
+							//display:none;
+						}
+					}
+				}
+				&:before {
+					font-size:@minor-ticks-font-size - @tick-padding;
+					line-height:@minor-ticks-font-size - @tick-padding;
+					margin-left:(@minor-ticks-width/2);
+				}
+				
+				&.tl-timeaxis-tick-hidden {
+					.tl-timeaxis-tick-text {
+						opacity:0 !important;
+					}
+					&:before {
+						opacity:0.33;
+					}
+				}
+			}
+		}
+		
+		
+	}
+
+}
+
+/* Skinny
+================================================== */
+.tl-skinny {
+	.tl-timeaxis {
+
+	}
+}
+
+/* Mobile, iPhone
+================================================== */
+.tl-mobile {
+	.tl-timeaxis {
+
+	}
+}
+
+/* Mobile, iPhone and skinny
+================================================== */
+.tl-mobile.tl-skinny {
+	.tl-timeaxis {
+
+	}
+}

@@ -16,7 +16,7 @@ If you do not have a `title`, the first event has `event_index` 0 and `slide_ind
 ```javascript
 
 // Create new Timeline object
-var timeline = new VCO.Timeline(...);
+var timeline = new TL.Timeline(...);
 
 // Set event handlers
 // event_name = string, name of the event, e.g. "change"
@@ -93,9 +93,9 @@ timeline.on(event_name, function(data) {
 
 `getDataId(<string id>)` _get data for slide by id_
 
-`getSlide(<int slide_index>)` _get VCO.Slide object by index_
+`getSlide(<int slide_index>)` _get TL.Slide object by index_
 
-`getSlideId(<string id>)` _get VCO.Slide object by id_
+`getSlideId(<string id>)` _get TL.Slide object by id_
 
 
 ####Event data format

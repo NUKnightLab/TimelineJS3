@@ -1,0 +1,121 @@
+/* Requires Variables.less
+================================================== */
+@leaflet-offset: 6px;
+@map-icon-size: 44px; //52
+@map-icon-width: 32px; //38
+@map-icon-size: 52px;
+@map-icon-width: 38px;
+.tl-map {
+	.tl-mapmarker, .tl-mapmarker-active {
+		font-family: 'tl-icons';
+		speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1;
+
+		/* Better Font Rendering =========== */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		
+		
+		width: @map-icon-width !important;
+		height: @map-icon-size !important;
+		//overflow:hidden;
+		top:-(@map-icon-size - @leaflet-offset);
+		left: -((@map-icon-width/2) - @leaflet-offset);
+		
+	} 
+	// Map Pin
+	.tl-mapmarker:before, .tl-mapmarker-active:before {
+		content: "\e600";
+		font-size:@map-icon-size;
+		text-shadow: rgba(0,0,0, 0.66) 0px 2px 5px;
+		
+	}
+	
+	.tl-mapmarker {
+		color:#a5a5a5;
+	}
+	.tl-mapmarker-active {
+		color:@color-theme;
+	}
+	
+	.tl-mapmarker-image-icon, .tl-mapmarker-image-icon-active {
+		border: 2px solid #a5a5a5;
+		box-shadow: 2px 2px 2px #000;
+		opacity:1;
+		
+	}
+	.tl-mapmarker-image-icon {
+		-webkit-filter: grayscale(100%);
+		-moz-filter: grayscale(100%);
+		filter: grayscale(100%);
+	}
+	.tl-mapmarker-image-icon-active {
+		opacity:1;
+		border: 4px solid @color-theme;
+		-webkit-filter: grayscale(0);
+		-moz-filter: grayscale(0);
+		filter: grayscale(0);
+	}
+	
+	/* Marker Media Icons
+	================================================== */
+	.tl-mapmarker-icon:after {
+			//font-size:20px;
+			font-size:24px;
+			color:#FFF; 
+			text-align:center;
+			width:@map-icon-width;
+			height: 24px;
+			overflow:hidden;
+			//content:'';
+			display:block;
+			position:absolute;
+			//top:4px;
+			top:8px;
+			left:0px;
+			
+			.opacity(75);
+	}
+	
+	.tl-mapmarker-active.tl-mapmarker-icon:after {
+		.opacity(100);
+	}
+	.tl-mapmarker-icon.tl-icon-youtube:after {
+		//content: "\e63a";
+		//font-size:22px;
+	}
+	.tl-icon-wikipedia:after {
+		//font-size:14px;
+		font-size:16px;
+		//top:10px;
+		top:12px;
+	}
+	.tl-icon-image:after {
+		top:6px;
+	}
+	.tl-icon-vine:after, .tl-icon-vimeo:after, .tl-icon-twitter:after {
+		//top: 6px;
+		top: 8px;
+	}
+	
+
+	
+}
+
+
+
+
+/* Mobile, iPhone and skinny
+================================================== */
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	.tl-map {
+		.tl-mapmarker {
+	
+		}
+	}
+}
+

@@ -36,28 +36,28 @@
         return true;
       }
 
-      QUnit.module("VCO.Util tests",{});
-      QUnit.test("VCO.Util", function(assert) {
+      QUnit.module("TL.Util tests",{});
+      QUnit.test("TL.Util", function(assert) {
         var test = [
           [0,1],
           [2,3],
           [5,7]
         ];
-        assert.equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
+        assert.equal(TL.Util.maxDepth(test),1,"Max depth 1.")
 
         var test = [
           [0,5],
           [2,8],
           [9,10]
         ];
-        assert.equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
+        assert.equal(TL.Util.maxDepth(test),2,"Max depth 2.")
 
         var test = [
           [0,3],
           [5,8],
           [9,10]
         ];
-        assert.equal(VCO.Util.maxDepth(test),1,"Max depth 1.")
+        assert.equal(TL.Util.maxDepth(test),1,"Max depth 1.")
 
         var test = [
           [0,3],
@@ -65,7 +65,7 @@
           [4,9],
           [15,20]
         ];
-        assert.equal(VCO.Util.maxDepth(test),2,"Max depth 2.")
+        assert.equal(TL.Util.maxDepth(test),2,"Max depth 2.")
 
         var test = [
           [0,5],
@@ -73,7 +73,7 @@
           [4,9],
           [15,20]
         ];
-        assert.equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
+        assert.equal(TL.Util.maxDepth(test),3,"Max depth 3.")
 
         var test = [
           [0,5],
@@ -84,168 +84,168 @@
           [24,28],
 
         ];
-        assert.equal(VCO.Util.maxDepth(test),3,"Max depth 3.")
+        assert.equal(TL.Util.maxDepth(test),3,"Max depth 3.")
 
-        assert.equal(VCO.Util.trim(null),'', "null gets zero length string");
-        assert.equal(VCO.Util.trim(' bob '), 'bob');
-        assert.equal(VCO.Util.trim('bob '), 'bob');
-        assert.equal(VCO.Util.trim('bob'), 'bob');
-        assert.ok(VCO.Util.trim('bob'), "trimming a non-empty string returns a true value")
-        assert.ok(!(VCO.Util.trim('')), "trimming an empty string returns a false value")
+        assert.equal(TL.Util.trim(null),'', "null gets zero length string");
+        assert.equal(TL.Util.trim(' bob '), 'bob');
+        assert.equal(TL.Util.trim('bob '), 'bob');
+        assert.equal(TL.Util.trim('bob'), 'bob');
+        assert.ok(TL.Util.trim('bob'), "trimming a non-empty string returns a true value")
+        assert.ok(!(TL.Util.trim('')), "trimming an empty string returns a false value")
       });
 
-      QUnit.test("VCO.Util color tools", function(assert){
-         assert.ok(VCO.Util.rgbToHex({r: 255, g: 255, b: 255}).match(/^#ffffff$/i), "RGB white is Hex white");
-         assert.ok(VCO.Util.rgbToHex('rgb(218,112,214)').match(/^#DA70D6$/i), "colors convert correctly from rgb string");
-         var rgb = VCO.Util.hexToRgb('#DA70D6');
+      QUnit.test("TL.Util color tools", function(assert){
+         assert.ok(TL.Util.rgbToHex({r: 255, g: 255, b: 255}).match(/^#ffffff$/i), "RGB white is Hex white");
+         assert.ok(TL.Util.rgbToHex('rgb(218,112,214)').match(/^#DA70D6$/i), "colors convert correctly from rgb string");
+         var rgb = TL.Util.hexToRgb('#DA70D6');
          assert.equal(rgb.r,218,"test hexToRgb red")
          assert.equal(rgb.g,112,"test hexToRgb green")
          assert.equal(rgb.b,214,"test hexToRgb blue")
-         throws(function(assert) { VCO.Util.rgbToHex("malformed string") }, "make sure bad values throw exceptions 1");
-         throws(function(assert) { VCO.Util.rgbToHex("rgb(218,112)") }, "make sure bad values throw exceptions 2");
-         throws(function(assert) { VCO.Util.rgbToHex({r: 255, g: 255, c: 255}) }, "make sure bad values throw exceptions 3");
-         var from_name = VCO.Util.hexToRgb('bisque');
-         var from_hex = VCO.Util.hexToRgb('#ffe4c4');
+         throws(function(assert) { TL.Util.rgbToHex("malformed string") }, "make sure bad values throw exceptions 1");
+         throws(function(assert) { TL.Util.rgbToHex("rgb(218,112)") }, "make sure bad values throw exceptions 2");
+         throws(function(assert) { TL.Util.rgbToHex({r: 255, g: 255, c: 255}) }, "make sure bad values throw exceptions 3");
+         var from_name = TL.Util.hexToRgb('bisque');
+         var from_hex = TL.Util.hexToRgb('#ffe4c4');
          assert.equal(from_name.r, from_hex.r, "named colors should work too... red")
          assert.equal(from_name.g, from_hex.g, "named colors should work too... green")
          assert.equal(from_name.b, from_hex.b, "named colors should work too... blue")
-         assert.equal(VCO.Util.colorObjToHex(from_name), VCO.Util.colorObjToHex(from_hex), "objects to hexes");
-         assert.ok(VCO.Util.colorObjToHex(from_name).match(/^#ffe4c4$/i), "objects to hexes")
-         assert.ok(VCO.Util.colorObjToHex(from_hex).match(/^#ffe4c4$/i), "objects to hexes")
+         assert.equal(TL.Util.colorObjToHex(from_name), TL.Util.colorObjToHex(from_hex), "objects to hexes");
+         assert.ok(TL.Util.colorObjToHex(from_name).match(/^#ffe4c4$/i), "objects to hexes")
+         assert.ok(TL.Util.colorObjToHex(from_hex).match(/^#ffe4c4$/i), "objects to hexes")
       });
 
-      QUnit.test("VCO.Util.linkify", function(assert) {
+      QUnit.test("TL.Util.linkify", function(assert) {
         var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
-        var linked = VCO.Util.linkify(text);
+        var linked = TL.Util.linkify(text);
         assert.ok(linked.startsWith('This is some text with a URL in it <a'), "should start the same and then have a link -> " + linked);
         assert.ok(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/), "should have an href -> " + linked);
         assert.ok(linked.match(/>knightlab.northwestern.edu<\/a>/), "should have an href " + linked);
 
         text = "This is some text with www.google.com in it";
-        var linked = VCO.Util.linkify(text);
+        var linked = TL.Util.linkify(text);
         assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
         assert.ok(linked.match(/href=['"]http:\/\/www.google.com['"]/), "should have an href");
         assert.ok(linked.match(/>www.google.com<\/a>/), "should have the right link text");
 
         text = "This is some text with support@knightlab.zendesk.com in it";
-        var linked = VCO.Util.linkify(text);
+        var linked = TL.Util.linkify(text);
         assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
         assert.ok(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/), "should have an href " + linked);
         assert.ok(linked.match(/>support@knightlab.zendesk.com<\/a>/), "should have the right link text " + linked);
 
         text = "This is text which already has <a href='http://google.com'>a link</a> in it."
-        var not_linked = VCO.Util.linkify(text);
+        var not_linked = TL.Util.linkify(text);
         assert.equal(not_linked,text,'linkify should not have changed anything.')
 
         text = 'This is text which already has <a href="http://google.com">a link</a> in it.'
-        var not_linked = VCO.Util.linkify(text);
+        var not_linked = TL.Util.linkify(text);
         assert.equal(not_linked,text,'linkify should not have changed anything.')
 
         text = 'This is text which already has <a href=http://google.com>a link</a> in it.'
-        var not_linked = VCO.Util.linkify(text);
+        var not_linked = TL.Util.linkify(text);
         assert.equal(not_linked,text,'linkify should not have changed anything.')
 
       })
 
-      QUnit.test("VCO.Util.findNextGreater", function(assert) {
+      QUnit.test("TL.Util.findNextGreater", function(assert) {
         var l = [1, 5, 10, 20, 35];
-        assert.equal(VCO.Util.findNextGreater(l,1),5, "5 is next greatest after 1");
-        assert.equal(VCO.Util.findNextGreater(l,5),10, "10 is next greatest after 5");
-        assert.equal(VCO.Util.findNextGreater(l,10),20, "20 is next greatest after 10");
-        assert.equal(VCO.Util.findNextGreater(l,15),20, "correctly handle a curr val which isn't in the list");
-        assert.equal(VCO.Util.findNextGreater(l,35),35, "handle value at end of list");
-        assert.equal(VCO.Util.findNextGreater(l,40),40, "handle value greater than max in list");
-        assert.equal(VCO.Util.findNextGreater(l,40, 35),35, "handle greater than max in list with default");
+        assert.equal(TL.Util.findNextGreater(l,1),5, "5 is next greatest after 1");
+        assert.equal(TL.Util.findNextGreater(l,5),10, "10 is next greatest after 5");
+        assert.equal(TL.Util.findNextGreater(l,10),20, "20 is next greatest after 10");
+        assert.equal(TL.Util.findNextGreater(l,15),20, "correctly handle a curr val which isn't in the list");
+        assert.equal(TL.Util.findNextGreater(l,35),35, "handle value at end of list");
+        assert.equal(TL.Util.findNextGreater(l,40),40, "handle value greater than max in list");
+        assert.equal(TL.Util.findNextGreater(l,40, 35),35, "handle greater than max in list with default");
 
-        assert.equal(VCO.Util.findNextLesser(l,1),1, "1 is least");
-        assert.equal(VCO.Util.findNextLesser(l,5),1, "1 is least after 5");
-        assert.equal(VCO.Util.findNextLesser(l,10),5, "20 is next greatest after 10");
-        assert.equal(VCO.Util.findNextLesser(l,15),10, "10 is less than 15 (which isn't in list)");
-        assert.equal(VCO.Util.findNextLesser(l,35),20, "20 less than 35");
-        assert.equal(VCO.Util.findNextLesser(l,40),35, "35 is less than 40");
-        assert.equal(VCO.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
-        assert.equal(VCO.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
+        assert.equal(TL.Util.findNextLesser(l,1),1, "1 is least");
+        assert.equal(TL.Util.findNextLesser(l,5),1, "1 is least after 5");
+        assert.equal(TL.Util.findNextLesser(l,10),5, "20 is next greatest after 10");
+        assert.equal(TL.Util.findNextLesser(l,15),10, "10 is less than 15 (which isn't in list)");
+        assert.equal(TL.Util.findNextLesser(l,35),20, "20 less than 35");
+        assert.equal(TL.Util.findNextLesser(l,40),35, "35 is less than 40");
+        assert.equal(TL.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
+        assert.equal(TL.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
       })
 
-      QUnit.test("VCO.Util.isEmptyObject", function(assert) {
+      QUnit.test("TL.Util.isEmptyObject", function(assert) {
           o = {}
-          assert.ok(VCO.Util.isEmptyObject(o),"no keys should be empty");
+          assert.ok(TL.Util.isEmptyObject(o),"no keys should be empty");
           o.foo = "  ";
-          assert.ok(VCO.Util.isEmptyObject(o),"empty string should be empty");
+          assert.ok(TL.Util.isEmptyObject(o),"empty string should be empty");
           o.bar = "";
-          assert.ok(VCO.Util.isEmptyObject(o),"2 empty strings should be empty");
+          assert.ok(TL.Util.isEmptyObject(o),"2 empty strings should be empty");
           o.baz = null;
-          assert.ok(VCO.Util.isEmptyObject(o),"add null, still should be empty");
+          assert.ok(TL.Util.isEmptyObject(o),"add null, still should be empty");
           o.foo = "  not empty  ";
-          assert.equal(VCO.Util.isEmptyObject(o), false, "adding a string ")
+          assert.equal(TL.Util.isEmptyObject(o), false, "adding a string ")
       })
 
-      QUnit.test("VCO.Util.parseYouTubeTime", function(assert) {
-          assert.equal(VCO.Util.parseYouTubeTime('5s'),5,"parse seconds only")
-          assert.equal(VCO.Util.parseYouTubeTime('1m5s'),65,"parse m/s")
-          assert.equal(VCO.Util.parseYouTubeTime('2h4m5s'),7445,"parse h/m/s")
-          assert.equal(VCO.Util.parseYouTubeTime('5m'),300,"parse minutes only")
-          assert.equal(VCO.Util.parseYouTubeTime('1h'),3600,"parse hours only")
-          assert.equal(VCO.Util.parseYouTubeTime(''),0,"handle empty string")
-          assert.equal(VCO.Util.parseYouTubeTime(null),0,"handle empty string")
-          assert.equal(VCO.Util.parseYouTubeTime('4:55'),0,"handle malformed string")
-          assert.equal(VCO.Util.parseYouTubeTime(5),5,"handle number")
+      QUnit.test("TL.Util.parseYouTubeTime", function(assert) {
+          assert.equal(TL.Util.parseYouTubeTime('5s'),5,"parse seconds only")
+          assert.equal(TL.Util.parseYouTubeTime('1m5s'),65,"parse m/s")
+          assert.equal(TL.Util.parseYouTubeTime('2h4m5s'),7445,"parse h/m/s")
+          assert.equal(TL.Util.parseYouTubeTime('5m'),300,"parse minutes only")
+          assert.equal(TL.Util.parseYouTubeTime('1h'),3600,"parse hours only")
+          assert.equal(TL.Util.parseYouTubeTime(''),0,"handle empty string")
+          assert.equal(TL.Util.parseYouTubeTime(null),0,"handle empty string")
+          assert.equal(TL.Util.parseYouTubeTime('4:55'),0,"handle malformed string")
+          assert.equal(TL.Util.parseYouTubeTime(5),5,"handle number")
       });
 
-      QUnit.test("VCO.Util.ensureUniqueKey", function(assert) {
+      QUnit.test("TL.Util.ensureUniqueKey", function(assert) {
           var o = { foo: 1, bar: 2 }
-          assert.ok(!(VCO.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
-          assert.equal(VCO.Util.ensureUniqueKey(o, 'baz'), 'baz', "not in there, give it back");
-          assert.equal(VCO.Util.ensureUniqueKey(o, 'foo'), 'foo-2', "treat existing as 1-based");
+          assert.ok(!(TL.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
+          assert.equal(TL.Util.ensureUniqueKey(o, 'baz'), 'baz', "not in there, give it back");
+          assert.equal(TL.Util.ensureUniqueKey(o, 'foo'), 'foo-2', "treat existing as 1-based");
           o['foo-2'] = 3;
-          assert.ok(!(VCO.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
-          var random = VCO.Util.ensureUniqueKey(o, '');
-          assert.ok(VCO.Util.trim(random), "Should get a non-empty string");
+          assert.ok(!(TL.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
+          var random = TL.Util.ensureUniqueKey(o, '');
+          assert.ok(TL.Util.trim(random), "Should get a non-empty string");
           assert.ok(!(random in o), "empty string should get non-empty unique");
       });
 
 
-      QUnit.module("VCO.Date tests",{});
+      QUnit.module("TL.Date tests",{});
 
-      QUnit.test("VCO.Date", function(assert) {
-        var refdate = VCO.Date.makeDate({year: 2000, month: 6, day: 21});
+      QUnit.test("TL.Date", function(assert) {
+        var refdate = TL.Date.makeDate({year: 2000, month: 6, day: 21});
         var jsdate = new Date();
         throws(function(assert) { refdate.isBefore(jsdate) }, "Don't allow comparison with JS Dates");
-        jsdate = VCO.Date.makeDate(new Date());
+        jsdate = TL.Date.makeDate(new Date());
         assert.ok(refdate.isBefore(jsdate),"refdate should be before any new date");
         assert.ok(jsdate.isAfter(refdate),"any new date should be after refdate");
 
-        var smalldate = VCO.Date.makeDate({year: 2015});
+        var smalldate = TL.Date.makeDate({year: 2015});
         assert.ok(!isNaN(smalldate.getTime()),"small dates are human");
 
-        var bigdate = VCO.Date.makeDate({year: 1000000});
+        var bigdate = TL.Date.makeDate({year: 1000000});
         assert.ok(!isNaN(bigdate.getTime()),"big dates are cosmological");
 
-        var cdate = VCO.Date.makeDate({year: 2014, display_date: "hello"});
+        var cdate = TL.Date.makeDate({year: 2014, display_date: "hello"});
         assert.equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')
 
-        var date = VCO.Date.makeDate({year: 75});
+        var date = TL.Date.makeDate({year: 75});
         assert.equal(date.getDisplayDate(), "75", "handle years in the first century CE correctly")
 
       });
 
-      QUnit.test("VCO.Date.parseDate", function(assert) {
-        var d = VCO.Date.parseDate('2014-08-20');
+      QUnit.test("TL.Date.parseDate", function(assert) {
+        var d = TL.Date.parseDate('2014-08-20');
         assert.equal(d.year,'2014','three part date gets year 2014');
         assert.equal(d.month,'08', 'three part date gets month 08');
         assert.equal(d.day,'20', 'three part date gets day 20');
 
-        var d = VCO.Date.parseDate('2014-08');
+        var d = TL.Date.parseDate('2014-08');
         assert.equal(d.year,'2014','two part date gets year 2014');
         assert.equal(d.month,'08','two part date gets month 08');
         assert.ok(!(d.day), 'two-part date has no day');
 
-        var d = VCO.Date.parseDate('2014');
+        var d = TL.Date.parseDate('2014');
         assert.equal(d.year,'2014','year-only date gets 2014');
         assert.ok(!(d.month), 'year only date has no month');
         assert.ok(!(d.day), 'year only date has no day');
 
-        var d = VCO.Date.parseDate('-6');
+        var d = TL.Date.parseDate('-6');
         assert.equal(d.year,'-6','year-only date gets -6 (BC ok)');
         assert.ok(!(d.month), 'year only date has no month');
         assert.ok(!(d.day), 'year only date has no day');
@@ -253,17 +253,17 @@
 
       });
 
-      QUnit.test("VCO.Date.findBestFormat", function(assert) {
-        var date = new VCO.Date({'year': 1975, month: 7})
+      QUnit.test("TL.Date.findBestFormat", function(assert) {
+        var date = new TL.Date({'year': 1975, month: 7})
         assert.equal(date.findBestFormat(),"month","Expect a format key")
         assert.equal(date.findBestFormat(true),"month_short","Expect a different format key for short (legacy)")
         assert.equal(date.findBestFormat('short'),"month_short","Expect a different format key for short (explicit)")
 
       });
 
-      QUnit.test("VCO.Date.floor", function(assert) {
-        throws(function(assert) { VCO.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
-          var d = VCO.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
+      QUnit.test("TL.Date.floor", function(assert) {
+        throws(function(assert) { TL.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
+          var d = TL.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
           var floored = d.floor('millisecond');
           var date_obj = floored.data.date_obj;
           assert.ok(date_parts_match(d,floored,['year','month','date','hours','minutes','seconds','milliseconds']), 'millisecond rounding doesnt change others')
@@ -326,11 +326,11 @@
           var date_obj = floored.data.date_obj;
           assert.equal(date_obj.getYear(),100, "Should round to 2000 " + floored)
 
-          var early_ce = VCO.Date.makeDate(-59149708181438); // 8/14/95 (90 not 1995)
+          var early_ce = TL.Date.makeDate(-59149708181438); // 8/14/95 (90 not 1995)
           var floored = early_ce.floor('decade');
           assert.equal(floored.getTime(),-59326970400000,'Early floored dates should not go into the 20th Century')
 
-          var age_scale = VCO.Date.makeDate({year: 1500000});
+          var age_scale = TL.Date.makeDate({year: 1500000});
           throws(function(assert) {
             age_scale.floor('year');
           },/invalid scale/,'year not valid scale for cosmo');
@@ -338,35 +338,35 @@
 
       });
 
-      QUnit.test("VCO.Date date formatting", function(assert) {
-        var msgs = VCO.Language.default;
-        var d = VCO.Date.makeDate({year: '2014', month: '1', day: '1' })
+      QUnit.test("TL.Date date formatting", function(assert) {
+        var msgs = TL.Language.default;
+        var d = TL.Date.makeDate({year: '2014', month: '1', day: '1' })
         assert.equal(d.getDisplayDate(msgs),"January 1, 2014")
-        var d = VCO.Date.makeDate({year: '2014'})
+        var d = TL.Date.makeDate({year: '2014'})
         assert.equal(d.getDisplayDate(msgs),"2014")
       });
 
 
-      QUnit.module("VCO.DateUtil tests",{});
-      QUnit.test("VCO.DateUtil", function(assert) {
-        var a = {start_date: VCO.Date.makeDate({year: 1999})} // will break when we have start dates
-        var b = {start_date: VCO.Date.makeDate({year: 2000})}
-        var c = {start_date: VCO.Date.makeDate({year: 2001})}
+      QUnit.module("TL.DateUtil tests",{});
+      QUnit.test("TL.DateUtil", function(assert) {
+        var a = {start_date: TL.Date.makeDate({year: 1999})} // will break when we have start dates
+        var b = {start_date: TL.Date.makeDate({year: 2000})}
+        var c = {start_date: TL.Date.makeDate({year: 2001})}
 
         var ary = [c,b,a]
-        VCO.DateUtil.sortByDate(ary);
+        TL.DateUtil.sortByDate(ary);
         assert.equal(ary[0],a,"A should sort first")
         assert.equal(ary[1],b,"B should sort second")
         assert.equal(ary[2],c,"C should sort third")
 
         ary = [b,a,c];
-        VCO.DateUtil.sortByDate(ary);
+        TL.DateUtil.sortByDate(ary);
         assert.equal(ary[0],a,"A should sort first")
         assert.equal(ary[1],b,"B should sort second")
         assert.equal(ary[2],c,"C should sort third")
 
         ary = [b,c,a]
-        VCO.DateUtil.sortByDate(ary);
+        TL.DateUtil.sortByDate(ary);
         assert.equal(ary[0],a,"A should sort first")
         assert.equal(ary[1],b,"B should sort second")
         assert.equal(ary[2],c,"C should sort third")
@@ -374,11 +374,11 @@
 
       })
 
-      QUnit.test("VCO.DateUtil.parseTime", function(assert){
+      QUnit.test("TL.DateUtil.parseTime", function(assert){
 
         var test_date = function(time_str,expected_hour, expected_minute, expected_second, expected_milli) {
           try {
-            var parsed = VCO.DateUtil.parseTime(time_str);
+            var parsed = TL.DateUtil.parseTime(time_str);
             assert.equal(parsed.hour,expected_hour,time_str + " expected hour " + expected_hour);
             assert.equal(parsed.minute,expected_minute,time_str + " expected minute " + expected_minute);
             assert.equal(parsed.second,expected_second,time_str + " expected second " + expected_second);
@@ -406,36 +406,36 @@
         test_date("1233", 12, 33, null, null);
         test_date("12:33 a.m.", 0, 33, null, null);
         test_date("0033", 0, 33, null, null);
-        throws(function(assert) {VCO.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
-        throws(function(assert) {VCO.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
+        throws(function(assert) {TL.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
+        throws(function(assert) {TL.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
 
 
 
       });
 
-      QUnit.module("VCO.Language tests",{});
-      QUnit.test("VCO.Language",function(assert) {
-        var msgs = new VCO.Language();
+      QUnit.module("TL.Language tests",{});
+      QUnit.test("TL.Language",function(assert) {
+        var msgs = new TL.Language();
         assert.equal(msgs.name,"English","English is default");
         assert.equal(msgs.lang,"en","en is default");
         assert.equal(msgs._('loading'),"Loading","get a message");
         assert.equal(msgs._('foobar'),"foobar","invalid keys should pass through");
 
-        var msgs = VCO.Language.fallback;
+        var msgs = TL.Language.fallback;
         assert.equal(msgs.name,"English","English is default");
         assert.equal(msgs.lang,"en","en is default");
         assert.equal(msgs._('loading'),"Loading","get a message");
         assert.equal(msgs._('foobar'),"foobar","invalid keys should pass through");
 
-        assert.equal(VCO.Language.formatNumber(18.54,'%.1f and some other stuff'), "18.5 and some other stuff", "check rounding and replacement")
+        assert.equal(TL.Language.formatNumber(18.54,'%.1f and some other stuff'), "18.5 and some other stuff", "check rounding and replacement")
 
-        assert.equal(VCO.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
+        assert.equal(TL.Language.formatNumber(18.54,'a literal display year'), 'a literal display year', "pass through literals as display dates")
 
         assert.equal(msgs.formatBigYear({'year': 20000}, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat")
       })
 
-      QUnit.test( "VCO.Language test non-english", function(assert) {
-          var msgs = new VCO.Language({language: 'pl'});
+      QUnit.test( "TL.Language test non-english", function(assert) {
+          var msgs = new TL.Language({language: 'pl'});
           assert.equal(msgs.name,"English","English is default and polish doesn't have one");
           assert.equal(msgs.lang,"pl","should have gotten 'pl'");
           assert.equal(msgs._('loading'),"\u0141adowanie","get a message for loading");
@@ -443,8 +443,8 @@
       });
 
 
-      QUnit.test("VCO.Language date formatting", function(assert) {
-        var msgs = VCO.Language.fallback;
+      QUnit.test("TL.Language date formatting", function(assert) {
+        var msgs = TL.Language.fallback;
         var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
         assert.equal(msgs.formatDate(d,'d'),'7','short day');
         assert.equal(msgs.formatDate(d,'dd'),'07','padded day');
@@ -477,46 +477,46 @@
 
       // QUnit.test("TimeScale._assessGroups", function(assert){
       //   var slides = [{group: 'alice'}, { group: 'bob'}, {group: 'alice'}, {group: 'carol'}];
-      //   var groups = VCO.TimeScale._assessGroups(slides);
+      //   var groups = TL.TimeScale._assessGroups(slides);
       //   assert.equal(groups.length,3);
       // });
 
 
       function asyncJSON(url) {
-            var data = VCO.ajax({
+            var data = TL.ajax({
                 url: url,
                 async: false
             });
             return JSON.parse(data.responseText);
       }
 
-      QUnit.module("VCO.ConfigFactory tests",{});
+      QUnit.module("TL.ConfigFactory tests",{});
 
-      QUnit.test("VCO.ConfigFactory", function(assert) {
-        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
+      QUnit.test("TL.ConfigFactory", function(assert) {
+        var data = TL.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
         assert.equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
         assert.ok(data.title, "There should be a title.")
-        var data = VCO.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
+        var data = TL.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
         assert.equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
         assert.ok(data.title, "There should be a title.")
         assert.equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
         assert.equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
       });
 
-      QUnit.test("VCO.ConfigFactory.parseGoogleSpreadsheetURL", function(assert) {
+      QUnit.test("TL.ConfigFactory.parseGoogleSpreadsheetURL", function(assert) {
         var key = '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI';
-        var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(key);
+        var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(key);
         assert.equal(key, parts.key, "Bare sheet ID should come back in key")
 
         var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml'
         var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
-        var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(url);
+        var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(url);
         assert.equal(key, parts.key, "new-ish url format should get the right key")
 
         var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml?gid=2066744085'
         var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
         var worksheet = '2066744085';
-        var parts = VCO.ConfigFactory.parseGoogleSpreadsheetURL(url);
+        var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(url);
         assert.equal(key, parts.key, "new-ish url format should get the right key")
         assert.equal(worksheet, parts.worksheet, "new-ish url format should get the right worksheet")
 
@@ -528,7 +528,7 @@
       QUnit.test("TimelineConfig for user-interface", function(assert) {
 
         var done = assert.async();
-        VCO.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json',function(config){
+        TL.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json',function(config){
             assert.ok((typeof(config) != undefined) ,"config loaded")
             console.log(config," is null? ")
             window.stash = config;
@@ -550,9 +550,9 @@
 
       QUnit.test("TimeScale", function(assert) {
           var done = assert.async();
-          VCO.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json',function(config){
+          TL.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json',function(config){
               assert.ok(config,"test data loaded");
-              var timescale = new VCO.TimeScale(config,{display_width: 2200, screen_multiplier: 3});
+              var timescale = new TL.TimeScale(config,{display_width: 2200, screen_multiplier: 3});
               assert.equal(timescale.getMinorScale(),'year',"timescale should be years");
               assert.ok(timescale.getTicks().major.ticks.length > 0,"should be some major ticks")
               assert.ok(timescale.getTicks().minor.ticks.length > 0,"should be some minor ticks")
@@ -569,8 +569,8 @@
 
       QUnit.test("TimeScale", function(assert) {
           var done = assert.async();
-          VCO.ConfigFactory.makeConfig('/examples/twain/marktwain.json',function(config){
-              var timescale = new VCO.TimeScale(config);
+          TL.ConfigFactory.makeConfig('/examples/twain/marktwain.json',function(config){
+              var timescale = new TL.TimeScale(config);
               assert.equal(timescale.getNumberOfRows(),5, "expect 5 rows");
               assert.equal(timescale._positions.length,config.events.length,"There should be the same number of positions (" + timescale._positions.length + ") as slides ("+config.events.length+")")
               var row_check = new Array(timescale.getNumberOfRows());
@@ -600,7 +600,7 @@
       })
 
       QUnit.test("TimeScale max rows", function(assert) {
-        var config = new VCO.TimelineConfig({ scale: 'cosmological',
+        var config = new TL.TimelineConfig({ scale: 'cosmological',
           events:
           [
             {start_date: {year: 1}, end_date: {year: 1000}},
@@ -611,9 +611,9 @@
             {start_date: {year: 500}, end_date: {year: 4000}},
           ]
         })
-        var timescale = new VCO.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 4});
+        var timescale = new TL.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 4});
         assert.equal(timescale.getNumberOfRows(),4,"Max rows 4 should be honored.")
-        var timescale = new VCO.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 3});
+        var timescale = new TL.TimeScale(config,{display_width: 600, screen_multiplier: 3, max_rows: 3});
         assert.equal(timescale.getNumberOfRows(),3,"Max rows 3 should be honored.")
       });
 

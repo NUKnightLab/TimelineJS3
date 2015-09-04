@@ -59,12 +59,12 @@
         //      @opt: options to pass to lessc
         "lessc": [
             {
-                "src": "source/less/VCO.Timeline.less",
+                "src": "source/less/TL.Timeline.less",
                 "dst": "build/css/timeline.css",
                 "opt": "--clean-css=--s0"
             },
             {
-                "src": "source/less/themes/dark/VCO.Theme.Dark.less",
+                "src": "source/less/themes/dark/TL.Theme.Dark.less",
                 "dst": "build/css/themes/timeline.theme.dark.css",
                 "opt": "--clean-css=--s0"
             },
@@ -82,7 +82,7 @@
         //
         "process": [
             {
-                "src": "source/js/VCO.Timeline.js",
+                "src": "source/js/TL.Timeline.js",
                 "dst": "build/js/timeline.js"
             },
             {

@@ -17,7 +17,7 @@
       // Optionally add a third item in the tuple for a more verbose 
       // description of what is being tested.
       MEDIA_TYPE_TESTS = [
-        // VCO.Media.YouTube
+        // TL.Media.YouTube
         ['https://www.youtube.com/watch?v=pi2v1m6gmD8&t=5m21s', 'youtube', 'YouTube with time stamp'],
         ['//www.youtube.com/watch?v=pi2v1m6gmD8', 'youtube', 'YouTube with no protocol'],
         ['youtu.be/pi2v1m6gmD8', 'youtube', 'YouTu.be short url'],
@@ -63,7 +63,7 @@
               expected_type = MEDIA_TYPE_TESTS[i][1];
           
           var expectation = MEDIA_TYPE_TESTS[i][2] || "Expected " + expected_type
-          var mediatype = VCO.MediaType({url: url});
+          var mediatype = TL.MediaType({url: url});
           equal(mediatype.type,expected_type,"Expected " + expected_type);
         }
 
@@ -74,7 +74,7 @@
       test("original URL tests", function() {
 
               function mediaTypeEqual(url, expected) {
-                var d = VCO.MediaType({'url': url})
+                var d = TL.MediaType({'url': url})
                 return equal(d.type,expected,expected);
               }
 

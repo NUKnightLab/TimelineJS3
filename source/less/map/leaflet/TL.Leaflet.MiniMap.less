@@ -1,0 +1,70 @@
+.tl-map {
+	.leaflet-container {
+		.leaflet-bottom {
+			.leaflet-control-minimap {
+				margin-left:10px;
+				margin-bottom:25px;
+			}
+		}
+		.leaflet-top {
+			.leaflet-control-minimap {
+				margin-left:10px;
+				margin-top:10px;
+			}
+		}
+		.leaflet-control-minimap {
+		    border:solid #FFF 2px;
+		    .box-shadow(1px 1px 7px rgba(0,0,0,.30));
+		    .border-radius(3px);
+		    //background: #f8f8f9;
+			background-color: darken(@color-background,30);
+		    transition: all .2s;
+			border: 2px solid darken(@color-background,30);
+		}
+
+		.leaflet-control-minimap a {
+		    background-color: darken(@color-background,30);
+		    //background-repeat: no-repeat;
+		    z-index: 99999;
+		    transition: all .2s;
+		    border-radius: 3px 0px 0px 0px;
+		}
+
+		.leaflet-control-minimap a.minimized {
+		    -webkit-transform: rotate(180deg);
+		    transform: rotate(180deg);
+		   // border-radius: 0px;
+		}
+
+		.leaflet-control-minimap-toggle-display {
+		    //background-image: url("images/toggle.png");
+		    height: 19px;
+		    width: 19px;
+		    position: absolute;
+		    bottom: 0;
+		    right: 0; 
+			border: 1px solid darken(@color-background,30);
+			background-color:darken(@color-background,50);
+		}
+		.leaflet-control-minimap-toggle-display:after {
+			font-family: 'tl-icons';
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			line-height: 1;
+		
+			/* Better Font Rendering =========== */
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		
+			//color: darken(@color-background,50);
+			color:#FFF;
+			font-size: 20px;
+			content: "\e647";
+		}
+	}
+}
+
+

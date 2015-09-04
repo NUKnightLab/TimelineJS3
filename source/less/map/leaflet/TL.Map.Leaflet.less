@@ -1,0 +1,213 @@
+/* Requires Variables.less
+================================================== */
+.tl-map {
+	/*
+	.leaflet-zoom-anim .leaflet-zoom-animated {
+		-webkit-transition: -webkit-transform 0.8s cubic-bezier(0.25,0.1,0.25,0.75);
+		   -moz-transition: -moz-transform 0.8s cubic-bezier(0.25,0.1,0.25,0.75);
+		     -o-transition: -o-transform 0.8s cubic-bezier(0.25,0.1,0.25,0.75);
+		        transition: transform 0.8s cubic-bezier(0.25,0.1,0.25,0.75);
+	}
+	*/
+	/*
+	.leaflet-zoom-anim .leaflet-zoom-animated {
+		-webkit-transition: -webkit-transform 1s cubic-bezier(1, 0, 0, 1);
+		   -moz-transition: -moz-transform 1s cubic-bezier(1, 0, 0, 1);
+		     -o-transition: -o-transform 1s cubic-bezier(1, 0, 0, 1);
+		        transition: transform 1s cubic-bezier(1, 0, 0, 1); 
+	}
+	*/
+	
+	.leaflet-container {
+		.leaflet-control-attribution {
+			color:#999;
+			margin-bottom:3px !important;
+			a {
+				color: #666;
+			}
+			.tl-knightlab-brand, a.tl-knightlab-brand {
+				margin-left:5px;
+				//color:@color-theme;
+				text-shadow: 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 5px #FFF;
+				font-size: 14px;
+				font-weight:bold;
+				span {
+					color:@color-theme;
+					display:inline-block;
+					transform:rotate(45deg);
+					-ms-transform:rotate(45deg); /* IE 9 */
+					-webkit-transform:rotate(45deg); /* Opera, Chrome, and Safari */
+				}
+				&:hover {
+					text-decoration:none;
+					color:lighten(@color-theme, 15);
+					//text-shadow: 0px 0px 0px #000;
+				}
+			}
+		}
+		img.leaflet-image-layer {
+		    max-width: none !important;
+		}
+
+		
+	}
+	.leaflet-overlay-pane {
+		z-index:auto;
+		.leaflet-image-layer {
+			z-index:-1;
+		}
+		svg {
+			z-index:4;
+		}
+	}
+	.leaflet-fade-anim .leaflet-tile,
+	.leaflet-fade-anim .leaflet-popup {
+		opacity: 0;
+		-webkit-transition: opacity 0.5s linear;
+		   -moz-transition: opacity 0.5s linear;
+		     -o-transition: opacity 0.5s linear;
+		        transition: opacity 0.5s linear;
+	}
+	.leaflet-fade-anim .leaflet-tile-loaded,
+	.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+		opacity: 1;
+	}
+	.leaflet-zoom-anim .leaflet-zoom-animated {
+		-webkit-transition: -webkit-transform 1s cubic-bezier(0.75, 0.1, 0.2, 1);
+		   -moz-transition: -moz-transform 1s cubic-bezier(0.75, 0.1, 0.2, 1);
+		     -o-transition: -o-transform 1s cubic-bezier(0.75, 0.1, 0.2, 1);
+		        transition: transform 1s cubic-bezier(0.75, 0.1, 0.2, 1); 
+		-webkit-transform: translateZ(0);
+		-webkit-perspective: 1000;
+		-webkit-backface-visibility: hidden;
+	}
+	/*
+	.leaflet-zoom-anim .leaflet-zoom-animated {
+		-webkit-transition: none;
+		   -moz-transition: none;
+		     -o-transition: none;
+		        transition: none; 
+	}
+	*/
+	.leaflet-bottom {
+		bottom: 0;
+	}
+	.leaflet-right {
+		left: 0;
+		right:auto;
+	}
+	.leaflet-container .leaflet-control-attribution{
+		background-color:transparent;
+		box-shadow:none;
+		margin:0;
+		border:none;
+		font-size: 10px;
+	}
+	
+	.leaflet-container {
+		//background-color: @color-foreground;
+		background-color: transparent;
+		//background: @color-foreground url("cartographer.jpg") repeat;
+		
+	}
+	
+	.leaflet-popup-content-wrapper {
+		display:none;
+		.border-radius(5px);
+		border: 1px solid darken(@ui-background-color, 15);
+		.box-shadow();
+		.box-shadow(1px 1px 2px rgba(0,0,0,.30));
+		//background: @color-foreground;
+		//.translucent-background(@color-foreground, 0.75);
+		.leaflet-popup-content {
+			margin:7px;
+			h4 {
+				margin:0;
+				font-weight:normal;
+				//color:@color-background;
+			}
+		}
+	}
+	.leaflet-popup-tip-container {
+		margin: 0 auto;
+		width: 40px;
+		height: 20px;
+		position: relative;
+		overflow: hidden;
+		display:none;
+	}
+	
+	.leaflet-bar {
+		.box-shadow(none);
+	}
+	
+	
+
+}
+
+/* Landscape
+================================================== */
+.tl-layout-landscape {
+	.tl-map {
+		.leaflet-bottom {
+			bottom: 0;
+			//top: auto;
+		}
+		.leaflet-right {
+			left: 0;
+			right:auto;
+		}
+		.leaflet-top {
+			bottom: 0;
+			top: 28px;
+		}
+		.leaflet-left {
+			//left: 0;
+			//right:auto;
+		}
+	}
+	
+}
+.tl-layout-portrait {
+	.leaflet-control-container {
+		
+	}
+	.leaflet-bottom {
+		//position:relative;
+		bottom: 0;
+		top: auto;
+	}
+}
+/* Mobile, iPhone and skinny
+================================================== */
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	
+}
+.tl-mobile.tl-skinny {
+	.leaflet-control-zoom, .leaflet-control-layers {
+		display:none;
+	}
+	.leaflet-container {
+		.leaflet-control-attribution {
+			font-size:8px;
+			.tl-knightlab-brand, a.tl-knightlab-brand {
+				font-size:8px;
+			}
+		}
+	}
+}
+.tl-skinny {
+	
+	.leaflet-container .leaflet-control-attribution{
+		background-color:transparent;
+		box-shadow:none;
+		margin:0;
+		border:none;
+		font-size:8px;
+		.tl-knightlab-brand, a.tl-knightlab-brand {
+			font-size:12px;
+		}
+		//font-size: 6px !important;
+	}
+}
+

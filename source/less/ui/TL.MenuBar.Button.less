@@ -1,0 +1,71 @@
+/* MenuBar Button
+================================================== */
+
+.tl-menubar-button {
+	//border-left: 1px solid darken(@color-background,10);
+	font-size: 18px;
+	line-height:18px;
+	//padding: 6px 12px 6px 12px;
+	//padding:12px;
+	background-color:fadeout(@ui-background-color, 10%);
+	cursor:pointer;
+	padding: 6px 12px 6px 12px;
+	display:inline-block;
+	display:block;
+	//color:@color-text;
+	color:darken(@marker-color,15);
+	[class^="tl-icon-"], [class*=" tl-icon-"] {
+		
+	}
+	
+	&.tl-menubar-button-inactive {
+		opacity:0.33;
+	}
+	&:hover {
+		background:@color-foreground;
+		color:@color-background;
+		&.tl-menubar-button-inactive {
+			color:darken(@marker-color,15);
+			background-color:fadeout(@ui-background-color, 10%);
+		}
+	}
+}
+
+.tl-mobile {
+	.tl-menubar-button {
+		display:block;
+		&:hover {
+			//background-color:#FFF;
+			background-color:fadeout(@ui-background-color, 33%);
+			color:@color-text;
+		}
+		&:active {
+			background:@color-theme;
+			color:@color-background;
+		}
+	}
+}
+
+
+@keyframes invertToBlack {
+	from {
+		background-color:#FFF;
+	}
+	to {
+		background-color:#000;
+	}
+}
+@-webkit-keyframes invertToBlack {
+	from {background:#FFF;}
+	to {background:#000;}
+}
+@keyframes invertToWhite {
+	from {background-color:#000;}
+	to {background-color:#FFF;}
+}
+@-webkit-keyframes invertToWhite{
+	from {background:#000;}
+	to {background:#FFF;}
+}
+
+
