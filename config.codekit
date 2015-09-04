@@ -8487,210 +8487,210 @@
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0
 		},
-	"\/source\/js\/animation\/VCO.Animate.js": {
+	"\/source\/js\/animation\/TL.Animate.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/animation\/VCO.Animate.js",
-		"outputAbbreviatedPath": "\/source\/js\/animation\/min\/VCO.Animate-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/animation\/TL.Animate.js",
+		"outputAbbreviatedPath": "\/source\/js\/animation\/min\/TL.Animate-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/animation\/VCO.Ease.js": {
+	"\/source\/js\/animation\/TL.Ease.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/animation\/VCO.Ease.js",
-		"outputAbbreviatedPath": "\/source\/js\/animation\/min\/VCO.Ease-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/animation\/TL.Ease.js",
+		"outputAbbreviatedPath": "\/source\/js\/animation\/min\/TL.Ease-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.Browser.js": {
+	"\/source\/js\/core\/TL.Browser.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.Browser.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.Browser-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.Browser.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.Browser-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.Class.js": {
+	"\/source\/js\/core\/TL.Class.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.Class.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.Class-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.Class.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.Class-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.ConfigFactory.js": {
+	"\/source\/js\/core\/TL.ConfigFactory.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.ConfigFactory.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.ConfigFactory-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.ConfigFactory.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.ConfigFactory-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.Events.js": {
+	"\/source\/js\/core\/TL.Events.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.Events.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.Events-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.Events.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.Events-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.js": {
+	"\/source\/js\/core\/TL.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.Load.js": {
+	"\/source\/js\/core\/TL.Load.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.Load.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.Load-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.Load.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.Load-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.TimelineConfig.js": {
+	"\/source\/js\/core\/TL.TimelineConfig.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.TimelineConfig.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.TimelineConfig-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.TimelineConfig.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.TimelineConfig-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/core\/VCO.Util.js": {
+	"\/source\/js\/core\/TL.Util.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/core\/VCO.Util.js",
-		"outputAbbreviatedPath": "\/source\/js\/core\/min\/VCO.Util-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/core\/TL.Util.js",
+		"outputAbbreviatedPath": "\/source\/js\/core\/min\/TL.Util-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/data\/VCO.Data.js": {
+	"\/source\/js\/data\/TL.Data.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/data\/VCO.Data.js",
-		"outputAbbreviatedPath": "\/source\/js\/data\/min\/VCO.Data-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/data\/TL.Data.js",
+		"outputAbbreviatedPath": "\/source\/js\/data\/min\/TL.Data-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/date\/VCO.Date.js": {
+	"\/source\/js\/date\/TL.Date.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.Date.js",
-		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.Date-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/date\/TL.Date.js",
+		"outputAbbreviatedPath": "\/source\/js\/date\/min\/TL.Date-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/date\/VCO.DateUtil.js": {
+	"\/source\/js\/date\/TL.DateUtil.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/date\/VCO.DateUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/date\/min\/VCO.DateUtil-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/date\/TL.DateUtil.js",
+		"outputAbbreviatedPath": "\/source\/js\/date\/min\/TL.DateUtil-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/dom\/VCO.Dom.js": {
+	"\/source\/js\/dom\/TL.Dom.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/dom\/VCO.Dom.js",
-		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/VCO.Dom-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/dom\/TL.Dom.js",
+		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/TL.Dom-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/dom\/VCO.DomEvent.js": {
+	"\/source\/js\/dom\/TL.DomEvent.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/dom\/VCO.DomEvent.js",
-		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/VCO.DomEvent-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/dom\/TL.DomEvent.js",
+		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/TL.DomEvent-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/dom\/VCO.DomMixins.js": {
+	"\/source\/js\/dom\/TL.DomMixins.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/dom\/VCO.DomMixins.js",
-		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/VCO.DomMixins-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/dom\/TL.DomMixins.js",
+		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/TL.DomMixins-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/dom\/VCO.DomUtil.js": {
+	"\/source\/js\/dom\/TL.DomUtil.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/dom\/VCO.DomUtil.js",
-		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/VCO.DomUtil-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/dom\/TL.DomUtil.js",
+		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/TL.DomUtil-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/dom\/VCO.Point.js": {
+	"\/source\/js\/dom\/TL.Point.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/dom\/VCO.Point.js",
-		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/VCO.Point-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/dom\/TL.Point.js",
+		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/TL.Point-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/dom\/VCO.StyleSheet.js": {
+	"\/source\/js\/dom\/TL.StyleSheet.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/dom\/VCO.StyleSheet.js",
-		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/VCO.StyleSheet-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/dom\/TL.StyleSheet.js",
+		"outputAbbreviatedPath": "\/source\/js\/dom\/min\/TL.StyleSheet-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -9422,23 +9422,23 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
-	"\/source\/js\/language\/VCO.I18NMixins.js": {
+	"\/source\/js\/language\/TL.I18NMixins.js": {
 		"fileType": 64,
 		"ignore": 1,
-		"ignoreWasSetByUser": 1,
-		"inputAbbreviatedPath": "\/source\/js\/language\/VCO.I18NMixins.js",
-		"outputAbbreviatedPath": "\/source\/js\/language\/min\/VCO.I18NMixins-min.js",
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/language\/TL.I18NMixins.js",
+		"outputAbbreviatedPath": "\/source\/js\/language\/min\/TL.I18NMixins-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/language\/VCO.Language.js": {
+	"\/source\/js\/language\/TL.Language.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/language\/VCO.Language.js",
-		"outputAbbreviatedPath": "\/source\/js\/language\/min\/VCO.Language-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/language\/TL.Language.js",
+		"outputAbbreviatedPath": "\/source\/js\/language\/min\/TL.Language-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -9455,447 +9455,447 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Blockquote.js": {
+	"\/source\/js\/media\/TL.Media.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Blockquote.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Blockquote-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/TL.Media.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/min\/TL.Media-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.DailyMotion.js": {
+	"\/source\/js\/media\/TL.MediaType.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.DailyMotion.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.DailyMotion-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/TL.MediaType.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/min\/TL.MediaType-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.DocumentCloud.js": {
+	"\/source\/js\/media\/types\/TL.Media.Blockquote.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.DocumentCloud.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.DocumentCloud-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Blockquote.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Blockquote-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Flickr.js": {
+	"\/source\/js\/media\/types\/TL.Media.DailyMotion.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Flickr.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Flickr-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.DailyMotion.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.DailyMotion-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.GoogleDoc.js": {
+	"\/source\/js\/media\/types\/TL.Media.DocumentCloud.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.GoogleDoc.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.GoogleDoc-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.DocumentCloud.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.DocumentCloud-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.GoogleMap.js": {
+	"\/source\/js\/media\/types\/TL.Media.Flickr.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.GoogleMap.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.GoogleMap-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Flickr.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Flickr-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.GooglePlus.js": {
+	"\/source\/js\/media\/types\/TL.Media.GoogleDoc.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.GooglePlus.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.GooglePlus-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.GoogleDoc.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.GoogleDoc-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.IFrame.js": {
+	"\/source\/js\/media\/types\/TL.Media.GoogleMap.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.IFrame.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.IFrame-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.GoogleMap.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.GoogleMap-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Image.js": {
+	"\/source\/js\/media\/types\/TL.Media.GooglePlus.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Image.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Image-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.GooglePlus.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.GooglePlus-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Instagram.js": {
+	"\/source\/js\/media\/types\/TL.Media.IFrame.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Instagram.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Instagram-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.IFrame.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.IFrame-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Profile.js": {
+	"\/source\/js\/media\/types\/TL.Media.Image.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Profile.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Profile-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Image.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Image-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Slider.js": {
+	"\/source\/js\/media\/types\/TL.Media.Instagram.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Slider.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Slider-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Instagram.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Instagram-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.SoundCloud.js": {
+	"\/source\/js\/media\/types\/TL.Media.Profile.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.SoundCloud.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.SoundCloud-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Profile.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Profile-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Spotify.js": {
+	"\/source\/js\/media\/types\/TL.Media.Slider.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Spotify.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Spotify-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Slider.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Slider-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Storify.js": {
+	"\/source\/js\/media\/types\/TL.Media.SoundCloud.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Storify.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Storify-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.SoundCloud.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.SoundCloud-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Text.js": {
+	"\/source\/js\/media\/types\/TL.Media.Spotify.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Text.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Text-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Spotify.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Spotify-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Twitter.js": {
+	"\/source\/js\/media\/types\/TL.Media.Storify.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Twitter.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Twitter-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Storify.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Storify-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.TwitterEmbed.js": {
+	"\/source\/js\/media\/types\/TL.Media.Text.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Text.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Text-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/media\/types\/TL.Media.Twitter.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Twitter.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Twitter-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/media\/types\/TL.Media.TwitterEmbed.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.TwitterEmbed.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.TwitterEmbed-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.TwitterEmbed.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.TwitterEmbed-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Vimeo.js": {
+	"\/source\/js\/media\/types\/TL.Media.Vimeo.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Vimeo.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Vimeo-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Vimeo.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Vimeo-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Vine.js": {
+	"\/source\/js\/media\/types\/TL.Media.Vine.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Vine.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Vine-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Vine.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Vine-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Website.js": {
+	"\/source\/js\/media\/types\/TL.Media.Website.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Website.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Website-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Website.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Website-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.Wikipedia.js": {
+	"\/source\/js\/media\/types\/TL.Media.Wikipedia.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.Wikipedia.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.Wikipedia-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.Wikipedia.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.Wikipedia-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/types\/VCO.Media.YouTube.js": {
+	"\/source\/js\/media\/types\/TL.Media.YouTube.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/types\/VCO.Media.YouTube.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/VCO.Media.YouTube-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/media\/types\/TL.Media.YouTube.js",
+		"outputAbbreviatedPath": "\/source\/js\/media\/types\/min\/TL.Media.YouTube-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/VCO.Media.js": {
+	"\/source\/js\/slider\/TL.Slide.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/VCO.Media.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/min\/VCO.Media-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/slider\/TL.Slide.js",
+		"outputAbbreviatedPath": "\/source\/js\/slider\/min\/TL.Slide-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/media\/VCO.MediaType.js": {
+	"\/source\/js\/slider\/TL.SlideNav.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/media\/VCO.MediaType.js",
-		"outputAbbreviatedPath": "\/source\/js\/media\/min\/VCO.MediaType-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/slider\/TL.SlideNav.js",
+		"outputAbbreviatedPath": "\/source\/js\/slider\/min\/TL.SlideNav-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/slider\/VCO.Slide.js": {
+	"\/source\/js\/slider\/TL.StorySlider.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/slider\/VCO.Slide.js",
-		"outputAbbreviatedPath": "\/source\/js\/slider\/min\/VCO.Slide-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/slider\/TL.StorySlider.js",
+		"outputAbbreviatedPath": "\/source\/js\/slider\/min\/TL.StorySlider-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/slider\/VCO.SlideNav.js": {
+	"\/source\/js\/timenav\/TL.AxisHelper.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/slider\/VCO.SlideNav.js",
-		"outputAbbreviatedPath": "\/source\/js\/slider\/min\/VCO.SlideNav-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/TL.AxisHelper.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/TL.AxisHelper-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/slider\/VCO.StorySlider.js": {
+	"\/source\/js\/timenav\/TL.TimeAxis.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/slider\/VCO.StorySlider.js",
-		"outputAbbreviatedPath": "\/source\/js\/slider\/min\/VCO.StorySlider-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/TL.TimeAxis.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/TL.TimeAxis-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.AxisHelper.js": {
+	"\/source\/js\/timenav\/TL.TimeGroup.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.AxisHelper.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.AxisHelper-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/TL.TimeGroup.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/TL.TimeGroup-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.TimeAxis.js": {
+	"\/source\/js\/timenav\/TL.TimeMarker.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeAxis.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeAxis-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/TL.TimeMarker.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/TL.TimeMarker-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.TimeGroup.js": {
+	"\/source\/js\/timenav\/TL.TimeNav.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeGroup.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeGroup-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/TL.TimeNav.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/TL.TimeNav-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.TimeMarker.js": {
+	"\/source\/js\/timenav\/TL.TimeScale.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeMarker.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeMarker-min.js",
+		"inputAbbreviatedPath": "\/source\/js\/timenav\/TL.TimeScale.js",
+		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/TL.TimeScale-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/source\/js\/timenav\/VCO.TimeNav.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeNav.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeNav-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/timenav\/VCO.TimeScale.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/timenav\/VCO.TimeScale.js",
-		"outputAbbreviatedPath": "\/source\/js\/timenav\/min\/VCO.TimeScale-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/ui\/VCO.Draggable.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/ui\/VCO.Draggable.js",
-		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/VCO.Draggable-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/ui\/VCO.MenuBar.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/ui\/VCO.MenuBar.js",
-		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/VCO.MenuBar-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/ui\/VCO.Message.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/ui\/VCO.Message.js",
-		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/VCO.Message-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/ui\/VCO.Swipable.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/ui\/VCO.Swipable.js",
-		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/VCO.Swipable-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/source\/js\/VCO.Timeline.js": {
+	"\/source\/js\/TL.Timeline.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 1,
-		"inputAbbreviatedPath": "\/source\/js\/VCO.Timeline.js",
+		"inputAbbreviatedPath": "\/source\/js\/TL.Timeline.js",
 		"outputAbbreviatedPath": "\/compiled\/js\/timeline.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 0
 		},
-	"\/source\/js\/VCO.Timeline.Min.js": {
+	"\/source\/js\/TL.Timeline.Min.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/js\/VCO.Timeline.Min.js",
+		"inputAbbreviatedPath": "\/source\/js\/TL.Timeline.Min.js",
 		"outputAbbreviatedPath": "\/compiled\/js\/timeline-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/source\/less\/animation\/VCO.Animate.less": {
+	"\/source\/js\/ui\/TL.Draggable.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/ui\/TL.Draggable.js",
+		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/TL.Draggable-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/ui\/TL.MenuBar.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/ui\/TL.MenuBar.js",
+		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/TL.MenuBar-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/ui\/TL.Message.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/ui\/TL.Message.js",
+		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/TL.Message-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/js\/ui\/TL.Swipable.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/js\/ui\/TL.Swipable.js",
+		"outputAbbreviatedPath": "\/source\/js\/ui\/min\/TL.Swipable-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/source\/less\/animation\/TL.Animate.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -9903,8 +9903,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/animation\/VCO.Animate.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.Animate.css",
+		"inputAbbreviatedPath": "\/source\/less\/animation\/TL.Animate.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.Animate.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -9955,7 +9955,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/core\/VCO.less": {
+	"\/source\/less\/core\/TL.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -9963,8 +9963,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/core\/VCO.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.css",
+		"inputAbbreviatedPath": "\/source\/less\/core\/TL.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10415,7 +10415,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/leaflet\/VCO.Leaflet.IE.less": {
+	"\/source\/less\/map\/leaflet\/TL.Leaflet.IE.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10423,8 +10423,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/VCO.Leaflet.IE.less",
-		"outputAbbreviatedPath": "\/source\/less\/map\/css\/VCO.Leaflet.IE.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/TL.Leaflet.IE.less",
+		"outputAbbreviatedPath": "\/source\/less\/map\/css\/TL.Leaflet.IE.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10435,7 +10435,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/leaflet\/VCO.Leaflet.less": {
+	"\/source\/less\/map\/leaflet\/TL.Leaflet.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10443,8 +10443,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/VCO.Leaflet.less",
-		"outputAbbreviatedPath": "\/source\/less\/map\/css\/VCO.Leaflet.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/TL.Leaflet.less",
+		"outputAbbreviatedPath": "\/source\/less\/map\/css\/TL.Leaflet.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10455,7 +10455,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/leaflet\/VCO.Leaflet.Mapbox.less": {
+	"\/source\/less\/map\/leaflet\/TL.Leaflet.Mapbox.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10463,8 +10463,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/VCO.Leaflet.Mapbox.less",
-		"outputAbbreviatedPath": "\/source\/less\/map\/css\/VCO.Leaflet.Mapbox.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/TL.Leaflet.Mapbox.less",
+		"outputAbbreviatedPath": "\/source\/less\/map\/css\/TL.Leaflet.Mapbox.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10475,7 +10475,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/leaflet\/VCO.Leaflet.MiniMap.less": {
+	"\/source\/less\/map\/leaflet\/TL.Leaflet.MiniMap.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10483,8 +10483,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/VCO.Leaflet.MiniMap.less",
-		"outputAbbreviatedPath": "\/source\/less\/map\/css\/VCO.Leaflet.MiniMap.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/TL.Leaflet.MiniMap.less",
+		"outputAbbreviatedPath": "\/source\/less\/map\/css\/TL.Leaflet.MiniMap.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10495,7 +10495,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/leaflet\/VCO.Map.Leaflet.less": {
+	"\/source\/less\/map\/leaflet\/TL.Map.Leaflet.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10503,8 +10503,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/VCO.Map.Leaflet.less",
-		"outputAbbreviatedPath": "\/source\/less\/map\/css\/VCO.Map.Leaflet.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/leaflet\/TL.Map.Leaflet.less",
+		"outputAbbreviatedPath": "\/source\/less\/map\/css\/TL.Map.Leaflet.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10515,7 +10515,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/VCO.ImageMarker.less": {
+	"\/source\/less\/map\/TL.ImageMarker.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10523,8 +10523,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/VCO.ImageMarker.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.ImageMarker.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/TL.ImageMarker.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.ImageMarker.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10535,7 +10535,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/VCO.Map.less": {
+	"\/source\/less\/map\/TL.Map.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10543,8 +10543,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/VCO.Map.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.Map.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/TL.Map.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.Map.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10555,7 +10555,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/map\/VCO.MapMarker.less": {
+	"\/source\/less\/map\/TL.MapMarker.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10563,8 +10563,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/map\/VCO.MapMarker.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.MapMarker.css",
+		"inputAbbreviatedPath": "\/source\/less\/map\/TL.MapMarker.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.MapMarker.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10575,7 +10575,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Blockquote.less": {
+	"\/source\/less\/media\/TL.Media.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10583,8 +10583,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Blockquote.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Blockquote.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/TL.Media.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.Media.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10595,7 +10595,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Flickr.less": {
+	"\/source\/less\/media\/types\/TL.Media.Blockquote.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10603,8 +10603,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Flickr.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Flickr.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Blockquote.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Blockquote.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10615,7 +10615,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.IFrame.less": {
+	"\/source\/less\/media\/types\/TL.Media.Flickr.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10623,8 +10623,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.IFrame.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.IFrame.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Flickr.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Flickr.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10635,7 +10635,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Image.less": {
+	"\/source\/less\/media\/types\/TL.Media.IFrame.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10643,8 +10643,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Image.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Image.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.IFrame.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.IFrame.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10655,7 +10655,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Instagram.less": {
+	"\/source\/less\/media\/types\/TL.Media.Image.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10663,8 +10663,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Instagram.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Instagram.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Image.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Image.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10675,7 +10675,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Profile.less": {
+	"\/source\/less\/media\/types\/TL.Media.Instagram.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10683,8 +10683,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Profile.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Profile.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Instagram.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Instagram.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10695,7 +10695,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Text.less": {
+	"\/source\/less\/media\/types\/TL.Media.Profile.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10703,8 +10703,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Text.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Text.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Profile.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Profile.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10715,7 +10715,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Twitter.less": {
+	"\/source\/less\/media\/types\/TL.Media.Text.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10723,8 +10723,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Twitter.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Twitter.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Text.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Text.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10735,7 +10735,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Website.less": {
+	"\/source\/less\/media\/types\/TL.Media.Twitter.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10743,8 +10743,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Website.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Website.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Twitter.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Twitter.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10755,7 +10755,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.Wikipedia.less": {
+	"\/source\/less\/media\/types\/TL.Media.Website.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10763,8 +10763,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.Wikipedia.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.Wikipedia.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Website.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Website.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10775,7 +10775,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/types\/VCO.Media.YouTube.less": {
+	"\/source\/less\/media\/types\/TL.Media.Wikipedia.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10783,8 +10783,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/types\/VCO.Media.YouTube.less",
-		"outputAbbreviatedPath": "\/source\/less\/media\/css\/VCO.Media.YouTube.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.Wikipedia.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.Wikipedia.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10795,7 +10795,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/media\/VCO.Media.less": {
+	"\/source\/less\/media\/types\/TL.Media.YouTube.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10803,8 +10803,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/media\/VCO.Media.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.Media.css",
+		"inputAbbreviatedPath": "\/source\/less\/media\/types\/TL.Media.YouTube.less",
+		"outputAbbreviatedPath": "\/source\/less\/media\/css\/TL.Media.YouTube.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10815,7 +10815,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/slider\/VCO.Slide.less": {
+	"\/source\/less\/slider\/TL.Slide.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10823,8 +10823,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/slider\/VCO.Slide.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.Slide.css",
+		"inputAbbreviatedPath": "\/source\/less\/slider\/TL.Slide.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.Slide.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10835,7 +10835,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/slider\/VCO.SlideNav.less": {
+	"\/source\/less\/slider\/TL.SlideNav.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10843,8 +10843,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/slider\/VCO.SlideNav.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.SlideNav.css",
+		"inputAbbreviatedPath": "\/source\/less\/slider\/TL.SlideNav.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.SlideNav.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -10855,7 +10855,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/slider\/VCO.StorySlider.less": {
+	"\/source\/less\/slider\/TL.StorySlider.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10863,11 +10863,31 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/slider\/VCO.StorySlider.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.StorySlider.css",
+		"inputAbbreviatedPath": "\/source\/less\/slider\/TL.StorySlider.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.StorySlider.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/themes\/dark\/TL.Theme.Dark.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/themes\/dark\/TL.Theme.Dark.less",
+		"outputAbbreviatedPath": "\/compiled\/css\/themes\/timeline.theme.dark.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 1,
 		"relativeURLS": 0,
 		"shouldRunAutoprefixer": 0,
 		"shouldRunBless": 0,
@@ -10895,7 +10915,107 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/themes\/dark\/VCO.Theme.Dark.less": {
+	"\/source\/less\/timenav\/TL.TimeAxis.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/TL.TimeAxis.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.TimeAxis.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/timenav\/TL.TimeGroup.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/TL.TimeGroup.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.TimeGroup.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/timenav\/TL.TimeMarker.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/TL.TimeMarker.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.TimeMarker.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/timenav\/TL.TimeNav.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/timenav\/TL.TimeNav.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.TimeNav.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/TL.Timeline.Base.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/source\/less\/TL.Timeline.Base.less",
+		"outputAbbreviatedPath": "\/source\/css\/TL.Timeline.Base.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/source\/less\/TL.Timeline.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10903,91 +11023,11 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/themes\/dark\/VCO.Theme.Dark.less",
-		"outputAbbreviatedPath": "\/compiled\/css\/themes\/timeline.theme.dark.css",
+		"inputAbbreviatedPath": "\/source\/less\/TL.Timeline.less",
+		"outputAbbreviatedPath": "\/compiled\/css\/timeline.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 1,
-		"relativeURLS": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"strictImports": 0,
-		"strictMath": 0,
-		"strictUnits": 0
-		},
-	"\/source\/less\/timenav\/VCO.TimeAxis.less": {
-		"allowInsecureImports": 0,
-		"createSourceMap": 0,
-		"disableJavascript": 0,
-		"fileType": 1,
-		"ieCompatibility": 1,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeAxis.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeAxis.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"relativeURLS": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"strictImports": 0,
-		"strictMath": 0,
-		"strictUnits": 0
-		},
-	"\/source\/less\/timenav\/VCO.TimeGroup.less": {
-		"allowInsecureImports": 0,
-		"createSourceMap": 0,
-		"disableJavascript": 0,
-		"fileType": 1,
-		"ieCompatibility": 1,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeGroup.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeGroup.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"relativeURLS": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"strictImports": 0,
-		"strictMath": 0,
-		"strictUnits": 0
-		},
-	"\/source\/less\/timenav\/VCO.TimeMarker.less": {
-		"allowInsecureImports": 0,
-		"createSourceMap": 0,
-		"disableJavascript": 0,
-		"fileType": 1,
-		"ieCompatibility": 1,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeMarker.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeMarker.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"relativeURLS": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"strictImports": 0,
-		"strictMath": 0,
-		"strictUnits": 0
-		},
-	"\/source\/less\/timenav\/VCO.TimeNav.less": {
-		"allowInsecureImports": 0,
-		"createSourceMap": 0,
-		"disableJavascript": 0,
-		"fileType": 1,
-		"ieCompatibility": 1,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/timenav\/VCO.TimeNav.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.TimeNav.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
 		"relativeURLS": 0,
 		"shouldRunAutoprefixer": 0,
 		"shouldRunBless": 0,
@@ -11015,7 +11055,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/ui\/VCO.MenuBar.Button.less": {
+	"\/source\/less\/ui\/TL.MenuBar.Button.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -11023,8 +11063,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/ui\/VCO.MenuBar.Button.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.MenuBar.Button.css",
+		"inputAbbreviatedPath": "\/source\/less\/ui\/TL.MenuBar.Button.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.MenuBar.Button.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -11035,7 +11075,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/ui\/VCO.MenuBar.less": {
+	"\/source\/less\/ui\/TL.MenuBar.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -11043,8 +11083,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/ui\/VCO.MenuBar.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.MenuBar.css",
+		"inputAbbreviatedPath": "\/source\/less\/ui\/TL.MenuBar.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.MenuBar.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -11055,7 +11095,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/ui\/VCO.Message.less": {
+	"\/source\/less\/ui\/TL.Message.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -11063,8 +11103,8 @@
 		"ieCompatibility": 1,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/ui\/VCO.Message.less",
-		"outputAbbreviatedPath": "\/source\/less\/css\/VCO.Message.css",
+		"inputAbbreviatedPath": "\/source\/less\/ui\/TL.Message.less",
+		"outputAbbreviatedPath": "\/source\/less\/css\/TL.Message.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -11088,46 +11128,6 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
-		"relativeURLS": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"strictImports": 0,
-		"strictMath": 0,
-		"strictUnits": 0
-		},
-	"\/source\/less\/VCO.Timeline.Base.less": {
-		"allowInsecureImports": 0,
-		"createSourceMap": 0,
-		"disableJavascript": 0,
-		"fileType": 1,
-		"ieCompatibility": 1,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/VCO.Timeline.Base.less",
-		"outputAbbreviatedPath": "\/source\/css\/VCO.Timeline.Base.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"relativeURLS": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"strictImports": 0,
-		"strictMath": 0,
-		"strictUnits": 0
-		},
-	"\/source\/less\/VCO.Timeline.less": {
-		"allowInsecureImports": 0,
-		"createSourceMap": 0,
-		"disableJavascript": 0,
-		"fileType": 1,
-		"ieCompatibility": 1,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/VCO.Timeline.less",
-		"outputAbbreviatedPath": "\/compiled\/css\/timeline.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 1,
-		"outputStyle": 1,
 		"relativeURLS": 0,
 		"shouldRunAutoprefixer": 0,
 		"shouldRunBless": 0,

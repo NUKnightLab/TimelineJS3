@@ -33,7 +33,7 @@
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML elements-->
     <!--if lt IE 9
-    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='https://html5shim.googlecode.com/svn/trunk/html5.js')
     
     -->
   </head>
@@ -60,14 +60,14 @@
       
       function new_timeline(url) {
       	timeline = null; // TODO: actively 'destroy' an existing timeline?
-      	var json = VCO.ConfigFactory.fromGoogle(url);
+      	var json = TL.ConfigFactory.fromGoogle(url);
       
       	window.factory_json = json;
       	
       	document.getElementById('input').style.height = "40px"
       	document.getElementById('timeline').style.height = (window.innerHeight - 40 + "px");
       	
-      	timeline = new VCO.Timeline('timeline', new VCO.TimelineConfig(json), {
+      	timeline = new TL.Timeline('timeline', new TL.TimelineConfig(json), {
       	});
         
       	
