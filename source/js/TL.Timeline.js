@@ -233,6 +233,7 @@ TL.Timeline = TL.Class.extend({
 
 
 		// Use Relative Date Calculations
+		// NOT YET IMPLEMENTED
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {
 				self._loadLanguage(data);
