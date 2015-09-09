@@ -167,7 +167,9 @@ TL.TimeAxis = TL.Class.extend({
 		var skip_times = {}
 		if (ticks_to_skip){
 			for (idx in ticks_to_skip) {
-				skip_times[ticks_to_skip[idx].getTime()] = true;
+				if(ticks_to_skip.hasOwnProperty(idx) {
+					skip_times[ticks_to_skip[idx].getTime()] = true;
+				}
 			}
 		}
 
