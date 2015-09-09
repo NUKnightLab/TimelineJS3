@@ -36,12 +36,12 @@
 
     &lt;!-- 3 --&gt;
     &lt;script type="text/javascript"&gt;
-      // The TL.Timeline constructor takes two arguments: 
+      // The VCO.Timeline constructor takes two arguments: 
       // the id of the Timeline container (no '#'), and 
       // the URL to your JSON data file or Google spreadsheet.
       // the id must refer to an element "above" this code, 
       // and the element must have CSS styling to give it width and height
-      timeline = new TL.Timeline('timeline-embed', 
+      timeline = new VCO.Timeline('timeline-embed', 
         'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
     &lt;/script&gt;</pre>
 
@@ -58,16 +58,16 @@
       &lt;script type="text/javascript"&gt;
         var timeline_json = make_the_json(); // you write this part
         // two arguments: the id of the Timeline container (no '#')
-        // and the JSON object or an instance of TL.TimelineConfig created from 
+        // and the JSON object or an instance of VCO.TimelineConfig created from 
         // a suitable JSON object
-        window.timeline = new TL.Timeline('timeline-embed', timeline_json);
+        window.timeline = new VCO.Timeline('timeline-embed', timeline_json);
       &lt;/script&gt;</pre>
 
     </p>
     </div>
     <div class="small-12 columns">
       <h3 id="options">Configuring TimelineJS options</h3>
-      <p><code>TL.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
+      <p><code>VCO.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
       <pre class="prettyprint lang-html">
         &lt;script type="text/javascript"&gt;
           var additionalOptions = {
@@ -76,7 +76,7 @@
             timenav_height: 250
           }
 
-          timeline = new TL.Timeline('timeline-embed',
+          timeline = new VCO.Timeline('timeline-embed',
           'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
           additionalOptions);
         &lt;/script&gt;

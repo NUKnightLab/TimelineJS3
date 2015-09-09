@@ -94,7 +94,7 @@
         },
         "text": {
           "headline": "Debut",
-          "text": "Whitney Houston's self titled first release sold over 12 million copies in the U.S. and included the hit singles 'How Will I Know,' 'You Give Good Love,' 'Saving All My Love For You' and 'Greatest Love of All.'"
+          "text": "Whitney Houston's self titled first release sold over 12 million copies in the U.S. and included the hit singles <span class='soundcite' data-url='https://upload.wikimedia.org/wikipedia/en/1/19/HowWillIKnow.ogg' data-start='15000' data-end='19000' data-plays='1'>How Will I Know?</span>, 'You Give Good Love,' 'Saving All My Love For You' and 'Greatest Love of All.'"
         }
       },
       {
@@ -164,7 +164,7 @@
         },
         "text": {
           "headline": "Super Bowl",
-          "text": "Houston's national anthem performance captures the hearts and minds of Americans ralllying behind soldiers in the Persian Guf War."
+          "text": "Houston's <span class='soundcite' data-url='https://upload.wikimedia.org/wikipedia/uk/c/cb/Whitney_Houston_-_USA_National_Anthem.ogg' data-start='0' data-end='16000' data-plays='1'>national anthem performance</span> captures the hearts and minds of Americans ralllying behind soldiers in the Persian Guf War."
         }
       },
       {
@@ -178,7 +178,7 @@
         },
         "text": {
           "headline": "\"The Bodyguard\"",
-          "text": "Houston starred opposite Kevin Costner in the box office hit, The Bodyguard. The soundtrack to the movie sold over 44 million copies worldwide  garnering 3 Grammy's for the artist."
+          "text": "Houston starred opposite Kevin Costner in the box office hit, The Bodyguard. The soundtrack to the movie sold over 44 million copies worldwide  garnering 3 Grammy's for the artist, including Record of the Year for <span class=\"soundcite\" data-url=\"https://upload.wikimedia.org/wikipedia/en/a/ac/I_Will_Always_Love_You_Whitney.ogg\" data-start=\"0\" data-end=\"11000\" data-plays=\"1\">I Will Always Love You</span>"
         }
       },
       {

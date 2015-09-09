@@ -1,6 +1,6 @@
 
 {
-    "timeline":  
+    "timeline":
   	{
         "headline":"Whitney Houston<br/> 1963 - 2012",
 		"startDate":"1963",
@@ -38,7 +38,7 @@
              {
                 "startDate":"1978",
                 "headline":"The Early Years",
-                "text":"As a teen Houston's credits include background vocals for Jermaine Jackson, Lou Rawls and the Neville Brothers. She also sang on Chaka Khan's, 'I'm Every Woman,' a song which she later remade for the <i>Bodyguard</i> soundtrack which is the bigget selling soundtrack of all time. It sold over 42 million copies worldwide.",
+                "text":"As a teen Houston's credits include background vocals for Jermaine Jackson, Lou Rawls and the Neville Brothers. She also sang on Chaka Khan's, 'I'm Every Woman,' a song which she later remade for the <i>Bodyguard</i> soundtrack which is the biggest selling soundtrack of all time. It sold over 42 million copies worldwide.",
                 "asset":
                 {
                     "media":"https://youtu.be/_gvJCCZzmro",
@@ -49,7 +49,7 @@
             {
                 "startDate":"1978",
                 "headline":"Early Album Credits",
-                "text":"As a teen Houston's credits include background vocals for Jermaine Jackson, Lou Rawls and the Neville Brothers. She also sang on Chaka Khan's, 'I'm Every Woman,' a song which she later remade for the <i>Bodyguard</i> soundtrack which is the bigget selling soundtrack of all time. It sold over 42 million copies worldwide.",
+                "text":"As a teen Houston's credits include background vocals for Jermaine Jackson, Lou Rawls and the Neville Brothers. She also sang on Chaka Khan's, 'I'm Every Woman,' a song which she later remade for the <i>Bodyguard</i> soundtrack which is the biggest selling soundtrack of all time. It sold over 42 million copies worldwide.",
                 "asset":
                 {
                     "media":"https://youtu.be/H7_sqdkaAfo",
@@ -167,7 +167,7 @@
                     "caption":"Diane Sawyer "
                 }
             },
-            
+
             {
                 "startDate":"2004",
                 "headline":"Rehab",
@@ -211,9 +211,8 @@
                     "credit":"<a href='http://commons.wikimedia.org/wiki/File%3AFlickr_Whitney_Houston_performing_on_GMA_2009_4.jpg'>Asterio Tecson</a> via Wikimedia",
                     "caption":"Houston, performing on Good Morning America in 2009."
                 }
-           
+
             }
         ]
     }
 }
-
