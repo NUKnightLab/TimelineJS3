@@ -305,10 +305,10 @@ TL.Util = {
 				b = parts[3];
 			}
 		}
-		if (!r || !b || !g) {
-			//throw "Invalid RGB argument";
+		if (isNaN(r) || isNaN(b) || isNaN(g)) {
+			throw "Invalid RGB argument";
 		}
-		return "#" + parseInt(r,10).toString(16) + parseInt(g,10).toString(16) + parseInt(b,10).toString(16);
+		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
 	},
 	colorObjToHex: function(o) {
 		var parts = [o.r, o.g, o.b];
@@ -599,7 +599,9 @@ TL.Util = {
 		while (val.length < len) val = "0" + val;
 		return val;
 	},
-
+	intToHexString: function(i) {
+		return TL.Util.pad(parseInt(i,10).toString(16));
+	},
     findNextGreater: function(list, current, default_value) {
         // given a sorted list and a current value which *might* be in the list,
         // return the next greatest value if the current value is >= the last item in the list, return default,

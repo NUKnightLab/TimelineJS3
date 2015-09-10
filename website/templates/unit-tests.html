@@ -104,6 +104,8 @@
          throws(function(assert) { TL.Util.rgbToHex("malformed string") }, "make sure bad values throw exceptions 1");
          throws(function(assert) { TL.Util.rgbToHex("rgb(218,112)") }, "make sure bad values throw exceptions 2");
          throws(function(assert) { TL.Util.rgbToHex({r: 255, g: 255, c: 255}) }, "make sure bad values throw exceptions 3");
+         var zero_test = TL.Util.rgbToHex({r: 0, g: 255, b: 255})
+         assert.ok(zero_test.match(/^#00FFFF$/i), "make sure a zero value doesn't throw an exception")
          var from_name = TL.Util.hexToRgb('bisque');
          var from_hex = TL.Util.hexToRgb('#ffe4c4');
          assert.equal(from_name.r, from_hex.r, "named colors should work too... red")
