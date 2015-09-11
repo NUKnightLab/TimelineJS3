@@ -594,7 +594,7 @@ TL.Timeline = TL.Class.extend({
 		if (this.config.isValid()) {
 			this._onDataLoaded();
 		} else {
-			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors(';'));
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors('<br>'));
 			// should we set 'self.ready'? if not, it won't resize,
 			// but most resizing would only work
 			// if more setup happens

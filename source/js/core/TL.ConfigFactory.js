@@ -209,7 +209,18 @@
         var key = parseGoogleSpreadsheetURL(url);
 
         if (key) {
+          try {
             var json = jsonFromGoogleURL(url);
+          } catch(e) {
+            tc = new TL.TimelineConfig();
+            if (e.name == 'NetworkError') {
+              tc.logError("Unable to read your Google Spreadsheet. Make sure you have published it to the web.")
+            } else {
+              tc.logError("An unexpected error occurred trying to read your spreadsheet data ["+e.name+"]");
+            }
+            callback(tc);
+            return;
+          }
             var tc = new TL.TimelineConfig(json);
             if (json.errors) {
                 for (var i = 0; i < json.errors.length; i++) {
