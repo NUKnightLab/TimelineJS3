@@ -48,3 +48,17 @@
     </section>
 
 {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  // make permalinks function for each question
+  jQuery("p[id],h4[id]").each(function(){
+    jQuery(this).css('cursor','pointer');
+    jQuery(this).click(function(){
+      window.location.hash = "#" + this.id;
+    })
+  });
+});
+</script>
+{% endblock %}
