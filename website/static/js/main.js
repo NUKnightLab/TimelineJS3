@@ -208,18 +208,8 @@ $(document).ready(function() {
   // Embed Generator
   updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
-  // TODO:make a func that grabs all inputs in .more-options and attaches update
-  $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-height').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-maptype').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-source-url').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-language').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-startatend').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-debug').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-hash-bookmark').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-initialzoom').change(function(evt) { updateEmbedCode(evt); });
+  $('#make-step-3 input').change(function(evt) { updateEmbedCode(evt); });
+  $('#make-step-3 select').change(function(evt) { updateEmbedCode(evt); });
   $("#embed-font li").on("click", function(evt){
     var currentFont = document.getElementById("embed-font-active");
     currentFont.removeChild(currentFont.firstChild);
