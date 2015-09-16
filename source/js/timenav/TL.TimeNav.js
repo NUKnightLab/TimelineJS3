@@ -353,9 +353,9 @@ TL.TimeNav = TL.Class.extend({
 		for (var i = 0; i < this._eras.length; i++) {
 			var pos = this.timescale.getPositionInfo(i);
 			if (fast) {
-				this._eras[i].setClass("tl-timemarker tl-timemarker-fast");
+				this._eras[i].setClass("tl-timeera tl-timeera-fast");
 			} else {
-				this._eras[i].setClass("tl-timemarker");
+				this._eras[i].setClass("tl-timeera");
 			}
 			this._eras[i].setPosition({left:pos.start});
 			this._eras[i].setWidth(pos.width);
@@ -552,6 +552,7 @@ TL.TimeNav = TL.Class.extend({
 		this._positionGroups();
 
 		if (this.has_eras) {
+
 			this._positionEras(fast);
 		}
 	},
@@ -584,6 +585,10 @@ TL.TimeNav = TL.Class.extend({
 			this._positionMarkers();
 			this._assignRowsToMarkers();
 			this._positionGroups();
+			if (this.has_eras) {
+				trace("update eras")
+				this._positionEras();
+			}
 			this._updateDisplay();
 		} else {
 			this._drawTimeline(true);

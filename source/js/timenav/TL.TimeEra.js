@@ -16,13 +16,9 @@ TL.TimeEra = TL.Class.extend({
 		this._el = {
 			container: {},
 			content_container: {},
-			media_container: {},
 			timespan: {},
-			line_left: {},
-			line_right: {},
 			content: {},
-			text: {},
-			media: {},
+			text: {}
 		};
 
 		// Components
@@ -37,7 +33,6 @@ TL.TimeEra = TL.Class.extend({
 		// Data
 		this.data = {
 			unique_id: 			"",
-			background: 		null,
 			date: {
 				year:			0,
 				month:			0,
@@ -52,8 +47,7 @@ TL.TimeEra = TL.Class.extend({
 			text: {
 				headline: 		"",
 				text: 			""
-			},
-			media: 				null
+			}
 		};
 
 		// Options
@@ -95,17 +89,7 @@ TL.TimeEra = TL.Class.extend({
 	},
 
 	setActive: function(is_active) {
-		this.active = is_active;
 
-		if (this.active && this.has_end_date) {
-			this._el.container.className = 'tl-timeera tl-timeera-with-end tl-timeera-active';
-		} else if (this.active){
-			this._el.container.className = 'tl-timeera tl-timeera-active';
-		} else if (this.has_end_date){
-			this._el.container.className = 'tl-timeera tl-timeera-with-end';
-		} else {
-			this._el.container.className = 'tl-timeera';
-		}
 	},
 
 	addTo: function(container) {
@@ -118,20 +102,6 @@ TL.TimeEra = TL.Class.extend({
 
 	updateDisplay: function(w, h) {
 		this._updateDisplay(w, h);
-	},
-
-	loadMedia: function() {
-
-		if (this._media && !this._state.loaded) {
-			this._media.loadMedia();
-			this._state.loaded = true;
-		}
-	},
-
-	stopMedia: function() {
-		if (this._media && this._state.loaded) {
-			this._media.stopMedia();
-		}
 	},
 
 	getLeft: function() {
@@ -157,18 +127,7 @@ TL.TimeEra = TL.Class.extend({
 
 		this._el.content_container.style.height = h  + "px";
 		this._el.timespan_content.style.height = h + "px";
-		// Handle Line height for better display of text
-		if (h <= 30) {
-			this._el.content.className = "tl-timeera-content tl-timeera-content-small";
-		} else {
-			this._el.content.className = "tl-timeera-content";
-		}
-
-		if (h <= 56) {
-			TL.DomUtil.addClass(this._el.content_container, "tl-timeera-content-container-small");
-		} else {
-			TL.DomUtil.removeClass(this._el.content_container, "tl-timeera-content-container-small");
-		}
+		this._el.content.className = "tl-timeera-content";
 
 		// Handle number of lines visible vertically
 
@@ -221,9 +180,7 @@ TL.TimeEra = TL.Class.extend({
 
 	/*	Events
 	================================================== */
-	_onMarkerClick: function(e) {
-		this.fire("markerclick", {unique_id:this.data.unique_id});
-	},
+
 
 	/*	Private Methods
 	================================================== */
@@ -232,7 +189,7 @@ TL.TimeEra = TL.Class.extend({
 		// Create Layout
 		this._el.container 				= TL.Dom.create("div", "tl-timeera");
 		if (this.data.unique_id) {
-			this._el.container.id 		= this.data.unique_id + "-marker";
+			this._el.container.id 		= this.data.unique_id + "-era";
 		}
 
 		if (this.data.end_date) {
@@ -246,24 +203,6 @@ TL.TimeEra = TL.Class.extend({
 
 		this._el.content				= TL.Dom.create("div", "tl-timeera-content", this._el.content_container);
 
-		this._el.line_left				= TL.Dom.create("div", "tl-timeera-line-left", this._el.timespan);
-		this._el.line_right				= TL.Dom.create("div", "tl-timeera-line-right", this._el.timespan);
-
-		// Thumbnail or Icon
-		if (this.data.media) {
-			this._el.media_container	= TL.Dom.create("div", "tl-timeera-media-container", this._el.content);
-
-			if (this.data.media.thumbnail && this.data.media.thumbnail != "") {
-				this._el.media				= TL.Dom.create("img", "tl-timeera-media", this._el.media_container);
-				this._el.media.src			= TL.Util.transformImageURL(this.data.media.thumbnail);
-
-			} else {
-				var media_type = TL.MediaType(this.data.media).type;
-				this._el.media				= TL.Dom.create("span", "tl-icon-" + media_type, this._el.media_container);
-
-			}
-
-		}
 
 
 		// Text
@@ -271,11 +210,7 @@ TL.TimeEra = TL.Class.extend({
 		this._text						= TL.Dom.create("h2", "tl-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
-		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.text);
-		} else if (this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.media.caption);
-		}
+		} 
 
 
 
@@ -285,7 +220,7 @@ TL.TimeEra = TL.Class.extend({
 	},
 
 	_initEvents: function() {
-		TL.DomEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
+		
 	},
 
 	// Update Display
