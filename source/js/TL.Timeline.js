@@ -154,7 +154,7 @@ TL.Timeline = TL.Class.extend({
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
 			is_full_embed: 				false,
-			hash_bookmark: 				true,
+			hash_bookmark: false,
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
 			layout: 					"landscape",			// portrait or landscape
@@ -189,10 +189,6 @@ TL.Timeline = TL.Class.extend({
 			ga_property_id: 			null,
 			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
-
-		// Current Slide
-		// this.current_slide = this.options.start_at_slide;
-		// no longer using this, track current slide by id only
 
 		// Animation Objects
 		this.animator_timenav = null;
