@@ -567,7 +567,7 @@ TL.Timeline = TL.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		var hash = "#" + "event-" + id.toString();
-    window.history.replaceState(null, "Browsing TimelineJS", hash);
+		window.history.replaceState(null, "Browsing TimelineJS", hash);
 		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 
@@ -633,11 +633,11 @@ TL.Timeline = TL.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
-    // intial_zoom cannot be applied before the timenav has been created
-    if (this.options.initial_zoom) {
-      // at this point, this.options refers to the merged set of options
-      this.setZoom(this.options.initial_zoom);
-    }
+		// intial_zoom cannot be applied before the timenav has been created
+		if (this.options.initial_zoom) {
+			// at this point, this.options refers to the merged set of options
+			this.setZoom(this.options.initial_zoom);
+		}
 
 		// Create StorySlider
 		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);
@@ -659,7 +659,8 @@ TL.Timeline = TL.Class.extend({
 		this._updateDisplay(false, true, 2000);
 
 	},
-  /* Depends upon _initLayout because these events are on things the layout initializes */
+	
+	/* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);

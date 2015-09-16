@@ -9,6 +9,7 @@ TL.TimelineConfig = TL.Class.extend({
 		this.title = '';
 		this.scale = '';
 		this.events = [];
+		this.eras = [];
 		this.event_dict = {}; // despite name, all slides (events + title) indexed by slide.unique_id
 		this.messages = {
 			errors: [],
@@ -27,6 +28,7 @@ TL.TimelineConfig = TL.Class.extend({
 				this.title = data.title;
 				this.event_dict[title_id] = this.title;
 			}
+
 			for (var i = 0; i < data.events.length; i++) {
 				try {
 					this.addEvent(data.events[i], true);
@@ -34,6 +36,20 @@ TL.TimelineConfig = TL.Class.extend({
 					this.logError("Event " + i + ": " + e);
 				}
 			}
+
+			if (data.eras) {
+				trace("has eras")
+				for (var i = 0; i < data.eras.length; i++) {
+					try {
+						this.addEra(data.eras[i], true);
+					} catch (e) {
+						this.logError("Era " + i + ": " + e);
+					}
+				}
+			}
+
+			trace(this.eras);
+
 			TL.DateUtil.sortByDate(this.events);
 
 
@@ -85,6 +101,25 @@ TL.TimelineConfig = TL.Class.extend({
 
 		if (!defer_sort) {
 			TL.DateUtil.sortByDate(this.events);
+		}
+		return event_id;
+	},
+
+	addEra: function(data, defer_sort) {
+		var event_id = this._assignID(data);
+
+		if (typeof(data.start_date) == 'undefined') {
+			throw(event_id + " is missing a start_date");
+		} else {
+			this._processDates(data);
+			this._tidyFields(data);
+		}
+
+		this.eras.push(data);
+		this.event_dict[event_id] = data;
+
+		if (!defer_sort) {
+			TL.DateUtil.sortByDate(this.eras);
 		}
 		return event_id;
 	},

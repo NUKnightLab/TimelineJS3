@@ -2957,6 +2957,7 @@ TL.TimelineConfig = TL.Class.extend({
 		this.title = '';
 		this.scale = '';
 		this.events = [];
+		this.eras = [];
 		this.event_dict = {}; // despite name, all slides (events + title) indexed by slide.unique_id
 		this.messages = {
 			errors: [],
@@ -2975,6 +2976,7 @@ TL.TimelineConfig = TL.Class.extend({
 				this.title = data.title;
 				this.event_dict[title_id] = this.title;
 			}
+
 			for (var i = 0; i < data.events.length; i++) {
 				try {
 					this.addEvent(data.events[i], true);
@@ -2982,6 +2984,20 @@ TL.TimelineConfig = TL.Class.extend({
 					this.logError("Event " + i + ": " + e);
 				}
 			}
+
+			if (data.eras) {
+				trace("has eras")
+				for (var i = 0; i < data.eras.length; i++) {
+					try {
+						this.addEra(data.eras[i], true);
+					} catch (e) {
+						this.logError("Era " + i + ": " + e);
+					}
+				}
+			}
+
+			trace(this.eras);
+
 			TL.DateUtil.sortByDate(this.events);
 
 
@@ -3033,6 +3049,25 @@ TL.TimelineConfig = TL.Class.extend({
 
 		if (!defer_sort) {
 			TL.DateUtil.sortByDate(this.events);
+		}
+		return event_id;
+	},
+
+	addEra: function(data, defer_sort) {
+		var event_id = this._assignID(data);
+
+		if (typeof(data.start_date) == 'undefined') {
+			throw(event_id + " is missing a start_date");
+		} else {
+			this._processDates(data);
+			this._tidyFields(data);
+		}
+
+		this.eras.push(data);
+		this.event_dict[event_id] = data;
+
+		if (!defer_sort) {
+			TL.DateUtil.sortByDate(this.eras);
 		}
 		return event_id;
 	},
@@ -11562,6 +11597,7 @@ TL.Timeline = TL.Class.extend({
 
 
 		// Use Relative Date Calculations
+		// NOT YET IMPLEMENTED
 		if(this.options.relative_date) {
 			if (typeof(moment) !== 'undefined') {
 				self._loadLanguage(data);
@@ -11895,7 +11931,7 @@ TL.Timeline = TL.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		var hash = "#" + "event-" + id.toString();
-    window.history.replaceState(null, "Browsing TimelineJS", hash);
+		window.history.replaceState(null, "Browsing TimelineJS", hash);
 		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 
@@ -11961,11 +11997,11 @@ TL.Timeline = TL.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
-    // intial_zoom cannot be applied before the timenav has been created
-    if (this.options.initial_zoom) {
-      // at this point, this.options refers to the merged set of options
-      this.setZoom(this.options.initial_zoom);
-    }
+		// intial_zoom cannot be applied before the timenav has been created
+		if (this.options.initial_zoom) {
+			// at this point, this.options refers to the merged set of options
+			this.setZoom(this.options.initial_zoom);
+		}
 
 		// Create StorySlider
 		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);
@@ -11987,7 +12023,8 @@ TL.Timeline = TL.Class.extend({
 		this._updateDisplay(false, true, 2000);
 
 	},
-  /* Depends upon _initLayout because these events are on things the layout initializes */
+	
+	/* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
