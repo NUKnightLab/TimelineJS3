@@ -366,6 +366,8 @@ TL.TimeNav = TL.Class.extend({
 			}
 			this._eras[i].setPosition({left:pos.start});
 			this._eras[i].setWidth(pos.width);
+
+			this._eras[i].setColor(i);
 		};
 
 	},

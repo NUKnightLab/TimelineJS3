@@ -15,8 +15,8 @@ TL.TimeEra = TL.Class.extend({
 		// DOM Elements
 		this._el = {
 			container: {},
+			background: {},
 			content_container: {},
-			timespan: {},
 			content: {},
 			text: {}
 		};
@@ -126,7 +126,6 @@ TL.TimeEra = TL.Class.extend({
 			text_lines = 1;
 
 		this._el.content_container.style.height = h  + "px";
-		this._el.timespan_content.style.height = h + "px";
 		this._el.content.className = "tl-timeera-content";
 
 		// Handle number of lines visible vertically
@@ -171,11 +170,14 @@ TL.TimeEra = TL.Class.extend({
 
 	setRowPosition: function(n, remainder) {
 		this.setPosition({top:n});
-		this._el.timespan.style.height = remainder + "px";
 
 		if (remainder < 56) {
 			//TL.DomUtil.removeClass(this._el.content_container, "tl-timeera-content-container-small");
 		}
+	},
+
+	setColor: function(color_num) {
+		this._el.container.className = 'tl-timeera tl-timeera-color' + color_num;
 	},
 
 	/*	Events
@@ -197,13 +199,13 @@ TL.TimeEra = TL.Class.extend({
 			this._el.container.className = 'tl-timeera tl-timeera-with-end';
 		}
 
-		this._el.timespan				= TL.Dom.create("div", "tl-timeera-timespan", this._el.container);
-		this._el.timespan_content		= TL.Dom.create("div", "tl-timeera-timespan-content", this._el.timespan);
 		this._el.content_container		= TL.Dom.create("div", "tl-timeera-content-container", this._el.container);
+
+		this._el.background 			= TL.Dom.create("div", "tl-timeera-background", this._el.content_container);
 
 		this._el.content				= TL.Dom.create("div", "tl-timeera-content", this._el.content_container);
 
-
+		
 
 		// Text
 		this._el.text					= TL.Dom.create("div", "tl-timeera-text", this._el.content);
