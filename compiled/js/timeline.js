@@ -9691,6 +9691,10 @@ TL.TimeNav = TL.Class.extend({
 		// Markers Array
 		this._markers = [];
 		
+		// Eras Array
+		this._eras = [];
+		this.has_eras = false;
+
 		// Groups Array
 		this._groups = [];
 		
@@ -9943,6 +9947,54 @@ TL.TimeNav = TL.Class.extend({
 		return _n;
 	},
 
+	/*	ERAS
+	================================================== */
+	_createEras: function(array) { 
+		for (var i = 0; i < array.length; i++) {
+			this._createEra(array[i], -1);
+		}		
+	},
+
+	_createEra: function(data, n) {
+		var era = new TL.TimeEra(data, this.options);
+		this._addEra(era);
+		if(n < 0) {
+		    this._eras.push(era);
+		} else {
+		    this._eras.splice(n, 0, era);
+		}
+	},
+
+	_addEra:function(era) {
+		era.addTo(this._el.marker_item_container);
+		era.on('added', this._onEraAdded, this);
+	},
+
+	_removeEra: function(era) {
+		era.removeFrom(this._el.marker_item_container);
+		//marker.off('added', this._onMarkerRemoved, this);
+	},
+
+	_destroyEra: function(n) {
+	    this._removeEra(this._eras[n]);
+	    this._eras.splice(n, 1);
+	},
+
+	_positionEras: function(fast) {
+		// POSITION X
+		for (var i = 0; i < this._eras.length; i++) {
+			var pos = this.timescale.getPositionInfo(i);
+			if (fast) {
+				this._eras[i].setClass("tl-timemarker tl-timemarker-fast");
+			} else {
+				this._eras[i].setClass("tl-timemarker");
+			}
+			this._eras[i].setPosition({left:pos.start});
+			this._eras[i].setWidth(pos.width);
+		};
+		
+	},
+
 	/*	Public
 	================================================== */
 	
@@ -10021,6 +10073,10 @@ TL.TimeNav = TL.Class.extend({
 	
 	_onMarkerAdded: function(e) {
 		this.fire("dateAdded", this.data);
+	},
+
+	_onEraAdded: function(e) {
+		this.fire("eraAdded", this.data);
 	},
 	
 	_onMarkerRemoved: function(e) {
@@ -10126,6 +10182,10 @@ TL.TimeNav = TL.Class.extend({
 		this._assignRowsToMarkers();
 		this._createGroups();
 		this._positionGroups();
+
+		if (this.has_eras) {
+			this._positionEras(fast);
+		}
 	},
 	
 	_updateDrawTimeline: function(check_update) {
@@ -10209,6 +10269,12 @@ TL.TimeNav = TL.Class.extend({
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
+
+		if (this.data.eras) {
+			this.has_eras = true;
+			this._createEras(this.data.eras);
+		}
+
 		this._drawTimeline();
 		
 	}
@@ -10486,6 +10552,312 @@ TL.TimeMarker = TL.Class.extend({
 
 		// Text
 		this._el.text					= TL.Dom.create("div", "tl-timemarker-text", this._el.content);
+		this._text						= TL.Dom.create("h2", "tl-headline", this._el.text);
+		if (this.data.text.headline && this.data.text.headline != "") {
+			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
+		} else if (this.data.text.text && this.data.text.text != "") {
+			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.text);
+		} else if (this.data.media.caption && this.data.media.caption != "") {
+			this._text.innerHTML		= TL.Util.unlinkify(this.data.media.caption);
+		}
+
+
+
+		// Fire event that the slide is loaded
+		this.onLoaded();
+
+	},
+
+	_initEvents: function() {
+		TL.DomEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
+	},
+
+	// Update Display
+	_updateDisplay: function(width, height, layout) {
+
+		if (width) {
+			this.options.width 					= width;
+		}
+
+		if (height) {
+			this.options.height = height;
+		}
+
+	}
+
+});
+
+
+/*	TL.TimeMarker
+
+================================================== */
+
+TL.TimeEra = TL.Class.extend({
+
+	includes: [TL.Events, TL.DomMixins],
+
+	_el: {},
+
+	/*	Constructor
+	================================================== */
+	initialize: function(data, options) {
+
+		// DOM Elements
+		this._el = {
+			container: {},
+			content_container: {},
+			media_container: {},
+			timespan: {},
+			line_left: {},
+			line_right: {},
+			content: {},
+			text: {},
+			media: {},
+		};
+
+		// Components
+		this._text			= {};
+
+		// State
+		this._state = {
+			loaded: 		false
+		};
+
+
+		// Data
+		this.data = {
+			unique_id: 			"",
+			background: 		null,
+			date: {
+				year:			0,
+				month:			0,
+				day: 			0,
+				hour: 			0,
+				minute: 		0,
+				second: 		0,
+				millisecond: 	0,
+				thumbnail: 		"",
+				format: 		""
+			},
+			text: {
+				headline: 		"",
+				text: 			""
+			},
+			media: 				null
+		};
+
+		// Options
+		this.options = {
+			duration: 			1000,
+			ease: 				TL.Ease.easeInSpline,
+			width: 				600,
+			height: 			600,
+			marker_width_min: 	100 			// Minimum Marker Width
+		};
+
+		// Actively Displaying
+		this.active = false;
+
+		// Animation Object
+		this.animator = {};
+
+		// End date
+		this.has_end_date = false;
+
+		// Merge Data and Options
+		TL.Util.mergeData(this.options, options);
+		TL.Util.mergeData(this.data, data);
+
+		this._initLayout();
+		this._initEvents();
+
+
+	},
+
+	/*	Adding, Hiding, Showing etc
+	================================================== */
+	show: function() {
+
+	},
+
+	hide: function() {
+
+	},
+
+	setActive: function(is_active) {
+		this.active = is_active;
+
+		if (this.active && this.has_end_date) {
+			this._el.container.className = 'tl-timeera tl-timeera-with-end tl-timeera-active';
+		} else if (this.active){
+			this._el.container.className = 'tl-timeera tl-timeera-active';
+		} else if (this.has_end_date){
+			this._el.container.className = 'tl-timeera tl-timeera-with-end';
+		} else {
+			this._el.container.className = 'tl-timeera';
+		}
+	},
+
+	addTo: function(container) {
+		container.appendChild(this._el.container);
+	},
+
+	removeFrom: function(container) {
+		container.removeChild(this._el.container);
+	},
+
+	updateDisplay: function(w, h) {
+		this._updateDisplay(w, h);
+	},
+
+	loadMedia: function() {
+
+		if (this._media && !this._state.loaded) {
+			this._media.loadMedia();
+			this._state.loaded = true;
+		}
+	},
+
+	stopMedia: function() {
+		if (this._media && this._state.loaded) {
+			this._media.stopMedia();
+		}
+	},
+
+	getLeft: function() {
+		return this._el.container.style.left.slice(0, -2);
+	},
+
+	getTime: function() { // TODO does this need to know about the end date?
+		return this.data.start_date.getTime();
+	},
+
+	getEndTime: function() {
+
+		if (this.data.end_date) {
+			return this.data.end_date.getTime();
+		} else {
+			return false;
+		}
+	},
+
+	setHeight: function(h) {
+		var text_line_height = 12,
+			text_lines = 1;
+
+		this._el.content_container.style.height = h  + "px";
+		this._el.timespan_content.style.height = h + "px";
+		// Handle Line height for better display of text
+		if (h <= 30) {
+			this._el.content.className = "tl-timeera-content tl-timeera-content-small";
+		} else {
+			this._el.content.className = "tl-timeera-content";
+		}
+
+		if (h <= 56) {
+			TL.DomUtil.addClass(this._el.content_container, "tl-timeera-content-container-small");
+		} else {
+			TL.DomUtil.removeClass(this._el.content_container, "tl-timeera-content-container-small");
+		}
+
+		// Handle number of lines visible vertically
+
+		if (TL.Browser.webkit) {
+			text_lines = Math.floor(h / (text_line_height + 2));
+			if (text_lines < 1) {
+				text_lines = 1;
+			}
+			this._text.className = "tl-headline";
+			this._text.style.webkitLineClamp = text_lines;
+		} else {
+			text_lines = h / text_line_height;
+			if (text_lines > 1) {
+				this._text.className = "tl-headline tl-headline-fadeout";
+			} else {
+				this._text.className = "tl-headline";
+			}
+			this._text.style.height = (text_lines * text_line_height)  + "px";
+		}
+
+	},
+
+	setWidth: function(w) {
+		if (this.data.end_date) {
+			this._el.container.style.width = w + "px";
+
+			if (w > this.options.marker_width_min) {
+				this._el.content_container.style.width = w + "px";
+				this._el.content_container.className = "tl-timeera-content-container tl-timeera-content-container-long";
+			} else {
+				this._el.content_container.style.width = this.options.marker_width_min + "px";
+				this._el.content_container.className = "tl-timeera-content-container";
+			}
+		}
+
+	},
+
+	setClass: function(n) {
+		this._el.container.className = n;
+	},
+
+	setRowPosition: function(n, remainder) {
+		this.setPosition({top:n});
+		this._el.timespan.style.height = remainder + "px";
+
+		if (remainder < 56) {
+			//TL.DomUtil.removeClass(this._el.content_container, "tl-timeera-content-container-small");
+		}
+	},
+
+	/*	Events
+	================================================== */
+	_onMarkerClick: function(e) {
+		this.fire("markerclick", {unique_id:this.data.unique_id});
+	},
+
+	/*	Private Methods
+	================================================== */
+	_initLayout: function () {
+		//trace(this.data)
+		// Create Layout
+		this._el.container 				= TL.Dom.create("div", "tl-timeera");
+		if (this.data.unique_id) {
+			this._el.container.id 		= this.data.unique_id + "-marker";
+		}
+
+		if (this.data.end_date) {
+			this.has_end_date = true;
+			this._el.container.className = 'tl-timeera tl-timeera-with-end';
+		}
+
+		this._el.timespan				= TL.Dom.create("div", "tl-timeera-timespan", this._el.container);
+		this._el.timespan_content		= TL.Dom.create("div", "tl-timeera-timespan-content", this._el.timespan);
+		this._el.content_container		= TL.Dom.create("div", "tl-timeera-content-container", this._el.container);
+
+		this._el.content				= TL.Dom.create("div", "tl-timeera-content", this._el.content_container);
+
+		this._el.line_left				= TL.Dom.create("div", "tl-timeera-line-left", this._el.timespan);
+		this._el.line_right				= TL.Dom.create("div", "tl-timeera-line-right", this._el.timespan);
+
+		// Thumbnail or Icon
+		if (this.data.media) {
+			this._el.media_container	= TL.Dom.create("div", "tl-timeera-media-container", this._el.content);
+
+			if (this.data.media.thumbnail && this.data.media.thumbnail != "") {
+				this._el.media				= TL.Dom.create("img", "tl-timeera-media", this._el.media_container);
+				this._el.media.src			= TL.Util.transformImageURL(this.data.media.thumbnail);
+
+			} else {
+				var media_type = TL.MediaType(this.data.media).type;
+				this._el.media				= TL.Dom.create("span", "tl-icon-" + media_type, this._el.media_container);
+
+			}
+
+		}
+
+
+		// Text
+		this._el.text					= TL.Dom.create("div", "tl-timeera-text", this._el.content);
 		this._text						= TL.Dom.create("h2", "tl-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
@@ -11454,6 +11826,7 @@ https://incident57.com/codekit/
 // TIMENAV
 	// @codekit-prepend "timenav/TL.TimeNav.js";
 	// @codekit-prepend "timenav/TL.TimeMarker.js";
+	// @codekit-prepend "timenav/TL.TimeEra.js";
 	// @codekit-prepend "timenav/TL.TimeGroup.js";
 	// @codekit-prepend "timenav/TL.TimeScale.js";
 	// @codekit-prepend "timenav/TL.TimeAxis.js";
@@ -12023,7 +12396,7 @@ TL.Timeline = TL.Class.extend({
 		this._updateDisplay(false, true, 2000);
 
 	},
-	
+
 	/* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events

@@ -59,6 +59,10 @@ TL.TimeNav = TL.Class.extend({
 		// Markers Array
 		this._markers = [];
 		
+		// Eras Array
+		this._eras = [];
+		this.has_eras = false;
+
 		// Groups Array
 		this._groups = [];
 		
@@ -311,6 +315,54 @@ TL.TimeNav = TL.Class.extend({
 		return _n;
 	},
 
+	/*	ERAS
+	================================================== */
+	_createEras: function(array) { 
+		for (var i = 0; i < array.length; i++) {
+			this._createEra(array[i], -1);
+		}		
+	},
+
+	_createEra: function(data, n) {
+		var era = new TL.TimeEra(data, this.options);
+		this._addEra(era);
+		if(n < 0) {
+		    this._eras.push(era);
+		} else {
+		    this._eras.splice(n, 0, era);
+		}
+	},
+
+	_addEra:function(era) {
+		era.addTo(this._el.marker_item_container);
+		era.on('added', this._onEraAdded, this);
+	},
+
+	_removeEra: function(era) {
+		era.removeFrom(this._el.marker_item_container);
+		//marker.off('added', this._onMarkerRemoved, this);
+	},
+
+	_destroyEra: function(n) {
+	    this._removeEra(this._eras[n]);
+	    this._eras.splice(n, 1);
+	},
+
+	_positionEras: function(fast) {
+		// POSITION X
+		for (var i = 0; i < this._eras.length; i++) {
+			var pos = this.timescale.getPositionInfo(i);
+			if (fast) {
+				this._eras[i].setClass("tl-timemarker tl-timemarker-fast");
+			} else {
+				this._eras[i].setClass("tl-timemarker");
+			}
+			this._eras[i].setPosition({left:pos.start});
+			this._eras[i].setWidth(pos.width);
+		};
+		
+	},
+
 	/*	Public
 	================================================== */
 	
@@ -389,6 +441,10 @@ TL.TimeNav = TL.Class.extend({
 	
 	_onMarkerAdded: function(e) {
 		this.fire("dateAdded", this.data);
+	},
+
+	_onEraAdded: function(e) {
+		this.fire("eraAdded", this.data);
 	},
 	
 	_onMarkerRemoved: function(e) {
@@ -494,6 +550,10 @@ TL.TimeNav = TL.Class.extend({
 		this._assignRowsToMarkers();
 		this._createGroups();
 		this._positionGroups();
+
+		if (this.has_eras) {
+			this._positionEras(fast);
+		}
 	},
 	
 	_updateDrawTimeline: function(check_update) {
@@ -577,6 +637,12 @@ TL.TimeNav = TL.Class.extend({
 	_initData: function() {
 		// Create Markers and then add them
 		this._createMarkers(this.data.events);
+
+		if (this.data.eras) {
+			this.has_eras = true;
+			this._createEras(this.data.eras);
+		}
+
 		this._drawTimeline();
 		
 	}

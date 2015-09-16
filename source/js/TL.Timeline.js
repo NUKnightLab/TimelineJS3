@@ -90,6 +90,7 @@ https://incident57.com/codekit/
 // TIMENAV
 	// @codekit-prepend "timenav/TL.TimeNav.js";
 	// @codekit-prepend "timenav/TL.TimeMarker.js";
+	// @codekit-prepend "timenav/TL.TimeEra.js";
 	// @codekit-prepend "timenav/TL.TimeGroup.js";
 	// @codekit-prepend "timenav/TL.TimeScale.js";
 	// @codekit-prepend "timenav/TL.TimeAxis.js";
@@ -659,7 +660,7 @@ TL.Timeline = TL.Class.extend({
 		this._updateDisplay(false, true, 2000);
 
 	},
-	
+
 	/* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events
