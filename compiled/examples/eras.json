@@ -14,7 +14,7 @@
                 "year":         "650"
             },
             "text": {
-                "headline": "Era Test 600-700"
+                "headline": "Era Test 600-650"
             }
         },
         {
@@ -25,7 +25,7 @@
                 "year":         "700"
             },
             "text": {
-                "headline": "Era Test 700-800"
+                "headline": "Era Test 650-700"
             }
         },
         {
@@ -36,22 +36,7 @@
                 "year":         "720"
             },
             "text": {
-                "headline": "Era Test 800-900"
-            }
-        },
-        {
-            "start_date": {
-                "year":         "618",
-                "month":        "06",
-                "day":          "18"
-            },
-            "end_date": {
-                "year":         "907",
-                "month":        "06",
-                "day":          "01"
-            },
-            "text": {
-                "headline": "Tang Dynasty in China"
+                "headline": "Era Test 700-720"
             }
         }
     ],
