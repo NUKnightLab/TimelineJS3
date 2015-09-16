@@ -2986,7 +2986,6 @@ TL.TimelineConfig = TL.Class.extend({
 			}
 
 			if (data.eras) {
-				trace("has eras")
 				for (var i = 0; i < data.eras.length; i++) {
 					try {
 						this.addEra(data.eras[i], true);
@@ -2995,8 +2994,6 @@ TL.TimelineConfig = TL.Class.extend({
 					}
 				}
 			}
-
-			trace(this.eras);
 
 			TL.DateUtil.sortByDate(this.events);
 
@@ -10218,7 +10215,6 @@ TL.TimeNav = TL.Class.extend({
 			this._assignRowsToMarkers();
 			this._positionGroups();
 			if (this.has_eras) {
-				trace("update eras")
 				this._positionEras();
 			}
 			this._updateDisplay();

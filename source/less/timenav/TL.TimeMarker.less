@@ -12,7 +12,7 @@
 	================================================== */
 	.property-animation(left, @animation-duration, @animation-ease);
 	.property-animation(top, @animation-duration-fast, @animation-ease);
-	.property-animation(height, @animation-duration, @animation-ease);
+	.property-animation(height, @animation-duration-fast, @animation-ease);
 	.property-animation(width, @animation-duration, @animation-ease);
 	.animation-timing-cubic-bezier();
 	
@@ -45,7 +45,7 @@
 		border-top-right-radius:@time-marker-border-radius;
 		border-top-left-radius:@time-marker-border-radius;
 		
-		.property-animation(height, @animation-duration, @animation-ease);
+		.property-animation(height, @animation-duration-fast, @animation-ease);
 		.property-animation(width, @animation-duration, @animation-ease);
 		.animation-timing-cubic-bezier();
 		//box-shadow: 1px 1px 1px @color-background;
@@ -130,7 +130,7 @@
 		&:hover {
 			z-index: 9;
 		}
-		.property-animation(height, @animation-duration, @animation-ease);
+		.property-animation(height, @animation-duration-fast, @animation-ease);
 		.property-animation(width, @animation-duration, @animation-ease);
 		.animation-timing-cubic-bezier();
 		box-sizing: border-box;

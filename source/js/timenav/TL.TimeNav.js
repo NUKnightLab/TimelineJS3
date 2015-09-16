@@ -586,7 +586,6 @@ TL.TimeNav = TL.Class.extend({
 			this._assignRowsToMarkers();
 			this._positionGroups();
 			if (this.has_eras) {
-				trace("update eras")
 				this._positionEras();
 			}
 			this._updateDisplay();
