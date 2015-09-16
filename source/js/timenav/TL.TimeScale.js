@@ -7,9 +7,6 @@
 TL.TimeScale = TL.Class.extend({
 
     initialize: function (timeline_config, options) {
-        timeline_config = TL.Util.mergeData({ // establish defaults
-            scale: 'human'
-        }, timeline_config);
 
         var slides = timeline_config.events;
         this._scale = timeline_config.scale;
@@ -28,13 +25,10 @@ TL.TimeScale = TL.Class.extend({
         this._positions = [];
         this._pixels_per_milli = 0;
 
-        this._earliest = slides[0].start_date.getTime();
-        // TODO: should _latest be the end date if there is one?
-        this._latest = slides[slides.length - 1].start_date.getTime();
+        this._earliest = timeline_config.getEarliestDate().getTime();
+        this._latest = timeline_config.getLatestDate().getTime();
         this._span_in_millis = this._latest - this._earliest;
-        if (this._span_in_millis < 0) {
-            throw new Error("earliest event time is before latest. Events should be sorted.")
-        } else if (this._span_in_millis == 0) {
+        if (this._span_in_millis <= 0) {
             this._span_in_millis = this._computeDefaultSpan(timeline_config);
         }
         this._average = (this._span_in_millis)/slides.length;
@@ -50,6 +44,7 @@ TL.TimeScale = TL.Class.extend({
     _computeDefaultSpan: function(timeline_config) {
         // this gets called when all events are at the same instant,
         // or maybe when the span_in_millis is > 0 but still below a desired threshold
+        // TODO: does this need smarts about eras?
         if (timeline_config.scale == 'human') {
             var formats = {}
             for (var i = 0; i < timeline_config.events.length; i++) {
