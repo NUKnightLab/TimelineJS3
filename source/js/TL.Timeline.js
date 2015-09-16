@@ -562,7 +562,9 @@ TL.Timeline = TL.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		var hash = "#" + "event-" + id.toString();
-    window.history.replaceState(null, "Browsing TimelineJS", hash);
+		if (window.location.protocol != 'file:') {
+			window.history.replaceState(null, "Browsing TimelineJS", hash);
+		}
 		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 
