@@ -9980,7 +9980,16 @@ TL.TimeNav = TL.Class.extend({
 	_positionEras: function(fast) {
 		// POSITION X
 		for (var i = 0; i < this._eras.length; i++) {
-			var pos = this.timescale.getPositionInfo(i);
+			var pos = {
+				start:0,
+				end:0,
+				width:0
+			};
+
+			pos.start = this.timescale.getPosition(this._eras[i].data.start_date.getTime());
+			pos.end = this.timescale.getPosition(this._eras[i].data.end_date.getTime());
+			pos.width = pos.end - pos.start;
+
 			if (fast) {
 				this._eras[i].setClass("tl-timeera tl-timeera-fast");
 			} else {
