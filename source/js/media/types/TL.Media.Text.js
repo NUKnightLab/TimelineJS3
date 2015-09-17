@@ -103,23 +103,20 @@ TL.Media.Text = TL.Class.extend({
 			this._el.headline				= TL.Dom.create("h2", headline_class, this._el.content_container);
 			this._el.headline.innerHTML		= this.data.headline;
 		}
-		
+
 		// Text
 		if (this.data.text != "") {
 			var text_content = "";
-			
-			text_content 					+= TL.Util.htmlify(TL.Util.linkify(this.data.text));
-						
+
+      text_content += TL.Util.htmlify(this.options.autolink == true ? TL.Util.linkify(this.data.text) : this.data.text);
+
 			this._el.content				= TL.Dom.create("div", "tl-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;
 		}
-		
-		
+
 		// Fire event that the slide is loaded
 		this.onLoaded();
-		
-		
-		
+
 	}
-	
+
 });
