@@ -249,14 +249,14 @@ TL.Media = TL.Class.extend({
 		// Credit
 		if (this.data.credit && this.data.credit != "") {
 			this._el.credit					= TL.Dom.create("div", "tl-credit", this._el.content_container);
-			this._el.credit.innerHTML		= TL.Util.linkify(this.data.credit);
+			this._el.credit.innerHTML		= this.options.autolink == true ? TL.Util.linkify(this.data.credit) : this.data.credit;
 			this.options.credit_height 		= this._el.credit.offsetHeight;
 		}
 
 		// Caption
 		if (this.data.caption && this.data.caption != "") {
 			this._el.caption				= TL.Dom.create("div", "tl-caption", this._el.content_container);
-			this._el.caption.innerHTML		= TL.Util.linkify(this.data.caption);
+			this._el.caption.innerHTML		= this.options.autolink == true ? TL.Util.linkify(this.data.caption) : this.data.caption;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
 		}
 
