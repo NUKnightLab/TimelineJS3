@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="overriding-styles">
+  <div class="row">
+    <div class="small-12 columns">
+      <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+        <h2>Using the TimelineJS CSS selectors</h2>
+        <p>If you want to change the way TimelineJS looks, first check out our <a href+"docs/faq.html#styling">style and presentation frequently asked questions</a>. IN particular, note that <strong>there is no way to override the CSS using the iframe embed.</strong> You will need to be able to <a href="docs/instantiate-a-timeline.html">instantiate the Timeline in javascript</a> on your own page. Then, either in <code>style</code> tags in that page, or in an external stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. Here are a few of the major CSS classes you might want to override.</p>
+      <p><strong><em>Slide options</em></strong> affect the media and text areas of slides.</p>
+      <table>
+        <thead>
+          <th>Class Name</th>
+          <th>Element Type</th>
+          <th>Notes</th>
+        </thead>
+        <tbody>
+        <tr>
+          <td><code>tl-timeline</code></td>
+          <td><code>div</code></td>
+          <td>Added to the initial div containing the timeline. Contains entire element.</td>
+          </tr>
+        <tr>
+          <td><code>tl-slider-container-mask</code></td>
+          <td><code>div</code></td>
+          <td>A wrapper around the slides. Background colors or images can be set here.</td>
+        </tr>
+        <tr>
+          <td><code>tl-slide</code></td>
+          <td><code>div</code></td>
+          <td>Each complete set of slide items. May appear in conjunction with .tl-slide-titleslide (for title slides) or .tl-slide-media-only (slides without text).</td>
+        </tr>
+        <tr>
+          <td><code>tl-media-content-container</code></td>
+          <td><code>div</code></td>
+          <td>Contains the media, its credit, and its caption.</td>
+        </tr>
+        <tr>
+          <td><code>tl-media-content</code></td>
+          <td><code>div</code></td>
+          <td>Contains the media item. Use this to add borders, padding and more.</td>
+        </tr>
+        <tr>
+          <td><code>tl-credit</code></td>
+          <td><code>div</code></td>
+          <td>The media item's credit.</td>
+        </tr>
+        <tr>
+          <td><code>tl-caption</code></td>
+          <td><code>div</code></td>
+          <td>The media item's caption.</td>
+        </tr>
+        <tr>
+          <td><code>tl-text</code></td>
+          <td><code>div</code></td>
+          <td>The slide's text plus padding. Add background color to the text portion of the slide here.</td>
+        </tr>
+        <tr>
+          <td><code>tl-text-content-container</code></td>
+          <td><code>div</code></td>
+          <td>The slide's text minus padding.</td>
+        </tr>
+        <tr>
+          <td><code>tl-headline-date</code></td>
+          <td><code>h3</code></td>
+          <td>The date that appears over the slide's headline.</td>
+        </tr>
+        <tr>
+          <td><code>tl-headline</code></td>
+          <td><code>h2</code></td>
+          <td>The slide's headline. Title slides have the additional class <code>tl-headline-title</code>.</td>
+        </tr>
+        <tr>
+          <td><code>tl-text-content</code></td>
+          <td><code>div</code></td>
+          <td>The text of the slide, in <code>p</code> tags.</td>
+        </tr>
+        <tr>
+          <td><code>tl-slidenav-next</code> <code>tl-slidenav-previous</code></td>
+          <td><code>div</code></td>
+          <td>The navigation and text for moving forward and back. Use in conjunction with the following selectors to render the navigation arrows and text.</td>
+        </tr>
+        <tr>
+          <td><code>tl-slidenav-icon::before</code></td>
+          <td><code>div</code></td>
+          <td>Inserts the navigation arrow. Preface with <code>tl-slidenav-next</code> or <code>tl-slidenav-previous</code> to specify which arrow to render.</td>
+        </tr>
+        <tr>
+          <td><code>tl-slidenav-title</code></td>
+          <td><code>div</code></td>
+          <td>The title of the next/previous slide. Preface with <code>tl-slidenav-next</code> or <code>tl-slidenav-previous</code> to specify which title to render.</td>
+        </tr>
+        <tr>
+          <td><code>tl-slidenav-description</code></td>
+          <td><code>div</code></td>
+          <td>The description of the next/previous slide. Appears on hover. Preface with <code>tl-slidenav-next</code> or <code>tl-slidenav-previous</code> to specify which description to render.</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <p><strong><em>Timenav options</em></strong> affect the portion of the timeline that renders the time series.</p>
+      <table>
+        <thead>
+          <th>Class Name</th>
+          <th>Element Type</th>
+          <th>Notes</th>
+        </thead>
+        <tbody>
+        <tr>
+          <td><code>tl-timenav</code></td>
+          <td><code>div</code></td>
+          <td>The timeline element. Change the background color here.</td>
+        </tr>
+        <tr>
+          <td><code>tl-menubar</code></td>
+          <td><code>div</code></td>
+          <td>The zoom icons.</td>
+        </tr>
+        <tr>
+          <td><code>tl-timemarker</code></td>
+          <td><code>div</code></td>
+          <td>All of the elements that make up the markers (flags and lines) on the timenav. The marker of the current slide also has the class <code>tl-timemarker-active</code>.</td>
+        </tr>
+        <tr>
+          <td><code>tl-timemarker-content-container</code></td>
+          <td><code>div</code></td>
+          <td>The flag of the marker. You can set the flag's background color and text color here. When writing styles for this selector, preface this selector with <code>tl-timemarker</code> (for slides other than the current slide) or <code>tl-timemarker.tl-timemarker-active</code> (for the current slide).</td>
+        </tr>
+        <tr>
+          <td><code>tl-timemarker-timespan</code></td>
+          <td><code>div</code></td>
+          <td>The width of the marker. This draws the translucent background behind markers if your event has a start and end date. When writing styles for this selector, preface this selector with <code>tl-timemarker</code> (for slides other than the current slide) or <code>tl-timemarker.tl-timemarker-active</code> (for the current slide).</td>
+        </tr>
+        <tr>
+          <td><code>tl-timemarker-media-container</code></td>
+          <td><code>div</code></td>
+          <td>The icon or thumbnail representing the media in the timeline flag.</td>
+        </tr>
+        <tr>
+          <td><code>tl-headline</code></td>
+          <td><code>h2</code></td>
+          <td>The text of the flag. Set color and font family here.</td>
+        </tr>
+        <tr>
+          <td><code>tl-timeaxis</code></td>
+          <td><code>div</code></td>
+          <td>The ticks representing the timescale.</td>
+        </tr>
+        <tr>
+          <td><code>tl-timeaxis-background</code></td>
+          <td><code>div</code></td>
+          <td>The appearance of the background for the tick marks.</td>
+        </tr>
+        <tr>
+          <td><code>tl-timeaxis-tick:before</code></td>
+          <td><code>div</code></td>
+          <td>The line drawing the tick. Set the background color to change the color of the line. Preface with <code>tl-timeaxis-major</code> to target major ticks or <code>tl-timeaxis-minor</code> to target minor ticks.</td>
+        </tr>
+        </tbody>
+      </table>
+     </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  // make permalinks function for each question
+  jQuery("p[id]").each(function(){
+    jQuery(this).css('cursor','pointer');
+    jQuery(this).click(function(){
+      window.location.hash = "#" + this.id;
+    })
+  });
+});
+</script>
+{% endblock %}

@@ -208,14 +208,13 @@
             <div class="row">
               <div class="small-12 medium-3 columns">
                 <label class="checkbox">
-                  <input id="embed-timenavtop" type="checkbox" value="option1">Nav on top
+                  <input id="embed-timenavtop" type="checkbox" value="option1">Show nav on top
                 </label>
               </div>
               <div class="small-12 medium-9 columns">
                   <span class="help-inline">Switches the vertical order of the timeline navigation and the media.</span>
               </div>
             </div>
-            <!-- Debug-->
             <div class="row">
               <div class="small-12 medium-3 columns">
                 <label class="checkbox">
@@ -226,7 +225,17 @@
                   <span class="help-inline">In debug mode, the JavaScript console will display logging messages.</span>
               </div>
             </div>
-            <!-- Start at Slide-->
+            <div class="row">
+              <div class="small-12 medium-3 columns">
+                <label class="checkbox">
+                  <input id="embed-hash-bookmark" type="checkbox" value="option1">Use hash bookmarks
+                </label>
+              </div>
+              <div class="small-12 medium-9 columns">
+                  <span class="help-inline">Assigns a hash bookmark to each slide's URL, allowing deep linking to slides.</span>
+              </div>
+            </div>
+
             <div class="row">
               <div class="small-12 columns">
                 <label name="slide-start" for="embed-startatslide">Default start slide</label>
@@ -243,11 +252,10 @@
               <div class="small-12 medium-8 columns">
                 <p class="help-block">You can tell TimelineJS to start at a specific slide number.</p>
               </div>
-              </div>
-            <!-- Start at Slide-->
+            </div>
             <div class="row">
               <div class="small-12 columns">
-                <label name="slide-start" for="embed-initialzoom">Initial zoom level</label>
+                <label name="initial-zoom" for="embed-initialzoom">Initial zoom level</label>
               </div>
             </div>
             <div class="row collapse">
