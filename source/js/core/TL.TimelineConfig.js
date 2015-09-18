@@ -9,6 +9,7 @@ TL.TimelineConfig = TL.Class.extend({
 		this.title = '';
 		this.scale = '';
 		this.events = [];
+		this.eras = [];
 		this.event_dict = {}; // despite name, all slides (events + title) indexed by slide.unique_id
 		this.messages = {
 			errors: [],
@@ -27,6 +28,7 @@ TL.TimelineConfig = TL.Class.extend({
 				this.title = data.title;
 				this.event_dict[title_id] = this.title;
 			}
+
 			for (var i = 0; i < data.events.length; i++) {
 				try {
 					this.addEvent(data.events[i], true);
@@ -34,8 +36,19 @@ TL.TimelineConfig = TL.Class.extend({
 					this.logError("Event " + i + ": " + e);
 				}
 			}
-			TL.DateUtil.sortByDate(this.events);
 
+			if (data.eras) {
+				for (var i = 0; i < data.eras.length; i++) {
+					try {
+						this.addEra(data.eras[i], true);
+					} catch (e) {
+						this.logError("Era " + i + ": " + e);
+					}
+				}
+			}
+
+			TL.DateUtil.sortByDate(this.events);
+			TL.DateUtil.sortByDate(this.eras);
 
 		}
 	},
@@ -85,6 +98,25 @@ TL.TimelineConfig = TL.Class.extend({
 
 		if (!defer_sort) {
 			TL.DateUtil.sortByDate(this.events);
+		}
+		return event_id;
+	},
+
+	addEra: function(data, defer_sort) {
+		var event_id = this._assignID(data);
+
+		if (typeof(data.start_date) == 'undefined') {
+			throw(event_id + " is missing a start_date");
+		} else {
+			this._processDates(data);
+			this._tidyFields(data);
+		}
+
+		this.eras.push(data);
+		this.event_dict[event_id] = data;
+
+		if (!defer_sort) {
+			TL.DateUtil.sortByDate(this.eras);
 		}
 		return event_id;
 	},
@@ -167,31 +199,71 @@ TL.TimelineConfig = TL.Class.extend({
 		var dateCls = TL.DateUtil.SCALE_DATE_CLASSES[this.scale];
 		if (!dateCls) { this.logError("Don't know how to process dates on scale "+this.scale); }
 	},
-	_processDates: function(slide) {
+	/*
+	   Given a thing which has a start_date and optionally an end_date, make sure that it is an instance
+		 of the correct date class (for human or cosmological scale). For slides, remove redundant end dates
+		 (people frequently configure an end date which is the same as the start date).
+	 */
+	_processDates: function(slide_or_era) {
 		var dateCls = TL.DateUtil.SCALE_DATE_CLASSES[this.scale];
-		if(!(slide.start_date instanceof dateCls)) {
-			var start_date = slide.start_date;
-			slide.start_date = new dateCls(start_date);
+		if(!(slide_or_era.start_date instanceof dateCls)) {
+			var start_date = slide_or_era.start_date;
+			slide_or_era.start_date = new dateCls(start_date);
 
 			// eliminate redundant end dates.
-			if (typeof(slide.end_date) != 'undefined' && !(slide.end_date instanceof dateCls)) {
-				var end_date = slide.end_date;
+			if (typeof(slide_or_era.end_date) != 'undefined' && !(slide_or_era.end_date instanceof dateCls)) {
+				var end_date = slide_or_era.end_date;
 				var equal = true;
 				for (property in start_date) {
 					equal = equal && (start_date[property] == end_date[property]);
 				}
 				if (equal) {
 					trace("End date same as start date is redundant; dropping end date");
-					delete slide.end_date;
+					delete slide_or_era.end_date;
 				} else {
-					slide.end_date = new dateCls(end_date);
+					slide_or_era.end_date = new dateCls(end_date);
 				}
 
 			}
 		}
 
 	},
+	/**
+	 * Return the earliest date that this config knows about, whether it's a slide or an era
+	 */
+	getEarliestDate: function() {
+		// counting that dates were sorted in initialization
+		var date = this.events[0].start_date;
+		if (this.eras && this.eras.length > 0) {
+			if (this.eras[0].start_date.isBefore(date)) {
+				return this.eras[0].start_date;
+			}
+		}
+		return date;
 
+	},
+	/**
+	 * Return the latest date that this config knows about, whether it's a slide or an era, taking end_dates into account.
+	 */
+	getLatestDate: function() {
+		var dates = [];
+		for (var i = 0; i < this.events.length; i++) {
+			if (this.events[i].end_date) {
+				dates.push({ date: this.events[i].end_date });
+			} else {
+				dates.push({ date: this.events[i].start_date });
+			}
+		}
+		for (var i = 0; i < this.eras.length; i++) {
+			if (this.eras[i].end_date) {
+				dates.push({ date: this.eras[i].end_date });
+			} else {
+				dates.push({ date: this.eras[i].start_date });
+			}
+		}
+		TL.DateUtil.sortByDate(dates, 'date');
+		return dates.slice(-1)[0].date;
+	},
 	_tidyFields: function(slide) {
 
 		function fillIn(obj,key,default_value) {

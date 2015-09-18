@@ -49,7 +49,7 @@
         ]
     }, 
     "api": {
-        "wikipedia": "en"
+        "wikipedia": "en" // the two letter code at the beginning of the Wikipedia subdomain for this language
     }, 
     "messages": {
         "loading": "Loading", 
@@ -83,7 +83,7 @@
             "suffix": "BCE"
         }
     },
-    "period_labels": {  // use of t/tt/T/TT legacy of original Timeline date format
+    "period_labels": {  // use of t/tt/T/TT is a legacy of original Timeline date format
         "t": ["a", "p"],
         "tt": ["am", "pm"],
         "T": ["A", "P"],

@@ -15,7 +15,7 @@ TL.Media.Image = TL.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 
-		if (this.data.url.match(/.png(\?.*)?$/)) {
+		if (this.data.url.match(/.png(\?.*)?$/) || this.data.url.match(/.svg(\?.*)?$/)) {
 			image_class = "tl-media-item tl-media-image"
 		}
 
