@@ -234,7 +234,7 @@ TL.TimelineConfig = TL.Class.extend({
 	getEarliestDate: function() {
 		// counting that dates were sorted in initialization
 		var date = this.events[0].start_date;
-		if (this.eras) {
+		if (this.eras && this.eras.length > 0) {
 			if (this.eras[0].start_date.isBefore(date)) {
 				return this.eras[0].start_date;
 			}
