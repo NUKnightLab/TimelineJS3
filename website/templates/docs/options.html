@@ -6,8 +6,21 @@
       <div class="small-12 columns">
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
       <h2 id="options">TimelineJS options</h2>
-      <p>When you create a timeline manually by calling <code>VCO.Timeline</code>, you may pass in an optional third parameter which contains a variety of presentation options.</p>
-      <p>If you use our authoring tool, you can pass most of these as URL parameters. Add <code>&amp;option_name=<em>value</em></code> for each.</p>
+      <p>When you create a timeline manually by calling <code>TL.Timeline</code>, you may pass in an optional third parameter which contains a variety of presentation options.
+      This third parameter should be a javascript object with keys matching the value in the `Name` column and corresponding values appropriate to the specific key. For example:
+      <pre class="prettyprint lang-javascript">
+  var options = {
+    hash_bookmark: false,
+    initial_zoom: 5
+  }
+  var timeline = new TL.Timeline('timeline-embed',
+                                 'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+                                 options);
+      </pre>
+    </p>
+
+      <p>If you use our authoring tool, you can pass most of these as URL parameters. Add <code>&amp;option_name=<em>value</em></code> for each. To demonstrate using the same options
+      as above: <code>https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Default&lang=en&initial_zoom=3&height=650&hash_bookmark=false</code></p>
       <table>
         <thead>
           <th>Name</th>
@@ -65,7 +78,7 @@
             <td><code>zoom_sequence</code></td>
             <td>[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</td>
             <td>Array of values for TimeNav zoom levels. Each value is a <code>scale_factor</code>,  which means that at any given level, the full timeline
-            would require that many screens to display all events. 
+            would require that many screens to display all events.
             </td>
           </tr>
           <tr>
@@ -165,7 +178,7 @@
           </tr>
           <tr>
             <td><code>ease</code></td>
-            <td><code>VCO.Ease.easeInOutQuint</code></td>
+            <td><code>TL.Ease.easeInOutQuint</code></td>
             <td></td>
           </tr>
           <tr>

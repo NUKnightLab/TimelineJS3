@@ -39,11 +39,13 @@ function getLinkAndIframe() {
     e_startatend = document.getElementById('embed-startatend'),
     e_timenav_top = document.getElementById('embed-timenavtop'),
     e_startatslide = document.getElementById('embed-startatslide'),
+    e_hashbookmark = document.getElementById('embed-hash-bookmark'),
     e_debug = document.getElementById('embed-debug'),
     initial_zoom = document.getElementById('embed-initialzoom'),
     timenav_position = "bottom",
     start_at_end = false,
     is_debug = false,
+    hash_bookmark = false,
     iframe,
     link,
     vars,
@@ -53,7 +55,7 @@ function getLinkAndIframe() {
   /* SOURCE KEY
   ================================================== */
   if (e_source.value.match("docs.google.com")) {
-    var obj = VCO.ConfigFactory.parseGoogleSpreadsheetURL(e_source.value);
+    var obj = TL.ConfigFactory.parseGoogleSpreadsheetURL(e_source.value);
     source_key = obj.key;
   } else {
     if (e_source.value == "") {
@@ -77,6 +79,10 @@ function getLinkAndIframe() {
     is_debug = true;
   }
 
+  if (e_hashbookmark.checked) {
+    hash_bookmark = true;
+  }
+
   /* IFRAME AND LINK
   ================================================== */
   vars    =  generator_embed_path + "?source=" + source_key;
@@ -90,6 +96,9 @@ function getLinkAndIframe() {
   }
   if (is_debug) {
     vars  += "&debug=" + is_debug;
+  }
+  if (hash_bookmark) {
+    vars += "&hash_bookmark=" + hash_bookmark;
   }
   if (initial_zoom) {
     vars += "&initial_zoom=" + initial_zoom.value;
@@ -199,16 +208,8 @@ $(document).ready(function() {
   // Embed Generator
   updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
-  $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-height').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-maptype').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-source-url').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-language').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-startatend').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-timenavtop').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-width').change(function(evt) { updateEmbedCode(evt); });
-  $('#embed-initialzoom').change(function(evt) { updateEmbedCode(evt); });
+  $('#make-step-3 input').change(function(evt) { updateEmbedCode(evt); });
+  $('#make-step-3 select').change(function(evt) { updateEmbedCode(evt); });
   $("#embed-font li").on("click", function(evt){
     var currentFont = document.getElementById("embed-font-active");
     currentFont.removeChild(currentFont.firstChild);

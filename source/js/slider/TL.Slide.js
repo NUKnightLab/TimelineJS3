@@ -53,7 +53,8 @@ TL.Slide = TL.Class.extend({
 			end_date: 				null,
 			location: 				null,
 			text: 					null,
-			media: 					null
+			media: 					null,
+      autolink: true
 		};
 	
 		// Options
@@ -229,6 +230,7 @@ TL.Slide = TL.Class.extend({
 			this.data.media.mediatype 	= TL.MediaType(this.data.media);
 			this.options.media_name 	= this.data.media.mediatype.name;
 			this.options.media_type 	= this.data.media.mediatype.type;
+      this.options.autolink = this.data.autolink;
 			
 			// Create a media object using the matched class name
 			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
@@ -237,7 +239,7 @@ TL.Slide = TL.Class.extend({
 		
 		// Create Text
 		if (this.has.text || this.has.headline) {
-			this._text = new TL.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
+			this._text = new TL.Media.Text(this.data.text, {title:this.has.title,language: this.options.language, autolink: this.data.autolink });
 			this._text.addDateText(this.getFormattedDate());
 		}
 		

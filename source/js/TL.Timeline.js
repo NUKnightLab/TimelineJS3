@@ -155,7 +155,7 @@ TL.Timeline = TL.Class.extend({
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
 			is_full_embed: 				false,
-			hash_bookmark: 				true,
+			hash_bookmark: false,
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
 			layout: 					"landscape",			// portrait or landscape
@@ -190,10 +190,6 @@ TL.Timeline = TL.Class.extend({
 			ga_property_id: 			null,
 			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
-
-		// Current Slide
-		// this.current_slide = this.options.start_at_slide;
-		// no longer using this, track current slide by id only
 
 		// Animation Objects
 		this.animator_timenav = null;
@@ -568,7 +564,9 @@ TL.Timeline = TL.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		var hash = "#" + "event-" + id.toString();
-		window.history.replaceState(null, "Browsing TimelineJS", hash);
+		if (window.location.protocol != 'file:') {
+			window.history.replaceState(null, "Browsing TimelineJS", hash);
+		}
 		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 
@@ -596,7 +594,7 @@ TL.Timeline = TL.Class.extend({
 		if (this.config.isValid()) {
 			this._onDataLoaded();
 		} else {
-			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors(';'));
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors('<br>'));
 			// should we set 'self.ready'? if not, it won't resize,
 			// but most resizing would only work
 			// if more setup happens
@@ -634,11 +632,11 @@ TL.Timeline = TL.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
-		// intial_zoom cannot be applied before the timenav has been created
-		if (this.options.initial_zoom) {
-			// at this point, this.options refers to the merged set of options
-			this.setZoom(this.options.initial_zoom);
-		}
+    // intial_zoom cannot be applied before the timenav has been created
+    if (this.options.initial_zoom) {
+      // at this point, this.options refers to the merged set of options
+      this.setZoom(this.options.initial_zoom);
+    }
 
 		// Create StorySlider
 		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);
@@ -661,7 +659,7 @@ TL.Timeline = TL.Class.extend({
 
 	},
 
-	/* Depends upon _initLayout because these events are on things the layout initializes */
+  /* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);

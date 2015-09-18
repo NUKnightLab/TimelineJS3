@@ -36,9 +36,15 @@
           stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. The basis of TimelineJS's styles are in
           <a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/source/less">these files</a>, which use the <a href="http://lesscss.org/">Less CSS preprocessor</a>.
         </p>
-
-
-
+      </div>
+      <div class="question">
+        <p id="groups">
+          How can I categorize or group my events?
+        </p>
+        <p>
+          Every event in a timeline can have a <code>group</code> property. Events with the same group are shown in the same row or adjacent rows, and the common value of their <code>group</code>
+          property is used as a label at the left edge of the timeline. Groups can be set <a href="/docs/using-spreadsheets.html#groups">using the "group" column in the Google Spreadsheet</a> or the <a href="/docs/json-format.html#json-slide">"group" property of a JSON slide object</a>. TimelineJS does not support any other special styling for events in the same group.
+        </p>
       </div>
 
 

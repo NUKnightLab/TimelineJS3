@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 2015-09-16-20-09-13 - 2015-09-16
+    TimelineJS - ver. 2015-09-18-15-26-18 - 2015-09-18
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -26,7 +26,7 @@ var embed_analytics = "UA-537357-20";
 
 /* REPLACE THIS WITH YOUR BASE PATH FOR TIMELINE
 ================================================== */
-//var embed_path = "http://cdn.knightlab.com/libs/timeline3/latest/embed/";
+//var embed_path = "https://cdn.knightlab.com/libs/timeline3/latest/embed/";
 
 /* LOAD TIMER
 ================================================== */

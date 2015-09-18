@@ -90,6 +90,15 @@
                 <br/><code>color</code>: a CSS color, in hexadecimal (e.g. <code>#0f9bd1</code>) or a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_keywords">CSS color keyword</a>.
             </td>
           </tr>
+          <tr>
+            <td><code>autolink</code></td>
+            <td>No</td>
+            <td>A boolean value (<code>true</code> or <code>false</code>). Defaults to <code>true</code>, which means that Timeline will scan text fields and automatically add
+              <code>&lt;a&gt;</code> tags so that links and email addresses are "clickable." If set to false, you may still manually apply the tags in the appropriate fields when
+              you want links. Autolinking applies to the <code>text</code> field in
+              a <code><a href="#json-text" data-scroll="true">text</a></code> object and the <code>caption</code> and <code>credit</code> fields in
+              a <code><a href="#json-media" data-scroll="true">media</a></code> object.</td>
+            </tr>
         </tbody>
       </table>
     <p id="json-date" class="jump"><strong><em>Date objects</em></strong> are JSON objects with the following properties:</p>
@@ -195,4 +204,17 @@
     </div>
   </div>
 </section>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  // make permalinks function for each question
+  jQuery("p[id]").each(function(){
+    jQuery(this).css('cursor','pointer');
+    jQuery(this).click(function(){
+      window.location.hash = "#" + this.id;
+    })
+  });
+});
+</script>
 {% endblock %}

@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 2015-09-16-20-09-13 - 2015-09-16
+    TimelineJS - ver. 2015-09-18-15-26-18 - 2015-09-18
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -364,10 +364,10 @@ TL.Util = {
 				b = parts[3];
 			}
 		}
-		if (!r || !b || !g) {
-			//throw "Invalid RGB argument";
+		if (isNaN(r) || isNaN(b) || isNaN(g)) {
+			throw "Invalid RGB argument";
 		}
-		return "#" + parseInt(r,10).toString(16) + parseInt(g,10).toString(16) + parseInt(b,10).toString(16);
+		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
 	},
 	colorObjToHex: function(o) {
 		var parts = [o.r, o.g, o.b];
@@ -658,7 +658,9 @@ TL.Util = {
 		while (val.length < len) val = "0" + val;
 		return val;
 	},
-
+	intToHexString: function(i) {
+		return TL.Util.pad(parseInt(i,10).toString(16));
+	},
     findNextGreater: function(list, current, default_value) {
         // given a sorted list and a current value which *might* be in the list,
         // return the next greatest value if the current value is >= the last item in the list, return default,
@@ -3223,7 +3225,7 @@ TL.TimelineConfig = TL.Class.extend({
 	getEarliestDate: function() {
 		// counting that dates were sorted in initialization
 		var date = this.events[0].start_date;
-		if (this.eras) {
+		if (this.eras && this.eras.length > 0) {
 			if (this.eras[0].start_date.isBefore(date)) {
 				return this.eras[0].start_date;
 			}
@@ -3456,7 +3458,7 @@ TL.TimelineConfig = TL.Class.extend({
         }
 
     var googleFeedJSONtoTimelineJSON = function(data) {
-        var timeline_config = { 'events': [], 'errors': [] }
+        var timeline_config = { 'events': [], 'errors': [], 'eras': [] }
         var extract = getGoogleItemExtractor(data);
         for (var i = 0; i < data.feed.entry.length; i++) {
             try {
@@ -3469,6 +3471,8 @@ TL.TimelineConfig = TL.Class.extend({
                   }
                   if (row_type == 'title') {
                       timeline_config.title = event;
+                  } else if (row_type == 'era') {
+                    timeline_config.eras.push(event);
                   } else {
                       timeline_config.events.push(event);
                   }
@@ -3488,7 +3492,18 @@ TL.TimelineConfig = TL.Class.extend({
         var key = parseGoogleSpreadsheetURL(url);
 
         if (key) {
+          try {
             var json = jsonFromGoogleURL(url);
+          } catch(e) {
+            tc = new TL.TimelineConfig();
+            if (e.name == 'NetworkError') {
+              tc.logError("Unable to read your Google Spreadsheet. Make sure you have published it to the web.")
+            } else {
+              tc.logError("An unexpected error occurred trying to read your spreadsheet data ["+e.name+"]");
+            }
+            callback(tc);
+            return;
+          }
             var tc = new TL.TimelineConfig(json);
             if (json.errors) {
                 for (var i = 0; i < json.errors.length; i++) {
@@ -7095,14 +7110,14 @@ TL.Media = TL.Class.extend({
 		// Credit
 		if (this.data.credit && this.data.credit != "") {
 			this._el.credit					= TL.Dom.create("div", "tl-credit", this._el.content_container);
-			this._el.credit.innerHTML		= TL.Util.linkify(this.data.credit);
+			this._el.credit.innerHTML		= this.options.autolink == true ? TL.Util.linkify(this.data.credit) : this.data.credit;
 			this.options.credit_height 		= this._el.credit.offsetHeight;
 		}
 
 		// Caption
 		if (this.data.caption && this.data.caption != "") {
 			this._el.caption				= TL.Dom.create("div", "tl-caption", this._el.content_container);
-			this._el.caption.innerHTML		= TL.Util.linkify(this.data.caption);
+			this._el.caption.innerHTML		= this.options.autolink == true ? TL.Util.linkify(this.data.caption) : this.data.caption;
 			this.options.caption_height 	= this._el.caption.offsetHeight;
 		}
 
@@ -7655,7 +7670,7 @@ TL.Media.Image = TL.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 
-		if (this.data.url.match(/.png(\?.*)?$/)) {
+		if (this.data.url.match(/.png(\?.*)?$/) || this.data.url.match(/.svg(\?.*)?$/)) {
 			image_class = "tl-media-item tl-media-image"
 		}
 
@@ -8289,26 +8304,24 @@ TL.Media.Text = TL.Class.extend({
 			this._el.headline				= TL.Dom.create("h2", headline_class, this._el.content_container);
 			this._el.headline.innerHTML		= this.data.headline;
 		}
-		
+
 		// Text
 		if (this.data.text != "") {
 			var text_content = "";
-			
-			text_content 					+= TL.Util.htmlify(TL.Util.linkify(this.data.text));
-						
+
+      text_content += TL.Util.htmlify(this.options.autolink == true ? TL.Util.linkify(this.data.text) : this.data.text);
+
 			this._el.content				= TL.Dom.create("div", "tl-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;
 		}
-		
-		
+
 		// Fire event that the slide is loaded
 		this.onLoaded();
-		
-		
-		
+
 	}
-	
+
 });
+
 
 /* **********************************************
      Begin TL.Media.Twitter.js
@@ -8930,7 +8943,8 @@ TL.Slide = TL.Class.extend({
 			end_date: 				null,
 			location: 				null,
 			text: 					null,
-			media: 					null
+			media: 					null,
+      autolink: true
 		};
 	
 		// Options
@@ -9106,6 +9120,7 @@ TL.Slide = TL.Class.extend({
 			this.data.media.mediatype 	= TL.MediaType(this.data.media);
 			this.options.media_name 	= this.data.media.mediatype.name;
 			this.options.media_type 	= this.data.media.mediatype.type;
+      this.options.autolink = this.data.autolink;
 			
 			// Create a media object using the matched class name
 			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
@@ -9114,7 +9129,7 @@ TL.Slide = TL.Class.extend({
 		
 		// Create Text
 		if (this.has.text || this.has.headline) {
-			this._text = new TL.Media.Text(this.data.text, {title:this.has.title,language: this.options.language});
+			this._text = new TL.Media.Text(this.data.text, {title:this.has.title,language: this.options.language, autolink: this.data.autolink });
 			this._text.addDateText(this.getFormattedDate());
 		}
 		
@@ -11575,11 +11590,11 @@ TL.TimeScale = TL.Class.extend({
 ================================================== */
 
 TL.TimeAxis = TL.Class.extend({
-	
+
 	includes: [TL.Events, TL.DomMixins, TL.I18NMixins],
-	
+
 	_el: {},
-	
+
 	/*	Constructor
 	================================================== */
 	initialize: function(elem, options) {
@@ -11590,19 +11605,19 @@ TL.TimeAxis = TL.Class.extend({
 			major: {},
 			minor: {},
 		};
-	
+
 		// Components
 		this._text			= {};
-	
+
 		// State
 		this._state = {
 			loaded: 		false
 		};
-		
-		
+
+
 		// Data
 		this.data = {};
-	
+
 		// Options
 		this.options = {
 			duration: 				1000,
@@ -11610,22 +11625,22 @@ TL.TimeAxis = TL.Class.extend({
 			width: 					600,
 			height: 				600
 		};
-		
+
 		// Actively Displaying
 		this.active = false;
-		
+
 		// Animation Object
 		this.animator = {};
-		
+
 		// Axis Helper
 		this.axis_helper = {};
-		
+
 		// Minor tick dom element array
 		this.minor_ticks = [];
-		
+
 		// Minor tick dom element array
 		this.major_ticks = [];
-		
+
 		// Date Format Lookup, map TL.Date.SCALES names to...
 		this.dateformat_lookup = {
 	        millisecond: 'time_milliseconds',     // ...TL.Language.<code>.dateformats
@@ -11637,55 +11652,55 @@ TL.TimeAxis = TL.Class.extend({
 	        year: 'year',
 	        decade: 'year',
 	        century: 'year',
-	        millennium: 'year', 
+	        millennium: 'year',
 	        age: 'compact',  // ...TL.Language.<code>.bigdateformats
 	        epoch: 'compact',
 	        era: 'compact',
 	        eon: 'compact',
 	        eon2: 'compact'
 	    }
-		
+
 		// Main element
 		if (typeof elem === 'object') {
 			this._el.container = elem;
 		} else {
 			this._el.container = TL.Dom.get(elem);
 		}
-		
+
 		// Merge Data and Options
 		TL.Util.mergeData(this.options, options);
-		
+
 		this._initLayout();
 		this._initEvents();
-		
+
 	},
-	
+
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show: function() {
 
 	},
-	
+
 	hide: function() {
-		
+
 	},
-	
+
 	addTo: function(container) {
 		container.appendChild(this._el.container);
 	},
-	
+
 	removeFrom: function(container) {
 		container.removeChild(this._el.container);
 	},
-	
+
 	updateDisplay: function(w, h) {
 		this._updateDisplay(w, h);
 	},
-	
+
 	getLeft: function() {
 		return this._el.container.style.left.slice(0, -2);
 	},
-	
+
 	drawTicks: function(timescale, optimal_tick_width) {
 
 		var ticks = timescale.getTicks();
@@ -11709,37 +11724,37 @@ TL.TimeAxis = TL.Class.extend({
 		this._el.minor.className = "tl-timeaxis-minor";
 		this._el.major.style.opacity = 0;
 		this._el.minor.style.opacity = 0;
-		
+
 		// CREATE MAJOR TICKS
 		this.major_ticks = this._createTickElements(
-			ticks['major'].ticks, 
-			this._el.major, 
+			ticks['major'].ticks,
+			this._el.major,
 			this.dateformat_lookup[ticks['major'].name]
 		);
-		
+
 		// CREATE MINOR TICKS
 		this.minor_ticks = this._createTickElements(
-			ticks['minor'].ticks, 
-			this._el.minor, 
+			ticks['minor'].ticks,
+			this._el.minor,
 			this.dateformat_lookup[ticks['minor'].name],
 			ticks['major'].ticks
 		);
-		
+
 		this.positionTicks(timescale, optimal_tick_width, true);
-		
+
 		// FADE IN
 		this._el.major.className = "tl-timeaxis-major tl-animate-opacity tl-timeaxis-animate-opacity";
 		this._el.minor.className = "tl-timeaxis-minor tl-animate-opacity tl-timeaxis-animate-opacity";
 		this._el.major.style.opacity = 1;
 		this._el.minor.style.opacity = 1;
 	},
-	
+
 	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
 		tick_element.innerHTML = "";
 		var skip_times = {}
 		if (ticks_to_skip){
-			for (idx in ticks_to_skip) {
-				skip_times[ticks_to_skip[idx].getTime()] = true;
+			for (var i = 0; i < ticks_to_skip.length; i++) {
+				skip_times[ticks_to_skip[i].getTime()] = true;
 			}
 		}
 
@@ -11749,9 +11764,9 @@ TL.TimeAxis = TL.Class.extend({
 			if (!(ts_tick.getTime() in skip_times)) {
 				var tick = TL.Dom.create("div", "tl-timeaxis-tick", tick_element),
 					tick_text 	= TL.Dom.create("span", "tl-timeaxis-tick-text tl-animate-opacity", tick);
-				
+
 				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage(), dateformat);
-				
+
 				tick_elements.push({
 					tick:tick,
 					tick_text:tick_text,
@@ -11764,7 +11779,7 @@ TL.TimeAxis = TL.Class.extend({
 	},
 
 	positionTicks: function(timescale, optimal_tick_width, no_animate) {
-		
+
 		// Handle Animation
 		if (no_animate) {
 			this._el.major.className = "tl-timeaxis-major";
@@ -11773,33 +11788,33 @@ TL.TimeAxis = TL.Class.extend({
 			this._el.major.className = "tl-timeaxis-major tl-timeaxis-animate";
 			this._el.minor.className = "tl-timeaxis-minor tl-timeaxis-animate";
 		}
-		
+
 		this._positionTickArray(this.major_ticks, timescale, optimal_tick_width);
 		this._positionTickArray(this.minor_ticks, timescale, optimal_tick_width);
-		
+
 	},
-	
+
 	_positionTickArray: function(tick_array, timescale, optimal_tick_width) {
 		// Poition Ticks & Handle density of ticks
 		if (tick_array[1] && tick_array[0]) {
 			var distance = ( timescale.getPosition(tick_array[1].date.getMillisecond()) - timescale.getPosition(tick_array[0].date.getMillisecond()) ),
 				fraction_of_array = 1;
-				
-				
+
+
 			if (distance < optimal_tick_width) {
 				fraction_of_array = Math.round(optimal_tick_width/timescale.getPixelsPerTick());
 			}
-			
+
 			var show = 1;
-			
+
 			for (var i = 0; i < tick_array.length; i++) {
-				
+
 				var tick = tick_array[i];
-				
+
 				// Poition Ticks
 				tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
 				tick.tick_text.innerHTML = tick.display_date;
-				
+
 				// Handle density of ticks
 				if (fraction_of_array > 1) {
 					if (show >= fraction_of_array) {
@@ -11815,43 +11830,43 @@ TL.TimeAxis = TL.Class.extend({
 					tick.tick_text.style.opacity = 1;
 					tick.tick.className = "tl-timeaxis-tick";
 				}
-				
+
 			};
 		}
 	},
-	
+
 	/*	Events
 	================================================== */
 
-	
+
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
 		this._el.content_container		= TL.Dom.create("div", "tl-timeaxis-content-container", this._el.container);
 		this._el.major					= TL.Dom.create("div", "tl-timeaxis-major", this._el.content_container);
 		this._el.minor					= TL.Dom.create("div", "tl-timeaxis-minor", this._el.content_container);
-		
+
 		// Fire event that the slide is loaded
 		this.onLoaded();
 	},
-	
+
 	_initEvents: function() {
-		
+
 	},
-	
+
 	// Update Display
 	_updateDisplay: function(width, height, layout) {
-		
+
 		if (width) {
 			this.options.width 					= width;
-		} 
+		}
 
 		if (height) {
 			this.options.height = height;
 		}
-		
+
 	}
-	
+
 });
 
 
@@ -12123,7 +12138,7 @@ TL.Timeline = TL.Class.extend({
 			width: 						this._el.container.offsetWidth,
 			is_embed: 					false,
 			is_full_embed: 				false,
-			hash_bookmark: 				true,
+			hash_bookmark: false,
 			default_bg_color: 			{r:255, g:255, b:255},
 			scale_factor: 				2,						// How many screen widths wide should the timeline be
 			layout: 					"landscape",			// portrait or landscape
@@ -12158,10 +12173,6 @@ TL.Timeline = TL.Class.extend({
 			ga_property_id: 			null,
 			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
 		};
-
-		// Current Slide
-		// this.current_slide = this.options.start_at_slide;
-		// no longer using this, track current slide by id only
 
 		// Animation Objects
 		this.animator_timenav = null;
@@ -12536,7 +12547,9 @@ TL.Timeline = TL.Class.extend({
 	// Update hashbookmark in the url bar
 	_updateHashBookmark: function(id) {
 		var hash = "#" + "event-" + id.toString();
-		window.history.replaceState(null, "Browsing TimelineJS", hash);
+		if (window.location.protocol != 'file:') {
+			window.history.replaceState(null, "Browsing TimelineJS", hash);
+		}
 		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
 	},
 
@@ -12564,7 +12577,7 @@ TL.Timeline = TL.Class.extend({
 		if (this.config.isValid()) {
 			this._onDataLoaded();
 		} else {
-			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors(';'));
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors('<br>'));
 			// should we set 'self.ready'? if not, it won't resize,
 			// but most resizing would only work
 			// if more setup happens
@@ -12602,11 +12615,11 @@ TL.Timeline = TL.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
-		// intial_zoom cannot be applied before the timenav has been created
-		if (this.options.initial_zoom) {
-			// at this point, this.options refers to the merged set of options
-			this.setZoom(this.options.initial_zoom);
-		}
+    // intial_zoom cannot be applied before the timenav has been created
+    if (this.options.initial_zoom) {
+      // at this point, this.options refers to the merged set of options
+      this.setZoom(this.options.initial_zoom);
+    }
 
 		// Create StorySlider
 		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);
@@ -12629,7 +12642,7 @@ TL.Timeline = TL.Class.extend({
 
 	},
 
-	/* Depends upon _initLayout because these events are on things the layout initializes */
+  /* Depends upon _initLayout because these events are on things the layout initializes */
 	_initEvents: function () {
 		// TimeNav Events
 		this._timenav.on('change', this._onTimeNavChange, this);
