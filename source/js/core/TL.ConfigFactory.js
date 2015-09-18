@@ -189,7 +189,11 @@
                       delete event.type;
                   }
                   if (row_type == 'title') {
+                    if (!timeline_config.title) {
                       timeline_config.title = event;
+                    } else {
+                      timeline_config.events.push(event);
+                    }
                   } else if (row_type == 'era') {
                     timeline_config.eras.push(event);
                   } else {
