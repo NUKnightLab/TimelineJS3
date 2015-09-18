@@ -177,7 +177,7 @@
         }
 
     var googleFeedJSONtoTimelineJSON = function(data) {
-        var timeline_config = { 'events': [], 'errors': [], 'eras': [] }
+        var timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
         var extract = getGoogleItemExtractor(data);
         for (var i = 0; i < data.feed.entry.length; i++) {
             try {
@@ -192,6 +192,7 @@
                     if (!timeline_config.title) {
                       timeline_config.title = event;
                     } else {
+                      timeline_config.warnings.push("Multiple title slides detected.");
                       timeline_config.events.push(event);
                     }
                   } else if (row_type == 'era') {
