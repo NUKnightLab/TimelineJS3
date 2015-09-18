@@ -347,6 +347,8 @@ TL.TimeNav = TL.Class.extend({
 	},
 
 	_positionEras: function(fast) {
+
+		var era_color = 0;
 		// POSITION X
 		for (var i = 0; i < this._eras.length; i++) {
 			var pos = {
@@ -367,7 +369,11 @@ TL.TimeNav = TL.Class.extend({
 			this._eras[i].setPosition({left:pos.start});
 			this._eras[i].setWidth(pos.width);
 
-			this._eras[i].setColor(i);
+			era_color++;
+			if (era_color > 5) {
+				era_color = 0;
+			}
+			this._eras[i].setColor(era_color);
 		};
 
 	},
