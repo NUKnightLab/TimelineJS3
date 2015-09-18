@@ -177,7 +177,7 @@
         }
 
     var googleFeedJSONtoTimelineJSON = function(data) {
-        var timeline_config = { 'events': [], 'errors': [] }
+        var timeline_config = { 'events': [], 'errors': [], 'eras': [] }
         var extract = getGoogleItemExtractor(data);
         for (var i = 0; i < data.feed.entry.length; i++) {
             try {
@@ -190,6 +190,8 @@
                   }
                   if (row_type == 'title') {
                       timeline_config.title = event;
+                  } else if (row_type == 'era') {
+                    timeline_config.eras.push(event);
                   } else {
                       timeline_config.events.push(event);
                   }
