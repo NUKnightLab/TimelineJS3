@@ -624,7 +624,7 @@ TL.Timeline = TL.Class.extend({
 		this._el.storyslider.style.top  = "1px";
 
 		// Set TimeNav Height
-		this.options.timenav_height = this._calculateTimeNavHeight();
+		this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
 
 		// Create TimeNav
 		this._timenav = new TL.TimeNav(this._el.timenav, this.config, this.options);
@@ -655,7 +655,7 @@ TL.Timeline = TL.Class.extend({
 
 
 		// Update Display
-		this._updateDisplay(false, true, 2000);
+		this._updateDisplay(this._timenav.options.height, true, 2000);
 
 	},
 
