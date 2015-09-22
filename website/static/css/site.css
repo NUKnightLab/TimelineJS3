@@ -389,6 +389,10 @@ p.input-label {
     margin-top: 20px;
 }
 
+ul.supported-media li {
+    padding: 2px 0;
+}
+
 /* documentation pages */
 p.breadcrumb {
     font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
