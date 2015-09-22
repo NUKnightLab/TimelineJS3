@@ -451,7 +451,7 @@ p.breadcrumb {
   }
 
 #mc-embedded-subscribe-form .input-large {
-  width: 260px;
+    margin: 0;
 }
 
 #font-preview-trigger { margin: 20px 0 0 0;}
