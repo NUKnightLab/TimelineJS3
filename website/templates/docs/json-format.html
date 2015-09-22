@@ -7,7 +7,7 @@
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
         <h2>TimelineJS 3 JSON data format</h2>
         <p>
-          Every timeline needs data about the events it is to show. Most people are happy to just <a href="/index.html#make">use a Google spreadsheet</a> to configure their Timeline, but if you want to write
+          Every timeline needs data about the events it is to show. Most people are happy to just <a href="using-spreadsheets.html">use a Google spreadsheet</a> to configure their Timeline, but if you want to write
           code to dynamically create or update your timeline, you'll need to understand how to format the data.
         </p>
         <p>
@@ -34,6 +34,11 @@
           <td><code>title</code></td>
           <td>No</td>
           <td>A "slide" object (<a href="#json-slide" data-scroll="true">see below</a>)</td>
+        </tr>
+        <tr>
+          <td><code>eras</code></td>
+          <td>No</td>
+          <td>A JSON list of "era" objects (<a href="#json-era" data-scroll="true">see below</a>)</td>
         </tr>
         <tr>
           <td><code>scale</code></td>
@@ -101,6 +106,36 @@
             </tr>
         </tbody>
       </table>
+
+      <p id="json-era" class="jump">
+        <strong><em>Era objects</em></strong> are JSON objects which are used to label a span of time on the timeline navigation component. In structure, they are essentially
+        very restricted "slide" objects.
+        <table>
+          <thead>
+            <th>Name</th>
+            <th>Required?</th>
+            <th>Notes</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>start_date</code></td>
+              <td>Yes</td>
+              <td>A "date" object (<a href="#json-date" data-scroll="true">see below</a>)</td>
+            </tr>
+            <tr>
+              <td><code>end_date</code></td>
+              <td>Yes</td>
+              <td>A "date" object (<a href="#json-date" data-scroll="true">see below</a>)</td>
+            </tr>
+            <tr>
+              <td><code>text</code></td>
+              <td>No, but recommended</td>
+              <td>A "text" object (<a href="#json-text" data-scroll="true">see below</a>) </td>
+            </tr>
+          </tbody>
+        </table>
+
+
     <p id="json-date" class="jump"><strong><em>Date objects</em></strong> are JSON objects with the following properties:</p>
     <table>
       <thead>
@@ -167,7 +202,7 @@
         <tr>
           <td><code>text</code></td>
           <td>No</td>
-          <td>Any text. HTML markup is OK. Blank is OK.</td>
+          <td>Any text. HTML markup is OK. Blank is OK. Not used for <a href="#json-era" data-scroll="true">era</a> objects.</td>
         </tr>
       </tbody>
     </table>

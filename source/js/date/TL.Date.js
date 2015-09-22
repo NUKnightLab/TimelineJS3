@@ -239,7 +239,7 @@ TL.BigYear = TL.Class.extend({
     // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
     var ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 
-    /* For now, rather than extract parts from regexp, let's trust the browser.
+    /* For now, rather than extract parts from regexp, lets trust the browser.
      * Famous last words...
      * What about UTC vs local time?
      * see also http://stackoverflow.com/questions/10005374/ecmascript-5-date-parse-results-for-iso-8601-test-cases
@@ -407,6 +407,10 @@ TL.BigDate = TL.Date.extend({
 
     // cosmological scales
     cls.SCALES = [ // ( name, units_per_tick, flooring function )
+				['year',1, new Floorer(1)],
+				['decade',10, new Floorer(10)],
+				['century',100, new Floorer(100)],
+				['millennium',1000, new Floorer(1000)],
         ['age',AGE, new Floorer(AGE)],          // 1M years
         ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
         ['era',ERA, new Floorer(ERA)],          // 100M years
