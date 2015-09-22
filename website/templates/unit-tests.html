@@ -334,9 +334,12 @@
 
           var age_scale = TL.Date.makeDate({year: 1500000});
           throws(function(assert) {
-            age_scale.floor('year');
-          },/invalid scale/,'year not valid scale for cosmo');
+            age_scale.floor('month');
+          },/invalid scale/,'month not valid scale for cosmo');
           assert.equal(age_scale.floor('age').getTime(),1000000,'Should floor to 1M years');
+
+          var cosmo_year = new TL.BigDate({'year': 1945});
+          assert.equal(cosmo_year.floor('decade').getTime(),1940, 'decade should floor 1945 to 1940')
 
       });
 
