@@ -23,9 +23,17 @@
         <p id="slide_background">
           If you like, you can set the background of the slide to a specific color or an image. To do this, enter a <a href="http://www.w3schools.com/cssref/css_colors.asp">CSS hex color</a> value, <a href="http://www.w3schools.com/cssref/css_colornames.asp">CSS named color</a>, or the URL to an image in the <strong>Background</strong> column (<strong>R</strong>).
         </p>
-        <h4 id="title_slides">Title slides</h4>
+        <h4 id="title_slides">Titles and Eras</h4>
         <p>
-          Each timeline has the option for an introductory title slide. Simply type "title" into the <strong>Type</strong> column (<strong>P</strong>) of the slide you wish to display first. This slide will have no date displayed. You should only have one row with "title" in the Type column.
+          The <strong>Type</strong> column (<strong>P</strong>) can be used to activate a few more specialized features in Timeline. In most cases, you'll leave it blank.
+        </p>
+        <p>
+          If you use the word <code>title</code> in this column, then Timeline will use the row as a "title slide," which is shown before all others, and which does not require a date. Title
+          slides do not appear in the markers in the navigation component of the Timeline. You should only have one row with "title" in the Type column.
+        </p>
+        <p>
+          If you use the word <code>era</code> in this column, then Timeline will use the row to label a span of time in the "axis" area of the timeline navigation component. Each era gets
+          a distinct color, which is not currently configurable. At this time, overlapping eras are not well-supported, but we are investigating design strategies for that use case.
         </p>
         <h4 id="organizing_slides">Organizing slides</h4>
         <p>
