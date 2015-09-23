@@ -3,10 +3,10 @@
 {% endblock %}
 {% block content %}
   {% include "_banner.html" %}
+  {% include "_demo.html" %}
   {% include "_overview.html" %}
   {% include "_make.html" %}
   {% include "_examples.html" %}
-  {% include "_roadmap.html" %}
 {% endblock %}
 
 {% block scripts %}
@@ -19,7 +19,7 @@
     var generator_embed_path = "/build/embed/index.html";
   {% endif %}
   </script>
-
+  <script src="//cdn.knightlab.com/libs/purpleline/latest/js/foundation.abide.js"></script>
   <script src="{{ static_url }}/js/main.js"></script>
 {% endblock %}
 
