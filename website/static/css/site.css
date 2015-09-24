@@ -215,7 +215,7 @@ ul#embed-font-dropdown > li > p {
 }
 
 #preview-embed {
-  display: none;
+    display: none;
 }
 #device-preview-mode {
     font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;

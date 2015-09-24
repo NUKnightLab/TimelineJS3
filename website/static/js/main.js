@@ -165,7 +165,8 @@ $(document).ready(function() {
 
   // Preview
   $("#iframe-preview-button").click(function () {
-    var $embed = $("#preview");
+    updateEmbedCode();
+    var $embed = $("#preview-embed-iframe");
 
     $embed.show();
 
@@ -184,7 +185,6 @@ $(document).ready(function() {
   });
 
   // Embed Generator
-  updateEmbedCode();
   $("#embed_code").click(function() { $(this).select(); });
   $('#make-step-3 input').change(function(evt) { updateEmbedCode(evt); });
   $('#make-step-3 select').change(function(evt) { updateEmbedCode(evt); });
@@ -198,7 +198,7 @@ $(document).ready(function() {
     $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
                            .attr("alt", fontPair );
     $("ul#embed-font").hide();
-    updateEmbedCode(evt);
+    updateEmbedCode
   });
   $("#embed-font-dropdown a, #font-pair-preview").on("click", function(evt){
       evt.preventDefault();
