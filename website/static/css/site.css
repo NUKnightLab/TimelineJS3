@@ -244,7 +244,7 @@ ul#embed-font-dropdown > li > p {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
-  border-radius: 10px;
+  border-radius: 2px;
   transition: width 0.5s;
   -webkit-transition: width 0.5s;
   width: 100%;
