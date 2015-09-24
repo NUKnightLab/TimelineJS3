@@ -47,3 +47,10 @@ def stage_wp():
     distutils.dir_util.copy_tree(build_js_dir, wp_js_dir)
 
     print("\nRemember to push the updated files in TimelineJS-Wordpress-Plugin as well....")
+
+@task
+def stage_compiled():
+    """Copy CSS/JS from build to compiled"""
+    # # Copy over CSS files
+    distutils.dir_util.copy_tree("build/css", "compiled/css")
+    distutils.dir_util.copy_tree("build/js", "compiled/js")
