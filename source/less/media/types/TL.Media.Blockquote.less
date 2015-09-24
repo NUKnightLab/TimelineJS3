@@ -7,6 +7,9 @@
 			margin:0;
 			margin-right: 	@base-spacing;
 			text-align: 	left;
+			font-size: 		@base-font-size-xlarge;
+			line-height: 	floor(@base-font-size-xlarge * 1.1);
+			color:			@color-foreground;
 			p {
 				font-size: 		@base-font-size-xlarge;
 				line-height: 	floor(@base-font-size-xlarge * 1.1);
@@ -31,8 +34,10 @@
 			cite {
 				font-size: 		@base-font-size;
 				line-height:	floor(@base-font-size * @base-line-height);
-				color:			@color-foreground;
+				//color:			@color-foreground;
+				color: 			lighten(@color-foreground, 40%);
 				text-align: 	right;
+				margin-top: 	@base-spacing;
 			}
 
 		}
