@@ -124,8 +124,10 @@ h2.intro { margin-bottom: 10px; }
 }
 
 /* Timeline */
-#demo {
+#demo .row {
   width: 100%;
+  max-width: 1600px;
+  margin-top: 30px;
 }
 
 /* Steps */
