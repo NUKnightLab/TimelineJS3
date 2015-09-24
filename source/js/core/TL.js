@@ -12,7 +12,7 @@
 /*	TL.Debug
 	Debug mode
 ================================================== */
-TL.debug = true;
+TL.debug = false;
 
 
 

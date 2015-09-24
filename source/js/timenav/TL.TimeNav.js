@@ -176,7 +176,7 @@ TL.TimeNav = TL.Class.extend({
 		if (typeof(zoom_factor) == 'number') {
 			this.setZoomFactor(zoom_factor);
 		} else {
-			console.log("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
+			console.warn("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
 		}
 	},
 

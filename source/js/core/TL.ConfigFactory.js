@@ -251,7 +251,7 @@
 
 
         fromGoogle: function(url) {
-            console.log("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
+            console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
             return jsonFromGoogleURL(url);
 
         },
