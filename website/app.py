@@ -96,10 +96,7 @@ if __name__ == "__main__":
         opts, args = getopt.getopt(sys.argv[1:], "sp:", ["port="])
         for opt, arg in opts:
             if opt == '-s':
-                from OpenSSL import SSL
-                ssl_context = SSL.Context(SSL.SSLv23_METHOD)
-                ssl_context.use_privatekey_file(os.path.join(site_dir, 'website.key'))
-                ssl_context.use_certificate_file(os.path.join(site_dir, 'website.crt'))
+                ssl_context = 'adhoc'
             elif opt in ('-p', '--port'):
                 port = int(arg)
             else:
