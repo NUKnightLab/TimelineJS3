@@ -50,11 +50,11 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/compiled\/css\/fonts\/font.bevan-potanosans.css": {
+	"\/compiled\/css\/fonts\/font.bevan-pontanosans.css": {
 		"fileType": 16,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/compiled\/css\/fonts\/font.bevan-potanosans.css",
+		"inputAbbreviatedPath": "\/compiled\/css\/fonts\/font.bevan-pontanosans.css",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -10055,7 +10055,7 @@
 		"strictMath": 0,
 		"strictUnits": 0
 		},
-	"\/source\/less\/fonts\/font.bevan-potanosans.less": {
+	"\/source\/less\/fonts\/font.bevan-pontanosans.less": {
 		"allowInsecureImports": 0,
 		"createSourceMap": 0,
 		"disableJavascript": 0,
@@ -10063,8 +10063,8 @@
 		"ieCompatibility": 1,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/source\/less\/fonts\/font.bevan-potanosans.less",
-		"outputAbbreviatedPath": "\/compiled\/css\/fonts\/font.bevan-potanosans.css",
+		"inputAbbreviatedPath": "\/source\/less\/fonts\/font.bevan-pontanosans.less",
+		"outputAbbreviatedPath": "\/compiled\/css\/fonts\/font.bevan-pontanosans.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 1,
