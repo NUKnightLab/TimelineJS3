@@ -1,0 +1,663 @@
+{
+    "title": {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114137421.jpg",
+          "caption": "Mandela in 1990.",
+          "credit": "David Turnley / Corbis"
+        },
+        "text": {
+          "headline": "Mandela: A Life of Purpose",
+          "text": "<p>Nelson Mandela, the revolutionary-turned-prisoner-turned-president who led South Africa out of apartheid and into an era of political and racial reconciliation, passed away on Dec. 5, 2013. He was 95. As both the father of his nation and its conscience, Mandela’s remarkable life changed history and its legacy resonates around the world.</p>"
+        }
+    },
+    "events": [
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "18",
+          "year": "1918",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "A Child is Born",
+          "text": "<p>Rolihlahla Dalibhunga Mandela is born in Mvezo, South Africa. One of 13 children, he was the eldest child of his father’s third wife. A teacher later gave him the name Nelson.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/51400478.jpg",
+          "caption": "Supporters of the African National Congress gather as part of a civil disobedience campaign to protest the apartheid regime of racial segregation.",
+          "credit": "AFP / Getty Images"
+        },
+        "start_date": {
+          "month": "1",
+          "day": "1",
+          "year": "1942",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "African National Congress",
+          "text": "<p>Mandela begins attending meetings of the African National Congress (ANC). Two years later, he formally joined the group and helped establish the Youth League.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "15",
+          "year": "1944",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Marriage",
+          "text": "<p>Mandela marries Evelyn Ntoko Mase. They had four children, one of whom died at the age of 9 months. Nelson and Evelyn divorced in 1958.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "1",
+          "day": "1",
+          "year": "1948",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "The National Party wins elections and begins enacting apartheid laws.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114134870.jpg",
+          "caption": "Mandela in the office of Mandela and Tambo",
+          "credit": "Jurgen Schadeberg / Getty Images"
+        },
+        "start_date": {
+          "month": "8",
+          "day": "1",
+          "year": "1952",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Law Firm",
+          "text": "<p>Mandela and Oliver Tambo found South Africa’s first black-run law firm.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "12",
+          "day": "5",
+          "year": "1956",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Arrest",
+          "text": "<p>Mandela is arrested and charged with high treason along with 155 other activists, all of whom are eventually acquitted. The trials of the last 30 defendants, including Mandela, did not end until March 29, 1961.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114137440.jpg",
+          "caption": "",
+          "credit": "Sunday Times / SIPA USA"
+        },
+        "start_date": {
+          "month": "6",
+          "day": "14",
+          "year": "1958",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Second Marriage",
+          "text": "<p>Mandela marries Nomzamo Winifred Madikizela, known as Winnie. They had two daughters and divorced in 1996.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114134887.jpg",
+          "caption": "An armed man stands beside the body of one of the sixty-nine black South Africans killed by police in the massacre at Sharpeville, South Africa, March 21, 1960.",
+          "credit": "Central Press / Getty Images"
+        },
+        "start_date": {
+          "month": "3",
+          "day": "21",
+          "year": "1960",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Sharpeville Massacre",
+          "text": "<p>Police open fire on a crowd of unarmed anti-apartheid protesters in Sharpeville, killing 69 and injuring 180 others.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "4",
+          "day": "8",
+          "year": "1960",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "The government bans the ANC and declares a state of emergency.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "6",
+          "day": "1",
+          "year": "1961",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Forms the ANC’s military wing, Umkhonto we Sizwe (Spear of the Nation).",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114134884.jpg",
+          "caption": "African women join in a demonstration demanding the release of Mandela in South Africa, Aug. 16, 1962.",
+          "credit": "Dennis Lee Royle / AP"
+        },
+        "start_date": {
+          "month": "1",
+          "day": "11",
+          "year": "1962",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Sneaking for Support",
+          "text": "<p>Mandela sneaks out of South Africa, traveling the continent and visiting England to drum up support for the ANC’s cause. After receiving military training in North Africa, Mandela returned to South Africa in July.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "8",
+          "day": "5",
+          "year": "1962",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Prison Sentence",
+          "text": "<p>Mandela receives a five-year prison sentence on charges of leaving the country illegally and inciting workers to strike. In 1964, after a trial for sabotage, Mandela was sentenced to life in prison without parole. He was sent to Robben Island, off Cape Town, where he remained until 1982.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "1",
+          "day": "1",
+          "year": "1974",
+          "hour": "00",
+          "minute": "00"
+        },
+        "end_date": {
+          "month": "1",
+          "day": "1",
+          "year": "1975",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Memoir",
+          "text": "<p>Mandela begins secretly writing his memoir, which becomes the basis for his autobiography, <i>Long Walk to Freedom</i>, published in 1995.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "3",
+          "day": "9",
+          "year": "1980",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "A Campaign for Freedom",
+          "text": "<p>Percy Qoboza, editor of the Johannesburg <i>Sunday Post</i>, launches a campaign for Mandela’s release, noting that “he commands a following that is unheard of in this land.”</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "3",
+          "day": "31",
+          "year": "1982",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela is transferred to Pollsmoor, a maximum-security prison in southern Cape Town.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "1",
+          "day": "31",
+          "year": "1985",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "An Offer",
+          "text": "<p>President P.W. Botha offers to free Mandela if he renounces violence. Mandela refuses but soon begins a series of secret meetings with government officials.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "8",
+          "day": "1",
+          "year": "1988",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela is diagnosed with tuberculosis.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "12",
+          "day": "7",
+          "year": "1988",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela is moved to the Cape winelands’ Victor Verster Prison, where he has his own bungalow.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "4",
+          "year": "1989",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Meeting",
+          "text": "<p>Mandela meets with Botha in Cape Town. A month later, F.W. de Klerk succeeded Botha as President.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "12",
+          "day": "13",
+          "year": "1989",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Meets with De Klerk",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "2",
+          "day": "2",
+          "year": "1990",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Ban Lifted",
+          "text": "<p>De Klerk lifts the ban on the ANC and announces that Mandela will be released from prison “without delay.”</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/nelson_mandela_071.jpg",
+          "caption": "Mandela walks with his wife Winnie after being released from prison.",
+          "credit": "AP"
+        },
+        "start_date": {
+          "month": "2",
+          "day": "11",
+          "year": "1990",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela is freed after 27 years."
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "1",
+          "year": "1991",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela replaces Tambo as ANC president.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/nelson_mandela_091.jpg",
+          "caption": "",
+          "credit": "Reuters/Corbis"
+        },
+        "start_date": {
+          "month": "10",
+          "day": "15",
+          "year": "1993",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela and De Klerk win the Nobel Peace Prize."
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "4",
+          "day": "27",
+          "year": "1994",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela casts his vote in South Africa’s first democratic elections.",
+          "text": "<p></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/nelson_mandela_131.jpg",
+          "caption": "Mandela takes the oath of office.",
+          "credit": "Louise Gubb / Corbis"
+        },
+        "start_date": {
+          "month": "10",
+          "day": "15",
+          "year": "1993",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela is inaugurated as South Africa’s first black President."
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130624130017.jpg",
+          "caption": "Mandela congratulates South Africa's rugby team captain François Pienaar before handing him the William Webb trophy after his team's victory over New Zealand in the final of the Rugby World Cup at Ellis Park in Johannesburg, June 24, 1995.",
+          "credit": "Jean-Pierre Muller / AFP / Getty Images"
+        },
+        "start_date": {
+          "month": "10",
+          "day": "15",
+          "year": "1993",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Rugby World Cup",
+          "text": "<p>South Africa hosts the Rugby World Cup. Mandela urges black South Africans to cheer for the Springboks, who were strongly associated with apartheid. They won the tournament and their story was retold in Clint Eastwood’s 2009 film <i>Invictus</i>.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114134877.jpg",
+          "caption": "",
+          "credit": "AP"
+        },
+        "start_date": {
+          "month": "10",
+          "day": "15",
+          "year": "1993",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "On his 80th birthday, Mandela marries Graça Machel, the widow of a former Mozambican President."
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114134878.jpg",
+          "caption": "",
+          "credit": "Oryx Media Archive / Gallo Images / Getty Images"
+        },
+        "start_date": {
+          "month": "6",
+          "day": "1",
+          "year": "1999",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela steps down after one term as President. He was succeeded by Thabo Mbeki."
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "1",
+          "year": "2001",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela is diagnosed with prostate cancer."
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "6",
+          "day": "1",
+          "year": "2004",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Mandela retires from public life."
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/130114134879.jpg",
+          "caption": "Makgatho Mandela in August 2000.",
+          "credit": "Lefty Shivambu / AP"
+        },
+        "start_date": {
+          "month": "1",
+          "day": "6",
+          "year": "2005",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Death of a Son",
+          "text": "<p>Mandela announces that his son Makgatho has died of AIDS and urges South Africans to treat AIDS as a “normal illness” rather than “something extraordinary for which people go to hell and not to heaven.”</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "18",
+          "year": "2007",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "The Elders",
+          "text": "<p>Mandela, Machel and Archbishop Desmond Tutu launch the Elders, a group of world leaders dedicated to peace and human rights.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "10",
+          "day": "1",
+          "year": "2010",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "A Second Book",
+          "text": "<p>Mandela publishes his second book, <i>Conversations With Myself</i>.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "start_date": {
+          "month": "7",
+          "day": "1",
+          "year": "2011",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "Back Home",
+          "text": "<p>Mandela moves to Qunu, near his birthplace of Mvezo, though he occasionally returns to Pretoria for medical checkups.</p>"
+        }
+      },
+      {
+        "media": {
+          "url": "{{ static_url }}/img/examples/mandela/time-mandela-cover.jpg",
+          "caption": "TIME's Nelson Mandela Commemorative Issue",
+          "credit": "Photograph by Hans Gedda"
+        },
+        "start_date": {
+          "month": "12",
+          "day": "5",
+          "year": "2013",
+          "hour": "00",
+          "minute": "00"
+        },
+        "text": {
+          "headline": "The Loss of an Icon",
+          "text": "<p>Nelson Mandela dies at the age of 95. “He is now resting. He is now at peace,” South Africa's President Jacob Zuma said. “Our nation has lost its greatest son. Our people have lost a father.”</p>"
+        }
+      }
+    ]
+}
