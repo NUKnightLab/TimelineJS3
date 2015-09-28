@@ -1,11 +1,11 @@
 #TimelineJS3
 ============
 
-TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline3.knightlab.com
+TimelineJS v3: A Storytelling Timeline built in JavaScript.  http://timeline.knightlab.com
 
 ## Overview
 
-TimelineJS 3 is a rewrite of the popular Timeline JS software. It will eventually replace that software, but it is currently in development and testing. Please be clear that this is software which "does" the same thing, but it isn't the same software, so some details will vary. See http://timeline3.knightlab.com for more information.
+TimelineJS 3 is a rewrite of the popular Timeline JS software. Please be clear that this is software which "does" the same thing, but it isn't the same software, so some details will vary. See http://timeline.knightlab.com for more information.
 
 ## Getting Started
 Include CSS file(s) in the head of your page.
