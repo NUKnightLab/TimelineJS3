@@ -1,0 +1,47 @@
+/*	Font Bevan & Pontano+Sans
+
+https://www.google.com/fonts/specimen/Bevan
+https://www.google.com/fonts/specimen/Pontano+Sans
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(https://fonts.googleapis.com/css?family=Pontano+Sans|Bevan);
+// Font Variables
+@font-main:						'Pontano Sans', sans-serif;
+@font-secondary:				'Bevan', cursive;
+@font-navigation:				@font-main;
+@font-marker: 					@font-main;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				17px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			38px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+ 
+@import "font.base.less";
+
+.tl-timeline {
+	.tl-headline-date, h3.tl-headline-date {
+		margin-bottom:10px !important;
+	}
+}
