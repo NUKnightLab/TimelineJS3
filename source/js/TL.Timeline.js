@@ -153,6 +153,7 @@ TL.Timeline = TL.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			debug: 						false,
 			is_embed: 					false,
 			is_full_embed: 				false,
 			hash_bookmark: false,
@@ -162,7 +163,7 @@ TL.Timeline = TL.Class.extend({
 			timenav_position: 			"bottom",				// timeline on top or bottom
 			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
 			base_class: 				"tl-timeline", 		// removing tl-timeline will break all default stylesheets...
-			timenav_height: 			175,
+			timenav_height: 			null,
 			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
 			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
 			timenav_height_min: 		175,					// Minimum timenav height
@@ -197,7 +198,6 @@ TL.Timeline = TL.Class.extend({
 		this.animator_menubar = null;
 
 		// Merge Options
-
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
 			if (parsed) {
@@ -211,7 +211,10 @@ TL.Timeline = TL.Class.extend({
 
 		window.addEventListener("resize", function(e){
 			self.updateDisplay();
-		})
+		});
+
+		// Set Debug Mode
+		TL.debug = this.options.debug;
 
 		// Apply base class to container
 		this._el.container.className += ' tl-timeline';
@@ -408,6 +411,7 @@ TL.Timeline = TL.Class.extend({
 
   	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
+		
 		var height = 0;
 
 		if (timenav_height) {
@@ -422,6 +426,15 @@ TL.Timeline = TL.Class.extend({
 
 			}
 		}
+
+		// Set new minimum based on how many rows needed
+		if (this._timenav.ready) {
+			if (this.options.timenav_height_min < this._timenav.getMinimumHeight()) {
+				this.options.timenav_height_min = this._timenav.getMinimumHeight();
+			}
+		}
+
+		// If height is less than minimum set it to minimum
 		if (height < this.options.timenav_height_min) {
 			height = this.options.timenav_height_min;
 		}
@@ -629,6 +642,7 @@ TL.Timeline = TL.Class.extend({
 		// Create TimeNav
 		this._timenav = new TL.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.on('update_timenav_min', this._updateTimeNavHeightMin, this);
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 

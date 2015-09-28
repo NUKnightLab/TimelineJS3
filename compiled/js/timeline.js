@@ -1,16 +1,3 @@
-/*
-    TimelineJS - ver. 3.3.2 - 2015-09-23
-    Copyright (c) 2012-2015 Northwestern University
-    a project of the Northwestern University Knight Lab, originally created by Zach Wise
-    https://github.com/NUKnightLab/TimelineJS3
-    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
-    If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-*/
-
-/* **********************************************
-     Begin TL.js
-********************************************** */
-
 /*!
 	TL
 */
@@ -25,7 +12,7 @@
 /*	TL.Debug
 	Debug mode
 ================================================== */
-TL.debug = true;
+TL.debug = false;
 
 
 
@@ -53,9 +40,6 @@ trace = function( msg ) {
 	}
 }
 
-/* **********************************************
-     Begin TL.Util.js
-********************************************** */
 
 /*	TL.Util
 	Class of utilities
@@ -726,10 +710,6 @@ TL.Util = {
 	}
 };
 
-
-/* **********************************************
-     Begin TL.Data.js
-********************************************** */
 
 // Expects TL to be visible in scope
 
@@ -2318,10 +2298,6 @@ SOFTWARE.
 */
 
 
-/* **********************************************
-     Begin TL.Class.js
-********************************************** */
-
 /*	TL.Class
 	Class powers the OOP facilities of the library.
 ================================================== */
@@ -2389,10 +2365,6 @@ TL.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 };
 
 
-/* **********************************************
-     Begin TL.Events.js
-********************************************** */
-
 /*	TL.Events
 	adds custom events functionality to TL classes
 ================================================== */
@@ -2454,10 +2426,6 @@ TL.Events.off	= TL.Events.removeEventListener;
 TL.Events.fire = TL.Events.fireEvent;
 
 
-/* **********************************************
-     Begin TL.Browser.js
-********************************************** */
-
 /*
 	Based on Leaflet Browser
 	TL.Browser handles different browser and feature detections for internal  use.
@@ -2497,6 +2465,8 @@ TL.Events.fire = TL.Events.fireEvent;
 
 	TL.Browser = {
 		ie: ie,
+		ua: ua,
+		ie9: Boolean(ie && ua.match(/MSIE 9/i)),
 		ielt9: ie && !document.addEventListener,
 		webkit: webkit,
 		//gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
@@ -2525,7 +2495,7 @@ TL.Events.fire = TL.Events.fireEvent;
 			var w = window.innerWidth,
 				h = window.innerHeight,
 				_orientation = "portrait";
-			
+
 			if (w > h) {
 				_orientation = "landscape";
 			}
@@ -2537,11 +2507,8 @@ TL.Events.fire = TL.Events.fireEvent;
 		}
 	};
 
-}()); 
+}());
 
-/* **********************************************
-     Begin TL.Load.js
-********************************************** */
 
 /*	TL.Load
 	Loads External Javascript and CSS
@@ -2985,10 +2952,6 @@ TL.LoadIt = (function (doc) {
 })(this.document);
 
 
-/* **********************************************
-     Begin TL.TimelineConfig.js
-********************************************** */
-
 /*  TL.TimelineConfig
 separate the configuration from the display (TL.Timeline)
 to make testing easier
@@ -3275,10 +3238,6 @@ TL.TimelineConfig = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.ConfigFactory.js
-********************************************** */
-
 /* TL.ConfigFactory.js
  * Build TimelineConfig objects from other data sources
  */
@@ -3532,7 +3491,7 @@ TL.TimelineConfig = TL.Class.extend({
 
 
         fromGoogle: function(url) {
-            console.log("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
+            console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
             return jsonFromGoogleURL(url);
 
         },
@@ -3547,10 +3506,6 @@ TL.TimelineConfig = TL.Class.extend({
     }
 })(TL)
 
-
-/* **********************************************
-     Begin TL.Language.js
-********************************************** */
 
 TL.Language = function(options) {
 	// borrowed from http://stackoverflow.com/a/14446414/102476
@@ -3831,10 +3786,6 @@ TL.Language.languages = {
 TL.Language.fallback = new TL.Language();
 
 
-/* **********************************************
-     Begin TL.I18NMixins.js
-********************************************** */
-
 /*  TL.I18NMixins
     assumes that its class has an options object with a TL.Language instance    
 ================================================== */
@@ -3852,10 +3803,6 @@ TL.I18NMixins = {
     }
 }
 
-
-/* **********************************************
-     Begin TL.Ease.js
-********************************************** */
 
 /* The equations defined here are open source under BSD License.
  * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
@@ -4098,10 +4045,6 @@ Math.easeInOutExpo = function (t, b, c, d) {
 	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
 };
 */
-
-/* **********************************************
-     Begin TL.Animate.js
-********************************************** */
 
 /*	TL.Animate
 	Basic animation
@@ -4535,10 +4478,6 @@ window.tlanimate = (function() {
 })();
 
 
-/* **********************************************
-     Begin TL.Point.js
-********************************************** */
-
 /*	TL.Point
 	Inspired by Leaflet
 	TL.Point represents a point with x and y coordinates.
@@ -4606,10 +4545,6 @@ TL.Point.prototype = {
 				TL.Util.formatNum(this.y) + ')';
 	}
 };
-
-/* **********************************************
-     Begin TL.DomMixins.js
-********************************************** */
 
 /*	TL.DomMixins
 	DOM methods used regularly
@@ -4702,10 +4637,6 @@ TL.DomMixins = {
 };
 
 
-/* **********************************************
-     Begin TL.Dom.js
-********************************************** */
-
 /*	TL.Dom
 	Utilities for working with the DOM
 ================================================== */
@@ -4794,10 +4725,6 @@ TL.Util.extend(TL.Dom, {
 	TRANSLATE_CLOSE: TL.Browser.webkit3d ? ',0)' : ')'
 });
 
-
-/* **********************************************
-     Begin TL.DomUtil.js
-********************************************** */
 
 /*	TL.DomUtil
 	Inspired by Leaflet
@@ -4954,10 +4881,6 @@ TL.DomUtil = {
 	}
 };
 
-/* **********************************************
-     Begin TL.DomEvent.js
-********************************************** */
-
 /*	TL.DomEvent
 	Inspired by Leaflet 
 	DomEvent contains functions for working with DOM events.
@@ -5109,10 +5032,6 @@ TL.DomEvent = {
 
 
 
-/* **********************************************
-     Begin TL.StyleSheet.js
-********************************************** */
-
 /*	TL.StyleSheet
 	Style Sheet Object
 ================================================== */
@@ -5163,10 +5082,6 @@ TL.StyleSheet = TL.Class.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.Date.js
-********************************************** */
 
 /*	TL.Date
 	Date object
@@ -5590,10 +5505,6 @@ TL.BigDate = TL.Date.extend({
 })(TL.BigDate)
 
 
-/* **********************************************
-     Begin TL.DateUtil.js
-********************************************** */
-
 /*	TL.DateUtil
 	Utilities for parsing time
 ================================================== */
@@ -5679,10 +5590,6 @@ TL.DateUtil = {
 
 };
 
-
-/* **********************************************
-     Begin TL.Draggable.js
-********************************************** */
 
 /*	TL.Draggable
 	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
@@ -6004,10 +5911,6 @@ TL.Draggable = TL.Class.extend({
 	}
 });
 
-
-/* **********************************************
-     Begin TL.Swipable.js
-********************************************** */
 
 /*	TL.Swipable
 	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
@@ -6404,10 +6307,6 @@ TL.Swipable = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.MenuBar.js
-********************************************** */
-
 /*	TL.MenuBar
 	Draggable component to control size
 ================================================== */
@@ -6587,10 +6486,6 @@ TL.MenuBar = TL.Class.extend({
 	
 });
 
-/* **********************************************
-     Begin TL.Message.js
-********************************************** */
-
 /*	TL.Message
 	
 ================================================== */
@@ -6695,10 +6590,6 @@ TL.Message = TL.Class.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.MediaType.js
-********************************************** */
 
 /*	TL.MediaType
 	Determines the type of media the url string is.
@@ -6863,10 +6754,6 @@ TL.MediaType = function(m) {
 
 }
 
-
-/* **********************************************
-     Begin TL.Media.js
-********************************************** */
 
 /*	TL.Media
 	Main media template for media assets.
@@ -7228,10 +7115,6 @@ TL.Media = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Blockquote.js
-********************************************** */
-
 /*	TL.Media.Blockquote
 ================================================== */
 
@@ -7271,10 +7154,6 @@ TL.Media.Blockquote = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.DailyMotion.js
-********************************************** */
 
 /*	TL.Media.DailyMotion
 ================================================== */
@@ -7319,10 +7198,6 @@ TL.Media.DailyMotion = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.DocumentCloud.js
-********************************************** */
 
 /*	TL.Media.DocumentCloud
 ================================================== */
@@ -7389,10 +7264,6 @@ TL.Media.DocumentCloud = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Flickr.js
-********************************************** */
 
 /*	TL.Media.Flickr
 
@@ -7514,10 +7385,6 @@ TL.Media.Flickr = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.GoogleDoc.js
-********************************************** */
-
 /*	TL.Media.GoogleDoc
 
 ================================================== */
@@ -7569,10 +7436,6 @@ TL.Media.GoogleDoc = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.GooglePlus.js
-********************************************** */
-
 /*	TL.Media.GooglePlus
 ================================================== */
 
@@ -7614,10 +7477,6 @@ TL.Media.GooglePlus = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.IFrame.js
-********************************************** */
-
 /*	TL.Media.IFrame
 ================================================== */
 
@@ -7657,10 +7516,6 @@ TL.Media.IFrame = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Image.js
-********************************************** */
 
 /*	TL.Media.Image
 	Produces image assets.
@@ -7715,10 +7570,6 @@ TL.Media.Image = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.Instagram.js
-********************************************** */
 
 /*	TL.Media.Instagram
 
@@ -7795,10 +7646,6 @@ TL.Media.Instagram = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.GoogleMap.js
-********************************************** */
 
 /*  TL.Media.Map
 ================================================== */
@@ -7956,10 +7803,6 @@ TL.Media.GoogleMap = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Profile.js
-********************************************** */
-
 /*	TL.Media.Profile
 
 ================================================== */
@@ -7990,10 +7833,6 @@ TL.Media.Profile = TL.Media.extend({
 	
 });
 
-/* **********************************************
-     Begin TL.Media.Slider.js
-********************************************** */
-
 /*	TL.Media.SLider
 	Produces a Slider
 	Takes a data object and populates a dom object
@@ -8016,10 +7855,6 @@ TL.Media.Slider = TL.Media.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.Media.SoundCloud.js
-********************************************** */
 
 /*	TL.Media.SoundCloud
 ================================================== */
@@ -8062,10 +7897,6 @@ TL.Media.SoundCloud = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Spotify.js
-********************************************** */
 
 /*	TL.Media.Spotify
 ================================================== */
@@ -8159,10 +7990,6 @@ TL.Media.Spotify = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Storify.js
-********************************************** */
-
 /*	TL.Media.Storify
 ================================================== */
 
@@ -8203,10 +8030,6 @@ TL.Media.Storify = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Text.js
-********************************************** */
 
 TL.Media.Text = TL.Class.extend({
 	
@@ -8332,10 +8155,6 @@ TL.Media.Text = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Twitter.js
-********************************************** */
-
 /*	TL.Media.Twitter
 	Produces Twitter Display
 ================================================== */
@@ -8441,10 +8260,6 @@ TL.Media.Twitter = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Vimeo.js
-********************************************** */
-
 /*	TL.Media.Vimeo
 ================================================== */
 
@@ -8505,10 +8320,6 @@ TL.Media.Vimeo = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Vine.js
-********************************************** */
-
 /*	TL.Media.Vine
 
 ================================================== */
@@ -8550,10 +8361,6 @@ TL.Media.Vine = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Website.js
-********************************************** */
 
 /*	TL.Media.Website
 	Uses Embedly
@@ -8645,10 +8452,6 @@ TL.Media.Website = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Wikipedia.js
-********************************************** */
 
 /*	TL.Media.Wikipedia
 ================================================== */
@@ -8764,10 +8567,6 @@ TL.Media.Wikipedia = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.YouTube.js
-********************************************** */
 
 /*	TL.Media.YouTube
 ================================================== */
@@ -8892,10 +8691,6 @@ TL.Media.YouTube = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Slide.js
-********************************************** */
 
 /*	TL.Slide
 	Creates a slide. Takes a data object and
@@ -9227,10 +9022,6 @@ TL.Slide = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.SlideNav.js
-********************************************** */
-
 /*	TL.SlideNav
 	encapsulate DOM display/events for the 
 	'next' and 'previous' buttons on a slide.
@@ -9358,10 +9149,6 @@ TL.SlideNav = TL.Class.extend({
 	
 	
 });
-
-/* **********************************************
-     Begin TL.StorySlider.js
-********************************************** */
 
 /*	StorySlider
 	is the central class of the API - it is used to create a StorySlider
@@ -9912,10 +9699,6 @@ TL.StorySlider = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeNav.js
-********************************************** */
-
 /*	TL.TimeNav
 
 ================================================== */
@@ -9972,6 +9755,9 @@ TL.TimeNav = TL.Class.extend({
 
 		// Animation
 		this.animator = null;
+
+		// Ready state
+		this.ready = false;
 
 		// Markers Array
 		this._markers = [];
@@ -10094,7 +9880,7 @@ TL.TimeNav = TL.Class.extend({
 		if (typeof(zoom_factor) == 'number') {
 			this.setZoomFactor(zoom_factor);
 		} else {
-			console.log("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
+			console.warn("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
 		}
 	},
 
@@ -10137,9 +9923,13 @@ TL.TimeNav = TL.Class.extend({
 
 			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
 				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
+				var group_hide = false;
+				if (group_y > (available_height- this.options.marker_padding)) {
+					group_hide = true;
+				}
 
 				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2);
-				this._groups[i].setAlternateRowColor(TL.Util.isEven(i));
+				this._groups[i].setAlternateRowColor(TL.Util.isEven(i), group_hide);
 
 				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
 			}
@@ -10195,11 +9985,35 @@ TL.TimeNav = TL.Class.extend({
 
 	},
 
-	_assignRowsToMarkers: function() {
-		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
-			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+	_calculateMarkerHeight: function(h) {
+		return Math.floor((h /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+	},
 
-		this._calculated_row_height = Math.floor(available_height /this.timescale.getNumberOfRows());
+	_calculateRowHeight: function(h) {
+		return Math.floor(h /this.timescale.getNumberOfRows());
+	},
+
+	_calculateAvailableHeight: function() {
+		return (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
+	},
+
+	_calculateMinimumTimeNavHeight: function() {
+		return (this.timescale.getNumberOfRows() * this.options.marker_height_min) + this._el.timeaxis_background.offsetHeight + (this.options.marker_padding);
+
+	},
+
+	getMinimumHeight: function() {
+		return this._calculateMinimumTimeNavHeight();
+	},
+
+	_assignRowsToMarkers: function() {
+		var available_height 	= this._calculateAvailableHeight(),
+			marker_height 		= this._calculateMarkerHeight(available_height);
+
+
+		this._positionGroups();		
+
+		this._calculated_row_height = this._calculateRowHeight(available_height);
 
 		for (var i = 0; i < this._markers.length; i++) {
 
@@ -10369,6 +10183,7 @@ TL.TimeNav = TL.Class.extend({
 	/*	Events
 	================================================== */
 	_onLoaded: function() {
+		this.ready = true;
 		this.fire("loaded", this.config);
 	},
 
@@ -10587,10 +10402,6 @@ TL.TimeNav = TL.Class.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.TimeMarker.js
-********************************************** */
 
 /*	TL.TimeMarker
 
@@ -10898,10 +10709,6 @@ TL.TimeMarker = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeEra.js
-********************************************** */
-
 /*	TL.TimeMarker
 
 ================================================== */
@@ -11145,10 +10952,6 @@ TL.TimeEra = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeGroup.js
-********************************************** */
-
 /*	TL.TimeGroup
 	
 ================================================== */
@@ -11208,18 +11011,23 @@ TL.TimeGroup = TL.Class.extend({
 	},
 	
 	setRowPosition: function(n, h) {
+		// trace(n);
+		// trace(this._el.container)
 		this.options.height = h * this.data.rows;
 		this.setPosition({top:n});
 		this._el.container.style.height = this.options.height + "px";
 		
 	},
 	
-	setAlternateRowColor: function(alternate) {
+	setAlternateRowColor: function(alternate, hide) {
+		var class_name = "tl-timegroup";
 		if (alternate) {
-			this._el.container.className = "tl-timegroup tl-timegroup-alternate";
-		} else {
-			this._el.container.className = "tl-timegroup";
+			class_name += " tl-timegroup-alternate";
 		}
+		if (hide) {
+			class_name += " tl-timegroup-hidden";
+		}
+		this._el.container.className = class_name;
 	},
 	
 	/*	Events
@@ -11252,10 +11060,6 @@ TL.TimeGroup = TL.Class.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.TimeScale.js
-********************************************** */
 
 /*  TL.TimeScale
     Strategies for laying out the timenav
@@ -11600,10 +11404,6 @@ TL.TimeScale = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeAxis.js
-********************************************** */
-
 /*	TL.TimeAxis
 	Display element for showing timescale ticks
 ================================================== */
@@ -11889,10 +11689,6 @@ TL.TimeAxis = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.AxisHelper.js
-********************************************** */
-
 /*  TL.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
@@ -11995,10 +11791,6 @@ TL.AxisHelper = TL.Class.extend({
     }
 })(TL.AxisHelper);
 
-
-/* **********************************************
-     Begin TL.Timeline.js
-********************************************** */
 
 /*  TimelineJS
 Designed and built by Zach Wise at KnightLab
@@ -12155,6 +11947,7 @@ TL.Timeline = TL.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			debug: 						false,
 			is_embed: 					false,
 			is_full_embed: 				false,
 			hash_bookmark: false,
@@ -12164,7 +11957,7 @@ TL.Timeline = TL.Class.extend({
 			timenav_position: 			"bottom",				// timeline on top or bottom
 			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
 			base_class: 				"tl-timeline", 		// removing tl-timeline will break all default stylesheets...
-			timenav_height: 			175,
+			timenav_height: 			null,
 			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
 			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
 			timenav_height_min: 		175,					// Minimum timenav height
@@ -12199,7 +11992,6 @@ TL.Timeline = TL.Class.extend({
 		this.animator_menubar = null;
 
 		// Merge Options
-
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
 			if (parsed) {
@@ -12213,7 +12005,10 @@ TL.Timeline = TL.Class.extend({
 
 		window.addEventListener("resize", function(e){
 			self.updateDisplay();
-		})
+		});
+
+		// Set Debug Mode
+		TL.debug = this.options.debug;
 
 		// Apply base class to container
 		this._el.container.className += ' tl-timeline';
@@ -12410,6 +12205,7 @@ TL.Timeline = TL.Class.extend({
 
   	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
+		
 		var height = 0;
 
 		if (timenav_height) {
@@ -12424,6 +12220,15 @@ TL.Timeline = TL.Class.extend({
 
 			}
 		}
+
+		// Set new minimum based on how many rows needed
+		if (this._timenav.ready) {
+			if (this.options.timenav_height_min < this._timenav.getMinimumHeight()) {
+				this.options.timenav_height_min = this._timenav.getMinimumHeight();
+			}
+		}
+
+		// If height is less than minimum set it to minimum
 		if (height < this.options.timenav_height_min) {
 			height = this.options.timenav_height_min;
 		}
@@ -12631,6 +12436,7 @@ TL.Timeline = TL.Class.extend({
 		// Create TimeNav
 		this._timenav = new TL.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.on('update_timenav_min', this._updateTimeNavHeightMin, this);
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
@@ -12866,4 +12672,5 @@ TL.Timeline.source_path = (function() {
 	var src = script_tags[script_tags.length-1].src;
 	return src.substr(0,src.lastIndexOf('/'));
 })();
+
 

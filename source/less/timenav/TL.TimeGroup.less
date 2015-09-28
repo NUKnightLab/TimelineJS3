@@ -18,10 +18,7 @@
 	-webkit-align-items: center;
 	-webkit-box-align: center;
 	
-	.property-animation(top, @animation-duration-fast, @animation-ease);
-	.property-animation(height, @animation-duration-fast, @animation-ease);
-	.property-animation(width, @animation-duration-fast, @animation-ease);
-	.animation-timing-cubic-bezier();
+
 	
 	.tl-timegroup-message {
 		//z-index:6;
@@ -37,6 +34,9 @@
 		.tl-timegroup-message {
 			//background-color:lighten(@ui-background-color,3);
 		}
+	}
+	&.tl-timegroup-hidden {
+		display:none;
 	}
 	
 	/* Animate Left Width and Top
