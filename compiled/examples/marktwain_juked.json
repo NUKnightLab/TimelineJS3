@@ -2,7 +2,7 @@
     "title": {
             "text": {
                 "headline": "Mark Twain JSON",
-                "text":     "Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910),[1] better known by his pen name Mark Twain, was an American author and humorist.<span class='tl-note'>This is an overview or title slide to show all the points in your story routed on your map.</span>"
+                "text":     "Samuel Langhorne Clemens (November 30, 1835 – April 21, 1910),[1] better known by his pen name Mark Twain, was an American author and humorist.<span class='tl-note'>This is a title slide</span>"
             },
             "media": {
                 "url": "https://en.wikipedia.org/wiki/Mark_Twain",
