@@ -37,6 +37,8 @@
 
 	TL.Browser = {
 		ie: ie,
+		ua: ua,
+		ie9: Boolean(ie && ua.match(/MSIE 9/i)),
 		ielt9: ie && !document.addEventListener,
 		webkit: webkit,
 		//gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
@@ -65,7 +67,7 @@
 			var w = window.innerWidth,
 				h = window.innerHeight,
 				_orientation = "portrait";
-			
+
 			if (w > h) {
 				_orientation = "landscape";
 			}
@@ -77,4 +79,4 @@
 		}
 	};
 
-}()); 
+}());

@@ -12,7 +12,7 @@
 /*	TL.Debug
 	Debug mode
 ================================================== */
-TL.debug = true;
+TL.debug = false;
 
 
 
@@ -39,6 +39,7 @@ trace = function( msg ) {
 		}
 	}
 }
+
 
 /*	TL.Util
 	Class of utilities
@@ -2464,6 +2465,8 @@ TL.Events.fire = TL.Events.fireEvent;
 
 	TL.Browser = {
 		ie: ie,
+		ua: ua,
+		ie9: Boolean(ie && ua.match(/MSIE 9/i)),
 		ielt9: ie && !document.addEventListener,
 		webkit: webkit,
 		//gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
@@ -2492,7 +2495,7 @@ TL.Events.fire = TL.Events.fireEvent;
 			var w = window.innerWidth,
 				h = window.innerHeight,
 				_orientation = "portrait";
-			
+
 			if (w > h) {
 				_orientation = "landscape";
 			}
@@ -2504,7 +2507,8 @@ TL.Events.fire = TL.Events.fireEvent;
 		}
 	};
 
-}()); 
+}());
+
 
 /*	TL.Load
 	Loads External Javascript and CSS
@@ -3413,7 +3417,7 @@ TL.TimelineConfig = TL.Class.extend({
         }
 
     var googleFeedJSONtoTimelineJSON = function(data) {
-        var timeline_config = { 'events': [], 'errors': [], 'eras': [] }
+        var timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
         var extract = getGoogleItemExtractor(data);
         for (var i = 0; i < data.feed.entry.length; i++) {
             try {
@@ -3425,7 +3429,12 @@ TL.TimelineConfig = TL.Class.extend({
                       delete event.type;
                   }
                   if (row_type == 'title') {
+                    if (!timeline_config.title) {
                       timeline_config.title = event;
+                    } else {
+                      timeline_config.warnings.push("Multiple title slides detected.");
+                      timeline_config.events.push(event);
+                    }
                   } else if (row_type == 'era') {
                     timeline_config.eras.push(event);
                   } else {
@@ -3482,7 +3491,7 @@ TL.TimelineConfig = TL.Class.extend({
 
 
         fromGoogle: function(url) {
-            console.log("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
+            console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
             return jsonFromGoogleURL(url);
 
         },
@@ -5315,7 +5324,7 @@ TL.BigYear = TL.Class.extend({
     // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
     var ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 
-    /* For now, rather than extract parts from regexp, let's trust the browser.
+    /* For now, rather than extract parts from regexp, lets trust the browser.
      * Famous last words...
      * What about UTC vs local time?
      * see also http://stackoverflow.com/questions/10005374/ecmascript-5-date-parse-results-for-iso-8601-test-cases
@@ -5483,6 +5492,10 @@ TL.BigDate = TL.Date.extend({
 
     // cosmological scales
     cls.SCALES = [ // ( name, units_per_tick, flooring function )
+				['year',1, new Floorer(1)],
+				['decade',10, new Floorer(10)],
+				['century',100, new Floorer(100)],
+				['millennium',1000, new Floorer(1000)],
         ['age',AGE, new Floorer(AGE)],          // 1M years
         ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
         ['era',ERA, new Floorer(ERA)],          // 100M years
@@ -6581,85 +6594,85 @@ TL.Message = TL.Class.extend({
 /*	TL.MediaType
 	Determines the type of media the url string is.
 	returns an object with .type and .id
-	You can add new media types by adding a regex 
-	to match and the media class name to use to 
-	render the media 
+	You can add new media types by adding a regex
+	to match and the media class name to use to
+	render the media
 
 	TODO
 	Allow array so a slideshow can be a mediatype
 ================================================== */
 TL.MediaType = function(m) {
-	var media = {}, 
+	var media = {},
 		media_types = 	[
 			{
 				type: 		"youtube",
-				name: 		"YouTube", 
+				name: 		"YouTube",
 				match_str: 	"^(https?:)?\/*(www.)?youtube|youtu\.be",
 				cls: 		TL.Media.YouTube
 			},
 			{
 				type: 		"vimeo",
-				name: 		"Vimeo", 
+				name: 		"Vimeo",
 				match_str: 	"^(https?:)?\/*(player.)?vimeo\.com",
 				cls: 		TL.Media.Vimeo
 			},
 			{
 				type: 		"dailymotion",
-				name: 		"DailyMotion", 
+				name: 		"DailyMotion",
 				match_str: 	"^(https?:)?\/*(www.)?dailymotion\.com",
 				cls: 		TL.Media.DailyMotion
 			},
 			{
 				type: 		"vine",
-				name: 		"Vine", 
+				name: 		"Vine",
 				match_str: 	"^(https?:)?\/*(www.)?vine\.co",
 				cls: 		TL.Media.Vine
 			},
 			{
 				type: 		"soundcloud",
-				name: 		"SoundCloud", 
+				name: 		"SoundCloud",
 				match_str: 	"^(https?:)?\/*(player.)?soundcloud\.com",
 				cls: 		TL.Media.SoundCloud
 			},
 			{
 				type: 		"twitter",
-				name: 		"Twitter", 
+				name: 		"Twitter",
 				match_str: 	"^(https?:)?\/*(www.)?twitter\.com",
 				cls: 		TL.Media.Twitter
 			},
 			{
 				type: 		"twitterembed",
-				name: 		"TwitterEmbed", 
+				name: 		"TwitterEmbed",
 				match_str: 	"<blockquote class=\"twitter-tweet\"",
 				cls: 		TL.Media.TwitterEmbed
 			},
 			{
 				type: 		"googlemaps",
-				name: 		"Google Map", 
+				name: 		"Google Map",
 				match_str: 	/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
 				cls: 		TL.Media.GoogleMap
 			},
 			{
 				type: 		"googleplus",
-				name: 		"Google+", 
+				name: 		"Google+",
 				match_str: 	"^(https?:)?\/*plus.google",
 				cls: 		TL.Media.GooglePlus
 			},
 			{
 				type: 		"flickr",
-				name: 		"Flickr", 
+				name: 		"Flickr",
 				match_str: 	"^(https?:)?\/*(www.)?flickr.com\/photos",
 				cls: 		TL.Media.Flickr
 			},
 			{
 				type: 		"instagram",
-				name: 		"Instagram", 
+				name: 		"Instagram",
 				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
 				cls: 		TL.Media.Instagram
 			},
 			{
 				type: 		"profile",
-				name: 		"Profile", 
+				name: 		"Profile",
 				match_str: 	/^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
 				cls: 		TL.Media.Profile
 			},
@@ -6672,7 +6685,7 @@ TL.MediaType = function(m) {
 			{
 				type: 		"image",
 				name: 		"Image",
-				match_str: 	/(jpg|jpeg|png|gif)(\?.*)?$/i,
+				match_str: 	/(jpg|jpeg|png|gif|svg)(\?.*)?$/i,
 				cls: 		TL.Media.Image
 			},
 			{
@@ -6724,7 +6737,7 @@ TL.MediaType = function(m) {
 				cls: 		TL.Media.Image
 			}
 		];
-	
+
 	for (var i = 0; i < media_types.length; i++) {
 		if (m instanceof Array) {
 			return media = {
@@ -6736,9 +6749,9 @@ TL.MediaType = function(m) {
 			return media;
 		}
 	};
-	
+
 	return false;
-	
+
 }
 
 
@@ -9149,17 +9162,17 @@ TL.SlideNav = TL.Class.extend({
 	slideLoaded
 	slideRemoved
 
-	
+
 ================================================== */
 
 TL.StorySlider = TL.Class.extend({
-	
+
 	includes: TL.Events,
-	
+
 	/*	Private Methods
 	================================================== */
 	initialize: function (elem, data, options, init) {
-		
+
 		// DOM ELEMENTS
 		this._el = {
 			container: {},
@@ -9168,32 +9181,32 @@ TL.StorySlider = TL.Class.extend({
 			slider_container: {},
 			slider_item_container: {}
 		};
-		
+
 		this._nav = {};
 		this._nav.previous = {};
 		this._nav.next = {};
-		
+
 		// Slide Spacing
 		this.slide_spacing = 0;
-		
+
 		// Slides Array
 		this._slides = [];
-		
+
 		// Swipe Object
 		this._swipable;
-		
+
 		// Preload Timer
 		this.preloadTimer;
-		
+
 		// Message
 		this._message;
-		
+
 		// Current Slide
 		this.current_id = '';
-		
+
 		// Data Object
 		this.data = {};
-		
+
 		this.options = {
 			id: 					"",
 			layout: 				"portrait",
@@ -9210,7 +9223,7 @@ TL.StorySlider = TL.Class.extend({
 			dragging: 				true,
 			trackResize: 			true
 		};
-		
+
 		// Main element ID
 		if (typeof elem === 'object') {
 			this._el.container = elem;
@@ -9223,33 +9236,33 @@ TL.StorySlider = TL.Class.extend({
 		if (!this._el.container.id) {
 			this._el.container.id = this.options.id;
 		}
-		
+
 		// Animation Object
 		this.animator = null;
-		
+
 		// Merge Data and Options
 		TL.Util.mergeData(this.options, options);
 		TL.Util.mergeData(this.data, data);
-		
+
 		if (init) {
 			this.init();
 		}
 	},
-	
+
 	init: function() {
 		this._initLayout();
 		this._initEvents();
 		this._initData();
 		this._updateDisplay();
-		
+
 		// Go to initial slide
 		this.goTo(this.options.start_at_slide);
-		
+
 		this._onLoaded();
 	},
-	
+
 	/* Slides
-	================================================== */	
+	================================================== */
 	_addSlide:function(slide) {
 		slide.addTo(this._el.slider_item_container);
 		slide.on('added', this._onSlideAdded, this);
@@ -9259,7 +9272,7 @@ TL.StorySlider = TL.Class.extend({
 	_createSlide: function(d, title_slide, n) {
 		var slide = new TL.Slide(d, this.options, title_slide);
 		this._addSlide(slide);
-		if(n < 0) { 
+		if(n < 0) {
 		    this._slides.push(slide);
 		} else {
 		    this._slides.splice(n, 0, slide);
@@ -9274,7 +9287,7 @@ TL.StorySlider = TL.Class.extend({
             this._createSlide(array[i], false, -1);
 		}
 	},
-		
+
 	_removeSlide: function(slide) {
 		slide.removeFrom(this._el.slider_item_container);
 		slide.off('added', this._onSlideRemoved, this);
@@ -9285,7 +9298,7 @@ TL.StorySlider = TL.Class.extend({
 		this._removeSlide(this._slides[n]);
 		this._slides.splice(n, 1);
 	},
-		
+
     _findSlideIndex: function(n) {
         var _n = n;
 		if (typeof n == 'string' || n instanceof String) {
@@ -9299,45 +9312,48 @@ TL.StorySlider = TL.Class.extend({
 	updateDisplay: function(w, h, a, l) {
 		this._updateDisplay(w, h, a, l);
 	},
-	
+
 	// Create a slide
 	createSlide: function(d, n) {
 		this._createSlide(d, false, n);
 	},
-	
+
 	// Create Many Slides from an array
 	createSlides: function(array) {
 		this._createSlides(array);
 	},
-	    
+
 	// Destroy slide by index
 	destroySlide: function(n) {
 	    this._destroySlide(n);
 	},
-	
+
 	// Destroy slide by id
 	destroySlideId: function(id) {
 	    this.destroySlide(this._findSlideIndex(id));
 	},
-		
+
 	/*	Navigation
 	================================================== */
 	goTo: function(n, fast, displayupdate) {
+		n = parseInt(n);
+		if (isNaN(n)) n = 0;
+		
 		var self = this;
-		
+
 		this.changeBackground({color_value:"", image:false});
-		
+
 		// Clear Preloader Timer
 		if (this.preloadTimer) {
 			clearTimeout(this.preloadTimer);
 		}
-		
+
 		// Set Slide Active State
 		for (var i = 0; i < this._slides.length; i++) {
 			this._slides[i].setActive(false);
 		}
-		
-		if (n < this._slides.length && n >= 0) {			
+
+		if (n < this._slides.length && n >= 0) {
 			this.current_id = this._slides[n].data.unique_id;
 
 			// Stop animation
@@ -9347,7 +9363,7 @@ TL.StorySlider = TL.Class.extend({
 			if (this._swipable) {
 				this._swipable.stopMomentum();
 			}
-			
+
 			if (fast) {
 				this._el.slider_container.style.left = -(this.slide_spacing * n) + "px";
 				this._onSlideChange(displayupdate);
@@ -9357,12 +9373,12 @@ TL.StorySlider = TL.Class.extend({
 					duration: 	this.options.duration,
 					easing: 	this.options.ease,
 					complete: 	this._onSlideChange(displayupdate)
-				});				
+				});
 			}
-			
+
 			// Set Slide Active State
 			this._slides[n].setActive(true);
-			
+
 			// Update Navigation and Info
 			if (this._slides[n + 1]) {
 				this.showNav(this._nav.next, true);
@@ -9376,18 +9392,18 @@ TL.StorySlider = TL.Class.extend({
 			} else {
 				this.showNav(this._nav.previous, false);
 			}
-							
+
 			// Preload Slides
 			this.preloadTimer = setTimeout(function() {
 				self.preloadSlides(n);
-			}, this.options.duration);			
+			}, this.options.duration);
 		}
 	},
 
 	goToId: function(id, fast, displayupdate) {
-		this.goTo(this._findSlideIndex(id), fast, displayupdate);		
+		this.goTo(this._findSlideIndex(id), fast, displayupdate);
 	},
-		
+
 	preloadSlides: function(n) {
 		if (this._slides[n + 1]) {
 			this._slides[n + 1].loadMedia();
@@ -9406,16 +9422,16 @@ TL.StorySlider = TL.Class.extend({
 			this._slides[n - 2].scrollToTop();
 		}
 	},
-		
+
 	next: function() {
-	    var n = this._findSlideIndex(this.current_id);	    
+	    var n = this._findSlideIndex(this.current_id);
 		if ((n + 1) < (this._slides.length)) {
 			this.goTo(n + 1);
 		} else {
 			this.goTo(n);
 		}
 	},
-	
+
 	previous: function() {
 	    var n = this._findSlideIndex(this.current_id);
 		if (n - 1 >= 0) {
@@ -9424,48 +9440,48 @@ TL.StorySlider = TL.Class.extend({
 			this.goTo(n);
 		}
 	},
-	
+
 	showNav: function(nav_obj, show) {
-		
+
 		if (this.options.width <= 500 && TL.Browser.mobile) {
-			
+
 		} else {
 			if (show) {
 				nav_obj.show();
 			} else {
 				nav_obj.hide();
 			}
-			
+
 		}
 	},
-	
- 
+
+
 
 	changeBackground: function(bg) {
 		var bg_color = {r:256, g:256, b:256},
 			bg_color_rgb;
-			
+
 		if (bg.color_value && bg.color_value != "") {
 			bg_color = TL.Util.hexToRgb(bg.color_value);
 			if (!bg_color) {
 				trace("Invalid color value " + bg.color_value);
-				bg_color = this.options.default_bg_color;	
+				bg_color = this.options.default_bg_color;
 			}
 		} else {
 			bg_color = this.options.default_bg_color;
 			bg.color_value = "rgb(" + bg_color.r + " , " + bg_color.g + ", " + bg_color.b + ")";
 		}
-		
+
 		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;
 		this._el.background.style.backgroundImage = "none";
-		
+
 
 		if (bg.color_value) {
 			this._el.background.style.backgroundColor = bg.color_value;
 		} else {
 			this._el.background.style.backgroundColor = "transparent";
 		}
-		
+
 		if (bg_color.r < 255 || bg_color.g < 255 || bg_color.b < 255 || bg.image) {
 			this._nav.next.setColor(true);
 			this._nav.previous.setColor(true);
@@ -9476,94 +9492,94 @@ TL.StorySlider = TL.Class.extend({
 	},
 	/*	Private Methods
 	================================================== */
-	
+
 	// Update Display
 	_updateDisplay: function(width, height, animate, layout) {
 		var nav_pos, _layout;
-		
+
 		if(typeof layout === 'undefined'){
 			_layout = this.options.layout;
 		} else {
 			_layout = layout;
 		}
-		
+
 		this.options.layout = _layout;
-		
+
 		this.slide_spacing = this.options.width*2;
-		
+
 		if (width) {
 			this.options.width = width;
 		} else {
 			this.options.width = this._el.container.offsetWidth;
 		}
-		
+
 		if (height) {
 			this.options.height = height;
 		} else {
 			this.options.height = this._el.container.offsetHeight;
 		}
-		
+
 		//this._el.container.style.height = this.options.height;
-		
+
 		// position navigation
 		nav_pos = (this.options.height/2);
 		this._nav.next.setPosition({top:nav_pos});
 		this._nav.previous.setPosition({top:nav_pos});
-		
-		
+
+
 		// Position slides
 		for (var i = 0; i < this._slides.length; i++) {
 			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
 			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});
-			
+
 		};
-		
+
 		// Go to the current slide
 		this.goToId(this.current_id, true, true);
 	},
-	
+
 	// Reposition and redraw slides
     _updateDrawSlides: function() {
 	    var _layout = this.options.layout;
-   
+
 		for (var i = 0; i < this._slides.length; i++) {
 			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
-			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});			
+			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});
 		};
-	
-		this.goToId(this.current_id, true, false);	
+
+		this.goToId(this.current_id, true, false);
 	},
-	
-	
+
+
 	/*	Init
 	================================================== */
 	_initLayout: function () {
-		
+
 		this._el.container.className += ' tl-storyslider';
-		
+
 		// Create Layout
 		this._el.slider_container_mask		= TL.Dom.create('div', 'tl-slider-container-mask', this._el.container);
-		this._el.background 				= TL.Dom.create('div', 'tl-slider-background tl-animate', this._el.container); 
+		this._el.background 				= TL.Dom.create('div', 'tl-slider-background tl-animate', this._el.container);
 		this._el.slider_container			= TL.Dom.create('div', 'tl-slider-container tlanimate', this._el.slider_container_mask);
 		this._el.slider_item_container		= TL.Dom.create('div', 'tl-slider-item-container', this._el.slider_container);
-		
-		
+
+
 		// Update Size
 		this.options.width = this._el.container.offsetWidth;
 		this.options.height = this._el.container.offsetHeight;
-		
+
 		// Create Navigation
 		this._nav.previous = new TL.SlideNav({title: "Previous", description: "description"}, {direction:"previous"});
 		this._nav.next = new TL.SlideNav({title: "Next",description: "description"}, {direction:"next"});
-		
+
 		// add the navigation to the dom
 		this._nav.next.addTo(this._el.container);
 		this._nav.previous.addTo(this._el.container);
-		
-		
-				
+
+
+
 		this._el.slider_container.style.left="0px";
-		
+
 		if (TL.Browser.touch) {
 			//this._el.slider_touch_mask = TL.Dom.create('div', 'tl-slider-touch-mask', this._el.slider_container_mask);
 			this._swipable = new TL.Swipable(this._el.slider_container_mask, this._el.slider_container, {
@@ -9571,7 +9587,7 @@ TL.StorySlider = TL.Class.extend({
 				snap: 	true
 			});
 			this._swipable.enable();
-			
+
 			// Message
 			this._message = new TL.Message({}, {
 				message_class: 		"tl-message-full",
@@ -9580,33 +9596,33 @@ TL.StorySlider = TL.Class.extend({
 			this._message.updateMessage("Swipe to Navigate<br><span class='tl-button'>OK</span>");
 			this._message.addTo(this._el.container);
 		}
-		
+
 	},
-	
+
 	_initEvents: function () {
 		this._nav.next.on('clicked', this._onNavigation, this);
 		this._nav.previous.on('clicked', this._onNavigation, this);
-		
+
 		if (this._message) {
 			this._message.on('clicked', this._onMessageClick, this);
 		}
-		
+
 		if (this._swipable) {
 			this._swipable.on('swipe_left', this._onNavigation, this);
 			this._swipable.on('swipe_right', this._onNavigation, this);
 			this._swipable.on('swipe_nodirection', this._onSwipeNoDirection, this);
 		}
-		
-		
+
+
 	},
-	
+
 	_initData: function() {
 	    if(this.data.title) {
 	        this._createSlide(this.data.title, true, -1);
 	    }
         this._createSlides(this.data.events);
 	},
-	
+
 	/*	Events
 	================================================== */
 	_onBackgroundChange: function(e) {
@@ -9615,44 +9631,44 @@ TL.StorySlider = TL.Class.extend({
 		this.changeBackground(e);
 		this.fire("colorchange", slide_background);
 	},
-	
+
 	_onMessageClick: function(e) {
 		this._message.hide();
 	},
-	
+
 	_onSwipeNoDirection: function(e) {
 		this.goToId(this.current_id);
 	},
-	
+
 	_onNavigation: function(e) {
-		
+
 		if (e.direction == "next" || e.direction == "left") {
 			this.next();
 		} else if (e.direction == "previous" || e.direction == "right") {
 			this.previous();
-		} 
+		}
 		this.fire("nav_" + e.direction, this.data);
 	},
-	
+
 	_onSlideAdded: function(e) {
 		trace("slideadded")
 		this.fire("slideAdded", this.data);
 	},
-	
+
 	_onSlideRemoved: function(e) {
 		this.fire("slideRemoved", this.data);
 	},
-	
-	_onSlideChange: function(displayupdate) {		
+
+	_onSlideChange: function(displayupdate) {
 		if (!displayupdate) {
 			this.fire("change", {unique_id: this.current_id});
 		}
 	},
-	
+
 	_onMouseClick: function(e) {
-		
+
 	},
-	
+
 	_fireMouseEvent: function (e) {
 		if (!this._loaded) {
 			return;
@@ -9668,19 +9684,20 @@ TL.StorySlider = TL.Class.extend({
 		if (type === 'contextmenu') {
 			TL.DomEvent.preventDefault(e);
 		}
-		
+
 		this.fire(type, {
 			latlng: "something", //this.mouseEventToLatLng(e),
 			layerPoint: "something else" //this.mouseEventToLayerPoint(e)
 		});
 	},
-	
+
 	_onLoaded: function() {
 		this.fire("loaded", this.data);
 	}
-	
-	
+
+
 });
+
 
 /*	TL.TimeNav
 
@@ -9738,6 +9755,9 @@ TL.TimeNav = TL.Class.extend({
 
 		// Animation
 		this.animator = null;
+
+		// Ready state
+		this.ready = false;
 
 		// Markers Array
 		this._markers = [];
@@ -9860,7 +9880,7 @@ TL.TimeNav = TL.Class.extend({
 		if (typeof(zoom_factor) == 'number') {
 			this.setZoomFactor(zoom_factor);
 		} else {
-			console.log("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
+			console.warn("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
 		}
 	},
 
@@ -9903,9 +9923,13 @@ TL.TimeNav = TL.Class.extend({
 
 			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
 				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
+				var group_hide = false;
+				if (group_y > (available_height- this.options.marker_padding)) {
+					group_hide = true;
+				}
 
 				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2);
-				this._groups[i].setAlternateRowColor(TL.Util.isEven(i));
+				this._groups[i].setAlternateRowColor(TL.Util.isEven(i), group_hide);
 
 				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
 			}
@@ -9961,11 +9985,35 @@ TL.TimeNav = TL.Class.extend({
 
 	},
 
-	_assignRowsToMarkers: function() {
-		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
-			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+	_calculateMarkerHeight: function(h) {
+		return Math.floor((h /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+	},
 
-		this._calculated_row_height = Math.floor(available_height /this.timescale.getNumberOfRows());
+	_calculateRowHeight: function(h) {
+		return Math.floor(h /this.timescale.getNumberOfRows());
+	},
+
+	_calculateAvailableHeight: function() {
+		return (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
+	},
+
+	_calculateMinimumTimeNavHeight: function() {
+		return (this.timescale.getNumberOfRows() * this.options.marker_height_min) + this._el.timeaxis_background.offsetHeight + (this.options.marker_padding);
+
+	},
+
+	getMinimumHeight: function() {
+		return this._calculateMinimumTimeNavHeight();
+	},
+
+	_assignRowsToMarkers: function() {
+		var available_height 	= this._calculateAvailableHeight(),
+			marker_height 		= this._calculateMarkerHeight(available_height);
+
+
+		this._positionGroups();		
+
+		this._calculated_row_height = this._calculateRowHeight(available_height);
 
 		for (var i = 0; i < this._markers.length; i++) {
 
@@ -10135,6 +10183,7 @@ TL.TimeNav = TL.Class.extend({
 	/*	Events
 	================================================== */
 	_onLoaded: function() {
+		this.ready = true;
 		this.fire("loaded", this.config);
 	},
 
@@ -10962,18 +11011,23 @@ TL.TimeGroup = TL.Class.extend({
 	},
 	
 	setRowPosition: function(n, h) {
+		// trace(n);
+		// trace(this._el.container)
 		this.options.height = h * this.data.rows;
 		this.setPosition({top:n});
 		this._el.container.style.height = this.options.height + "px";
 		
 	},
 	
-	setAlternateRowColor: function(alternate) {
+	setAlternateRowColor: function(alternate, hide) {
+		var class_name = "tl-timegroup";
 		if (alternate) {
-			this._el.container.className = "tl-timegroup tl-timegroup-alternate";
-		} else {
-			this._el.container.className = "tl-timegroup";
+			class_name += " tl-timegroup-alternate";
 		}
+		if (hide) {
+			class_name += " tl-timegroup-hidden";
+		}
+		this._el.container.className = class_name;
 	},
 	
 	/*	Events
@@ -11893,6 +11947,7 @@ TL.Timeline = TL.Class.extend({
 			script_path: 				"",
 			height: 					this._el.container.offsetHeight,
 			width: 						this._el.container.offsetWidth,
+			debug: 						false,
 			is_embed: 					false,
 			is_full_embed: 				false,
 			hash_bookmark: false,
@@ -11902,7 +11957,7 @@ TL.Timeline = TL.Class.extend({
 			timenav_position: 			"bottom",				// timeline on top or bottom
 			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
 			base_class: 				"tl-timeline", 		// removing tl-timeline will break all default stylesheets...
-			timenav_height: 			175,
+			timenav_height: 			null,
 			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
 			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
 			timenav_height_min: 		175,					// Minimum timenav height
@@ -11937,7 +11992,6 @@ TL.Timeline = TL.Class.extend({
 		this.animator_menubar = null;
 
 		// Merge Options
-
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
 			if (parsed) {
@@ -11951,7 +12005,10 @@ TL.Timeline = TL.Class.extend({
 
 		window.addEventListener("resize", function(e){
 			self.updateDisplay();
-		})
+		});
+
+		// Set Debug Mode
+		TL.debug = this.options.debug;
 
 		// Apply base class to container
 		this._el.container.className += ' tl-timeline';
@@ -12148,6 +12205,7 @@ TL.Timeline = TL.Class.extend({
 
   	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
+		
 		var height = 0;
 
 		if (timenav_height) {
@@ -12162,6 +12220,15 @@ TL.Timeline = TL.Class.extend({
 
 			}
 		}
+
+		// Set new minimum based on how many rows needed
+		if (this._timenav.ready) {
+			if (this.options.timenav_height_min < this._timenav.getMinimumHeight()) {
+				this.options.timenav_height_min = this._timenav.getMinimumHeight();
+			}
+		}
+
+		// If height is less than minimum set it to minimum
 		if (height < this.options.timenav_height_min) {
 			height = this.options.timenav_height_min;
 		}
@@ -12364,11 +12431,12 @@ TL.Timeline = TL.Class.extend({
 		this._el.storyslider.style.top  = "1px";
 
 		// Set TimeNav Height
-		this.options.timenav_height = this._calculateTimeNavHeight();
+		this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
 
 		// Create TimeNav
 		this._timenav = new TL.TimeNav(this._el.timenav, this.config, this.options);
 		this._timenav.on('loaded', this._onTimeNavLoaded, this);
+		this._timenav.on('update_timenav_min', this._updateTimeNavHeightMin, this);
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
@@ -12395,7 +12463,7 @@ TL.Timeline = TL.Class.extend({
 
 
 		// Update Display
-		this._updateDisplay(false, true, 2000);
+		this._updateDisplay(this._timenav.options.height, true, 2000);
 
 	},
 

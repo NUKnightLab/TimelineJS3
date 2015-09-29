@@ -55,6 +55,9 @@ TL.TimeNav = TL.Class.extend({
 		// Animation
 		this.animator = null;
 
+		// Ready state
+		this.ready = false;
+
 		// Markers Array
 		this._markers = [];
 
@@ -219,9 +222,13 @@ TL.TimeNav = TL.Class.extend({
 
 			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
 				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
+				var group_hide = false;
+				if (group_y > (available_height- this.options.marker_padding)) {
+					group_hide = true;
+				}
 
 				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2);
-				this._groups[i].setAlternateRowColor(TL.Util.isEven(i));
+				this._groups[i].setAlternateRowColor(TL.Util.isEven(i), group_hide);
 
 				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
 			}
@@ -277,11 +284,35 @@ TL.TimeNav = TL.Class.extend({
 
 	},
 
-	_assignRowsToMarkers: function() {
-		var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)),
-			marker_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+	_calculateMarkerHeight: function(h) {
+		return Math.floor((h /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+	},
 
-		this._calculated_row_height = Math.floor(available_height /this.timescale.getNumberOfRows());
+	_calculateRowHeight: function(h) {
+		return Math.floor(h /this.timescale.getNumberOfRows());
+	},
+
+	_calculateAvailableHeight: function() {
+		return (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
+	},
+
+	_calculateMinimumTimeNavHeight: function() {
+		return (this.timescale.getNumberOfRows() * this.options.marker_height_min) + this._el.timeaxis_background.offsetHeight + (this.options.marker_padding);
+
+	},
+
+	getMinimumHeight: function() {
+		return this._calculateMinimumTimeNavHeight();
+	},
+
+	_assignRowsToMarkers: function() {
+		var available_height 	= this._calculateAvailableHeight(),
+			marker_height 		= this._calculateMarkerHeight(available_height);
+
+
+		this._positionGroups();		
+
+		this._calculated_row_height = this._calculateRowHeight(available_height);
 
 		for (var i = 0; i < this._markers.length; i++) {
 
@@ -451,6 +482,7 @@ TL.TimeNav = TL.Class.extend({
 	/*	Events
 	================================================== */
 	_onLoaded: function() {
+		this.ready = true;
 		this.fire("loaded", this.config);
 	},
 

@@ -57,18 +57,23 @@ TL.TimeGroup = TL.Class.extend({
 	},
 	
 	setRowPosition: function(n, h) {
+		// trace(n);
+		// trace(this._el.container)
 		this.options.height = h * this.data.rows;
 		this.setPosition({top:n});
 		this._el.container.style.height = this.options.height + "px";
 		
 	},
 	
-	setAlternateRowColor: function(alternate) {
+	setAlternateRowColor: function(alternate, hide) {
+		var class_name = "tl-timegroup";
 		if (alternate) {
-			this._el.container.className = "tl-timegroup tl-timegroup-alternate";
-		} else {
-			this._el.container.className = "tl-timegroup";
+			class_name += " tl-timegroup-alternate";
 		}
+		if (hide) {
+			class_name += " tl-timegroup-hidden";
+		}
+		this._el.container.className = class_name;
 	},
 	
 	/*	Events
