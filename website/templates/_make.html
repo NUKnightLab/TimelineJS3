@@ -10,9 +10,11 @@
 
   <!-- Step 1 -->
   <div id="make-step-1" class="step row">
-    <h2 class="small-2 medium-1 columns">1</h2>
-    <div class="small-10 medium-11 columns">
-      <h4><span>1. </span>Create your spreadsheet</h4>
+    <div class="small-2 columns">
+      <h2>1</h2>
+      <h6>Create your spreadsheet</h6>
+    </div>
+    <div class="small-10 columns">
       <p>Build a new Google Spreadsheet using our <a href="https://drive.google.com/previewtemplate?id=1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ&mode=public" target="_blank" >template</a>.
       Drop dates, text and links to media into the appropriate columns. For more about working with our template, <a href="/docs/using-spreadsheets.html">see our help docs.</a></p>
       <p><b>Note:</b> Don't change the column headers, don't remove any columns, and don't leave any blank rows in your spreadsheet.</p>
@@ -24,15 +26,17 @@
 
   <!-- Step 2 -->
   <div id="make-step-2" class="step row">
-    <h2 class="small-2 medium-1 columns">2</h2>
+    <div class="small-2 columns">
+      <h2>2</h2>
+      <h6>Publish to the web</h6>
+    </div>
     <div class="small-10 medium-5 columns">
-      <h4><span>2. </span>Publish to the web</h4>
-      <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_small.png" alt="Publish to Web"></p>
       <p>Under the File menu, select <em>&ldquo;Publish to the Web.&rdquo;</em></p>
+      <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_small.png" alt="Publish to Web"></p>
       <p>In the next window, click the blue "publish" button. When asked, "Are you sure…?" click OK.</p>
       <p>Now, copy the URL that appears in the center of the window. You'll use this in the next step.</p>
     </div>
-    <div class="small-12 medium-6 columns">
+    <div class="small-12 medium-5 columns">
         <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_button_small.png" alt="Publish to Web 2"></p>
         <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_url_small.png" alt="Publish to Web 3"></p>
       </div>
@@ -41,41 +45,36 @@
 
   <!-- Step 3 -->
   <form id="make-step-3" class="step row">
-    <h2 class="small-2 medium-1 columns">3</h2>
-    <div class="small-10 medium-11 columns">
-      <h4><span>3. </span>Copy/paste spreadsheet URL into the generator box below</h4>
+    <div class="small-2 columns">
+      <h2>3</h2>
+      <h6>Generate your timeline</h6>
+    </div>
+    <div class="small-10 columns">
       <div class="row">
-        <div class="small-12 medium-3 columns">
-          <label for="embed-source-url" class="right inline">Google Spreadsheet URL</label>
-        </div>
-        <div class="small-12 medium-6 columns">
-          <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI">
-        </div>
-        <div class="small-12 medium-3 columns">
-          <p class="left inline"><small>(Make sure you've published it.)</small></p>
-        </div>
-      </div>
-      <!-- Size-->
-      <div class="row">
-        <div class="small-3 columns">
-          <label class="right inline">Size</label>
-        </div>
-        <div class="small-9 columns">
+        <div class="small-12 columns">
+          <p>Copy/paste spreadsheet URL into the box below to generate your timeline. (Make sure you've published the spreadsheet.)</p>
           <div class="row collapse">
-            <div class="small-6 medium-3 large-1 columns">
-              <span class="prefix">Width</span>
+            <div class="small-6 medium-3 columns">
+              <label for="embed-source-url" class="prefix">Google Spreadsheet URL</label>
             </div>
-            <div class="small-6 medium-3 large-1 columns">
-              <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
+            <div class="small-6 medium-4 columns">
+              <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI">
             </div>
-            <div class="small-12 medium-3 large-1 columns"></div>
-            <div class="small-6 medium-3 large-1 columns">
-              <span class="prefix">Height</span>
+            <div class="small-12 medium-5 columns">
+              <div class="small-6 medium-3 large-2 columns">
+                <span class="prefix">Width</span>
+              </div>
+              <div class="small-6 medium-3 large-2 columns">
+                <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
+              </div>
+              <div class="small-12 medium-3 large-2 columns"></div>
+              <div class="small-6 medium-3 large-2 columns">
+                <span class="prefix">Height</span>
+              </div>
+              <div class="small-6 medium-3 large-2 columns end">
+                <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
+              </div>
             </div>
-            <div class="small-6 medium-3 large-1 columns end">
-              <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
-            </div>
-        </div>
       </div>
 
       <!-- Extra Options -->
@@ -193,43 +192,43 @@
             <div class="row">
               <label>Misc</label>
               <!-- Start at End?-->
-              <div class="small-12 medium-3 columns">
+              <div class="small-12 medium-4 columns">
                   <label class="checkbox">
                     <input id="embed-startatend" type="checkbox" value="option1">Start at the end
                   </label>
               </div>
-              <div class="small-12 medium-9 columns">
+              <div class="small-12 medium-8 columns">
                   <span class="help-inline">Begins the timeline on the last slide.</span>
               </div>
             </div>
             <!-- Nav position -->
             <div class="row">
-              <div class="small-12 medium-3 columns">
+              <div class="small-12 medium-4 columns">
                 <label class="checkbox">
                   <input id="embed-timenavtop" type="checkbox" value="option1">Show nav on top
                 </label>
               </div>
-              <div class="small-12 medium-9 columns">
+              <div class="small-12 medium-8 columns">
                   <span class="help-inline">Switches the vertical order of the timeline navigation and the media.</span>
               </div>
             </div>
             <div class="row">
-              <div class="small-12 medium-3 columns">
+              <div class="small-12 medium-4 columns">
                 <label class="checkbox">
                   <input id="embed-debug" type="checkbox" value="option1">Debug
                 </label>
               </div>
-              <div class="small-12 medium-9 columns">
+              <div class="small-12 medium-8 columns">
                   <span class="help-inline">In debug mode, the JavaScript console will display logging messages.</span>
               </div>
             </div>
             <div class="row">
-              <div class="small-12 medium-3 columns">
+              <div class="small-12 medium-4 columns">
                 <label class="checkbox">
                   <input id="embed-hash-bookmark" type="checkbox" value="option1">Use hash bookmarks
                 </label>
               </div>
-              <div class="small-12 medium-9 columns">
+              <div class="small-12 medium-8 columns">
                   <span class="help-inline">Assigns a hash bookmark to each slide's URL, allowing deep linking to slides.</span>
               </div>
             </div>
@@ -277,9 +276,11 @@
   </div>
   <!-- Step 4 -->
   <div id="make-step-4" class="step row last">
-    <h2 class="small-2 medium-1 columns">4</h2>
-    <div class="small-10 medium-11 columns">
-      <h4><span>4. </span>Embed the code into your website</h4>
+    <div class="small-2 columns">
+      <h2>4</h2>
+      <h6>Embed the code into your website</h6>
+    </div>
+    <div class="small-10 columns">
       <p>Grab the embed code and paste it on your site where you want your TimelineJS to appear (just like a YouTube video).</p>
       <textarea readonly="readonly" style="width: 100%; height: 160px; min-height: 110px; max-height: 300px; resize: none; font-family: Menlo,Monaco,'Courier New',monospace; font-size: 12px;" id="embed_code"><iframe src='https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Bevan-PotanoSans&maptype=toner&width=600&height=600' width='600' height='600' frameborder='0'></iframe></textarea><br><br>
       <div class="row">
