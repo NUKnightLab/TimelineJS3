@@ -5,32 +5,11 @@ section {
   padding: 20px 0;
 }
 
-/* purpleline fixes */
-/* should be incorporated into purpleline core */
-table {
-    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-th,
-td {
-    padding: 0.5625em 0.625em;
-}
-
-table code {
-    font-family: Consolas, "Liberation Mono", Courier, monospace;
-    padding: 0;
-    background: transparent;
-    border: none;
-    color: #ce4d28;
-}
-
-.label {
-    padding: 3px 5px 2px
-}
-
 #tips-and-tricks ol li {
     margin-top: 10px;
 }
+/*purpleline fixes to be incorporated */
+.panel .logo-mark + h2.intro { margin-top: -10px; }
 @media screen and (max-width: 767px) {
     h1.logo-mark.xl {
         font-size: 55px!important;
