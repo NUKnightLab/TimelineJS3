@@ -261,6 +261,10 @@ h2.intro {
   margin-bottom: 10px;
 }
 
+#examples .logo {
+  max-height: 33px;
+}
+
 .tabs {
   margin: 20px 20px 0 20px !important;
 }
