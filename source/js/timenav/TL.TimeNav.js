@@ -285,11 +285,11 @@ TL.TimeNav = TL.Class.extend({
 	},
 
 	_calculateMarkerHeight: function(h) {
-		return Math.floor((h /this.timescale.getNumberOfRows()) - this.options.marker_padding);
+		return ((h /this.timescale.getNumberOfRows()) - this.options.marker_padding);
 	},
 
 	_calculateRowHeight: function(h) {
-		return Math.floor(h /this.timescale.getNumberOfRows());
+		return (h /this.timescale.getNumberOfRows());
 	},
 
 	_calculateAvailableHeight: function() {
