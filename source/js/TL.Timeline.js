@@ -69,6 +69,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "media/types/TL.Media.Image.js";
 	// @codekit-prepend "media/types/TL.Media.Instagram.js";
 	// @codekit-prepend "media/types/TL.Media.GoogleMap.js";
+	// @codekit-prepend "media/types/TL.Media.PDF.js";
 	// @codekit-prepend "media/types/TL.Media.Profile.js";
 	// @codekit-prepend "media/types/TL.Media.Slider.js";
 	// @codekit-prepend "media/types/TL.Media.SoundCloud.js";
@@ -411,7 +412,7 @@ TL.Timeline = TL.Class.extend({
 
   	 */
 	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
-		
+
 		var height = 0;
 
 		if (timenav_height) {
