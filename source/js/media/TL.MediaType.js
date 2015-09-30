@@ -102,12 +102,6 @@ TL.MediaType = function(m) {
 				cls: 		TL.Media.GoogleDoc
 			},
 			{
-				type: 		"googledocs",
-				name: 		"Google Doc",
-				match_str: 	/^.*\.pdf(\?.*)?(\#.*)?/,
-				cls: 		TL.Media.GoogleDoc
-			},
-			{
 				type: 		"wikipedia",
 				name: 		"Wikipedia",
 				match_str: 	"^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
