@@ -19,11 +19,14 @@ TL.Media.PDF = TL.Media.extend({
 
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
-
+		var markup = "";
 		// not assigning media_id attribute. Seems like a holdover which is no longer used.
-		this._el.content_item.innerHTML	=	"<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + this.data.url + "'></iframe>";
-
-		// After Loaded
+		if (TL.Browser.ie || TL.Browser.edge) {
+			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + this.data.url + "&amp;embedded=true'></iframe>";
+		} else {
+			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + this.data.url + "'></iframe>"
+		}
+		this._el.content_item.innerHTML	= markup
 		this.onLoaded();
 	},
 

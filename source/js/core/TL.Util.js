@@ -177,7 +177,7 @@ TL.Util = {
             if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
                 link_text = link_text.substring(0,MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
             }
-            return prefix + "<a class='tl-makelink' target='_blank' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
+            return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
         }
 		// http://, https://, ftp://
 		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
