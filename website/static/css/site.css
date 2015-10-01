@@ -242,6 +242,30 @@ ul#embed-font-dropdown > li > p {
     margin-top: 0;
 }
 
+/* FAQ */
+#faq-stub {
+    padding-left: 40px;
+}
+#faq-stub p::before {
+    content: "Q: ";
+    margin-left: -25px;
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ce4d28;
+    font-weight: bold;
+    font-style: normal;
+}
+#faq-stub a {
+    font-weight: bold;
+    color: #222;
+}
+
+#faq-stub a span {
+    color: #1dacd6;
+    font-weight: normal;
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-left: 5px;
+}
+
 /* Examples */
 #examples h3 {
   font-size: 16px;
