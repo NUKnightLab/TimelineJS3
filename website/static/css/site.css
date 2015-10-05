@@ -263,6 +263,7 @@ h2.intro {
 
 #examples .logo {
   max-height: 33px;
+  max-width: 70%;
 }
 
 .tabs {
