@@ -209,10 +209,18 @@ TL.Language.languages = {
 	en: {
 		name: 					"English",
 		lang: 					"en",
+        api: {
+            wikipedia:          "en" // the two letter code at the beginning of the Wikipedia subdomain for this language
+        }, 
 		messages: {
 			loading: 			"Loading",
 			wikipedia: 			"From Wikipedia, the free encyclopedia",
-			error: 				"Error"
+			error: 				"Error",
+            contract_timeline:  "Contract Timeline", 
+            return_to_title:    "Return to Title", 
+            loading_content:    "Loading Content", 
+            expand_timeline:    "Expand Timeline", 
+            loading_timeline:   "Loading Timeline... "
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
