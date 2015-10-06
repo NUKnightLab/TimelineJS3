@@ -224,6 +224,7 @@ TL.Language.languages = {
             unknown_read_err:               "An unexpected error occurred trying to read your spreadsheet data",
             network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
             empty_feed_err:                 "No data entries found",
+            missing_start_date_err:         "Missing start_date",
             invalid_data_format_err:        "Invalid data format",
             date_compare_err:               "Can't compare TL.Dates on different scales",
             invalid_scale_err:              "Invalid scale",
