@@ -260,7 +260,7 @@ TL.Timeline = TL.Class.extend({
 	
 	_translateError: function(e) {
 	    if(e.message_key) {
-	        return this._(e.message_key) + (e.detail ? '' + e.detail : '')
+	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
 	    }
 	    return e;
 	},
