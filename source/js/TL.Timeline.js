@@ -253,9 +253,12 @@ TL.Timeline = TL.Class.extend({
 	/*  Load Language
 	================================================== */
 	_loadLanguage: function(data) {
-		var self = this;
-		this.options.language = new TL.Language(this.options);
-		this._initData(data);
+		try {
+		    this.options.language = new TL.Language(this.options);
+		    this._initData(data);
+		} catch(e) {
+		    this.showMessage(e);			
+		}
 	},
 	
 	_translateError: function(e) {
@@ -612,7 +615,11 @@ TL.Timeline = TL.Class.extend({
 		this.config = config;
 		this.config.validate();
 		if (this.config.isValid()) {
-			this._onDataLoaded();
+		    try {
+			    this._onDataLoaded();
+			} catch(e) {
+			    this.showMessage("<strong>"+ this._('error') +":</strong> " + this._translateError(e));			
+			}
 		} else {
 		    var translated_errs = [];
 		    
