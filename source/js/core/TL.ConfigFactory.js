@@ -148,7 +148,7 @@
     var getGoogleItemExtractor = function(data) {
         if (typeof data.feed.entry === 'undefined'
                 || data.feed.entry.length == 0) {
-            throw('No data entries found.');
+            throw new TL.Error("empty_feed_err");
         }
         var entry = data.feed.entry[0];
         if (typeof entry.gsx$startdate !== 'undefined') {
@@ -156,7 +156,7 @@
         } else if (typeof entry.gsx$year !== 'undefined') {
             return extractGoogleEntryData_V3;
         } else {
-            throw('Invalid data format.');
+            throw new TL.Error("invalid_data_format_err");
         }
     }
 
@@ -223,6 +223,8 @@
                 tc = new TL.TimelineConfig();
                 if (e.name == 'NetworkError') {
                     tc.logError(new TL.Error("network_err"));
+                } else if(e.name == 'TL.Error') {
+                    tc.logError(e);
                 } else {
                     tc.logError(new TL.Error("unknown_read_err", e.name));
                 }
