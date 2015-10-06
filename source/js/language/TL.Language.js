@@ -213,14 +213,20 @@ TL.Language.languages = {
             wikipedia:          "en" // the two letter code at the beginning of the Wikipedia subdomain for this language
         }, 
 		messages: {
-			loading: 			"Loading",
-			wikipedia: 			"From Wikipedia, the free encyclopedia",
-			error: 				"Error",
-            contract_timeline:  "Contract Timeline", 
-            return_to_title:    "Return to Title", 
-            loading_content:    "Loading Content", 
-            expand_timeline:    "Expand Timeline", 
-            loading_timeline:   "Loading Timeline... "
+			loading: 			    "Loading",
+			wikipedia: 			    "From Wikipedia, the free encyclopedia",
+			error: 				    "Error",
+            contract_timeline:      "Contract Timeline", 
+            return_to_title:        "Return to Title", 
+            loading_content:        "Loading Content", 
+            expand_timeline:        "Expand Timeline", 
+            loading_timeline:       "Loading Timeline... ",
+            date_compare_err:       "Can't compare TL.Dates on different scales",
+            date_scale_err:         "Invalid scale",
+            flickr_notfound_err:    "Photo not found or private",
+            flickr_invalidurl_err:  "Invalid Flickr URL",
+            twitter_load_err:       "Unable to load Tweet",
+            wikipedia_load_err:     "Unable to load Wikipedia entry"   
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],

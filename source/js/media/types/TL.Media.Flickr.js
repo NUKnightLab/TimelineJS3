@@ -28,27 +28,30 @@ TL.Media.Flickr = TL.Media.extend({
 			self.onMediaLoaded();
 		});
 		
-		// Get Media ID
-		this.establishMediaID();
+		try {
+		    // Get Media ID
+		    this.establishMediaID();
 		
-		// API URL
-		api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
-		
-		// API Call
-		TL.getJSON(api_url, function(d) {
-			if (d.stat == "ok") {
-				self.createMedia(d);
-			} else {
-				self.loadErrorDisplay("Photo not found or private.");
-			}
-		});
-		
+            // API URL
+            api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
+        
+            // API Call
+            TL.getJSON(api_url, function(d) {
+                if (d.stat == "ok") {
+                    self.createMedia(d);
+                } else {
+                    self.loadErrorDisplay(self._("flickr_notfound_err"));
+                }
+            });
+		} catch(e) {
+		    self.loadErrorDisplay(self._(e.message_key)); 
+		}		
 	},
 
 	establishMediaID: function() {
 		var marker = 'flickr.com/photos/';
 		var idx = this.data.url.indexOf(marker);
-		if (idx == -1) { throw "Invalid Flickr URL"; }
+		if (idx == -1) { throw new TL.Error("flickr_invalidurl_err"); }
 		var pos = idx + marker.length;
 		this.media_id = this.data.url.substr(pos).split("/")[1];
 	},
