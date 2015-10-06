@@ -213,22 +213,23 @@
     }
 
     var makeConfig = function(url, callback) {
-        var key = parseGoogleSpreadsheetURL(url);
+        var tc,
+            key = parseGoogleSpreadsheetURL(url);
 
         if (key) {
-          try {
-            var json = jsonFromGoogleURL(url);
-          } catch(e) {
-            tc = new TL.TimelineConfig();
-            if (e.name == 'NetworkError') {
-              tc.logError("Unable to read your Google Spreadsheet. Make sure you have published it to the web.")
-            } else {
-              tc.logError("An unexpected error occurred trying to read your spreadsheet data ["+e.name+"]");
+            try {
+                var json = jsonFromGoogleURL(url);
+            } catch(e) {
+                tc = new TL.TimelineConfig();
+                if (e.name == 'NetworkError') {
+                    tc.logError("Unable to read your Google Spreadsheet. Make sure you have published it to the web.")
+                } else {
+                    tc.logError("An unexpected error occurred trying to read your spreadsheet data ["+e.name+"]");
+                }
+                callback(tc);
+                return;
             }
-            callback(tc);
-            return;
-          }
-            var tc = new TL.TimelineConfig(json);
+            tc = new TL.TimelineConfig(json);
             if (json.errors) {
                 for (var i = 0; i < json.errors.length; i++) {
                     tc.logError(json.errors[i]);
@@ -237,8 +238,13 @@
             callback(tc);
         } else {
             TL.getJSON(url, function(data){
-                callback(new TL.TimelineConfig(data));
-
+                try {
+                    tc = new TL.TimelineConfig(data);
+                } catch(e) {
+                    tc = new TL.TimelineConfig();
+                    tc.logError(e);                    
+                }
+                callback(tc);
             });
         }
     }
