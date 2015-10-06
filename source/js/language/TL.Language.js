@@ -238,7 +238,9 @@ TL.Language.languages = {
             flickr_notfound_err:            "Photo not found or private",
             flickr_invalidurl_err:          "Invalid Flickr URL",
             twitter_load_err:               "Unable to load Tweet",
-            wikipedia_load_err:             "Unable to load Wikipedia entry"   
+            wikipedia_load_err:             "Unable to load Wikipedia entry",
+            template_value_err:             "No value provided for variable",
+            invalid_rgb_err:                "Invalid RGB argument"
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
