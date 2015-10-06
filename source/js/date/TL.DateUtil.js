@@ -40,7 +40,7 @@ TL.DateUtil = {
 		}
 
 		if (parts.length > 4) { 
-		    throw new Error("invalid_separator_error");
+		    throw new TL.Error("invalid_separator_error");
 		}
 
 		parsed.hour = parseInt(parts[0]);
