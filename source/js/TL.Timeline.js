@@ -137,11 +137,6 @@ TL.Timeline = TL.Class.extend({
 		// TimeNav
 		this._timenav = {};
 
-		// Message
-		this.message = new TL.Message({}, {
-			message_class: "tl-message-full"
-		});
-
 		// Menu Bar
 		this._menubar = {};
 
@@ -199,6 +194,9 @@ TL.Timeline = TL.Class.extend({
 		this.animator_storyslider = null;
 		this.animator_menubar = null;
 
+		// Add message to DOM
+		this.message = new TL.Message({}, {message_class: "tl-message-full"}, this._el.container);
+        
 		// Merge Options
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
@@ -229,9 +227,6 @@ TL.Timeline = TL.Class.extend({
 			this._el.container.className += ' tl-timeline-full-embed';
 		}
 
-		// Add Message to DOM
-		this.message.addTo(this._el.container);
-
 		// Use Relative Date Calculations
 		// NOT YET IMPLEMENTED
 		if(this.options.relative_date) {
@@ -243,7 +238,6 @@ TL.Timeline = TL.Class.extend({
 					trace("LOAD MOMENTJS")
 				});
 			}
-
 		} else {
 			self._loadLanguage(data);
 		}
@@ -638,7 +632,9 @@ TL.Timeline = TL.Class.extend({
 	_initLayout: function () {
 		var self = this;
 
+        this.message.removeFrom(this._el.container);
 		this._el.container.innerHTML = "";
+		
 		// Create Layout
 		if (this.options.timenav_position == "top") {
 			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
@@ -666,11 +662,11 @@ TL.Timeline = TL.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
-    // intial_zoom cannot be applied before the timenav has been created
-    if (this.options.initial_zoom) {
-      // at this point, this.options refers to the merged set of options
-      this.setZoom(this.options.initial_zoom);
-    }
+        // intial_zoom cannot be applied before the timenav has been created
+        if (this.options.initial_zoom) {
+            // at this point, this.options refers to the merged set of options
+            this.setZoom(this.options.initial_zoom);
+        }
 
 		// Create StorySlider
 		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);
