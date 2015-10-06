@@ -222,9 +222,9 @@
             } catch(e) {
                 tc = new TL.TimelineConfig();
                 if (e.name == 'NetworkError') {
-                    tc.logError("Unable to read your Google Spreadsheet. Make sure you have published it to the web.")
+                    tc.logError(new TL.Error("network_err"));
                 } else {
-                    tc.logError("An unexpected error occurred trying to read your spreadsheet data ["+e.name+"]");
+                    tc.logError(new TL.Error("unknown_read_err", e.name));
                 }
                 callback(tc);
                 return;

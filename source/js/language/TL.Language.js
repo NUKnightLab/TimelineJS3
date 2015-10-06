@@ -221,6 +221,8 @@ TL.Language.languages = {
             loading_content:                "Loading Content", 
             expand_timeline:                "Expand Timeline", 
             loading_timeline:               "Loading Timeline... ",
+            unknown_read_err:               "An unexpected error occurred trying to read your spreadsheet data",
+            network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
             date_compare_err:               "Can't compare TL.Dates on different scales",
             invalid_scale_err:              "Invalid scale",
             invalid_date_err:               "Invalid date",
