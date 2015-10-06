@@ -18,6 +18,7 @@ https://incident57.com/codekit/
 
 // CORE
 	// @codekit-prepend "core/TL.js";
+	// @codekit-prepend "core/TL.Error.js";
 	// @codekit-prepend "core/TL.Util.js";
 	// @codekit-prepend "data/TL.Data.js";
 	// @codekit-prepend "core/TL.Class.js";
@@ -231,8 +232,6 @@ TL.Timeline = TL.Class.extend({
 		// Add Message to DOM
 		this.message.addTo(this._el.container);
 
-
-
 		// Use Relative Date Calculations
 		// NOT YET IMPLEMENTED
 		if(this.options.relative_date) {
@@ -257,6 +256,13 @@ TL.Timeline = TL.Class.extend({
 		var self = this;
 		this.options.language = new TL.Language(this.options);
 		this._initData(data);
+	},
+	
+	_translateError: function(e) {
+	    if(e.message_key) {
+	        return this._(e.message_key) + (e.detail ? '' + e.detail : '')
+	    }
+	    return e;
 	},
 
 
@@ -608,7 +614,13 @@ TL.Timeline = TL.Class.extend({
 		if (this.config.isValid()) {
 			this._onDataLoaded();
 		} else {
-			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors('<br>'));
+		    var translated_errs = [];
+		    
+		    for(var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
+		        translated_errs.push(this._translateError(errs[i]));
+		    }
+		    
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + translated_errs.join('<br>'));
 			// should we set 'self.ready'? if not, it won't resize,
 			// but most resizing would only work
 			// if more setup happens
