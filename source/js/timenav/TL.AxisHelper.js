@@ -10,7 +10,7 @@ TL.AxisHelper = TL.Class.extend({
 	        this.minor = options.minor;
 	        this.major = options.major;
 		} else {
-            throw("Axis helper must be configured with options")
+            throw new TL.Error("axis_helper_no_options_err")
         }
        
     },
@@ -77,7 +77,7 @@ TL.AxisHelper = TL.Class.extend({
         var helpers = HELPERS[ts_scale];
         
         if (!helpers) {
-            throw ("No AxisHelper available for "+ts_scale);
+            throw new TL.Error("axis_helper_scale_err", ts_scale);
         }
         
         var prev = null;

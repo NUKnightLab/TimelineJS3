@@ -114,8 +114,7 @@ TL.TimeScale = TL.Class.extend({
         } else if(this._scale == 'cosmological') {
             return new TL.BigDate(new TL.BigYear(t));
         }
-
-        throw("Don't know how to get date from time for "+this._scale);
+        throw new TL.Error("time_scale_scale_err", this._scale);
     },
 
     getMajorScale: function() {

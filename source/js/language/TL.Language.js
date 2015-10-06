@@ -241,7 +241,10 @@ TL.Language.languages = {
             twitter_load_err:               "Unable to load Tweet",
             wikipedia_load_err:             "Unable to load Wikipedia entry",
             template_value_err:             "No value provided for variable",
-            invalid_rgb_err:                "Invalid RGB argument"
+            invalid_rgb_err:                "Invalid RGB argument",
+            time_scale_scale_err:           "Don't know how to get date from time for scale",
+            axis_helper_no_options_err:     "Axis helper must be configured with options",
+            axis_helper_scale_err:          "No AxisHelper available for scale"
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
