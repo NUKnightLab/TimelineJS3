@@ -7,13 +7,13 @@ TL.Dom = {
 	get: function(id) {
 		return (typeof id === 'string' ? document.getElementById(id) : id);
 	},
-	
+
 	getByClass: function(id) {
 		if (id) {
 			return document.getElementsByClassName(id);
 		}
 	},
-	
+
 	create: function(tagName, className, container) {
 		var el = document.createElement(tagName);
 		el.className = className;
@@ -22,7 +22,7 @@ TL.Dom = {
 		}
 		return el;
 	},
-	
+
 	createText: function(content, container) {
 		var el = document.createTextNode(content);
 		if (container) {
@@ -30,13 +30,13 @@ TL.Dom = {
 		}
 		return el;
 	},
-	
+
 	getTranslateString: function (point) {
 		return TL.Dom.TRANSLATE_OPEN +
 				point.x + 'px,' + point.y + 'px' +
 				TL.Dom.TRANSLATE_CLOSE;
 	},
-	
+
 	setPosition: function (el, point) {
 		el._tl_pos = point;
 		if (TL.Browser.webkit3d) {
@@ -51,7 +51,7 @@ TL.Dom = {
 			el.style.top = point.y + 'px';
 		}
 	},
-	
+
 	getPosition: function(el){
 	    var pos = {
 	    	x: 0,
@@ -75,10 +75,10 @@ TL.Dom = {
 		}
 		return false;
 	}
-	
+
 };
 
-TL.Util.extend(TL.Dom, {
+TL.Util.mergeData(TL.Dom, {
 	TRANSITION: TL.Dom.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
 	TRANSFORM: TL.Dom.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
 
