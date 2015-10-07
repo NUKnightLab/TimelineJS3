@@ -196,7 +196,7 @@ TL.Timeline = TL.Class.extend({
 
 		// Add message to DOM
 		this.message = new TL.Message({}, {message_class: "tl-message-full"}, this._el.container);
-        
+
 		// Merge Options
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
@@ -217,14 +217,14 @@ TL.Timeline = TL.Class.extend({
 		TL.debug = this.options.debug;
 
 		// Apply base class to container
-		this._el.container.className += ' tl-timeline';
+		TL.DomUtil.addClass(this._el.container, 'tl-timeline');
 
 		if (this.options.is_embed) {
-			this._el.container.className += ' tl-timeline-embed';
+			TL.DomUtil.addClass(this._el.container, 'tl-timeline-embed');
 		}
 
 		if (this.options.is_full_embed) {
-			this._el.container.className += ' tl-timeline-full-embed';
+			TL.DomUtil.addClass(this._el.container, 'tl-timeline-full-embed');
 		}
 
 		// Use Relative Date Calculations
@@ -251,10 +251,10 @@ TL.Timeline = TL.Class.extend({
 		    this.options.language = new TL.Language(this.options);
 		    this._initData(data);
 		} catch(e) {
-		    this.showMessage(e);			
+		    this.showMessage(e);
 		}
 	},
-	
+
 	_translateError: function(e) {
 	    if(e.message_key) {
 	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
@@ -612,15 +612,15 @@ TL.Timeline = TL.Class.extend({
 		    try {
 			    this._onDataLoaded();
 			} catch(e) {
-			    this.showMessage("<strong>"+ this._('error') +":</strong> " + this._translateError(e));			
+			    this.showMessage("<strong>"+ this._('error') +":</strong> " + this._translateError(e));
 			}
 		} else {
 		    var translated_errs = [];
-		    
+
 		    for(var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
 		        translated_errs.push(this._translateError(errs[i]));
 		    }
-		    
+
 			this.showMessage("<strong>"+ this._('error') +":</strong> " + translated_errs.join('<br>'));
 			// should we set 'self.ready'? if not, it won't resize,
 			// but most resizing would only work
@@ -634,7 +634,7 @@ TL.Timeline = TL.Class.extend({
 
         this.message.removeFrom(this._el.container);
 		this._el.container.innerHTML = "";
-		
+
 		// Create Layout
 		if (this.options.timenav_position == "top") {
 			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
