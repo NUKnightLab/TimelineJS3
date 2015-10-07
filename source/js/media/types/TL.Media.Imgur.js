@@ -29,7 +29,7 @@ TL.Media.Imgur = TL.Media.extend({
 		});
 
 		try {
-			var image_id = this.data.url.split('/').slice(-1);
+			var image_id = this.data.url.split('/').slice(-1)[0];
 			// Set Image Source
 			this._el.content_item.src			= 'https://i.imgur.com/' + image_id + '.png';
 

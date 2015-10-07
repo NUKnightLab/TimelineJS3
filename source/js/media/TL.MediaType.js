@@ -72,6 +72,12 @@ TL.MediaType = function(m) {
 				cls: 		TL.Media.Flickr
 			},
 			{
+				type: 		"flickr",
+				name: 		"Flickr",
+				match_str: 	"^(https?:\/\/)?flic.kr\/.*",
+				cls: 		TL.Media.Flickr
+			},
+			{
 				type: 		"instagram",
 				name: 		"Instagram",
 				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
