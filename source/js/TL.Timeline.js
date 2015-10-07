@@ -68,6 +68,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "media/types/TL.Media.GooglePlus.js";
 	// @codekit-prepend "media/types/TL.Media.IFrame.js";
 	// @codekit-prepend "media/types/TL.Media.Image.js";
+	// @codekit-prepend "media/types/TL.Media.Imgur.js";
 	// @codekit-prepend "media/types/TL.Media.Instagram.js";
 	// @codekit-prepend "media/types/TL.Media.GoogleMap.js";
 	// @codekit-prepend "media/types/TL.Media.PDF.js";

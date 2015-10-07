@@ -96,6 +96,12 @@ TL.MediaType = function(m) {
 				cls: 		TL.Media.Image
 			},
 			{
+				type: 		"imgur",
+				name: 		"Imgur",
+				match_str: 	/^.*imgur.com\/.+$/i,
+				cls: 		TL.Media.Imgur
+			},
+			{
 				type: 		"googledocs",
 				name: 		"Google Doc",
 				match_str: 	"^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
