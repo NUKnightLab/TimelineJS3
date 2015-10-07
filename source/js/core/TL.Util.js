@@ -267,7 +267,7 @@ TL.Util = {
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
 			if (!data.hasOwnProperty(key)) {
-				throw new Error('No value provided for variable ' + str);
+			    throw new TL.Error("template_value_err", str);
 			}
 			return value;
 		});
@@ -306,7 +306,7 @@ TL.Util = {
 			}
 		}
 		if (isNaN(r) || isNaN(b) || isNaN(g)) {
-			throw "Invalid RGB argument";
+			throw new TL.Error("invalid_rgb_err");
 		}
 		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
 	},

@@ -38,7 +38,7 @@ TL.Media.Wikipedia = TL.Media.extend({
 			},
 			error:function(xhr, type){
 				var error_text = "";
-				error_text += "Unable to load Wikipedia entry. <br/>" + self.media_id + "<br/>" + type;
+				error_text += self._("wikipedia_load_err") + "<br/>" + self.media_id + "<br/>" + type;
 				self.loadErrorDisplay(error_text);
 			}
 		});

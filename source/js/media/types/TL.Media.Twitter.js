@@ -41,7 +41,7 @@ TL.Media.Twitter = TL.Media.extend({
 			},
 			error:function(xhr, type){
 				var error_text = "";
-				error_text += "Unable to load Tweet. <br/>" + self.media_id + "<br/>" + type;
+				error_text += self._("twitter_load_err") + "<br/>" + self.media_id + "<br/>" + type;
 				self.loadErrorDisplay(error_text);
 			}
 		});

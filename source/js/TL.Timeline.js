@@ -18,6 +18,7 @@ https://incident57.com/codekit/
 
 // CORE
 	// @codekit-prepend "core/TL.js";
+	// @codekit-prepend "core/TL.Error.js";
 	// @codekit-prepend "core/TL.Util.js";
 	// @codekit-prepend "data/TL.Data.js";
 	// @codekit-prepend "core/TL.Class.js";
@@ -136,11 +137,6 @@ TL.Timeline = TL.Class.extend({
 		// TimeNav
 		this._timenav = {};
 
-		// Message
-		this.message = new TL.Message({}, {
-			message_class: "tl-message-full"
-		});
-
 		// Menu Bar
 		this._menubar = {};
 
@@ -198,6 +194,9 @@ TL.Timeline = TL.Class.extend({
 		this.animator_storyslider = null;
 		this.animator_menubar = null;
 
+		// Add message to DOM
+		this.message = new TL.Message({}, {message_class: "tl-message-full"}, this._el.container);
+        
 		// Merge Options
 		if (typeof(options.default_bg_color) == "string") {
 			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
@@ -228,11 +227,6 @@ TL.Timeline = TL.Class.extend({
 			this._el.container.className += ' tl-timeline-full-embed';
 		}
 
-		// Add Message to DOM
-		this.message.addTo(this._el.container);
-
-
-
 		// Use Relative Date Calculations
 		// NOT YET IMPLEMENTED
 		if(this.options.relative_date) {
@@ -244,7 +238,6 @@ TL.Timeline = TL.Class.extend({
 					trace("LOAD MOMENTJS")
 				});
 			}
-
 		} else {
 			self._loadLanguage(data);
 		}
@@ -254,9 +247,19 @@ TL.Timeline = TL.Class.extend({
 	/*  Load Language
 	================================================== */
 	_loadLanguage: function(data) {
-		var self = this;
-		this.options.language = new TL.Language(this.options);
-		this._initData(data);
+		try {
+		    this.options.language = new TL.Language(this.options);
+		    this._initData(data);
+		} catch(e) {
+		    this.showMessage(e);			
+		}
+	},
+	
+	_translateError: function(e) {
+	    if(e.message_key) {
+	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
+	    }
+	    return e;
 	},
 
 
@@ -606,9 +609,19 @@ TL.Timeline = TL.Class.extend({
 		this.config = config;
 		this.config.validate();
 		if (this.config.isValid()) {
-			this._onDataLoaded();
+		    try {
+			    this._onDataLoaded();
+			} catch(e) {
+			    this.showMessage("<strong>"+ this._('error') +":</strong> " + this._translateError(e));			
+			}
 		} else {
-			this.showMessage("<strong>"+ this._('error') +":</strong> " + this.config.getErrors('<br>'));
+		    var translated_errs = [];
+		    
+		    for(var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
+		        translated_errs.push(this._translateError(errs[i]));
+		    }
+		    
+			this.showMessage("<strong>"+ this._('error') +":</strong> " + translated_errs.join('<br>'));
 			// should we set 'self.ready'? if not, it won't resize,
 			// but most resizing would only work
 			// if more setup happens
@@ -619,7 +632,9 @@ TL.Timeline = TL.Class.extend({
 	_initLayout: function () {
 		var self = this;
 
+        this.message.removeFrom(this._el.container);
 		this._el.container.innerHTML = "";
+		
 		// Create Layout
 		if (this.options.timenav_position == "top") {
 			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
@@ -647,11 +662,11 @@ TL.Timeline = TL.Class.extend({
 		this._timenav.options.height = this.options.timenav_height;
 		this._timenav.init();
 
-    // intial_zoom cannot be applied before the timenav has been created
-    if (this.options.initial_zoom) {
-      // at this point, this.options refers to the merged set of options
-      this.setZoom(this.options.initial_zoom);
-    }
+        // intial_zoom cannot be applied before the timenav has been created
+        if (this.options.initial_zoom) {
+            // at this point, this.options refers to the merged set of options
+            this.setZoom(this.options.initial_zoom);
+        }
 
 		// Create StorySlider
 		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);

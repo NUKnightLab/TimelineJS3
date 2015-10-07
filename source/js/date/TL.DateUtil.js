@@ -39,7 +39,9 @@ TL.DateUtil = {
 			}
 		}
 
-		if (parts.length > 4) { throw new Error("Invalid time: misuse of : or . as separator.");}
+		if (parts.length > 4) { 
+		    throw new TL.Error("invalid_separator_error");
+		}
 
 		parsed.hour = parseInt(parts[0]);
 
@@ -51,23 +53,31 @@ TL.DateUtil = {
 
 
 		if (isNaN(parsed.hour) || parsed.hour < 0 || parsed.hour > 23) {
-			throw new Error("Invalid time (hour) " + parsed.hour);
+			throw new TL.Error("invalid_hour_err", parsed.hour);
 		}
 
 		if (parts.length > 1) {
 			parsed.minute = parseInt(parts[1]);
-			if (isNaN(parsed.minute)) { throw new Error("Invalid time (minute)"); }
+			if (isNaN(parsed.minute)) { 
+			    throw new TL.Error("invalid_minute_err", parsed.minute); 
+			}
 		}
 
 		if (parts.length > 2) {
 			var sec_parts = parts[2].split(/[\.,]/);
 			parts = sec_parts.concat(parts.slice(3)) // deal with various methods of specifying fractional seconds
-			if (parts.length > 2) { throw new Error("Invalid time (seconds and fractional seconds)")}
+			if (parts.length > 2) { 
+			    throw new TL.Error("invalid_second_fractional_err");
+			}
 			parsed.second = parseInt(parts[0]);
-			if (isNaN(parsed.second)) { throw new Error("Invalid time (second)")}
+			if (isNaN(parsed.second)) { 
+			    throw new TL.Error("invalid_second_err");
+			}
 			if (parts.length == 2) {
 				var frac_secs = parseInt(parts[1]);
-				if (isNaN(frac_secs)) { throw new Error("Invalid time (fractional seconds)")}
+				if (isNaN(frac_secs)) { 
+				    throw new TL.Error("invalid_fractional_err");
+				}
 				parsed.millisecond = 100 * frac_secs;
 			}
 		}

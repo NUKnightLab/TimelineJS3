@@ -221,11 +221,11 @@ html, body {
     // Build slide_id menu
     function init_slide_menu(data) {
         console.log('EVENT='+data.type, data);
-
-        var slides = timeline.config.slides;
+        
+        var events = timeline.config.events;
         var html = '';
-        for(var i = 0, id; i < slides.length; i++) {
-            id = slides[i].unique_id;
+        for(var i = 0, id; i < events.length; i++) {
+            id = events[i].unique_id;
             html += '<option value="'+id+'">'+id+'</option>';
         }
 
