@@ -112,7 +112,7 @@ TL.Date = TL.Class.extend({
 
  		for (var ix in DATE_PARTS) {
  		    var x = TL.Util.trim(_date[DATE_PARTS[ix]]);
- 		    if (!x.match(/^\d*$/)) {
+ 		    if (!x.match(/^-?\d*$/)) {
  		        throw new TL.Error("invalid_date_err", DATE_PARTS[ix] + " = '" + _date[DATE_PARTS[ix]] + "'");
  		    }
  		    
