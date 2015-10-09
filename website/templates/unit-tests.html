@@ -264,7 +264,9 @@
       });
 
       QUnit.test("TL.Date.floor", function(assert) {
-        throws(function(assert) { TL.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid scale/),"bad scale throws error.")
+          throws(function(assert) { TL.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid_scale_err/),"bad scale throws invalid_scale_err error.")
+        
+        
           var d = TL.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
           var floored = d.floor('millisecond');
           var date_obj = floored.data.date_obj;
@@ -335,7 +337,7 @@
           var age_scale = TL.Date.makeDate({year: 1500000});
           throws(function(assert) {
             age_scale.floor('month');
-          },/invalid scale/,'month not valid scale for cosmo');
+          },/invalid_scale_err/,'month not valid scale for cosmo');
           assert.equal(age_scale.floor('age').getTime(),1000000,'Should floor to 1M years');
 
           var cosmo_year = new TL.BigDate({'year': 1945});
@@ -411,8 +413,8 @@
         test_date("1233", 12, 33, null, null);
         test_date("12:33 a.m.", 0, 33, null, null);
         test_date("0033", 0, 33, null, null);
-        throws(function(assert) {TL.DateUtil.parseTime('24:30')}, /invalid time/i, "expect to get an invalid time error");
-        throws(function(assert) {TL.DateUtil.parseTime('23:30pm')}, /invalid time/i, 'expect invalid time error' );
+        throws(function(assert) {TL.DateUtil.parseTime('24:30')}, /invalid_hour_err/i, "hour 24 throws invalid_hour_err error");
+        throws(function(assert) {TL.DateUtil.parseTime('23:30pm')}, /invalid_hour_err/i, 'hour 23 with pm throws invalid_hour_err error' );
 
 
 
