@@ -258,6 +258,9 @@ TL.Timeline = TL.Class.extend({
 	},
 
 	_translateError: function(e) {
+	    if(e.hasOwnProperty('stack')) {
+	        trace(e.stack);
+	    }
 	    if(e.message_key) {
 	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
 	    }
