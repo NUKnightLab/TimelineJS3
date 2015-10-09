@@ -198,18 +198,15 @@ TL.Slide = TL.Class.extend({
 		// Style Slide Background
 		if (this.data.background) {
 			if (this.data.background.url) {
-			    trace('slide background media url: '+this.data.background.url);
 			    var media_type = TL.MediaType(this.data.background, true);
 			    if(media_type) {
-			        trace('slide background medual url type: '+ media_type.type);
-			    }
-			    this._background_media = new media_type.cls(this.data.background, {background: 1});
-			    
-				this.has.background.image 					= true;
-				this._el.container.className 				+= ' tl-full-image-background';
-				this.has.background.color_value 			= "#000";
-				// this._el.background.style.backgroundImage 	= "url('" + this.data.background.url + "')"; set this after loaded
-				this._el.background.style.display 			= "block";
+                    this._background_media = new media_type.cls(this.data.background, {background: 1});
+                
+                    this.has.background.image 					= true;
+                    this._el.container.className 				+= ' tl-full-image-background';
+                    this.has.background.color_value 			= "#000";
+                    this._el.background.style.display 			= "block";
+                }
 			}
 			if (this.data.background.color) {
 				this.has.background.color 					= true;
@@ -337,11 +334,11 @@ TL.Slide = TL.Class.extend({
 				this._media.updateDisplay(content_width/2, this.options.height, layout);
 			}
 		}
-
+		
+		this._updateBackgroundDisplay();
 	},
 	
 	_updateBackgroundDisplay: function() {
-	    trace('TL.Slide._updateBackgroundDisplay');
 	    if(this._background_media && this._background_media._state.loaded) {
 	        this._el.background.style.backgroundImage 	= "url('" + this._background_media.getImageURL(this.options.width, this.options.height) + "')";
 	    }
