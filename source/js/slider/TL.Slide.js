@@ -25,6 +25,7 @@ TL.Slide = TL.Class.extend({
 		this._media 		= null;
 		this._mediaclass	= {};
 		this._text			= {};
+		this._background_media = null;
 
 		// State
 		this._state = {
@@ -54,7 +55,7 @@ TL.Slide = TL.Class.extend({
 			location: 				null,
 			text: 					null,
 			media: 					null,
-      autolink: true
+            autolink: true
 		};
 
 		// Options
@@ -126,10 +127,18 @@ TL.Slide = TL.Class.extend({
 	},
 
 	loadMedia: function() {
-
+        var self = this;
+        
 		if (this._media && !this._state.loaded) {
 			this._media.loadMedia();
 			this._state.loaded = true;
+		}
+		
+		if(this._background_media && !this._background_media._state.loaded) {
+		    this._background_media.on("loaded", function() {
+		        self._updateBackgroundDisplay();
+		    });
+		    this._background_media.loadMedia();
 		}
 	},
 
@@ -189,11 +198,17 @@ TL.Slide = TL.Class.extend({
 		// Style Slide Background
 		if (this.data.background) {
 			if (this.data.background.url) {
+			    trace('slide background media url: '+this.data.background.url);
+			    var media_type = TL.MediaType(this.data.background, true);
+			    if(media_type) {
+			        trace('slide background medual url type: '+ media_type.type);
+			    }
+			    this._background_media = new media_type.cls(this.data.background, {background: 1});
+			    
 				this.has.background.image 					= true;
 				this._el.container.className 				+= ' tl-full-image-background';
-				//this._el.container.style.backgroundImage="url('" + this.data.background.url + "')";
 				this.has.background.color_value 			= "#000";
-				this._el.background.style.backgroundImage 	= "url('" + this.data.background.url + "')";
+				// this._el.background.style.backgroundImage 	= "url('" + this.data.background.url + "')"; set this after loaded
 				this._el.background.style.display 			= "block";
 			}
 			if (this.data.background.color) {
@@ -230,7 +245,7 @@ TL.Slide = TL.Class.extend({
 			this.data.media.mediatype 	= TL.MediaType(this.data.media);
 			this.options.media_name 	= this.data.media.mediatype.name;
 			this.options.media_type 	= this.data.media.mediatype.type;
-      this.options.autolink = this.data.autolink;
+            this.options.autolink = this.data.autolink;
 
 			// Create a media object using the matched class name
 			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
@@ -323,6 +338,13 @@ TL.Slide = TL.Class.extend({
 			}
 		}
 
+	},
+	
+	_updateBackgroundDisplay: function() {
+	    trace('TL.Slide._updateBackgroundDisplay');
+	    if(this._background_media && this._background_media._state.loaded) {
+	        this._el.background.style.backgroundImage 	= "url('" + this._background_media.getImageURL(this.options.width, this.options.height) + "')";
+	    }
 	}
 
 });

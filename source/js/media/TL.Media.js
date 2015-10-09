@@ -162,6 +162,9 @@ TL.Media = TL.Class.extend({
 	/*	Media Specific
 	================================================== */
     _loadMedia: function() {
+		// Loading Message
+		this.loadingMessage();
+        
         // All overrides must call this.onLoaded() to set state
         this.onLoaded();
     },
@@ -178,6 +181,11 @@ TL.Media = TL.Class.extend({
 
     },
 
+    _getImageURL: function(w, h) {
+        // Image-based media types should return <img>-compatible src url
+        return "";
+    },
+    
 	/*	Public
 	================================================== */
 	show: function() {
@@ -198,6 +206,10 @@ TL.Media = TL.Class.extend({
 		this.onRemove();
 	},
 
+    getImageURL: function(w, h) {
+        return this._getImageURL(w, h);
+    },
+    
 	// Update Display
 	updateDisplay: function(w, h, l) {
 		this._updateDisplay(w, h, l);

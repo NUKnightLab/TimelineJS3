@@ -9,15 +9,23 @@ TL.Media.Instagram = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
 		// Loading Message
 		this.loadingMessage();
 		
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
 		
+		if(!this.options.background) {
+		    this.createMedia();
+		}
+						
+		// After Loaded
+		this.onLoaded();
+	},
+
+    createMedia: function() {
+        var self = this;
+        
 		// Link
 		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 		this._el.content_link.href 			= this.data.url;
@@ -30,20 +38,17 @@ TL.Media.Instagram = TL.Media.extend({
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
-		
-		// Set source
-		this._el.content_item.src			= "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(this._el.content.offsetWidth);
-		
-		// API URL
-		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
+
+	    this._el.content_item.src = this.getImageURL(this._el.content.offsetWidth);
+    },
+
+    getImageURL: function(w, h) {
+        return "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(w);
+    },
+    	
 	_getMeta: function() {
 		var self = this,
-		api_url;
+		    api_url;
 		
 		// API URL
 		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";

@@ -15,19 +15,6 @@ TL.Media.Flickr = TL.Media.extend({
 		// Loading Message
 		this.loadingMessage();
 
-		// Link
-		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
-		this._el.content_link.href 			= this.data.url;
-		this._el.content_link.target 		= "_blank";
-
-		// Photo
-		this._el.content_item	= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-flickr tl-media-shadow", this._el.content_link);
-
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
 		try {
 		    // Get Media ID
 		    this.establishMediaID();
@@ -38,7 +25,13 @@ TL.Media.Flickr = TL.Media.extend({
             // API Call
             TL.getJSON(api_url, function(d) {
                 if (d.stat == "ok") {
-                    self.createMedia(d);
+                    self.sizes = d.sizes.size; // store sizes info
+                    
+                    if(!self.options.background) {
+                        self.createMedia();
+                    }
+                    
+                    self.onLoaded();
                 } else {
                     self.loadErrorDisplay(self._("flickr_notfound_err"));
                 }
@@ -61,25 +54,39 @@ TL.Media.Flickr = TL.Media.extend({
 		}
 	},
 
-	createMedia: function(d) {
-		trace(d);
-		var best_size 	= this.sizes(this.options.height),
-			size 		= d.sizes.size[d.sizes.size.length - 2].source;
-			self = this;
+	createMedia: function() {
+	    var self = this;
+	    
+		// Link
+		this._el.content_link = TL.Dom.create("a", "", this._el.content);
+		this._el.content_link.href = this.data.url;
+		this._el.content_link.target = "_blank";
 
-		for(var i = 0; i < d.sizes.size.length; i++) {
-			if (d.sizes.size[i].label == best_size) {
-				size = d.sizes.size[i].source;
-			}
-		}
+		// Photo
+		this._el.content_item = TL.Dom.create("img", "tl-media-item tl-media-image tl-media-flickr tl-media-shadow", this._el.content_link);
+
+		// Media Loaded Event
+		this._el.content_item.addEventListener('load', function(e) {
+			self.onMediaLoaded();
+		});
 
 		// Set Image Source
-		this._el.content_item.src			= size;
-
-		// After Loaded
-		this.onLoaded();
+		this._el.content_item.src = this.getImageURL(this.options.width, this.options.height);
 	},
 
+    getImageURL: function(w, h) {
+        var best_size 	= this.size_label(h),
+            source = this.sizes[this.sizes.length - 2].source;
+
+		for(var i = 0; i < this.sizes.length; i++) {
+			if (this.sizes[i].label == best_size) {
+				source = this.size[i].source;
+			}
+		}
+		
+		return source;
+    },
+    
 	_getMeta: function() {
 		var self = this,
 		api_url;
@@ -95,7 +102,7 @@ TL.Media.Flickr = TL.Media.extend({
 		});
 	},
 
-	sizes: function(s) {
+	size_label: function(s) {
 		var _size = "";
 
 		if (s <= 75) {
