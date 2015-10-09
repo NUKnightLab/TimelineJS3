@@ -108,10 +108,12 @@ TL.Media.Text = TL.Class.extend({
 		if (this.data.text != "") {
 			var text_content = "";
 
-      text_content += TL.Util.htmlify(this.options.autolink == true ? TL.Util.linkify(this.data.text) : this.data.text);
-
+			text_content += TL.Util.htmlify(this.options.autolink == true ? TL.Util.linkify(this.data.text) : this.data.text);
+			trace(this.data.text);
 			this._el.content				= TL.Dom.create("div", "tl-text-content", this._el.content_container);
 			this._el.content.innerHTML		= text_content;
+			trace(text_content);
+			trace(this._el.content)
 		}
 
 		// Fire event that the slide is loaded
