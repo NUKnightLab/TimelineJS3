@@ -4,7 +4,6 @@
 TL.Media.GoogleMap = TL.Media.extend({
 	includes: [TL.Events],
 
-	_API_KEY: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
 	/*  Load the media
 	================================================== */
 	_loadMedia: function() {
