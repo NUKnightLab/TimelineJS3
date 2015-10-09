@@ -78,6 +78,7 @@
         "flickr_notfound_err": "Photo not found or private",
         "flickr_invalidurl_err": "Invalid Flickr URL",
         "twitter_load_err": "Unable to load Tweet",
+        "twitterembed_invalidurl_err": "Invalid Twitter Embed url",
         "wikipedia_load_err": "Unable to load Wikipedia entry",
         "template_value_err": "No value provided for variable",
         "invalid_rgb_err": "Invalid RGB argument",
