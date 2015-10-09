@@ -9,9 +9,6 @@ TL.Media.GoogleMap = TL.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 
-		// Loading Message
-		this.loadingMessage();
-
 		// Create Dom element
 		this._el.content_item   = TL.Dom.create("div", "tl-media-item tl-media-map tl-media-shadow", this._el.content);
 

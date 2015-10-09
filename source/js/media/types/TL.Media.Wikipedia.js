@@ -11,10 +11,7 @@ TL.Media.Wikipedia = TL.Media.extend({
 		var api_url,
 			api_language,
 			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
+				
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-wikipedia", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";

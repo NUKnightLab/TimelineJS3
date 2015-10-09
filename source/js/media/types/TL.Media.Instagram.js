@@ -8,10 +8,7 @@ TL.Media.Instagram = TL.Media.extend({
 	
 	/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-		
+	_loadMedia: function() {		
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
 		

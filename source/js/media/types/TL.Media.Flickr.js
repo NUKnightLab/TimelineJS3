@@ -12,9 +12,6 @@ TL.Media.Flickr = TL.Media.extend({
 		var api_url,
 			self = this;
 
-		// Loading Message
-		this.loadingMessage();
-
 		try {
 		    // Get Media ID
 		    this.establishMediaID();

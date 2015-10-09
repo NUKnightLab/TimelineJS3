@@ -97,6 +97,7 @@ TL.Media = TL.Class.extend({
 		if (!this._state.loaded) {
 			try {
 				this.load_timer = setTimeout(function() {
+		            self.loadingMessage();
 					self._loadMedia();
 					// self._state.loaded = true; handled in onLoaded()
 					self._updateDisplay();
@@ -161,10 +162,7 @@ TL.Media = TL.Class.extend({
 
 	/*	Media Specific
 	================================================== */
-    _loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-        
+    _loadMedia: function() {        
         // All overrides must call this.onLoaded() to set state
         this.onLoaded();
     },

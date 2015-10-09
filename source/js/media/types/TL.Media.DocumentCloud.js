@@ -10,9 +10,6 @@ TL.Media.DocumentCloud = TL.Media.extend({
 	_loadMedia: function() {
 		var self = this;
 		
-		// Loading Message 
-		this.loadingMessage();
-				
 		// Create Dom elements
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-documentcloud tl-media-shadow", this._el.content);
 		this._el.content_item.id = TL.Util.unique_ID(7)

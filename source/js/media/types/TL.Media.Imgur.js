@@ -9,9 +9,6 @@ TL.Media.Imgur = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-
 		try {
 		    this.media_id = this.data.url.split('/').slice(-1)[0];
 
