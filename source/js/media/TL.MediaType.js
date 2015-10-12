@@ -72,6 +72,12 @@ TL.MediaType = function(m) {
 				cls: 		TL.Media.Flickr
 			},
 			{
+				type: 		"flickr",
+				name: 		"Flickr",
+				match_str: 	"^(https?:\/\/)?flic.kr\/.*",
+				cls: 		TL.Media.Flickr
+			},
+			{
 				type: 		"instagram",
 				name: 		"Instagram",
 				match_str: 	/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
@@ -94,6 +100,12 @@ TL.MediaType = function(m) {
 				name: 		"Image",
 				match_str: 	/(jpg|jpeg|png|gif|svg)(\?.*)?$/i,
 				cls: 		TL.Media.Image
+			},
+			{
+				type: 		"imgur",
+				name: 		"Imgur",
+				match_str: 	/^.*imgur.com\/.+$/i,
+				cls: 		TL.Media.Imgur
 			},
 			{
 				type: 		"googledocs",

@@ -33,7 +33,7 @@ TL.TimelineConfig = TL.Class.extend({
 				try {
 					this.addEvent(data.events[i], true);
 				} catch (e) {
-					this.logError("Event " + i + ": " + e);
+				    this.logError(e);
 				}
 			}
 
