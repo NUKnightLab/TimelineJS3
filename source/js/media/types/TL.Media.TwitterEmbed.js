@@ -20,18 +20,14 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
 		
 		// Get Media ID
-		if (this.data.url.match("status\/")) {
-			this.media_id = this.data.url.split("status\/")[1];
-		} else if (url.match("statuses\/")) {
-			this.media_id = this.data.url.split("statuses\/")[1];
+		var found = this.data.url.match(/(status|statuses)\/(\d+)/);
+		if (found && found.length > 2) {
+		    this.media_id = found[2];
 		} else {
-			this.media_id = "";
+		    self.loadErrorDisplay(self._("twitterembed_invalidurl_err"));
+		    return;
 		}
 
-		if (this.media_id.match(/\"">(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/)){
-			this.media_id = this.media_id.split(/\"">(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec)/)[0];
-		}
-		
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
 		
@@ -45,7 +41,7 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 			},
 			error:function(xhr, type){
 				var error_text = "";
-				error_text += "Unable to load Tweet. <br/>" + self.media_id + "<br/>" + type;
+				error_text += self._("twitter_load_err") + "<br/>" + self.media_id + "<br/>" + type;
 				self.loadErrorDisplay(error_text);
 			}
 		});

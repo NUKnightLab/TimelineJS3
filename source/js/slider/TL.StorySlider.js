@@ -186,7 +186,7 @@ TL.StorySlider = TL.Class.extend({
 	goTo: function(n, fast, displayupdate) {
 		n = parseInt(n);
 		if (isNaN(n)) n = 0;
-		
+
 		var self = this;
 
 		this.changeBackground({color_value:"", image:false});
@@ -403,7 +403,7 @@ TL.StorySlider = TL.Class.extend({
 	================================================== */
 	_initLayout: function () {
 
-		this._el.container.className += ' tl-storyslider';
+		TL.DomUtil.addClass(this._el.container, 'tl-storyslider');
 
 		// Create Layout
 		this._el.slider_container_mask		= TL.Dom.create('div', 'tl-slider-container-mask', this._el.container);

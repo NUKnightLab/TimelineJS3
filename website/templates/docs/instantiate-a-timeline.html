@@ -36,11 +36,13 @@
 
     &lt;!-- 3 --&gt;
     &lt;script type="text/javascript"&gt;
-      // The TL.Timeline constructor takes two arguments:
+      // The TL.Timeline constructor takes at least two arguments:
       // the id of the Timeline container (no '#'), and
       // the URL to your JSON data file or Google spreadsheet.
       // the id must refer to an element "above" this code,
       // and the element must have CSS styling to give it width and height
+      // optionally, a third argument with configuration options can be passed.
+      // See below for more about options.
       timeline = new TL.Timeline('timeline-embed',
         'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
     &lt;/script&gt;</pre>
@@ -49,7 +51,9 @@
     <div class="small-12 columns">
     <h3 id="in-page-json">Creating your own JSON</h3>
     <p>
-      Programmers often want to create a Timeline based on a dynamic process. If you are not loading JSON for a Timeline directly from a URL, here's what you need to know.
+      If you are retrieving JSON from a URL, you can simply use that URL as the second argument, just as if you are
+      loading data from a Google spreadsheet. If instead you have something in your page which will put the data together,
+      you can also pass a JSON object as the second argument.
     </p>
     <p>
       Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.

@@ -28,6 +28,8 @@ TL.Message = TL.Class.extend({
 			message_icon_class: 	"tl-loading-icon"
 		};
 		
+		this._add_to_container = add_to_container || {}; // save ref
+		
 		// Merge Data and Options
 		TL.Util.mergeData(this.data, data);
 		TL.Util.mergeData(this.options, options);
@@ -37,13 +39,11 @@ TL.Message = TL.Class.extend({
 		if (add_to_container) {
 			add_to_container.appendChild(this._el.container);
 			this._el.parent = add_to_container;
-		};
-		
+		}
 		
 		// Animation
 		this.animator = {};
-		
-		
+				
 		this._initLayout();
 		this._initEvents();
 	},
@@ -67,6 +67,12 @@ TL.Message = TL.Class.extend({
 		} else {
 			this._el.message.innerHTML = t;
 		}
+		
+		// Re-add to DOM?
+		if(!this._el.parent.atrributes && this._add_to_container.attributes) {
+		    this._add_to_container.appendChild(this._el.container);
+		    this._el.parent = this._add_to_container;
+		}
 	},
 	
 
@@ -77,8 +83,12 @@ TL.Message = TL.Class.extend({
 	_onMouseClick: function() {
 		this.fire("clicked", this.options);
 	},
-
 	
+	_onRemove: function() {
+	    this._el.parent = {};
+	},
+
+
 	/*	Private Methods
 	================================================== */
 	_initLayout: function () {
@@ -94,6 +104,7 @@ TL.Message = TL.Class.extend({
 	
 	_initEvents: function () {
 		TL.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
+		TL.DomEvent.addListener(this, 'removed', this._onRemove, this);
 	},
 	
 	// Update Display

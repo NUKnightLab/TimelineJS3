@@ -39,7 +39,7 @@ You must also check out one more git repository, that our code depends on. Check
 
     git clone https://github.com/NUKnightLab/fablib.git
 
-After you've done the above, run these commands:
+After you've done the above, change into your TimeLineJS3 directory and run these commands:
 
 	fab build
 	fab serve
