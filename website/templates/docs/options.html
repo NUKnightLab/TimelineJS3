@@ -214,3 +214,26 @@
         </tbody>
       </table>
 {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+
+jQuery(document).ready(function() {
+  // make permalinks function for each question
+  jQuery("tr[id]").each(function(){
+  });
+
+  // set up the top level links to major sections
+  jQuery('tr td:first-of-type > code').each(function() {
+    var hash = jQuery(this).text();
+    var tr = this.parentElement.parentElement;
+    tr.id = hash;
+    jQuery(tr).css('cursor','pointer');
+    jQuery(tr).click(function(){
+      window.location.hash = "#" + this.id;
+    })
+  })
+
+})
+</script>
+
+{% endblock %}

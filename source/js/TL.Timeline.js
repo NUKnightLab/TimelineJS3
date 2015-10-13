@@ -79,6 +79,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "media/types/TL.Media.Storify.js";
 	// @codekit-prepend "media/types/TL.Media.Text.js";
 	// @codekit-prepend "media/types/TL.Media.Twitter.js";
+	// @codekit-prepend "media/types/TL.Media.TwitterEmbed.js";
 	// @codekit-prepend "media/types/TL.Media.Vimeo.js";
 	// @codekit-prepend "media/types/TL.Media.Vine.js";
 	// @codekit-prepend "media/types/TL.Media.Website.js";
@@ -257,6 +258,9 @@ TL.Timeline = TL.Class.extend({
 	},
 
 	_translateError: function(e) {
+	    if(e.hasOwnProperty('stack')) {
+	        trace(e.stack);
+	    }
 	    if(e.message_key) {
 	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
 	    }
