@@ -221,6 +221,7 @@ TL.Language.languages = {
             loading_content:                "Loading Content", 
             expand_timeline:                "Expand Timeline", 
             loading_timeline:               "Loading Timeline... ",
+            swipe_to_navigate:              "Swipe to Navigate<br><span class='tl-button'>OK</span>",
             unknown_read_err:               "An unexpected error occurred trying to read your spreadsheet data",
             network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
             empty_feed_err:                 "No data entries found",
