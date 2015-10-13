@@ -1,3 +1,7 @@
+3.3.7 (in development)
+----------------------
+* Support media-type image inference for background images (eg flickr, imgur, dropbox) (#268)
+
 3.3.6 (2015-10-12)
 ------------------
 * Have TimelineConfig validate date parts as integers (#269)
