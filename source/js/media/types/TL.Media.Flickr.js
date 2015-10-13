@@ -23,11 +23,11 @@ TL.Media.Flickr = TL.Media.extend({
             TL.getJSON(api_url, function(d) {
                 if (d.stat == "ok") {
                     self.sizes = d.sizes.size; // store sizes info
-                    
+
                     if(!self.options.background) {
                         self.createMedia();
                     }
-                    
+
                     self.onLoaded();
                 } else {
                     self.loadErrorDisplay(self._("flickr_notfound_err"));
@@ -53,7 +53,7 @@ TL.Media.Flickr = TL.Media.extend({
 
 	createMedia: function() {
 	    var self = this;
-	    
+
 		// Link
 		this._el.content_link = TL.Dom.create("a", "", this._el.content);
 		this._el.content_link.href = this.data.url;
@@ -77,13 +77,13 @@ TL.Media.Flickr = TL.Media.extend({
 
 		for(var i = 0; i < this.sizes.length; i++) {
 			if (this.sizes[i].label == best_size) {
-				source = this.size[i].source;
+				source = this.sizes[i].source;
 			}
 		}
-		
+
 		return source;
     },
-    
+
 	_getMeta: function() {
 		var self = this,
 		api_url;
