@@ -613,6 +613,7 @@ TL.Timeline = TL.Class.extend({
 	setConfig: function(config) {
 		this.config = config;
 		this.config.validate();
+		this._validateOptions();
 		if (this.config.isValid()) {
 		    try {
 			    this._onDataLoaded();
@@ -632,7 +633,24 @@ TL.Timeline = TL.Class.extend({
 			// if more setup happens
 		}
 	},
+	_validateOptions: function() {
+		// assumes that this.options and this.config have been set.
+		var INTEGER_PROPERTIES = ['timenav_height', 'timenav_height_min', 'marker_height_min', 'marker_width_min', 'marker_padding', 'start_at_slide', 'slide_padding_lr'  ];
 
+		for (var i = 0; i < INTEGER_PROPERTIES.length; i++) {
+				var opt = INTEGER_PROPERTIES[i];
+				var value = this.options[opt];
+				valid = true;
+				if (typeof(value) == 'number') {
+					valid = (value == parseInt(value))
+				} else if (typeof(value) == "string") {
+					valid = (value.match(/^\s*\-?\d+\s*$/));
+				}
+				if (!valid) {
+					this.config.logError({ message_key: 'invalid_integer_option', detail: opt });
+				}
+		}
+	},
 	// Initialize the layout
 	_initLayout: function () {
 		var self = this;
