@@ -19,7 +19,7 @@ TL.Media.Twitter = TL.Media.extend({
 		// Get Media ID
 		if (this.data.url.match("status\/")) {
 			this.media_id = this.data.url.split("status\/")[1];
-		} else if (url.match("statuses\/")) {
+		} else if (this.data.url.match("statuses\/")) {
 			this.media_id = this.data.url.split("statuses\/")[1];
 		} else {
 			this.media_id = "";
