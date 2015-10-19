@@ -1,4 +1,4 @@
-3.3.7 (in development)
+3.3.7 (2015-10-19)
 ----------------------
 * Fix bug in Twitter embed (#282) (thanks @Newman101)
 * Support media-type image inference for background images (eg flickr, imgur, dropbox) (#268)
