@@ -1,3 +1,7 @@
+3.3.8 (2015-10-20)
+----------------------
+* Fix Document Cloud URL bug
+
 3.3.7 (2015-10-19)
 ----------------------
 * Fix bug in Twitter embed (#282) (thanks @Newman101)
