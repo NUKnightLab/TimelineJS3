@@ -40,7 +40,16 @@ nav ul li { padding: 0; }
   }
 #intro-copy {
     margin-top: 20px;
-    margin-bottom: 25px;
+    /*margin-bottom: 25px;*/
+}
+
+#screencast {
+    margin-top: 20px;
+}
+
+#screencast iframe {
+    width: 493px;
+    height: 281px;
 }
 
 #overview {
@@ -448,6 +457,20 @@ p.breadcrumb {
 
 #font-preview-trigger { margin: 20px 0 0 0;}
 
+@media (max-width: 1100px) {
+    #screencast iframe {
+        width: 400px;
+        height: 225px;
+    }
+}
+
+@media (max-width: 830px) {
+    #screencast iframe {
+        width: 350px;
+        height: 215px;
+    }
+}
+
 
 @media (max-width: 767px) {
     body { font-size: 14px; }
@@ -481,6 +504,24 @@ p.breadcrumb {
         font-size: 1rem;
         line-height: 1.6;
     }
+
+    #screencast iframe {
+        width: 285px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 700px) {
+    #screencast {
+        text-align: center;
+    }
+    #screencast iframe {
+        width: 490px;
+        height: 280px;
+    }
+    .overview-segment .columns {
+        width: 100%;
+    }
 }
 
 @media (max-width: 600px) {
@@ -491,6 +532,13 @@ p.breadcrumb {
 
     .step h2 { font-size: 70px; }
     .step h4 { font-size: 1.3em; line-height: 1.4; }
+}
+
+@media (max-width: 550px) {
+    #screencast iframe {
+        width: 390px;
+        height: 220px;
+    }
 }
 
 @media (max-width: 500px) {
@@ -528,6 +576,15 @@ p.breadcrumb {
     .step .small-10 { width: 100%; }
     .step .small-10 h4 span { display: inline; }
 
+    #screencast {
+        margin-bottom: 20px;
+    }
+
+    #screencast iframe {
+        width: 325px;
+        height: 190px;
+    }
+
 }
 
 @media (max-width: 380px) {
@@ -538,6 +595,7 @@ p.breadcrumb {
     }
     h2.intro { font-size: 20px; }
     #overview ul li a { padding: 10px 0; }
+    #screencast iframe { width: 220px; height: 125px; }
     .banner img { margin-left: 25px; }
     p.lead { font-size: 1rem; line-height: 27px; }
     p small,
@@ -547,4 +605,5 @@ p.breadcrumb {
     #preview-inputs button { margin: 10px auto; }
     #examples .span2 { text-align: center; }
     #examples img { margin: 10px auto; }
+
 }
