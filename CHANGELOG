@@ -1,3 +1,7 @@
+3.3.9 (2015-10-26)
+----------------------
+* Make sure 'invalid_date_err' gets translated, esp so detail message gets displayed
+
 3.3.8 (2015-10-20)
 ----------------------
 * Fix Document Cloud URL bug
