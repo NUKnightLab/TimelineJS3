@@ -68,7 +68,7 @@
         "invalid_data_format_err": "Invalid data format",
         "date_compare_err": "Can't compare TL.Dates on different scales",
         "invalid_scale_err": "Invalid scale",
-        "invalid_date_err": "Invalid date",
+        "invalid_date_err": "Invalid date: month, day and year must be numbers.",
         "invalid_separator_error": "Invalid time: misuse of : or . as separator.",
         "invalid_hour_err": "Invalid time (hour)",
         "invalid_minute_err": "Invalid time (minute)",

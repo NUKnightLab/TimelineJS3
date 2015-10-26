@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 3.3.8 - 2015-10-21
+    TimelineJS - ver. 3.3.9 - 2015-10-26
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -3854,7 +3854,7 @@ TL.Language.languages = {
       invalid_data_format_err:        "Invalid data format",
       date_compare_err:               "Can't compare TL.Dates on different scales",
       invalid_scale_err:              "Invalid scale",
-      invalid_date_err:               "Invalid date",
+      invalid_date_err:               "Invalid date: month, day and year must be numbers.",
       invalid_separator_error:        "Invalid time: misuse of : or . as separator.",
       invalid_hour_err:               "Invalid time (hour)",
       invalid_minute_err:             "Invalid time (minute)",
@@ -5336,7 +5336,7 @@ TL.Date = TL.Class.extend({
 		return this.data.date_obj.getTime();
 	},
 
-	isBefore: function(other_date) {	    
+	isBefore: function(other_date) {
         if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
             throw new TL.Error("date_compare_err") // but should be able to compare 'cosmological scale' dates once we get to that...
         }
@@ -5467,7 +5467,7 @@ TL.Date.makeDate = function(data) {
 TL.BigYear = TL.Class.extend({
     initialize: function (year) {
         this.year = parseInt(year);
-        if (isNaN(this.year)) { 
+        if (isNaN(this.year)) {
             throw new TL.Error('invalid_year_err', year);
         }
     },
@@ -12667,18 +12667,6 @@ TL.Timeline = TL.Class.extend({
 		}
 
 	},
-
-	/*  Load Language
-	================================================== */
-	_loadLanguage: function(data) {
-		try {
-		    this.options.language = new TL.Language(this.options);
-		    this._initData(data);
-		} catch(e) {
-		    this.showMessage(e);
-		}
-	},
-
 	_translateError: function(e) {
 	    if(e.hasOwnProperty('stack')) {
 	        trace(e.stack);
@@ -12687,6 +12675,17 @@ TL.Timeline = TL.Class.extend({
 	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
 	    }
 	    return e;
+	},
+
+	/*  Load Language
+	================================================== */
+	_loadLanguage: function(data) {
+		try {
+		    this.options.language = new TL.Language(this.options);
+		    this._initData(data);
+		} catch(e) {
+		    this.showMessage(this._translateError(e));
+		}
 	},
 
 
