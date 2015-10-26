@@ -245,18 +245,6 @@ TL.Timeline = TL.Class.extend({
 		}
 
 	},
-
-	/*  Load Language
-	================================================== */
-	_loadLanguage: function(data) {
-		try {
-		    this.options.language = new TL.Language(this.options);
-		    this._initData(data);
-		} catch(e) {
-		    this.showMessage(e);
-		}
-	},
-
 	_translateError: function(e) {
 	    if(e.hasOwnProperty('stack')) {
 	        trace(e.stack);
@@ -265,6 +253,17 @@ TL.Timeline = TL.Class.extend({
 	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
 	    }
 	    return e;
+	},
+
+	/*  Load Language
+	================================================== */
+	_loadLanguage: function(data) {
+		try {
+		    this.options.language = new TL.Language(this.options);
+		    this._initData(data);
+		} catch(e) {
+		    this.showMessage(this._translateError(e));
+		}
 	},
 
 
