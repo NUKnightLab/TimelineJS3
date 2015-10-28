@@ -10,16 +10,27 @@ TL.Media.Image = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var self = this,
-			image_class = "tl-media-item tl-media-image tl-media-shadow";
 		// Loading Message
 		this.loadingMessage();
 
+        // Create media?
+        if(!this.options.background) {
+            this.createMedia();
+        }
+        
+        // After loaded
+		this.onLoaded();
+	},
+
+    createMedia: function() {
+        var self = this,
+            image_class = "tl-media-item tl-media-image tl-media-shadow";
+        
 		if (this.data.url.match(/.png(\?.*)?$/) || this.data.url.match(/.svg(\?.*)?$/)) {
 			image_class = "tl-media-item tl-media-image"
 		}
-
-		// Link
+		
+ 		// Link
 		if (this.data.link) {
 			this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 			this._el.content_link.href 			= this.data.link;
@@ -28,25 +39,24 @@ TL.Media.Image = TL.Media.extend({
 		} else {
 			this._el.content_item				= TL.Dom.create("img", image_class, this._el.content);
 		}
-
+		
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
 
-		this._el.content_item.src			= TL.Util.transformImageURL(this.data.url);
-
-		this.onLoaded();
-	},
-
+		this._el.content_item.src			= this.getImageURL();
+    },
+        
+    getImageURL: function(w, h) {
+        return TL.Util.transformImageURL(this.data.url);
+    },
+    
 	_updateMediaDisplay: function(layout) {
-
-
 		if(TL.Browser.firefox) {
 			//this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
 			this._el.content_item.style.width = "auto";
 		}
-
 	}
 
 });

@@ -15,7 +15,7 @@ TL.Language = function(options) {
 				var url = script_path + fragment;
 			}
 			var self = this;
-			var xhr = TL.ajax({ 
+			var xhr = TL.ajax({
 				url: url, async: false
 			});
 			if (xhr.status == 200) {
@@ -44,7 +44,7 @@ TL.Language.formatNumber = function(val,mask) {
 
 
 
-/* TL.Util.mergeData is shallow, we have nested dicts. 
+/* TL.Util.mergeData is shallow, we have nested dicts.
    This is a simplistic handling but should work.
  */
 TL.Language.prototype.mergeData = function(lang_json) {
@@ -99,7 +99,7 @@ TL.Language.prototype.formatBigYear = function(bigyear, format_name) {
 
 		return the_year.toString();
 
-	} else {	
+	} else {
 	    trace("Language file dateformats missing cosmological. Falling back.");
 	    return TL.Language.formatNumber(the_year,format_name);
 	}
@@ -114,16 +114,16 @@ TL.Language.prototype.formatJSDate = function(js_date, format_name) {
 		if (formats) {
 			var fmt = (value < 12) ? formats[0] : formats[1];
 		}
-		return "<span class='tl-timeaxis-timesuffix'>" + fmt + "</span>"; 
+		return "<span class='tl-timeaxis-timesuffix'>" + fmt + "</span>";
 	}
 
-	var utc = false, 
+	var utc = false,
 		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
 		timezoneClip = /[^-+\dA-Z]/g;
 
 
 	if (!format_name) {
-		format_name = 'full'; 
+		format_name = 'full';
 	}
 
 	var mask = this.dateformats[format_name] || TL.Language.fallback.dateformats[format_name];
@@ -186,7 +186,7 @@ TL.Language.prototype.has_negative_year_modifier = function() {
 
 
 TL.Language.prototype._applyEra = function(formatted_date, original_year) {
-	// trusts that the formatted_date was property created with a non-negative year if there are 
+	// trusts that the formatted_date was property created with a non-negative year if there are
 	// negative affixes to be applied
 	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
 	var result = '';
@@ -199,34 +199,72 @@ TL.Language.prototype._applyEra = function(formatted_date, original_year) {
 
 TL.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
-TL.Language.languages = { 
+TL.Language.languages = {
 /*
 	This represents the canonical list of message keys which translation files should handle. The existence of the 'en.json' file should not mislead you.
-	It is provided more as a starting point for someone who wants to provide a 
+	It is provided more as a starting point for someone who wants to provide a
 	new translation since the form for non-default languages (JSON not JS) is slightly different from what appears below. Also, those files have some message keys grandfathered in from TimelineJS2 which we'd rather not have to
 	get "re-translated" if we use them.
 */
 	en: {
 		name: 					"English",
 		lang: 					"en",
+        api: {
+            wikipedia:          "en" // the two letter code at the beginning of the Wikipedia subdomain for this language
+        },
 		messages: {
-			loading: 			"Loading",
-			wikipedia: 			"From Wikipedia, the free encyclopedia",
-			error: 				"Error"
+			loading: 			            		  "Loading",
+			wikipedia: 			            		"From Wikipedia, the free encyclopedia",
+			error: 				            			"Error",
+      contract_timeline:              "Contract Timeline",
+      return_to_title:                "Return to Title",
+      loading_content:                "Loading Content",
+      expand_timeline:                "Expand Timeline",
+      loading_timeline:               "Loading Timeline... ",
+      swipe_to_navigate:              "Swipe to Navigate<br><span class='tl-button'>OK</span>",
+      unknown_read_err:               "An unexpected error occurred trying to read your spreadsheet data",
+      network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
+      empty_feed_err:                 "No data entries found",
+      missing_start_date_err:         "Missing start_date",
+      invalid_data_format_err:        "Invalid data format",
+      date_compare_err:               "Can't compare TL.Dates on different scales",
+      invalid_scale_err:              "Invalid scale",
+      invalid_date_err:               "Invalid date: month, day and year must be numbers.",
+      invalid_separator_error:        "Invalid time: misuse of : or . as separator.",
+      invalid_hour_err:               "Invalid time (hour)",
+      invalid_minute_err:             "Invalid time (minute)",
+      invalid_second_err:             "Invalid time (second)",
+      invalid_fractional_err:         "Invalid time (fractional seconds)",
+      invalid_second_fractional_err:  "Invalid time (seconds and fractional seconds)",
+      invalid_year_err:               "Invalid year",
+      flickr_notfound_err:            "Photo not found or private",
+      flickr_invalidurl_err:          "Invalid Flickr URL",
+      imgur_invalidurl_err:           "Invalid Imgur URL",
+      twitter_invalidurl_err:         "Invalid Twitter URL",
+      twitter_load_err:               "Unable to load Tweet",
+      twitterembed_invalidurl_err:    "Invalid Twitter Embed url",
+      wikipedia_load_err:             "Unable to load Wikipedia entry",
+      youtube_invalidurl_err:         "Invalid YouTube URL",
+      template_value_err:             "No value provided for variable",
+      invalid_rgb_err:                "Invalid RGB argument",
+      time_scale_scale_err:           "Don't know how to get date from time for scale",
+      axis_helper_no_options_err:     "Axis helper must be configured with options",
+      axis_helper_scale_err:          "No AxisHelper available for scale",
+			invalid_integer_option: 				"Invalid option value—must be a whole number."
 		},
 		date: {
 			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
 			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
-		}, 
-		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change. 
+		},
+		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change.
 	        positive_year: {
-	        	prefix: '', 
+	        	prefix: '',
 	        	suffix: ''
 	        },
 	        negative_year: { // if either of these is specified, the year will be converted to positive before they are applied
-	        	prefix: '', 
+	        	prefix: '',
 	        	suffix: 'BCE'
 	        }
         },
@@ -258,18 +296,18 @@ TL.Language.languages = {
 				[1000,"%.1f thousand years ago"],
 				[1, "%f years ago"]
 			],
-		    compact: [ 
+		    compact: [
 				[1000000000,"%.2f bya"],
 				[1000000,"%.1f mya"],
 				[1000,"%.1f kya"],
 				[1, "%f years ago"]
 			],
-		    verbose: [ 
+		    verbose: [
 				[1000000000,"%.2f billion years ago"],
 				[1000000,"%.1f million years ago"],
 				[1000,"%.1f thousand years ago"],
 				[1, "%f years ago"]
-			]		
+			]
 		}
 	}
 }

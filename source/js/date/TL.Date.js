@@ -59,7 +59,7 @@ TL.Date = TL.Class.extend({
 
 	isBefore: function(other_date) {
         if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
-            throw("Can't compare TL.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+            throw new TL.Error("date_compare_err") // but should be able to compare 'cosmological scale' dates once we get to that...
         }
         if ('isBefore' in this.data.date_obj) {
             return this.data.date_obj['isBefore'](other_date.data.date_obj);
@@ -69,7 +69,7 @@ TL.Date = TL.Class.extend({
 
 	isAfter: function(other_date) {
         if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
-            throw("Can't compare TL.Dates on different scales") // but should be able to compare 'cosmological scale' dates once we get to that...
+            throw new TL.Error("date_compare_err") // but should be able to compare 'cosmological scale' dates once we get to that...
         }
         if ('isAfter' in this.data.date_obj) {
             return this.data.date_obj['isAfter'](other_date.data.date_obj);
@@ -87,7 +87,7 @@ TL.Date = TL.Class.extend({
             if (TL.Date.SCALES[i][0] == scale) return new TL.Date(d);
         };
 
-        throw('invalid scale ' + scale);
+        throw new TL.Error("invalid_scale_err", scale);
     },
 
 	/*	Private Methods
@@ -111,6 +111,11 @@ TL.Date = TL.Class.extend({
 		var DATE_PARTS = TL.Date.DATE_PARTS;
 
  		for (var ix in DATE_PARTS) {
+ 		    var x = TL.Util.trim(_date[DATE_PARTS[ix]]);
+ 		    if (!x.match(/^-?\d*$/)) {
+ 		        throw new TL.Error("invalid_date_err", DATE_PARTS[ix] + " = '" + _date[DATE_PARTS[ix]] + "'");
+ 		    }
+ 		    
 			var parsed = parseInt(_date[DATE_PARTS[ix]]);
 			if (isNaN(parsed)) {
                 parsed = (ix == 4 || ix == 5) ? 1 : 0; // month and day have diff baselines
@@ -183,17 +188,11 @@ TL.Date.makeDate = function(data) {
 TL.BigYear = TL.Class.extend({
     initialize: function (year) {
         this.year = parseInt(year);
-        if (isNaN(this.year)) { throw("Invalid year " + year) }
-    },
-/* THERE ARE UNUSED ...
-    getDisplayText: function(tl_language) {
-        return this.year.toLocaleString(tl_language.lang);
+        if (isNaN(this.year)) {
+            throw new TL.Error('invalid_year_err', year);
+        }
     },
 
-    getDisplayTextShort: function(tl_language) {
-        return this.year.toLocaleString(tl_language.lang);
-    },
-*/
     isBefore: function(that) {
         return this.year < that.year;
     },
@@ -246,7 +245,9 @@ TL.BigYear = TL.Class.extend({
      */
     cls.parseISODate = function(str) {
         var d = new Date(str);
-        if (isNaN(d)) throw "Invalid date: " + str;
+        if (isNaN(d)) {
+            throw new TL.Error("invalid_date_err", str);
+        }
         return {
             year: d.getFullYear(),
             month: d.getMonth() + 1,
@@ -387,7 +388,7 @@ TL.BigDate = TL.Date.extend({
             }
         };
 
-        throw('invalid scale ' + scale);
+        throw new TL.Error("invalid_scale_err", scale);
     }
 });
 

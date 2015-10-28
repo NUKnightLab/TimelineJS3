@@ -33,7 +33,7 @@ TL.TimelineConfig = TL.Class.extend({
 				try {
 					this.addEvent(data.events[i], true);
 				} catch (e) {
-					this.logError("Event " + i + ": " + e);
+				    this.logError(e);
 				}
 			}
 
@@ -81,13 +81,13 @@ TL.TimelineConfig = TL.Class.extend({
 	},
 	/* Add an event (including cleaning/validation) and return the unique id.
 	* All event data validation should happen in here.
-	* Throws: string errors for any validation problems.
+	* Throws: TL.Error for any validation problems.
 	*/
 	addEvent: function(data, defer_sort) {
 		var event_id = this._assignID(data);
 
 		if (typeof(data.start_date) == 'undefined') {
-			throw(event_id + " is missing a start_date");
+		    throw new TL.Error("missing_start_date_err", event_id);
 		} else {
 			this._processDates(data);
 			this._tidyFields(data);
@@ -106,7 +106,7 @@ TL.TimelineConfig = TL.Class.extend({
 		var event_id = this._assignID(data);
 
 		if (typeof(data.start_date) == 'undefined') {
-			throw(event_id + " is missing a start_date");
+		    throw new TL.Error("missing_start_date_err", event_id);
 		} else {
 			this._processDates(data);
 			this._tidyFields(data);

@@ -9,8 +9,6 @@ TL.Media.Profile = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
 		
 		this._el.content_item				= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-profile tl-media-shadow", this._el.content);
 		this._el.content_item.src			= this.data.url;

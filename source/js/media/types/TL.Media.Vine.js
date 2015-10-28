@@ -11,10 +11,7 @@ TL.Media.Vine = TL.Media.extend({
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-		
-		// Loading Message
-		this.loadingMessage();
-		
+				
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-vine tl-media-shadow", this._el.content);
 		
