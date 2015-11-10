@@ -93,7 +93,7 @@ timeline.on(event_name, function(data) {
 
 `getData(<int slide_index>)` _get data for slide by index_
 
-`getDataId(<string id>)` _get data for slide by id_
+`getDataById(<string id>)` _get data for slide by id_
 
 `getSlide(<int slide_index>)` _get TL.Slide object by index_
 
