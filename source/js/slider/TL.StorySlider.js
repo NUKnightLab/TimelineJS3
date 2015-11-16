@@ -15,7 +15,7 @@
 
 TL.StorySlider = TL.Class.extend({
 
-	includes: TL.Events,
+	includes: [TL.Events, TL.I18NMixins],
 
 	/*	Private Methods
 	================================================== */
@@ -441,7 +441,7 @@ TL.StorySlider = TL.Class.extend({
 				message_class: 		"tl-message-full",
 				message_icon_class: "tl-icon-swipe-left"
 			});
-			this._message.updateMessage("Swipe to Navigate<br><span class='tl-button'>OK</span>");
+			this._message.updateMessage(this._("swipe_to_navigate"));
 			this._message.addTo(this._el.container);
 		}
 

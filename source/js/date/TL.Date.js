@@ -57,7 +57,7 @@ TL.Date = TL.Class.extend({
 		return this.data.date_obj.getTime();
 	},
 
-	isBefore: function(other_date) {	    
+	isBefore: function(other_date) {
         if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
             throw new TL.Error("date_compare_err") // but should be able to compare 'cosmological scale' dates once we get to that...
         }
@@ -188,7 +188,7 @@ TL.Date.makeDate = function(data) {
 TL.BigYear = TL.Class.extend({
     initialize: function (year) {
         this.year = parseInt(year);
-        if (isNaN(this.year)) { 
+        if (isNaN(this.year)) {
             throw new TL.Error('invalid_year_err', year);
         }
     },

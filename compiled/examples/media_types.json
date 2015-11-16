@@ -1,0 +1,549 @@
+{
+    "scale": "human",
+	"title": {
+		        "media": {
+		            "caption": "",
+		            "credit": "",
+		            "url": "",
+		            "thumb": 	""
+		        },
+	            "text": {
+	                "headline": "Test Timeline",
+	                "text": "This is a test Timeline that has at least one slide of every media type."
+	            }
+	    },
+    "events": [
+        {
+            "background": {
+                "color": "#000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1900",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "thumbnail": 	"",
+                "format": 		""
+            },
+            "text": {
+                "headline": "Get started!",
+                "text": "This slide has an image background."
+            },
+            "background": {
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            }
+        },
+        {
+            "background": {
+                "color": "#000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1900",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "thumbnail": 	"",
+                "format": 		""
+            },
+            "text": {
+                "headline": "Hello",
+                "text": "This slide has an imgur background."
+            },
+            "background": {
+                "url": "http://imgur.com/gallery/e47JWq7"
+            }
+        },
+
+        {
+            "start_date": {
+                "year":			"1901",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "Dr. Seuss",
+                "url": "<blockquote><p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p></blockquote>",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Blockquote",
+                "text": "This is an example of a blockquote. This slide has an instgram background."
+            },
+            "background": {
+                "url": "https://instagram.com/p/0nsIGKIbb7/"
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1902",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "Somebody",
+                "url": "http://www.dailymotion.com/video/x38xw18_tame-impala-performs-the-less-i-know-the-better_fun",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "DailyMotion",
+                "text": "This is an example of a daily motion thing.  This slide has a flickr background."
+            },
+            "background": {
+                "url": "https://www.flickr.com/photos/zachwise/14514563402/"
+            }
+        },
+        
+
+        {
+            "start_date": {
+                "year":			"1903",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://www.documentcloud.org/documents/2451733-o2015-6341-pdf.html",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "DocumentCloud",
+                "text": "This is an example of a Document Cloud thing."
+            },
+            "background": {
+                "url": ""
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1904",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "Zach Wise",
+                "url": "https://www.flickr.com/photos/zachwise/14514563402/"
+            },
+            "text": {
+                "headline": "Flickr",
+                "text": "To add a Flickr photo, just paste a link to the photo page in the media field. Example: https://www.flickr.com/photos/zachwise/14514563402/"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1905",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://docs.google.com/document/d/1wwjWAYFERCAl0QYg3F2fqs5SBnzrythWyglV0A3Ao2c/edit?usp=sharing"
+            },
+            "text": {
+                "headline": "GoogleDoc",
+                "text": "This is Google Doc slide."
+            },
+            "unique_id": ""
+        },
+   
+        {
+            "start_date": {
+                "year":			"1906",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://www.google.com/maps/place/1845+Sheridan+Rd,+Evanston,+IL+60208/@42.0507029,-87.6741602,17z/data=!3m1!4b1!4m2!3m1!1s0x880fd0746c9b0007:0x8bb1a9034220562f"
+            },
+            "text": {
+                "headline": "GoogleMap",
+                "text": "This is Google Map slide."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1909",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "Image",
+                "text": "This is an image slide."
+            },
+            "unique_id": ""
+        },
+
+        {
+            "start_date": {
+                "year":			"1910",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://instagram.com/p/0nsIGKIbb7/"
+            },
+            "text": {
+                "headline": "Instagram",
+                "text": "To add an Instagram photo, just paste a link to the photo page in the media field. Example: https://instagram.com/p/0nsIGKIbb7/"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1910",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://instagram.com/p/0nsIGKIbb7/"
+            },
+            "text": {
+                "headline": "Instagram",
+                "text": "To add an Instagram photo, just paste a link to the photo page in the media field. Example: https://instagram.com/p/0nsIGKIbb7/"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1911",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://stlab.adobe.com/wiki/images/d/d3/Test.pdf"
+            },
+            "text": {
+                "headline": "PDF",
+                "text": "This is a PDF slide"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1914",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://soundcloud.com/beastieboys/make-some-noise"
+            },
+            "text": {
+                "headline": "SoundCloud",
+                "text": "Just add a link to the track in the media field."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1915",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z"
+            },
+            "text": {
+                "headline": "Spotify Track URL",
+                "text": "Spotify Track URL"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1917",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "https://storify.com/cmgnationalnews/last-minute-rumors-about-apple-s-new-iphone-6-iwat"
+            },
+            "text": {
+                "headline": "Storify",
+                "text": "Add a link to the Storify"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1918",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://twitter.com/zlwise/status/502535723715923968"
+            },
+            "text": {
+                "headline": "Twitter",
+                "text": "Just add a link to the tweet"
+            },
+            "unique_id": ""
+        },
+         {
+            "start_date": {
+                "year":			"1920",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": null,
+                "url": "https://vimeo.com/105602328"
+            },
+            "text": {
+                "headline": "Vimeo",
+                "text": "Just add a link to the video in the media field."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1921",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "https://vine.co/v/bjHh0zHdgZT"
+            },
+            "text": {
+                "headline": "Vine",
+                "text": "Add a link to the Vine"
+            },
+            "unique_id": ""
+        },        
+        {
+            "start_date": {
+                "year":			"1922",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://www.nytimes.com/",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Website",
+                "text": "This is an example of a website. Just paste a link to the site in the media field."
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1923",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://en.wikipedia.org/wiki/A_Trip_to_the_Moon",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Wikipedia",
+                "text": "Add a link to a <a href='http://en.wikipedia.org/wiki/A_Trip_to_the_Moon' target='_blank'>Wikipedia entry</a> in the media field to show an excerpt alongside your text."
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1924",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "Le portrait mystérieux",
+                "credit": "Georges Méliès",
+                "url": "http://youtu.be/lIvftGgps24",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "YouTube video",
+                "text": "To add a YouTube video, just add a link to it in the media field. No embedding necessary. http://youtu.be/lIvftGgps24"
+            }
+        }
+    ]
+}

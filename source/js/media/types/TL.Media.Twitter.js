@@ -11,10 +11,7 @@ TL.Media.Twitter = TL.Media.extend({
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-			
-		// Loading Message
-		this.loadingMessage();
-		
+					
 		// Create Dom element
 		this._el.content_item = TL.Dom.create("div", "tl-media-twitter", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
@@ -22,7 +19,7 @@ TL.Media.Twitter = TL.Media.extend({
 		// Get Media ID
 		if (this.data.url.match("status\/")) {
 			this.media_id = this.data.url.split("status\/")[1];
-		} else if (url.match("statuses\/")) {
+		} else if (this.data.url.match("statuses\/")) {
 			this.media_id = this.data.url.split("statuses\/")[1];
 		} else {
 			this.media_id = "";

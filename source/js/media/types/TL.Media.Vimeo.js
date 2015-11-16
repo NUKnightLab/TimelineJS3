@@ -11,9 +11,6 @@ TL.Media.Vimeo = TL.Media.extend({
 		var api_url,
 			self = this;
 
-		// Loading Message
-		this.loadingMessage();
-
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-vimeo tl-media-shadow", this._el.content);
 

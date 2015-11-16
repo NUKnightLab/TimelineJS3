@@ -11,8 +11,6 @@ TL.Media.Website = TL.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 		var self = this;
-		// Loading Message
-		this.loadingMessage();
 		
 		// Get Media ID
 		this.media_id = this.data.url.replace(/.*?:\/\//g, "");

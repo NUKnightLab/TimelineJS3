@@ -11,9 +11,6 @@ TL.Media.YouTube = TL.Media.extend({
 		var self = this,
 			url_vars;
 
-		// Loading Message
-		this.loadingMessage();
-
 		this.youtube_loaded = false;
 
 		// Create Dom element

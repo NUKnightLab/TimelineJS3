@@ -9,12 +9,24 @@ TL.Media.Imgur = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var api_url,
-			self = this;
+		try {
+		    this.media_id = this.data.url.split('/').slice(-1)[0];
 
-		// Loading Message
-		this.loadingMessage();
+            if(!this.options.background) {
+                this.createMedia();
+            }
+            
+			// After Loaded
+			this.onLoaded();
 
+		} catch(e) {
+		    this.loadErrorDisplay(self._("imgur_invalidurl_err"));
+		}
+	},
+		
+	createMedia: function() {
+	    var self = this;
+	    
 		// Link
 		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 		this._el.content_link.href 			= this.data.url;
@@ -27,17 +39,12 @@ TL.Media.Imgur = TL.Media.extend({
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
-
-		try {
-			var image_id = this.data.url.split('/').slice(-1)[0];
-			// Set Image Source
-			this._el.content_item.src			= 'https://i.imgur.com/' + image_id + '.png';
-
-			// After Loaded
-			this.onLoaded();
-
-		} catch(e) {
-		    self.loadErrorDisplay(self._(e.message_key));
-		}
+	
+        this._el.content_item.src			= this.getImageURL();
+	},
+	
+	getImageURL: function(w, h) {
+	    return 'https://i.imgur.com/' + this.media_id + '.png';	
 	}
+	
 });

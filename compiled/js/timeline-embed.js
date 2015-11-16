@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 3.3.2 - 2015-09-23
+    TimelineJS - ver. 3.3.9 - 2015-10-26
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -468,7 +468,7 @@ LoadLib = (function (doc) {
 // Provide a bootstrap method for instantiating a timeline. On page load, check the definition of these window scoped variables in this order: [url_config, timeline_config, storyjs_config, config]. As soon as one of these is found to be defined with type 'object,' it will be used to automatically instantiate a timeline.
 
 /*  CodeKit Import
-  https://incident57.com/codekit/ 
+  https://incident57.com/codekit/
 ================================================== */
 // @codekit-prepend "Embed.LoadLib.js";
 
@@ -673,7 +673,7 @@ function createStoryJS(c, src) {
   /* Build Timeline
   ================================================== */
   function createEmbedDiv() {
-    var embed_classname = "storyjs-embed";
+    var embed_classname = "tl-timeline-embed";
 
     t = document.createElement('div');
 
@@ -695,11 +695,11 @@ function createStoryJS(c, src) {
 
     if (storyjs_e_config.height.toString().match("%")) {
       te.style.height = storyjs_e_config.height;
-      embed_classname += " full-embed";
+      embed_classname += " tl-timeline-full-embed";
       te.style.height = storyjs_e_config.height.split("%")[0] + "%";
 
     } else if (storyjs_e_config.width.toString().match("%")) {
-      embed_classname += " full-embed";
+      embed_classname += " tl-timeline-full-embed";
       storyjs_e_config.height = storyjs_e_config.height - 16;
       te.style.height = (storyjs_e_config.height) + 'px';
     }else {

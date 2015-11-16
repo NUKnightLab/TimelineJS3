@@ -64,7 +64,8 @@ TL.Media = TL.Class.extend({
 			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
 			api_key_embedly: 		"", // ae2da610d1454b66abdf2e6a4c44026d
 			credit_height: 			0,
-			caption_height: 		0
+			caption_height: 		0,
+			background:             0   // is background media (for slide)
 		};
 
 		this.animator = {};
@@ -73,20 +74,21 @@ TL.Media = TL.Class.extend({
 		TL.Util.mergeData(this.options, options);
 		TL.Util.mergeData(this.data, data);
 
-		this._el.container = TL.Dom.create("div", "tl-media");
+        // Don't create DOM elements if this is background media
+        if(!this.options.background) {
+            this._el.container = TL.Dom.create("div", "tl-media");
 
-		if (this.data.unique_id) {
-			this._el.container.id = this.data.unique_id;
-		}
+            if (this.data.unique_id) {
+                this._el.container.id = this.data.unique_id;
+            }
 
+            this._initLayout();
 
-		this._initLayout();
-
-		if (add_to_container) {
-			add_to_container.appendChild(this._el.container);
-			this._el.parent = add_to_container;
-		};
-
+            if (add_to_container) {
+                add_to_container.appendChild(this._el.container);
+                this._el.parent = add_to_container;
+            }
+        }
 	},
 
 	loadMedia: function() {
@@ -95,24 +97,26 @@ TL.Media = TL.Class.extend({
 		if (!this._state.loaded) {
 			try {
 				this.load_timer = setTimeout(function() {
+		            self.loadingMessage();
 					self._loadMedia();
-					self._state.loaded = true;
+					// self._state.loaded = true; handled in onLoaded()
 					self._updateDisplay();
 				}, 1200);
 			} catch (e) {
 				trace("Error loading media for ", this._media);
 				trace(e);
 			}
-
-			//this._state.loaded = true;
 		}
-
-
-
 	},
 
+    _updateMessage: function(msg) {
+        if(this.message) {
+            this.message.updateMessage(msg);
+        }    
+    },
+    
 	loadingMessage: function() {
-		this.message.updateMessage(this._('loading') + " " + this.options.media_name);
+	    this._updateMessage(this._('loading') + " " + this.options.media_name);
 	},
 
 	errorMessage: function(msg) {
@@ -121,12 +125,11 @@ TL.Media = TL.Class.extend({
 		} else {
 			msg = this._('error');
 		}
-		this.message.updateMessage(msg);
+		this._updateMessage(msg);
 	},
 
 	updateMediaDisplay: function(layout) {
-		if (this._state.loaded) {
-
+		if (this._state.loaded && !this.options.background) {
 
 			if (TL.Browser.mobile) {
 				this._el.content_item.style.maxHeight = (this.options.height/2) + "px";
@@ -142,8 +145,6 @@ TL.Media = TL.Class.extend({
 					//this._el.content_item.style.width = "100%";
 				}
 			}
-
-
 
 			this._updateMediaDisplay(layout);
 
@@ -161,22 +162,28 @@ TL.Media = TL.Class.extend({
 
 	/*	Media Specific
 	================================================== */
-		_loadMedia: function() {
+    _loadMedia: function() {        
+        // All overrides must call this.onLoaded() to set state
+        this.onLoaded();
+    },
 
-		},
+    _updateMediaDisplay: function(l) {
+        //this._el.content_item.style.maxHeight = (this.options.height - this.options.credit_height - this.options.caption_height - 16) + "px";
+        if(TL.Browser.firefox) {
+            this._el.content_item.style.maxWidth = this.options.width + "px";
+            this._el.content_item.style.width = "auto";
+        }
+    },
 
-		_updateMediaDisplay: function(l) {
-			//this._el.content_item.style.maxHeight = (this.options.height - this.options.credit_height - this.options.caption_height - 16) + "px";
-			if(TL.Browser.firefox) {
-				this._el.content_item.style.maxWidth = this.options.width + "px";
-				this._el.content_item.style.width = "auto";
-			}
-		},
+    _getMeta: function() {
 
-		_getMeta: function() {
+    },
 
-		},
-
+    _getImageURL: function(w, h) {
+        // Image-based media types should return <img>-compatible src url
+        return "";
+    },
+    
 	/*	Public
 	================================================== */
 	show: function() {
@@ -197,6 +204,10 @@ TL.Media = TL.Class.extend({
 		this.onRemove();
 	},
 
+    getImageURL: function(w, h) {
+        return this._getImageURL(w, h);
+    },
+    
 	// Update Display
 	updateDisplay: function(w, h, l) {
 		this._updateDisplay(w, h, l);
@@ -227,7 +238,7 @@ TL.Media = TL.Class.extend({
 		if (this.message) {
 			this.message.hide();
 		}
-		if (!error) {
+		if (!(error || this.options.background)) {
 			this.showMeta();
 		}
 		this.updateDisplay();

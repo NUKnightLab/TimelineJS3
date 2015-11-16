@@ -4,11 +4,15 @@
 	You can add new media types by adding a regex
 	to match and the media class name to use to
 	render the media
+	
+	The image_only parameter indicates that the
+	call only wants an image-based media type
+	that can be resolved to an image URL.
 
 	TODO
 	Allow array so a slideshow can be a mediatype
 ================================================== */
-TL.MediaType = function(m) {
+TL.MediaType = function(m, image_only) {
 	var media = {},
 		media_types = 	[
 			{
@@ -162,18 +166,41 @@ TL.MediaType = function(m) {
 				cls: 		TL.Media.Image
 			}
 		];
-
-	for (var i = 0; i < media_types.length; i++) {
-		if (m instanceof Array) {
-			return media = {
-				type: 		"slider",
-				cls: 		TL.Media.Slider
-			};
-		} else if (m.url.match(media_types[i].match_str)) {
-			media 		= media_types[i];
-			return media;
-		}
-	};
+	
+	if(image_only) {
+        if (m instanceof Array) {
+            return false;
+        }
+        for (var i = 0; i < media_types.length; i++) {
+            switch(media_types[i].type) {
+                case "flickr":
+                case "image":
+                case "imgur":
+                case "instagram":
+                    if (m.url.match(media_types[i].match_str)) {
+                        media = media_types[i];
+                        return media;
+                    }
+                    break;
+                
+                default:
+                    break;            
+            }
+        }        
+	
+	} else {
+        for (var i = 0; i < media_types.length; i++) {
+            if (m instanceof Array) {
+                return media = {
+                    type: 		"slider",
+                    cls: 		TL.Media.Slider
+                };
+            } else if (m.url.match(media_types[i].match_str)) {
+                media 		= media_types[i];
+                return media;
+            }
+        };
+    }
 
 	return false;
 

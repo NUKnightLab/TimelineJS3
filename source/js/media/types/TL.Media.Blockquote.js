@@ -7,11 +7,7 @@ TL.Media.Blockquote = TL.Media.extend({
 	
 	/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		
-		// Loading Message
-		this.loadingMessage();
-		
+	_loadMedia: function() {		
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-blockquote", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";

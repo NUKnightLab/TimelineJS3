@@ -14,9 +14,6 @@ TL.Media.PDF = TL.Media.extend({
 		var url,
 			self = this;
 
-		// Loading Message
-		this.loadingMessage();
-
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
 		var markup = "";
