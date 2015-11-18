@@ -151,13 +151,26 @@
             throw new TL.Error("empty_feed_err");
         }
         var entry = data.feed.entry[0];
-        if (typeof entry.gsx$startdate !== 'undefined') {
+        
+        if (typeof entry.gsx$startdate !== 'undefined') { 
+            // check headers V1
+            var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
+            for (var i = 0; i < headers_V1.length; i++) {
+                if (typeof entry['gsx$' + headers_V1[i]] == 'undefined') {
+                    throw new TL.Error("invalid_data_format_err");
+                }
+            }
             return extractGoogleEntryData_V1;
-        } else if (typeof entry.gsx$year !== 'undefined') {
+        } else if (typeof entry.gsx$year !== 'undefined') { 
+            // check rest of V3 headers
+            var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','type','group','background'];
+            for (var i = 0; i < headers_V3.length; i++) {
+                if (typeof entry['gsx$' + headers_V3[i]] == 'undefined') {
+                    throw new TL.Error("invalid_data_format_err");
+                }
+            }
             return extractGoogleEntryData_V3;
-        } else {
-            throw new TL.Error("invalid_data_format_err");
-        }
+        }        
     }
 
     var buildGoogleFeedURL = function(parts) {
