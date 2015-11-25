@@ -11,17 +11,17 @@ TL.Media.PDF = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var url,
+		var url = TL.Util.transformImageURL(this.data.url),
 			self = this;
 
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
 		var markup = "";
 		// not assigning media_id attribute. Seems like a holdover which is no longer used.
-		if (TL.Browser.ie || TL.Browser.edge) {
-			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + this.data.url + "&amp;embedded=true'></iframe>";
+		if (TL.Browser.ie || TL.Browser.edge || url.match(/dl.dropboxusercontent.com/)) {
+			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + url + "&amp;embedded=true'></iframe>";
 		} else {
-			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + this.data.url + "'></iframe>"
+			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>"
 		}
 		this._el.content_item.innerHTML	= markup
 		this.onLoaded();
