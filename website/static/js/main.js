@@ -148,6 +148,11 @@ function updateEmbedCode(element, options) {
 
 var $ = jQuery;
 $(document).ready(function() {
+  if (window.innerWidth <= 700) {
+    var intro = $('#intro-copy');
+    $('#intro-copy').remove();
+    $('#screencast').prepend(intro);
+  }
   // More Options
   $(".show-options").click(function (e) {
     $(this).hide();
