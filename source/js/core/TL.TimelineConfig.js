@@ -75,7 +75,15 @@ TL.TimelineConfig = TL.Class.extend({
 		if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
 			this.logError("Timeline configuration has no events.")
 		}
+
+		// make sure all eras have start and end dates
+		for (var i = 0; i < this.eras.length; i++) {
+			if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
+				this.logError("All eras must have start and end dates.") // add internationalization (I18N) and context
+			}
+		};
 	},
+
 	isValid: function() {
 		return this.messages.errors.length == 0;
 	},
