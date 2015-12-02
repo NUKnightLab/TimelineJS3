@@ -79,7 +79,13 @@ TL.TimelineConfig = TL.Class.extend({
 		// make sure all eras have start and end dates
 		for (var i = 0; i < this.eras.length; i++) {
 			if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
-				this.logError("All eras must have start and end dates.") // add internationalization (I18N) and context
+				var era_identifier;
+				if (this.eras[i].text && this.eras[i].text.headline) {
+					era_identifier = this.eras[i].text.headline
+				} else {
+					era_identifier = "era " + (i+1);
+				}
+				this.logError("All eras must have start and end dates. [" + era_identifier + "]") // add internationalization (I18N) and context
 			}
 		};
 	},
