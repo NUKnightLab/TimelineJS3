@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 3.3.9 - 2015-10-26
+    TimelineJS - ver. 3.3.10 - 2015-12-02
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -3129,7 +3129,21 @@ TL.TimelineConfig = TL.Class.extend({
 		if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
 			this.logError("Timeline configuration has no events.")
 		}
+
+		// make sure all eras have start and end dates
+		for (var i = 0; i < this.eras.length; i++) {
+			if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
+				var era_identifier;
+				if (this.eras[i].text && this.eras[i].text.headline) {
+					era_identifier = this.eras[i].text.headline
+				} else {
+					era_identifier = "era " + (i+1);
+				}
+				this.logError("All eras must have start and end dates. [" + era_identifier + "]") // add internationalization (I18N) and context
+			}
+		};
 	},
+
 	isValid: function() {
 		return this.messages.errors.length == 0;
 	},
@@ -3495,13 +3509,26 @@ TL.TimelineConfig = TL.Class.extend({
             throw new TL.Error("empty_feed_err");
         }
         var entry = data.feed.entry[0];
-        if (typeof entry.gsx$startdate !== 'undefined') {
+        
+        if (typeof entry.gsx$startdate !== 'undefined') { 
+            // check headers V1
+            var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
+            for (var i = 0; i < headers_V1.length; i++) {
+                if (typeof entry['gsx$' + headers_V1[i]] == 'undefined') {
+                    throw new TL.Error("invalid_data_format_err");
+                }
+            }
             return extractGoogleEntryData_V1;
-        } else if (typeof entry.gsx$year !== 'undefined') {
+        } else if (typeof entry.gsx$year !== 'undefined') { 
+            // check rest of V3 headers
+            var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','type','group','background'];
+            for (var i = 0; i < headers_V3.length; i++) {
+                if (typeof entry['gsx$' + headers_V3[i]] == 'undefined') {
+                    throw new TL.Error("invalid_data_format_err");
+                }
+            }
             return extractGoogleEntryData_V3;
-        } else {
-            throw new TL.Error("invalid_data_format_err");
-        }
+        }        
     }
 
     var buildGoogleFeedURL = function(parts) {
@@ -3851,7 +3878,7 @@ TL.Language.languages = {
       network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
       empty_feed_err:                 "No data entries found",
       missing_start_date_err:         "Missing start_date",
-      invalid_data_format_err:        "Invalid data format",
+      invalid_data_format_err:        "Header row has been modified.",
       date_compare_err:               "Can't compare TL.Dates on different scales",
       invalid_scale_err:              "Invalid scale",
       invalid_date_err:               "Invalid date: month, day and year must be numbers.",
@@ -8217,17 +8244,17 @@ TL.Media.PDF = TL.Media.extend({
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
-		var url,
+		var url = TL.Util.transformImageURL(this.data.url),
 			self = this;
 
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
 		var markup = "";
 		// not assigning media_id attribute. Seems like a holdover which is no longer used.
-		if (TL.Browser.ie || TL.Browser.edge) {
-			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + this.data.url + "&amp;embedded=true'></iframe>";
+		if (TL.Browser.ie || TL.Browser.edge || url.match(/dl.dropboxusercontent.com/)) {
+			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + url + "&amp;embedded=true'></iframe>";
 		} else {
-			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + this.data.url + "'></iframe>"
+			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>"
 		}
 		this._el.content_item.innerHTML	= markup
 		this.onLoaded();
