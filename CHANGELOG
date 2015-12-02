@@ -1,3 +1,8 @@
+3.3.10 (2015-12-02)
+-------------------
+* improved validation/messaging during authoring: changes to headers, eras without end dates (#287)
+* Improved support for PDF files from Dropbox
+
 3.3.9 (2015-10-26)
 ----------------------
 * Make sure 'invalid_date_err' gets translated, esp so detail message gets displayed
