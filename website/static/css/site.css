@@ -253,6 +253,10 @@ ul#embed-font-dropdown > li > p {
 }
 
 /* FAQ */
+#help .panel h4,
+#help .panel p {
+    font-size: 70%;
+}
 #faq-stub {
     padding-left: 40px;
 }
