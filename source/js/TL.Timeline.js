@@ -643,7 +643,7 @@ TL.Timeline = TL.Class.extend({
 				if (typeof(value) == 'number') {
 					valid = (value == parseInt(value))
 				} else if (typeof(value) == "string") {
-					valid = (value.match(/^\s*\-?\d+\s*$/));
+					valid = (value.match(/^\s*(\-?\d+)?\s*$/));
 				}
 				if (!valid) {
 					this.config.logError({ message_key: 'invalid_integer_option', detail: opt });
