@@ -457,6 +457,18 @@ p.breadcrumb {
     font-style: normal;
 }
 
+#step-screenshots {
+    /*clear: both;*/
+    overflow: hidden;
+    margin: 25px 0;
+    /*display: block;*/
+}
+
+.doc-illos {
+    width: 29%;
+    float: left;
+    margin-right: 15px;
+}
 
 /* Developers */
 #developers .develop {
@@ -499,6 +511,7 @@ p.breadcrumb {
         height: 215px;
     }
 }
+
 
 
 @media (max-width: 767px) {
@@ -561,6 +574,11 @@ p.breadcrumb {
 
     .step h2 { font-size: 70px; }
     .step h4 { font-size: 1.3em; line-height: 1.4; }
+
+    .doc-illos {
+        width: 45%;
+        margin-bottom: 15px;
+    }
 }
 
 @media (max-width: 550px) {
@@ -612,6 +630,14 @@ p.breadcrumb {
     #screencast iframe {
         width: 325px;
         height: 190px;
+    }
+
+}
+
+@media (max-width: 440px) {
+    .doc-illos {
+        width: 70%;
+        margin: 0 auto 15px auto;
     }
 
 }
