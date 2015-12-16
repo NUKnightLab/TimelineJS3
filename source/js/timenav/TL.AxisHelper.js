@@ -81,7 +81,7 @@ TL.AxisHelper = TL.Class.extend({
         }
         
         var prev = null;
-        for (var idx in helpers) {
+        for (var idx = 0; idx < helpers.length; idx++) {
             var curr = helpers[idx];
             var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
             if (pixels_per_tick > optimal_tick_width)  {
