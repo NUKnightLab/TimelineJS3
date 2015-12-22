@@ -6,7 +6,10 @@
     <div class="small-12 columns">
       <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
         <h2>Using the TimelineJS CSS selectors</h2>
-        <p>If you want to change the way TimelineJS looks, first check out our <a href="/docs/faq.html#styling">style and presentation frequently asked questions</a>. IN particular, note that <strong>there is no way to override the CSS using the iframe embed.</strong> You will need to be able to <a href="/docs/instantiate-a-timeline.html">instantiate the Timeline in javascript</a> on your own page. Then, either in <code>style</code> tags in that page, or in an external stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. Here are a few of the major CSS classes you might want to override.</p>
+        <p>If you want to change the way TimelineJS looks, first check out our <a href="/docs/faq.html#styling">style and presentation frequently asked questions</a>. In particular, note that <strong>there is no way to override the CSS using the iframe embed.</strong> You will need to be able to <a href="/docs/instantiate-a-timeline.html">instantiate the Timeline in javascript</a> on your own page. Then, either in <code>style</code> tags in that page, or in an external stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. </p>
+
+      <h3>Timeline CSS classes</h3>
+      <p>This table lists the major CSS classes which TimelineJS uses. You may just be able to tweak some of these. However, TimelineJS uses Less for CSS preprocessing, which means that some of the CSS rules are very specific. If just overriding a class doesn't seem to work, read more about <a data-scroll="true" href="#timeline-and-less">Timeline and Less</a> below.</p>
       <p><strong><em>Slide options</em></strong> affect the media and text areas of slides.</p>
       <table>
         <thead>
@@ -160,6 +163,12 @@
         </tr>
         </tbody>
       </table>
+      <h3 id="timeline-and-less">TimelineJS and Less</h3>
+      <p>TimelineJS uses the <a href="http://lesscss.org/"><code>Less</code> CSS pre-processor</a> to manage the complex number of elements, variables, and conditions needed to make everything look great. One side effect of how we use <code>Less</code> is that various style rules for TimelineJS are often very specific. Since, in CSS, more specific rules take precedence over less specific ones, you may find it easier to edit Timeline's <code>Less</code> files and compile your own stylesheet than to work out the exact selector which controls style rules.
+      </p>
+      <p>A full <code>Less</code> tutorial is outside the scope of this documentation. In the future, we may be able to provide a few more tips about how our <code>Less</code> files are organized, but the main thing you need to know is this: even though there are many <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">less files in our Github repository</a>, you only need to compile <code><a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/TL.Timeline.less">TL.Timeline.less</a></code>, which links to all of the others.
+      </p>
+
      </div>
   </div>
 </section>
