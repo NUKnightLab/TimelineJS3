@@ -1,3 +1,12 @@
+3.3.12 (not yet released)
+-------------------
+* translate "swipe_to_navigate" for German (de)
+* add Urdu (ur) translation
+
+3.3.11 (2015-12-03)
+-------------------
+* back out header validation, interfered with too many random changes in the wild
+
 3.3.10 (2015-12-02)
 -------------------
 * improved validation/messaging during authoring: changes to headers, eras without end dates (#287)
