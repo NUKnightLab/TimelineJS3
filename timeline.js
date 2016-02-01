@@ -9,7 +9,6 @@ function createMarker() {
   }
   var marker = $('.tl-timenav-item-container > div.tl-timemarker').first().clone();
   marker.attr('id', 'tl-timenav-marker').css({
-    left: 0,
     width: '5px',
     top: '5px',
     'background-color': '#F00',
