@@ -1,6 +1,9 @@
 
-// reposition slider
-$('.tl-timenav-slider').css('left', $('.tl-menubar').width());
+setTimeout(function () {
+  // reposition slider
+  $('.tl-timenav-slider').css('left', $('.tl-menubar').width());
+  moveMarker();
+}, 1000);
 
 function createMarker() {
   if ($('#tl-timenav-marker').length)
