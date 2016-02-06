@@ -1,0 +1,6 @@
+var timeline_config = {
+  "personalhackathon": {
+    "source": "https://docs.google.com/spreadsheets/d/1bxDTwnSvSwmCilKz1Hrb6nK2zO_gAVYuH3EKjsiCGxg/pubhtml?gid=0",
+    "initial_zoom": 1
+  }
+}
