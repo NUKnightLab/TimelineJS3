@@ -1,5 +1,4 @@
-
-moveMarker();
+setTimeout(moveMarker, 1000);
 
 function createMarker() {
   if ($('#tl-timenav-marker').length)
