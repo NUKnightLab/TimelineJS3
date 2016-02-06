@@ -1,9 +1,5 @@
 
-setTimeout(function () {
-  // reposition slider
-  $('.tl-timenav-slider').css('left', $('.tl-menubar').width());
-  moveMarker();
-}, 1000);
+moveMarker();
 
 function createMarker() {
   if ($('#tl-timenav-marker').length)
@@ -27,6 +23,7 @@ function moveMarker() {
     left: timeline._timenav.timescale.getPosition(new Date().getTime())
   });
   goToNowSlide();
+  $('.tl-timenav-slider').css('left', $('.tl-menubar').width());
   setTimeout(moveMarker, 1000);
 }
 
