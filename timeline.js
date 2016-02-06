@@ -17,12 +17,23 @@ function createMarker() {
   return marker;  
 }
 
+function getSliderPosition (nowpos) {
+  var pw = timeline._timenav.timescale.getPixelWidth();
+  var lastitempos = timeline._timenav.timescale.getPosition(timeline.getSlide(timeline._storyslider._slides.length - 1).data.end_date.data.date_obj);
+
+  if (pw - nowpos < pw/2)
+    return lastitempos - pw - 100;
+  else if (nowpos > pw/2)
+    return pw/2 - nowpos;
+  else
+    return $('.tl-menubar').width();
+}
+
 function moveMarker() {
-  createMarker().css({
-    left: timeline._timenav.timescale.getPosition(new Date().getTime())
-  });
+  var nowpos = timeline._timenav.timescale.getPosition(new Date());
+  createMarker().css({ left: nowpos });
   goToNowSlide();
-  $('.tl-timenav-slider').css('left', $('.tl-menubar').width());
+  $('.tl-timenav-slider').css('left', getSliderPosition(nowpos));
   setTimeout(moveMarker, 1000);
 }
 
@@ -32,7 +43,7 @@ function goToNowSlide() {
 
   if (! (current.start_date instanceof TL.Date)) {
     timeline.goToNext();
-    return goToNowSlide();    
+    return goToNowSlide();
   }
 
   // current slide is before now
