@@ -1,5 +1,0 @@
-var config = {
-  "source": "https://docs.google.com/spreadsheets/d/1bxDTwnSvSwmCilKz1Hrb6nK2zO_gAVYuH3EKjsiCGxg/pubhtml?gid=0",
-  "timenav_height_percentage": 50,
-  "initial_zoom": 1
-};

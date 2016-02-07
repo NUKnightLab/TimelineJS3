@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Mark Twain Example</title>
+    <meta charset="utf-8">
+    <meta name="description" content="TimelineJS Embed">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- CSS-->
+    <link rel="stylesheet" href="../css/timeline.css?v1">
+    <!--FONT-->
+    <link rel="stylesheet" href="../css/fonts/font.default.css?v1">
+    <!-- Style-->
+    <style>
+      html, body {
+      	height:100%;
+      	width:100%;
+      	padding: 0px;
+      	margin: 0px;
+      }
+      .tl-timeline {
+      	
+      }
+      
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--if lt IE 9
+    script(src='https://html5shim.googlecode.com/svn/trunk/html5.js')
+    
+    -->
+  </head>
+  <body>
+    <div id="timeline"></div>
+    <!-- JavaScript-->
+    <script src="../js/timeline.js"></script>
+    <script>
+      var timeline = new TL.Timeline('timeline',
+        'https://docs.google.com/spreadsheets/d/1bxDTwnSvSwmCilKz1Hrb6nK2zO_gAVYuH3EKjsiCGxg/pubhtml?gid=0',
+        {
+          timenav_height_percentage: 50,
+          initial_zoom: 1,
+          ga_property_id: "UA-99134-2",
+          debug: true,
+          is_embed: true
+        });
+    </script>
+    <script src="../js/timeline-moving-marker.js"></script>
+  </body>
+</html>
