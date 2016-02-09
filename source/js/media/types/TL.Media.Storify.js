@@ -9,10 +9,7 @@ TL.Media.Storify = TL.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 		var content;
-		
-		// Loading Message
-		this.loadingMessage();
-		
+				
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-storify", this._el.content);
 		

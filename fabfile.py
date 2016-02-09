@@ -38,12 +38,12 @@ def stage_wp():
 
     # # Copy over CSS files
     build_css_dir = "build/css"
-    wp_css_dir = "../TimelineJS-Wordpress-Plugin/css"
+    wp_css_dir = "../TimelineJS-Wordpress-Plugin/v3/css"
     distutils.dir_util.copy_tree(build_css_dir, wp_css_dir)
 
     # # Copy over JS files
     build_js_dir = "build/js"
-    wp_js_dir = "../TimelineJS-Wordpress-Plugin/js"
+    wp_js_dir = "../TimelineJS-Wordpress-Plugin/v3/js"
     distutils.dir_util.copy_tree(build_js_dir, wp_js_dir)
 
     print("\nRemember to push the updated files in TimelineJS-Wordpress-Plugin as well....")

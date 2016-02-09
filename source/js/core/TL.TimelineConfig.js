@@ -33,7 +33,7 @@ TL.TimelineConfig = TL.Class.extend({
 				try {
 					this.addEvent(data.events[i], true);
 				} catch (e) {
-					this.logError("Event " + i + ": " + e);
+				    this.logError(e);
 				}
 			}
 
@@ -75,19 +75,33 @@ TL.TimelineConfig = TL.Class.extend({
 		if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
 			this.logError("Timeline configuration has no events.")
 		}
+
+		// make sure all eras have start and end dates
+		for (var i = 0; i < this.eras.length; i++) {
+			if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
+				var era_identifier;
+				if (this.eras[i].text && this.eras[i].text.headline) {
+					era_identifier = this.eras[i].text.headline
+				} else {
+					era_identifier = "era " + (i+1);
+				}
+				this.logError("All eras must have start and end dates. [" + era_identifier + "]") // add internationalization (I18N) and context
+			}
+		};
 	},
+
 	isValid: function() {
 		return this.messages.errors.length == 0;
 	},
 	/* Add an event (including cleaning/validation) and return the unique id.
 	* All event data validation should happen in here.
-	* Throws: string errors for any validation problems.
+	* Throws: TL.Error for any validation problems.
 	*/
 	addEvent: function(data, defer_sort) {
 		var event_id = this._assignID(data);
 
 		if (typeof(data.start_date) == 'undefined') {
-			throw(event_id + " is missing a start_date");
+		    throw new TL.Error("missing_start_date_err", event_id);
 		} else {
 			this._processDates(data);
 			this._tidyFields(data);
@@ -106,7 +120,7 @@ TL.TimelineConfig = TL.Class.extend({
 		var event_id = this._assignID(data);
 
 		if (typeof(data.start_date) == 'undefined') {
-			throw(event_id + " is missing a start_date");
+		    throw new TL.Error("missing_start_date_err", event_id);
 		} else {
 			this._processDates(data);
 			this._tidyFields(data);

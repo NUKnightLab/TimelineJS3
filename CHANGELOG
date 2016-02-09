@@ -1,3 +1,56 @@
+3.3.12 (2016-02-01)
+-------------------
+* translate "swipe_to_navigate" for German (de)
+* add Urdu (ur) translation
+
+3.3.11 (2015-12-03)
+-------------------
+* back out header validation, interfered with too many random changes in the wild
+
+3.3.10 (2015-12-02)
+-------------------
+* improved validation/messaging during authoring: changes to headers, eras without end dates (#287)
+* Improved support for PDF files from Dropbox
+
+3.3.9 (2015-10-26)
+----------------------
+* Make sure 'invalid_date_err' gets translated, esp so detail message gets displayed
+
+3.3.8 (2015-10-20)
+----------------------
+* Fix Document Cloud URL bug
+
+3.3.7 (2015-10-19)
+----------------------
+* Fix bug in Twitter embed (#282) (thanks @Newman101)
+* Support media-type image inference for background images (eg flickr, imgur, dropbox) (#268)
+
+3.3.6 (2015-10-12)
+------------------
+* Have TimelineConfig validate date parts as integers (#269)
+* Support Twitter embed markup in media (in addition to a direct URL to a tweet)
+* support flic.kr URLs for Flickr images in addition fo flickr.com
+* add Imgur to supported media types
+* don't duplicate tl-storyslider class (#223)
+* Improved support for error message I18N
+
+3.3.5 (2015-10-01)
+------------------
+* remove default target for links added by code.
+
+3.3.4 (2015-09-30)
+------------------
+* implement PDF media type (#205)
+
+3.3.3 (2015-09-30)
+------------------
+* Fix small offset in marker group alignment (#259)
+* Fix text-shadow appearing on slides with backgrounds (#260)
+* Added Bevan-PontanoSans font combo
+* Support for IE9 officially ruled out
+* Fixes to blockquote style
+* default TL.debug to false.
+
 3.3.2 (2015-09-23)
-------
+------------------
 This version of Timeline officially replaces the previous one.

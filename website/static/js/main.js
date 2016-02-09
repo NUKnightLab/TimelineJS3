@@ -86,7 +86,7 @@ function getLinkAndIframe() {
   /* IFRAME AND LINK
   ================================================== */
   vars    =  generator_embed_path + "?source=" + source_key;
-  vars    += "&font=" + e_font.dataset.value;
+  vars    += "&font=" + e_font.getAttribute("data-value");
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
     vars  += "&start_at_end=" + start_at_end;
@@ -148,6 +148,11 @@ function updateEmbedCode(element, options) {
 
 var $ = jQuery;
 $(document).ready(function() {
+  if (window.innerWidth <= 700) {
+    var intro = $('#intro-copy');
+    $('#intro-copy').remove();
+    $('#screencast').prepend(intro);
+  }
   // More Options
   $(".show-options").click(function (e) {
     $(this).hide();
@@ -196,9 +201,9 @@ $(document).ready(function() {
            .prepend('<i class="fa fa-check"></i>');
     var fontPair = $(this).data("value");
     $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
-                           .attr("alt", fontPair );
+                           .attr("alt", fontPair);
     $("ul#embed-font").hide();
-    updateEmbedCode
+    updateEmbedCode(evt);
   });
   $("#embed-font-dropdown a, #font-pair-preview").on("click", function(evt){
       evt.preventDefault();

@@ -46,6 +46,7 @@
 		android: ua.indexOf('android') !== -1,
 		android23: android23,
 		chrome: ua.indexOf('chrome') !== -1,
+		edge: ua.indexOf('edge/') !== -1,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,

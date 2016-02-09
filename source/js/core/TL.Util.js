@@ -177,7 +177,7 @@ TL.Util = {
             if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
                 link_text = link_text.substring(0,MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
             }
-            return prefix + "<a class='tl-makelink' target='_blank' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
+            return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
         }
 		// http://, https://, ftp://
 		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
@@ -267,7 +267,7 @@ TL.Util = {
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
 			if (!data.hasOwnProperty(key)) {
-				throw new Error('No value provided for variable ' + str);
+			    throw new TL.Error("template_value_err", str);
 			}
 			return value;
 		});
@@ -306,7 +306,7 @@ TL.Util = {
 			}
 		}
 		if (isNaN(r) || isNaN(b) || isNaN(g)) {
-			throw "Invalid RGB argument";
+			throw new TL.Error("invalid_rgb_err");
 		}
 		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
 	},
@@ -664,5 +664,38 @@ TL.Util = {
 	 */
 	transformImageURL: function(url) {
 		return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
-	}
+	},
+
+	base58: (function(alpha) {
+	    var alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
+	        base = alphabet.length;
+	    return {
+	        encode: function(enc) {
+	            if(typeof enc!=='number' || enc !== parseInt(enc))
+	                throw '"encode" only accepts integers.';
+	            var encoded = '';
+	            while(enc) {
+	                var remainder = enc % base;
+	                enc = Math.floor(enc / base);
+	                encoded = alphabet[remainder].toString() + encoded;
+	            }
+	            return encoded;
+	        },
+	        decode: function(dec) {
+	            if(typeof dec!=='string')
+	                throw '"decode" only accepts strings.';
+	            var decoded = 0;
+	            while(dec) {
+	                var alphabetPosition = alphabet.indexOf(dec[0]);
+	                if (alphabetPosition < 0)
+	                    throw '"decode" can\'t find "' + dec[0] + '" in the alphabet: "' + alphabet + '"';
+	                var powerOf = dec.length - 1;
+	                decoded += alphabetPosition * (Math.pow(base, powerOf));
+	                dec = dec.substring(1);
+	            }
+	            return decoded;
+	        }
+	    };
+	})()
+
 };

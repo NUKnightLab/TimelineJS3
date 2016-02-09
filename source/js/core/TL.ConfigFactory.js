@@ -15,12 +15,14 @@
             worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
         }
         // key as url parameter (old-fashioned)
-        var pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
-        if (url.match(pat)) {
-            parts.key = url.match(pat)[1];
+        var key_pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
+        var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d 
+
+        if (url.match(key_pat)) {
+            parts.key = url.match(key_pat)[1];
             // can we get a worksheet from this form?
-        } else if (url.match("docs.google.com/spreadsheets/d/")) {
-            var pos = url.indexOf("docs.google.com/spreadsheets/d/") + "docs.google.com/spreadsheets/d/".length;
+        } else if (url.match(url_pat)) {
+            var pos = url.search(url_pat) + url.match(url_pat)[0].length;
             var tail = url.substr(pos);
             parts.key = tail.split('/')[0]
             if (url.match(/\?gid=(\d+)/)) {
@@ -148,16 +150,30 @@
     var getGoogleItemExtractor = function(data) {
         if (typeof data.feed.entry === 'undefined'
                 || data.feed.entry.length == 0) {
-            throw('No data entries found.');
+            throw new TL.Error("empty_feed_err");
         }
         var entry = data.feed.entry[0];
+
         if (typeof entry.gsx$startdate !== 'undefined') {
+            // check headers V1
+            // var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
+            // for (var i = 0; i < headers_V1.length; i++) {
+            //     if (typeof entry['gsx$' + headers_V1[i]] == 'undefined') {
+            //         throw new TL.Error("invalid_data_format_err");
+            //     }
+            // }
             return extractGoogleEntryData_V1;
         } else if (typeof entry.gsx$year !== 'undefined') {
+            // check rest of V3 headers
+            var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','type','group','background'];
+            // for (var i = 0; i < headers_V3.length; i++) {
+            //     if (typeof entry['gsx$' + headers_V3[i]] == 'undefined') {
+            //         throw new TL.Error("invalid_data_format_err");
+            //     }
+            // }
             return extractGoogleEntryData_V3;
-        } else {
-            throw('Invalid data format.');
         }
+        throw new TL.Error("invalid_data_format_err");
     }
 
     var buildGoogleFeedURL = function(parts) {
@@ -213,22 +229,25 @@
     }
 
     var makeConfig = function(url, callback) {
-        var key = parseGoogleSpreadsheetURL(url);
+        var tc,
+            key = parseGoogleSpreadsheetURL(url);
 
         if (key) {
-          try {
-            var json = jsonFromGoogleURL(url);
-          } catch(e) {
-            tc = new TL.TimelineConfig();
-            if (e.name == 'NetworkError') {
-              tc.logError("Unable to read your Google Spreadsheet. Make sure you have published it to the web.")
-            } else {
-              tc.logError("An unexpected error occurred trying to read your spreadsheet data ["+e.name+"]");
+            try {
+                var json = jsonFromGoogleURL(url);
+            } catch(e) {
+                tc = new TL.TimelineConfig();
+                if (e.name == 'NetworkError') {
+                    tc.logError(new TL.Error("network_err"));
+                } else if(e.name == 'TL.Error') {
+                    tc.logError(e);
+                } else {
+                    tc.logError(new TL.Error("unknown_read_err", e.name));
+                }
+                callback(tc);
+                return;
             }
-            callback(tc);
-            return;
-          }
-            var tc = new TL.TimelineConfig(json);
+            tc = new TL.TimelineConfig(json);
             if (json.errors) {
                 for (var i = 0; i < json.errors.length; i++) {
                     tc.logError(json.errors[i]);
@@ -237,8 +256,13 @@
             callback(tc);
         } else {
             TL.getJSON(url, function(data){
-                callback(new TL.TimelineConfig(data));
-
+                try {
+                    tc = new TL.TimelineConfig(data);
+                } catch(e) {
+                    tc = new TL.TimelineConfig();
+                    tc.logError(e);
+                }
+                callback(tc);
             });
         }
     }

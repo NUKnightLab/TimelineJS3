@@ -46,7 +46,9 @@ timeline.on(event_name, function(data) {
 `loaded` _after story slider and time navigator have been loaded_
 
 * scale: "human" or "cosmological", the type of date scale
-* slides: array, the processed slide data
+* eras: array
+* events: array
+* title: title slide data, if title slide exists
 
 `zoom_in` _when user zooms in the time navigator_
 
@@ -91,7 +93,7 @@ timeline.on(event_name, function(data) {
 
 `getData(<int slide_index>)` _get data for slide by index_
 
-`getDataId(<string id>)` _get data for slide by id_
+`getDataById(<string id>)` _get data for slide by id_
 
 `getSlide(<int slide_index>)` _get TL.Slide object by index_
 

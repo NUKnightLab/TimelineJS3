@@ -104,6 +104,11 @@
               a <code><a href="#json-text" data-scroll="true">text</a></code> object and the <code>caption</code> and <code>credit</code> fields in
               a <code><a href="#json-media" data-scroll="true">media</a></code> object.</td>
             </tr>
+            <tr>
+              <td><code>unique_id</code></td>
+              <td>No</td>
+              <td>A string value which is unique among all slides in your timeline. If not specified, TimelineJS will construct an ID based on the headline, but if you later edit your headline, the ID will change. Unique IDs are used when the <code><a href="/docs/options.html#hash_bookmark">hash_bookmark</a></code> option is used, and can also be used with the <code>timeline.goToId()</code> method to programmatically move the timeline to a specific slide.</td>
+            </tr>
         </tbody>
       </table>
 

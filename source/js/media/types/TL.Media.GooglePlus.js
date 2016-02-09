@@ -11,9 +11,6 @@ TL.Media.GooglePlus = TL.Media.extend({
 		var api_url,
 			self = this;
 		
-		// Loading Message
-		this.loadingMessage();
-		
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-googleplus", this._el.content);
 		

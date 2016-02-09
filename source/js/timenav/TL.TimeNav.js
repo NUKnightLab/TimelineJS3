@@ -156,21 +156,11 @@ TL.TimeNav = TL.Class.extend({
 
 	zoomIn: function() { // move the the next "higher" scale factor
 		var new_scale = TL.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
-		if (new_scale == this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
-			this.fire("zoomtoggle", {zoom:"in", show:false});
-		} else {
-			this.fire("zoomtoggle", {zoom:"in", show:true});
-		}
 		this.setZoomFactor(new_scale);
 	},
 
 	zoomOut: function() { // move the the next "lower" scale factor
 		var new_scale = TL.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
-		if (new_scale == this.options.zoom_sequence[0]) {
-			this.fire("zoomtoggle", {zoom:"out", show:false});
-		} else {
-			this.fire("zoomtoggle", {zoom:"out", show:true});
-		}
 		this.setZoomFactor(new_scale);
 	},
 
@@ -179,11 +169,27 @@ TL.TimeNav = TL.Class.extend({
 		if (typeof(zoom_factor) == 'number') {
 			this.setZoomFactor(zoom_factor);
 		} else {
-			console.warn("Invalid zoom level. Please use a number between 0 and " + (this.options.zoom_sequence.length - 1));
+			console.warn("Invalid zoom level. Please use an index number between 0 and " + (this.options.zoom_sequence.length - 1));
 		}
 	},
 
 	setZoomFactor: function(factor) {
+		if (factor <= this.options.zoom_sequence[0]) {
+			this.fire("zoomtoggle", {zoom:"out", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"out", show:true});
+		}
+
+		if (factor >= this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
+			this.fire("zoomtoggle", {zoom:"in", show:false});
+		} else {
+			this.fire("zoomtoggle", {zoom:"in", show:true});
+		}
+
+		if (factor == 0) {
+			console.warn("Zoom factor must be greater than zero. Using 0.1");
+			factor = 0.1;
+		}
 		this.options.scale_factor = factor;
 		//this._updateDrawTimeline(true);
 		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
@@ -310,7 +316,7 @@ TL.TimeNav = TL.Class.extend({
 			marker_height 		= this._calculateMarkerHeight(available_height);
 
 
-		this._positionGroups();		
+		this._positionGroups();
 
 		this._calculated_row_height = this._calculateRowHeight(available_height);
 
