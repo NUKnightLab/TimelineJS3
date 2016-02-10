@@ -116,16 +116,55 @@ h2.intro { margin-bottom: 10px; }
 }
 
 /* Steps */
-#make .row { background-color: #EFFBFF; }
+#make { 
+    background-color: #EFFBFF;
+    
+}
+#make .step {
+    font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#make h6 {
+    color:#6DCBE5;
+    margin-top:0;
+    font-weight:400;
+    font-size: 20px;
+}
+#make fieldset {
+    background-color:#DDF7FF;
+}
+#make .step p {
+    font-size:16px;
+}
+#make .button {
+    margin-bottom:0;
+}
+#embed_code {
+    background-color: #F3F3F3;
+    font-size: 16px;
+
+}
 
 .step .small-10 h4 span { display: none; color: #999; }
 .step {
-    padding-top: 20px;
-    padding-bottom: 40px;
+    /*padding-top: 25px;
+    padding-bottom:25px;*/
+    padding-top: 15px;
+    padding-bottom:15px;
     background-color: #EFFBFF;
+    margin-top:50px;
+    margin-bottom:50px;
+    
 }
-.step.last { border: none; }
-
+.step .instructions {
+    /*border-bottom:1px solid #6DCBE5;*/
+    /*padding-bottom:50px;*/
+}
+.step.last { 
+    border: none;
+}
+.step.last .instructions { 
+    border: none;
+}
 
 .step h2 {
     margin-top: 0;
@@ -253,6 +292,11 @@ ul#embed-font-dropdown > li > p {
 }
 
 /* FAQ */
+#help {
+
+    background-color:#F3F3F3;
+}
+
 #help .panel h4,
 #help .panel p {
     font-size: 70%;
@@ -377,6 +421,13 @@ fieldset legend {
     border: 1px solid #ccc;
     padding: 10px 20px;
 }
+
+.inline-note {
+    font-style: italic;
+    color:#999;
+    font-size:14px;
+}
+
 
 .json-note.alert {
     text-align: center;
