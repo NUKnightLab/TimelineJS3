@@ -37,11 +37,15 @@ function moveMarker() {
   setTimeout(moveMarker, 1000);
 }
 
+var ratelimiter = 0;
 function goToNowSlide() {
   var now = TL.Date.makeDate(new Date());
   var current = timeline.getCurrentSlide().data;
 
   if (! (current.start_date instanceof TL.Date)) {
+    if (0 < ratelimiter++) {
+      return true;
+    }
     timeline.goToNext();
     return goToNowSlide();
   }
