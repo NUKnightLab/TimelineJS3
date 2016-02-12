@@ -1,4 +1,7 @@
-setTimeout(moveMarker, 1000);
+setTimeout(function () {
+  $('.tl-timenav-slider').css('left', $('.tl-menubar').width());
+  moveMarker();
+}, 1000);
 
 function createMarker() {
   if ($('#tl-timenav-marker').length)
@@ -17,22 +20,9 @@ function createMarker() {
   return marker;  
 }
 
-function getSliderPosition (nowpos) {
-  var pw = timeline._timenav.timescale.getPixelWidth();
-  var lastitempos = timeline._timenav.timescale.getPosition(timeline.getSlide(timeline._storyslider._slides.length - 1).data.end_date.data.date_obj);
-
-  if (pw - nowpos < pw/2)
-    return lastitempos - pw - 100;
-  else if (nowpos > pw/2)
-    return pw/2 - nowpos;
-  else
-    return $('.tl-menubar').width();
-}
-
 function moveMarker() {
   var nowpos = timeline._timenav.timescale.getPosition(new Date());
   createMarker().css({ left: nowpos });
-  $('.tl-timenav-slider').css('left', getSliderPosition(nowpos));
   if (goToNowSlide())
     setTimeout(moveMarker, 1000);
 }
