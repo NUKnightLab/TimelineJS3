@@ -67,25 +67,21 @@ function goToNowSlide() {
   var current = timeline.getCurrentSlide().data;
   var start_end = findStartEndDate(timeline._storyslider._slides);
 
-  if (start_end.start_date.isAfter(now) || start_end.end_date.isBefore(now)) {
-    console.log('out or range, skipping');
-    return false;
-  }
-
   if (! (current.start_date instanceof TL.Date)) {
-    timeline.goToNext();
-    return goToNowSlide();
+    return true; // don't move until initialized
   }
 
   // current slide is before now
-  if (current.start_date.isBefore(now)
+  if (start_end.start_date.isAfter(now)
+    && current.start_date.isBefore(now)
     && current.end_date.isBefore(now)) {
     timeline.goToNext();
     return goToNowSlide();
   }
 
   // current slide is after now
-  if (current.start_date.isAfter(now)
+  if (start_end.end_date.isBefore(now)
+    && current.start_date.isAfter(now)
     && current.end_date.isAfter(now)) {
     timeline.goToPrev();
     return goToNowSlide();
