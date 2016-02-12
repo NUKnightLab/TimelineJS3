@@ -3,6 +3,12 @@
 // wait for timeline.js to initialize
 setTimeout(moveMarker, 1000);
 
+timeline._movingMarker = {
+  moveMarker: moveMarker,
+  createMarker: createMarker,
+  goToNowSlide: goToNowSlide,
+};
+
 function moveMarker() {
   createMarker($).css({
     left: timeline._timenav.timescale.getPosition(new Date()),
