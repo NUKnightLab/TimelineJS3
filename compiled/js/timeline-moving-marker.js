@@ -57,8 +57,8 @@ function goToNowSlide() {
   var current = timeline.getCurrentSlide().data;
   var start_end = findStartEndDate(timeline._storyslider._slides);
 
-  if (! (current.start_date instanceof TL.Date)) {
-    return true; // don't move until initialized
+  if (timeline.config.title.unique_id === current.unique_id) {
+    return true;
   }
 
   // current slide is before now
