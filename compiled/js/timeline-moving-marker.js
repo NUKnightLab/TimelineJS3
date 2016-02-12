@@ -62,7 +62,7 @@ function goToNowSlide() {
   }
 
   // current slide is before now
-  if (start_end.start_date.isAfter(now)
+  if (start_end.end_date.isAfter(now)
     && current.start_date.isBefore(now)
     && current.end_date.isBefore(now)) {
     timeline.goToNext();
@@ -70,7 +70,7 @@ function goToNowSlide() {
   }
 
   // current slide is after now
-  if (start_end.end_date.isBefore(now)
+  if (start_end.start_date.isBefore(now)
     && current.start_date.isAfter(now)
     && current.end_date.isAfter(now)) {
     timeline.goToPrev();
