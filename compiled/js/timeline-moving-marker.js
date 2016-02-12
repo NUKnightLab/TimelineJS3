@@ -28,42 +28,16 @@ function moveMarker() {
     setTimeout(moveMarker, 1000);
 }
 
-function findStartEndDate (slides) {
-  var global_start_date;
-  var global_end_date;
-  slides.forEach(function (el, i) {
-    var start_date = el.data.start_date;
-    var end_date = el.data.end_date;
-    if (! (start_date instanceof TL.Date)) {
-      start_date = new TL.Date(start_date);
-    };
-    if (! (end_date instanceof TL.Date)) {
-      end_date = new TL.Date(end_date);
-    };
-    if (! global_start_date || global_start_date.isAfter(start_date)) {
-      global_start_date = start_date;
-    }
-    if (! global_end_date || global_end_date.isBefore(end_date)) {
-      global_end_date = end_date;
-    }
-  });
-  return {
-    start_date: global_start_date,
-    end_date: global_end_date,
-  }
-}
-
 function goToNowSlide() {
   var now = TL.Date.makeDate(new Date());
   var current = timeline.getCurrentSlide().data;
-  var start_end = findStartEndDate(timeline._storyslider._slides);
 
   if (timeline.config.title.unique_id === current.unique_id) {
     return true;
   }
 
   // current slide is before now
-  if (start_end.end_date.isAfter(now)
+  if (timeline.config.getLatestDate().isAfter(now)
     && current.start_date.isBefore(now)
     && current.end_date.isBefore(now)) {
     timeline.goToNext();
@@ -71,7 +45,7 @@ function goToNowSlide() {
   }
 
   // current slide is after now
-  if (start_end.start_date.isBefore(now)
+  if (timeline.config.getEarliestDate().isBefore(now)
     && current.start_date.isAfter(now)
     && current.end_date.isAfter(now)) {
     timeline.goToPrev();
