@@ -4,7 +4,7 @@ TL.TimeMarker.Moving = function ($, timeline) {
   this.createMarker = createMarker;
   this.goToNowSlide = goToNowSlide;
   timeline._timenav._movingMarker = this;
-  timeline._timenav.on('loaded', timeline._timenav._movingMarker.moveMarker, timeline);
+  moveMarker();
 
 function moveMarker() {
 
