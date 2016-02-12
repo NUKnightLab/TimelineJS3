@@ -34,6 +34,7 @@
     <div id="timeline"></div>
     <!-- JavaScript-->
     <script src="../js/timeline.js"></script>
+    <script src="../js/timeline-moving-marker.js"></script>
     <script>
       var timeline = new TL.Timeline('timeline',
         'https://docs.google.com/spreadsheets/d/1bxDTwnSvSwmCilKz1Hrb6nK2zO_gAVYuH3EKjsiCGxg/pubhtml?gid=0',
@@ -45,7 +46,7 @@
           debug: true,
           is_embed: true
         });
+      new TL.TimeMarker.Moving(Zepto, timeline);
     </script>
-    <script src="../js/timeline-moving-marker.js"></script>
   </body>
 </html>

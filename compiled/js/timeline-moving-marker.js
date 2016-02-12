@@ -1,13 +1,10 @@
-(function ($, timeline) {
+TL.TimeMarker.Moving = function ($, timeline) {
 
-// wait for timeline.js to initialize
-setTimeout(moveMarker, 1000);
-
-timeline._movingMarker = {
-  moveMarker: moveMarker,
-  createMarker: createMarker,
-  goToNowSlide: goToNowSlide,
-};
+  this.moveMarker = moveMarker;
+  this.createMarker = createMarker;
+  this.goToNowSlide = goToNowSlide;
+  timeline._timenav._movingMarker = this;
+  timeline._timenav.on('loaded', timeline._timenav._movingMarker.moveMarker, timeline);
 
 function moveMarker() {
 
@@ -77,4 +74,4 @@ function goToNowSlide(timeline) {
   return true; // don't move
 }
 
-})(Zepto, timeline);
+};
