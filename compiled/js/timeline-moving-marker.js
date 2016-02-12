@@ -32,20 +32,47 @@ function getSliderPosition (nowpos) {
 function moveMarker() {
   var nowpos = timeline._timenav.timescale.getPosition(new Date());
   createMarker().css({ left: nowpos });
-  goToNowSlide();
   $('.tl-timenav-slider').css('left', getSliderPosition(nowpos));
-  setTimeout(moveMarker, 1000);
+  if (goToNowSlide())
+    setTimeout(moveMarker, 1000);
 }
 
-var ratelimiter = 0;
+function findStartEndDate (slides) {
+  var global_start_date;
+  var global_end_date;
+  slides.forEach(function (el, i) {
+    var start_date = el.data.start_date;
+    var end_date = el.data.end_date;
+    if (! (start_date instanceof TL.Date)) {
+      start_date = new TL.Date(start_date);
+    };
+    if (! (end_date instanceof TL.Date)) {
+      end_date = new TL.Date(end_date);
+    };
+    if (! global_start_date || global_start_date.isAfter(start_date)) {
+      global_start_date = start_date;
+    }
+    if (! global_end_date || global_end_date.isBefore(end_date)) {
+      global_end_date = end_date;
+    }
+  });
+  return {
+    start_date: global_start_date,
+    end_date: global_end_date,
+  }
+}
+
 function goToNowSlide() {
   var now = TL.Date.makeDate(new Date());
   var current = timeline.getCurrentSlide().data;
+  var start_end = findStartEndDate(timeline._storyslider._slides);
+
+  if (start_end.start_date.isAfter(now) || start_end.end_date.isBefore(now)) {
+    console.log('out or range, skipping');
+    return false;
+  }
 
   if (! (current.start_date instanceof TL.Date)) {
-    if (0 < ratelimiter++) {
-      return true;
-    }
     timeline.goToNext();
     return goToNowSlide();
   }
