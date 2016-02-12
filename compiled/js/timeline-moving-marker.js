@@ -1,7 +1,15 @@
-setTimeout(function () {
-  $('.tl-timenav-slider').css('left', $('.tl-menubar').width());
-  moveMarker();
-}, 1000);
+(function ($, timeline) {
+
+// wait for timeline.js to initialize
+setTimeout(moveMarker, 1000);
+
+function moveMarker() {
+  createMarker($).css({
+    left: timeline._timenav.timescale.getPosition(new Date()),
+  });
+  goToNowSlide(timeline);
+  setTimeout(moveMarker, 1000);
+}
 
 function createMarker() {
   if ($('#tl-timenav-marker').length)
@@ -21,17 +29,11 @@ function createMarker() {
   return marker;  
 }
 
-function moveMarker() {
-  var nowpos = timeline._timenav.timescale.getPosition(new Date());
-  createMarker().css({ left: nowpos });
-  if (goToNowSlide())
-    setTimeout(moveMarker, 1000);
-}
-
-function goToNowSlide() {
+function goToNowSlide(timeline) {
   var now = TL.Date.makeDate(new Date());
   var current = timeline.getCurrentSlide().data;
 
+  // if current slide is of type "title", don't start
   if (timeline.config.title.unique_id === current.unique_id) {
     return true;
   }
@@ -41,7 +43,7 @@ function goToNowSlide() {
     && current.start_date.isBefore(now)
     && current.end_date.isBefore(now)) {
     timeline.goToNext();
-    return goToNowSlide();
+    return goToNowSlide(timeline);
   }
 
   // current slide is after now
@@ -49,8 +51,10 @@ function goToNowSlide() {
     && current.start_date.isAfter(now)
     && current.end_date.isAfter(now)) {
     timeline.goToPrev();
-    return goToNowSlide();
+    return goToNowSlide(timeline);
   }
 
   return true; // don't move
 }
+
+})(Zepto, timeline);
