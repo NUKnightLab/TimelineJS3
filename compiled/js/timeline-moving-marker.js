@@ -13,6 +13,7 @@ function createMarker() {
     width: '5px',
     top: '5px',
     'background-color': '#F00',
+    'z-index': 3,
   });
   marker.find('.tl-timemarker-content-container').remove();
   marker.find('.tl-timemarker-timespan-content').remove();
