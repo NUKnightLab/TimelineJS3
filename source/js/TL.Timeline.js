@@ -896,7 +896,7 @@ TL.Timeline = TL.Class.extend({
 			if (this.options.hash_bookmark && window.location.hash != "") {
 				this.goToId(window.location.hash.replace("#event-", ""));
 			} else {
-				if(this.options.start_at_end == "true" || this.options.start_at_slide > this.config.events.length ) {
+				if( TL.Util.isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length ) {
 					this.goToEnd();
 				} else {
 					this.goTo(this.options.start_at_slide);

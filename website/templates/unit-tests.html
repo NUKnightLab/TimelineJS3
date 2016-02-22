@@ -265,8 +265,8 @@
 
       QUnit.test("TL.Date.floor", function(assert) {
           throws(function(assert) { TL.Date.makeDate(new Date()).floor('foobar'); },new RegExp(/invalid_scale_err/),"bad scale throws invalid_scale_err error.")
-        
-        
+
+
           var d = TL.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
           var floored = d.floor('millisecond');
           var date_obj = floored.data.date_obj;
@@ -353,6 +353,14 @@
         assert.equal(d.getDisplayDate(msgs),"2014")
       });
 
+      QUnit.test("TL.Util.isTrue", function(assert) {
+        assert.ok(TL.Util.isTrue(true));
+        assert.notOk(TL.Util.isTrue(false));
+        assert.notOk(TL.Util.isTrue());
+        assert.notOk(TL.Util.isTrue(null));
+        assert.ok(TL.Util.isTrue('true'));
+        assert.ok(TL.Util.isTrue(1));
+      })
 
       QUnit.module("TL.DateUtil tests",{});
       QUnit.test("TL.DateUtil", function(assert) {

@@ -27,6 +27,11 @@ TL.Util = {
 	  return n == parseFloat(n)? !(n%2) : void 0;
 	},
 
+	isTrue: function(s) {
+		if (s == null) return false;
+		return s == true || String(s).toLowerCase() == 'true' || Number(s) == 1;
+	},
+
 	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
 		var _n = defaultVal || 0;
 
