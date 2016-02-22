@@ -86,11 +86,11 @@
                 "dst": "build/js/timeline.js"
             },
             {
-                "src": "source/js/Embed/Embed.CDN.js",
+                "src": "source/js/embed/Embed.CDN.js",
                 "dst": "build/js/timeline-embed-cdn.js"
             },
             {
-                "src": "source/js/Embed/Embed.js",
+                "src": "source/js/embed/Embed.js",
                 "dst": "build/js/timeline-embed.js"
             }
         ],
