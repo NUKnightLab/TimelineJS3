@@ -245,18 +245,19 @@ TL.Language.languages = {
       twitterembed_invalidurl_err:    "Invalid Twitter Embed url",
       wikipedia_load_err:             "Unable to load Wikipedia entry",
       youtube_invalidurl_err:         "Invalid YouTube URL",
+      spotify_invalid_url:            "Invalid Spotify URL",
       template_value_err:             "No value provided for variable",
       invalid_rgb_err:                "Invalid RGB argument",
       time_scale_scale_err:           "Don't know how to get date from time for scale",
       axis_helper_no_options_err:     "Axis helper must be configured with options",
       axis_helper_scale_err:          "No AxisHelper available for scale",
-			invalid_integer_option: 				"Invalid option value—must be a whole number."
+      invalid_integer_option:       	"Invalid option value—must be a whole number."
 		},
 		date: {
-			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
+      month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+      day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
 		},
 		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change.
 	        positive_year: {

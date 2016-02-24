@@ -40,7 +40,7 @@ TL.Media.Spotify = TL.Media.extend({
 			this.onLoaded();
 
 		} else {
-				this.loadErrorDisplay("Invalid spotify URL");
+				this.loadErrorDisplay(this._('spotify_invalid_url'));
 		}
 	},
 
