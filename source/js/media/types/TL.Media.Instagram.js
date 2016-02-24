@@ -3,34 +3,34 @@
 ================================================== */
 
 TL.Media.Instagram = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
-	_loadMedia: function() {		
+	_loadMedia: function() {
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
-		
+
 		if(!this.options.background) {
 		    this.createMedia();
 		}
-						
+
 		// After Loaded
 		this.onLoaded();
 	},
 
     createMedia: function() {
         var self = this;
-        
+
 		// Link
 		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 		this._el.content_link.href 			= this.data.url;
 		this._el.content_link.target 		= "_blank";
-		
+
 		// Photo
 		this._el.content_item				= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-instagram tl-media-shadow", this._el.content_link);
-		
+
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
@@ -40,16 +40,16 @@ TL.Media.Instagram = TL.Media.extend({
     },
 
     getImageURL: function(w, h) {
-        return "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(w);
+        return "https://instagram.com/p/" + this.media_id + "/media/?size=" + this.sizes(w);
     },
-    	
+
 	_getMeta: function() {
 		var self = this,
 		    api_url;
-		
+
 		// API URL
-		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
-		
+		api_url = "https://api.instagram.com/oembed?url=https://instagr.am/p/" + this.media_id + "&callback=?";
+
 		// API Call
 		TL.getJSON(api_url, function(d) {
 			self.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
@@ -57,7 +57,7 @@ TL.Media.Instagram = TL.Media.extend({
 			self.updateMeta();
 		});
 	},
-	
+
 	sizes: function(s) {
 		var _size = "";
 		if (s <= 150) {
@@ -67,10 +67,10 @@ TL.Media.Instagram = TL.Media.extend({
 		} else {
 			_size = "l";
 		}
-		
+
 		return _size;
 	}
-	
-	
-	
+
+
+
 });

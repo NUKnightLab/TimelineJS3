@@ -2,56 +2,61 @@
 ================================================== */
 
 TL.Media.Spotify = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-		
+
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-spotify", this._el.content);
-		
+
 		// Get Media ID
-		if (this.data.url.match("open.spotify.com/track/")) {
-			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
-		} else if (this.data.url.match("spotify:track:")) {
-			this.media_id = this.data.url;
-		} else if (this.data.url.match("/playlist/")) {
-			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
-			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
-		} else if (this.data.url.match(":playlist:")) {
+		if (this.data.url.match(/^spotify:track/) || this.data.url.match(/^spotify:user:.+:playlist:/)) {
 			this.media_id = this.data.url;
 		}
-		
-		// API URL
-		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
-				
-		this.player = TL.Dom.create("iframe", "tl-media-shadow", this._el.content_item);
-		this.player.width 		= "100%";
-		this.player.height 		= "100%";
-		this.player.frameBorder = "0";
-		this.player.src 		= api_url;
-		
-		// After Loaded
-		this.onLoaded();
+		if (this.data.url.match(/spotify.com\/track\/(.+)/)) {
+			this.media_id = "spotify:track:" + this.data.url.match(/spotify.com\/track\/(.+)/)[1];
+		} else if (this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)) {
+			var user = this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)[1];
+			var playlist = this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)[2];
+			this.media_id = "spotify:user:" + user + ":playlist:" + playlist;
+		}
+
+		if (this.media_id) {
+			// API URL
+			api_url = "https://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+
+			this.player = TL.Dom.create("iframe", "tl-media-shadow", this._el.content_item);
+			this.player.width 		= "100%";
+			this.player.height 		= "100%";
+			this.player.frameBorder = "0";
+			this.player.src 		= api_url;
+
+			// After Loaded
+			this.onLoaded();
+
+		} else {
+				this.loadErrorDisplay("Invalid spotify URL");
+		}
 	},
-	
+
 	// Update Media Display
-	
+
 	_updateMediaDisplay: function(l) {
 		var _height = this.options.height,
 			_player_height = 0,
 			_player_width = 0;
-			
+
 		if (TL.Browser.mobile) {
 			_height = (this.options.height/2);
 		} else {
 			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
 		}
-		
+
 		this._el.content_item.style.maxHeight = "none";
 		trace(_height);
 		trace(this.options.width)
@@ -65,11 +70,11 @@ TL.Media.Spotify = TL.Media.extend({
 			_player_height = _height + "px";
 			_player_width = _height - 80 + "px";
 		}
-		
+
 
 		this.player.style.width = _player_width;
 		this.player.style.height = _player_height;
-		
+
 		if (this._el.credit) {
 			this._el.credit.style.width		= _player_width;
 		}
@@ -77,11 +82,11 @@ TL.Media.Spotify = TL.Media.extend({
 			this._el.caption.style.width		= _player_width;
 		}
 	},
-	
-	
+
+
 	_stopMedia: function() {
 		// Need spotify stop code
-		
+
 	}
-	
+
 });
