@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 2016-02-22-22-49-47 - 2016-02-22
+    TimelineJS - ver. 3.3.13 - 2016-02-25
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -3905,18 +3905,19 @@ TL.Language.languages = {
       twitterembed_invalidurl_err:    "Invalid Twitter Embed url",
       wikipedia_load_err:             "Unable to load Wikipedia entry",
       youtube_invalidurl_err:         "Invalid YouTube URL",
+      spotify_invalid_url:            "Invalid Spotify URL",
       template_value_err:             "No value provided for variable",
       invalid_rgb_err:                "Invalid RGB argument",
       time_scale_scale_err:           "Don't know how to get date from time for scale",
       axis_helper_no_options_err:     "Axis helper must be configured with options",
       axis_helper_scale_err:          "No AxisHelper available for scale",
-			invalid_integer_option: 				"Invalid option value—must be a whole number."
+      invalid_integer_option:       	"Invalid option value—must be a whole number."
 		},
 		date: {
-			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
+      month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+      day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
 		},
 		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change.
 	        positive_year: {
@@ -7495,40 +7496,40 @@ TL.Media.Blockquote = TL.Media.extend({
 ================================================== */
 
 TL.Media.DailyMotion = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-				
+
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-dailymotion", this._el.content);
-		
+
 		// Get Media ID
 		if (this.data.url.match("video")) {
 			this.media_id = this.data.url.split("video\/")[1].split(/[?&]/)[0];
 		} else {
 			this.media_id = this.data.url.split("embed\/")[1].split(/[?&]/)[0];
 		}
-		
+
 		// API URL
-		api_url = "http://www.dailymotion.com/embed/video/" + this.media_id;
-		
+		api_url = "https://www.dailymotion.com/embed/video/" + this.media_id;
+
 		// API Call
-		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"		
-		
+		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"
+
 		// After Loaded
 		this.onLoaded();
 	},
-	
+
 	// Update Media Display
 	_updateMediaDisplay: function() {
 		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
 	}
-	
+
 });
 
 
@@ -8003,34 +8004,34 @@ TL.Media.Imgur = TL.Media.extend({
 ================================================== */
 
 TL.Media.Instagram = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
-	_loadMedia: function() {		
+	_loadMedia: function() {
 		// Get Media ID
 		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
-		
+
 		if(!this.options.background) {
 		    this.createMedia();
 		}
-						
+
 		// After Loaded
 		this.onLoaded();
 	},
 
     createMedia: function() {
         var self = this;
-        
+
 		// Link
 		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 		this._el.content_link.href 			= this.data.url;
 		this._el.content_link.target 		= "_blank";
-		
+
 		// Photo
 		this._el.content_item				= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-instagram tl-media-shadow", this._el.content_link);
-		
+
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
@@ -8040,16 +8041,16 @@ TL.Media.Instagram = TL.Media.extend({
     },
 
     getImageURL: function(w, h) {
-        return "http://instagr.am/p/" + this.media_id + "/media/?size=" + this.sizes(w);
+        return "https://instagram.com/p/" + this.media_id + "/media/?size=" + this.sizes(w);
     },
-    	
+
 	_getMeta: function() {
 		var self = this,
 		    api_url;
-		
+
 		// API URL
-		api_url = "http://api.instagram.com/oembed?url=http://instagr.am/p/" + this.media_id + "&callback=?";
-		
+		api_url = "https://api.instagram.com/oembed?url=https://instagr.am/p/" + this.media_id + "&callback=?";
+
 		// API Call
 		TL.getJSON(api_url, function(d) {
 			self.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
@@ -8057,7 +8058,7 @@ TL.Media.Instagram = TL.Media.extend({
 			self.updateMeta();
 		});
 	},
-	
+
 	sizes: function(s) {
 		var _size = "";
 		if (s <= 150) {
@@ -8067,12 +8068,12 @@ TL.Media.Instagram = TL.Media.extend({
 		} else {
 			_size = "l";
 		}
-		
+
 		return _size;
 	}
-	
-	
-	
+
+
+
 });
 
 
@@ -8341,38 +8342,38 @@ TL.Media.Slider = TL.Media.extend({
 ================================================== */
 
 TL.Media.SoundCloud = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-				
+
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-soundcloud tl-media-shadow", this._el.content);
-		
+
 		// Get Media ID
 		this.media_id = this.data.url;
-		
+
 		// API URL
-		api_url = "http://soundcloud.com/oembed?url=" + this.media_id + "&format=js&callback=?"
-		
+		api_url = "https://soundcloud.com/oembed?url=" + this.media_id + "&format=js&callback=?"
+
 		// API Call
 		TL.getJSON(api_url, function(d) {
 			self.createMedia(d);
 		});
-		
+
 	},
-	
+
 	createMedia: function(d) {
 		this._el.content_item.innerHTML = d.html;
-		
+
 		// After Loaded
 		this.onLoaded();
 	}
-	
+
 });
 
 
@@ -8384,56 +8385,61 @@ TL.Media.SoundCloud = TL.Media.extend({
 ================================================== */
 
 TL.Media.Spotify = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-		
+
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-spotify", this._el.content);
-		
+
 		// Get Media ID
-		if (this.data.url.match("open.spotify.com/track/")) {
-			this.media_id = "spotify:track:" + this.data.url.split("open.spotify.com/track/")[1];
-		} else if (this.data.url.match("spotify:track:")) {
-			this.media_id = this.data.url;
-		} else if (this.data.url.match("/playlist/")) {
-			var user = this.data.url.split("open.spotify.com/user/")[1].split("/playlist/")[0];
-			this.media_id = "spotify:user:" + user + ":playlist:" + this.data.url.split("/playlist/")[1];
-		} else if (this.data.url.match(":playlist:")) {
+		if (this.data.url.match(/^spotify:track/) || this.data.url.match(/^spotify:user:.+:playlist:/)) {
 			this.media_id = this.data.url;
 		}
-		
-		// API URL
-		api_url = "http://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
-				
-		this.player = TL.Dom.create("iframe", "tl-media-shadow", this._el.content_item);
-		this.player.width 		= "100%";
-		this.player.height 		= "100%";
-		this.player.frameBorder = "0";
-		this.player.src 		= api_url;
-		
-		// After Loaded
-		this.onLoaded();
+		if (this.data.url.match(/spotify.com\/track\/(.+)/)) {
+			this.media_id = "spotify:track:" + this.data.url.match(/spotify.com\/track\/(.+)/)[1];
+		} else if (this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)) {
+			var user = this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)[1];
+			var playlist = this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)[2];
+			this.media_id = "spotify:user:" + user + ":playlist:" + playlist;
+		}
+
+		if (this.media_id) {
+			// API URL
+			api_url = "https://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
+
+			this.player = TL.Dom.create("iframe", "tl-media-shadow", this._el.content_item);
+			this.player.width 		= "100%";
+			this.player.height 		= "100%";
+			this.player.frameBorder = "0";
+			this.player.src 		= api_url;
+
+			// After Loaded
+			this.onLoaded();
+
+		} else {
+				this.loadErrorDisplay(this._('spotify_invalid_url'));
+		}
 	},
-	
+
 	// Update Media Display
-	
+
 	_updateMediaDisplay: function(l) {
 		var _height = this.options.height,
 			_player_height = 0,
 			_player_width = 0;
-			
+
 		if (TL.Browser.mobile) {
 			_height = (this.options.height/2);
 		} else {
 			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
 		}
-		
+
 		this._el.content_item.style.maxHeight = "none";
 		trace(_height);
 		trace(this.options.width)
@@ -8447,11 +8453,11 @@ TL.Media.Spotify = TL.Media.extend({
 			_player_height = _height + "px";
 			_player_width = _height - 80 + "px";
 		}
-		
+
 
 		this.player.style.width = _player_width;
 		this.player.style.height = _player_height;
-		
+
 		if (this._el.credit) {
 			this._el.credit.style.width		= _player_width;
 		}
@@ -8459,13 +8465,13 @@ TL.Media.Spotify = TL.Media.extend({
 			this._el.caption.style.width		= _player_width;
 		}
 	},
-	
-	
+
+
 	_stopMedia: function() {
 		// Need spotify stop code
-		
+
 	}
-	
+
 });
 
 
@@ -8924,37 +8930,37 @@ TL.Media.Vimeo = TL.Media.extend({
 ================================================== */
 
 TL.Media.Vine = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var api_url,
 			self = this;
-				
+
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-vine tl-media-shadow", this._el.content);
-		
+
 		// Get Media ID
 		this.media_id = this.data.url.split("vine.co/v/")[1];
-		
+
 		// API URL
 		api_url = "https://vine.co/v/" + this.media_id + "/embed/simple";
-		
+
 		// API Call
-		this._el.content_item.innerHTML = "<iframe frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe><script async src='http://platform.vine.co/static/scripts/embed.js' charset='utf-8'></script>"		
-		
+		this._el.content_item.innerHTML = "<iframe frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe><script async src='https://platform.vine.co/static/scripts/embed.js' charset='utf-8'></script>"		
+
 		// After Loaded
 		this.onLoaded();
 	},
-	
+
 	// Update Media Display
 	_updateMediaDisplay: function() {
 		var size = TL.Util.ratio.square({w:this._el.content_item.offsetWidth , h:this.options.height});
 		this._el.content_item.style.height = size.h + "px";
 	}
-	
+
 });
 
 
@@ -8968,21 +8974,21 @@ TL.Media.Vine = TL.Media.extend({
 ================================================== */
 
 TL.Media.Website = TL.Media.extend({
-	
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
 		var self = this;
-		
+
 		// Get Media ID
 		this.media_id = this.data.url.replace(/.*?:\/\//g, "");
 
 		if (this.options.api_key_embedly) {
 			// API URL
-			api_url = "http://api.embed.ly/1/extract?key=" + this.options.api_key_embedly + "&url=" + this.media_id + "&callback=?";
-			
+			api_url = "https://api.embed.ly/1/extract?key=" + this.options.api_key_embedly + "&url=" + this.media_id + "&callback=?";
+
 			// API Call
 			TL.getJSON(api_url, function(d) {
 				self.createMedia(d);
@@ -8991,7 +8997,7 @@ TL.Media.Website = TL.Media.extend({
 			this.createCardContent();
 		}
 	},
-	
+
 	createCardContent: function() {
 		(function(w, d){
 			var id='embedly-platform', n = 'script';
@@ -9010,8 +9016,8 @@ TL.Media.Website = TL.Media.extend({
 	},
 	createMedia: function(d) { // this costs API credits...
 		var content = "";
-		
-		
+
+
 		content		+=	"<h4><a href='" + this.data.url + "' target='_blank'>" + d.title + "</a></h4>";
 		if (d.images) {
 			if (d.images[0]) {
@@ -9024,7 +9030,7 @@ TL.Media.Website = TL.Media.extend({
 		}
 		content		+=	"<span class='tl-media-website-description'>" + d.provider_name + "</span><br/>";
 		content		+=	"<p>" + d.description + "</p>";
-		
+
 		this._setContent(content);
 	},
 
@@ -9033,21 +9039,21 @@ TL.Media.Website = TL.Media.extend({
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-website", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
 		this._el.content_item.innerHTML = content;
-		
+
 		// After Loaded
 		this.onLoaded();
 
 	},
-	
+
 	updateMediaDisplay: function() {
-		
+
 	},
-	
+
 	_updateMediaDisplay: function() {
-		
+
 	}
-	
-	
+
+
 });
 
 
@@ -12436,7 +12442,7 @@ TL.AxisHelper = TL.Class.extend({
         }
         
         var prev = null;
-        for (var idx in helpers) {
+        for (var idx = 0; idx < helpers.length; idx++) {
             var curr = helpers[idx];
             var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
             if (pixels_per_tick > optimal_tick_width)  {
