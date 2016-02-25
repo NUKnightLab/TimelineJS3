@@ -1,8 +1,15 @@
+3.3.13 (2016-02-25)
+-------------------
+* Fix API calls for Soundcloud, DailyMotion, Instagram, Spotify and Vine which used http and thus would fail in cross-protocol situations.
+* #342 test for 'start at end' to support boolean true as well as 'true'
+* #340 docfix: syntax highlighting for code snippets on GitHub Markdown
+* #323 more careful for loop in case people extend the Array prototype; fix build problem for Linux user-select
+
 3.3.12 (2016-02-01)
 -------------------
 * translate "swipe_to_navigate" for German (de)
 * add Urdu (ur) translation
-
+*
 3.3.11 (2015-12-03)
 -------------------
 * back out header validation, interfered with too many random changes in the wild
