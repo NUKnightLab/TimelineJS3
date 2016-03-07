@@ -17,7 +17,7 @@ Include any font files
 <link rel="stylesheet" href="css/fonts/font.default.css?v1">
 ```
 Add a `div` to the body that will contain your timeline. The div should have a unique `id`.
-Include the JS file at the bootom of the page right before the `</body>` closes.
+Include the JS file at the bottom of the page right before the `</body>` closes.
 ```html
 <script src="js/timeline.js"></script>
 ```
