@@ -39,7 +39,7 @@ html, body {
       var embed_path = "https://cdn.knightlab.com/libs/timeline3/latest/";
     }
     var oembed_link = document.createElement('link');
-    oembed_link['ref'] = 'alternate';
+    oembed_link['rel'] = 'alternate';
     oembed_link['type'] = 'application/json+oembed';
     oembed_link['href'] = 'https://oembed.knightlab.com/timeline/?url=' + encodeURIComponent(window.location.href);
     document.head.appendChild(oembed_link);
