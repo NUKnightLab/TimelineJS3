@@ -1,3 +1,7 @@
+3.3.14 (not yet released)
+-------------------------
+* Fix bug in handling imgur URLs which were to an imgur page and not directly to an image.
+
 3.3.13 (2016-02-25)
 -------------------
 * Fix API calls for Soundcloud, DailyMotion, Instagram, Spotify and Vine which used http and thus would fail in cross-protocol situations.
@@ -9,7 +13,7 @@
 -------------------
 * translate "swipe_to_navigate" for German (de)
 * add Urdu (ur) translation
-*
+
 3.3.11 (2015-12-03)
 -------------------
 * back out header validation, interfered with too many random changes in the wild
