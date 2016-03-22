@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 3.3.13 - 2016-02-25
+    TimelineJS - ver. 3.3.14 - 2016-03-22
     Copyright (c) 2012-2015 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -7960,38 +7960,39 @@ TL.Media.Imgur = TL.Media.extend({
             if(!this.options.background) {
                 this.createMedia();
             }
-            
+
 			// After Loaded
 			this.onLoaded();
 
 		} catch(e) {
-		    this.loadErrorDisplay(self._("imgur_invalidurl_err"));
+		    this.loadErrorDisplay(this._("imgur_invalidurl_err"));
 		}
 	},
-		
+
 	createMedia: function() {
 	    var self = this;
-	    
+
 		// Link
 		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 		this._el.content_link.href 			= this.data.url;
 		this._el.content_link.target 		= "_blank";
 
 		// Photo
-		this._el.content_item	= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-imgur tl-media-shadow", this._el.content_link);
+		this._el.content_item	= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-imgur tl-media-shadow",
+																					this._el.content_link);
 
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
-	
-        this._el.content_item.src			= this.getImageURL();
+
+    this._el.content_item.src			= this.getImageURL();
 	},
-	
+
 	getImageURL: function(w, h) {
-	    return 'https://i.imgur.com/' + this.media_id + '.png';	
+	    return 'https://i.imgur.com/' + this.media_id + '.jpg';
 	}
-	
+
 });
 
 
