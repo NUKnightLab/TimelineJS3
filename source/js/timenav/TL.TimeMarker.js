@@ -252,11 +252,16 @@ TL.TimeMarker = TL.Class.extend({
 		// Thumbnail or Icon
 		if (this.data.media) {
 			this._el.media_container	= TL.Dom.create("div", "tl-timemarker-media-container", this._el.content);
-
-			if (this.data.media.thumbnail && this.data.media.thumbnail != "") {
-				this._el.media				= TL.Dom.create("img", "tl-timemarker-media", this._el.media_container);
-				this._el.media.src			= TL.Util.transformImageURL(this.data.media.thumbnail);
-
+			// ugh. needs an overhaul
+			var mtd = {url: this.data.media.thumbnail};
+			var thumbnail_media_type = (this.data.media.thumbnail) ? TL.MediaType(mtd, true) : null;
+			if (thumbnail_media_type) {
+				var thumbnail_media = new thumbnail_media_type.cls(mtd);
+				thumbnail_media.on("loaded", function() {
+					this._el.media				= TL.Dom.create("img", "tl-timemarker-media", this._el.media_container);
+					this._el.media.src			= thumbnail_media.getImageURL();
+				}.bind(this));
+				thumbnail_media.loadMedia();
 			} else {
 				var media_type = TL.MediaType(this.data.media).type;
 				this._el.media				= TL.Dom.create("span", "tl-icon-" + media_type, this._el.media_container);
