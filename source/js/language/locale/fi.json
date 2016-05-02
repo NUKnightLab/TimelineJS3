@@ -71,5 +71,25 @@
         "time_short": "HH:MM:ss", 
         "year": "yyyy", 
         "full_long_small_date": "HH:MM'<br/><small>d. mmm yyyy'</small>'"
+    },
+    "bigdateformats": {
+            "fallback": [[ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+				[1000000000,"%.2f miljardia vuotta sitten"],
+				[1000000,"%.1f miljoonaa vuotta sitten"],
+				[1000,"%.1f tuhatta vuotta sitten"],
+				[1, "%f vuotta sitten"]
+			],
+		"compact": [
+		            [1000000000,"%.2f mrd.vs"],
+				    [1000000,"%.1f mvs"],
+				    [1000,"%.1f tvs"],
+				    [1, "%f vuotta sitten"]
+		    ],
+		"verbose": [
+		            [1000000000,"%.2f miljardia vuotta sitten"],
+				    [1000000,"%.1f miljoonaa vuotta sitten"],
+				    [1000,"%.1f tuhatta vuotta sitten"],
+				    [1, "%f vuotta sitten"]
+		    ]
     }
 }
