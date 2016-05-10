@@ -91,5 +91,24 @@
                     [1000,"%.1f ezer évvel ezelőtt"],
                     [1, "%f évvel ezelőtt"]
             ]
+    },
+    "bigdateformats": {
+            "fallback": [
+				    [1000000,"%.1f millió évvel ezelőtt"],
+				    [1000,"%.1f ezer évvel ezelőtt"],
+				    [1, "%f é.e."]
+			],
+		"compact": [
+		            [1000000000,"%.2f md.é.e"],
+				    [1000000,"%.1f mó.é.e"],
+				    [1000,"%.1f e.é.e"],
+				    [1, "%f vuotta sitten"]
+		    ],
+		"verbose": [
+		            [1000000000,"%.2f milliárd évvel ezelőtt"],
+				    [1000000,"%.1f millió évvel ezelőtt"],
+				    [1000,"%.1f ezer évvel ezelőtt"],
+				    [1, "%f évvel ezelőtt"]
+		    ]
     }
 }
