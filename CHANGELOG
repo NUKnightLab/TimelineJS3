@@ -2,6 +2,7 @@
 -------------------------
 * Apply MediaType handling to thumbnails for the slider, so that people can use the same kinds of urls they use for regular media.
 * Establish correct indication of "BCE" in Swedish.
+* Establish correct indication of "BCE" in Finnish and Hungarian.
 
 3.3.14 (2016-03-22)
 -------------------------

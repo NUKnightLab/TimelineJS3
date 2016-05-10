@@ -8,3 +8,4 @@ wsgiref==0.1.2
 Fabric==1.10.0
 pyOpenSSL==0.15.1
 
+pycrypto==2.6.1
