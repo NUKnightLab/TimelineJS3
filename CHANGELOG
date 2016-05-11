@@ -1,4 +1,4 @@
-3.3.15 (not yet released)
+3.3.15 (2016-05-11)
 -------------------------
 * Apply MediaType handling to thumbnails for the slider, so that people can use the same kinds of urls they use for regular media.
 * Establish correct indication of "BCE" in Swedish.
