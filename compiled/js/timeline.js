@@ -1,16 +1,3 @@
-/*
-    TimelineJS - ver. 3.3.14 - 2016-03-22
-    Copyright (c) 2012-2015 Northwestern University
-    a project of the Northwestern University Knight Lab, originally created by Zach Wise
-    https://github.com/NUKnightLab/TimelineJS3
-    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
-    If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-*/
-
-/* **********************************************
-     Begin TL.js
-********************************************** */
-
 /*!
 	TL
 */
@@ -54,10 +41,6 @@ trace = function( msg ) {
 }
 
 
-/* **********************************************
-     Begin TL.Error.js
-********************************************** */
-
 /* Timeline Error class */
 
 function TL_Error(message_key, detail) {
@@ -78,10 +61,6 @@ TL_Error.prototype.constructor = TL_Error;
 
 TL.Error = TL_Error;
 
-
-/* **********************************************
-     Begin TL.Util.js
-********************************************** */
 
 /*	TL.Util
 	Class of utilities
@@ -790,10 +769,6 @@ TL.Util = {
 
 };
 
-
-/* **********************************************
-     Begin TL.Data.js
-********************************************** */
 
 // Expects TL to be visible in scope
 
@@ -2382,10 +2357,6 @@ SOFTWARE.
 */
 
 
-/* **********************************************
-     Begin TL.Class.js
-********************************************** */
-
 /*	TL.Class
 	Class powers the OOP facilities of the library.
 ================================================== */
@@ -2453,10 +2424,6 @@ TL.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 };
 
 
-/* **********************************************
-     Begin TL.Events.js
-********************************************** */
-
 /*	TL.Events
 	adds custom events functionality to TL classes
 ================================================== */
@@ -2517,10 +2484,6 @@ TL.Events.on	= TL.Events.addEventListener;
 TL.Events.off	= TL.Events.removeEventListener;
 TL.Events.fire = TL.Events.fireEvent;
 
-
-/* **********************************************
-     Begin TL.Browser.js
-********************************************** */
 
 /*
 	Based on Leaflet Browser
@@ -2606,10 +2569,6 @@ TL.Events.fire = TL.Events.fireEvent;
 
 }());
 
-
-/* **********************************************
-     Begin TL.Load.js
-********************************************** */
 
 /*	TL.Load
 	Loads External Javascript and CSS
@@ -3053,10 +3012,6 @@ TL.LoadIt = (function (doc) {
 })(this.document);
 
 
-/* **********************************************
-     Begin TL.TimelineConfig.js
-********************************************** */
-
 /*  TL.TimelineConfig
 separate the configuration from the display (TL.Timeline)
 to make testing easier
@@ -3357,10 +3312,6 @@ TL.TimelineConfig = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.ConfigFactory.js
-********************************************** */
-
 /* TL.ConfigFactory.js
  * Build TimelineConfig objects from other data sources
  */
@@ -3653,10 +3604,6 @@ TL.TimelineConfig = TL.Class.extend({
     }
 })(TL)
 
-
-/* **********************************************
-     Begin TL.Language.js
-********************************************** */
 
 TL.Language = function(options) {
 	// borrowed from http://stackoverflow.com/a/14446414/102476
@@ -3976,10 +3923,6 @@ TL.Language.languages = {
 TL.Language.fallback = new TL.Language();
 
 
-/* **********************************************
-     Begin TL.I18NMixins.js
-********************************************** */
-
 /*  TL.I18NMixins
     assumes that its class has an options object with a TL.Language instance    
 ================================================== */
@@ -3997,10 +3940,6 @@ TL.I18NMixins = {
     }
 }
 
-
-/* **********************************************
-     Begin TL.Ease.js
-********************************************** */
 
 /* The equations defined here are open source under BSD License.
  * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
@@ -4243,10 +4182,6 @@ Math.easeInOutExpo = function (t, b, c, d) {
 	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
 };
 */
-
-/* **********************************************
-     Begin TL.Animate.js
-********************************************** */
 
 /*	TL.Animate
 	Basic animation
@@ -4680,10 +4615,6 @@ window.tlanimate = (function() {
 })();
 
 
-/* **********************************************
-     Begin TL.Point.js
-********************************************** */
-
 /*	TL.Point
 	Inspired by Leaflet
 	TL.Point represents a point with x and y coordinates.
@@ -4751,10 +4682,6 @@ TL.Point.prototype = {
 				TL.Util.formatNum(this.y) + ')';
 	}
 };
-
-/* **********************************************
-     Begin TL.DomMixins.js
-********************************************** */
 
 /*	TL.DomMixins
 	DOM methods used regularly
@@ -4847,10 +4774,6 @@ TL.DomMixins = {
 };
 
 
-/* **********************************************
-     Begin TL.Dom.js
-********************************************** */
-
 /*	TL.Dom
 	Utilities for working with the DOM
 ================================================== */
@@ -4939,10 +4862,6 @@ TL.Util.mergeData(TL.Dom, {
 	TRANSLATE_CLOSE: TL.Browser.webkit3d ? ',0)' : ')'
 });
 
-
-/* **********************************************
-     Begin TL.DomUtil.js
-********************************************** */
 
 /*	TL.DomUtil
 	Inspired by Leaflet
@@ -5099,10 +5018,6 @@ TL.DomUtil = {
 	}
 };
 
-/* **********************************************
-     Begin TL.DomEvent.js
-********************************************** */
-
 /*	TL.DomEvent
 	Inspired by Leaflet 
 	DomEvent contains functions for working with DOM events.
@@ -5254,10 +5169,6 @@ TL.DomEvent = {
 
 
 
-/* **********************************************
-     Begin TL.StyleSheet.js
-********************************************** */
-
 /*	TL.StyleSheet
 	Style Sheet Object
 ================================================== */
@@ -5308,10 +5219,6 @@ TL.StyleSheet = TL.Class.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.Date.js
-********************************************** */
 
 /*	TL.Date
 	Date object
@@ -5736,10 +5643,6 @@ TL.BigDate = TL.Date.extend({
 })(TL.BigDate)
 
 
-/* **********************************************
-     Begin TL.DateUtil.js
-********************************************** */
-
 /*	TL.DateUtil
 	Utilities for parsing time
 ================================================== */
@@ -5835,10 +5738,6 @@ TL.DateUtil = {
 
 };
 
-
-/* **********************************************
-     Begin TL.Draggable.js
-********************************************** */
 
 /*	TL.Draggable
 	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
@@ -6160,10 +6059,6 @@ TL.Draggable = TL.Class.extend({
 	}
 });
 
-
-/* **********************************************
-     Begin TL.Swipable.js
-********************************************** */
 
 /*	TL.Swipable
 	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
@@ -6560,10 +6455,6 @@ TL.Swipable = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.MenuBar.js
-********************************************** */
-
 /*	TL.MenuBar
 	Draggable component to control size
 ================================================== */
@@ -6740,10 +6631,6 @@ TL.MenuBar = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Message.js
-********************************************** */
-
 /*	TL.Message
 	
 ================================================== */
@@ -6859,10 +6746,6 @@ TL.Message = TL.Class.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.MediaType.js
-********************************************** */
 
 /*	TL.MediaType
 	Determines the type of media the url string is.
@@ -7072,10 +6955,6 @@ TL.MediaType = function(m, image_only) {
 
 }
 
-
-/* **********************************************
-     Begin TL.Media.js
-********************************************** */
 
 /*	TL.Media
 	Main media template for media assets.
@@ -7448,10 +7327,6 @@ TL.Media = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Blockquote.js
-********************************************** */
-
 /*	TL.Media.Blockquote
 ================================================== */
 
@@ -7487,10 +7362,6 @@ TL.Media.Blockquote = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.DailyMotion.js
-********************************************** */
 
 /*	TL.Media.DailyMotion
 ================================================== */
@@ -7532,10 +7403,6 @@ TL.Media.DailyMotion = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.DocumentCloud.js
-********************************************** */
 
 /*	TL.Media.DocumentCloud
 ================================================== */
@@ -7599,10 +7466,6 @@ TL.Media.DocumentCloud = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.Flickr.js
-********************************************** */
 
 /*	TL.Media.Flickr
 
@@ -7736,10 +7599,6 @@ TL.Media.Flickr = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.GoogleDoc.js
-********************************************** */
-
 /*	TL.Media.GoogleDoc
 
 ================================================== */
@@ -7788,10 +7647,6 @@ TL.Media.GoogleDoc = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.GooglePlus.js
-********************************************** */
-
 /*	TL.Media.GooglePlus
 ================================================== */
 
@@ -7830,10 +7685,6 @@ TL.Media.GooglePlus = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.IFrame.js
-********************************************** */
-
 /*	TL.Media.IFrame
 ================================================== */
 
@@ -7870,10 +7721,6 @@ TL.Media.IFrame = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Image.js
-********************************************** */
 
 /*	TL.Media.Image
 	Produces image assets.
@@ -7939,10 +7786,6 @@ TL.Media.Image = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Imgur.js
-********************************************** */
-
 /*	TL.Media.Flickr
 
 ================================================== */
@@ -7995,10 +7838,6 @@ TL.Media.Imgur = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.Instagram.js
-********************************************** */
 
 /*	TL.Media.Instagram
 
@@ -8077,10 +7916,6 @@ TL.Media.Instagram = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.GoogleMap.js
-********************************************** */
 
 /*  TL.Media.Map
 ================================================== */
@@ -8234,10 +8069,6 @@ TL.Media.GoogleMap = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.PDF.js
-********************************************** */
-
 /*	TL.Media.PDF
  * Chrome and Firefox on both OSes and Safari all support PDFs as iframe src.
  * This prompts for a download on IE10/11. We should investigate using
@@ -8276,10 +8107,6 @@ TL.Media.PDF = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Profile.js
-********************************************** */
-
 /*	TL.Media.Profile
 
 ================================================== */
@@ -8308,10 +8135,6 @@ TL.Media.Profile = TL.Media.extend({
 	
 });
 
-/* **********************************************
-     Begin TL.Media.Slider.js
-********************************************** */
-
 /*	TL.Media.SLider
 	Produces a Slider
 	Takes a data object and populates a dom object
@@ -8334,10 +8157,6 @@ TL.Media.Slider = TL.Media.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.Media.SoundCloud.js
-********************************************** */
 
 /*	TL.Media.SoundCloud
 ================================================== */
@@ -8377,10 +8196,6 @@ TL.Media.SoundCloud = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.Spotify.js
-********************************************** */
 
 /*	TL.Media.Spotify
 ================================================== */
@@ -8476,10 +8291,6 @@ TL.Media.Spotify = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Storify.js
-********************************************** */
-
 /*	TL.Media.Storify
 ================================================== */
 
@@ -8517,10 +8328,6 @@ TL.Media.Storify = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.Text.js
-********************************************** */
 
 TL.Media.Text = TL.Class.extend({
 	
@@ -8648,10 +8455,6 @@ TL.Media.Text = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Twitter.js
-********************************************** */
-
 /*	TL.Media.Twitter
 	Produces Twitter Display
 ================================================== */
@@ -8753,10 +8556,6 @@ TL.Media.Twitter = TL.Media.extend({
 	
 });
 
-
-/* **********************************************
-     Begin TL.Media.TwitterEmbed.js
-********************************************** */
 
 /*	TL.Media.TwitterEmbed
 	Produces Twitter Display
@@ -8861,10 +8660,6 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Vimeo.js
-********************************************** */
-
 /*	TL.Media.Vimeo
 ================================================== */
 
@@ -8922,10 +8717,6 @@ TL.Media.Vimeo = TL.Media.extend({
 });
 
 
-/* **********************************************
-     Begin TL.Media.Vine.js
-********************************************** */
-
 /*	TL.Media.Vine
 
 ================================================== */
@@ -8964,10 +8755,6 @@ TL.Media.Vine = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.Website.js
-********************************************** */
 
 /*	TL.Media.Website
 	Uses Embedly
@@ -9057,10 +8844,6 @@ TL.Media.Website = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.Wikipedia.js
-********************************************** */
 
 /*	TL.Media.Wikipedia
 ================================================== */
@@ -9173,10 +8956,6 @@ TL.Media.Wikipedia = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Media.YouTube.js
-********************************************** */
 
 /*	TL.Media.YouTube
 ================================================== */
@@ -9298,10 +9077,6 @@ TL.Media.YouTube = TL.Media.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.Slide.js
-********************************************** */
 
 /*	TL.Slide
 	Creates a slide. Takes a data object and
@@ -9652,10 +9427,6 @@ TL.Slide = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.SlideNav.js
-********************************************** */
-
 /*	TL.SlideNav
 	encapsulate DOM display/events for the 
 	'next' and 'previous' buttons on a slide.
@@ -9783,10 +9554,6 @@ TL.SlideNav = TL.Class.extend({
 	
 	
 });
-
-/* **********************************************
-     Begin TL.StorySlider.js
-********************************************** */
 
 /*	StorySlider
 	is the central class of the API - it is used to create a StorySlider
@@ -10336,10 +10103,6 @@ TL.StorySlider = TL.Class.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.TimeNav.js
-********************************************** */
 
 /*	TL.TimeNav
 
@@ -11051,10 +10814,6 @@ TL.TimeNav = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeMarker.js
-********************************************** */
-
 /*	TL.TimeMarker
 
 ================================================== */
@@ -11309,11 +11068,16 @@ TL.TimeMarker = TL.Class.extend({
 		// Thumbnail or Icon
 		if (this.data.media) {
 			this._el.media_container	= TL.Dom.create("div", "tl-timemarker-media-container", this._el.content);
-
-			if (this.data.media.thumbnail && this.data.media.thumbnail != "") {
-				this._el.media				= TL.Dom.create("img", "tl-timemarker-media", this._el.media_container);
-				this._el.media.src			= TL.Util.transformImageURL(this.data.media.thumbnail);
-
+			// ugh. needs an overhaul
+			var mtd = {url: this.data.media.thumbnail};
+			var thumbnail_media_type = (this.data.media.thumbnail) ? TL.MediaType(mtd, true) : null;
+			if (thumbnail_media_type) {
+				var thumbnail_media = new thumbnail_media_type.cls(mtd);
+				thumbnail_media.on("loaded", function() {
+					this._el.media				= TL.Dom.create("img", "tl-timemarker-media", this._el.media_container);
+					this._el.media.src			= thumbnail_media.getImageURL();
+				}.bind(this));
+				thumbnail_media.loadMedia();
 			} else {
 				var media_type = TL.MediaType(this.data.media).type;
 				this._el.media				= TL.Dom.create("span", "tl-icon-" + media_type, this._el.media_container);
@@ -11360,10 +11124,6 @@ TL.TimeMarker = TL.Class.extend({
 
 });
 
-
-/* **********************************************
-     Begin TL.TimeEra.js
-********************************************** */
 
 /*	TL.TimeMarker
 
@@ -11608,10 +11368,6 @@ TL.TimeEra = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeGroup.js
-********************************************** */
-
 /*	TL.TimeGroup
 	
 ================================================== */
@@ -11720,10 +11476,6 @@ TL.TimeGroup = TL.Class.extend({
 	}
 	
 });
-
-/* **********************************************
-     Begin TL.TimeScale.js
-********************************************** */
 
 /*  TL.TimeScale
     Strategies for laying out the timenav
@@ -12067,10 +11819,6 @@ TL.TimeScale = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.TimeAxis.js
-********************************************** */
-
 /*	TL.TimeAxis
 	Display element for showing timescale ticks
 ================================================== */
@@ -12356,10 +12104,6 @@ TL.TimeAxis = TL.Class.extend({
 });
 
 
-/* **********************************************
-     Begin TL.AxisHelper.js
-********************************************** */
-
 /*  TL.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
@@ -12462,10 +12206,6 @@ TL.AxisHelper = TL.Class.extend({
     }
 })(TL.AxisHelper);
 
-
-/* **********************************************
-     Begin TL.Timeline.js
-********************************************** */
 
 /*  TimelineJS
 Designed and built by Zach Wise at KnightLab
@@ -13385,4 +13125,5 @@ TL.Timeline.source_path = (function() {
 	var src = script_tags[script_tags.length-1].src;
 	return src.substr(0,src.lastIndexOf('/'));
 })();
+
 
