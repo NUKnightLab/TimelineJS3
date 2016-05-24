@@ -74,60 +74,6 @@
 	
 }
 
-/* VCard
-================================================== */
-.vcard {
-	//float:right;
-	
-	.clearfix();
-	margin-bottom:@base-spacing;
-	margin-top:10px;
-	.twitter-date {
-		text-align:left;
-		font-size:@base-font-size-small;
-	}
-	.author {
-		float:right;
-		//text-align:right;
-	}
-	a {
-		color: lighten(@color-dark, 20%);
-		text-decoration:none;
-	}
-	a:hover {
-		text-decoration: none;
-		.fn, .nickname {
-			color:@color-theme;
-			//text-decoration: underline;
-		}
-	}
-	.fn, .nickname {
-			
-		padding-left: 42px;
-	}
-	.fn {
-		display:block;
-		font-weight: bold;
-
-	}
-	.nickname {
-		margin-top:1px;
-		display:block;
-		color: lighten(@color-dark, 40%);
-	}
-		
-	.avatar {
-		float:left;
-		display: block;
-		width: 32px;
-		height: 32px;
-		img {
-			-moz-border-radius: 5px;
-			-webkit-border-radius: 5px;
-			border-radius: 5px;
-		}
-	}
-}
 .tl-slide.tl-full-image-background, .tl-slide.tl-full-color-background {
 	a, .vcard a {
 		.slide-text-shadow();
