@@ -1,6 +1,6 @@
 /*
-    TimelineJS - ver. 3.3.14 - 2016-03-22
-    Copyright (c) 2012-2015 Northwestern University
+    TimelineJS - ver. 3.3.16 - 2016-05-31
+    Copyright (c) 2012-2016 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
     This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
