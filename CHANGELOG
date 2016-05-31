@@ -1,3 +1,8 @@
+3.3.16 (2016-05-31)
+-------------------------
+* #365 Scope vcard styles to avoid impacting pages which embed timelines without iframe
+* #366 Fix headline problem with <p> tag
+
 3.3.15 (2016-05-11)
 -------------------------
 * Apply MediaType handling to thumbnails for the slider, so that people can use the same kinds of urls they use for regular media.
