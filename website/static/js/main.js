@@ -137,6 +137,7 @@ function updateEmbedCode(element, options) {
   var e_embed = document.getElementById('embed_code'),
     el = getLinkAndIframe();
   e_embed.value = el.copybox;
+  jQuery('#embed_code_medium').val(el.link);
   jQuery("#preview-embed-link").attr('href', el.link);
   jQuery("#preview-embed-iframe").html(el.iframe);
   if (jQuery("#preview-embed").css("display") == "none"){
