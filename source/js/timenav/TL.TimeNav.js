@@ -141,12 +141,13 @@ TL.TimeNav = TL.Class.extend({
 		if (this.max_rows < 1) {
 			this.max_rows = 1;
 		}
-		return new TL.TimeScale(this.config, {
+		this.timescale = new TL.TimeScale(this.config, {
             display_width: this._el.container.offsetWidth,
             screen_multiplier: this.options.scale_factor,
-            max_rows: this.max_rows
-
-		});
+            max_rows: this.max_rows});
+		this._groups = [];
+		this._createGroups();
+		return this.timescale;
 	},
 
 	_updateTimeScale: function(new_scale) {
@@ -601,7 +602,6 @@ TL.TimeNav = TL.Class.extend({
 		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
 		this._positionMarkers(fast);
 		this._assignRowsToMarkers();
-		this._createGroups();
 		this._positionGroups();
 
 		if (this.has_eras) {
