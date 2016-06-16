@@ -160,6 +160,10 @@ h2.intro { margin-bottom: 10px; }
 
 .checkbox input { margin-right: 20px; }
 
+.make-note {
+  font-size: small;
+  margin-left: 5px;
+}
 #embed-source-url {
     width: 98%;
 }
