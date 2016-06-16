@@ -1,3 +1,7 @@
+3.3.17 (not yet released)
+-------------------------
+* #372 Italian translation for "Swipe to Navigate"
+
 3.3.16 (2016-05-31)
 -------------------------
 * #365 Scope vcard styles to avoid impacting pages which embed timelines without iframe
