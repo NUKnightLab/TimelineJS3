@@ -10427,6 +10427,9 @@ TL.TimeNav = TL.Class.extend({
 		// Max Rows
 		this.max_rows = 6;
 
+	        // Reverse Order Rows
+		this.sort_reverse = false;
+
 		// Animate CSS
 		this.animate_css = false;
 
@@ -10435,6 +10438,9 @@ TL.TimeNav = TL.Class.extend({
 
 		// Merge Data and Options
 		TL.Util.mergeData(this.options, options);
+
+		TL.TimeNav.prototype._positionGroups = this.options.sort_reverse ? this._positionGroupsReverse : this._positionGroups;
+		TL.TimeNav.prototype._assignRowsToMarkers = this.options.sort_reverse ? this._assignRowsToMarkersReverse : this._assignRowsToMarkers;
 
 		if (init) {
 			this.init();
@@ -10584,6 +10590,20 @@ TL.TimeNav = TL.Class.extend({
 		}
 	},
 
+	_positionGroupsReverse: function() {
+	    if (!this.options.has_groups) return;
+	    var offset_h = this.options.height - this._el.timeaxis_background.offsetHeight;
+	    var h = this._calculateMarkerHeight(offset_h);
+	    var nrows = 0;
+	    var pad = this.options.marker_padding;
+	    this._groups.forEach(function(g, i) {
+		var y = offset_h - (h + pad) * (nrows + g.data.rows);
+		g.setRowPosition(y, this._calculated_row_height);
+		g.setAlternateRowColor(TL.Util.isEven(i), y < 0);
+		nrows += g.data.rows;
+	    }, this);
+	},
+
 	/*	Markers
 	================================================== */
 	_addMarker:function(marker) {
@@ -10652,6 +10672,20 @@ TL.TimeNav = TL.Class.extend({
 
 	getMinimumHeight: function() {
 		return this._calculateMinimumTimeNavHeight();
+	},
+
+	_assignRowsToMarkersReverse: function() {
+	    var offset_h = this._calculateAvailableHeight();
+	    var h = this._calculateMarkerHeight(offset_h);
+	    this._positionGroups();
+	    this._calculated_row_height = this._calculateRowHeight(offset_h);
+	    var pad = this.options.marker_padding;
+	    this._markers.forEach(function(m, i) {
+		var n = this.timescale.getPositionInfo(i).row;
+		var y = offset_h - (h + pad) * (n + 1) + pad;
+		m.setHeight(h);
+		m.setRowPosition(y, offset_h - y);
+	    }, this);
 	},
 
 	_assignRowsToMarkers: function() {
