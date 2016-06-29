@@ -1,6 +1,6 @@
 
 {
-    "timeline":  
+    "timeline":
   	{
         "headline":"Revolutionary User Interfaces",
 		"startDate":"1600",
@@ -225,7 +225,7 @@
             {
                 "startDate":"2001,10,23",
                 "headline":"Continuous Scrolling",
-                "text":"The first iPod introduces the wheel as a user interface. It allowed users to continuously scroll through thousands of songs seemlessly. This interface helped Apple dominate the music player business and eventually the music content business through its iTunes ecosystem.",
+                "text":"The first iPod introduces the wheel as a user interface. It allowed users to continuously scroll through thousands of songs seamlessly. This interface helped Apple dominate the music player business and eventually the music content business through its iTunes ecosystem.",
                 "asset":
                 {
                     "media":"//upload.wikimedia.org/wikipedia/commons/3/35/Ipod_1G.png",
@@ -258,4 +258,3 @@
         ]
     }
 }
-
