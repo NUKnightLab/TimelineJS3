@@ -29,9 +29,9 @@
         </thead>
         <tbody>
           <tr>
-            <td><code>script_path</code></td>
-            <td>""</td>
-            <td></td>
+            <td><code>debug</code></td>
+            <td><code>false</code></td>
+            <td>If <code>true</code>, copious console logging will be enabled.</td>
           </tr>
           <tr>
             <td><code>height</code></td>
@@ -46,13 +46,14 @@
           <tr>
             <td><code>is_embed</code></td>
             <td><code>false</code></td>
-            <td></td>
+            <td>If <code>true</code>, the class <code>tl-timeline-embed</code> is added to the outer Timeline container. Typically only used to support Timeline iframe embeds.</td>
           </tr>
+          <!-- This is not meant to be a user option. It's an inferred status.
           <tr>
             <td><code>is_full_embed</code></td>
             <td><code>false</code></td>
-            <td></td>
-          </tr>
+            <td>If true, the class <code>tl-timeline-full-embed</code> is added to the outer Timeline container. Typically only used to support Timeline iframe embeds.</td>
+          </tr> -->
           <tr>
             <td><code>hash_bookmark</code></td>
             <td><code>false</code></td>
@@ -202,6 +203,11 @@
             <td><code>track_events</code></td>
             <td>['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']</td>
             <td></td>
+          </tr>
+          <tr>
+            <td><code>script_path</code></td>
+            <td>""</td>
+            <td>Can be used to help Timeline load related resources such as CSS themes and language files. Rarely needs to be set.</td>
           </tr>
         </tbody>
       </table>
