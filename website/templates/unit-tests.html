@@ -460,7 +460,7 @@
 
       QUnit.test("TL.Language date formatting", function(assert) {
         var msgs = TL.Language.fallback;
-        var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
+        var d = new Date(2014,7,7,4,5,0);
         assert.equal(msgs.formatDate(d,'d'),'7','short day');
         assert.equal(msgs.formatDate(d,'dd'),'07','padded day');
         assert.equal(msgs.formatDate(d,'ddd'),'Thurs.','short day of week');
@@ -483,7 +483,7 @@
         assert.equal(msgs.formatDate(d,'s'),'0','second');
         assert.equal(msgs.formatDate(d,'ss'),'00','padded second');
 
-        var d = new Date('2014-08-07T09:05:00Z') // Thu Aug 07 2014 04:05:00 GMT-0500 (CDT)
+        var d = new Date(2014,7,7,4,5,0);
         d.setFullYear(-500);
         assert.equal(msgs.formatDate(d,'yyyy'),'500 <span>BCE</span>','BCE date');
 
