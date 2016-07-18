@@ -16,7 +16,7 @@
         }
         // key as url parameter (old-fashioned)
         var key_pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
-        var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d 
+        var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d
 
         if (url.match(key_pat)) {
             parts.key = url.match(key_pat)[1];
@@ -255,15 +255,30 @@
             }
             callback(tc);
         } else {
-            TL.getJSON(url, function(data){
-                try {
-                    tc = new TL.TimelineConfig(data);
-                } catch(e) {
-                    tc = new TL.TimelineConfig();
-                    tc.logError(e);
-                }
-                callback(tc);
-            });
+          TL.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data){
+            try {
+                tc = new TL.TimelineConfig(data);
+            } catch(e) {
+                tc = new TL.TimelineConfig();
+                tc.logError(e);
+            }
+            callback(tc);
+            },
+            error: function(xhr, errorType, error) {
+              tc = new TL.TimelineConfig();
+              if (errorType == 'parsererror') {
+                var error = new TL.Error("invalid_url_err");
+              } else {
+                var error = new TL.Error("unknown_read_err", errorType)
+              }
+              tc.logError(error);
+              callback(tc);
+            }
+          });
+
         }
     }
 
