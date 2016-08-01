@@ -6,9 +6,7 @@
 	height:100%;
 	padding:0px;
 	margin:0px;
-	overflow-x:hidden;
-	overflow-y:auto;
-	
+
 	.tl-slide-background {
 		position:absolute;
 		left:0;
@@ -26,14 +24,13 @@
 			    background-size: cover;
 	}
 	.tl-slide-scrollable-container {
-		display:table;
-		table-layout: fixed;
 		height:100%;
+		padding-top:10px;
 		z-index:1;
+		overflow-x:hidden;
+		overflow-y:auto;
 	}
 	.tl-slide-content-container {
-		display:table-cell;
-		vertical-align:middle;
 		position:relative;
 		width:100%;
 		height:100%;
@@ -236,18 +233,12 @@
 
 	.tl-slide {
 		display:block;
-		padding-top:10px;
 		.tl-slide-content-container {
 			display:block;
 			position:static;
 			height:auto;
 			height:100%;
 			//vertical-align:baseline;
-			display: -webkit-flex; /* Safari */
-			display: flex;
-			//flex-direction:column-reverse;
-			align-items: center;
-			-webkit-align-items: center; /* Safari 7.0+ */
 			.tl-slide-content {
 				display:block;
 
