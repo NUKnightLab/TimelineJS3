@@ -31,9 +31,11 @@
 		overflow-y:auto;
 	}
 	.tl-slide-content-container {
-		display:flex;
-		flex-direction:column;
-		justify-content:center;
+		display: -webkit-flex;
+		display: flex;
+		align-items: center;
+		-webkit-align-items: center;
+
 		position:relative;
 		width:100%;
 		min-height:100%;
@@ -237,10 +239,6 @@
 	.tl-slide {
 		display:block;
 		.tl-slide-content-container {
-			display:block;
-			position:static;
-			height:auto;
-			height:100%;
 			//vertical-align:baseline;
 			.tl-slide-content {
 				display:block;
