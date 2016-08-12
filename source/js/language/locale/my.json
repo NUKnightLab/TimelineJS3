@@ -1,7 +1,7 @@
-{		
-	"name":	"Burmese",	
+{
+	"name":	"Burmese",
 	"lang":	"my",
-	"date": {	
+	"date": {
 		"day":	[
 			"တနင်္ဂနွေ",
 			"တနင်္လာ",
@@ -10,7 +10,7 @@
 			"ကြာသပတေး",
 			"သောကြာ",
 			"စနေ"
-		],		
+		],
 		"month": [
 			"ဇန်နဝါရီ",
 			"ဖေဖော်ဝါရီ",
@@ -24,12 +24,12 @@
 			"အောက်တိုဘာ",
 			"နိုဝင်ဘာ",
 			"ဒီဇင်ဘာ"
-		]		
-	},		
-	"api":	{	
+		]
+	},
+	"api":	{
 		"wikipedia": "my"
-	}, 	
-	"messages":	{	
+	},
+	"messages":	{
 		"loading": "လုပ်ဆောင်နေသည်",
 		"error": "မှားယွင်းချက်",
 		"contract_timeline": "အချိန်အလိုက် မှတ်တမ်းစာချုပ်",
@@ -68,7 +68,7 @@
         "invalid_rgb_err": "RGB ငြင်းဆိုမှု မှားနေပါသည်။",
         "time_scale_scale_err": "အတိုင်းအတာ အတွက် အချိန်မှ ရက်စွဲ မည်သို့ ရရှိသည်ကို မသိပါ။",
         "axis_helper_no_options_err": "Axis helper အား ပြုပြင်ရန် လိုအပ်ပါသည်။",
-        "axis_helper_scale_err": "အတိုင်းအတာအတွက် AxisHelper မရရှိနိုင်ပါ။",
+        "axis_helper_scale_err": "အတိုင်းအတာအတွက် AxisHelper မရရှိနိုင်ပါ။"
     },
     "dateformats": {
         "full_long": "mmm d',' yyyy 'at' h:MM TT",
@@ -82,17 +82,17 @@
         "year": "yyyy",
         "full_long_small_date": "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
     },
-    "era_labels": { // specify prefix or suffix to apply to formatted date. Blanks mean no change.
+    "era_labels": {
         "positive_year": {
             "prefix": "",
             "suffix": ""
         },
-        "negative_year": { // if either of these is specified, the year will be converted to positive before they are applied
+        "negative_year": {
             "prefix": "",
             "suffix": "BCE"
         }
     },
-    "period_labels": {  // use of t/tt/T/TT is a legacy of original Timeline date format
+    "period_labels": {
         "t": ["a", "p"],
         "tt": ["am", "pm"],
         "T": ["A", "P"],
