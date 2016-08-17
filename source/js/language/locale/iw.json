@@ -12,7 +12,7 @@
     "api": {
         "wikipedia": "he"
     }, 
-    "right_to_left": true, 
+    "direction": "rtl",
     "date": {
         "month_abbr": [
             "ינואר", 

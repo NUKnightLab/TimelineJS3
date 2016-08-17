@@ -260,6 +260,7 @@ TL.Timeline = TL.Class.extend({
 	_loadLanguage: function(data) {
 		try {
 		    this.options.language = new TL.Language(this.options);
+
 		    this._initData(data);
 		} catch(e) {
 		    this.showMessage(this._translateError(e));
@@ -576,6 +577,11 @@ TL.Timeline = TL.Class.extend({
 		// Update Component Displays
 		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
 		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
+
+		if (this.options.language.direction == 'rtl') {
+			display_class += ' tl-rtl';
+		}
+
 
 		// Apply class
 		this._el.container.className = display_class;

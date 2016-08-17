@@ -1,5 +1,6 @@
 {
     "lang": "ar", 
+    "direction": "rtl",
     "messages": {
         "loading": "تحميل", 
         "contract_timeline": "الاتفاقية", 
@@ -12,7 +13,6 @@
     "api": {
         "wikipedia": "ar"
     }, 
-    "right_to_left": true, 
     "date": {
         "month_abbr": [
             "كانون الثاني", 

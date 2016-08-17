@@ -1,22 +1,23 @@
 {
     "lang": "ur",
+    "direction": "rtl",
     "date": {
         "month_abbr": [
             "جنوری",
             "فروری‬",
-            "مارچ‬‮",
-            "اپریل‬‮",
-            "مئی‬‮",
-            "جون‬‮",
-            "جولائی‬‮",
-            "اگست‬‮",
-            "ستمبر‬‮",
-            "اکتوبر‬‮",
-            "نومبر‬‮",
-            "دسمبر‬‮"
+            "مارچ",
+            "اپریل",
+            "مئی",
+            "جون",
+            "جولائی",
+            "اگست",
+            "ستمبر",
+            "اکتوبر",
+            "نومبر",
+            "دسمبر"
         ],
         "day_abbr": [
-            "اتوار‬‮",
+            "اتوار",
             "پیر",
             "منگل",
             "بدھ",
@@ -36,16 +37,16 @@
         "month": [
             "جنوری",
             "فروری‬",
-            "مارچ‬‮",
-            "اپریل‬‮",
-            "مئی‬‮",
-            "جون‬‮",
-            "جولائی‬‮",
-            "اگست‬‮",
-            "ستمبر‬‮",
-            "اکتوبر‬‮",
-            "نومبر‬‮",
-            "دسمبر‬‮"
+            "مارچ",
+            "اپریل",
+            "مئی",
+            "جون",
+            "جولائی",
+            "اگست",
+            "ستمبر",
+            "اکتوبر",
+            "نومبر",
+            "دسمبر"
         ]
     },
     "api": {
@@ -92,7 +93,7 @@
         "invalid_integer_option": 				"Invalid option value—must be a whole number."
     },
     "dateformats": {
-        "full_long": "mmm d',' yyyy 'at' h:MM TT",
+        "full_long": "mmm d',' yyyy 'at' hh:MM TT",
         "full_short": "mmm d",
         "full": "mmmm d',' yyyy",
         "month_short": "mmm",
@@ -101,7 +102,7 @@
         "time_no_seconds_short": "h:MM TT",
         "time_short": "h:MM:ss TT",
         "year": "yyyy",
-        "full_long_small_date": "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+        "full_long_small_date": "hh:MM TT'<br/><small>mmm d',' yyyy'</small>'"
     },
     "era_labels": {
         "positive_year": {
