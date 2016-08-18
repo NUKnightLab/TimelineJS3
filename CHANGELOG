@@ -1,8 +1,14 @@
-3.3.17 (not yet released)
+3.3.18 (not yet released)
+-------------------------
+* Changed alignment for RTL language support, removed Urdu Unicode translation bugs
+
+3.3.17 (2016-08-22)
 -------------------------
 * #372 Italian translation for "Swipe to Navigate"
-* #376 Throw an error if URL is neither a Google Spreadsheet nor a source of parseable JSON 
+* #376 Throw an error if URL is neither a Google Spreadsheet nor a source of parseable JSON
 * Chinese (traditional) (zh-cn) translation for "Swipe to Navigate"
+* Norwegian translation for "Swipe to Navigate"
+* added Burmese translation
 
 3.3.16 (2016-05-31)
 -------------------------
