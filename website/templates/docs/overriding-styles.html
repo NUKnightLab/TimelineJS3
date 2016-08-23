@@ -71,7 +71,10 @@
         <tr>
           <td><code>tl-headline</code></td>
           <td><code>h2</code></td>
-          <td>The slide's headline. Title slides have the additional class <code>.tl-headline-title</code>.</td>
+          <td>The slide's headline. Title slides have the additional class <code>.tl-headline-title</code>.
+          Note that you will probably need to use the selector <code>h2.tl-headline</code> to change the appearance
+          of the slide titles.
+          </td>
         </tr>
         <tr>
           <td><code>tl-text-content</code></td>
@@ -144,7 +147,11 @@
         <tr>
           <td><code>tl-headline</code></td>
           <td><code>h2</code></td>
-          <td>The text of the flag. Set color and font family here.</td>
+          <td>The text of the flag. Set color and font family here. Note that this is the same class used
+          for the headline in the main slide body. If you want to change only the headline in the navigation,
+          use <code>.tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline</code>.
+          (Yes, ideally it wouldn't need to be so specific, but for now, it does.)
+          </td>
         </tr>
         <tr>
           <td><code>tl-timeaxis</code></td>
