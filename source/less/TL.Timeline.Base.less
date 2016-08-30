@@ -1,15 +1,15 @@
 /*!
-	Timeline JS 3 
-	
+	Timeline JS 3
+
 	Designed and built by Zach Wise for the Northwestern University Knight Lab
-	
+
 	This Source Code Form is subject to the terms of the Mozilla Public
 	License, v. 2.0. If a copy of the MPL was not distributed with this
 	file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 */
 
-/* Includes 
+/* Includes
 ================================================== */
 
 @import "core/Mixins.less"; 		// Less shortcuts and functions
@@ -68,14 +68,14 @@
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
-	
+
 	&.tl-timeline-embed {
 		box-sizing:border-box;
 		border-top: 1px solid darken(@ui-background-color-darker, 10);
 		border-bottom: 1px solid darken(@ui-background-color-darker, 10);
 		border-radius: 0;
 	}
-	
+
 	&.tl-timeline-full-embed {
 		box-sizing:border-box;
 		border: 1px solid darken(@ui-background-color-darker, 10);
@@ -104,21 +104,19 @@
 	}
 
 	.tl-timemarker-text{
-		margin-right: 35px; 
+		margin-right: 35px;
 	}
 
 	.tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container{
 		float:right;
 	}
+
+	.tl-caption {
+		text-align: right;
+	}
+
+	.tl-credit {
+		text-align: left;
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
