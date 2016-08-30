@@ -1,6 +1,6 @@
-3.3.18 (not yet released)
+3.4.0 (2018-08-30)
 -------------------------
-* Changed alignment for RTL language support, removed Urdu Unicode translation bugs
+* Complete (?) RTL language support, removed Urdu Unicode translation bugs
 
 3.3.17 (2016-08-22)
 -------------------------
