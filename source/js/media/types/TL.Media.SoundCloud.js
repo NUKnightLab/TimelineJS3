@@ -35,6 +35,9 @@ TL.Media.SoundCloud = TL.Media.extend({
 		this._el.content_item.innerHTML = d.html;
 
 		this.soundCloudCreated = true;
+
+		self.widget = SC.Widget(this._el.content_item.querySelector("iframe"));//create widget for api use
+
 		// After Loaded
 		this.onLoaded();
 	},
@@ -42,8 +45,7 @@ TL.Media.SoundCloud = TL.Media.extend({
 	_stopMedia: function() {
 		if (this.soundCloudCreated)
 		{
-			var widget = SC.Widget(this._el.content_item.querySelector("iframe"));
-			widget.pause();
+			self.widget.pause();
 		}
 	}
 
