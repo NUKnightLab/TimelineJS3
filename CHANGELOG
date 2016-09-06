@@ -1,3 +1,7 @@
+3.4.1 (not yet released)
+------------------------
+* PR #400 - pause Vine, DailyMotion, and Soundcloud media on slide exit (thanks @Hammman and @JustaBitDope)
+
 3.4.0 (2018-08-30)
 -------------------------
 * Complete (?) RTL language support, removed Urdu Unicode translation bugs
