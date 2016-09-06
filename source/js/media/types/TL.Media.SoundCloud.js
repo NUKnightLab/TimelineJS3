@@ -1,6 +1,8 @@
 /*	TL.Media.SoundCloud
 ================================================== */
 
+var soundCoudCreated = false;
+
 TL.Media.SoundCloud = TL.Media.extend({
 
 	includes: [TL.Events],
@@ -22,7 +24,9 @@ TL.Media.SoundCloud = TL.Media.extend({
 
 		// API Call
 		TL.getJSON(api_url, function(d) {
-			self.createMedia(d);
+			TL.Load.js("https://w.soundcloud.com/player/api.js", function() {//load soundcloud api for pausing.
+				self.createMedia(d);
+			});
 		});
 
 	},
@@ -30,8 +34,19 @@ TL.Media.SoundCloud = TL.Media.extend({
 	createMedia: function(d) {
 		this._el.content_item.innerHTML = d.html;
 
+		this.soundCloudCreated = true;
+
+		self.widget = SC.Widget(this._el.content_item.querySelector("iframe"));//create widget for api use
+
 		// After Loaded
 		this.onLoaded();
+	},
+
+	_stopMedia: function() {
+		if (this.soundCloudCreated)
+		{
+			self.widget.pause();
+		}
 	}
 
 });

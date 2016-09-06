@@ -32,6 +32,10 @@ TL.Media.Vine = TL.Media.extend({
 	_updateMediaDisplay: function() {
 		var size = TL.Util.ratio.square({w:this._el.content_item.offsetWidth , h:this.options.height});
 		this._el.content_item.style.height = size.h + "px";
+	},
+
+	_stopMedia: function() {
+		this._el.content_item.querySelector("iframe").contentWindow.postMessage('pause', '*');
 	}
 
 });

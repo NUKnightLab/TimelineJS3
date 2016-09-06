@@ -22,7 +22,7 @@ TL.Media.DailyMotion = TL.Media.extend({
 		}
 
 		// API URL
-		api_url = "https://www.dailymotion.com/embed/video/" + this.media_id;
+		api_url = "https://www.dailymotion.com/embed/video/" + this.media_id+"?api=postMessage";
 
 		// API Call
 		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"
@@ -34,6 +34,11 @@ TL.Media.DailyMotion = TL.Media.extend({
 	// Update Media Display
 	_updateMediaDisplay: function() {
 		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+	},
+
+	_stopMedia: function() {
+		this._el.content_item.querySelector("iframe").contentWindow.postMessage('{"command":"pause","parameters":[]}', "*");
+
 	}
 
 });
