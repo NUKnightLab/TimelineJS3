@@ -59,7 +59,6 @@
         "loading_content": "Chargement", 
         "expand_timeline": "Elargir la frise", 
         "loading_timeline": "Chargement de la frise en cours... ",
-        
         "error": "Erreur",
         "swipe_to_navigate": "Faites glisser pour naviguer<br><span class='tl-button'>OK</span>",
         "unknown_read_err": "Une erreur indéterminée est survenue lors de l'accès aux données de votre feuille de calcul.",
