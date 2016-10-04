@@ -1,6 +1,7 @@
-3.4.1 (not yet released)
+3.4.1 (2016-10-04)
 ------------------------
 * PR #400 - pause Vine, DailyMotion, and Soundcloud media on slide exit (thanks @Hammman and @JustaBitDope)
+* PR #413 - French language support additions
 
 3.4.0 (2018-08-30)
 -------------------------
