@@ -1,3 +1,7 @@
+3.4.2 (TBA)
+------------------------
+* PR #374 - Adds margin-top for large screen disply. Fixes #277
+
 3.4.1 (2016-10-04)
 ------------------------
 * PR #400 - pause Vine, DailyMotion, and Soundcloud media on slide exit (thanks @Hammman and @JustaBitDope)
