@@ -97,7 +97,7 @@ timeline.on(event_name, function(data) {
 
 `getSlide(<int slide_index>)` _get TL.Slide object by index_
 
-`getSlideId(<string id>)` _get TL.Slide object by id_
+`getSlideById(<string id>)` _get TL.Slide object by id_
 
 
 ####Event data format
