@@ -18,87 +18,150 @@ https://incident57.com/codekit/
 
 // CORE
 	// @codekit-prepend "core/TL.js";
+	//=include core/TL.js
 	// @codekit-prepend "core/TL.Error.js";
+	//=include core/TL.Error.js
 	// @codekit-prepend "core/TL.Util.js";
+	//=include core/TL.Util.js
 	// @codekit-prepend "data/TL.Data.js";
+	//=include data/TL.Data.js
 	// @codekit-prepend "core/TL.Class.js";
+	//=include core/TL.Class.js
 	// @codekit-prepend "core/TL.Events.js";
+	//=include core/TL.Events.js
 	// @codekit-prepend "core/TL.Browser.js";
+	//=include core/TL.Browser.js
 	// @codekit-prepend "core/TL.Load.js";
+	//=include core/TL.Load.js
 	// @codekit-prepend "core/TL.TimelineConfig.js";
+	//=include core/TL.TimelineConfig.js
 	// @codekit-prepend "core/TL.ConfigFactory.js";
+	//=include core/TL.ConfigFactory.js
 
 
 // LANGUAGE
 	// @codekit-prepend "language/TL.Language.js";
+	//=include language/TL.Language.js
 	// @codekit-prepend "language/TL.I18NMixins.js";
+	//=include language/TL.I18NMixins.js
 
 // ANIMATION
 	// @codekit-prepend "animation/TL.Ease.js";
+	//=include animation/TL.Ease.js
 	// @codekit-prepend "animation/TL.Animate.js";
+	//=include animation/TL.Animate.js
 
 // DOM
 	// @codekit-prepend "dom/TL.Point.js";
+	//=include dom/TL.Point.js
 	// @codekit-prepend "dom/TL.DomMixins.js";
+	//=include dom/TL.DomMixins.js
 	// @codekit-prepend "dom/TL.Dom.js";
+	//=include dom/TL.Dom.js
 	// @codekit-prepend "dom/TL.DomUtil.js";
+	//=include dom/TL.DomUtil.js
 	// @codekit-prepend "dom/TL.DomEvent.js";
+	//=include dom/TL.DomEvent.js
 	// @codekit-prepend "dom/TL.StyleSheet.js";
+	//=include dom/TL.StyleSheet.js
 
 // Date
 	// @codekit-prepend "date/TL.Date.js";
+	//=include date/TL.Date.js
 	// @codekit-prepend "date/TL.DateUtil.js";
+	//=include date/TL.DateUtil.js
 
 // UI
 	// @codekit-prepend "ui/TL.Draggable.js";
+	//=include ui/TL.Draggable.js
 	// @codekit-prepend "ui/TL.Swipable.js";
+	//=include ui/TL.Swipable.js
 	// @codekit-prepend "ui/TL.MenuBar.js";
+	//=include ui/TL.MenuBar.js
 	// @codekit-prepend "ui/TL.Message.js";
+	//=include ui/TL.Message.js
 
 // MEDIA
 	// @codekit-prepend "media/TL.MediaType.js";
+	//=include media/TL.MediaType.js
 	// @codekit-prepend "media/TL.Media.js";
+	//=include media/TL.Media.js
 
 // MEDIA TYPES
 	// @codekit-prepend "media/types/TL.Media.Blockquote.js";
+	//=include media/types/TL.Media.Blockquote.js
 	// @codekit-prepend "media/types/TL.Media.DailyMotion.js";
+	//=include media/types/TL.Media.DailyMotion.js
 	// @codekit-prepend "media/types/TL.Media.DocumentCloud.js";
+	//=include media/types/TL.Media.DocumentCloud.js
 	// @codekit-prepend "media/types/TL.Media.Flickr.js";
+	//=include media/types/TL.Media.Flickr.js
 	// @codekit-prepend "media/types/TL.Media.GoogleDoc.js";
+	//=include media/types/TL.Media.GoogleDoc.js
 	// @codekit-prepend "media/types/TL.Media.GooglePlus.js";
+	//=include media/types/TL.Media.GooglePlus.js
 	// @codekit-prepend "media/types/TL.Media.IFrame.js";
+	//=include media/types/TL.Media.IFrame.js
 	// @codekit-prepend "media/types/TL.Media.Image.js";
+	//=include media/types/TL.Media.Image.js
 	// @codekit-prepend "media/types/TL.Media.Imgur.js";
+	//=include media/types/TL.Media.Imgur.js
 	// @codekit-prepend "media/types/TL.Media.Instagram.js";
+	//=include media/types/TL.Media.Instagram.js
 	// @codekit-prepend "media/types/TL.Media.GoogleMap.js";
+	//=include media/types/TL.Media.GoogleMap.js
 	// @codekit-prepend "media/types/TL.Media.PDF.js";
+	//=include media/types/TL.Media.PDF.js
 	// @codekit-prepend "media/types/TL.Media.Profile.js";
+	//=include media/types/TL.Media.Profile.js
 	// @codekit-prepend "media/types/TL.Media.Slider.js";
+	//=include media/types/TL.Media.Slider.js
 	// @codekit-prepend "media/types/TL.Media.SoundCloud.js";
+	//=include media/types/TL.Media.SoundCloud.js
 	// @codekit-prepend "media/types/TL.Media.Spotify.js";
+	//=include media/types/TL.Media.Spotify.js
 	// @codekit-prepend "media/types/TL.Media.Storify.js";
+	//=include media/types/TL.Media.Storify.js
 	// @codekit-prepend "media/types/TL.Media.Text.js";
+	//=include media/types/TL.Media.Text.js
 	// @codekit-prepend "media/types/TL.Media.Twitter.js";
+	//=include media/types/TL.Media.Twitter.js
 	// @codekit-prepend "media/types/TL.Media.TwitterEmbed.js";
+	//=include media/types/TL.Media.TwitterEmbed.js
 	// @codekit-prepend "media/types/TL.Media.Vimeo.js";
+	//=include media/types/TL.Media.Vimeo.js
 	// @codekit-prepend "media/types/TL.Media.Vine.js";
+	//=include media/types/TL.Media.Vine.js
 	// @codekit-prepend "media/types/TL.Media.Website.js";
+	//=include media/types/TL.Media.Website.js
 	// @codekit-prepend "media/types/TL.Media.Wikipedia.js";
+	//=include media/types/TL.Media.Wikipedia.js
 	// @codekit-prepend "media/types/TL.Media.YouTube.js";
+	//=include media/types/TL.Media.YouTube.js
 
 // STORYSLIDER
 	// @codekit-prepend "slider/TL.Slide.js";
+	//=include slider/TL.Slide.js
 	// @codekit-prepend "slider/TL.SlideNav.js";
+	//=include slider/TL.SlideNav.js
 	// @codekit-prepend "slider/TL.StorySlider.js";
+	//=include slider/TL.StorySlider.js
 
 // TIMENAV
 	// @codekit-prepend "timenav/TL.TimeNav.js";
+	//=include timenav/TL.TimeNav.js
 	// @codekit-prepend "timenav/TL.TimeMarker.js";
+	//=include timenav/TL.TimeMarker.js
 	// @codekit-prepend "timenav/TL.TimeEra.js";
+	//=include timenav/TL.TimeEra.js
 	// @codekit-prepend "timenav/TL.TimeGroup.js";
+	//=include timenav/TL.TimeGroup.js
 	// @codekit-prepend "timenav/TL.TimeScale.js";
+	//=include timenav/TL.TimeScale.js
 	// @codekit-prepend "timenav/TL.TimeAxis.js";
+	//=include timenav/TL.TimeAxis.js
 	// @codekit-prepend "timenav/TL.AxisHelper.js";
+	//=include timenav/TL.AxisHelper.js
 
 
 TL.Timeline = TL.Class.extend({
