@@ -6,6 +6,7 @@
   https://incident57.com/codekit/
 ================================================== */
 // @codekit-append "Embed.js";
+//=include Embed.js
 
 /* REPLACE THIS WITH YOUR GOOGLE ANALYTICS ACCOUNT
 ================================================== */

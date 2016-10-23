@@ -5,6 +5,7 @@
   https://incident57.com/codekit/
 ================================================== */
 // @codekit-prepend "Embed.LoadLib.js";
+//=include Embed.LoadLib.js
 
 if(typeof embed_path == 'undefined') {
   // REPLACE WITH YOUR BASEPATH IF YOU WANT OTHERWISE IT WILL TRY AND FIGURE IT OUT
