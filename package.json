@@ -1,0 +1,21 @@
+{
+  "name": "TimelineJS3",
+  "version": "3.4.0",
+  "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
+  "dependencies": {
+    "less": "^2.1.1",
+    "less-plugin-clean-css": "^1.2.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NUKnightLab/TimelineJS3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Mozilla Public License 2.0",
+  "bugs": {
+    "url": "https://github.com/NUKnightLab/TimelineJS3/issues"
+  },
+  "homepage": "https://github.com/NUKnightLab/TimelineJS3#readme"
+}

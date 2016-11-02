@@ -164,7 +164,11 @@ TL.TimeAxis = TL.Class.extend({
 
 	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
 		tick_element.innerHTML = "";
-		var skip_times = {}
+		var skip_times = {};
+
+		var yearZero = new Date(-1,13,-30);
+		skip_times[yearZero.getTime()] = true;
+
 		if (ticks_to_skip){
 			for (var i = 0; i < ticks_to_skip.length; i++) {
 				skip_times[ticks_to_skip[i].getTime()] = true;
