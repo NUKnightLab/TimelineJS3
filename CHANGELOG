@@ -2,6 +2,7 @@
 ------------------------
 * PR #374 - Adds margin-top for large screen disply. Fixes #277
 * PR #401 - Adds Vietnamese translation
+* PR #419 - Removes year zero from the timeline. Fixes #328
 
 3.4.1 (2016-10-04)
 ------------------------
