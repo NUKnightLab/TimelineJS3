@@ -33,7 +33,14 @@ TL.Media.YouTube = TL.Media.extend({
 			trace("YOUTUBE IN URL BUT NOT A VALID VIDEO");
 		}
 
-		this.media_id.start		= TL.Util.parseYouTubeTime(url_vars["t"]);
+		this.media_id.start		= parseInt(url_vars["start"]);	
+
+		if (isNaN(this.media_id.start)){
+			this.media_id.start		= TL.Util.parseYouTubeTime(url_vars["t"]);
+		}
+
+		this.media_id.end		= parseInt(url_vars["end"]);
+
 		this.media_id.hd		= Boolean(typeof(url_vars["hd"]) != 'undefined');
 
 
@@ -79,6 +86,7 @@ TL.Media.YouTube = TL.Media.extend({
 					showinfo:			0,
 					theme:				'light',
 					start:				this.media_id.start,
+					end:  				this.media_id.end,
 					fs: 				0,
 					rel:				0
 				},
