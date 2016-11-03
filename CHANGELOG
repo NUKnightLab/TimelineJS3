@@ -4,6 +4,7 @@
 * PR #401 - Adds Vietnamese translation
 * PR #419 - Removes year zero from the timeline. Fixes #328
 * PR #387 - Fixes background image scrolling on long slide. #387
+* PR #389 - Adds YouTube end-time feature. #388
 
 3.4.1 (2016-10-04)
 ------------------------
