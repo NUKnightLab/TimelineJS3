@@ -1,3 +1,7 @@
+3.4.3 (2016-11-15)
+------------------------
+* Revert PR #374, reopen #277. Fix left black bar across full screen timelines.
+
 3.4.2 (2016-11-15)
 ------------------------
 * PR #374 - Adds margin-top for large screen disply. Fixes #277
