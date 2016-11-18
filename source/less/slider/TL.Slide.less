@@ -17,13 +17,16 @@
 		overflow:hidden;
 		display:none;
 		.opacity(50);
-		background: no-repeat center center; 
+		background: no-repeat center center;
 		-webkit-background-size: cover;
 		   -moz-background-size: cover;
 		     -o-background-size: cover;
 			    background-size: cover;
 	}
 	.tl-slide-scrollable-container {
+		display: table;
+		display: -webkit-flex;
+		display: flex;
 		height:100%;
 		padding-top:10px;
 		z-index:1;
@@ -31,6 +34,8 @@
 		overflow-y:auto;
 	}
 	.tl-slide-content-container {
+		display: table-cell;
+		vertical-align: middle;
 		display: -webkit-flex;
 		display: flex;
 		align-items: center;
