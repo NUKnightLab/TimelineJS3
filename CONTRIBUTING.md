@@ -32,6 +32,7 @@ As mentioned above, developers building this code using Python must also install
 
     npm install -g less
     npm install -g uglifyjs
+    npm install -g less-plugin-clean-css
 
 <h4>Check your install</h4>
 You must also check out one more git repository, that our code depends on. Check this out "alongside" your TimelineJS3 directory -- they should both have the same parent folder.
