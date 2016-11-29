@@ -1,3 +1,6 @@
+3.4.4 (TBA)
+* PR #428 - Reinstate table display for IE. #427
+
 3.4.3 (2016-11-15)
 ------------------------
 * Revert PR #374, reopen #277. Fix left black bar across full screen timelines.
