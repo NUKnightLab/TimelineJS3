@@ -134,7 +134,7 @@ function getLinkAndIframe() {
 const VALID_URL_REGEX = new RegExp('https://docs\.google\.com/spreadsheets/d/[-_0-9A-Za-z]{10,}');
 const PUB_TO_WEB_URL_REGEX = new RegExp('https://docs\.google\.com/spreadsheets/d/e/[-_0-9A-Za-z]+/pub(?:\\?output=)?(.+)');
 
-function checkSpreadsheetURL(url) {
+function spreadsheetUrlIsValid(url) {
     var url = jQuery('#embed-source-url').val();
     var checkURL = VALID_URL_REGEX.exec(url);
     if (checkURL) {
@@ -160,7 +160,7 @@ function checkSpreadsheetURL(url) {
 /* EMBED GENERATOR
 ================================================== */
 function updateEmbedCode(element, options) {
-    if (checkSpreadsheetURL()) {
+    if (spreadsheetUrlIsValid()) {
         var e_embed = document.getElementById('embed_code'),
             el = getLinkAndIframe();
         e_embed.value = el.copybox;
