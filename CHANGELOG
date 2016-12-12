@@ -1,3 +1,6 @@
+3.4.6 (2016-12-12)
+* Revert PR #387 which was causing slide cutoff on small screens
+
 3.4.5 (2016-12-07)
 * PR #428 - Reinstate table display for IE. #427
 
