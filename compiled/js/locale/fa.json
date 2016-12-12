@@ -12,7 +12,7 @@
     "api": {
         "wikipedia": "fa"
     }, 
-    "right_to_left": true, 
+    "direction": "rtl",
     "date": {
         "month_abbr": [
             "فروردین", 

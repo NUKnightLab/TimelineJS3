@@ -58,7 +58,8 @@
         "wikipedia": "Fra Wikipedia, den frie encyklopedi", 
         "loading_content": "Laster innhold", 
         "expand_timeline": "Utvid tidslinje", 
-        "loading_timeline": "Laster tidslinje... "
+        "loading_timeline": "Laster tidslinje... ",
+        "swipe_to_navigate": "Sveip for å navigere<br><span class='tl-button'>OK</span>"
     }, 
     "dateformats": {
         "full_long": "dddd',' d. mmm',' yyyy 'kl.' HH:MM", 
