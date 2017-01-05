@@ -123,7 +123,7 @@ function getLinkAndIframe() {
   if (e_height.value > 0 || e_height.value.match("%")) {
     iframe  += " height='" + e_height.value + "'";
   }
-  iframe    += " frameborder='0'></iframe>";
+  iframe    += " webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>";
 
   theobj.iframe = iframe;
   theobj.link   = vars;

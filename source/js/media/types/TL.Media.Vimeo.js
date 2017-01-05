@@ -32,6 +32,10 @@ TL.Media.Vimeo = TL.Media.extend({
 		this.player.frameBorder = "0";
 		this.player.src 		= api_url;
 
+		this.player.setAttribute('allowfullscreen', '');
+		this.player.setAttribute('webkitallowfullscreen', '');
+		this.player.setAttribute('mozallowfullscreen', '');
+
 		// After Loaded
 		this.onLoaded();
 	},
