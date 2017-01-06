@@ -55,6 +55,13 @@ def inject_static_url():
         static_url = static_url.rstrip('/')
     return dict(static_url=static_url, STATIC_URL=static_url)
 
+
+@app.route('/orangeline')
+def orangeline():
+    # https://github.com/NUKnightLab/orangeline/blob/master/dist/templates/pages/timeline.html
+    # copied on 2017-01-06
+    return render_template('orangeline.html')
+
 @app.route('/compiled/<path:path>')
 def catch_compiled(path):
     """
