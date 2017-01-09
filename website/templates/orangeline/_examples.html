@@ -1,0 +1,156 @@
+    <section class="section-color fill-color-grey--lightest" id="examples">
+        <div class="container">
+        <h2>Examples</h2>
+        <div class="example-grid">
+        {% for example in examples %}
+        {#
+            Add/edit examples in the examples.json file.
+            Depends upon inject_index_data in app.py for these to be available to render.
+        #}
+        <div class="grid-item">
+            <a href="{{ example.link }}" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="{{ example.thumbnail }}" alt="{{ example.title }}">
+                </figure>
+                <img src="{{ example.source_logo }}" alt="{{ example.source }}" class="logo-inline">
+                <h4>{{ example.title }}</h4>
+            </a>
+        </div>
+        {% endfor %}
+    </section>
+
+{# TODO: add these into examples.json
+        </div>
+                <div class="grid-item">
+                    <a href="http://www.lemonde.fr/election-presidentielle-2012/visuel/2012/04/21/chronologie-une-si-longue-campagne-presidentielle_1681661_1471069.html#meter_toaster" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_lemonde.jpg" alt="Chronology of the French Presidential Race">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_lemonde.png" class="logo-inline">
+                        <h4>Chronology of the French Presidential Race</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://www.themaneater.com/special-sections/mu-fall-2015/" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_univofmissouri.jpg" alt="Historic Fall at University of Missouri">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_maneater.png" class="logo-inline">
+                        <h4>Historic Fall at University of Missouri</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://www.cnn.com/2016/04/20/asia/north-korea-restaurant-defectors/index.html" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_northkorea.jpg" alt="North Korea&#x27;s Nuclear Ambitions">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_cnn.png" class="logo-inline">
+                        <h4>North Korea&#x27;s Nuclear Ambitions</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://bulger.wbur.org/story/1977/?location&#x3D;44444" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_bulger.jpg" alt="Bulger on Trial">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_wbur.png" class="logo-inline">
+                        <h4>Bulger on Trial</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="https://www.publicintegrity.org/2014/07/15/15037/decades-making-decline-irs-nonprofit-regulation" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_supremecourt.jpg" alt="The Decline of IRS Nonprofit Regulation">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_centerforpublicintegrity.png" class="logo-inline">
+                        <h4>The Decline of IRS Nonprofit Regulation</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://www.denverpost.com/breakingnews/ci_21119904" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_denver_shooting.jpg" alt="Aurora, Colorado Movie Theater Shooting">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_denverpost.png" class="logo-inline">
+                        <h4>Aurora, Colorado Movie Theater Shooting</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="https://www.engadget.com/2016/04/22/microsoft-mobile-timeline/" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_mobile_device.jpg" alt="The Collapse of Microsoft and Nokia&#x27;s Mobile Business">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_engadget.png" class="logo-inline">
+                        <h4>The Collapse of Microsoft and Nokia&#x27;s Mobile Business</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://www.ibtimes.com/islamic-state-timeline-shows-how-isis-expanded-one-year-two-countries-ten-1959705" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_isis.jpg" alt="How ISIS Spread to 10 Countries">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_ibt.png" class="logo-inline">
+                        <h4>How ISIS Spread to 10 Countries</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://www.ksat.com/news/texas/middle-school-teacher-had-sexual-relationship-with-student-authorities-say_" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_perpwalk.jpg" alt="Reported Sexual Assault Cases by Texas Educators">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_ksat.png" class="logo-inline">
+                        <h4>Reported Sexual Assault Cases by Texas Educators</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://vinepair.com/wine-colonized-world-wine-history/#1" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_wine.jpg" alt="A History of Wine Around the World">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_vinepair.png" class="logo-inline">
+                        <h4>A History of Wine Around the World</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://mashable.com/2014/03/13/timeline-malaysia-airlines-flight-370/?utm_cid&#x3D;mash-com-Tw-main-link#hzbp7TyJREqX" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_malaysia-airlines.jpg" alt="The Mystery of Malaysia Airlines Flight 370">
+                        </figure>
+                        <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_mashable.png" class="logo-inline">
+                        <h4>The Mystery of Malaysia Airlines Flight 370</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="https://timeline.knightlab.com/examples/user-interface/index.html" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_userinterface.png" alt="Revolutionary User Interfaces">
+                        </figure>
+                        <h4>Revolutionary User Interfaces</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="http://beyondtheseal.com/#19" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_banana.png" alt="A Brief History of the Banana Business">
+                        </figure>
+                        <h4>A Brief History of the Banana Business</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="https://timeline.knightlab.com/examples/republican/index.html" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_republican.jpg" alt="The Republican Run-Up">
+                        </figure>
+                        <h4>The Republican Run-Up</h4>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <a href="https://timeline.knightlab.com/examples/houston/index.html" class="button button-light">
+                        <figure class="examples">
+                            <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_houston.jpg" alt="Whitney Houston: 1963-2012">
+                        </figure>
+                        <h4>Whitney Houston: 1963-2012</h4>
+                    </a>
+                </div>
+        </div>
+#}

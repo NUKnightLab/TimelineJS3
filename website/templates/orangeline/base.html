@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+{% block head %}
+    {% include "orangeline/_head.html" %}
+{% endblock head %}
+</head>
+
+<body>
+
+<nav id="navbar-product-top" class="navbar navbar-dark">
+    <ul>
+        <li class="logo">
+            <a href="http://knightlab.com">
+                <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/knightlab-dark.png" />
+            </a>
+        </li>
+    </ul>
+    <ul class="nav-right column-hide-phone">
+        <li><a class="button button-dark button-small-tablet" href="http://knightlab.northwestern.edu/projects/">Projects</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/class">Class</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/devicelab">Device Lab</a></li>
+        <li><a class="button button-dark button-small-tablet" href="http://knightlab.northwestern.edu/news/">Blog</a></li>
+        <li><a class="button button-dark button-small-tablet" href="http://knightlab.northwestern.edu/events/">Community</a></li>
+        <li><a class="button button-dark button-small-tablet" href="http://knightlab.northwestern.edu/about/">About</a></li>
+    </ul>
+</nav>
+
+{% block content %}
+{% endblock content %}
+
+{% block footer %}
+    {% include "orangeline/_footer.html" %}
+{% endblock footer %}
+
+{% block scripts %}
+    <script src="../../js/main.js"></script>
+{% endblock scripts %}
+</body>
+</html>
