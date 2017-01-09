@@ -16,6 +16,8 @@ import os
 
 # Add current directory to sys.path
 site_dir = os.path.dirname(os.path.abspath(__file__))
+examples_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'examples.json')
+faq_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'faq.json')
 
 if site_dir not in sys.path:
     sys.path.append(site_dir)
@@ -56,7 +58,12 @@ def inject_static_url():
     return dict(static_url=static_url, STATIC_URL=static_url)
 
 
-@app.route('/orangeline')
+@app.context_processor
+def inject_index_data():
+        return dict(examples=json.load(open(examples_json)),faqs=json.load(open(faq_json)))
+
+
+@app.route('/orangeline/index.html')
 def orangeline():
     # https://github.com/NUKnightLab/orangeline/blob/master/dist/templates/pages/timeline.html
     # copied on 2017-01-06
