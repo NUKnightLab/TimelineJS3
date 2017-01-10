@@ -3,5 +3,75 @@
       "slug": "how-do-i-edit-my-timeline",
       "question": "How do I edit my timeline?",
       "answer": "Once you've created a timeline, you can make changes by going back to your Google spreadsheet. Changes you make to the spreadsheet are automatically available to your Timeline—you don't need to repeat the 'publish to the web' step (step #2). If you want to make changes to the optional settings, you will need to update your embed code, but if you are only changing content in the spreadsheet, then there's nothing else to do."
+  },
+  {
+      "slug": "what-web-browsers-does-timelinejs-work-with",
+      "question": "What web browsers does TimelineJS work with?",
+      "answer": "Our primary development and testing browser is Google Chrome. We adhere closely to web standards, so we believe that TimelineJS should work effectively in all modern web browsers. TimelineJS is known to not work with Internet Explorer versions before IE10."
+  },  
+  {
+      "slug": "what-are-my-options-for-changing-how-my-timeline-works",
+      "question": "What are my options for changing how my Timeline looks?",
+      "answer": "First, make sure you know everything you can do in the spreadsheet configuration, like background colors and images. Also, check out the optional settings part of 'step 3' of the authoring tool. You can change the fonts, the position of the timeline navigation, and the initial zoom level. If you still want to do more, there are some configuration options available. Most of those are for fine tuning, but some of them may be helpful."
+  },
+  {
+      "slug": "can-i-change-things-using-css",
+      "question": "There aren't enough options. I want more control over the [font size/color/etc]. Can I change things using CSS?",
+      "answer": "Because there are so many details to the styling, this is not exactly simple, but, if you have some technical capacity, you can override TimelineJS's <abbr title='Cascading Style Sheets'>CSS</abbr> rules and have complete control over the look of the timeline. For details, see <a href='/docs/overriding-styles.html'>Using the TimelineJS CSS selectors</a>. You will need to be able to <a href='/docs/instantiate-a-timeline.html'>instantiate the Timeline</a> in javascript on your own page. (There is no way to override the CSS using the <code>iframe</code> embed.) Then, either in <code>&lt;style&gt;</code> tags in that page, or in an external stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. The basis of TimelineJS's styles are in <a href='https://github.com/NUKnightLab/TimelineJS3/tree/master/source/less'>these files</a>, which use the <a href='http://lesscss.org/'>Less CSS preprocessor</a>."
+  },
+  {
+      "slug": "how-can-i-categorize-or-group-my-events",
+      "question": "How can I categorize or group my events?",
+      "answer": "Every event in a timeline can have a group property. Events with the same group are shown in the same row or adjacent rows, and the common value of their group property is used as a label at the left edge of the timeline. Groups can be set using the 'group' column in the Google Spreadsheet or the 'group' property of a JSON slide object. TimelineJS does not support any other special styling for events in the same group."
+  },
+  {
+      "slug": "why-did-this-happen",
+      "question": "The first slide in my timeline isn't the first chronologically. Why did this happen?",
+      "answer": ""
+  },
+  {
+      "slug": "can-i-make-media-images-clickable",
+      "question": "Can I make media images clickable?",
+      "answer": ""
+  },
+  {
+      "slug": "how-can-i-format-text",
+      "question": "How can I format text (add line breaks, bold, italics)?",
+      "answer": ""
+  },
+  {
+      "slug": "how-do-i-enter-bce-dates",
+      "question": "How do I enter BCE dates?",
+      "answer": ""
+  },
+  {
+      "slug": "how-do-i-create-very-ancient-dates",
+      "question": "How do I create very ancient dates?",
+      "answer": ""
+  },
+  {
+      "slug": "who-can-access-the-data-in-my-google-spreadsheet",
+      "question": "Who can access the data in my Google spreadsheet?",
+      "answer": ""
+  },
+  {
+      "slug": "how-should-i-use-timelinejs",
+      "question": "Privacy is very important to me. How should I use TimelineJS?",
+      "answer": ""
+  },
+  {
+      "slug": "will-my-spreadsheet-get-picked-up-by-search-engines",
+      "question": "Will my spreadsheet get picked up by search engines?",
+      "answer": ""
+  },
+  {
+      "slug": "can-i-use-timelinejs-with-wordpress",
+      "question": "Can I use TimelineJS with Wordpress?",
+      "answer": ""
+  },
+  {
+      "slug": "is-timelinejs-free-for-commercial-use",
+      "question": "Is TimelineJS free for commercial use?",
+      "answer": ""
   }
 ]
