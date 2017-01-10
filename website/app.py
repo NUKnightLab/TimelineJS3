@@ -63,12 +63,6 @@ def inject_index_data():
         return dict(examples=json.load(open(examples_json)),faqs=json.load(open(faq_json)))
 
 
-@app.route('/orangeline/index.html')
-def orangeline():
-    # https://github.com/NUKnightLab/orangeline/blob/master/dist/templates/pages/timeline.html
-    # copied on 2017-01-06
-    return render_template('orangeline.html')
-
 @app.route('/compiled/<path:path>')
 def catch_compiled(path):
     """
