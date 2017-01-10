@@ -1,313 +1,100 @@
-<!-- Make a Timeline -->
-<section id="make">
-
-  <div class="row">
-    <div class="small-12 columns">
-      <h2>Make a Timeline</h2>
-      <p>TimelineJS works on any site or blog. Make your own in four easy steps. <br>      <em>Having trouble? Watch our <a href="https://vimeo.com/143407878">video</a>, or see the <a href="#help">help section below</a>.</em>
-</p>
-    </div>
-  </div>
-
-  <!-- Step 1 -->
-  <div id="make-step-1" class="step row">
-    <div class="small-2 columns">
-      <h2>1</h2>
-      <h6>Create your spreadsheet</h6>
-    </div>
-    <div class="small-10 columns">
-      <p>Build a new Google Spreadsheet using our <a href="https://drive.google.com/previewtemplate?id=1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ&mode=public" target="_blank" >template</a>. You'll need to copy the template to your own Google Drive account by clicking the "Use this template" button.</p>
-      <p>Drop dates, text and links to media into the appropriate columns. For more about working with our template, <a href="/docs/using-spreadsheets.html">see our help docs.</a></p>
-      <p><a class="button info" href="https://drive.google.com/previewtemplate?id=1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ&mode=public" target="_blank" class="btn">Get the Spreadsheet Template <i class="fa fa-arrow-circle-right fa-4"></i></a></p>
-      <p><b>Note:</b> Don't change the column headers, don't remove any columns, and don't leave any blank rows in your spreadsheet.</p>
-    </div>
-  </div>
-
-  <!-- Step 2 -->
-  <div id="make-step-2" class="step row">
-    <div class="small-2 columns">
-      <h2>2</h2>
-      <h6>Publish to the web</h6>
-    </div>
-    <div class="small-10 medium-5 columns">
-      <p>Under the File menu, select <em>&ldquo;Publish to the Web.&rdquo;</em></p>
-      <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_small.png" alt="Publish to Web"></p>
-      <p>In the next window, click the blue "publish" button. When asked, "Are you sure…?" click OK.</p>
-      <p><strong>NOTE: The following has changed as of 21 November 2016!</strong></p>
-        <p>Close the 'Publish to the web' window. Copy the URL for your Timeline from the browser's address bar. It should look something like this:
-        <code>https://docs.google.com/spreadsheets/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/edit#gid=0</code></p>
-        <p>Disregard the URL that appears in the "publish to the web" window. It used to be used below, but changes to Google mean that you'll get an error if you use it now.</p>
-
-    </div>
-    <div class="small-12 medium-5 columns">
-        <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_button_small.png" alt="Publish to Web 2"></p>
-        <p><img class="polaroid" src="{{ static_url }}/img/make/publish_to_web_url_small.png" alt="Publish to Web 3"></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Step 3 -->
-  <form id="make-step-3" class="step row">
-    <div class="small-2 columns">
-      <h2>3</h2>
-      <h6>Generate your timeline</h6>
-    </div>
-    <div class="small-10 columns">
-      <div class="row">
-        <div class="small-12 columns">
-          <p>Copy/paste spreadsheet URL into the box below to generate your timeline. (Make sure you've published the spreadsheet.)</p>
-          <div class="row collapse">
-            <div class="small-6 medium-3 columns">
-              <label for="embed-source-url" class="prefix">Google Spreadsheet URL</label>
+    <section class="section-color section-color-complement" id="make">
+            <div class="container">
+                <h2>Make a Timeline</h2>
+                <p>
+                    TimelineJS works on any site or blog. Make your own in four easy steps. <br>      <em>Having trouble? Watch our <a href="https://vimeo.com/143407878">video</a>, or see the <a href="#help">help section below</a>.</em>
+                </p>
+                <ol class="instructional-steps">
+                    <li class="step grid">
+                        <div class="step-number column-2">
+                            <h6>Create your spreadsheet</h6>
+                        </div>
+                        <div class="step-details column-10">
+                            <p>Build a new Google Spreadsheet using our template. You'll need to copy the template to your own Google Drive account by clicking the "Use this template" button.</p>
+                            <p>Drop dates, text and links to media into the appropriate columns. For more about working with our template, see our <a href="#">help docs.</a></p>
+                            <a class="button button-complement" href="https://drive.google.com/previewtemplate?id=1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ&mode=public" target="_blank">Get the Spreadsheet Template &nbsp;<span class="icon-new-tab"></span></a>
+                            <p class="note">Don't change the column headers, don't remove any columns, and don't leave any blank rows in your spreadsheet.</p>
+                        </div>
+                    </li>
+                    <li class="step grid">
+                        <div class="step-number column-2">
+                            <h6>Publish to the web</h6>
+                        </div>
+                        <div class="step-details column-10">
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <p>Under the File menu, select “Publish to the Web.”</p>
+                                    <img class="img-shadow"  src="http://timeline.knightlab.com/static/img/make/publish_to_web_small.png" />
+                                    <p>In the next window, click the blue "publish" button. When asked, "Are you sure…?" click OK.</p>
+                                    <p>Now, copy the URL that appears in the center of the window. You'll use this in the next step.</p>
+                                </div>
+                                <div class="grid-item">
+                                    <img class="img-shadow"  src="http://timeline.knightlab.com/static/img/make/publish_to_web_button_small.png" />
+                                    <img class="img-shadow"  src="http://timeline.knightlab.com/static/img/make/publish_to_web_url_small.png" />
+                                </div>
+                            </div>
+                            <p class="note note-alert">
+                                The following has changed as of 21 November 2016!<br/><br/>
+                                Close the 'Publish to the web' window. Copy the URL for your Timeline from the browser's address bar. It should look something like this:<br />
+                                 <code>https://docs.google.com/spreadsheets/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/edit#gid=0</code>
+                                <br/><br/>Disregard the URL that appears in the "publish to the web" window. It used to be used below, but changes to Google mean that you'll get an error if you use it now.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="step grid">
+                        <div class="step-number column-2">
+                            <h6>Generate your timeline</h6>
+                        </div>
+                        <div class="step-details column-10">
+                            <p>Copy/paste spreadsheet URL into the box below to generate your timeline. (Make sure you've published the spreadsheet.)</p>
+                            <form>
+                                <div class="input-group-label column-12">
+                                    <label class="input-group-addon" for="inlinelabel">Google Spreadsheet URL</label>
+                                    <input type="text" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI" name="inlinelabel">
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                    <li class="step grid">
+                        <div class="step-number column-2">
+                            <h6>Share your timeline</h6>
+                        </div>
+                        <div class="step-details column-10">
+                            <h6>Share Link</h6>
+                            <!-- <ul class="list--social">
+                                <li>
+                                    <a class="link--no-style" href="#" ><span class="icon-twitter text-color-complement"></span></a>
+                                </li>
+                                <li>
+                                    <a class="link--no-style" href="#"><span class="icon-facebook text-color-complement"></span></a>
+                                </li>
+                            </ul> -->
+                            <form>
+                                <textarea rows="3" type="text" "readonly" name="textplaceholder" value="" style="height:4rem;">
+https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Bevan-PotanoSans&maptype=toner&width=600&height=600
+                                </textarea>
+                            </form>
+                            <h6>Embed</h6>
+                            <p class="small">Grab the embed code and paste it on your site where you want your timeline to appear (just like a YouTube video). <em>If you're embedding on Medium.com just paste the link from the right where you want your timeline to appear.</em></p>
+                            <form>
+                                <textarea rows="3" readonly="readonly" type="text" name="textplaceholder" value="" style="height:5rem;">
+&lt;iframe src=&apos;https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Bevan-PotanoSans&amp;maptype=toner&amp;width=600&amp;height=600&apos; width=&apos;600&apos; height=&apos;600&apos; frameborder=&apos;0&apos;&gt;&lt;/iframe&gt;
+                                </textarea>
+                            </form>
+                            <a class="button button-complement" href="#" target="_blank">Preview</a>&nbsp;
+                            <a class="button button-light" href="#" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
+                        </div>
+                    </li>
+                </ol>
             </div>
-            <div class="small-6 medium-4 columns">
-              <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI">
+            <div id="preview-embed">
+                <div class="container">
+                    <h3>Preview Embed</h3>
+                </div>
+                <section id="demo" class="container-fluid">
+                    <div id="preview-embed-iframe" class="product-demo">
+                        <iframe src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=650" width="100%" height="650" frameborder="0"></iframe>
+                    </div>
+                </section>
             </div>
-            <div class="small-12 medium-5 columns">
-              <div class="small-6 medium-3 large-2 columns">
-                <span class="prefix">Width</span>
-              </div>
-              <div class="small-6 medium-3 large-2 columns">
-                <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
-              </div>
-              <div class="small-12 medium-3 large-2 columns"></div>
-              <div class="small-6 medium-3 large-2 columns">
-                <span class="prefix">Height</span>
-              </div>
-              <div class="small-6 medium-3 large-2 columns end">
-                <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
-              </div>
-            </div>
-      </div>
-
-      <!-- Extra Options -->
-      <form>
-        <fieldset>
-          <legend>Optional settings
-            <a class="show-options" href="#">(show)<span class="caret"></span></a>
-            <a class="hide-options" href="#">(hide)<span class="caret"></span></a>
-          </legend>
-          <p><em>Set language, fonts, starting slide and more.</em></p>
-          <div class="more-options">
-            <div class="row">
-            <!-- Language-->
-              <div class="small-12 medium-4 columns">
-                <label name="language" for="embed-language">Language</label>
-                <select id="embed-language">
-                  <option value="en" data-lang="English">English</option>
-                  <option value="en-24hr" data-lang="English (24-hour time)">English (24-hour time)</option>
-                  <option value="ar" data-lang="Arabic">العربية</option>
-                  <option value="af" data-lang="Afrikaans">Afrikaans</option>
-                  <option value="id" data-lang="Indonesian">Bahasa Indonesia</option>
-                  <option value="ms" data-lang="Malay">Bahasa Melayu</option>
-                  <option value="be" data-lang="Belarusian">Беларуская мова</option>
-                  <option value="bg" data-lang="Bulgarian">български език</option>
-                  <option value="ca" data-lang="Catalan">Català</option>
-                  <option value="cz" data-lang="Czech">Čeština</option>
-                  <option value="da" data-lang="Danish">Dansk</option>
-                  <option value="hi" data-lang="Hindi">हिन्दी</option>
-                  <option value="de" data-lang="German">Deutsch</option>
-                  <option value="et" data-lang="Estonian">Eesti keel</option>
-                  <option value="el" data-lang="Greek">ελληνικά</option>
-                  <option value="es" data-lang="Spanish">Español</option>
-                  <option value="eo" data-lang="Esperanto">Esperanto</option>
-                  <option value="eu" data-lang="Basque">Euskara</option>
-                  <option value="fo" data-lang="Faroese">Føroyskt</option>
-                  <option value="fr" data-lang="French">Français</option>
-                  <option value="fy" data-lang="Frisian">Frysk</option>
-                  <option value="ga" data-lang="Irish">Gaeilge</option>
-                  <option value="gl" data-lang="Galician">Galego</option>
-                  <option value="ko" data-lang="Korean">한국어</option>
-                  <option value="hr" data-lang="Croatian">Hrvatski</option>
-                  <option value="hy" data-lang="Armenian">Հայերէն</option>
-                  <option value="is" data-lang="Icelandic">Íslenska</option>
-                  <option value="it" data-lang="Italian">Italiano</option>
-                  <option value="he" data-lang="Hebrew">עברית</option>
-                  <option value="ka" data-lang="Georgian">ქართული</option>
-                  <option value="lv" data-lang="Latvian">Latviešu valoda</option>
-                  <option value="lb" data-lang="Luxembourgish">Lëtzebuergesch</option>
-                  <option value="lt" data-lang="Lithuanian">Lietuvių kalba</option>
-                  <option value="ro" data-lang="Romanian">Limba română</option>
-                  <option value="hu" data-lang="Hungarian">Magyar</option>
-                  <option value="my" data-lang="Myanmar"> မြန်မာ</option>
-                  <option value="nl" data-lang="Dutch">Nederlands</option>
-                  <option value="ne" data-lang="Nepali">नेपाली</option>
-                  <option value="ja" data-lang="Japanese">日本語</option>
-                  <option value="no" data-lang="Norwegian">Norsk</option>
-                  <option value="th" data-lang="Thai">ภาษาไทย</option>
-                  <option value="pl" data-lang="Polish">Polski</option>
-                  <option value="pt" data-lang="Portuguese">Português</option>
-                  <option value="pt-br" data-lang="Portuguese - Brazilian">Português (Brasil)</option>
-                  <option value="rm" data-lang="Romansh">Rumantsch</option>
-                  <option value="ru" data-lang="Russian">Русский язык</option>
-                  <option value="si" data-lang="Sinhalese">සිංහල</option>
-                  <option value="sl" data-lang="Slovenian">Slovenščina</option>
-                  <option value="sk" data-lang="Slovak">Slovenčina</option>
-                  <option value="sr" data-lang="Serbian - Latin">Srpski</option>
-                  <option value="sr-cy" data-lang="Serbian - Cyrillic">српски</option>
-                  <option value="fi" data-lang="Finnish">Suomi</option>
-                  <option value="sv" data-lang="Swedish">Svenska</option>
-                  <option value="zh-tw" data-lang="Taiwanese">Taiwanese</option>
-                  <option value="tl" data-lang="Tagalog">Tagalog</option>
-                  <option value="ta" data-lang="Tamil">தமிழ்</option>
-                  <option value="te" data-lang="Telugu">తెలుగు</option>
-                  <option value="tr" data-lang="Turkish">Türkçe</option>
-                  <option value="uk" data-lang="Ukrainian">Українська</option>
-                  <option value="ur" data-lang="Urdu">اُردُو</option>
-                  <option value="vi" data-lang="Vietnamese">Tiếng Việt</option>
-                  <option value="fa" data-lang="Farsi">فارسی</option>
-                  <option value="zh-cn" data-lang="Chinese">中文</option>
-                </select>
-            </div>
-            <!-- Fonts-->
-            <div class="small-12 medium-5 columns">
-              <ul id="embed-font-dropdown">
-                <li>
-                  <label name="fonts" for="embed-font">Fonts (<a href="#">change</a>)</label>
-                  <p><img id="font-pair-preview" src="static/img/make/default.png" /></p>
-                  <ul id="embed-font">
-                    <li data-value="Default" id="embed-font-active"><i class="fa fa-check"></i> <img src="static/img/make/default.png" alt="PT Narrow and PT Serif"/></li>
-                    <li data-value="Abril-DroidSans"><img src="static/img/make/abril-droidsans.png" alt="Abril and Droid Sans"/></li>
-                    <li data-value="Amatic-Andika" checked><img src="static/img/make/amatic-andika.png" alt="Amatic and Andika"/></li>
-                    <li data-value="Bevan-PontanoSans"><img src="static/img/make/bevan-pontanosans.png" alt="Bevan and Pontano Sans"/></li>
-                    <li data-value="Bitter-Raleway"><img src="static/img/make/bitter-raleway.png" alt="Bitter and Raleway"/></li>
-                    <li data-value="Clicker-Garamond"><img src="static/img/make/clicker-garamond.png" alt="Clicker and Garamond"/></li>
-                    <li data-value="Dancing-Ledger"><img src="static/img/make/dancing-ledger.png" alt="Dancing and Ledger"/></li>
-                    <li data-value="Fjalla-Average"><img src="static/img/make/fjalla-average.png" alt="Fjalla and Average"/></li>
-                    <li data-value="Georgia-Helvetica"><img src="static/img/make/georgia-helvetica.png" alt="Georgia and Helvetica"/></li>
-                    <li data-value="Lustria-Lato"><img src="static/img/make/lustria-lato.png" alt="Lustria and Lato"/></li>
-                    <li data-value="Medula-Lato"><img src="static/img/make/medula-lato.png" alt="Medula One and Lato"/></li>
-                    <li data-value="OldStandard"><img src="static/img/make/oldstandard.png" alt="Old Standard"/></li>
-                    <li data-value="OpenSans-GentiumBook"><img src="static/img/make/opensans-gentiumbook.png" alt="Open Sans and Gentium Book"/></li>
-                    <li data-value="Playfair-FaunaOne"><img src="static/img/make/playfair-faunaone.png" alt="Playfair and Fauna One"/></li>
-                    <li data-value="Playfair"><img src="static/img/make/playfair.png" alt="Playfair SC and Playfair"/></li>
-                    <li data-value="PT"><img src="static/img/make/pt.png" alt="PT Sans, PT Sans Narrow, and PT Serif"/></li>
-                    <li data-value="Roboto-Megrim"><img src="static/img/make/roboto-megrim.png" alt="Roboto and Megrim"/></li>
-                    <li data-value="Rufina-Sintony"><img src="static/img/make/rufina-sintony.png" alt="Rufina and Sintony"/></li>
-                    <li data-value="UnicaOne-Vollkorn"><img src="static/img/make/unicaone-vollkorn.png" alt="Unica One and Vollkorn"/></li>
-                  </ul>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <!-- Map Type-->
-            <div class="small-12 columns">
-              <label name="map-type" for="embed-maptype">Map Type</label>
-              <div id="embed-maptype"><p><small>Currently all Google's base maps are supported. When creating a Google map, style it the way you would like it to appear, and then paste the resulting link into your Google Spreadsheet.</small></p></div>
-            </div>
-            </div>
-            <div class="row">
-              <label>Misc</label>
-              <!-- Start at End?-->
-              <div class="small-12 medium-4 columns">
-                  <label class="checkbox">
-                    <input id="embed-startatend" type="checkbox" value="option1">Start at the end
-                  </label>
-              </div>
-              <div class="small-12 medium-8 columns">
-                  <span class="help-block">Begins the timeline on the last slide.</span>
-              </div>
-            </div>
-            <!-- Nav position -->
-            <div class="row">
-              <div class="small-12 medium-4 columns">
-                <label class="checkbox">
-                  <input id="embed-timenavtop" type="checkbox" value="option1">Show nav on top
-                </label>
-              </div>
-              <div class="small-12 medium-8 columns">
-                  <span class="help-block">Switches the vertical order of the timeline navigation and the media.</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="small-12 medium-4 columns">
-                <label class="checkbox">
-                  <input id="embed-debug" type="checkbox" value="option1">Debug
-                </label>
-              </div>
-              <div class="small-12 medium-8 columns">
-                  <span class="help-block">In debug mode, the JavaScript console will display logging messages.</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="small-12 medium-4 columns">
-                <label class="checkbox">
-                  <input id="embed-hash-bookmark" type="checkbox" value="option1">Use hash bookmarks
-                </label>
-              </div>
-              <div class="small-12 medium-8 columns">
-                  <span class="help-block">Assigns a hash bookmark to each slide's URL, allowing deep linking to slides. (For directly-linked Timelines only -- does not work for iframe embeds)</span>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="small-12 columns">
-                <label name="slide-start" for="embed-startatslide">Default start slide</label>
-              </div>
-            </div>
-
-            <div class="row collapse">
-              <div class="small-6 medium-2 columns">
-                <span class="prefix">Slide</span>
-              </div>
-              <div class="small-6 medium-1 columns">
-                  <input id="embed-startatslide" type="text" value="0" placeholder="0">
-              </div>
-              <div class="small-12 medium-8 columns">
-                <p class="help-block">You can tell TimelineJS to start at a specific slide number.</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="small-12 columns">
-                <label name="initial-zoom" for="embed-initialzoom">Initial zoom level</label>
-              </div>
-            </div>
-            <div class="row collapse">
-              <div class="small-6 medium-2 columns">
-                <span class="prefix">Zoom level</span>
-              </div>
-              <div class="small-6 medium-1 columns">
-                  <input id="embed-initialzoom" type="text" value="2" placeholder="2">
-              </div>
-              <div class="small-12 medium-8 columns">
-                <p class="help-block">The zoom level at which the timeline portion of TimelineJS will display on load. Specify a value from 0-10 (default is 2). Smaller numbers show a greater span of time.</p>
-              </div>
-              </div>
-            </div>
-            </div>
-        </div>
-      </div>
-    </fieldset>
-  </form>
-  </div>
-  </div>
-  <!-- Step 4 -->
-  <div id="make-step-4" class="step row last">
-    <div class="small-2 columns">
-      <h2>4</h2>
-      <h6>Embed your Timeline</h6>
-    </div>
-    <div class="small-10 columns">
-      <p>Grab the embed code and paste it on your site where you want your timeline to appear (just like a YouTube video).</p>
-      <textarea id="embed_code" readonly="readonly" style="width: 100%; height: 70px; min-height: 60px; max-height: 300px; resize: none; font-family: Menlo,Monaco,'Courier New',monospace; font-size: 12px;" ><iframe src='https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Bevan-PotanoSans&maptype=toner&width=600&height=600' width='600' height='600' frameborder='0'></iframe></textarea>
-      <div class="row">
-        <p class="small-12 medium-4 columns"><a href="#preview-embed" data-scroll="true" id="iframe-preview-button" class="button info small">Preview</a>
-        <a class="button small" href="#preview-embed" data-scroll="false" id="preview-embed-link" target="_blank">Get link to preview</a></p>
-      </div>
-      <p>To share your timeline in a <a href="https://medium.com">Medium.com</a> post, copy the link below
-      and paste it on a line by itself where you'd like the timeline to appear. <span class="make-note">(<a target="_blank" href="http://knightlab.northwestern.edu/2016/06/15/knight-lab-tools-now-embeddable-on-medium/">learn more</a>)</span></p>
-      <textarea id="embed_code_medium" readonly="readonly" style="width: 100%; height: 70px; min-height: 60px; max-height: 300px; resize: none; font-family: Menlo,Monaco,'Courier New',monospace; font-size: 12px;" >https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Bevan-PotanoSans&maptype=toner&width=600&height=600</textarea><br><br>
-    </div>
-  </div>
-
-  <!-- Preview -->
-  <div id="preview" class="row">
-    <div id="preview-embed" class="small-12 columns">
-      <h2>Preview</h2>
-      <div id="preview-embed-iframe"></div>
-      <!-- Activate when mobile styles are sorted. -->
-      <p id="device-preview-mode">Preview mode: <span data-size="desktop-view" class="active">Desktop</span> <span data-size="tablet-view">Tablet</span> <span data-size="mobile-view">Mobile</span></p>
-      <p class="help-block">Note: In order for TimelineJS to work on responsive web pages, the iframe's width must be proportional (i.e., <code>width="100%"</code>) and not absolute (i.e., <code>width="650"</code>).</p>
-    </div>
-  </div>
-</section>
+    </section>

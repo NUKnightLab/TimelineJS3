@@ -1,28 +1,17 @@
 {% extends "base.html" %}
-{% block nav %}
-{% endblock %}
+
 {% block content %}
-  {% include "_banner.html" %}
-  {% include "_demo.html" %}
-  {% include "_overview.html" %}
-  {% include "_make.html" %}
-  {% include "_examples.html" %}
-  {% include "_help.html" %}
-{% endblock %}
+{% include "_header.html" %}
 
-{% block scripts %}
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<article id="product-body">
+    {% include "_demo.html" %}
+    {% include "_overview.html" %}
+    {% include "_examples.html" %}
+    {% include "_make.html" %}
+    {% include "_help.html" %}
+</article>
 
-  <script type="text/javascript">
-  {% if cdn %}
-    var generator_embed_path = "https://cdn.knightlab.com/libs/timeline3/{{ cdn }}/embed/index.html";
-  {% else %}
-    var generator_embed_path = "/build/embed/index.html";
-  {% endif %}
-  </script>
-  <script src="https://cdn.knightlab.com/libs/purpleline/latest/js/foundation.abide.js"></script>
-  <script src="{{ static_url }}/js/main.js"></script>
-  <script src="{{ static_url }}/js/faq-generator.js"></script>
-{% endblock %}
+{% include "_storytelling_tools.html" %}
 
+{% endblock content %}
 
