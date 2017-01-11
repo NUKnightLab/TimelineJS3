@@ -86,29 +86,29 @@
   {
       "link": "https://timeline.knightlab.com/examples/user-interface/index.html",
       "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_userinterface.png",
-      "source": "",
-      "source_logo": "",
+      "source": "Knight Lab",
+      "source_logo": "/static/img/examples/logos/logo_knightlab.png",
       "title": "Revolutionary User Interfaces"
   },
   {
       "link": "http://beyondtheseal.com/#19",
       "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_banana.png",
-      "source": "",
-      "source_logo": "",
+      "source": "Beyond the Seal",
+      "source_logo": "/static/img/examples/logos/logo_beyondtheseal.png",
       "title": "A Brief History of the Banana Business"
   },
   {
       "link": "https://timeline.knightlab.com/examples/republican/index.html",
       "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_republican.jpg",
-      "source": "",
-      "source_logo": "",
+      "source": "Knight Lab",
+      "source_logo": "/static/img/examples/logos/logo_knightlab.png",
       "title": "The Republican Run-Up"
   },
   {
       "link": "https://timeline.knightlab.com/examples/houston/index.html",
       "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_houston.jpg",
-      "source": "",
-      "source_logo": "",
+      "source": "Knight Lab",
+      "source_logo": "/static/img/examples/logos/logo_knightlab.png",
       "title": "Whitney Houston: 1963-2012"
   }
 ]
