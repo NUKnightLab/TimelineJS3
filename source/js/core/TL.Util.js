@@ -170,6 +170,11 @@ TL.Util = {
 		}
 	},
 
+	unhtmlify: function(str) {
+		str = str.replace(/(<[^>]*>)+/g, '');
+		return str.replace('"', "'");
+	},
+
 	/*	* Turns plain text links into real links
 	================================================== */
 	linkify: function(text,targets,is_touch) {
