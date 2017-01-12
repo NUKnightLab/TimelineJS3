@@ -34,7 +34,6 @@ TL.Media.Image = TL.Media.extend({
 		if (this.data.link) {
 			this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
 			this._el.content_link.href 			= this.data.link;
-
 			this._el.content_link.target 		= "_blank";
 			this._el.content_item				= TL.Dom.create("img", image_class, this._el.content_link);
 		} else {
@@ -45,6 +44,12 @@ TL.Media.Image = TL.Media.extend({
 			this._el.content_item.alt = this.data.alt;
 		} else if (this.data.caption) {
 			this._el.content_item.alt = TL.Util.unhtmlify(this.data.caption);
+		}
+
+		if (this.data.title) {
+			this._el.content_item.title = this.data.title;
+		} else if (this.data.caption) {
+			this._el.content_item.title = TL.Util.unhtmlify(this.data.caption);
 		}
 
 		// Media Loaded Event
