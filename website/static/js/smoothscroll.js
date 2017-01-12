@@ -7,7 +7,7 @@ $(document).ready(function(){
   }
 
   // Navbar scrollTo
-  $(".navbar .nav a, [data-scroll='true']").click(function (e) {
+  $(".navbar a, [data-scroll='true']").click(function (e) {
     var $target = $(this)
       , href = $target.attr("href")
       , hash = href.substring(href.lastIndexOf('#'))
