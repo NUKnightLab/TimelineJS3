@@ -131,18 +131,46 @@ function getLinkAndIframe() {
   return theobj;
 };
 
+const VALID_URL_REGEX = new RegExp('https://docs\.google\.com/spreadsheets/d/[-_0-9A-Za-z]{10,}');
+const PUB_TO_WEB_URL_REGEX = new RegExp('https://docs\.google\.com/spreadsheets/d/e/[-_0-9A-Za-z]+/pub(?:\\?output=)?(.+)');
+
+function spreadsheetUrlIsValid() {
+    var url = jQuery('#embed-source-url').val();
+    var checkURL = VALID_URL_REGEX.exec(url);
+    if (checkURL) {
+        jQuery('#url-error').html('');
+        return true;
+    } else {
+        var err = 'Incorrect URL.';
+        var pubType = PUB_TO_WEB_URL_REGEX.exec(url);
+        if (pubType && pubType.length > 1) {
+            pubType = pubType[1].toUpperCase();
+        }
+        if (pubType) {
+            err += ' This looks like a publish-as-' + pubType + ' URL. Please disregard the "Publish to the web" link and instead copy the URL from the address bar of your browser.';
+        } else {
+            err += ' Unknown URL type. Please copy the URL of your spreadsheet from the address bar of your browser.';
+        }
+        err += ' See related note in Step 2 above.';
+        jQuery('#url-error').html('<p class="dark-orange-text">' + err + '</p>');
+        return false;
+    }
+}
+
 /* EMBED GENERATOR
 ================================================== */
 function updateEmbedCode(element, options) {
-  var e_embed = document.getElementById('embed_code'),
-    el = getLinkAndIframe();
-  e_embed.value = el.copybox;
-  jQuery('#embed_code_medium').val(el.link);
-  jQuery("#preview-embed-link").attr('href', el.link);
-  jQuery("#preview-embed-iframe").html(el.iframe);
-  if (jQuery("#preview-embed").css("display") == "none"){
-    jQuery("#preview-embed").css("display","block");
-  }
+    if (spreadsheetUrlIsValid()) {
+        var e_embed = document.getElementById('embed_code'),
+            el = getLinkAndIframe();
+        e_embed.value = el.copybox;
+        jQuery('#embed_code_medium').val(el.link);
+        jQuery("#preview-embed-link").attr('href', el.link);
+        jQuery("#preview-embed-iframe").html(el.iframe);
+        if (jQuery("#preview-embed").css("display") == "none"){
+            jQuery("#preview-embed").css("display","block");
+        }
+    }
 }
 
 
