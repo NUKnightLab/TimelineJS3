@@ -146,8 +146,6 @@ function updateEmbedCode(element, options) {
   }
 }
 
-
-
 var $ = jQuery;
 $(document).ready(function() {
   if (window.innerWidth <= 700) {
