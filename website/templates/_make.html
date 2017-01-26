@@ -52,23 +52,16 @@
                                     <label class="input-group-addon" for="inlinelabel">Google Spreadsheet URL</label>
                                     <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI" name="inlinelabel">
                                 </div>
-                            <!-- WIDTH, HEIGHT -->
-                                <div class="small-12 medium-5 columns">
-                                  <div class="small-6 medium-3 large-2 columns">
-                                    <span class="prefix">Width</span>
-                                  </div>
-                                  <div class="small-6 medium-3 large-2 columns">
-                                    <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
-                                  </div>
-                                  <div class="small-12 medium-3 large-2 columns"></div>
-                                  <div class="small-6 medium-3 large-2 columns">
-                                    <span class="prefix">Height</span>
-                                  </div>
-                                  <div class="small-6 medium-3 large-2 columns end">
-                                    <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
-                                  </div>
+                                <div class="grid">
+                                    <div class="input-group-label column-5">
+                                        <label class="input-group-addon" for="inlinelabel">Width</label>
+                                        <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
+                                    </div>
+                                    <div class="input-group-label column-5">
+                                        <label class="input-group-addon" for="inlinelabel">Height</label>
+                                        <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
+                                    </div>
                                 </div>
-                            <!-- ENDS HERE -->
                             </form>
 
 
@@ -81,9 +74,9 @@
                               </legend>
                               <p><em>Set language, fonts, starting slide and more.</em></p>
                               <div class="more-options">
-                                <div class="row">
+                                <div class="grid">
                                 <!-- Language-->
-                                  <div class="small-12 medium-4 columns">
+                                  <div class="column-6">
                                     <label name="language" for="embed-language">Language</label>
                                     <select id="embed-language">
                                       <option value="en" data-lang="English">English</option>
@@ -151,8 +144,12 @@
                                       <option value="zh-cn" data-lang="Chinese">中文</option>
                                     </select>
                                 </div>
+
+                                <!--NEED TO FIX THE CLASSES SO THE DROPDOWN WILL WORK-->
+
+
                                 <!-- Fonts-->
-                                <div class="small-12 medium-5 columns">
+                                <div class="column-6">
                                   <ul id="embed-font-dropdown">
                                     <li>
                                       <label name="fonts" for="embed-font">Fonts (<a href="#">change</a>)</label>
@@ -178,102 +175,103 @@
                                         <li data-value="Rufina-Sintony"><img src="static/img/make/rufina-sintony.png" alt="Rufina and Sintony"/></li>
                                         <li data-value="UnicaOne-Vollkorn"><img src="static/img/make/unicaone-vollkorn.png" alt="Unica One and Vollkorn"/></li>
                                       </ul>
+                                  </li>
                                   </ul>
                                 </div>
                               </div>
-                              <div class="row">
+                              <div class="grid">
                                 <!-- Map Type-->
-                                <div class="small-12 columns">
+                                <div class="column-12">
                                   <label name="map-type" for="embed-maptype">Map Type</label>
                                   <div id="embed-maptype"><p><small>Currently all Google's base maps are supported. When creating a Google map, style it the way you would like it to appear, and then paste the resulting link into your Google Spreadsheet.</small></p></div>
                                 </div>
+                              </div>
+                                <div class="grid">
+                                  <div class="column-12">
+                                    <label>Misc</label>
+                                  </div>
                                 </div>
-                                <div class="row">
-                                  <label>Misc</label>
                                   <!-- Start at End?-->
-                                  <div class="small-12 medium-4 columns">
+                                <div class="grid">
+                                  <div class="column-4">
                                       <label class="checkbox">
                                         <input id="embed-startatend" type="checkbox" value="option1">Start at the end
                                       </label>
                                   </div>
-                                  <div class="small-12 medium-8 columns">
+                                  <div class="column-8">
                                       <span class="help-block">Begins the timeline on the last slide.</span>
                                   </div>
                                 </div>
                                 <!-- Nav position -->
-                                <div class="row">
-                                  <div class="small-12 medium-4 columns">
+                                <div class="grid">
+                                  <div class="column-4">
                                     <label class="checkbox">
                                       <input id="embed-timenavtop" type="checkbox" value="option1">Show nav on top
                                     </label>
                                   </div>
-                                  <div class="small-12 medium-8 columns">
+                                  <div class="column-8">
                                       <span class="help-block">Switches the vertical order of the timeline navigation and the media.</span>
                                   </div>
                                 </div>
-                                <div class="row">
-                                  <div class="small-12 medium-4 columns">
+                                <div class="grid">
+                                  <div class="column-4">
                                     <label class="checkbox">
                                       <input id="embed-debug" type="checkbox" value="option1">Debug
                                     </label>
                                   </div>
-                                  <div class="small-12 medium-8 columns">
+                                  <div class="column-8">
                                       <span class="help-block">In debug mode, the JavaScript console will display logging messages.</span>
                                   </div>
                                 </div>
-                                <div class="row">
-                                  <div class="small-12 medium-4 columns">
+                                <div class="grid">
+                                  <div class="column-4">
                                     <label class="checkbox">
                                       <input id="embed-hash-bookmark" type="checkbox" value="option1">Use hash bookmarks
                                     </label>
                                   </div>
-                                  <div class="small-12 medium-8 columns">
+                                  <div class="column-8">
                                       <span class="help-block">Assigns a hash bookmark to each slide's URL, allowing deep linking to slides. (For directly-linked Timelines only -- does not work for iframe embeds)</span>
                                   </div>
                                 </div>
 
-                                <div class="row">
-                                  <div class="small-12 columns">
+                                <div class="grid">
+                                  <div class="column-12">
                                     <label name="slide-start" for="embed-startatslide">Default start slide</label>
                                   </div>
                                 </div>
 
-                                <div class="row collapse">
-                                  <div class="small-6 medium-2 columns">
-                                    <span class="prefix">Slide</span>
+                                <div class="grid">
+                                  <div class="input-group-label column-4">
+                                    <label class="input-group-addon" for="inlinelabel">Slide</label>
+                                    <input type="text" value="0" placeholder="0" id="embed-startatslide" class="input-mini">
                                   </div>
-                                  <div class="small-6 medium-1 columns">
-                                      <input id="embed-startatslide" type="text" value="0" placeholder="0">
-                                  </div>
-                                  <div class="small-12 medium-8 columns">
+                                  <div class="column-8">
                                     <p class="help-block">You can tell TimelineJS to start at a specific slide number.</p>
                                   </div>
                                 </div>
-                                <div class="row">
-                                  <div class="small-12 columns">
+
+                                <div class="grid">
+                                  <div class="column-12">
                                     <label name="initial-zoom" for="embed-initialzoom">Initial zoom level</label>
                                   </div>
                                 </div>
-                                <div class="row collapse">
-                                  <div class="small-6 medium-2 columns">
-                                    <span class="prefix">Zoom level</span>
+
+                                <div class="grid">
+                                  <div class="input-group-label column-4">
+                                    <label class="input-group-addon" for="inlinelabel">Zoom Level</label>
+                                    <input type="text" value="2" placeholder="2" id="embed-initialzoom" class="input-mini">
                                   </div>
-                                  <div class="small-6 medium-1 columns">
-                                      <input id="embed-initialzoom" type="text" value="2" placeholder="2">
-                                  </div>
-                                  <div class="small-12 medium-8 columns">
+                                  <div class="column-8">
                                     <p class="help-block">The zoom level at which the timeline portion of TimelineJS will display on load. Specify a value from 0-10 (default is 2). Smaller numbers show a greater span of time.</p>
                                   </div>
-                                  </div>
                                 </div>
-                                </div>
+
                             </div>
-                          </div>
                         </fieldset>
                       </form>
-
                         </div>
                     </li>
+
                     <li class="step grid">
                         <div class="step-number column-2">
                             <h6>Share your timeline</h6>
@@ -300,8 +298,8 @@ https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCW
 &lt;iframe src=&apos;https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Bevan-PotanoSans&amp;maptype=toner&amp;width=600&amp;height=600&apos; width=&apos;600&apos; height=&apos;600&apos; frameborder=&apos;0&apos;&gt;&lt;/iframe&gt;
                                 </textarea>
                             </form>
-                            <a class="button button-complement" href="#preview-embed">Preview</a>&nbsp;
-                            <a class="button button-light" href="#" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
+                            <a class="button button-complement" href="#preview-embed" id="iframe-preview-button">Preview</a>&nbsp;
+                            <a class="button button-light" href="#" id="preview-embed-link" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
                         </div>
                     </li>
                 </ol>
