@@ -85,7 +85,8 @@ function getLinkAndIframe() {
 
   /* IFRAME AND LINK
   ================================================== */
-  vars    =  generator_embed_path + "?source=" + source_key;
+//  vars    =  generator_embed_path + "?source=" + source_key;
+  vars    =  "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=" + source_key;  
   vars    += "&font=" + e_font.getAttribute("data-value");
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
@@ -133,21 +134,20 @@ function getLinkAndIframe() {
 
 /* EMBED GENERATOR
 ================================================== */
+var $ = jQuery;
+
 function updateEmbedCode(element, options) {
   var e_embed = document.getElementById('embed_code'),
     el = getLinkAndIframe();
   e_embed.value = el.copybox;
-  jQuery('#embed_code_medium').val(el.link);
-  jQuery("#preview-embed-link").attr('href', el.link);
-  jQuery("#preview-embed-iframe").html(el.iframe);
-  if (jQuery("#preview-embed").css("display") == "none"){
-    jQuery("#preview-embed").css("display","block");
+  $('#embed_code_medium').val(el.link);
+  $("#preview-embed-link").attr('href', el.link);
+  $("#preview-embed-iframe").html(el.iframe);
+  if ($("#preview-embed").css("display") == "none"){
+    $("#preview-embed").css("display","block");
   }
 }
 
-
-
-var $ = jQuery;
 $(document).ready(function() {
   if (window.innerWidth <= 700) {
     var intro = $('#intro-copy');
