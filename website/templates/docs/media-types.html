@@ -1,82 +1,84 @@
 {% extends "base.html" %}
 
 {% block content %}
-<article id="product-body">
-  <section class="section container">
-    <div class="row">
-      <div class="small-12 columns">
-      <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
-      <h2 id="media-types">Media Types</h2>
-      <p>
+<article>
+  <section class="section-color container">
+    <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+    <h2 class="header-story" id="media-types">Media Types</h2>
+    <p>
       People have always loved how easy TimelineJS makes it to add rich media to the slides that tell your story. The new version of Timeline continues the tradition and adds a few new media types.
-      </p>
-      <dl>
-        <dt>Image</dt>
-        <dd>If your URL ends in <code>jpg</code>, <code>gif</code>, <code>png</code> or <code>jpeg</code>, it will be used as the source for an image tag. It should also work if there is a <a href="https://en.wikipedia.org/wiki/Query_string">query string</a> after the extension, perhaps specifying dynamic width and height values.
-        </dd>
+    </p>
+  </section>
+  <section class="section-color container">
+    <div class="grid">
+      <div class="column-12">
+        <dl>
+          <dt>Image</dt>
+          <dd>If your URL ends in <code>jpg</code>, <code>gif</code>, <code>png</code> or <code>jpeg</code>, it will be used as the source for an image tag. It should also work if there is a <a href="https://en.wikipedia.org/wiki/Query_string">query string</a> after the extension, perhaps specifying dynamic width and height values.
+          </dd>
 
-        <dt>Online Videos</dt>
-        <dd>Use the URL for the page of the video for <a href="http://vimeo.com">Vimeo</a>, <a href="http://DailyMotion.com">DailyMotion</a>, <a href="http://Vine.co">Vine</a>, and <a href="http://youtube.com/">YouTube</a>. Timeline honors <a href="http://youtubetime.com/">Youtube start-at time parameters</a>.</dd>
+          <dt>Online Videos</dt>
+          <dd>Use the URL for the page of the video for <a href="http://vimeo.com">Vimeo</a>, <a href="http://DailyMotion.com">DailyMotion</a>, <a href="http://Vine.co">Vine</a>, and <a href="http://youtube.com/">YouTube</a>. Timeline honors <a href="http://youtubetime.com/">Youtube start-at time parameters</a>.</dd>
 
-        <dt>SoundCloud</dt>
-        <dd>Use the URL for the <a href="http://soundcloud.com">SoundCloud</a> clip page.</dd>
+          <dt>SoundCloud</dt>
+          <dd>Use the URL for the <a href="http://soundcloud.com">SoundCloud</a> clip page.</dd>
 
-        <dt>Twitter</dt>
-        <dd>Use the the <a href="http://twitter.com">Twitter</a> embed code, or the URL of the tweet's page.</dd>
+          <dt>Twitter</dt>
+          <dd>Use the the <a href="http://twitter.com">Twitter</a> embed code, or the URL of the tweet's page.</dd>
 
-        <dt>Google Maps</dt>
-        <dd>Use the URL for the <a href="http://google.com/maps">Google Maps</a> page (unless you are using Streetview, which currently requires the embed URL found in the "Share" section). Coordinates, search results, place marks and directions are all honored by Timeline. TimelineJS supports roadmap, hybrid, satellite and terrain Google Maps, as well as directions, places, and Streetview maps.</dd>
+          <dt>Google Maps</dt>
+          <dd>Use the URL for the <a href="http://google.com/maps">Google Maps</a> page (unless you are using Streetview, which currently requires the embed URL found in the "Share" section). Coordinates, search results, place marks and directions are all honored by Timeline. TimelineJS supports roadmap, hybrid, satellite and terrain Google Maps, as well as directions, places, and Streetview maps.</dd>
 
-        <dt>Google Plus</dt>
-        <dd>Use the URL for the <a href="http://plus.google.com">Google Plus</a> photo, found by right-clicking (or control-clicking) the image and selecting "Copy Image URL".</dd>
+          <dt>Google Plus</dt>
+          <dd>Use the URL for the <a href="http://plus.google.com">Google Plus</a> photo, found by right-clicking (or control-clicking) the image and selecting "Copy Image URL".</dd>
 
-        <dt>Instagram</dt>
-        <dd>Use the URL for the <a href="http://www.instagram.com">Instagram</a> photo's page.</dd>
+          <dt>Instagram</dt>
+          <dd>Use the URL for the <a href="http://www.instagram.com">Instagram</a> photo's page.</dd>
 
-        <dt>Flickr</dt>
-        <dd>Use the URL for the <a href="http://www.flickr.com">Flickr</a> photo's page. The shortened link  provided in the share menu  (e.g. <code>https://flic.kr/p/sv3VN6</code>) will also work.</dd>
+          <dt>Flickr</dt>
+          <dd>Use the URL for the <a href="http://www.flickr.com">Flickr</a> photo's page. The shortened link  provided in the share menu  (e.g. <code>https://flic.kr/p/sv3VN6</code>) will also work.</dd>
 
-        <dt>Imgur</dt>
-        <dd>Use the URL for the <a href="http://imgur.com">Imgur</a> photo's page.</dd>
+          <dt>Imgur</dt>
+          <dd>Use the URL for the <a href="http://imgur.com">Imgur</a> photo's page.</dd>
 
-{#
-        <dt>Instagram Profile</dt> <!-- this one seemed kinda uncertain -->
-        <dd>(details TK)</dd>
- #}
-        <dt>DocumentCloud</dt>
-        <dd>Use the URL of the <a href="http://www.documentcloud.org">Document Cloud</a> document's page.</dd>
+  {#
+          <dt>Instagram Profile</dt> <!-- this one seemed kinda uncertain -->
+          <dd>(details TK)</dd>
+   #}
+          <dt>DocumentCloud</dt>
+          <dd>Use the URL of the <a href="http://www.documentcloud.org">Document Cloud</a> document's page.</dd>
 
-        <!-- <dt>Google Doc</dt>
-        <dd>Use the shareable URL provided for your <a href="http://www.google.com/docs/">Google Doc</a>.</dd>
+          <!-- <dt>Google Doc</dt>
+          <dd>Use the shareable URL provided for your <a href="http://www.google.com/docs/">Google Doc</a>.</dd>
 
-        Not sure exactly how to link to Google docs...
+          Not sure exactly how to link to Google docs...
 
-        -->
+          -->
 
-        <dt>Wikipedia</dt>
-        <dd>Use the URL of the <a href="https://en.wikipedia.org/">Wikipedia</a> article's page.</dd>
+          <dt>Wikipedia</dt>
+          <dd>Use the URL of the <a href="https://en.wikipedia.org/">Wikipedia</a> article's page.</dd>
 
-        <!--
+          <!--
 
-        <dt>Spotify</dt>
-        <dd>Use the 'Spotify URL' of the <a href="http://www.spotify.com">Spotify</a> track or playlist to make a <a href="https://developer.spotify.com/technologies/widgets/spotify-play-button/">Spotify Embed</a>. Use the provided embed code.</dd>
+          <dt>Spotify</dt>
+          <dd>Use the 'Spotify URL' of the <a href="http://www.spotify.com">Spotify</a> track or playlist to make a <a href="https://developer.spotify.com/technologies/widgets/spotify-play-button/">Spotify Embed</a>. Use the provided embed code.</dd>
 
-        Spotify embedding isn't working, you get an error message saying "Opps, there doesn't seem to be anything there."
+          Spotify embedding isn't working, you get an error message saying "Opps, there doesn't seem to be anything there."
 
-        -->
+          -->
 
-        <dt>Storify</dt>
-        <dd>Use the URL of the <a href="http://www.storify.com">Storify</a>.</dd>
+          <dt>Storify</dt>
+          <dd>Use the URL of the <a href="http://www.storify.com">Storify</a>.</dd>
 
-        <dt>iframe</dt>
-        <dd>Instead of a URL, you can use <code>&lt;iframe&gt;</code> markup. This is a good general workaround to embedding media types that TimelineJS doesn't handle directly.</dd>
+          <dt>iframe</dt>
+          <dd>Instead of a URL, you can use <code>&lt;iframe&gt;</code> markup. This is a good general workaround to embedding media types that TimelineJS doesn't handle directly.</dd>
 
-        <dt>Blockquote</dt>
-        <dd>Instead of a URL, you can use <code>&lt;blockquote&gt;</code> tags around whatever text you want to quote.</dd>
+          <dt>Blockquote</dt>
+          <dd>Instead of a URL, you can use <code>&lt;blockquote&gt;</code> tags around whatever text you want to quote.</dd>
 
-        <dt>Embedly</dt>
-        <dd>If TimelineJS doesn't recognize your media URL, it will try to use <a href="http://embed.ly/">Embed.ly</a> to get the best thing to include on your slide.</dd>
-      </dl>
+          <dt>Embedly</dt>
+          <dd>If TimelineJS doesn't recognize your media URL, it will try to use <a href="http://embed.ly/">Embed.ly</a> to get the best thing to include on your slide.</dd>
+        </dl>
       </div>
     </div>
 </section>
