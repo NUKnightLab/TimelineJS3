@@ -45,7 +45,8 @@ TL.Media.Video = TL.Media.extend({
 		});
 
 		this._el.source_item.src = this.data.url;
-		this._el.source_item.type = this._getType(this.data.url);
+		this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
+		this._el.content_item.innerHTML = "Your browser doesn't support HTML5 video with " + this._el.source_item.type;
   },
 
 	_updateMediaDisplay: function(layout) {
@@ -54,14 +55,22 @@ TL.Media.Video = TL.Media.extend({
 		}
 	},
 
-	_getType: function(url) {
-		var ext = url.match(/(mp4)(\?.*)?$/i);
-		var type = "audio/"
+	_getType: function(url, reg) {
+		var ext = url.match(reg);
+		var type = "video/"
 		switch(ext[1]) {
 			case "mp4":
 				type += "mp4";
 				break;
+			case "webm":
+				type += "webm";
+				break;
+			case "ogv":
+			case "ogm":
+				type += "ogg";
+				break;
 			default:
+				type = "video";
 				break;
 		}
 		return type

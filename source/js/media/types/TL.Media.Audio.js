@@ -45,7 +45,8 @@ TL.Media.Audio = TL.Media.extend({
 		});
 
 		this._el.source_item.src = this.data.url;
-		this._el.source_item.type = this._getType(this.data.url);
+		this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
+		this._el.content_item.innerHTML = "Your browser doesn't support HTML5 audio with " + this._el.source_item.type;
   },
 
 	_updateMediaDisplay: function(layout) {
@@ -54,8 +55,8 @@ TL.Media.Audio = TL.Media.extend({
 		}
 	},
 
-	_getType: function(url) {
-		var ext = url.match(/(mp3|wav)(\?.*)?$/i);
+	_getType: function(url, reg) {
+		var ext = url.match(reg);
 		var type = "audio/"
 		switch(ext[1]) {
 			case "mp3":
@@ -64,7 +65,18 @@ TL.Media.Audio = TL.Media.extend({
 			case "wav":
 				type += "wav";
 				break;
+			case "m4a":
+				type += "mp4";
+				break;
+			case "oga":
+			case "ogg":
+				type += "oga";
+				break;
+			case "webma":
+				type += "webm";
+				break;
 			default:
+				type = "audio";
 				break;
 		}
 		return type
