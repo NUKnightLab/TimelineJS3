@@ -189,8 +189,6 @@ TL.MediaType = function(m, image_only) {
                 case "image":
                 case "imgur":
                 case "instagram":
-								case "audio":
-								case "video":
                     if (m.url.match(media_types[i].match_str)) {
                         media = media_types[i];
                         return media;

@@ -46,7 +46,7 @@ TL.Media.Video = TL.Media.extend({
 
 		this._el.source_item.src = this.data.url;
 		this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
-		this._el.content_item.innerHTML = "Your browser doesn't support HTML5 video with " + this._el.source_item.type;
+		this._el.content_item.innerHTML += "Your browser doesn't support HTML5 video with " + this._el.source_item.type;
   },
 
 	_updateMediaDisplay: function(layout) {

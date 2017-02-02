@@ -46,7 +46,7 @@ TL.Media.Audio = TL.Media.extend({
 
 		this._el.source_item.src = this.data.url;
 		this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
-		this._el.content_item.innerHTML = "Your browser doesn't support HTML5 audio with " + this._el.source_item.type;
+		this._el.content_item.innerHTML += "Your browser doesn't support HTML5 audio with " + this._el.source_item.type;
   },
 
 	_updateMediaDisplay: function(layout) {
@@ -70,7 +70,7 @@ TL.Media.Audio = TL.Media.extend({
 				break;
 			case "oga":
 			case "ogg":
-				type += "oga";
+				type += "ogg";
 				break;
 			case "webma":
 				type += "webm";
