@@ -4,7 +4,7 @@
 	You can add new media types by adding a regex
 	to match and the media class name to use to
 	render the media
-	
+
 	The image_only parameter indicates that the
 	call only wants an image-based media type
 	that can be resolved to an image URL.
@@ -160,13 +160,25 @@ TL.MediaType = function(m, image_only) {
 			// 	cls: 		TL.Media.Website
 			// },
 			{
+				type: 		"video",
+				name: 		"Video",
+				match_str: 	/(mp4)(\?.*)?$/i,
+				cls: 		TL.Media.Video
+			},
+			{
+				type: 		"audio",
+				name: 		"Audio",
+				match_str: 	/(mp3|wav)(\?.*)?$/i,
+				cls: 		TL.Media.Audio
+			},
+			{
 				type: 		"imageblank",
 				name: 		"Imageblank",
 				match_str: 	"",
 				cls: 		TL.Media.Image
 			}
 		];
-	
+
 	if(image_only) {
         if (m instanceof Array) {
             return false;
@@ -177,17 +189,19 @@ TL.MediaType = function(m, image_only) {
                 case "image":
                 case "imgur":
                 case "instagram":
+								case "audio":
+								case "video":
                     if (m.url.match(media_types[i].match_str)) {
                         media = media_types[i];
                         return media;
                     }
                     break;
-                
+
                 default:
-                    break;            
+                    break;
             }
-        }        
-	
+        }
+
 	} else {
         for (var i = 0; i < media_types.length; i++) {
             if (m instanceof Array) {
