@@ -15,7 +15,7 @@
 
 .checkbox input { margin-right: 20px; }
 
-ul#embed-font-dropdown,
+#embed-font-dropdown,
 ul#embed-font {
     list-style-type:none;
     margin: 0;
@@ -36,7 +36,7 @@ ul#embed-font{
 ul#embed-font li img {
     max-width: 60%;
 }
-ul#embed-font-dropdown > li > p {
+#embed-font-dropdown > li > p {
     font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin: 0;

@@ -195,11 +195,11 @@ $(document).ready(function() {
   $('#make-step-3 input').change(function(evt) { updateEmbedCode(evt); });
   $('#make-step-3 select').change(function(evt) { updateEmbedCode(evt); });
   $("#embed-font li").on("click", function(evt){
-    var currentFont = document.getElementById("embed-font-active");
-    currentFont.removeChild(currentFont.firstChild);
-    currentFont.removeAttribute("id");
-    $(this).attr("id", "embed-font-active")
-           .prepend('<i class="fa fa-check"></i>');
+  //    var currentFont = document.getElementById("embed-font-active");
+  //    currentFont.removeChild(currentFont.firstChild);
+  //    currentFont.removeAttribute("id");
+  //    $(this).attr("id", "embed-font-active")
+  //         .prepend('<span class="icon-github"></span>');
     var fontPair = $(this).data("value");
     $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
                            .attr("alt", fontPair);
