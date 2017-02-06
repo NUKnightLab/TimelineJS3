@@ -142,6 +142,7 @@ function updateEmbedCode(element, options) {
   e_embed.value = el.copybox;
   $('#embed_code_medium').val(el.link);
   $("#preview-embed-link").attr('href', el.link);
+  $("#sharable-url").html(el.link);
   $("#preview-embed-iframe").html(el.iframe);
   if ($("#preview-embed").css("display") == "none"){
     $("#preview-embed").css("display","block");
@@ -194,17 +195,17 @@ $(document).ready(function() {
   $("#embed_code").click(function() { $(this).select(); });
   $('#make-step-3 input').change(function(evt) { updateEmbedCode(evt); });
   $('#make-step-3 select').change(function(evt) { updateEmbedCode(evt); });
-  $("#embed-font li").on("click", function(evt){
+  $("#embed-font li").click(function(evt){
     var currentFont = document.getElementById("embed-font-active");
-    currentFont.removeChild(currentFont.firstChild);
+  //  currentFont.removeChild(currentFont.firstChild);
     currentFont.removeAttribute("id");
     $(this).attr("id", "embed-font-active")
-           .prepend('<i class="fa fa-check"></i>');
+  //         .prepend('<span class="icon-github"></span>');
     var fontPair = $(this).data("value");
     $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
                            .attr("alt", fontPair);
     $("ul#embed-font").hide();
-    updateEmbedCode(evt);
+  //    updateEmbedCode(evt);
   });
   $("#embed-font-dropdown a, #font-pair-preview").on("click", function(evt){
       evt.preventDefault();
