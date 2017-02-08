@@ -27,7 +27,11 @@ TL.Media.Spotify = TL.Media.extend({
 			var user = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[1];
 			var playlist = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[2];
 			this.media_id = "spotify:user:" + user + ":playlist:" + playlist;
+		} else if (this.data.url.match(/spotify\.com\/artist\/(.+)/)) {
+			var artist = this.data.url.match(/spotify\.com\/artist\/(.+)/)[1];
+			this.media_id = "spotify:artist:" + artist;
 		}
+
 
 		if (this.media_id) {
 			// API URL
