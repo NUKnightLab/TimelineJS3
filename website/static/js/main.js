@@ -140,38 +140,39 @@ function updateEmbedCode(element, options) {
   var e_embed = document.getElementById('embed_code'),
     el = getLinkAndIframe();
   e_embed.value = el.copybox;
-  $('#embed_code_medium').val(el.link);
-  $("#preview-embed-link").attr('href', el.link);
-  $("#sharable-url").html(el.link);
-  $("#preview-embed-iframe").html(el.iframe);
-  if ($("#preview-embed").css("display") == "none"){
-    $("#preview-embed").css("display","block");
+//  document.getElementById('embed_code_medium').val(el.link);
+  document.getElementById('preview-embed-link').setAttribute('href', el.link);
+  document.getElementById("sharable-url").innerHTML(el.link);
+  document.getElementById("preview-embed-iframe").innerHTML(el.iframe);
+  if (document.getElementById("preview-embed").style.display == "none"){
+    document.getElementById("preview-embed").style.display = "block";
   }
 }
 
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
   if (window.innerWidth <= 700) {
-    var intro = $('#intro-copy');
-    $('#intro-copy').remove();
-    $('#screencast').prepend(intro);
+    var intro = document.getElementById('intro-copy');
+    document.getElementById('intro-copy').parentNode.removeChild(document.getElementById('intro-copy'));
+    document.getElementById('screencast').insertBefore(intro, document.getElementById('screencast').firstChild);
   }
+
   // More Options
-  $(".show-options").click(function (e) {
-    $(this).hide();
-    $(".hide-options").show();
+  document.getElementById("show-options").addEventListener("click", function (e) {
+    this.style.display = "none";
+    document.getElementById("hide-options").show();
     $(".more-options").slideDown();
     return false;
   });
 
-  $(".hide-options").click(function (e) {
-    $(this).hide();
-    $(".show-options").show();
+  document.getElementById("hide-options").addEventListener("click", function (e) {
+    this.style.display = "none";
+    document.getElementById("show-options").show();
     $(".more-options").slideUp();
     return false;
   });
 
   // Preview
-  $("#iframe-preview-button").click(function () {
+  document.getElementById("iframe-preview-button").addEventListener("click", function () {
     updateEmbedCode();
     var $embed = $("#preview-embed-iframe");
 
