@@ -142,9 +142,9 @@ function updateEmbedCode(element, options) {
   e_embed.value = el.copybox;
 //  document.getElementById('embed_code_medium').val(el.link);
   document.getElementById('preview-embed-link').setAttribute('href', el.link);
-  document.getElementById("sharable-url").innerHTML(el.link);
-  document.getElementById("preview-embed-iframe").innerHTML(el.iframe);
-  if (document.getElementById("preview-embed").style.display == "none"){
+  document.getElementById("sharable-url").innerHTML = el.link;
+  document.getElementById("preview-embed-iframe").innerHTML = el.iframe;
+  if (!document.getElementById("preview-embed").style.display){
     document.getElementById("preview-embed").style.display = "block";
   }
 }
