@@ -60,6 +60,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "media/TL.Media.js";
 
 // MEDIA TYPES
+	// @codekit-prepend "media/types/TL.Media.Auvio.js";
 	// @codekit-prepend "media/types/TL.Media.Blockquote.js";
 	// @codekit-prepend "media/types/TL.Media.DailyMotion.js";
 	// @codekit-prepend "media/types/TL.Media.DocumentCloud.js";
