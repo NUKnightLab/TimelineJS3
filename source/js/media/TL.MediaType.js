@@ -28,6 +28,12 @@ TL.MediaType = function(m, image_only) {
 				cls: 		TL.Media.Vimeo
 			},
 			{
+				type: 		"auvio",
+				name: 		"RTBF Auvio",
+				match_str: 	"^(https?:)?\/*(www.)?(local.|itt.|uat.)?rtbf\.be\/(auvio\/embed\/media|embed\/m)",
+				cls: 		TL.Media.Auvio
+			},
+			{
 				type: 		"dailymotion",
 				name: 		"DailyMotion",
 				match_str: 	"^(https?:)?\/*(www.)?dailymotion\.com",
