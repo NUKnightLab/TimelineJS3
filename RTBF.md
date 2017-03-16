@@ -24,12 +24,12 @@ The built CSS file `timeline.css` should be copied in [`/news/common/public/stat
 
 This way, the file will be versioned in GitHub and compiled to CSS...
 
-Do the same with the files inside the folders `fonts` and `theme`.
+Do the same with the files inside the folders `fonts` and `themes`
 
 See:
 
 * [`/news/common/public/static/scss/vendor/timelinejs/fonts/`](https://github.com/RTBF/cryo-news-common/tree/master/public/static/scss/vendor/timelinejs/fonts)
-* [`/news/common/public/static/scss/vendor/timelinejs/theme/`](https://github.com/RTBF/cryo-news-common/tree/master/public/static/scss/vendor/timelinejs/theme)
+* [`/news/common/public/static/scss/vendor/timelinejs/themes/`](https://github.com/RTBF/cryo-news-common/tree/master/public/static/scss/vendor/timelinejs/themes)
 
 
 #### Font files
