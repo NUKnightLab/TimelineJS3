@@ -86,7 +86,7 @@ function getLinkAndIframe() {
   /* IFRAME AND LINK
   ================================================== */
 //  vars    =  generator_embed_path + "?source=" + source_key;
-  vars    =  "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=" + source_key;  
+  vars    =  "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=" + source_key;
   vars    += "&font=" + e_font.getAttribute("data-value");
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
@@ -159,14 +159,14 @@ document.addEventListener("DOMContentLoaded", function() {
   // More Options
   document.getElementById("show-options").addEventListener("click", function (e) {
     this.style.display = "none";
-    document.getElementById("hide-options").show();
+    $("#hide-options").show();
     $(".more-options").slideDown();
     return false;
   });
 
   document.getElementById("hide-options").addEventListener("click", function (e) {
     this.style.display = "none";
-    document.getElementById("show-options").show();
+    $("#show-options").show();
     $(".more-options").slideUp();
     return false;
   });
