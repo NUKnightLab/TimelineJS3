@@ -86,7 +86,7 @@ function getLinkAndIframe() {
   /* IFRAME AND LINK
   ================================================== */
 //  vars    =  generator_embed_path + "?source=" + source_key;
-  vars    =  "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=" + source_key;  
+  vars    =  "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=" + source_key;
   vars    += "&font=" + e_font.getAttribute("data-value");
   vars    += "&lang=" + e_language.value;
   if (start_at_end) {
