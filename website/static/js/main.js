@@ -157,16 +157,16 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // More Options
-  document.getElementById("show-options").addEventListener("click", function (e) {
-    this.style.display = "none";
-    document.getElementById("hide-options").show();
+  $("#show-options").click(function (e) {
+    $(this).hide();
+    $("#hide-options").show();
     $(".more-options").slideDown();
     return false;
   });
 
-  document.getElementById("hide-options").addEventListener("click", function (e) {
-    this.style.display = "none";
-    document.getElementById("show-options").show();
+  $("#hide-options").click(function (e) {
+    $(this).hide();
+    $("#show-options").show();
     $(".more-options").slideUp();
     return false;
   });
