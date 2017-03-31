@@ -1,3 +1,8 @@
+3.4.8 (2017-03-31)
+------------------
+* Fix missing accent in French translation
+* Add additional Thai translation
+
 3.4.7 (2016-01-12)
 * PR #447 Enable Vimeo fullscreen controls
 
