@@ -239,18 +239,12 @@ TL.Timeline = TL.Class.extend({
 			var firstSlide = 0;
 
 			if (keyName == 'ArrowLeft'){
-				if (currentSlide==firstSlide){
-					self.goTo(firstSlide);
-				}
-				else{
+				if (currentSlide!=firstSlide){
 					self.goToPrev();
 				}
 			}
 			else if (keyName == 'ArrowRight'){
-				if (currentSlide==lastSlide){
-					self.goTo(lastSlide);
-				}
-				else{
+				if (currentSlide!=lastSlide){
 					self.goToNext();
 				}
 			}
