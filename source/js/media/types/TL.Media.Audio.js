@@ -68,13 +68,6 @@ TL.Media.Audio = TL.Media.extend({
 			case "m4a":
 				type += "mp4";
 				break;
-			case "oga":
-			case "ogg":
-				type += "ogg";
-				break;
-			case "webma":
-				type += "webm";
-				break;
 			default:
 				type = "audio";
 				break;

@@ -162,13 +162,13 @@ TL.MediaType = function(m, image_only) {
 			{
 				type: 		"video",
 				name: 		"Video",
-				match_str: 	/(mp4|webm|ogv|ogm)(\?.*)?$/i,
+				match_str: 	/(mp4)(\?.*)?$/i,
 				cls: 		TL.Media.Video
 			},
 			{
 				type: 		"audio",
 				name: 		"Audio",
-				match_str: 	/(mp3|wav|m4a|ogg|oga|webma)(\?.*)?$/i,
+				match_str: 	/(mp3|wav|m4a)(\?.*)?$/i,
 				cls: 		TL.Media.Audio
 			},
 			{

@@ -62,13 +62,6 @@ TL.Media.Video = TL.Media.extend({
 			case "mp4":
 				type += "mp4";
 				break;
-			case "webm":
-				type += "webm";
-				break;
-			case "ogv":
-			case "ogm":
-				type += "ogg";
-				break;
 			default:
 				type = "video";
 				break;
