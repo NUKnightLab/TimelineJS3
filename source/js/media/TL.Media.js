@@ -61,11 +61,11 @@ TL.Media = TL.Class.extend({
 		//Options
 		this.options = {
 			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
-			api_key_googlemaps: 	"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
+			api_key_googlemaps: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
 			api_key_embedly: 		"", // ae2da610d1454b66abdf2e6a4c44026d
 			credit_height: 			0,
 			caption_height: 		0,
-			background:             0   // is background media (for slide)
+			background:         0   // is background media (for slide)
 		};
 
 		this.animator = {};
@@ -109,12 +109,12 @@ TL.Media = TL.Class.extend({
 		}
 	},
 
-    _updateMessage: function(msg) {
-        if(this.message) {
-            this.message.updateMessage(msg);
-        }    
-    },
-    
+  _updateMessage: function(msg) {
+      if(this.message) {
+          this.message.updateMessage(msg);
+      }
+  },
+
 	loadingMessage: function() {
 	    this._updateMessage(this._('loading') + " " + this.options.media_name);
 	},
@@ -162,7 +162,7 @@ TL.Media = TL.Class.extend({
 
 	/*	Media Specific
 	================================================== */
-    _loadMedia: function() {        
+    _loadMedia: function() {
         // All overrides must call this.onLoaded() to set state
         this.onLoaded();
     },
@@ -183,7 +183,7 @@ TL.Media = TL.Class.extend({
         // Image-based media types should return <img>-compatible src url
         return "";
     },
-    
+
 	/*	Public
 	================================================== */
 	show: function() {
@@ -204,10 +204,10 @@ TL.Media = TL.Class.extend({
 		this.onRemove();
 	},
 
-    getImageURL: function(w, h) {
-        return this._getImageURL(w, h);
-    },
-    
+  getImageURL: function(w, h) {
+      return this._getImageURL(w, h);
+  },
+
 	// Update Display
 	updateDisplay: function(w, h, l) {
 		this._updateDisplay(w, h, l);

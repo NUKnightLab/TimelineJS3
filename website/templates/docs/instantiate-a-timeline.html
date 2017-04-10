@@ -2,128 +2,132 @@
 
 {% block content %}
 
-<section>
-  <div class="row">
-    <div class="small-12 columns">
-      <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
-    <h2 id="add-javascript">Integrate Timeline using Javascript</h2>
+<article id="product-body">
+  <section class="section-color container" id="overriding-styles">
+    <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+    <h2 class="header-story" id="add-javascript">Integrate Timeline using Javascript</h2>
     <p>
       Most of our users are happy to use the markup created in our <a href="/index.html#make">simple authoring tool</a> to publish their timeline. However, if you want to substantially customize the visual presentation of your timeline, or integrate it with other parts of your page, you will need to understand some more technical details.
     </p>
-    <p>
-      There are three key things you need to include on your page to embed a timeline:
-      <ol>
-        <li>A <code>link</code> tag loading the Timeline CSS.</li>
-        <li>A <code>script</code> tag loading the Timeline javascript.</li>
-        <li>A second <code>script</code> tag which creates a Timeline.</li>
-      </ol>
-      Sometimes you'll add more things:
-      <ul>
-        <li>a <code>link</code> tag for <a href="#custom-fonts">custom fonts.</a></li>
-        <li>a <code>link</code> tag to override some of TimelineJS's CSS.</li>
-        <li>Javascript code to read configuration data from a Google Spreadsheet.</li>
-      </ul>
-    </p>
+  </section>
+  <section class="section-color container">
+    <div class="grid">
+      <div class="column-12">
+        <p>
+          There are three key things you need to include on your page to embed a timeline:
+          <ol>
+            <li>A <code>link</code> tag loading the Timeline CSS.</li>
+            <li>A <code>script</code> tag loading the Timeline javascript.</li>
+            <li>A second <code>script</code> tag which creates a Timeline.</li>
+          </ol>
+          Sometimes you'll add more things:
+          <ul>
+            <li>a <code>link</code> tag for <a href="#custom-fonts">custom fonts.</a></li>
+            <li>a <code>link</code> tag to override some of TimelineJS's CSS.</li>
+            <li>Javascript code to read configuration data from a Google Spreadsheet.</li>
+          </ul>
+        </p>
 
-    <pre class="prettyprint lang-html">
-    &lt;!-- 1 --&gt;
-    &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
-
-    &lt;!-- 2 --&gt;
-    &lt;script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
-
-    &lt;div id='timeline-embed' style="width: 100%; height: 600px"&gt;&lt;/div&gt;
-
-    &lt;!-- 3 --&gt;
-    &lt;script type="text/javascript"&gt;
-      // The TL.Timeline constructor takes at least two arguments:
-      // the id of the Timeline container (no '#'), and
-      // the URL to your JSON data file or Google spreadsheet.
-      // the id must refer to an element "above" this code,
-      // and the element must have CSS styling to give it width and height
-      // optionally, a third argument with configuration options can be passed.
-      // See below for more about options.
-      timeline = new TL.Timeline('timeline-embed',
-        'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
-    &lt;/script&gt;</pre>
-
-    </div>
-    <div class="small-12 columns">
-    <h3 id="in-page-json">Creating your own JSON</h3>
-    <p>
-      If you are retrieving JSON from a URL, you can simply use that URL as the second argument, just as if you are
-      loading data from a Google spreadsheet. If instead you have something in your page which will put the data together,
-      you can also pass a JSON object as the second argument.
-    </p>
-    <p>
-      Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.
       <pre class="prettyprint lang-html">
+      &lt;!-- 1 --&gt;
+      &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
+
+      &lt;!-- 2 --&gt;
+      &lt;script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
+
+      &lt;div id='timeline-embed' style="width: 100%; height: 600px"&gt;&lt;/div&gt;
+
       &lt;!-- 3 --&gt;
       &lt;script type="text/javascript"&gt;
-        var timeline_json = make_the_json(); // you write this part
-        // two arguments: the id of the Timeline container (no '#')
-        // and the JSON object or an instance of TL.TimelineConfig created from
-        // a suitable JSON object
-        window.timeline = new TL.Timeline('timeline-embed', timeline_json);
+        // The TL.Timeline constructor takes at least two arguments:
+        // the id of the Timeline container (no '#'), and
+        // the URL to your JSON data file or Google spreadsheet.
+        // the id must refer to an element "above" this code,
+        // and the element must have CSS styling to give it width and height
+        // optionally, a third argument with configuration options can be passed.
+        // See below for more about options.
+        timeline = new TL.Timeline('timeline-embed',
+          'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
       &lt;/script&gt;</pre>
 
-    </p>
-    </div>
-    <div class="small-12 columns">
-      <h3 id="options">Configuring TimelineJS options</h3>
-      <p><code>TL.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
-      <pre class="prettyprint lang-html">
+      </div>
+      <div class="column-12">
+      <h3 id="in-page-json">Creating your own JSON</h3>
+      <p>
+        If you are retrieving JSON from a URL, you can simply use that URL as the second argument, just as if you are
+        loading data from a Google spreadsheet. If instead you have something in your page which will put the data together,
+        you can also pass a JSON object as the second argument.
+      </p>
+      <p>
+        Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.
+        <pre class="prettyprint lang-html">
+        &lt;!-- 3 --&gt;
         &lt;script type="text/javascript"&gt;
-          var additionalOptions = {
-            start_at_end: true,
-            default_bg_color: {r:0, g:0, b:0},
-            timenav_height: 250
-          }
+          var timeline_json = make_the_json(); // you write this part
+          // two arguments: the id of the Timeline container (no '#')
+          // and the JSON object or an instance of TL.TimelineConfig created from
+          // a suitable JSON object
+          window.timeline = new TL.Timeline('timeline-embed', timeline_json);
+        &lt;/script&gt;</pre>
 
-          timeline = new TL.Timeline('timeline-embed',
-          'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
-          additionalOptions);
-        &lt;/script&gt;
-      </pre>
+      </p>
+      </div>
+      <div class="column-12">
+        <h3 id="options">Configuring TimelineJS options</h3>
+        <p><code>TL.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
+        <pre class="prettyprint lang-html">
+          &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+              start_at_end: true,
+              default_bg_color: {r:0, g:0, b:0},
+              timenav_height: 250
+            }
 
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+          &lt;/script&gt;
+        </pre>
+
+      </div>
+      <div class="column-12">
+      <h3 id="custom-fonts">Using custom fonts</h3>
+      <p>Timeline offers several pre-selected font sets. When you use our simple tool, the fonts get included for you, but if you're using the methods on this page, you'll have to load them yourself.</p>
+      <p>
+        To include them, use markup like this, a variation on step 1 above.
+            <pre class="prettyprint lang-html">
+      &lt;!-- 1 --&gt;
+      &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
+      &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css"&gt;</pre>
+      </p>
+      <p>
+          Of course, you'll change <code>font.abril-droidsans.css</code> according to which fonts you choose. Here are all the values which you might use there:
+          <ul>
+            <li>font.abril-droidsans.css</li>
+            <li>font.amatic-andika.css</li>
+            <li>font.bevan-pontanosans.css</li>
+            <li>font.bitter-raleway.css</li>
+            <li>font.clicker-garamond.css</li>
+            <li>font.dancing-ledger.css</li>
+            <li>font.default.css</li>
+            <li>font.fjalla-average.css</li>
+            <li>font.georgia-helvetica.css</li>
+            <li>font.knightlab.css</li>
+            <li>font.lustria-lato.css</li>
+            <li>font.medula-lato.css</li>
+            <li>font.oldstandard.css</li>
+            <li>font.opensans-gentiumbook.css</li>
+            <li>font.playfair-faunaone.css</li>
+            <li>font.playfair.css</li>
+            <li>font.pt.css</li>
+            <li>font.roboto-megrim.css</li>
+            <li>font.rufina-sintony.css</li>
+            <li>font.ubuntu.css</li>
+            <li>font.unicaone-vollkorn.css</li>
+          </ul></p>
+      </div>
+      <p>You can <a href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN. You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a> If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">our LESS files on GitHub</a>.</p>
     </div>
-    <div class="small-12 columns">
-    <h3 id="custom-fonts">Using custom fonts</h3>
-    <p>Timeline offers several pre-selected font sets. When you use our simple tool, the fonts get included for you, but if you're using the methods on this page, you'll have to load them yourself.</p>
-    <p>
-      To include them, use markup like this, a variation on step 1 above.
-          <pre class="prettyprint lang-html">
-    &lt;!-- 1 --&gt;
-    &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
-    &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css"&gt;</pre>
-    </p>
-    <p>
-        Of course, you'll change <code>font.abril-droidsans.css</code> according to which fonts you choose. Here are all the values which you might use there:
-        <ul>
-          <li>font.abril-droidsans.css</li>
-          <li>font.amatic-andika.css</li>
-          <li>font.bevan-pontanosans.css</li>
-          <li>font.bitter-raleway.css</li>
-          <li>font.clicker-garamond.css</li>
-          <li>font.dancing-ledger.css</li>
-          <li>font.default.css</li>
-          <li>font.fjalla-average.css</li>
-          <li>font.georgia-helvetica.css</li>
-          <li>font.knightlab.css</li>
-          <li>font.lustria-lato.css</li>
-          <li>font.medula-lato.css</li>
-          <li>font.oldstandard.css</li>
-          <li>font.opensans-gentiumbook.css</li>
-          <li>font.playfair-faunaone.css</li>
-          <li>font.playfair.css</li>
-          <li>font.pt.css</li>
-          <li>font.roboto-megrim.css</li>
-          <li>font.rufina-sintony.css</li>
-          <li>font.ubuntu.css</li>
-          <li>font.unicaone-vollkorn.css</li>
-        </ul></p>
-    </div>
-    <p>You can <a href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN. You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a> If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">our LESS files on GitHub</a>.</p>
-  </div>
-</section>
+  </section>
+</article>
 {% endblock %}

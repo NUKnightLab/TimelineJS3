@@ -15,16 +15,23 @@ TL.Media.Spotify = TL.Media.extend({
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-spotify", this._el.content);
 
 		// Get Media ID
-		if (this.data.url.match(/^spotify:track/) || this.data.url.match(/^spotify:user:.+:playlist:/)) {
+		if (this.data.url.match(/^spotify:track/) || this.data.url.match(/^spotify:album/) || this.data.url.match(/^spotify:user:.+:playlist:/)) {
 			this.media_id = this.data.url;
 		}
-		if (this.data.url.match(/spotify.com\/track\/(.+)/)) {
-			this.media_id = "spotify:track:" + this.data.url.match(/spotify.com\/track\/(.+)/)[1];
-		} else if (this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)) {
-			var user = this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)[1];
-			var playlist = this.data.url.match(/spotify.com\/user\/(.+?)\/playlist\/(.+)/)[2];
+
+		if (this.data.url.match(/spotify\.com\/track\/(.+)/)) {
+			this.media_id = "spotify:track:" + this.data.url.match(/spotify\.com\/track\/(.+)/)[1];
+		} else if (this.data.url.match(/spotify\.com\/album\/(.+)/)) {
+			this.media_id = "spotify:album:" + this.data.url.match(/spotify\.com\/album\/(.+)/)[1];
+		} else if (this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)) {
+			var user = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[1];
+			var playlist = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[2];
 			this.media_id = "spotify:user:" + user + ":playlist:" + playlist;
+		} else if (this.data.url.match(/spotify\.com\/artist\/(.+)/)) {
+			var artist = this.data.url.match(/spotify\.com\/artist\/(.+)/)[1];
+			this.media_id = "spotify:artist:" + artist;
 		}
+
 
 		if (this.media_id) {
 			// API URL

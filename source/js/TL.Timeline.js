@@ -85,6 +85,8 @@ https://incident57.com/codekit/
 	// @codekit-prepend "media/types/TL.Media.Website.js";
 	// @codekit-prepend "media/types/TL.Media.Wikipedia.js";
 	// @codekit-prepend "media/types/TL.Media.YouTube.js";
+	// @codekit-prepend "media/types/TL.Media.Audio.js";
+	// @codekit-prepend "media/types/TL.Media.Video.js";
 
 // STORYSLIDER
 	// @codekit-prepend "slider/TL.Slide.js";

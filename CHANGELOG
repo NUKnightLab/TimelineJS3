@@ -1,4 +1,15 @@
-3.4.7 (TBD)
+3.4.9 (TBD)
+------------------
+* PR #468 support audio and video files (.mp4, .mp3, .wav, .m4a)
+* PR #460 improve spotify documentation and support album and artist pages
+* PR #454 use the `lang` attribute set in the embed url as the lang for the iframe
+
+3.4.8 (2017-03-31)
+------------------
+* Fix missing accent in French translation
+* Add additional Thai translation
+
+3.4.7 (2016-01-12)
 * PR #447 Enable Vimeo fullscreen controls
 
 3.4.6 (2016-12-12)

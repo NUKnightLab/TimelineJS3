@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 2016-12-12-17-36-22 - 2016-12-12
+    TimelineJS - ver. 2017-03-31-15-29-59 - 2017-03-31
     Copyright (c) 2012-2016 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -8934,6 +8934,10 @@ TL.Media.Vimeo = TL.Media.extend({
 		this.player.height 		= "100%";
 		this.player.frameBorder = "0";
 		this.player.src 		= api_url;
+
+		this.player.setAttribute('allowfullscreen', '');
+		this.player.setAttribute('webkitallowfullscreen', '');
+		this.player.setAttribute('mozallowfullscreen', '');
 
 		// After Loaded
 		this.onLoaded();
