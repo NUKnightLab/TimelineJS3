@@ -17,7 +17,7 @@ TL.Media.Image = TL.Media.extend({
         if(!this.options.background) {
             this.createMedia();
         }
-        
+
         // After loaded
 		this.onLoaded();
 	},
@@ -25,11 +25,11 @@ TL.Media.Image = TL.Media.extend({
     createMedia: function() {
         var self = this,
             image_class = "tl-media-item tl-media-image tl-media-shadow";
-        
+
 		if (this.data.url.match(/.png(\?.*)?$/) || this.data.url.match(/.svg(\?.*)?$/)) {
 			image_class = "tl-media-item tl-media-image"
 		}
-		
+
  		// Link
 		if (this.data.link) {
 			this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
@@ -39,7 +39,19 @@ TL.Media.Image = TL.Media.extend({
 		} else {
 			this._el.content_item				= TL.Dom.create("img", image_class, this._el.content);
 		}
-		
+
+		if (this.data.alt) {
+			this._el.content_item.alt = this.data.alt;
+		} else if (this.data.caption) {
+			this._el.content_item.alt = TL.Util.unhtmlify(this.data.caption);
+		}
+
+		if (this.data.title) {
+			this._el.content_item.title = this.data.title;
+		} else if (this.data.caption) {
+			this._el.content_item.title = TL.Util.unhtmlify(this.data.caption);
+		}
+
 		// Media Loaded Event
 		this._el.content_item.addEventListener('load', function(e) {
 			self.onMediaLoaded();
@@ -47,11 +59,11 @@ TL.Media.Image = TL.Media.extend({
 
 		this._el.content_item.src			= this.getImageURL();
     },
-        
+
     getImageURL: function(w, h) {
         return TL.Util.transformImageURL(this.data.url);
     },
-    
+
 	_updateMediaDisplay: function(layout) {
 		if(TL.Browser.firefox) {
 			//this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
