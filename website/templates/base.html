@@ -1,104 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% block header %}
-    <title>Timeline JS3 - Beautifully crafted timelines that are easy, and intuitive to use.</title>
-    <meta name="description" content="Beautifully crafted timelines that are easy, and intuitive to use.">
-    {% endblock %}
 
-    <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="author" content="Northwestern University Knight Lab">
-  <meta name="viewport" content="initial-scale=1,width=device-width">
-  <meta name="image" content="https://cdn.knightlab.com/libs/purpleline/latest/img/logos/logo_stacked_600x548_white_padded.png">
-<!--    someone needs to go through Blueline and fix the small viewport CSS details before we can turn this on.
-  -->
-    <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
-    <link rel="stylesheet" href="/build/css/timeline.css">
-    <!-- endbuild -->
-  <link rel="icon" type="image/png" href="https://cdn.knightlab.com/libs/purpleline/latest/img/favicon.png">
-  <link href="//cloud.webtype.com/css/d4767ecb-457a-4677-8761-72f890add836.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="https://cdn.knightlab.com/libs/purpleline/latest/css/purpleline.css">
-	<link title="" rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<head>
+{% block head %}
+    {% include "_head.html" %}
+{% endblock head %}
 </head>
+
 <body>
 
-  {% block nav %}
-    {% include "_nav.html" %}
-  {% endblock %}
-	{% block content %}
-	{% endblock %}
-<footer>
-      <div class="about-knightlab">
-        <div id="knightlab-logo-column">
-          <a href="//knightlab.northwestern.edu" target="_blank"><img src="https://cdn.knightlab.com/libs/purpleline/latest/img/logos/logo_stacked_256x256_NOtagline_transparent_padded.png" class="img-responsive"></a>
-          <ul class="contact-icons">
-            <li><a title="follow @knightlab on Twitter" href="//www.twitter.com/knightlab"><i class="fa fa-twitter"></i></a></li>
-            <li><a title="Knight Lab on Facebook" href="https://www.facebook.com/knightlab"><i class="fa fa-facebook"></i></a></li>
-            <li><a title="email Knight Lab" href="mailto:Knightlab@northwestern.edu"><i class="fa fa-envelope-o"></i></a></li>
-            <li><a title="Knight Lab on GitHub" href="https://github.com/NUKnightLab/"><i class="fa fa-github-alt"></i></a></li>
-          </ul>
-        </div>
-        <div id="knightlab-description">
-          <p>The <a title="Northwestern University" href="//www.northwestern.edu/" target="_blank">Northwestern University</a> Knight Lab is a team of technologists and journalists working at advancing news media innovation through exploration and experimentation.</p>
-          <p>A joint initiative of the <a href="//www.mccormick.northwestern.edu/" target="_blank">Robert R. McCormick School of Engineering and Applied Science</a> and the<a href="//www.medill.northwestern.edu/" target="_blank"> Medill School of Journalism, Media, Integrated Marketing Communications</a>.</p><img src="//knightlab.northwestern.edu/wp-content/uploads/2014/12/Logos-Horizontal.png" class="img-responsive logos">
-        </div>
-        <div class="contact">
-          <address itemscope="" itemtype="//data-vocabulary.org/Organization">
-            <span style="display:none;" itemprop="name" title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name">Knight Lab</span>
-            <span itemprop="tel" class="tel">(847) 467-4971 | </span>
-            <span itemprop="address" itemscope="" itemtype="//data-vocabulary.org/Address" class="address">
-              <span itemprop="street-address" class="street-address"><a href="https://maps.google.com/maps?q=1845+Sheridan+Road+Evanston+IL+6020&amp;hl=en&amp;ll=42.050942,-87.673511&amp;spn=0.003059,0.004898&amp;sll=42.050647,-87.674246&amp;sspn=0.012237,0.019591&amp;gl=us&amp;hnear=1845+Sheridan+Rd,+Evanston,+Cook,+Illinois+60201&amp;t=m&amp;z=18&amp;iwloc=A" target="_blank">1845 Sheridan Road Fisk #109 & #111</span>,
-              <span itemprop="locality">Evanston,</span>
-              <span itemprop="region">IL</span>
-              <span itemprop="postal-code">60208 |</span>
-              <span itemprop="country-name" class="address-country">United States</span>
-            </span>
-            <span style="display:none;" itemprop="geo" itemscope="" itemtype="//www.data-vocabulary.org/Geo/" class="geo">
-              Latitude: <span itemprop="latitude">42.056893</span><br>
-              Longitude: <span itemprop="longitude">-87.676735</span>
-            </span>
-            <a style="display:none;" href="//knightlab.northwestern.edu" itemprop="url" class="url">Northwestern University Knight Lab | Advancing media innovation through exploration and experimentation.</a>
-          </address>
-          <span class="copyright">| Copyright 2015, Northwestern University</span>
-        </div>
-      </div><!-- end .about-knightlab -->
-    </footer>
+<nav id="navbar-product-top" class="navbar navbar-dark">
+    <ul>
+        <li class="logo">
+            <a href="http://knightlab.com">
+                <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/knightlab-dark.png" />
+            </a>
+        </li>
+    </ul>
+    <ul class="nav-right column-hide-phone">
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/projects/">Projects</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/class">Class</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/devicelab">Device Lab</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/news/">Blog</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/events/">Community</a></li>
+        <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/about/">About</a></li>
+    </ul>
+</nav>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="https://cdn.knightlab.com/libs/purpleline/latest/js/purpleline.min.js"></script>
-<script src="https://cdn.knightlab.com/libs/purpleline/latest/js/foundation.dropdown.js"></script>
-<!--<script src="https://cdn.knightlab.com/libs/purpleline/latest/js/foundation.magellan.js"></script>-->
-<script type="text/javascript">
-  $(document).foundation();
-</script>
-<script src="{{ static_url }}/js/smoothscroll.js"></script>
-<!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
-<script src="/build/js/timeline.js"></script>
-<!-- endbuild -->
-  <!-- Google Analytics: don't mess with this stuff -->
-  <!-- named tracker notes from https://developers.google.com/analytics/devguides/collection/gajs/ -->
-  <!-- multi-domain tracking notes from https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite -->
-  <script>
-  var _gaq = _gaq || [];
-  _gaq.push(
-            function() {
-                var pageTracker = _gat._createTracker('UA-27829802-1', 'knightlabTracker');
-             },
-            ['knightlabTracker._setDomainName', 'knightlab.com'] // DON'T CHANGE THIS FOR SUBDOMAINS
-            ['knightlabTracker._setAllowLinker', true],
-            ['knightlabTracker._trackPageview']
-  );
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-  </script>
-  <!-- End Google Analytics -->
-  <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+{% block content %}
+{% endblock content %}
+
+{% block footer %}
+    {% include "_footer.html" %}
+{% endblock footer %}
+
 {% block scripts %}
-{% endblock %}
+    <!-- build:js https://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+    <script src="/build/js/timeline.js"></script>
+    <!-- endbuild -->
+    <script src="/static/js/main.js"></script>
+    <script src="https://cdn.knightlab.com/libs/orangeline/latest/js/main.js"></script>
+{% endblock scripts %}
 </body>
 </html>

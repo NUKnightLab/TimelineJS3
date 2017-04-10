@@ -16,6 +16,8 @@ import os
 
 # Add current directory to sys.path
 site_dir = os.path.dirname(os.path.abspath(__file__))
+examples_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'examples.json')
+faq_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'faq.json')
 
 if site_dir not in sys.path:
     sys.path.append(site_dir)
@@ -54,6 +56,12 @@ def inject_static_url():
     if static_url.endswith('/'):
         static_url = static_url.rstrip('/')
     return dict(static_url=static_url, STATIC_URL=static_url)
+
+
+@app.context_processor
+def inject_index_data():
+        return dict(examples=json.load(open(examples_json)),faqs=json.load(open(faq_json)))
+
 
 @app.route('/compiled/<path:path>')
 def catch_compiled(path):
