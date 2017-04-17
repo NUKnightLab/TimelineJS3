@@ -85,11 +85,22 @@ function getLinkAndIframe() {
 
   /* IFRAME AND LINK
   ================================================== */
-  vars    =  "https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=" + source_key;
 
   if ((window.location.host).includes("localhost:") || (window.location.host).includes("0.0.0.0:") ){
-    vars    =  "http://" + window.location.host + "/source/embed/index.html?source=" + source_key;
+    urlBase = "http://" + window.location.host + "/source/";
   }
+  else{
+    urlBase = "https://cdn.knightlab.com/libs/timeline3/latest/";
+  }
+
+  vars    =  urlBase + "embed/index.html?source=" + source_key;
+
+  vars    += "&font=" + e_font.getAttribute("data-value");
+  vars    += "&lang=" + e_language.value;
+
+  if (start_at_end) {
+    vars  += "&start_at_end=" + start_at_end;
+  } 
 
   if (timenav_position == "top") {
     vars += "&timenav_position=" + timenav_position;
