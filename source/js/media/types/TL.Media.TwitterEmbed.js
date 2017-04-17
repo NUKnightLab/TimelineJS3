@@ -3,8 +3,11 @@
 ================================================== */
 
 TL.Media.TwitterEmbed = TL.Media.extend({
+        
 	
 	includes: [TL.Events],
+    
+
 	
 	/*	Load the media
 	================================================== */
@@ -27,6 +30,23 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
+        
+            window.twttr = (function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0],
+t = window.twttr || {};
+if (d.getElementById(id)) return t;
+js = d.createElement(s);
+js.id = id;
+js.src = "https://platform.twitter.com/widgets.js";
+fjs.parentNode.insertBefore(js, fjs);
+
+t._e = [];
+t.ready = function(f) {
+t._e.push(f);
+};
+
+return t;
+}(document, "script", "twitter-wjs"));
 		
 		// API Call
 		TL.ajax({
@@ -63,6 +83,24 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 		
 		// Open links in new window
 		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+    
+        
+        if (tweet_text.includes("pic.twitter.com")) {
+            tweet = document.getElementsByClassName("tl-media-twitter");
+            var id = this.media_id;
+
+            twttr.widgets.createTweet(
+            id, tweet, 
+            {
+                conversation : 'none',    // or all
+                cards        : 'hidden',  // or visible 
+                theme        : 'light'    // or dark
+            })
+    .then (function (el) {
+      el.contentDocument.querySelector(".footer").style.display = "none";
+    });
+        }
+        else {
 
 		// 	TWEET CONTENT
 		tweet += tweet_text;
@@ -85,6 +123,7 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+        }
 			
 	},
 	

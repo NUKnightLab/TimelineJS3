@@ -3,11 +3,16 @@
 ================================================== */
 
 TL.Media.Twitter = TL.Media.extend({
+    
+
 	
 	includes: [TL.Events],
+    
+
 	
 	/*	Load the media
 	================================================== */
+
 	_loadMedia: function() {
 		var api_url,
 			self = this;
@@ -27,6 +32,23 @@ TL.Media.Twitter = TL.Media.extend({
 		
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
+        
+                                window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));
 		
 		// API Call
 		TL.ajax({
@@ -51,7 +73,8 @@ TL.Media.Twitter = TL.Media.extend({
 			tweetuser			= "",
 			tweet_status_temp 	= "",
 			tweet_status_url 	= "",
-			tweet_status_date 	= "";
+			tweet_status_date 	= "",
+            tweet_status_media  = "";
 			
 		//	TWEET CONTENT
 		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>";
@@ -62,6 +85,24 @@ TL.Media.Twitter = TL.Media.extend({
 		
 		// Open links in new window
 		tweet_text = tweet_text.replace(/<a href/ig, '<a class="tl-makelink" target="_blank" href');
+    
+        
+        if (tweet_text.includes("pic.twitter.com")) {
+            tweet = document.getElementsByClassName("tl-media-twitter");
+            var id = this.media_id;
+
+            twttr.widgets.createTweet(
+            id, tweet, 
+            {
+                conversation : 'none',    // or all
+                cards        : 'hidden',  // or visible 
+                theme        : 'light'    // or dark
+            })
+    .then (function (el) {
+      el.contentDocument.querySelector(".footer").style.display = "none";
+    });
+        }
+        else {
 
 		// 	TWEET CONTENT
 		tweet += tweet_text;
@@ -69,6 +110,7 @@ TL.Media.Twitter = TL.Media.extend({
 		//	TWEET AUTHOR
 		tweet += "<div class='vcard'>";
 		tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
+        tweet += "<img src='" + tweet_status_media + "' class='tl-media-item tl-media-image' target='_blank'>" + "</a>";
 		tweet += "<div class='author'>";
 		tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
 		tweet += "<span class='avatar'></span>";
@@ -84,17 +126,18 @@ TL.Media.Twitter = TL.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+        }
 			
 	},
 	
-	updateMediaDisplay: function() {
-		
-	},
-	
-	_updateMediaDisplay: function() {
-		
-	}
-	
+//	updateMediaDisplay: function() {
+//		
+//	},
+//	
+//	_updateMediaDisplay: function() {
+//		
+//	}
+//	
 	
 	
 });
