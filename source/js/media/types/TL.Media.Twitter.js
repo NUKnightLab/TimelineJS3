@@ -129,7 +129,7 @@ TL.Media.Twitter = TL.Media.extend({
 		//	TWEET AUTHOR
 		tweet += "<div class='vcard'>";
 		tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
-        tweet += "<img src='" + tweet_status_media + "' class='tl-media-item tl-media-image' target='_blank'>" + "</a>";
+        tweet += "<img src='" + "' class='tl-media-item tl-media-image' target='_blank'>" + "</a>";
 		tweet += "<div class='author'>";
 		tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
 		tweet += "<span class='avatar'></span>";
