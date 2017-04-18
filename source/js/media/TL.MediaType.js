@@ -55,7 +55,7 @@ TL.MediaType = function(m, image_only) {
 				type: 		"twitterembed",
 				name: 		"TwitterEmbed",
 				match_str: 	"<blockquote class=['\"]twitter-tweet['\"]",
-				cls: 		TL.Media.TwitterEmbed
+				cls: 		TL.Media.Twitter
 			},
 			{
 				type: 		"googlemaps",

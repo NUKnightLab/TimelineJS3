@@ -19,8 +19,10 @@ TL.Media.Twitter = TL.Media.extend({
 		// Create Dom element
 		this._el.content_item = TL.Dom.create("div", "tl-media-twitter", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
-		
+        		
 		// Get Media ID
+        if(this.data.url.match("^(https?:)?\/*(www.)?twitter\.com"))
+        {
 		if (this.data.url.match("status\/")) {
 			this.media_id = this.data.url.split("status\/")[1];
 		} else if (this.data.url.match("statuses\/")) {
@@ -28,7 +30,19 @@ TL.Media.Twitter = TL.Media.extend({
 		} else {
 			this.media_id = "";
 		}
+        }
+        
+        else if(this.data.url.match("<blockquote class=['\"]twitter-tweet['\"]")) {
 		
+        var found = this.data.url.match(/(status|statuses)\/(\d+)/);
+		if (found && found.length > 2) {
+		    this.media_id = found[2];
+		} else {
+		    self.loadErrorDisplay(self._("twitterembed_invalidurl_err"));
+		    return;
+		}
+    }
+        
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
         
@@ -99,9 +113,9 @@ TL.Media.Twitter = TL.Media.extend({
                             linkColor    : '#cc0000', // default is blue
                             theme        : 'light'    // or dark
                         })
-                    .then(function (evt) {
-                        this.onLoaded();
-                    });
+//                    .then(function (evt) {
+//                        this.onLoaded();
+//                    });
                 }
             );
             this._el.content_item.innerHTML	= tweet;
