@@ -78,6 +78,7 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 			
 		//	TWEET CONTENT
 		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>";
+        console.log(tweet_text);
 		tweetuser			= d.author_url.split("twitter.com\/")[1];
 		tweet_status_temp 	= d.html.split("<\/p>\&mdash;")[1].split("<a href=\"")[1];
 		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
@@ -85,7 +86,6 @@ TL.Media.TwitterEmbed = TL.Media.extend({
 		
 		// Open links in new window
 		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
-    
         
         if (tweet_text.includes("pic.twitter.com")) {
             twttr.ready(

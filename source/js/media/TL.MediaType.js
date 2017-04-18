@@ -54,7 +54,7 @@ TL.MediaType = function(m, image_only) {
 			{
 				type: 		"twitterembed",
 				name: 		"TwitterEmbed",
-				match_str: 	"<blockquote class=\"twitter-tweet\"",
+				match_str: 	"<blockquote class=['\"]twitter-tweet['\"]",
 				cls: 		TL.Media.TwitterEmbed
 			},
 			{
