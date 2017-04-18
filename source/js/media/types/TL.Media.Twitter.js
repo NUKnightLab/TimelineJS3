@@ -1,10 +1,9 @@
 /*	TL.Media.Twitter
 	Produces Twitter Display
 ================================================== */
+        var mediaID;
 
 TL.Media.Twitter = TL.Media.extend({
-    
-
 	
 	includes: [TL.Events],
     
@@ -33,22 +32,24 @@ TL.Media.Twitter = TL.Media.extend({
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
         
-                                window.twttr = (function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0],
-    t = window.twttr || {};
-  if (d.getElementById(id)) return t;
-  js = d.createElement(s);
-  js.id = id;
-  js.src = "https://platform.twitter.com/widgets.js";
-  fjs.parentNode.insertBefore(js, fjs);
+        window.twttr = (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+            t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
 
-  t._e = [];
-  t.ready = function(f) {
-    t._e.push(f);
-  };
+            t._e = [];
+            t.ready = function(f) {
+            t._e.push(f);
+        };
 
-  return t;
-}(document, "script", "twitter-wjs"));
+        return t;
+        }(document, "script", "twitter-wjs"));
+
+        mediaID = this.media_id;
 		
 		// API Call
 		TL.ajax({
@@ -88,21 +89,26 @@ TL.Media.Twitter = TL.Media.extend({
     
         
         if (tweet_text.includes("pic.twitter.com")) {
-            tweet = document.getElementsByClassName("tl-media-twitter");
-            var id = this.media_id;
-
-            twttr.widgets.createTweet(
-            id, tweet, 
-            {
-                conversation : 'none',    // or all
-                cards        : 'hidden',  // or visible 
-                theme        : 'light'    // or dark
-            })
-    .then (function (el) {
-      el.contentDocument.querySelector(".footer").style.display = "none";
-    });
-        }
-        else {
+            
+            twttr.ready(
+                function(evt) {
+                    tweet = document.getElementsByClassName("tl-media-twitter")[0];
+                    var id = String(mediaID);
+                    twttr.widgets.createTweet(id, tweet,
+                        {
+                            conversation : 'none',    // or all
+                            linkColor    : '#cc0000', // default is blue
+                            theme        : 'light'    // or dark
+                        })
+                    .then(function (evt) {
+                        this.onLoaded();
+                    });
+                }
+            );
+            this._el.content_item.innerHTML	= tweet;
+            this.onLoaded();
+            
+        } else {
 
 		// 	TWEET CONTENT
 		tweet += tweet_text;
@@ -130,14 +136,14 @@ TL.Media.Twitter = TL.Media.extend({
 			
 	},
 	
-//	updateMediaDisplay: function() {
-//		
-//	},
-//	
-//	_updateMediaDisplay: function() {
-//		
-//	}
-//	
+	updateMediaDisplay: function() {
+		
+	},
+	
+	_updateMediaDisplay: function() {
+		
+	}
+	
 	
 	
 });
