@@ -231,6 +231,25 @@ TL.Timeline = TL.Class.extend({
 			TL.DomUtil.addClass(this._el.container, 'tl-timeline-full-embed');
 		}
 
+		document.addEventListener("keydown", function(event) {
+			var keyName = event.key;
+			var currentSlide = self._getSlideIndex(self.current_id);
+			var _n = self.config.events.length - 1;
+			var lastSlide = self.config.title ? _n + 1 : _n;
+			var firstSlide = 0;
+
+			if (keyName == 'ArrowLeft'){
+				if (currentSlide!=firstSlide){
+					self.goToPrev();
+				}
+			}
+			else if (keyName == 'ArrowRight'){
+				if (currentSlide!=lastSlide){
+					self.goToNext();
+				}
+			}
+		});
+
 		// Use Relative Date Calculations
 		// NOT YET IMPLEMENTED
 		if(this.options.relative_date) {
