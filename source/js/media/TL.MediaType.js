@@ -187,7 +187,6 @@ TL.MediaType = function(m, image_only) {
             switch(media_types[i].type) {
                 case "flickr":
                 case "image":
-                case "imgur":
                 case "instagram":
                     if (m.url.match(media_types[i].match_str)) {
                         media = media_types[i];

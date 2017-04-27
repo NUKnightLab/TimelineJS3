@@ -10,14 +10,17 @@ TL.Media.Imgur = TL.Media.extend({
 	================================================== */
 	_loadMedia: function() {
 		try {
+			var self = this;
+
+			if (this.data.url)
 		    this.media_id = this.data.url.split('/').slice(-1)[0];
-
-            if(!this.options.background) {
-                this.createMedia();
-            }
-
-			// After Loaded
-			this.onLoaded();
+	
+	        TL.Load.js([
+						'https://s.imgur.com/min/embed.js'], 
+					function(){
+						self.createMedia();
+					}
+			);
 
 		} catch(e) {
 		    this.loadErrorDisplay(this._("imgur_invalidurl_err"));
@@ -26,37 +29,56 @@ TL.Media.Imgur = TL.Media.extend({
 
 	createMedia: function() {
 	    var self = this;
+		var api_url = "https://api.imgur.com/oembed.json?url=" + this.data.url;
 
-		// Link
-		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
-		this._el.content_link.href 			= this.data.url;
-		this._el.content_link.target 		= "_blank";
+		// Content div
+		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-image tl-media-imgur",
+																								this._el.content);
 
-		// Photo
-		this._el.content_item	= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-imgur tl-media-shadow", this._el.content_link);
+		// API Call
 
-		if (this.data.alt) {
-			this._el.content_item.alt = this.data.alt;
-		} else if (this.data.caption) {
-			this._el.content_item.alt = TL.Util.unhtmlify(this.data.caption);
-		}
+          TL.ajax({
+          	type: 'GET',
+            url: api_url,
+            dataType: 'json',
+            success: function(data){
+            try {
+                self._el.content_item.innerHTML	= data.html;
+            	setInterval(function(){
+            		if(document.querySelector("blockquote.imgur-embed-pub") == null){
+            			clearInterval();
+            		}
+            		else{
+            			imgurEmbed.createIframe();
+            			document.getElementById("imageElement").removeAttribute("style");
+            			document.getElementById("image").removeAttribute("style");
+            		}
+            	}, 2000);
+            } catch(e) {
+            }
+            },
+            error: function(xhr, errorType, error) {
+              tc = new TL.TimelineConfig();
+              if (errorType == 'parsererror') {
+                var error = new TL.Error("invalid_url_err");
+              } else {
+                var error = new TL.Error("unknown_read_err", errorType);
+              }
+              self.loadErrorDisplay(self._("imgur_invalidurl_err"));
+              tc.logError(error);
+            }
+          });
 
-		if (this.data.title) {
-			this._el.content_item.title = this.data.title;
-		} else if (this.data.caption) {
-			this._el.content_item.title = TL.Util.unhtmlify(this.data.caption);
-		}
+         this.onLoaded();
 
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-    this._el.content_item.src			= this.getImageURL();
 	},
 
-	getImageURL: function(w, h) {
-	    return 'https://i.imgur.com/' + this.media_id + '.jpg';
+
+
+	_updateMediaDisplay: function() {
+		//this.el.content_item = document.getElementById(this._el.content_item.id);
+		this._el.content_item.style.width = this.options.width + "px";
+		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this.options.width}) + "px";
 	}
 
 });
