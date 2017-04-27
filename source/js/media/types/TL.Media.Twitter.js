@@ -116,6 +116,8 @@ TL.Media.Twitter = TL.Media.extend({
                             linkColor    : '#cc0000', // default is blue
                             theme        : 'light'    // or dark
                         })
+                }
+            );
             
             this.onLoaded();
             counter+=1;
