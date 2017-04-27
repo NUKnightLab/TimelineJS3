@@ -1,8 +1,6 @@
 /*	TL.Media.Twitter
 	Produces Twitter Display
 ================================================== */
-        var mediaID;
-        var counter = -1;
 
 TL.Media.Twitter = TL.Media.extend({
 	
@@ -46,25 +44,6 @@ TL.Media.Twitter = TL.Media.extend({
         
 		// API URL
 		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
-        
-        window.twttr = (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0],
-            t = window.twttr || {};
-            if (d.getElementById(id)) return t;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "https://platform.twitter.com/widgets.js";
-            fjs.parentNode.insertBefore(js, fjs);
-
-            t._e = [];
-            t.ready = function(f) {
-            t._e.push(f);
-        };
-
-        return t;
-        }(document, "script", "twitter-wjs"));
-
-        mediaID = this.media_id;
 		
 		// API Call
 		TL.ajax({
@@ -90,7 +69,8 @@ TL.Media.Twitter = TL.Media.extend({
 			tweetuser			= "",
 			tweet_status_temp 	= "",
 			tweet_status_url 	= "",
-			tweet_status_date 	= "";
+			tweet_status_date 	= "",
+            self = this;
 			
 		//	TWEET CONTENT
 		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>";
@@ -104,50 +84,41 @@ TL.Media.Twitter = TL.Media.extend({
         
         if (tweet_text.includes("pic.twitter.com")) {
             
-            twttr.ready(
-                function(evt) {
-                    var ct = counter;
-                    tweet = document.getElementsByClassName("tl-media-twitter")[ct];
-//                    console.log(ct);
-                    var id = String(mediaID);
-                    twttr.widgets.createTweet(id, tweet,
-                        {
-                            conversation : 'none',    // or all
-                            linkColor    : '#cc0000', // default is blue
-                            theme        : 'light'    // or dark
-                        })
-                }
-            );
+            TL.Load.js('https://platform.twitter.com/widgets.js', function() {
+                twttr.widgets.createTweet(self.media_id, self._el.content_item,
+                {
+                    conversation : 'none',    // or all
+                    linkColor    : '#cc0000', // default is blue
+                    theme        : 'light'    // or dark
+                })
+            });
             
             this.onLoaded();
-            counter+=1;
-//            console.log(counter);
             
         } else {
 
-		// 	TWEET CONTENT
-		tweet += tweet_text;
-		
-		//	TWEET AUTHOR
-		tweet += "<div class='vcard'>";
-		tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
-        tweet += "<img src='" + "' class='tl-media-item tl-media-image' target='_blank'>" + "</a>";
-		tweet += "<div class='author'>";
-		tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
-		tweet += "<span class='avatar'></span>";
-		tweet += "<span class='fn'>" + d.author_name + " <span class='tl-icon-twitter'></span></span>";
-		tweet += "<span class='nickname'>@" + tweetuser + "<span class='thumbnail-inline'></span></span>";
-		tweet += "</a>";
-		tweet += "</div>";
-		tweet += "</div>";
-		
-		
-		// Add to DOM
-		this._el.content_item.innerHTML	= tweet;
-		
-		// After Loaded
-		this.onLoaded();
-            counter+=1;
+            // 	TWEET CONTENT
+            tweet += tweet_text;
+
+            //	TWEET AUTHOR
+            tweet += "<div class='vcard'>";
+            tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
+            tweet += "<img src='" + "' class='tl-media-item tl-media-image' target='_blank'>" + "</a>";
+            tweet += "<div class='author'>";
+            tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
+            tweet += "<span class='avatar'></span>";
+            tweet += "<span class='fn'>" + d.author_name + " <span class='tl-icon-twitter'></span></span>";
+            tweet += "<span class='nickname'>@" + tweetuser + "<span class='thumbnail-inline'></span></span>";
+            tweet += "</a>";
+            tweet += "</div>";
+            tweet += "</div>";
+
+
+            // Add to DOM
+            this._el.content_item.innerHTML	= tweet;
+
+            // After Loaded
+            this.onLoaded();
         }
     },
 	
