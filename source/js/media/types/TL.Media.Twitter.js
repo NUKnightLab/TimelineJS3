@@ -2,6 +2,7 @@
 	Produces Twitter Display
 ================================================== */
         var mediaID;
+        var counter = -1;
 
 TL.Media.Twitter = TL.Media.extend({
 	
@@ -105,7 +106,9 @@ TL.Media.Twitter = TL.Media.extend({
             
             twttr.ready(
                 function(evt) {
-                    tweet = document.getElementsByClassName("tl-media-twitter")[0];
+                    var ct = counter;
+                    tweet = document.getElementsByClassName("tl-media-twitter")[ct];
+//                    console.log(ct);
                     var id = String(mediaID);
                     twttr.widgets.createTweet(id, tweet,
                         {
@@ -113,13 +116,10 @@ TL.Media.Twitter = TL.Media.extend({
                             linkColor    : '#cc0000', // default is blue
                             theme        : 'light'    // or dark
                         })
-//                    .then(function (evt) {
-//                        this.onLoaded();
-//                    });
-                }
-            );
-            this._el.content_item.innerHTML	= tweet;
+            
             this.onLoaded();
+            counter+=1;
+//            console.log(counter);
             
         } else {
 
@@ -145,17 +145,19 @@ TL.Media.Twitter = TL.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
+            counter+=1;
         }
-			
-	},
+    },
 	
+    
 	updateMediaDisplay: function() {
 		
 	},
 	
 	_updateMediaDisplay: function() {
 		
-	}
+	},
+    
 	
 	
 	
