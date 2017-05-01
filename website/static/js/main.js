@@ -89,7 +89,10 @@ function getLinkAndIframe() {
   if ((window.location.host).includes("localhost:") || (window.location.host).includes("0.0.0.0:") ){
     urlBase = "http://" + window.location.host + "/source/";
   }
-  else{
+  else if ((window.location.host).includes("timeline.knilab.com")){
+    urlBase = "http://cdn.knightlab.com/libs/timeline3/dev/";
+  }
+  else {
     urlBase = "https://cdn.knightlab.com/libs/timeline3/latest/";
   }
 
