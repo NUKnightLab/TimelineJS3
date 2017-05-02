@@ -39,10 +39,9 @@ TL.Media.DocumentCloud = TL.Media.extend({
 
 	// Update Media Display
 	_updateMediaDisplay: function() {
-        if(TL.Browser.mobile && (this.options.width <= this.options.medium_size && this.options.width >= this.options.skinny_size)) {
-            this._media.updateDisplay(this.options.width, this.options.height, layout);
-		} else if (this.options.width <= this.options.medium_size && this.options.width >= this.options.skinny_size) {
-			this._media.updateDisplay(this.options.width-100, this.options.height, layout);
+        if (window.innerWidth <= 800 && window.innerWidth >= 650) {
+            this._el.content_item.style.width = window.innerWidth-100 + "px";
+            console.log("zone");
 		} 
         
         this._el.content_item.style.height = this.options.height + "px";
