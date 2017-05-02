@@ -43,7 +43,6 @@ TL.Media.Vimeo = TL.Media.extend({
 	// Update Media Display
 	_updateMediaDisplay: function() {
 		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-
 	},
 
 	_stopMedia: function() {
@@ -54,6 +53,5 @@ TL.Media.Vimeo = TL.Media.extend({
 		catch(err) {
 			trace(err);
 		}
-
 	}
 });

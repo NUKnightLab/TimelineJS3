@@ -166,6 +166,12 @@ TL.MediaType = function(m, image_only) {
                 cls:         TL.Media.Video
             },
             {
+              type:         "wistia",
+              name:         "Wistia",
+              match_str:     /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/i,
+              cls:         TL.Media.Wistia
+            },
+            {
                 type:         "audio",
                 name:         "Audio",
                 match_str:     /(mp3|wav|m4a)(\?.*)?$/i,
@@ -187,14 +193,12 @@ TL.MediaType = function(m, image_only) {
             switch(media_types[i].type) {
                 case "flickr":
                 case "image":
-                case "imgur":
                 case "instagram":
                     if (m.url.match(media_types[i].match_str)) {
                         media = media_types[i];
                         return media;
                     }
                     break;
-
                 default:
                     break;
             }
@@ -213,7 +217,7 @@ TL.MediaType = function(m, image_only) {
             }
         };
     }
+  }
 
     return false;
-
 }
