@@ -1,11 +1,10 @@
 /*	TL.Media.Wistia
-	Produces Wistia Display
 ================================================== */
 
-TL.Media.Wista = TL.Media.extend({
-	
+TL.Media.Wistia = TL.Media.extend({
+
 	includes: [TL.Events],
-	
+
 	/*	Load the media
 	================================================== */
 	_loadMedia: function() {
@@ -16,14 +15,14 @@ TL.Media.Wista = TL.Media.extend({
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-wistia tl-media-shadow", this._el.content);
 
 		// Get Media ID
-		this.media_id = this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];
+		this.media_id = this.data.url.split(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/medias\/(.*)/)[3];
 
 		// API URL
-		api_url = "https://player.vimeo.com/video/" + this.media_id + "?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff";
+		api_url = "http://fast.wistia.com/embed/iframe/" + this.media_id + "?version=v1&controlsVisibleOnLoad=true&playerColor=aae3d8";
 
-		this.player = TL.Dom.create("iframe", "", this._el.content_item);
+    this.player = TL.Dom.create("iframe", "", this._el.content_item);
 
-		// Media Loaded Event
+    // Media Loaded Event
 		this.player.addEventListener('load', function(e) {
 			self.onMediaLoaded();
 		});
@@ -44,17 +43,14 @@ TL.Media.Wista = TL.Media.extend({
 	// Update Media Display
 	_updateMediaDisplay: function() {
 		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-
 	},
 
 	_stopMedia: function() {
-
 		try {
 			this.player.contentWindow.postMessage(JSON.stringify({method: "pause"}), "https://player.vimeo.com");
 		}
 		catch(err) {
 			trace(err);
 		}
-
 	}
 });
