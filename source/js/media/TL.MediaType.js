@@ -185,27 +185,24 @@ TL.MediaType = function(m, image_only) {
   		}
   	];
 
-  if(image_only) {
-    if (m instanceof Array) {
-      return false;
-    }
-    for (var i = 0; i < media_types.length; i++) {
-      console.log(media_types[i])
-      switch(media_types[i].type) {
-        case "flickr":
-        case "image":
-        case "imgur":
-        case "instagram":
-          if (m.url.match(media_types[i].match_str)) {
-            media = media_types[i];
-            return media;
-          }
-          break;
-
-        default:
-          break;
-      }
-    }
+	if(image_only) {
+        if (m instanceof Array) {
+            return false;
+        }
+        for (var i = 0; i < media_types.length; i++) {
+            switch(media_types[i].type) {
+                case "flickr":
+                case "image":
+                case "instagram":
+                    if (m.url.match(media_types[i].match_str)) {
+                        media = media_types[i];
+                        return media;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 	} else {
     for (var i = 0; i < media_types.length; i++) {
       if (m instanceof Array) {
