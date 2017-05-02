@@ -215,9 +215,7 @@ TL.MediaType = function(m, image_only) {
                 media         = media_types[i];
                 return media;
             }
-        };
+        }
     }
-  }
-
     return false;
 }
