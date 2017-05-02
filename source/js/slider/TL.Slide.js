@@ -66,7 +66,7 @@ TL.Slide = TL.Class.extend({
 			ease: 				TL.Ease.easeInSpline,
 			width: 				600,
 			height: 			600,
-			skinny_size: 		650,
+			skinny_size: 		770,
 			media_name: 		""
 		};
 

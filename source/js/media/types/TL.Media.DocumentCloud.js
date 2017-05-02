@@ -12,6 +12,7 @@ TL.Media.DocumentCloud = TL.Media.extend({
 
 		// Create Dom elements
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-documentcloud tl-media-shadow", this._el.content);
+        this._el.content_item.setAttribute("style", "min-width:300px;");
 		this._el.content_item.id = TL.Util.unique_ID(7)
 
 		// Check url
@@ -46,8 +47,9 @@ TL.Media.DocumentCloud = TL.Media.extend({
 		// DocumentCloud API call
 		DV.load(this.data.url, {
 		    container: '#'+this._el.content_item.id,
-		    showSidebar: false
-		});
+		    showSidebar: false,
+            responsive: true
+        });
 		this.onLoaded();
 	},
 
