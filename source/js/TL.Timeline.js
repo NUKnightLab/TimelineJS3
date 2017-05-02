@@ -174,7 +174,7 @@ TL.Timeline = TL.Class.extend({
 			start_at_slide: 			0,
 			start_at_end: 				false,
 			menubar_height: 			0,
-			skinny_size: 				770,
+			skinny_size: 				650,
 			medium_size: 				800,
 			relative_date: 				false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
 			use_bc: 					false,					// Use declared suffix on dates earlier than 0

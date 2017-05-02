@@ -1,0 +1,6 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Users/rosaliechan/GitHub/TimelineJS3/source/js/media/TL.MediaType.js",
+        "/Users/rosaliechan/GitHub/TimelineJS3/source/js/slider/TL.Slide.js"
+    ]
+}

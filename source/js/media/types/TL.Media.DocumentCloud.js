@@ -12,7 +12,7 @@ TL.Media.DocumentCloud = TL.Media.extend({
 
 		// Create Dom elements
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-documentcloud tl-media-shadow", this._el.content);
-        this._el.content_item.setAttribute("style", "min-width:300px;");
+        this._el.content_item.setAttribute("style", "min-width:300px; z-index:-1;");
 		this._el.content_item.id = TL.Util.unique_ID(7)
 
 		// Check url
@@ -39,6 +39,12 @@ TL.Media.DocumentCloud = TL.Media.extend({
 
 	// Update Media Display
 	_updateMediaDisplay: function() {
+        if(TL.Browser.mobile && (this.options.width <= this.options.medium_size && this.options.width >= this.options.skinny_size)) {
+            this._media.updateDisplay(this.options.width, this.options.height, layout);
+		} else if (this.options.width <= this.options.medium_size && this.options.width >= this.options.skinny_size) {
+			this._media.updateDisplay(this.options.width-100, this.options.height, layout);
+		} 
+        
         this._el.content_item.style.height = this.options.height + "px";
 		//this._el.content_item.style.width = this.options.width + "px";
 	},
