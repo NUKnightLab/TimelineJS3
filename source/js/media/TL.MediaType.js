@@ -108,7 +108,7 @@ TL.MediaType = function(m, image_only) {
             {
                 type:         "imgur",
                 name:         "Imgur",
-                match_str:     /^.*imgur.com\/.+$/i,
+                match_str:     /^.*imgur.com\/.+$|<blockquote class=['\"]imgur-embed-pub['\"]/i,
                 cls:         TL.Media.Imgur
             },
             {
