@@ -18,7 +18,7 @@ TL.Media.Wistia = TL.Media.extend({
 		this.media_id = this.data.url.split(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/medias\/(.*)/)[3];
 
 		// API URL
-		api_url = "http://fast.wistia.com/embed/iframe/" + this.media_id + "?version=v1&controlsVisibleOnLoad=true&playerColor=aae3d8";
+		api_url = "https://fast.wistia.com/embed/iframe/" + this.media_id + "?version=v1&controlsVisibleOnLoad=true&playerColor=aae3d8";
 
     this.player = TL.Dom.create("iframe", "", this._el.content_item);
 
