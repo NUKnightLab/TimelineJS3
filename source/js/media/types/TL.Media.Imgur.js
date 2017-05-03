@@ -12,9 +12,15 @@ TL.Media.Imgur = TL.Media.extend({
 		try {
 			var self = this;
 
-			if (this.data.url)
-		    this.media_id = this.data.url.split('/').slice(-1)[0];
-	
+			if (this.data.url.match("<blockquote class=['\"]imgur-embed-pub['\"]")){
+				var found = this.data.url.match(/(imgur\.com)\/(\w+)/);
+				this.media_id = found[2];
+				this.data.url = "http://imgur.com/gallery/" + this.media_id;
+			}
+			else if (this.data.url){
+				this.media_id = this.data.url.split('/').slice(-1)[0];
+			}
+
 	        TL.Load.js([
 						'https://s.imgur.com/min/embed.js'], 
 					function(){
