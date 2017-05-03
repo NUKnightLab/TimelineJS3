@@ -40,6 +40,8 @@ TL.Media.DocumentCloud = TL.Media.extend({
 	// Update Media Display
 	_updateMediaDisplay: function() {
         if (window.innerWidth <= 800 && window.innerWidth >= 650) {
+            this.options.base_class += " tl-skinny";
+			this.options.layout = "portrait";
             this._el.content_item.style.width = window.innerWidth-100 + "px";
             console.log("zone");
 		} 
