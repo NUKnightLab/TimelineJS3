@@ -544,15 +544,15 @@
       QUnit.module("TimelineConfig ajax tests", {});
 
       QUnit.test("Handling CDN 'preview' URLs", function (assert){
-        assert.expect(0);
+        assert.expect(2);
         var bad_url = 'https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Default&lang=en&initial_zoom=2&height=650';
         var done = assert.async();
         var config = TL.ConfigFactory.makeConfig(bad_url,function(config) {
             assert.notOk(config.isValid(), "Bad URL should result in invalid timeline config.");
             var tl_error = config.messages.errors[0];
             assert.equal(tl_error.message_key, 'invalid_url_err', "Expect 'invalid_url_err' in message key.");
+            done();
         })
-        done();
       })
 
       QUnit.module("user-interface JSON tests", {});
