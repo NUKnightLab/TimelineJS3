@@ -1,3 +1,12 @@
+3.5.1 (2017-05-03)
+* PR #522 use https in wistia
+
+3.5.0 (2017-05-03)
+* PR #510 Twitter image support
+* PR #520, #515 Imgur image support
+* PR #514 Wistia video support (URL only)
+* PR #508 Fixes to local previews for development
+
 3.4.9 (2017-04-10)
 ------------------
 * PR #468 support audio and video files (.mp4, .mp3, .wav, .m4a)

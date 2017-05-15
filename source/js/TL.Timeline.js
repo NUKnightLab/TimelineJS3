@@ -84,6 +84,7 @@ https://incident57.com/codekit/
 	// @codekit-prepend "media/types/TL.Media.Vine.js";
 	// @codekit-prepend "media/types/TL.Media.Website.js";
 	// @codekit-prepend "media/types/TL.Media.Wikipedia.js";
+	// @codekit-prepend "media/types/TL.Media.Wistia.js";
 	// @codekit-prepend "media/types/TL.Media.YouTube.js";
 	// @codekit-prepend "media/types/TL.Media.Audio.js";
 	// @codekit-prepend "media/types/TL.Media.Video.js";
@@ -230,6 +231,25 @@ TL.Timeline = TL.Class.extend({
 		if (this.options.is_full_embed) {
 			TL.DomUtil.addClass(this._el.container, 'tl-timeline-full-embed');
 		}
+
+		document.addEventListener("keydown", function(event) {
+			var keyName = event.key;
+			var currentSlide = self._getSlideIndex(self.current_id);
+			var _n = self.config.events.length - 1;
+			var lastSlide = self.config.title ? _n + 1 : _n;
+			var firstSlide = 0;
+
+			if (keyName == 'ArrowLeft'){
+				if (currentSlide!=firstSlide){
+					self.goToPrev();
+				}
+			}
+			else if (keyName == 'ArrowRight'){
+				if (currentSlide!=lastSlide){
+					self.goToNext();
+				}
+			}
+		});
 
 		// Use Relative Date Calculations
 		// NOT YET IMPLEMENTED
