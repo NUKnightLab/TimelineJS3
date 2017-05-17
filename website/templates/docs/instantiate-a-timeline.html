@@ -63,7 +63,7 @@
         <pre class="prettyprint lang-html">
         &lt;!-- 3 --&gt;
         &lt;script type="text/javascript"&gt;
-          var timeline_json = make_the_json(); // you write this part
+          var timeline_json = make_the_json(); // replace make_the_json() with the JSON object you created
           // two arguments: the id of the Timeline container (no '#')
           // and the JSON object or an instance of TL.TimelineConfig created from
           // a suitable JSON object
@@ -125,8 +125,18 @@
             <li>font.ubuntu.css</li>
             <li>font.unicaone-vollkorn.css</li>
           </ul></p>
+
+<p>You can <a href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN. You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a> If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">our LESS files on GitHub</a>.</p>
       </div>
-      <p>You can <a href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN. You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a> If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">our LESS files on GitHub</a>.</p>
+
+<div class="column-12">
+        <h3 id="local_files">Loading Files Locally</h3>
+        <p>If you choose not to load TimelineJS's JavaScript and CSS files from our CDN, you can also load the files locally. To do this, download our ZIP file <a href="https://cdn.knightlab.com/libs/timeline3/latest/timeline3.zip">here</a>.</p>
+    <p>Unpack the ZIP and include it on your web server, and load the JS (either <code>timeline.js</code> or <code>timeline.min.js</code>) and CSS (<code>timeline.css</code>) files from it instead of from `cdn.knightlab.com`. If you are using the default fonts and English language, you only need those two files.</p>
+    <p>However, if you plan to use other languages and font sets, putting the entire contents of the ZIP on your server is necessary to fully support all of Timeline’s features.</p>
+
+      </div>
+      
     </div>
   </section>
 </article>
