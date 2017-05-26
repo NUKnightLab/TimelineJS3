@@ -74,10 +74,6 @@ Make sure that your virtual environment is active, change into your TimeLineJS3 
 
 Then open a browser and visit http://localhost:5000/unit-tests.html . All of the unit tests should run with no errors reported. You may also want to check some of the examples, such as http://localhost:5000/examples/houston/ to make sure that things are basically working. The local webserver should load all of its javascript from your local `/build/` directory, so as you develop code, periodically execute `fab build` and then use the local server to make sure things are going well. (Again, don't forget about the unit tests!)
 
-You may get the following warning. Unless you are part of the Knight Lab, you don't need to worry about this.
-
-![alt text](warningimage.png "Warning Screenshot")
-
 
 <h3>Working with CodeKit</h3>
 TimelineJS's initial development was done with [CodeKit](https://incident57.com/codekit/), so we maintain support for that. 
