@@ -12,10 +12,18 @@ If you run into challenges trying to set up for contribution, post a [GitHub iss
 
 The official way that TimelineJS code is managed uses a python-based system for compiling the javascript and CSS and managing the static site content. We strongly encourage people working on the code to use this system. However, if this is a major burden, it is also possible to use the CodeKit IDE to work on the code.
 
+In order to clone or download the TimelineJS3 envrionment, use the following command:
+
+    git clone https://github.com/NUKnightLab/TimelineJS3.git
+    
+You must also check out one more git repository, that our code depends on. Check this out "alongside" your TimelineJS3 directory -- they should both have the same parent folder.
+
+    git clone https://github.com/NUKnightLab/fablib.git
+    
 <h3>The Python Method</h3>
 Our build environment is routinely used with Python 2.7. Other versions of Python may work but have not been tested. Even though we call it the `python method`, there are also dependencies on `node` libraries for preparing the CSS and Javascript files.
 
-Generally, we recommend python projects begin with a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) (aka virtualenv) but this is not strictly required. Whether in a virtualenv or not, you must install a few [libraries](https://github.com/NUKnightLab/TimelineJS3/blob/master/requirements.txt). The best way to do this is with the following command:
+Generally, we recommend python projects begin with a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) (aka virtualenv) but this is not strictly required. Whether in a virtualenv or not, you must install a few [libraries](https://github.com/NUKnightLab/TimelineJS3/blob/master/requirements.txt). The best way to do this is with the following command, after you `cd` into the TimelineJS3 folder:
 
     pip install -r requirements.txt
 
@@ -27,25 +35,48 @@ Once the requirements are installed, here are things to know:
 * You may also want to make sure that the [examples](http://localhost:5000/#examples) still work as expected after you change code.
 * Don't break the unit tests. Consider adding test code for your changes. We're still working out our unit testing methodology, but before you submit pull requests, you should check http://localhost:5000/unit-tests.html and http://localhost:5000/mediatype-tests.html and verify that you haven't broken any of the tests with your changes.
 
+<h4>Setting Up a Virtual Environment</h4>
+To set up a virtual environment, you will first need to install [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/).
+
+To install virtualenv, use the following command:
+
+    pip install virtualenv
+    
+To install virtualenvwrapper, first type the following command:
+
+    pip install virtualenvwrapper
+    
+Then, type this:
+
+    source /usr/local/bin/virtualenvwrapper.sh
+    
+Now, you can create a virtual environment with the following command:
+
+    mkvirtualenv timelinejs3
+    
+To activate the virtual environment, use the following command:
+
+    workon timelinejs3
+
 <h4>node/npm</h4>
 As mentioned above, developers building this code using Python must also install a handful of `node` utilities. Installing `node` and `npm` is left as an exercise for the developer, but once they are installed, make sure you do these commands:
 
     npm install -g less
-    npm install -g uglifyjs
+    npm install -g uglify-js
     npm install -g less-plugin-clean-css
+    
 
 <h4>Check your install</h4>
-You must also check out one more git repository, that our code depends on. Check this out "alongside" your TimelineJS3 directory -- they should both have the same parent folder.
-
-
-    git clone https://github.com/NUKnightLab/fablib.git
-
-After you've done the above, make sure that your virtual environment is active, change into your TimeLineJS3 directory and run these commands:
+Make sure that your virtual environment is active, change into your TimeLineJS3 directory and run these commands:
 
 	fab build
 	fab serve
 
 Then open a browser and visit http://localhost:5000/unit-tests.html . All of the unit tests should run with no errors reported. You may also want to check some of the examples, such as http://localhost:5000/examples/houston/ to make sure that things are basically working. The local webserver should load all of its javascript from your local `/build/` directory, so as you develop code, periodically execute `fab build` and then use the local server to make sure things are going well. (Again, don't forget about the unit tests!)
+
+You may get the following warning. Unless you are part of the Knight Lab, you don't need to worry about this.
+
+![alt text](warningimage.png "Warning Screenshot")
 
 
 <h3>Working with CodeKit</h3>
