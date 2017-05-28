@@ -431,8 +431,9 @@ TL.StorySlider = TL.Class.extend({
 		if (TL.Browser.touch) {
 			//this._el.slider_touch_mask = TL.Dom.create('div', 'tl-slider-touch-mask', this._el.slider_container_mask);
 			this._swipable = new TL.Swipable(this._el.slider_container_mask, this._el.slider_container, {
-				enable: {x:true, y:false},
-				snap: 	true
+				enable: 		{x:true, y:false},
+				snap: 			true,
+				momentum_modifier: 	(Number.isInteger(this.options.momentum_multiplier) ? this.options.momentum_multiplier : 2000)
 			});
 			this._swipable.enable();
 
