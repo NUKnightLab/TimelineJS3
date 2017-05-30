@@ -11,6 +11,7 @@ TL.Media.Blockquote = TL.Media.extend({
 		// Create Dom element
 		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-blockquote", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
+        this._el.content_item.style.marginTop = '10%';
 		
 		// Get Media ID
 		this.media_id = this.data.url;
