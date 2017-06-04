@@ -275,11 +275,11 @@ TL.TimeMarker = TL.Class.extend({
 		this._el.text					= TL.Dom.create("div", "tl-timemarker-text", this._el.content);
 		this._text						= TL.Dom.create("h2", "tl-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
+			this._text.innerHTML		= this.options.allowLinks ? this.data.text.headline : TL.Util.unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.text);
+			this._text.innerHTML		= this.options.allowLinks ? this.data.text.text : TL.Util.unlinkify(this.data.text.text);
 		} else if (this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.media.caption);
+			this._text.innerHTML		= this.options.allowLinks ? this.data.media.caption : TL.Util.unlinkify(this.data.media.caption);
 		}
 
 
