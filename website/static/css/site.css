@@ -48,3 +48,10 @@ ul#embed-font li img {
 #preview-embed {
     display: none;
 }
+
+.note-error {
+  display: none;
+}
+.note-error:before {
+  content: "Warning: "
+}

@@ -55,6 +55,10 @@ function getLinkAndIframe() {
   /* SOURCE KEY
   ================================================== */
   if (e_source.value.match("docs.google.com")) {
+    if (e_source.value.match(new RegExp('/spreadsheets/d/e'))) {
+      theobj.warning = "Invalid Google URL. Please see the note above about how a recent change with Google Spreadsheets affects creating timelines.";
+      return theobj;
+    }
     var obj = TL.ConfigFactory.parseGoogleSpreadsheetURL(e_source.value);
     source_key = obj.key;
   } else {
@@ -103,7 +107,7 @@ function getLinkAndIframe() {
 
   if (start_at_end) {
     vars  += "&start_at_end=" + start_at_end;
-  } 
+  }
 
   if (timenav_position == "top") {
     vars += "&timenav_position=" + timenav_position;
@@ -150,8 +154,14 @@ function getLinkAndIframe() {
 var $ = jQuery;
 
 function updateEmbedCode(element, options) {
+  $("#embed-source-url-message").hide();
   var e_embed = document.getElementById('embed_code'),
     el = getLinkAndIframe();
+    if (el.warning) {
+      $("#embed-source-url-message").html(el.warning);
+      $("#embed-source-url-message").css('display','block');
+      return;
+    }
   e_embed.value = el.copybox;
 //  document.getElementById('embed_code_medium').val(el.link);
   document.getElementById('preview-embed-link').setAttribute('href', el.link);
