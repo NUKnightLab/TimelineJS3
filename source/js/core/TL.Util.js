@@ -169,6 +169,10 @@ TL.Util = {
 			return "<p>" + str + "</p>";
 		}
 	},
+  unhtmlify: function(str) {
+		str = str.replace(/(<[^>]*>)+/g, '');
+		return str.replace('"', "'");
+	},
 
 	unhtmlify: function(str) {
 		str = str.replace(/(<[^>]*>)+/g, '');

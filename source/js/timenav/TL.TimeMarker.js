@@ -260,6 +260,12 @@ TL.TimeMarker = TL.Class.extend({
 				thumbnail_media.on("loaded", function() {
 					this._el.media				= TL.Dom.create("img", "tl-timemarker-media", this._el.media_container);
 					this._el.media.src			= thumbnail_media.getImageURL();
+          if (this.data.text.headline && this.data.text.headline != "") {
+              this._el.media.alt			= TL.Util.unlinkify(this.data.text.headline) + " icon";
+          }else{
+              this._el.media.alt			= "Event Icon";
+             
+          }
 				}.bind(this));
 				thumbnail_media.loadMedia();
 			} else {
