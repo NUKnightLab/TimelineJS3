@@ -8,3 +8,7 @@ codekit-config.json
 build/website
 build
 *.log
+
+#website
+betterweb/node_modules/
+betterweb/dist/

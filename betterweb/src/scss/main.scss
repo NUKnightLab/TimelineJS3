@@ -1,0 +1,11 @@
+@import "colors";
+
+.hello {
+  &:after {
+    color: $red;
+  }
+}
+
+.thing {
+  background-color: blue;
+}
