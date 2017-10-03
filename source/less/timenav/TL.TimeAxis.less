@@ -99,7 +99,8 @@
 			.tl-timeaxis-tick {
 				font-size:@minor-ticks-font-size;
 				line-height:@minor-ticks-font-size + @tick-padding;
-				color:@minor-ticks-color;
+//				color:@minor-ticks-color;
+                color:@major-ticks-color;
 				width:@minor-ticks-width;
 				margin-left:-(@minor-ticks-width/2);
 				.tl-timeaxis-tick-text {
@@ -113,7 +114,8 @@
 						font-size:9px;
 						line-height:9px;
 						margin-top:-2px;
-						color:lighten(@minor-ticks-color,15);
+//						color:lighten(@minor-ticks-color,15);
+                        color:@major-ticks-color;
 						&.tl-timeaxis-timesuffix {
 							//display:none;
 						}
