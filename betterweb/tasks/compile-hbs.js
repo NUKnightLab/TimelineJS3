@@ -4,8 +4,6 @@ var _ = require('lodash'),
     fs = require('fs-extra'),
     path = require('path'),
     Handlebars = require('handlebars'),
-    globby = require('globby'),
-    debug = require('./helpers/debug-hbs.js'),
     helper = require('./helpers/partial-builder.js');
 
 data = getData('src/data/data.yml');
@@ -38,23 +36,11 @@ function renderPage(template, layout, data) {
 }
 
 function build() {
-  var hbsTemplates = globby.sync('src/templates/**/*.hbs');
+  var fileName = 'src/templates/index.hbs'
 
-  _.forEach(hbsTemplates, function(file, i) {
-    var filePattern = path.dirname(file).split('src/templates/')[1],
-        fileName = path.basename(file, '.hbs'),
-        template = renderTemplate(file, data),
-        page = renderPage(template, 'src/templates/layouts/default.hbs', data);
-
-    if(!!filePattern) {
-      fs.outputFileSync(`dist/templates/${filePattern}/${fileName}.html`, page, 'utf8')
-    } else if(fileName === 'index') {
-        fs.outputFileSync(`dist/index.html`, page, 'utf8')
-    } else {
-      fs.outputFileSync(`dist/templates/${fileName}.html`, page, 'utf8');
-    }
-  });
-
+  template = renderTemplate(fileName, data),
+  page = renderPage(template, 'src/templates/layouts/default.hbs', data);
+  fs.outputFileSync(`dist/index.html`, page, 'utf8')
 }
 
 build();

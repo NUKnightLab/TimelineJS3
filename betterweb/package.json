@@ -17,7 +17,6 @@
     "exit-hook": "^1.1.1",
     "front-matter": "^2.1.0",
     "fs-extra": "^0.30.0",
-    "globby": "^5.0.0",
     "lodash": "^4.13.1",
     "rimraf": "^2.5.3",
     "shelljs": "^0.7.0",
