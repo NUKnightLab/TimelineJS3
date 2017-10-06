@@ -2,42 +2,42 @@
 	Utilities for working with the DOM
 ================================================== */
 
-TL.Dom = {
+var Dom = (function() {
 
-	get: function(id) {
+	function get(id) {
 		return (typeof id === 'string' ? document.getElementById(id) : id);
-	},
+	}
 
-	getByClass: function(id) {
+	function getByClass(id) {
 		if (id) {
 			return document.getElementsByClassName(id);
 		}
-	},
+	}
 
-	create: function(tagName, className, container) {
+	function create(tagName, className, container) {
 		var el = document.createElement(tagName);
 		el.className = className;
 		if (container) {
 			container.appendChild(el);
 		}
 		return el;
-	},
+	}
 
-	createText: function(content, container) {
+	function createText(content, container) {
 		var el = document.createTextNode(content);
 		if (container) {
 			container.appendChild(el);
 		}
 		return el;
-	},
+	}
 
-	getTranslateString: function (point) {
+	function getTranslateString(point) {
 		return TL.Dom.TRANSLATE_OPEN +
 				point.x + 'px,' + point.y + 'px' +
 				TL.Dom.TRANSLATE_CLOSE;
-	},
+	}
 
-	setPosition: function (el, point) {
+	function setPosition(el, point) {
 		el._tl_pos = point;
 		if (TL.Browser.webkit3d) {
 			el.style[TL.Dom.TRANSFORM] =  TL.Dom.getTranslateString(point);
@@ -50,9 +50,9 @@ TL.Dom = {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
 		}
-	},
+	}
 
-	getPosition: function(el){
+	function getPosition(el){
 	    var pos = {
 	    	x: 0,
 			y: 0
@@ -63,9 +63,9 @@ TL.Dom = {
 	        el = el.offsetParent;
 	    }
 	    return pos;
-	},
+	}
 
-	testProp: function(props) {
+	function testProp(props) {
 		var style = document.documentElement.style;
 
 		for (var i = 0; i < props.length; i++) {
@@ -75,13 +75,27 @@ TL.Dom = {
 		}
 		return false;
 	}
+    return {
+      get,
+      getByClass,
+      create,
+      createText,
+      getTranslateString,
+      setPosition,
+      getPosition,
+      testProp
+    }
 
-};
+})();
 
-TL.Util.mergeData(TL.Dom, {
-	TRANSITION: TL.Dom.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM: TL.Dom.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
+export {
+  Dom
+}
 
-	TRANSLATE_OPEN: 'translate' + (TL.Browser.webkit3d ? '3d(' : '('),
-	TRANSLATE_CLOSE: TL.Browser.webkit3d ? ',0)' : ')'
-});
+//TL.Util.mergeData(TL.Dom, {
+//	TRANSITION: TL.Dom.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
+//	TRANSFORM: TL.Dom.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
+//
+//	TRANSLATE_OPEN: 'translate' + (TL.Browser.webkit3d ? '3d(' : '('),
+//	TRANSLATE_CLOSE: TL.Browser.webkit3d ? ',0)' : ')'
+//});

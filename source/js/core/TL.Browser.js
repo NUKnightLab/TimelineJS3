@@ -4,7 +4,7 @@
 */
 
 
-(function() {
+var Browser = (function() {
 
 	var ua = navigator.userAgent.toLowerCase(),
 		doc = document.documentElement,
@@ -35,7 +35,7 @@
 
 	var touch = !window.L_NO_TOUCH && !phantomjs && (pointer || 'ontouchstart' in window || (window.DocumentTouch && document instanceof window.DocumentTouch));
 
-	TL.Browser = {
+	var browsers = {
 		ie: ie,
 		ua: ua,
 		ie9: Boolean(ie && ua.match(/MSIE 9/i)),
@@ -80,4 +80,13 @@
 		}
 	};
 
+    return {
+      touch: touch,
+      browsers: browsers
+    }
+
 }());
+
+export {
+  Browser
+}

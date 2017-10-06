@@ -9,17 +9,17 @@
  *
  * KeySpline - use bezier curve for transition easing function
  * Copyright (c) 2012 Gaetan Renaudeau <renaudeau.gaetan@gmail.com>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -36,15 +36,17 @@
  * spline.get(x) => returns the easing value | x must be in [0, 1] range
  */
 
-TL.Easings = {
-    ease:        [0.25, 0.1, 0.25, 1.0], 
+var Ease = function() {
+  this.Easings = {
+    ease:        [0.25, 0.1, 0.25, 1.0],
     linear:      [0.00, 0.0, 1.00, 1.0],
     easein:     [0.42, 0.0, 1.00, 1.0],
     easeout:    [0.00, 0.0, 0.58, 1.0],
     easeinout: [0.42, 0.0, 0.58, 1.0]
-};
+  }
+}
 
-TL.Ease = {
+Ease.prototype = {
 	KeySpline: function(a) {
 	//KeySpline: function(mX1, mY1, mX2, mY2) {
 		this.get = function(aX) {
@@ -88,17 +90,17 @@ TL.Ease = {
 			return aGuessT;
 		}
 	},
-	
+
 	easeInSpline: function(t) {
-		var spline = new TL.Ease.KeySpline(TL.Easings.easein);
+		var spline = this.KeySpline(this.Easings.easein);
 		return spline.get(t);
 	},
-	
+
 	easeInOutExpo: function(t) {
-		var spline = new TL.Ease.KeySpline(TL.Easings.easein);
+		var spline = this.KeySpline(this.Easings.easein);
 		return spline.get(t);
 	},
-	
+
 	easeOut: function(t) {
 		return Math.sin(t * Math.PI / 2);
 	},
@@ -193,15 +195,15 @@ TL.Ease = {
 	easeOutQuad: function (t) { return t*(2-t) },
 	// acceleration until halfway, then deceleration
 	easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
-	// accelerating from zero velocity 
+	// accelerating from zero velocity
 	easeInCubic: function (t) { return t*t*t },
-	// decelerating to zero velocity 
+	// decelerating to zero velocity
 	easeOutCubic: function (t) { return (--t)*t*t+1 },
-	// acceleration until halfway, then deceleration 
+	// acceleration until halfway, then deceleration
 	easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
-	// accelerating from zero velocity 
+	// accelerating from zero velocity
 	easeInQuart: function (t) { return t*t*t*t },
-	// decelerating to zero velocity 
+	// decelerating to zero velocity
 	easeOutQuart: function (t) { return 1-(--t)*t*t*t },
 	// acceleration until halfway, then deceleration
 	easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
@@ -209,7 +211,7 @@ TL.Ease = {
 	easeInQuint: function (t) { return t*t*t*t*t },
 	// decelerating to zero velocity
 	easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
-	// acceleration until halfway, then deceleration 
+	// acceleration until halfway, then deceleration
 	easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
 };
 
@@ -218,7 +220,7 @@ Math.easeInExpo = function (t, b, c, d) {
 	return c * Math.pow( 2, 10 * (t/d - 1) ) + b;
 };
 
-		
+
 
 // exponential easing out - decelerating to zero velocity
 
@@ -227,7 +229,7 @@ Math.easeOutExpo = function (t, b, c, d) {
 	return c * ( -Math.pow( 2, -10 * t/d ) + 1 ) + b;
 };
 
-		
+
 
 // exponential easing in/out - accelerating until halfway, then decelerating
 
@@ -239,3 +241,7 @@ Math.easeInOutExpo = function (t, b, c, d) {
 	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
 };
 */
+
+module.exports = {
+  Ease
+}

@@ -2,8 +2,8 @@
 	Class of utilities
 ================================================== */
 
-TL.Util = {
-	mergeData: function(data_main, data_to_merge) {
+var Util = (function() {
+	function mergeData(data_main, data_to_merge) {
 		var x;
 		for (x in data_to_merge) {
 			if (Object.prototype.hasOwnProperty.call(data_to_merge, x)) {
@@ -11,28 +11,28 @@ TL.Util = {
 			}
 		}
 		return data_main;
-	},
+	}
 
 	// like TL.Util.mergeData but takes an arbitrarily long list of sources to merge.
-	extend: function (/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
+	function extend(/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
 		var sources = Array.prototype.slice.call(arguments, 1);
 		for (var j = 0, len = sources.length, src; j < len; j++) {
 			src = sources[j] || {};
 			TL.Util.mergeData(dest, src);
 		}
 		return dest;
-	},
+	}
 
-	isEven: function(n) {
+	function isEven(n) {
 	  return n == parseFloat(n)? !(n%2) : void 0;
-	},
+	}
 
-	isTrue: function(s) {
+  function isTrue(s) {
 		if (s == null) return false;
 		return s == true || String(s).toLowerCase() == 'true' || Number(s) == 1;
-	},
+	}
 
-	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
+	 function findArrayNumberByUniqueID(id, array, prop, defaultVal) {
 		var _n = defaultVal || 0;
 
 		for (var i = 0; i < array.length; i++) {
@@ -42,17 +42,17 @@ TL.Util = {
 		};
 
 		return _n;
-	},
+	}
 
-	convertUnixTime: function(str) {
+	function convertUnixTime(str) {
 		var _date, _months, _year, _month, _day, _time, _date_array = [],
-			_date_str = {
-				ymd:"",
-				time:"",
-				time_array:[],
-				date_array:[],
-				full_array:[]
-			};
+		    _date_str = {
+				  ymd:"",
+				  time:"",
+				  time_array:[],
+				  date_array:[],
+				  full_array:[]
+			  };
 
 		_date_str.ymd = str.split(" ")[0];
 		_date_str.time = str.split(" ")[1];
@@ -72,16 +72,16 @@ TL.Util = {
 		_time = _month + ', ' + _day + ' ' + _year;
 
 		return _time;
-	},
+	}
 
-	setData: function (obj, data) {
+	function setData(obj, data) {
 		obj.data = TL.Util.extend({}, obj.data, data);
 		if (obj.data.unique_id === "") {
 			obj.data.unique_id = TL.Util.unique_ID(6);
 		}
-	},
+	}
 
-	stamp: (function () {
+	function stamp() {
 		var lastId = 0, key = '_tl_id';
 
 
@@ -89,9 +89,9 @@ TL.Util = {
 			obj[key] = obj[key] || ++lastId;
 			return obj[key];
 		};
-	}()),
+	}
 
-	isArray: (function () {
+	(function isArray() {
 	    // Use compiler's own isArray when available
 	    if (Array.isArray) {
 	        return Array.isArray;
@@ -105,16 +105,16 @@ TL.Util = {
 	    return function (subject) {
 	        return objectToStringFn.call(subject) === arrayToStringResult;
 	    };
-	}()),
+	}())
 
-    getRandomNumber: function(range) {
-   		return Math.floor(Math.random() * range);
-   	},
+  function getRandomNumber(range) {
+		return Math.floor(Math.random() * range);
+  }
 
-	unique_ID: function(size, prefix) {
+	function unique_ID (size, prefix) {
 
-		var getRandomNumber = function(range) {
-			return Math.floor(Math.random() * range);
+	  var getRandomNumber = function(range) {
+		  return Math.floor(Math.random() * range);
 		};
 
 		var getRandomChar = function() {
@@ -135,9 +135,9 @@ TL.Util = {
 		} else {
 			return "tl-" + randomID(size);
 		}
-	},
+	}
 
-	ensureUniqueKey: function(obj, candidate) {
+	function ensureUniqueKey (obj, candidate) {
 		if (!candidate) { candidate = TL.Util.unique_ID(6); }
 
 		if (!(candidate in obj)) { return candidate; }
@@ -157,10 +157,9 @@ TL.Util = {
 		}
 
 		return candidate;
-	},
+	}
 
-
-	htmlify: function(str) {
+	function htmlify(str) {
 		//if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
 		if (str.match(/<p>[\s\S]*?<\/p>/)) {
 
@@ -168,16 +167,16 @@ TL.Util = {
 		} else {
 			return "<p>" + str + "</p>";
 		}
-	},
+	}
 
-	unhtmlify: function(str) {
+	function unhtmlify(str) {
 		str = str.replace(/(<[^>]*>)+/g, '');
 		return str.replace('"', "'");
-	},
+	}
 
 	/*	* Turns plain text links into real links
 	================================================== */
-	linkify: function(text,targets,is_touch) {
+	function linkify(text,targets,is_touch) {
 
         var make_link = function(url, link_text, prefix) {
             if (!prefix) {
@@ -217,16 +216,16 @@ TL.Util = {
 			.replace(emailAddressPattern, function(match, email, offset, string) {
                 return make_link('mailto:' + email, email);
             });
-	},
+	}
 
-	unlinkify: function(text) {
+	function unlinkify (text) {
 		if(!text) return text;
 		text = text.replace(/<a\b[^>]*>/i,"");
 		text = text.replace(/<\/a>/i, "");
 		return text;
-	},
+	}
 
-	getParamString: function (obj) {
+	function getParamString (obj) {
 		var params = [];
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
@@ -234,19 +233,19 @@ TL.Util = {
 			}
 		}
 		return '?' + params.join('&');
-	},
+	}
 
-	formatNum: function (num, digits) {
+	function formatNum (num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
-	},
+	}
 
-	falseFn: function () {
+	function falseFn () {
 		return false;
-	},
+	}
 
-	requestAnimFrame: (function () {
-		function timeoutDefer(callback) {
+	(function requestAnimFrame() {
+		var timeoutDefer = function(callback) {
 			window.setTimeout(callback, 1000 / 60);
 		}
 
@@ -265,15 +264,15 @@ TL.Util = {
 				requestFn(callback, contextEl);
 			}
 		};
-	}()),
+	}())
 
-	bind: function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
+	function bind(/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
 		return function () {
 			return fn.apply(obj, arguments);
 		};
-	},
+	}
 
-	template: function (str, data) {
+	function template(str, data) {
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
 			if (!data.hasOwnProperty(key)) {
@@ -281,50 +280,10 @@ TL.Util = {
 			}
 			return value;
 		});
-	},
+	}
 
-	hexToRgb: function(hex) {
-	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-        if (TL.Util.css_named_colors[hex.toLowerCase()]) {
-            hex = TL.Util.css_named_colors[hex.toLowerCase()];
-        }
-	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-	        return r + r + g + g + b + b;
-	    });
-
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? {
-	        r: parseInt(result[1], 16),
-	        g: parseInt(result[2], 16),
-	        b: parseInt(result[3], 16)
-	    } : null;
-	},
-	// given an object with r, g, and b keys, or a string of the form 'rgb(mm,nn,ll)', return a CSS hex string including the leading '#' character
-	rgbToHex: function(rgb) {
-		var r,g,b;
-		if (typeof(rgb) == 'object') {
-			r = rgb.r;
-			g = rgb.g;
-			b = rgb.b;
-		} else if (typeof(rgb.match) == 'function'){
-			var parts = rgb.match(/^rgb\((\d+),(\d+),(\d+)\)$/);
-			if (parts) {
-				r = parts[1];
-				g = parts[2];
-				b = parts[3];
-			}
-		}
-		if (isNaN(r) || isNaN(b) || isNaN(g)) {
-			throw new TL.Error("invalid_rgb_err");
-		}
-		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
-	},
-	colorObjToHex: function(o) {
-		var parts = [o.r, o.g, o.b];
-		return TL.Util.rgbToHex("rgb(" + parts.join(',') + ")")
-	},
-    css_named_colors: {
+	function hexToRgb (hex) {
+        var colors = {
         "aliceblue": "#f0f8ff",
         "antiquewhite": "#faebd7",
         "aqua": "#00ffff",
@@ -466,9 +425,49 @@ TL.Util = {
         "whitesmoke": "#f5f5f5",
         "yellow": "#ffff00",
         "yellowgreen": "#9acd32"
-    },
-	ratio: {
-		square: function(size) {
+        }
+	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        if (colors[hex.toLowerCase()]) {
+            hex = colors[hex.toLowerCase()];
+        }
+	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+	        return r + r + g + g + b + b;
+	    });
+
+	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	    return result ? {
+	        r: parseInt(result[1], 16),
+	        g: parseInt(result[2], 16),
+	        b: parseInt(result[3], 16)
+	    } : null;
+	}
+	// given an object with r, g, and b keys, or a string of the form 'rgb(mm,nn,ll)', return a CSS hex string including the leading '#' character
+	function rgbToHex (rgb) {
+		var r,g,b;
+		if (typeof(rgb) == 'object') {
+			r = rgb.r;
+			g = rgb.g;
+			b = rgb.b;
+		} else if (typeof(rgb.match) == 'function'){
+			var parts = rgb.match(/^rgb\((\d+),(\d+),(\d+)\)$/);
+			if (parts) {
+				r = parts[1];
+				g = parts[2];
+				b = parts[3];
+			}
+		}
+		if (isNaN(r) || isNaN(b) || isNaN(g)) {
+			throw new TL.Error("invalid_rgb_err");
+		}
+		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
+	}
+	function colorObjToHex(o) {
+		var parts = [o.r, o.g, o.b];
+		return TL.Util.rgbToHex("rgb(" + parts.join(',') + ")")
+	}
+	function ratio() {
+		var square = function(size) {
 			var s = {
 				w: 0,
 				h: 0
@@ -481,9 +480,9 @@ TL.Util = {
 				s.h = size.w;
 			}
 			return s;
-		},
+		};
 
-		r16_9: function(size) {
+		var r16_9 = function(size) {
 			if (size.w !== null && size.w !== "") {
 				return Math.round((size.w / 16) * 9);
 			} else if (size.h !== null && size.h !== "") {
@@ -491,16 +490,16 @@ TL.Util = {
 			} else {
 				return 0;
 			}
-		},
-		r4_3: function(size) {
+		};
+		var r4_3 = function(size) {
 			if (size.w !== null && size.w !== "") {
 				return Math.round((size.w / 4) * 3);
 			} else if (size.h !== null && size.h !== "") {
 				return Math.round((size.h / 3) * 4);
 			}
 		}
-	},
-	getObjectAttributeByIndex: function(obj, index) {
+	}
+	function getObjectAttributeByIndex (obj, index) {
 		if(typeof obj != 'undefined') {
 			var i = 0;
 			for (var attr in obj){
@@ -514,8 +513,8 @@ TL.Util = {
 			return "";
 		}
 
-	},
-	getUrlVars: function(string) {
+	}
+	function getUrlVars (string) {
 		var str,
 			vars = [],
 			hash,
@@ -541,20 +540,19 @@ TL.Util = {
 
 
 		return vars;
-	},
+	}
     /**
      * Remove any leading or trailing whitespace from the given string.
      * If `str` is undefined or does not have a `replace` function, return
      * an empty string.
      */
-	trim: function(str) {
+	function trim (str) {
         if (str && typeof(str.replace) == 'function') {
             return str.replace(/^\s+|\s+$/g, '');
         }
         return "";
-	},
-
-	slugify: function(str) {
+	}
+	function slugify (str) {
 		// borrowed from http://stackoverflow.com/a/5782563/102476
 		str = TL.Util.trim(str);
 		str = str.toLowerCase();
@@ -572,8 +570,8 @@ TL.Util = {
 
 		str = str.replace(/^([0-9])/,'_$1');
 		return str;
-	},
-	maxDepth: function(ary) {
+	}
+	function maxDepth(ary) {
 		// given a sorted array of 2-tuples of numbers, count how many "deep" the items are.
 		// that is, what is the maximum number of tuples that occupy any one moment
 		// each tuple should also be sorted
@@ -601,18 +599,17 @@ TL.Util = {
 			}
 		};
 		return max_depth;
-	},
-
-	pad: function (val, len) {
+	}
+	function pad(val, len) {
 		val = String(val);
 		len = len || 2;
 		while (val.length < len) val = "0" + val;
 		return val;
-	},
-	intToHexString: function(i) {
+	}
+	function intToHexString(i) {
 		return TL.Util.pad(parseInt(i,10).toString(16));
-	},
-    findNextGreater: function(list, current, default_value) {
+	}
+  function findNextGreater (list, current, default_value) {
         // given a sorted list and a current value which *might* be in the list,
         // return the next greatest value if the current value is >= the last item in the list, return default,
         // or if default is undefined, return input value
@@ -623,9 +620,8 @@ TL.Util = {
         }
 
         return (default_value) ? default_value : current;
-    },
-
-    findNextLesser: function(list, current, default_value) {
+  }
+  function findNextLesser (list, current, default_value) {
         // given a sorted list and a current value which *might* be in the list,
         // return the next lesser value if the current value is <= the last item in the list, return default,
         // or if default is undefined, return input value
@@ -636,9 +632,8 @@ TL.Util = {
         }
 
         return (default_value) ? default_value : current;
-    },
-
-	isEmptyObject: function(o) {
+    }
+	function isEmptyObject(o) {
 		var properties = []
 		if (Object.keys) {
 			properties = Object.keys(o);
@@ -651,8 +646,8 @@ TL.Util = {
 			if (TL.Util.trim(o[k]).length != 0) return false;
 		}
 		return true;
-	},
-	parseYouTubeTime: function(s) {
+	}
+	function parseYouTubeTime(s) {
 	    // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
 		if (typeof(s) == 'string') {
 			parts = s.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i);
@@ -666,17 +661,17 @@ TL.Util = {
 			return s;
 		}
 		return 0;
-	},
+	}
 	/**
 	 * Try to make seamless the process of interpreting a URL to a web page which embeds an image for sharing purposes
 	 * as a direct image link. Some services have predictable transformations we can use rather than explain to people
 	 * this subtlety.
 	 */
-	transformImageURL: function(url) {
+	function transformImageURL(url) {
 		return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
-	},
+	}
 
-	base58: (function(alpha) {
+	(function base58 (alpha) {
 	    var alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
 	        base = alphabet.length;
 	    return {
@@ -707,5 +702,13 @@ TL.Util = {
 	        }
 	    };
 	})()
+	return {
+      mergeData: mergeData,
+      stamp: stamp
+	}
 
-};
+})();
+
+export {
+  Util
+}

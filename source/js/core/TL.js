@@ -3,6 +3,7 @@
 */
 
 (function (root) {
+    debugger
 	root.TL = {
 		VERSION: '0.1',
 		_originalL: root.TL

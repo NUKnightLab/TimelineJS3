@@ -5,7 +5,7 @@ module.exports = {
   context: path.join(__dirname, 'source'),
   entry: {
     "main": "./js/main.js",
-    "timeline": "./js/TL.Timeline.js",
+    "timeline": "./js/timeline.js",
     "timeline-embed-cdn": "./js/embed/Embed.CDN.js",
     "timeline-embed": "./js/embed/Embed.js",
   },
@@ -13,7 +13,7 @@ module.exports = {
     path: path.join(__dirname, "dist/js"),
     filename: "[name].js",
     libraryTarget: "var",
-    library: "[name]",
+    library: "TL",
     publicPath: "/dist"
   },
   module: {

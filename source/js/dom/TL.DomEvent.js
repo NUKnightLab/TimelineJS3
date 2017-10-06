@@ -1,13 +1,15 @@
 /*	TL.DomEvent
-	Inspired by Leaflet 
+	Inspired by Leaflet
 	DomEvent contains functions for working with DOM events.
 ================================================== */
 // TODO stamp
+import { Util } from '../core/TL.Util.js'
+import { Browser } from '../core/TL.Browser.js'
 
-TL.DomEvent = {
+var DomEvent = (function() {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
-		var id = TL.Util.stamp(fn),
+	function addListener(/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
+		var id = Util.stamp()(fn),
 			key = '_tl_' + type + id;
 
 		if (obj[key]) {
@@ -18,7 +20,7 @@ TL.DomEvent = {
 			return fn.call(context || obj, e || TL.DomEvent._getEvent());
 		};
 
-		if (TL.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+		if (Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			this.addDoubleTapListener(obj, handler, id);
 		} else if ('addEventListener' in obj) {
 			if (type === 'mousewheel') {
@@ -42,10 +44,10 @@ TL.DomEvent = {
 		}
 
 		obj[key] = handler;
-	},
+	}
 
-	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
-		var id = TL.Util.stamp(fn),
+	function removeListener(/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
+		var id = Util.stamp()(fn),
 			key = '_tl_' + type + id,
 			handler = obj[key];
 
@@ -53,7 +55,7 @@ TL.DomEvent = {
 			return;
 		}
 
-		if (TL.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
+		if (Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 		} else if ('removeEventListener' in obj) {
 			if (type === 'mousewheel') {
@@ -68,9 +70,9 @@ TL.DomEvent = {
 			obj.detachEvent("on" + type, handler);
 		}
 		obj[key] = null;
-	},
+	}
 
-	_checkMouse: function (el, e) {
+	function _checkMouse(el, e) {
 		var related = e.relatedTarget;
 
 		if (!related) {
@@ -86,10 +88,10 @@ TL.DomEvent = {
 		}
 
 		return (related !== el);
-	},
+	}
 
 	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function () {
+	function _getEvent() {
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
@@ -102,39 +104,39 @@ TL.DomEvent = {
 			}
 		}
 		return e;
-	},
+	}
 	/*jshint noarg:false */
 
-	stopPropagation: function (/*Event*/ e) {
+	function stopPropagation(/*Event*/ e) {
 		if (e.stopPropagation) {
 			e.stopPropagation();
 		} else {
 			e.cancelBubble = true;
 		}
-	},
-	
+	}
+
 	// TODO TL.Draggable.START
-	disableClickPropagation: function (/*HTMLElement*/ el) {
+	function disableClickPropagation(/*HTMLElement*/ el) {
 		TL.DomEvent.addListener(el, TL.Draggable.START, TL.DomEvent.stopPropagation);
 		TL.DomEvent.addListener(el, 'click', TL.DomEvent.stopPropagation);
 		TL.DomEvent.addListener(el, 'dblclick', TL.DomEvent.stopPropagation);
-	},
+	}
 
-	preventDefault: function (/*Event*/ e) {
+	function preventDefault(/*Event*/ e) {
 		if (e.preventDefault) {
 			e.preventDefault();
 		} else {
 			e.returnValue = false;
 		}
-	},
+	}
 
-	stop: function (e) {
+	function stop(e) {
 		TL.DomEvent.preventDefault(e);
 		TL.DomEvent.stopPropagation(e);
-	},
+	}
 
 
-	getWheelDelta: function (e) {
+	function getWheelDelta(e) {
 		var delta = 0;
 		if (e.wheelDelta) {
 			delta = e.wheelDelta / 120;
@@ -144,6 +146,17 @@ TL.DomEvent = {
 		}
 		return delta;
 	}
-};
+    return {
+      addListener,
+      removeListener,
+      disableClickPropagation,
+      preventDefault,
+      stop,
+      getWheelDelta
+    }
+})();
 
+export {
+  DomEvent
+}
 
