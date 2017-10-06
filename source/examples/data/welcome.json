@@ -1,0 +1,658 @@
+{
+    "scale": "human",
+	"title": {
+		        "media": {
+		            "caption": "",
+		            "credit": "",
+		            "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+		            "thumb": 	""
+		        },
+	            "text": {
+	                "headline": "Welcome to TimelineJS",
+	                "text": "<p>TimelineJS is an open-source tool that enables you to build visually-rich interactive timelines and is available in 40 languages.</p><p>You're looking at an example of one right now.</p><p>Click on the arrow to the right to learn more.</p>"
+	            }
+	    },
+    "events": [
+        {
+            "start_date": {
+                "year":			"1851",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Hello",
+            "media": {
+                "caption": "Screenshot from TimelineJS Embed Generator tool (see below)",
+                "credit": "",
+                "url": "http://timeline.knightlab.com/static/welcome/step3.png",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "It's Easy to Make Your Own Timeline",
+                "text": "The TimelineJS Embed Generator makes it easy to add a timeline to your own site. Just copy our Google Spreadsheet template, add your events as rows in the spreadsheet, and use our <a href='#make'>generator tool</a> to generate the HTML you need to add to your site."
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1857",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Hello",
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Illustrate your Timeline with photos, videos, tweets and more.",
+                "text": "Timeline can automatically pull in photos, videos from YouTube or Vimeo, tweets, wikipedia entries, and many other media types to help tell your story."
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1899",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Hello",
+            "media": {
+                "caption": "Le portrait mystérieux",
+                "credit": "Georges Méliès",
+                "url": "http://youtu.be/lIvftGgps24",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "YouTube video",
+                "text": "To add a YouTube video, just add a link to it in the media field. No embedding necessary. http://youtu.be/lIvftGgps24"
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1899",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Goodbye",
+            "media": {
+                "caption": "A Trip to the Moon / Le Voyage dans la lune",
+                "credit": "Georges Méliès",
+                "url": "http://youtu.be/7JDaOOw0MEE",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "YouTube with no text",
+                "text": ""
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1902",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Goodbye",
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://en.wikipedia.org/wiki/A_Trip_to_the_Moon",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Wikipedia",
+                "text": "Add a link to a <a href='http://en.wikipedia.org/wiki/A_Trip_to_the_Moon' target='_blank'>Wikipedia entry</a> in the media field to show an excerpt alongside your text."
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1902",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Goodbye",
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://en.wikipedia.org/wiki/A_Trip_to_the_Moon",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Wikipedia with no text",
+                "text": ""
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1950",
+                "month":		"2",
+                "day": 			"7",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1955",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Goodbye",
+            "media": {
+                "caption": "",
+                "credit": "Dr. Seuss",
+                "url": "<blockquote><p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p></blockquote>",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Blockquote",
+                "text": "This is an example of a blockquote. <br/>&lt;blockquote&gt;&ldquo; &lt;p&gt;&ldquo; Just use html blockquotes with paragraphs in the media field.&rdquo;&lt;/p&gt; &rdquo;&lt;/blockquote&gt;"
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1960",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://www.nytimes.com/",
+                "thumb": 	""
+            },
+            "text": {
+                "headline": "Website",
+                "text": "This is an example of a website. Just paste a link to the site in the media field."
+            }
+        },
+        {
+            "start_date": {
+                "year":			"1985",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "Zach Wise",
+                "url": "https://www.flickr.com/photos/zachwise/14514563402/"
+            },
+            "text": {
+                "headline": "Flickr",
+                "text": "To add a Flickr photo, just paste a link to the photo page in the media field. Example: https://www.flickr.com/photos/zachwise/14514563402/"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1987",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "Zach Wise",
+                "url": "http://www.flickr.com/photos/zachwise/7050589957/in/photostream/"
+            },
+            "text": {
+                "headline": "Flickr with no text",
+                "text": ""
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1990",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1995",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://instagram.com/p/0nsIGKIbb7/"
+            },
+            "text": {
+                "headline": "Instagram",
+                "text": "To add an Instagram photo, just paste a link to the photo page in the media field. Example: https://instagram.com/p/0nsIGKIbb7/"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1990",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1995",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://instagram.com/p/0n43jmuYkC/"
+            },
+            "text": {
+                "headline": "Instagram with no text",
+                "text": ""
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"2000",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://soundcloud.com/beastieboys/make-some-noise"
+            },
+            "text": {
+                "headline": "SoundCloud",
+                "text": "Just add a link to the track in the media field."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"2000",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+			"group": "Yo",
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://soundcloud.com/beastieboys/make-some-noise"
+            },
+            "text": {
+                "headline": "SoundCloud with no text",
+                "text": ""
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"2001",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": null,
+                "url": "https://vimeo.com/105602328"
+            },
+            "text": {
+                "headline": "Vimeo",
+                "text": "Just add a link to the video in the media field."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"2001",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": null,
+                "url": "https://vimeo.com/105602328"
+            },
+            "text": {
+                "headline": "Vimeo with no text",
+                "text": ""
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1956",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "spotify:track:1OT1G66Lt9EpKFWkwK8i9z"
+            },
+            "text": {
+                "headline": "Spotify Track URI",
+                "text": "Spotify Track URI"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1955",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "spotify:user:zachwise:playlist:3KqOUdFJXsEUC0DKudovj1"
+            },
+            "text": {
+                "headline": "Spotify Playlist URI",
+                "text": "Spotify Playlist URI"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1930",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "https://vine.co/v/bjHh0zHdgZT"
+            },
+            "text": {
+                "headline": "Vine",
+                "text": "Add a link to the Vine"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1944",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "https://storify.com/cmgnationalnews/last-minute-rumors-about-apple-s-new-iphone-6-iwat"
+            },
+            "text": {
+                "headline": "Storify",
+                "text": "Add a link to the Storify"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1957",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "http://open.spotify.com/user/zachwise/playlist/3KqOUdFJXsEUC0DKudovj1"
+            },
+            "text": {
+                "headline": "Spotify Playlist URL",
+                "text": "Spotify Playlist URL"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1958",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "http://open.spotify.com/track/1OT1G66Lt9EpKFWkwK8i9z"
+            },
+            "text": {
+                "headline": "Spotify Track URL",
+                "text": "Spotify Track URL"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1905",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1907",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://twitter.com/zlwise/status/502535723715923968"
+            },
+            "text": {
+                "headline": "Twitter",
+                "text": "Just add a link to the tweet"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1905",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1907",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://twitter.com/heathertal/status/581528844651331584"
+            },
+            "text": {
+                "headline": "Twitter",
+                "text": "Just add a link to the tweet"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1905",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1907",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "https://twitter.com/zlwise/status/502535723715923968"
+            },
+            "text": {
+                "headline": "Twitter with no text",
+                "text": ""
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"2014",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "thumbnail": 	"",
+                "format": 		""
+            },
+            "text": {
+                "headline": "Get started!",
+                "text": ""
+            },
+            "unique_id": ""
+        }
+    ]
+}

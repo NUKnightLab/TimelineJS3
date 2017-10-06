@@ -1,0 +1,455 @@
+{
+    "events": [
+        {
+            "start_date": {
+                "year":			"1900",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1902",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 39.491711,
+                "line": true,
+                "lon": -91.79326,
+                "name": "Florida, Missouri",
+                "zoom": 12
+            },
+            "media": {
+                "caption": "Twain caricatured by Spy for Vanity Fair, 1908",
+                "credit": "Vanity Fair",
+                "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg",
+                "thumb": 	"http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mark_Twain_Vanity_Fair_1908-05-13.jpeg/375px-Mark_Twain_Vanity_Fair_1908-05-13.jpeg"
+            },
+            "text": {
+                "headline": "Mark Twain JSON",
+                "text": "Samuel Langhorne Clemens (November 30, 1835 \u2013 April 21, 1910), better known by his pen name Mark Twain, was an American author and humorist. He wrote The Adventures of Tom Sawyer (1876) and its sequel, Adventures of Huckleberry Finn (1885), the later often called \"the Great American Novel.\""
+            },
+            "type": "overview"
+        },
+        {
+            "start_date": {
+                "year":			"2000",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 39.491711,
+                "line": true,
+                "lon": -91.79326,
+                "name": "Florida, Missouri",
+                "zoom": 12
+            },
+            "media": {
+                "caption": "Mark Twain's birthplace, Florida, Missouri",
+                "credit": "",
+                "url": "https://twitter.com/MarkTwainQuote/status/441928360583643136"
+            },
+            "text": {
+                "headline": "Florida, Missouri",
+                "text": "Born in Florida, Missouri. Halley\u2019s comet visible from earth."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1920",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "end_date": {
+                "year":			"1923",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 39.501711,
+                "line": true,
+                "lon": -91.94326,
+                "name": "Florida, Missouri",
+                "zoom": 12
+            },
+            "media": {
+                "caption": "Mark Twain's boyhood home in Hannibal, Missouri.",
+                "credit": "",
+                "url": "http://instagram.com/p/lEPdm4J20m/"
+            },
+            "text": {
+                "headline": "Hannibal, Missouri",
+                "text": "Moves to Hannibal, Missouri, which later serves as the model town for Tom Sawyer and Huckleberry Finn."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1915",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 40.714353,
+                "line": true,
+                "lon": -74.005973,
+                "zoom": 11
+            },
+            "media": {
+                "caption": null,
+                "credit": null,
+                "url": "https://vine.co/v/bjHh0zHdgZT"
+            },
+            "text": {
+                "headline": "Itinerant Printer",
+                "text": "Visits St. Louis, New York, and Philadelphia as an itinerant printer."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":         "1900",
+                "month":        "01",
+                "day":          "20",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 39.309514,
+                "line": true,
+                "lon": -119.649979,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "Mark Twain's desk when he was editor of the Territorial Enterprise. Mark Twain Territorial Enterprise Museum, Virginia City, NV.",
+                "credit": "",
+                "url": "http://en.wikipedia.org/wiki/Mark_Twain"
+            },
+            "text": {
+                "headline": "Virginia City Territorial Enterprise",
+                "text": "Travels around Nevada and California. Takes job as reporter for the Virginia City Territorial Enterprise."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1960",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 37.774929,
+                "line": true,
+                "lon": -122.419416,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "San Francisco",
+                "text": "Forced to leave Nevada for breaking dueling laws. Prospects in Calaveras County, settles in San Francisco. Writes for magazines and newspapers."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1963",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 19.896766,
+                "line": true,
+                "lon": -155.582782,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "Wreck of USS Hornet.",
+                "credit": "",
+                "url": "http://photos.wikimapia.org/p/00/00/56/17/28_big.jpg"
+            },
+            "text": {
+                "headline": "Hawaii",
+                "text": "Takes trip to Hawaii as correspondent of the Sacramento Alta Californian. Reports on shipwreck of the Hornet. Gives first public lecture."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"1930",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 54.525961,
+                "line": true,
+                "lon": 15.255119,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "",
+                "credit": "",
+                "url": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu/page1-395px-1867._The_Celebrated_Jumping_Frog_of_Calaveras_County%2C_and_Other_Sketches.djvu.jpg"
+            },
+            "text": {
+                "headline": "Travels",
+                "text": "Travels as correspondent to Europe and the Holy Land on the Quaker City. Sees a picture of Olivia Langdon (Livy). Publishes The Celebrated Jumping Frog of Calaveras County, and Other Sketches. Sales are light."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1935",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 42.089796,
+                "line": true,
+                "lon": -76.807734,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "Livy",
+                "text": "Lectures across the United States. Meets and falls in love with Livy in Elmira, New York."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1959",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 42.886447,
+                "lon": -78.878369,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "Married",
+                "text": "Marries Livy in Elmira. Her father buys them a house in Buffalo, New York. Son Langdon is born."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1990",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 41.763711,
+                "line": true,
+                "lon": -72.685093,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "Roughing It",
+                "text": "Moves with Livy to Hartford. Publishes Roughing It. Daughter is born. Son Langdon dies."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"1991",
+                "month":		"01",
+                "day": 			"05",
+                "hour": 		"6",
+                "minute": 		"45",
+                "second": 		"56",
+                "millisecond": 	"",
+                "format": 		""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 54.525961,
+                "lon": 15.255119,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "Financial",
+                "text": "Leaves Hartford to live in Europe because of financial difficulties."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": "#000000",
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":         "1900",
+                "month":        "01",
+                "day":          "10",
+                "hour":         "6",
+                "minute":       "45",
+                "second":       "56",
+                "millisecond":  "",
+                "format":       ""
+            },
+            "location": {
+                "icon": "http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-pushpin.png",
+                "lat": 40.714353,
+                "lon": -74.005973,
+                "zoom": 11
+            },
+            "media": {
+                "caption": "something",
+                "credit": "ETC",
+                "url": "http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg"
+            },
+            "text": {
+                "headline": "Livy dies",
+                "text": "Livy dies. Begins dictating autobiography. Moves to New York City."
+            },
+            "unique_id": ""
+        },
+        {
+            "background": {
+                "color": null,
+                "opacity": 50,
+                "url": null
+            },
+            "start_date": {
+                "year":			"2014",
+                "month":		"",
+                "day": 			"",
+                "hour": 		"",
+                "minute": 		"",
+                "second": 		"",
+                "millisecond": 	"",
+                "thumbnail": 	"",
+                "format": 		""
+            },
+            "text": {
+                "headline": "Get started!",
+                "text": ""
+            },
+            "unique_id": ""
+        }
+    ]
+}

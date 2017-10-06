@@ -1,0 +1,69 @@
+{
+    "events": [
+        {
+            "start_date": {
+                "year":			"-5410"
+            },
+            "media": {
+                "url": "http://en.wikipedia.org/wiki/Geologic_time_scale"
+            },
+            "text": {
+                "headline": "Geological Timeline Test",
+                "text": "Testing extreme dates for TimelineJS3"
+            },
+            "type": "overview"
+        },
+        {
+            "start_date": {
+                "year":			"-2520"
+            },
+            "media": {
+                "url": "http://en.wikipedia.org/wiki/Triassic"
+            },
+            "text": {
+                "headline": "-2520",
+                "text": "Archosaurs dominant on land as dinosaurs, in the oceans as Ichthyosaurs and nothosaurs, and in the air as pterosaurs. Cynodonts become smaller and more mammal-like, while first mammals and crocodilia appear. Dicroidiumflora common on land. Many large aquatic temnospondyl amphibians. Ceratitic ammonoids extremely common. Modern corals and teleost fish appear, as do many modern insect clades. Andean Orogeny in South America. Cimmerian Orogeny in Asia. Rangitata Orogeny begins in New Zealand. Hunter-Bowen Orogeny in Northern Australia, Queensland and New South Wales ends, (c. 260–225 Ma)"
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"-2010"
+            },
+            "media": {
+                "url": "http://en.wikipedia.org/wiki/Jurassic"
+            },
+            "text": {
+                "headline": "-2010",
+                "text": "Gymnosperms (especially conifers, Bennettitales and cycads) and ferns common. Many types of dinosaurs, such as sauropods, carnosaurs, and stegosaurs. Mammals common but small. First birds and lizards. Ichthyosaurs and plesiosaurs diverse. Bivalves, Ammonites and belemnites abundant. Sea urchins very common, along with crinoids, starfish, sponges, and terebratulid and rhynchonellid brachiopods. Breakup of Pangaea into Gondwana and Laurasia. Nevadan orogeny in North America. Rantigata and Cimmerian Orogenies taper off. Atmospheric CO2 levels 4–5 times the present day levels (1200–1500 ppmv, compared to today's 385 ppmv[27][28])."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"-1450"
+            },
+            "media": {
+                "url": "http://en.wikipedia.org/wiki/Cretaceous"
+            },
+            "text": {
+                "headline": "-1450",
+                "text": "Flowering plants proliferate, along with new types of insects. More modern teleost fish begin to appear. Ammonoidea, belemnites, rudist bivalves, echinoids and sponges all common. Many new types of dinosaurs (e.g. Tyrannosaurs, Titanosaurs, duck bills, and horned dinosaurs) evolve on land, as do Eusuchia (modern crocodilians); and mosasaurs and modern sharks appear in the sea. Primitive birds gradually replace pterosaurs. Monotremes, marsupials and placental mammals appear. Break up of Gondwana. Beginning of Laramide and Sevier Orogenies of the Rocky Mountains. Atmospheric CO2 close to present-day levels."
+            },
+            "unique_id": ""
+        },
+        {
+            "start_date": {
+                "year":			"-258"
+            },
+            "media": {
+                "url": "http://en.wikipedia.org/wiki/Quaternary"
+            },
+            "text": {
+                "headline": "-258",
+                "text": "Flourishing and then extinction of many large mammals (Pleistocene megafauna). Evolution of anatomically modern humans. Quaternary Ice Age continues with glaciations and interstadials (and the accompanying fluctuations from 100 to 300 ppmv in atmospheric CO2 levels[27][28]), further intensification of Icehouse Earth conditions, roughly 1.6 Ma. Last glacial maximum (30000 years ago), last glacial period (18000–15000 years ago). Dawn of human stone-age cultures, with increasing technical complexity relative to previous ice age cultures, such as engravings and clay statues (e.g. Venus of Lespugue), particularly in the Mediterranean and Europe. Lake Toba supervolcano erupts 75000 years before present, causing a volcanic winter that pushes humanity to the brink of extinction. Pleistocene ends with Oldest Dryas, Older Dryas/Allerød and Younger Dryas climate events, with Younger Dryas forming the boundary with the Holocene."
+            },
+            "unique_id": ""
+        }
+    ]
+}
