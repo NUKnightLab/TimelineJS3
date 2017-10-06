@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="../../css/TL.Timeline.css?v1">
 </head>
 <body>
-    <img src="assets/example.png" alt="example"/>
+    <div id="timeline"></div>
+    <!-- JavaScript-->
+    <script src="js/timeline.js"></script>
+    <script>
+      var timeline = new TL.Timeline('timeline', 'examples/data/welcome.json', {
+        theme_color: "#288EC3",
+        ga_property_id: "UA-27829802-4"
+      });
+    </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ TL.Language = function(options) {
 			if (/\.json$/.test(code)) {
 				var url = code;
 			} else {
-				var fragment = "/locale/" + code + ".json";
+				var fragment = "/language/locale/" + code + ".json";
 				var script_path = options.script_path || TL.Timeline.source_path;
 				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;

@@ -2,10 +2,18 @@ var webpack = require('webpack'),
     path = require('path');
 
 module.exports = {
-  entry: "./source/js/main.js",
+  context: path.join(__dirname, 'source'),
+  entry: {
+    "main": "./js/main.js",
+    "timeline": "./js/TL.Timeline.js",
+    "timeline-embed-cdn": "./js/embed/Embed.CDN.js",
+    "timeline-embed": "./js/embed/Embed.js",
+  },
   output: {
     path: path.join(__dirname, "dist/js"),
-    filename: "bundle.js",
+    filename: "[name].js",
+    libraryTarget: "var",
+    library: "[name]",
     publicPath: "/dist"
   },
   module: {
@@ -31,26 +39,45 @@ module.exports = {
         }
       },
       {
-        test: /\.(html)$/,
+        test: /\.html$/,
         use: {
-          loader: 'file-loader?[name].[ext]!html-loader',
+          loader: 'file-loader?name=[path][name].[ext]!html-loader',
           options: {
-            name: '[name].[ext]',
-            outputPath: '../'
+            name: '[path][name].[ext]',
+            outputPath: '../',
           }
         }
       },
       {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        test: /\.(less|css)$/,
+        use: [{
+          loader: "style-loader",
+        }, {
+          loader: "file-loader?[name].[ext]!css-loader",
+          options: {
+            name: '[path][name].css',
+            context: path.join(__dirname, 'source/less'),
+            outputPath: '../css/'
+          }
+        }, {
+          loader: "less-loader",
+        }]
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader?cacheDirectory=true',
+        }
       },
       {
         test: /\.json$/,
         use: {
           loader: 'file-loader?[name].[ext]!json-loader',
           options: {
-            name: '[name].[ext]',
-            outputPath: '../js/locale/'
+            name: '[path][name].[ext]',
+            context: path.join(__dirname, 'source/'),
+            outputPath: '../'
           }
         }
       }
