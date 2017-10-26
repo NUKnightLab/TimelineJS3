@@ -1,3 +1,6 @@
+3.5.2 (2017-10-26)
+* PR #554 adds direction to .tl-rtl
+
 3.5.1 (2017-05-03)
 * PR #522 use https in wistia
 
