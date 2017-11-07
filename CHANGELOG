@@ -1,3 +1,6 @@
+3.5.3 (2017-11-07)
+* Remove 1px offset that causes white line along top of Timeline
+
 3.5.2 (2017-10-26)
 * PR #554 adds direction to .tl-rtl
 

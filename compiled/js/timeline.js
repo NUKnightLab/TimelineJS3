@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 2017-10-25-19-01-55 - 2017-10-25
+    TimelineJS - ver. 2017-11-07-20-35-04 - 2017-11-07
     Copyright (c) 2012-2016 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -13630,7 +13630,7 @@ TL.Timeline = TL.Class.extend({
 		// Initial Default Layout
 		this.options.width        = this._el.container.offsetWidth;
 		this.options.height       = this._el.container.offsetHeight;
-		this._el.storyslider.style.top  = "1px";
+		// this._el.storyslider.style.top  = "1px";
 
 		// Set TimeNav Height
 		this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
