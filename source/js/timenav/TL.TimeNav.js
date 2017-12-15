@@ -198,6 +198,7 @@ TL.TimeNav = TL.Class.extend({
 	/*	Groups
 	================================================== */
 	_createGroups: function() {
+		this._groups = [];
 		var group_labels = this.timescale.getGroupLabels();
 
 		if (group_labels) {
