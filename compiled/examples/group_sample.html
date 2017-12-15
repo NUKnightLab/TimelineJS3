@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Groups Sample</title>
+    <meta charset="utf-8">
+    <meta name="description" content="TimelineJS Embed">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- CSS-->
+    <link rel="stylesheet" href="/build/css/timeline.css?v1">
+    <!--FONT-->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+    <!-- Style-->
+    <style>
+      html, body {
+      	height:100%;
+      	width:100%;
+      	padding: 0px;
+      	margin: 0px;
+      }
+      .vco-timeline {
+      	
+      }
+      
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    
+    -->
+  </head>
+  <body>
+    <div id="timeline" style="height:100%; width: 100%"></div>
+    <!-- JavaScript-->
+    <script src="/build/js/timeline.js"></script>
+    <script>
+      var defaultOptions = {
+        debug: false,                       // Can be set to debug timelinejs
+        script_path: '',
+        // width: will be 100%,
+        // height: will be 100%,
+        scale_factor: 2,                    // How many screen widths wide should the timeline be at first presentation
+        zoom_sequence: [0.5, 1, 2, 5, 9, 15], 	//[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+        layout: 'landscape',                // portrait or landscape
+        timenav_position: 'bottom',         // timeline on top or bottom
+        optimal_tick_width: 100,            // optimal distance (in pixels) between ticks on axis
+        base_class: '',
+        //timenav_height: 150,
+        timenav_height_percentage: 50,      // Overrides timenav height as a percentage of the screen
+        timenav_height_min: 150,            // Minimum timenav height
+        marker_height_min: 30,              // Minimum Marker Height
+        marker_width_min: 150,              // Minimum Marker Width
+        marker_padding: 5,                  // Top Bottom Marker Padding
+        start_at_slide: 0,
+        //menubar_height: 200,
+        skinny_size: 650,
+        relative_date: false,               // Use momentjs to show a relative date from the slide.text.date.created_time field
+        use_bc: false,                      // Use declared suffix on dates earlier than 0
+        duration: 1000,                     // Slider animation duration
+        ease: TL.Ease.easeInOutQuint,       // Slider animation type
+        dragging: true,
+        trackResize: true,
+        map_type: 'stamen:toner-lite',
+        slide_padding_lr: 100,              // padding on slide of slide
+        slide_default_fade: '50%',          // landscape fade
+        language: 'en'
+      };
+      var timeline = new TL.Timeline('timeline', 'group_sample.json', defaultOptions, {
+      	
+      });
+      window.onresize = function(event) {
+      	timeline.updateDisplay();
+      }
+    </script>
+  </body>
+</html>
