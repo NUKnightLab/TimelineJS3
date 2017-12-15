@@ -1,3 +1,6 @@
+3.5.4 (TBD)
+* PR #331 fixes bug that was causing duplications of groups
+
 3.5.3 (2017-11-07)
 * Remove 1px offset that causes white line along top of Timeline
 
