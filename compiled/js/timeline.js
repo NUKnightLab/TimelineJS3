@@ -1,5 +1,5 @@
 /*
-    TimelineJS - ver. 2017-11-07-20-35-04 - 2017-11-07
+    TimelineJS - ver. 2017-12-15-16-48-40 - 2017-12-15
     Copyright (c) 2012-2016 Northwestern University
     a project of the Northwestern University Knight Lab, originally created by Zach Wise
     https://github.com/NUKnightLab/TimelineJS3
@@ -10993,6 +10993,7 @@ TL.TimeNav = TL.Class.extend({
 	/*	Groups
 	================================================== */
 	_createGroups: function() {
+		this._groups = [];
 		var group_labels = this.timescale.getGroupLabels();
 
 		if (group_labels) {
@@ -11787,7 +11788,7 @@ TL.TimeMarker = TL.Class.extend({
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.text);
-		} else if (this.data.media.caption && this.data.media.caption != "") {
+		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.media.caption);
 		}
 
