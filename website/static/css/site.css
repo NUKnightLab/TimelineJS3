@@ -55,3 +55,15 @@ ul#embed-font li img {
 .note-error:before {
   content: "Warning: "
 }
+
+/* faq.html */
+h6.label {
+  font-size: 1.3em;
+  padding: 3em inherit 1em;
+}
+div.question p, div.question ul {
+  margin-left: 2em;
+}
+div.question p:first-child {
+  font-weight: bolder;
+}
