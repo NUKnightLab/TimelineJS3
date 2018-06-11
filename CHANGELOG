@@ -1,3 +1,6 @@
+3.6.0 (2018-06-11)
+* Configure Google Analytics tracking to anonymize_ip for GDPR compliance
+
 3.5.4 (2017-12-15)
 * PR #331 fixes bug that was causing duplications of groups
 * Fix to allow missing media in JSON #565
