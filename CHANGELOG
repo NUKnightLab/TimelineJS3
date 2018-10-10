@@ -1,3 +1,6 @@
+3.6.1 (2018-10-10)
+* Correct translation of "July" in Slovenian.
+
 3.6.0 (2018-06-11)
 * Configure Google Analytics tracking to anonymize_ip for GDPR compliance
 
