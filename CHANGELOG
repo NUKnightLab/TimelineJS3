@@ -1,3 +1,6 @@
+3.6.2 (TBD)
+* PR #592 adds missing woff2 font to fix nav arrows on MS Edge
+
 3.6.1 (2018-10-10)
 * Correct translation of "July" in Slovenian.
 
