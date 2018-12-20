@@ -59,7 +59,7 @@
         "wikipedia": "Zdroj: otevřená encyklopedie Wikipedia", 
         "loading_content": "Nahrávám obsah", 
         "expand_timeline": "Rozbalit časovou osu", 
-        "loading_timeline": "Načítám časovou osu... "
+        "loading_timeline": "Načítám časovou osu... ",
         "swipe_to_navigate": "Posunem ovládejte<br><span class='tl-button'>OK</span>",
         "unknown_read_err": "Došlo k neočekávané chybě při čtení dat tabulky",
         "invalid_url_err": "Nelze číst data časové osy. Ujistěte se, že adresa URL je pro tabulku Google nebo soubor časové osy JSON.",
