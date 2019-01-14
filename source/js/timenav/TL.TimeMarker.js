@@ -278,7 +278,7 @@ TL.TimeMarker = TL.Class.extend({
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.text);
-		} else if (this.data.media.caption && this.data.media.caption != "") {
+		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
 			this._text.innerHTML		= TL.Util.unlinkify(this.data.media.caption);
 		}
 

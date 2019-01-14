@@ -1,3 +1,26 @@
+3.6.3 (not yet released)
+* Issue #598 - use 24-hr time for Portuguese
+
+3.6.2 (2018-12-20)
+* PR #592 adds missing woff2 font to fix nav arrows on MS Edge
+* PR #594 Updated Czech (Čeština) translations
+
+3.6.1 (2018-10-10)
+* Correct translation of "July" in Slovenian.
+
+3.6.0 (2018-06-11)
+* Configure Google Analytics tracking to anonymize_ip for GDPR compliance
+
+3.5.4 (2017-12-15)
+* PR #331 fixes bug that was causing duplications of groups
+* Fix to allow missing media in JSON #565
+
+3.5.3 (2017-11-07)
+* Remove 1px offset that causes white line along top of Timeline
+
+3.5.2 (2017-10-26)
+* PR #554 adds direction to .tl-rtl
+
 3.5.1 (2017-05-03)
 * PR #522 use https in wistia
 
@@ -45,7 +68,7 @@
 * PR #400 - pause Vine, DailyMotion, and Soundcloud media on slide exit (thanks @Hammman and @JustaBitDope)
 * PR #413 - French language support additions
 
-3.4.0 (2018-08-30)
+3.4.0 (2016-08-30)
 -------------------------
 * Complete (?) RTL language support, removed Urdu Unicode translation bugs
 

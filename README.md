@@ -7,6 +7,9 @@ TimelineJS v3: A Storytelling Timeline built in JavaScript.  https://timeline.kn
 
 TimelineJS 3 is a rewrite of the popular Timeline JS software. Please be clear that this is software which "does" the same thing, but it isn't the same software, so some details will vary. See https://timeline.knightlab.com for more information.
 
+## Contributing to TimelineJS
+Are you trying to contribute to or develop TimelineJS3? [Here's where you should start.](https://github.com/NUKnightLab/TimelineJS3/blob/master/CONTRIBUTING.md)
+
 ## Getting Started
 
 The [official documentation for embedding a Timeline in your page instead of using an embed](https://timeline.knightlab.com/docs/instantiate-a-timeline.html) is now maintained on the main TimelineJS website.

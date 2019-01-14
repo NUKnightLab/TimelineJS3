@@ -24,15 +24,21 @@
                             <div class="grid">
                                 <div class="grid-item">
                                     <p>Under the File menu, select “Publish to the Web.”</p>
-                                    <img class="img-shadow"  src="http://timeline.knightlab.com/static/img/make/publish_to_web_small.png" />
+                                    <img class="img-shadow"  src="static/img/make/publish_to_web_small.png" />
                                     <p>In the next window, click the blue "publish" button. When asked, "Are you sure…?" click OK.</p>
                                     <p>Now, copy the URL that appears in the center of the window. You'll use this in the next step.</p>
                                 </div>
                                 <div class="grid-item">
-                                    <img class="img-shadow"  src="http://timeline.knightlab.com/static/img/make/publish_to_web_button_small.png" />
-                                    <img class="img-shadow"  src="http://timeline.knightlab.com/static/img/make/publish_to_web_url_small.png" />
+                                    <img class="img-shadow"  src="static/img/make/publish_to_web_button_small.png" />
+                                    <img class="img-shadow"  src="static/img/make/publish_to_web_url_small.png" />
                                 </div>
                             </div>
+                            <p class="note note-alert">
+                                The following has changed as of 18 July 2017!<br/><br/>
+                                Close the 'Publish to the web' window. Copy the URL for your Timeline from the browser's address bar. It should look something like this:<br />
+                                 <code>https://docs.google.com/spreadsheets/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/edit#gid=0</code>
+                                <br/><br/>Disregard the URL that appears in the "publish to the web" window. It used to be used below, but changes to Google mean that you'll get an error if you use it now.
+                            </p>
                         </div>
                     </li>
 
@@ -48,6 +54,7 @@
                                     <div class="input-group-label column-12">
                                         <label class="input-group-addon" for="inlinelabel">Google Spreadsheet URL</label>
                                         <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI" name="inlinelabel">
+                                        <p id="embed-source-url-message" class="note note-alert note-error"></p>
                                     </div>
                                     <div class="input-group-label column-3">
                                         <label class="input-group-addon" for="inlinelabel">Width</label>
@@ -144,7 +151,7 @@
                                                 <div class="grid-item" style="position: relative">
                                                     <h6>Fonts</h6>
                                                     <div id="embed-font-dropdown">
-                                                        <p style="padding-top:4px;"><img id="font-pair-preview" src="http://timeline.knilab.com/static/img/make/default.png"></p>
+                                                        <p style="padding-top:4px;"><img id="font-pair-preview" src="static/img/make/default.png"></p>
                                                         <ul id="embed-font">
                                                             <li data-value="Default" id="embed-font-active" style="padding-top: 1rem"><img src="static/img/make/default.png" alt="PT Narrow and PT Serif"></li>
                                                             <li data-value="Abril-DroidSans"><img src="static/img/make/abril-droidsans.png" alt="Abril and Droid Sans"></li>
