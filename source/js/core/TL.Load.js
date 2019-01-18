@@ -44,7 +44,7 @@ TL.Load = (function (doc) {
 		}
     };
 	
-})(this.document);
+})(window.document);
 
 
 /*jslint browser: true, eqeqeq: true, bitwise: true, newcap: true, immed: true, regexp: false */
@@ -437,4 +437,4 @@ TL.LoadIt = (function (doc) {
     }
 
   };
-})(this.document);
+})(window.document);

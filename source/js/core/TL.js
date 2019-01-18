@@ -7,7 +7,7 @@
 		VERSION: '0.1',
 		_originalL: root.TL
 	};
-}(this));
+}(window));
 
 /*	TL.Debug
 	Debug mode

@@ -111,12 +111,12 @@
             {
                 "src": "build/js/timeline.js",
                 "dst": "build/js/timeline-min.js",
-                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"
+                "opt": "--comments --mangle --reserved $ --compress booleans,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"
             },
             {
                 "src": "source/js/library/moment.js",
                 "dst": "build/js/library/moment.js",
-                "opt": "--comments --mangle --reserved $ --compress booleans,cascade,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"
+                "opt": "--comments --mangle --reserved $ --compress booleans,comparisons,conditionals,drop_debugger,evaluate,hoist_funs,if_return,join_vars,loops,properties,sequences"
             }
         ],
         //

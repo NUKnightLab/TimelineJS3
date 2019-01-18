@@ -2,10 +2,17 @@
   "name": "TimelineJS3",
   "version": "3.4.0",
   "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
+  "main": "compiled/js/timeline.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "fab build && fab stage_compiled",
+    "prepublish": "npm run build"
+  },
   "dependencies": {
     "less": "^2.1.1",
-    "less-plugin-clean-css": "^1.2.0"
-  },
+    "less-plugin-clean-css": "^1.2.0",
+    "uglify-js": "^3.4.9"
+  },  
   "devDependencies": {},
   "repository": {
     "type": "git",
