@@ -1,6 +1,6 @@
 {
   "name": "TimelineJS3",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
   "main": "compiled/js/timeline.js",
   "types": "types/index.d.ts",
