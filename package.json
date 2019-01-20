@@ -1,5 +1,5 @@
 {
-  "name": "TimelineJS3",
+  "name": "timelineJS3",
   "version": "3.4.1",
   "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
   "main": "compiled/js/timeline.js",
