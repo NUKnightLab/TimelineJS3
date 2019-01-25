@@ -36,6 +36,7 @@ Once the requirements are installed, here are things to know:
 * Don't break the unit tests. Consider adding test code for your changes. We're still working out our unit testing methodology, but before you submit pull requests, you should check http://localhost:5000/unit-tests.html and http://localhost:5000/mediatype-tests.html and verify that you haven't broken any of the tests with your changes.
 
 <h4>Setting Up a Virtual Environment</h4>
+
 To set up a virtual environment, you will first need to install [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/).
 
 To install virtualenv, use the following command:
@@ -76,6 +77,7 @@ Then open a browser and visit http://localhost:5000/unit-tests.html . All of the
 
 
 <h3>Working with CodeKit</h3>
+
 TimelineJS's initial development was done with [CodeKit](https://incident57.com/codekit/), so we maintain support for that. 
 
 Basically, just use CodeKit's "add project" feature to add the TimelineJS directory as a project. You shouldn't need to make any other changes. CodeKit is configured to build files automatically to the /compiled/ directory. There are HTML files in that directory designed to use for testing your code changes. The author of this document does not use CodeKit much, so if these instructions need improvement, please file a GitHub issue or give us a pull request.
