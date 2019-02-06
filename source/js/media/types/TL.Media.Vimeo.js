@@ -16,9 +16,18 @@ TL.Media.Vimeo = TL.Media.extend({
 
 		// Get Media ID
 		this.media_id = this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];
+		var start_time = null;
+
+		// Get start time
+		if (this.data.url.match(/#t=([^&]+).*/)) {
+			start_time = this.data.url.match(/#t=([^&]+).*/)[1];
+		}
 
 		// API URL
 		api_url = "https://player.vimeo.com/video/" + this.media_id + "?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff";
+		if (start_time) {
+			api_url = api_url += '&amp;#t=' + start_time;
+		}
 
 		this.player = TL.Dom.create("iframe", "", this._el.content_item);
 
