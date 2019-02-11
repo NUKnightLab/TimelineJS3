@@ -1,6 +1,7 @@
 3.6.3 (not yet released)
 * Issue #598 - use 24-hr time for Portuguese
 * PR #599 allow text selection on all devices
+* PR #608 allow video start times (and end times for youtube)
 
 3.6.2 (2018-12-20)
 * PR #592 adds missing woff2 font to fix nav arrows on MS Edge
