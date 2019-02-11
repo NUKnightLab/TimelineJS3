@@ -33,13 +33,18 @@ TL.Media.YouTube = TL.Media.extend({
 			trace("YOUTUBE IN URL BUT NOT A VALID VIDEO");
 		}
 
-		this.media_id.start		= parseInt(url_vars["start"]);	
-
-		if (isNaN(this.media_id.start)){
-			this.media_id.start		= TL.Util.parseYouTubeTime(url_vars["t"]);
+		// Get start second
+		if (this.data.url.match("start=")) {
+			this.media_id.start = parseInt(this.data.url.split("start=")[1], 10);
+		}
+		else if (this.data.url.match("t=")) {
+			this.media_id.start = parseInt(this.data.url.split("t=")[1], 10);
 		}
 
-		this.media_id.end		= parseInt(url_vars["end"]);
+		//Get end second
+		if (this.data.url.match("end=")) {
+			this.media_id.end = parseInt(this.data.url.split("end=")[1], 10);
+		}
 
 		this.media_id.hd		= Boolean(typeof(url_vars["hd"]) != 'undefined');
 
@@ -82,13 +87,10 @@ TL.Media.YouTube = TL.Media.extend({
 				playerVars: {
 					enablejsapi:		1,
 					color: 				'white',
-					autohide: 			1,
-					showinfo:			0,
-					theme:				'light',
+					controls: 1, 
 					start:				this.media_id.start,
 					end:  				this.media_id.end,
-					fs: 				0,
-					rel:				0
+					fs: 				1
 				},
 				videoId: this.media_id.id,
 				events: {
@@ -120,7 +122,7 @@ TL.Media.YouTube = TL.Media.extend({
         if(e.data == YT.PlayerState.ENDED) {
             e.target.seekTo(0);
             e.target.pauseVideo();
-        }				
+        }
 	}
 
 
