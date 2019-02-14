@@ -1,4 +1,4 @@
-#TimelineJS3
+TimelineJS3
 ============
 
 TimelineJS v3: A Storytelling Timeline built in JavaScript.  https://timeline.knightlab.com
