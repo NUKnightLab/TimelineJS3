@@ -147,14 +147,18 @@
 
 
 .tl-slide.tl-full-image-background, .tl-slide.tl-full-color-background {
-	.slide-text-shadow();
+	// .slide-text-shadow();
 
 	p, h1, h2, h3, h4, h5, h6 {
 		.slide-text-shadow();
 	}
-	a, a:hover, b, i, blockquote, blockquote p {
-		.slide-text-shadow();
+	a, b, i, blockquote, blockquote p {
+		text-shadow: 1px 1px 1px #000;
 		color: lighten(@color-theme, 90%);
+	}
+	a:hover{
+		text-decoration: underline;
+		color: @color-theme;
 	}
 	.tl-caption, .tl-credit {
 		.slide-text-shadow();
@@ -170,6 +174,10 @@
 	.vcard {
 		a, .nickname  {
 			.slide-text-shadow();
+			&:hover{
+				text-decoration: underline;
+				color: @color-theme;
+			}
 		}
 	}
 

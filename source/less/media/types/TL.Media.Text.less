@@ -17,7 +17,7 @@
 	}
 	.tl-text-content-container {
 		.tl-text-content{
-		
+
 		}
 	}
 	h2.tl-headline-title, h2.tl-headline {
@@ -56,15 +56,18 @@
 // When the background is an image
 .tl-full-image-background, .tl-full-color-background {
 	.tl-text, .tl-text p {
-		color: @color-text-inverted !important;
+		color: @color-text-inverted;
 		text-shadow: 1px 1px 2px #000;
 		.tl-headline-date, h3.tl-headline-date {
-			color: @color-text-inverted !important;
+			color: @color-text-inverted;
 			small {
-				color: @color-text-inverted !important;
+				color: @color-text-inverted;
 			}
 		}
-
+		a:hover {
+			text-decoration: underline;
+			color: @color-theme;
+		}
 	}
 }
 
@@ -80,7 +83,7 @@
 		margin-top:20px;
 		.tl-text-content-container {
 			.tl-text-content{
-		
+
 			}
 		}
 		h2.tl-headline-title, h2.tl-headline {
@@ -106,7 +109,7 @@
 /* Mobile, iPhone
 ================================================== */
 .tl-mobile {
-	
+
 }
 
 /* Mobile, iPhone and skinny

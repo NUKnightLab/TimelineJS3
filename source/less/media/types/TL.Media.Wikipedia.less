@@ -14,7 +14,7 @@
 			float:left;
 			padding-top:3px;
 			//padding-right:10px;
-			
+
 			//border-right: 1px solid @ui-background-color-darker;
 		}
 		.tl-wikipedia-pageimage {
@@ -29,7 +29,7 @@
 			border-left: 1px solid @ui-background-color-darker;
 			margin-bottom:10px;
 		}
-		.tl-wikipedia-source { 
+		.tl-wikipedia-source {
 			//margin-bottom:@base-space;
 			font-size: 13px;
 			line-height: 15px;
@@ -50,15 +50,12 @@
 			color:@color-dark; //@color-theme;
 			text-decoration: none;
 		}
-		h4 a:hover {
-			text-decoration: underline;
-		}
-		
+
 		p {
 			font-size: 13px;
 			line-height: 19px;
 		}
-		
+
 	}
 
 }
@@ -84,10 +81,14 @@
 			h4 a {
 				.slide-text-shadow();
 			}
+			a:hover{
+				text-decoration: underline;
+				color: @color-theme;
+			}
 			.tl-wikipedia-title {
 				border-color: fadeout(@ui-background-color-darker,75);
 			}
-			.tl-wikipedia-source { 
+			.tl-wikipedia-source {
 				color:fadeout(@ui-background-color-darker,15);
 			}
 		}
@@ -100,6 +101,6 @@
 			margin-left: 10px;
 			margin-right: 10px;
 		}
-		
+
 	}
 }
