@@ -228,6 +228,36 @@
 
     }
 
+    var fetchYAMLorJSON = function(url, callback) {
+        var isYAML = TL.Util.endsWith(url, '.yaml') || TL.Util.endsWith(url, '.yml');
+        var parser = isYAML ? jsyaml.safeLoad : JSON.parse;
+        
+        TL.ajax({
+          url: url,
+          dataType: 'text',
+          success: function(response) {
+            var data = parser(response);
+            try {
+                tc = new TL.TimelineConfig(data);
+            } catch(e) {
+                tc = new TL.TimelineConfig();
+                tc.logError(e);
+            }
+            callback(tc);
+          },
+          error: function(xhr, errorType, error) {
+            tc = new TL.TimelineConfig();
+            if (errorType == 'parsererror') {
+                error = new TL.Error("invalid_url_err");
+            } else {
+                error = new TL.Error("unknown_read_err", errorType);
+            }
+            tc.logError(error);
+            callback(tc);
+          }
+        });
+    }
+
     var makeConfig = function(url, callback) {
         var tc,
             key = parseGoogleSpreadsheetURL(url);
@@ -255,30 +285,14 @@
             }
             callback(tc);
         } else {
-          TL.ajax({
-            url: url,
-            dataType: 'json',
-            success: function(data){
-            try {
-                tc = new TL.TimelineConfig(data);
-            } catch(e) {
-                tc = new TL.TimelineConfig();
-                tc.logError(e);
+            if (typeof jsyaml !== 'undefined') {
+              fetchYAMLorJSON(url, callback);
+            } else {
+              TL.Load.js(TL.Timeline.source_path + "/library/js-yaml.js", function() {
+                trace("LOAD JSYAML");
+                fetchYAMLorJSON(url, callback);
+              });
             }
-            callback(tc);
-            },
-            error: function(xhr, errorType, error) {
-              tc = new TL.TimelineConfig();
-              if (errorType == 'parsererror') {
-                var error = new TL.Error("invalid_url_err");
-              } else {
-                var error = new TL.Error("unknown_read_err", errorType)
-              }
-              tc.logError(error);
-              callback(tc);
-            }
-          });
-
         }
     }
 
@@ -287,7 +301,8 @@
         parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
         // export for unit testing
         googleFeedJSONtoTimelineJSON: googleFeedJSONtoTimelineJSON,
-
+        // export for unit testing
+        fetchYAMLorJSON: fetchYAMLorJSON,
 
         fromGoogle: function(url) {
             console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
@@ -299,7 +314,7 @@
          * Given a URL to a Timeline data source, read the data, create a TimelineConfig
          * object, and call the given `callback` function passing the created config as
          * the only argument. This should be the main public interface to getting configs
-         * from any kind of URL, Google or direct JSON.
+         * from any kind of URL, Google or direct JSON or YAML.
          */
         makeConfig: makeConfig,
     }

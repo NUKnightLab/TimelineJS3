@@ -554,6 +554,10 @@ TL.Util = {
         return "";
 	},
 
+  endsWith: function(str, prefix) {
+    return str.indexOf(prefix, str.length - prefix.length) !== -1;
+  },
+
 	slugify: function(str) {
 		// borrowed from http://stackoverflow.com/a/5782563/102476
 		str = TL.Util.trim(str);
