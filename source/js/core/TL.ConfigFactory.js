@@ -236,8 +236,8 @@
           url: url,
           dataType: 'text',
           success: function(response) {
-            var data = parser(response);
             try {
+            		var data = parser(response);
                 tc = new TL.TimelineConfig(data);
             } catch(e) {
                 tc = new TL.TimelineConfig();
