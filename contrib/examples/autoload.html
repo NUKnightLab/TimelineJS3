@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Page structure from the Twitter Bootstrap starter template: https://getbootstrap.com/docs/4.3/getting-started/introduction/#starter-template -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Timeline examples: Autoloading Timeline Slideshow</title>
+    <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+  </head>
+  <body>
+    <div class="container">
+        <h1>TimelineJS3 Examples</h1>
+        <h2>Slideshow</h2>
+        <div class="row">
+            <div class="col">
+              <div id="timeline-embed" style="width: 100%; height: 600px"></div>
+            </div> <!-- .col -->
+        </div> <!-- .row -->
+    </div>
+
+    <script type="text/javascript">
+        const timeline = new TL.Timeline('timeline-embed',
+        'https://docs.google.com/spreadsheets/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/edit?usp=drive_web&ouid=113808851972646275751');
+
+        const loadNextSlide = function() {
+            try {
+                timeline.goToNext();
+            } catch(err) {
+                if (err instanceof TypeError) {
+                    console.log(err.message);
+                    if (err.message === "Cannot read property 'unique_id' of undefined") {
+                        timeline.goToStart();
+                    }
+                }
+            }
+        };
+
+        setInterval(loadNextSlide, 5000);
+    </script>
+  </body>
+<html>
