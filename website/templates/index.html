@@ -41,6 +41,8 @@
     <meta name="twitter:creator" content="@knightlab" />
     <!-- /Twitter Card -->
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 
 </head>
 
@@ -668,7 +670,7 @@
                             </ul> -->
 
                             <form>
-                                <textarea rows="2" type="text" "readonly" name="textplaceholder" value="" >
+                                <textarea rows="2" type="text" readonly="readonly" name="textplaceholder" value="" >
 https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Bevan-PotanoSans&maptype=toner&width=600&height=600
                                 </textarea>
                             </form>
@@ -681,8 +683,8 @@ https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCW
                                 </textarea>
                             </form>
                             <p class="note note-complement">Grab the embed code and paste it on your site where you want your timeline to appear (just like a YouTube video). If you're embedding on Medium.com just paste the link from the right where you want your timeline to appear.</p>
-                            <a class="button button-complement" href="#" target="_blank">Preview</a>&nbsp;
-                            <a class="button button-light" href="#" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
+                            <a class="button button-complement" href="#" id="iframe-preview-button" target="_blank">Preview</a>&nbsp;
+                            <a class="button button-light" href="#" id="preview-embed-link" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
 
 
                         </div>
@@ -998,6 +1000,9 @@ https://cdn.knightlab.com/libs/timeline/latest/embed/?source=1cWqQBZCkX9GpzFtxCW
 <script type="text/javascript" src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline-min.js"></script>
 <script src="/static/js/main.js"></script>
 <script src="https://cdn.knightlab.com/libs/orangeline/0.1.1/js/orangeline.js"></script>
+<script>
+    var support_spreadsheet_id = "17cNwEB_q_O9hNR7wJqVexBGgW_CkFxWfSVfmAG1L98E";
+</script>
 <script src="https://cdn.knightlab.com/libs/orangeline/0.1.1/js/techsupport.js"></script>
 
 </body>
