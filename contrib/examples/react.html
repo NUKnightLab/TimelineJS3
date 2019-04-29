@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script crossorigin src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+    <style>
+        div#timeline-embed {
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+
+  <div>Content above React container</div>
+  <div id="react-container"></div>
+  <div>Content below React container</div>
+
+  <script type="text/babel">
+        /**
+         * Alternatively: create a React Component and create the timeline
+         * object in componentDidMount() and componentDidUpdate() functions.
+         */
+        var timeline = null;
+        ReactDOM.render(<div>
+            <p>A React-rendered paragraph above Timeline</p>
+            <div id="timeline-embed"></div>
+            <p>A React-rendered paragraph below Timeline</p>
+            </div>,
+            document.getElementById('react-container'),
+            function() {
+                 timeline = new TL.Timeline('timeline-embed', 'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
+            }
+        );
+  </script>
+
+</body>
+</html>

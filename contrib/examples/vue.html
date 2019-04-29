@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+    <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+    <style>
+        div#timeline-embed {
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+
+    <div>Some content before the Vue application</div>
+    <div id="timeline-embed"></div>
+    <div>Content after the Vue application</div>
+
+    <script>
+        var app = new Vue({
+            el: '#timeline-embed',
+            data: { },
+            mounted: function() {
+                timeline = new TL.Timeline('timeline-embed', 'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
+            }
+        });
+    </script>
+</body>
+</html>
