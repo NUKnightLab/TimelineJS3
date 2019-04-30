@@ -224,6 +224,7 @@ TL.Language.languages = {
       swipe_to_navigate:              "Swipe to Navigate<br><span class='tl-button'>OK</span>",
       unknown_read_err:               "An unexpected error occurred trying to read your spreadsheet data",
 			invalid_url_err: 								"Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",
+			invalid_url_share_required:			"Because of unexpected changes to Google's data access API, the creator of this timeline must enable 'anyone with the url can read' access for this spreadsheet. See timeline.knightlab.com for more information.",
       network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
       empty_feed_err:                 "No data entries found",
       missing_start_date_err:         "Missing start_date",
