@@ -3888,6 +3888,28 @@
 		"opt": 0,
 		"q": 100
 		},
+	"/website/static/img/v4_step_1.png": {
+		"ft": 32768,
+		"iS": 23507,
+		"oA": 0,
+		"oAP": "/compiled/website/static/img/v4_step_1.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
+	"/website/static/img/v4_step_2.png": {
+		"ft": 32768,
+		"iS": 87100,
+		"oA": 0,
+		"oAP": "/compiled/website/static/img/v4_step_2.png",
+		"oF": 0,
+		"oIPL": 0,
+		"opt": 0,
+		"oT": 1,
+		"q": 100
+		},
 	"/website/static/js/.gitignore": {
 		"cB": 0,
 		"ft": 8192,
