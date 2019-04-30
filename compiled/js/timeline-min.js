@@ -599,7 +599,7 @@ var t=this.events[0].start_date;return this.eras&&0<this.eras.length&&this.eras[
 /**
 	 * Return the latest date that this config knows about, whether it's a slide or an era, taking end_dates into account.
 	 */
-getLatestDate:function(){for(var t=[],e=0;e<this.events.length;e++)this.events[e].end_date?t.push({date:this.events[e].end_date}):t.push({date:this.events[e].start_date});for(var e=0;e<this.eras.length;e++)this.eras[e].end_date?t.push({date:this.eras[e].end_date}):t.push({date:this.eras[e].start_date});return TL.DateUtil.sortByDate(t,"date"),t.slice(-1)[0].date},_tidyFields:function(t){function e(t,e,i){i||(i=""),t.hasOwnProperty(e)||(t[e]=i)}t.group&&(t.group=TL.Util.trim(t.group)),t.text||(t.text={}),e(t.text,"text"),e(t.text,"headline")}}),function(o){
+getLatestDate:function(){for(var t=[],e=0;e<this.events.length;e++)this.events[e].end_date?t.push({date:this.events[e].end_date}):t.push({date:this.events[e].start_date});for(var e=0;e<this.eras.length;e++)this.eras[e].end_date?t.push({date:this.eras[e].end_date}):t.push({date:this.eras[e].start_date});return TL.DateUtil.sortByDate(t,"date"),t.slice(-1)[0].date},_tidyFields:function(t){function e(t,e,i){i||(i=""),t.hasOwnProperty(e)||(t[e]=i)}t.group&&(t.group=TL.Util.trim(t.group)),t.text||(t.text={}),e(t.text,"text"),e(t.text,"headline")}}),function(h){
 /*
      * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
 
@@ -607,21 +607,26 @@ getLatestDate:function(){for(var t=[],e=0;e<this.events.length;e++)this.events[e
 
      If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
      */
-function r(t){parts={key:null,worksheet:0};
+function o(t){parts={key:null,worksheet:0};
 // key as url parameter (old-fashioned)
 var e=/\bkey=([-_A-Za-z0-9]+)&?/i,i=/docs.google.com\/spreadsheets(.*?)\/d\//;// fixing issue of URLs with u/0/d
 if(t.match(e))parts.key=t.match(e)[1];
 // can we get a worksheet from this form?
-else if(t.match(i)){var n=t.search(i)+t.match(i)[0].length,a=t.substr(n);parts.key=a.split("/")[0],t.match(/\?gid=(\d+)/)&&(parts.worksheet=t.match(/\?gid=(\d+)/)[1])}else t.match(/^\b[-_A-Za-z0-9]+$/)&&(parts.key=t);return parts.key?parts:null}function n(t){var e={};for(k in t)0==k.indexOf("gsx$")&&(e[k.substr(4)]=t[k].$t);if(o.Util.isEmptyObject(e))return null;var i={media:{caption:e.mediacaption||"",credit:e.mediacredit||"",url:e.media||"",thumbnail:e.mediathumbnail||""},text:{headline:e.headline||"",text:e.text||""},group:e.tag||"",type:e.type||""};return e.startdate&&(i.start_date=o.Date.parseDate(e.startdate)),e.enddate&&(i.end_date=o.Date.parseDate(e.enddate)),i}function a(t){function e(t){if(t)return t.replace(/[\s,]+/g,"");// doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
-}var i={};for(k in t)0==k.indexOf("gsx$")&&(i[k.substr(4)]=o.Util.trim(t[k].$t));if(o.Util.isEmptyObject(i))return null;var n={media:{caption:i.mediacaption||"",credit:i.mediacredit||"",url:i.media||"",thumbnail:i.mediathumbnail||""},text:{headline:i.headline||"",text:i.text||""},start_date:{year:e(i.year),month:e(i.month)||"",day:e(i.day)||""},end_date:{year:e(i.endyear)||"",month:e(i.endmonth)||"",day:e(i.endday)||""},display_date:i.displaydate||"",type:i.type||""};if(i.time&&o.Util.mergeData(n.start_date,o.DateUtil.parseTime(i.time)),i.endtime&&o.Util.mergeData(n.end_date,o.DateUtil.parseTime(i.endtime)),i.group&&(n.group=i.group),""==n.end_date.year){var a=n.end_date;if(delete n.end_date,""!=a.month||""!=a.day||""!=a.time){var s=n.text.headline||trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");trace(t)}}return i.background&&(i.background.match(/^(https?:)?\/\/?/)?// support http, https, protocol relative, site relative
+else if(t.match(i)){var n=t.search(i)+t.match(i)[0].length,a=t.substr(n);parts.key=a.split("/")[0],t.match(/\?gid=(\d+)/)&&(parts.worksheet=t.match(/\?gid=(\d+)/)[1])}else t.match(/^\b[-_A-Za-z0-9]+$/)&&(parts.key=t);return parts.key?parts:null}function n(t){var e={};for(k in t)0==k.indexOf("gsx$")&&(e[k.substr(4)]=t[k].$t);if(h.Util.isEmptyObject(e))return null;var i={media:{caption:e.mediacaption||"",credit:e.mediacredit||"",url:e.media||"",thumbnail:e.mediathumbnail||""},text:{headline:e.headline||"",text:e.text||""},group:e.tag||"",type:e.type||""};return e.startdate&&(i.start_date=h.Date.parseDate(e.startdate)),e.enddate&&(i.end_date=h.Date.parseDate(e.enddate)),i}function a(t){function e(t){if(t)return t.replace(/[\s,]+/g,"");// doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
+}var i={};for(k in t)0==k.indexOf("gsx$")&&(i[k.substr(4)]=h.Util.trim(t[k].$t));if(h.Util.isEmptyObject(i))return null;var n={media:{caption:i.mediacaption||"",credit:i.mediacredit||"",url:i.media||"",thumbnail:i.mediathumbnail||""},text:{headline:i.headline||"",text:i.text||""},start_date:{year:e(i.year),month:e(i.month)||"",day:e(i.day)||""},end_date:{year:e(i.endyear)||"",month:e(i.endmonth)||"",day:e(i.endday)||""},display_date:i.displaydate||"",type:i.type||""};if(i.time&&h.Util.mergeData(n.start_date,h.DateUtil.parseTime(i.time)),i.endtime&&h.Util.mergeData(n.end_date,h.DateUtil.parseTime(i.endtime)),i.group&&(n.group=i.group),""==n.end_date.year){var a=n.end_date;if(delete n.end_date,""!=a.month||""!=a.day||""!=a.time){var s=n.text.headline||trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");trace(t)}}return i.background&&(i.background.match(/^(https?:)?\/\/?/)?// support http, https, protocol relative, site relative
 n.background={url:i.background}:// for now we'll trust it's a color
 n.background={color:i.background}),n}function s(t,e){function i(t){if(t)return t.replace(/[\s,]+/g,"");// doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
 }
 // console.log(item);
 for(var n={},a=1;a<e.length;a++){var s;
 // console.log(column_name);
+// console.log(column[i]);
 // console.log("Column:" + column_name + " Value: " + item[i]);
-if(t.length>=a)n[t[a].toLowerCase().replace(" ","")]=e[a]}var o;return{media:{caption:n.mediacaption||"",credit:n.mediacredit||"",url:n.media||"",thumbnail:n.mediathumbnail||""},text:{headline:n.headline||"",text:n.text||""},start_date:{year:i(n.year),month:i(n.month)||"",day:i(n.day)||""},end_date:{year:i(n.endyear)||"",month:i(n.endmonth)||"",day:i(n.endday)||""},display_date:n.displaydate||"",type:n.type||""}}var t=function(t){if(void 0===t.feed.entry||0==t.feed.entry.length)throw new o.Error("empty_feed_err");var e=t.feed.entry[0];if(void 0!==e.gsx$startdate)
+if(t.length>=a)n[t[a].toLowerCase().replace(" ","")]=e[a]}var o={media:{caption:n.mediacaption||"",credit:n.mediacredit||"",url:n.media||"",thumbnail:n.mediathumbnail||""},text:{headline:n.headline||"",text:n.text||""},start_date:{year:i(e[0]),month:i(e[1])||"",day:i(e[2])||""},end_date:{year:i(n.endyear)||"",month:i(n.endmonth)||"",day:i(n.endday)||""},display_date:n.displaydate||"",type:n.type||""};if(n.time&&h.Util.mergeData(o.start_date,h.DateUtil.parseTime(e[3])),n.endtime&&h.Util.mergeData(o.end_date,h.DateUtil.parseTime(n.endtime)),n.group&&(o.group=n.group),""==o.end_date.year){var r=o.end_date;if(delete o.end_date,""!=r.month||""!=r.day||""!=r.time){var l=o.text.headline||trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");trace(e)}}
+// console.log(event);
+return n.background&&(n.background.match(/^(https?:)?\/\/?/)?// support http, https, protocol relative, site relative
+o.background={url:n.background}:// for now we'll trust it's a color
+o.background={color:n.background}),o}var t=function(t){if(void 0===t.feed.entry||0==t.feed.entry.length)throw new h.Error("empty_feed_err");var e=t.feed.entry[0];if(void 0!==e.gsx$startdate)
 // check headers V1
 // var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
 // for (var i = 0; i < headers_V1.length; i++) {
@@ -629,7 +634,7 @@ if(t.length>=a)n[t[a].toLowerCase().replace(" ","")]=e[a]}var o;return{media:{ca
 //         throw new TL.Error("invalid_data_format_err");
 //     }
 // }
-return n;if(void 0===e.gsx$year)throw new o.Error("invalid_data_format_err");
+return n;if(void 0===e.gsx$year)throw new h.Error("invalid_data_format_err");
 // check rest of V3 headers
 var i=["month","day","time","endmonth","endyear","endday","endtime","displaydate","headline","text","media","mediacredit","mediacaption","mediathumbnail","type","group","background"];
 // for (var i = 0; i < headers_V3.length; i++) {
@@ -637,9 +642,9 @@ var i=["month","day","time","endmonth","endyear","endday","endtime","displaydate
 //         throw new TL.Error("invalid_data_format_err");
 //     }
 // }
-return a},l=function(t){
+return a},r=function(t){
 // var api_3 = "https://spreadsheets.google.com/feeds/list/" + parts.key + "/od6/public/values?alt=json";
-var e;return"https://sheets.googleapis.com/v4/spreadsheets/"+t.key+"/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg"},h=function(t){var t=l(r(t)),e={events:[]},i=o.ajax({url:t,async:!1});return i=JSON.parse(i.responseText),d(i)},d=function(t){for(var e={events:[],errors:[],warnings:[],eras:[]},i=1;i<t.values.length;i++){var n=s(t.values[0],t.values[i]);if(n){// blank rows return null
+var e;return"https://sheets.googleapis.com/v4/spreadsheets/"+t.key+"/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg"},l=function(t){var t=r(o(t)),e={events:[]},i=h.ajax({url:t,async:!1});return i=JSON.parse(i.responseText),d(i)},d=function(t){for(var e={events:[],errors:[],warnings:[],eras:[]},i=1;i<t.values.length;i++){var n=s(t.values[0],t.values[i]);if(n){// blank rows return null
 var a="event";void 0!==n.type&&(a=n.type,delete n.type),"title"==a?e.title?(e.warnings.push("Multiple title slides detected."),e.events.push(n)):e.title=n:"era"==a?e.eras.push(n):e.events.push(n)}}
 // var extract = getGoogleItemExtractor(data);
 // for (var i = 0; i < data.feed.entry.length; i++) {
@@ -671,11 +676,11 @@ var a="event";void 0!==n.type&&(a=n.type,delete n.type),"title"==a?e.title?(e.wa
 //         timeline_config.errors.push(e + " ["+ i +"]");
 //     }
 // };
-return e},e=function(t,n){var a,e;if(r(t)){try{var i=h(t)}catch(t){return a=new o.TimelineConfig,"NetworkError"==t.name?a.logError(new o.Error("network_err")):"TL.Error"==t.name?a.logError(t):a.logError(new o.Error("unknown_read_err",t.name)),void n(a)}if(a=new o.TimelineConfig(i),i.errors)for(var s=0;s<i.errors.length;s++)a.logError(i.errors[s]);n(a)}else o.ajax({url:t,dataType:"json",success:function(t){try{a=new o.TimelineConfig(t)}catch(t){(a=new o.TimelineConfig).logError(t)}n(a)},error:function(t,e,i){if(a=new o.TimelineConfig,"parsererror"==e)var i=new o.Error("invalid_url_err");else var i=new o.Error("unknown_read_err",e);a.logError(i),n(a)}})};o.ConfigFactory={
+return console.log(e.events),e},e=function(t,n){var a,e;if(o(t)){try{var i=l(t)}catch(t){return a=new h.TimelineConfig,"NetworkError"==t.name?a.logError(new h.Error("network_err")):"TL.Error"==t.name?a.logError(t):a.logError(new h.Error("unknown_read_err",t.name)),void n(a)}if(a=new h.TimelineConfig(i),i.errors)for(var s=0;s<i.errors.length;s++)a.logError(i.errors[s]);n(a)}else h.ajax({url:t,dataType:"json",success:function(t){try{a=new h.TimelineConfig(t)}catch(t){(a=new h.TimelineConfig).logError(t)}n(a)},error:function(t,e,i){if(a=new h.TimelineConfig,"parsererror"==e)var i=new h.Error("invalid_url_err");else var i=new h.Error("unknown_read_err",e);a.logError(i),n(a)}})};h.ConfigFactory={
 // export for unit testing and use by authoring tool
-parseGoogleSpreadsheetURL:r,
+parseGoogleSpreadsheetURL:o,
 // export for unit testing
-googleFeedJSONtoTimelineJSON:d,fromGoogle:function(t){return console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)"),h(t)},
+googleFeedJSONtoTimelineJSON:d,fromGoogle:function(t){return console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)"),l(t)},
 /*
          * Given a URL to a Timeline data source, read the data, create a TimelineConfig
          * object, and call the given `callback` function passing the created config as

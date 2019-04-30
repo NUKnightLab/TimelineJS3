@@ -208,6 +208,7 @@
             if (column.length >= i) {
                 var column_name = column[i].toLowerCase().replace(" ", "");
                 // console.log(column_name);
+                // console.log(column[i]);
                 // console.log("Column:" + column_name + " Value: " + item[i]);
                 item_data[column_name] = item[i];
                 // console.log(item_data);
@@ -227,9 +228,9 @@
                 text: item_data.text || ''
             },
             start_date: {
-                year: clean_integer(item_data.year),
-                month: clean_integer(item_data.month) || '',
-                day: clean_integer(item_data.day) || ''
+                year: clean_integer(item[0]),
+                month: clean_integer(item[1]) || '',
+                day: clean_integer(item[2]) || ''
             },
             end_date: {
                 year: clean_integer(item_data.endyear) || '',
@@ -241,6 +242,38 @@
             type: item_data.type || ''
         }
 
+
+        if (item_data.time) {
+            TL.Util.mergeData(event.start_date,TL.DateUtil.parseTime(item[3]));
+        }
+
+        if (item_data.endtime) {
+            TL.Util.mergeData(event.end_date,TL.DateUtil.parseTime(item_data.endtime));
+        }
+
+        if (item_data.group) {
+            event.group = item_data.group;
+        }
+
+        if (event.end_date.year == '') {
+            var bad_date = event.end_date;
+            delete event.end_date;
+            if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
+                var label = event.text.headline ||
+                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
+                trace(item);
+            }
+        }
+
+        if (item_data.background) {
+            if (item_data.background.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
+                event['background'] = { 'url': item_data.background }
+            } else { // for now we'll trust it's a color
+                event['background'] = { 'color': item_data.background }
+            }
+        }
+
+        // console.log(event);
         return event;
     }
 
@@ -270,6 +303,7 @@
                 }
             }
         }
+        console.log(timeline_config.events)
         // var extract = getGoogleItemExtractor(data);
         // for (var i = 0; i < data.feed.entry.length; i++) {
         //     try {
