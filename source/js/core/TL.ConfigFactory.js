@@ -207,11 +207,7 @@
         for (var i = 1; i < item.length; i++) {
             if (column.length >= i) {
                 var column_name = column[i].toLowerCase().replace(" ", "");
-                // console.log(column_name);
-                // console.log(column[i]);
-                // console.log("Column:" + column_name + " Value: " + item[i]);
                 item_data[column_name] = item[i];
-                // console.log(item_data);
             }
            
         }
@@ -273,7 +269,6 @@
             }
         }
 
-        // console.log(event);
         return event;
     }
 
@@ -303,7 +298,8 @@
                 }
             }
         }
-        console.log(timeline_config.events)
+
+        // REMOVE FOR HOTFIX
         // var extract = getGoogleItemExtractor(data);
         // for (var i = 0; i < data.feed.entry.length; i++) {
         //     try {
