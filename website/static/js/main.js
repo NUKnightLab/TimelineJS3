@@ -94,7 +94,7 @@ function getLinkAndIframe() {
     urlBase = "http://" + window.location.host + "/source/";
   }
   else if ((window.location.host).includes("timeline.knilab.com")){
-    urlBase = "http://cdn.knightlab.com/libs/timeline3/dev/";
+    urlBase = "https://cdn.knightlab.com/libs/timeline3/dev/";
   }
   else {
     urlBase = "https://cdn.knightlab.com/libs/timeline3/latest/";
