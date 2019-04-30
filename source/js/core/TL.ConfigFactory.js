@@ -147,6 +147,8 @@
         return d;
     }
 
+    
+
     var getGoogleItemExtractor = function(data) {
         if (typeof data.feed.entry === 'undefined'
                 || data.feed.entry.length == 0) {
@@ -177,53 +179,127 @@
     }
 
     var buildGoogleFeedURL = function(parts) {
-        return "https://spreadsheets.google.com/feeds/list/" + parts.key + "/1/public/values?alt=json";
-
+        // var api_3 = "https://spreadsheets.google.com/feeds/list/" + parts.key + "/od6/public/values?alt=json";
+        var api_4 = "https://sheets.googleapis.com/v4/spreadsheets/" + parts.key + "/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg";
+        return api_4;
     }
 
     var jsonFromGoogleURL = function(url) {
         var url = buildGoogleFeedURL(parseGoogleSpreadsheetURL(url));
-            var timeline_config = { 'events': [] };
-            var data = TL.ajax({
-                url: url,
-                async: false
-            });
-            data = JSON.parse(data.responseText);
-            return googleFeedJSONtoTimelineJSON(data);
+        var timeline_config = { 'events': [] };
+        var data = TL.ajax({
+            url: url,
+            async: false
+        });
+        
+        data = JSON.parse(data.responseText);
+        return googleFeedJSONtoTimelineJSON(data);
+    }
+
+    function extractGoogleEntryData_V4(column, item) {
+        function clean_integer(s) {
+            if (s) {
+                return s.replace(/[\s,]+/g,''); // doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
+            }
         }
+        // console.log(item);
+        var item_data = {};
+        for (var i = 1; i < item.length; i++) {
+            if (column.length >= i) {
+                var column_name = column[i].toLowerCase().replace(" ", "");
+                // console.log(column_name);
+                // console.log("Column:" + column_name + " Value: " + item[i]);
+                item_data[column_name] = item[i];
+                // console.log(item_data);
+            }
+           
+        }
+
+        var event = {
+            media: {
+                caption: item_data.mediacaption || '',
+                credit: item_data.mediacredit || '',
+                url: item_data.media || '',
+                thumbnail: item_data.mediathumbnail || ''
+            },
+            text: {
+                headline: item_data.headline || '',
+                text: item_data.text || ''
+            },
+            start_date: {
+                year: clean_integer(item_data.year),
+                month: clean_integer(item_data.month) || '',
+                day: clean_integer(item_data.day) || ''
+            },
+            end_date: {
+                year: clean_integer(item_data.endyear) || '',
+                month: clean_integer(item_data.endmonth) || '',
+                day: clean_integer(item_data.endday) || ''
+            },
+            display_date: item_data.displaydate || '',
+
+            type: item_data.type || ''
+        }
+
+        return event;
+    }
 
     var googleFeedJSONtoTimelineJSON = function(data) {
         var timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
-        var extract = getGoogleItemExtractor(data);
-        for (var i = 0; i < data.feed.entry.length; i++) {
-            try {
-                var event = extract(data.feed.entry[i]);
-                if (event) { // blank rows return null
-                  var row_type = 'event';
-                  if (typeof(event.type) != 'undefined') {
-                      row_type = event.type;
-                      delete event.type;
-                  }
-                  if (row_type == 'title') {
-                    if (!timeline_config.title) {
-                      timeline_config.title = event;
-                    } else {
-                      timeline_config.warnings.push("Multiple title slides detected.");
-                      timeline_config.events.push(event);
-                    }
-                  } else if (row_type == 'era') {
-                    timeline_config.eras.push(event);
+        
+        
+        for (var i = 1; i < data.values.length; i++) {
+            var event = extractGoogleEntryData_V4(data.values[0], data.values[i]);
+            if (event) { // blank rows return null
+                var row_type = 'event';
+                if (typeof(event.type) != 'undefined') {
+                    row_type = event.type;
+                    delete event.type;
+                }
+                if (row_type == 'title') {
+                  if (!timeline_config.title) {
+                    timeline_config.title = event;
                   } else {
-                      timeline_config.events.push(event);
+                    timeline_config.warnings.push("Multiple title slides detected.");
+                    timeline_config.events.push(event);
                   }
+                } else if (row_type == 'era') {
+                    timeline_config.eras.push(event);
+                } else {
+                    timeline_config.events.push(event);
                 }
-            } catch(e) {
-                if (e.message) {
-                    e = e.message;
-                }
-                timeline_config.errors.push(e + " ["+ i +"]");
             }
-        };
+        }
+        // var extract = getGoogleItemExtractor(data);
+        // for (var i = 0; i < data.feed.entry.length; i++) {
+        //     try {
+        //         var event = extract(data.feed.entry[i]);
+        //         if (event) { // blank rows return null
+        //           var row_type = 'event';
+        //           if (typeof(event.type) != 'undefined') {
+        //               row_type = event.type;
+        //               delete event.type;
+        //           }
+        //           if (row_type == 'title') {
+        //             if (!timeline_config.title) {
+        //               timeline_config.title = event;
+        //             } else {
+        //               timeline_config.warnings.push("Multiple title slides detected.");
+        //               timeline_config.events.push(event);
+        //             }
+        //           } else if (row_type == 'era') {
+        //             timeline_config.eras.push(event);
+        //           } else {
+        //               timeline_config.events.push(event);
+        //           }
+        //         }
+        //     } catch(e) {
+        //         if (e.message) {
+        //             e = e.message;
+        //         }
+        //         timeline_config.errors.push(e + " ["+ i +"]");
+        //     }
+        // };
         return timeline_config;
 
     }
