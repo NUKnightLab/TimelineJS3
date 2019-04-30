@@ -300,6 +300,8 @@
         }
 
         // REMOVE FOR HOTFIX
+        // NEED TO REINTEGRATE getGoogleItemExtractor
+        
         // var extract = getGoogleItemExtractor(data);
         // for (var i = 0; i < data.feed.entry.length; i++) {
         //     try {
