@@ -624,7 +624,7 @@ for(var n={},a=1;a<e.length;a++){var s;
 // console.log("Column:" + column_name + " Value: " + item[i]);
 if(t.length>=a)n[t[a].toLowerCase().replace(" ","")]=e[a]}var o={media:{caption:n.mediacaption||"",credit:n.mediacredit||"",url:n.media||"",thumbnail:n.mediathumbnail||""},text:{headline:n.headline||"",text:n.text||""},start_date:{year:i(e[0]),month:i(e[1])||"",day:i(e[2])||""},end_date:{year:i(n.endyear)||"",month:i(n.endmonth)||"",day:i(n.endday)||""},display_date:n.displaydate||"",type:n.type||""};if(n.time&&h.Util.mergeData(o.start_date,h.DateUtil.parseTime(e[3])),n.endtime&&h.Util.mergeData(o.end_date,h.DateUtil.parseTime(n.endtime)),n.group&&(o.group=n.group),""==o.end_date.year){var r=o.end_date;if(delete o.end_date,""!=r.month||""!=r.day||""!=r.time){var l=o.text.headline||trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");trace(e)}}
 // console.log(event);
-return n.background&&(n.background.match(/^(https?:)?\/\/?/)?// support http, https, protocol relative, site relative
+return console.log(n.background),n.background&&(n.background.match(/^(https?:)?\/\/?/)?// support http, https, protocol relative, site relative
 o.background={url:n.background}:// for now we'll trust it's a color
 o.background={color:n.background}),o}var t=function(t){if(void 0===t.feed.entry||0==t.feed.entry.length)throw new h.Error("empty_feed_err");var e=t.feed.entry[0];if(void 0!==e.gsx$startdate)
 // check headers V1
