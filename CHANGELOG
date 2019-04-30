@@ -1,4 +1,5 @@
-3.6.3 (not yet released)
+3.6.4 (2019-04-30)
+* Fall back to Google Sheets API v4 when 500 error found using v3 (Workaround for Google API failure)
 * Issue #598 - use 24-hr time for Portuguese
 * PR #599 allow text selection on all devices
 * PR #608 allow video start times (and end times for youtube)
