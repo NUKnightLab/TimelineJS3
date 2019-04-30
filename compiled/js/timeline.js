@@ -1,2672 +1,318 @@
-/*
-    TimelineJS - ver. 2017-12-15-16-48-40 - 2017-12-15
-    Copyright (c) 2012-2016 Northwestern University
-    a project of the Northwestern University Knight Lab, originally created by Zach Wise
-    https://github.com/NUKnightLab/TimelineJS3
-    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
-    If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-*/
-
-/* **********************************************
-     Begin TL.js
-********************************************** */
-
 /*!
 	TL
 */
-
-(function (root) {
-	root.TL = {
-		VERSION: '0.1',
-		_originalL: root.TL
-	};
-}(this));
-
+/* Timeline Error class */
+function TL_Error(t,e){this.name="TL.Error",this.message=t||"error",this.message_key=this.message,this.detail=e||"";
+// Grab stack?
+var i=new Error;i.hasOwnProperty("stack")&&(this.stack=i.stack)}!function(t){t.TL={VERSION:"0.1",_originalL:t.TL}}(this),
 /*	TL.Debug
 	Debug mode
 ================================================== */
-TL.debug = false;
-
-
-
+TL.debug=!1,
 /*	TL.Bind
 ================================================== */
-TL.Bind = function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
-	return function () {
-		return fn.apply(obj, arguments);
-	};
-};
-
-
-
+TL.Bind=function(/*Function*/t,/*Object*/e){return function(){return t.apply(e,arguments)}},
 /* Trace (console.log)
 ================================================== */
-trace = function( msg ) {
-	if (TL.debug) {
-		if (window.console) {
-			console.log(msg);
-		} else if ( typeof( jsTrace ) != 'undefined' ) {
-			jsTrace.send( msg );
-		} else {
-			//alert(msg);
-		}
-	}
-}
-
-
-/* **********************************************
-     Begin TL.Error.js
-********************************************** */
-
-/* Timeline Error class */
-
-function TL_Error(message_key, detail) {
-    this.name = 'TL.Error';
-    this.message = message_key || 'error';
-    this.message_key = this.message;
-    this.detail = detail || '';
-  
-    // Grab stack?
-    var e = new Error();
-    if(e.hasOwnProperty('stack')) {
-        this.stack = e.stack;
-    }
-}
-
-TL_Error.prototype = Object.create(Error.prototype);
-TL_Error.prototype.constructor = TL_Error;
-
-TL.Error = TL_Error;
-
-
-/* **********************************************
-     Begin TL.Util.js
-********************************************** */
-
+trace=function(t){TL.debug&&(window.console?console.log(t):"undefined"!=typeof jsTrace&&jsTrace.send(t))},TL_Error.prototype=Object.create(Error.prototype),TL_Error.prototype.constructor=TL_Error,TL.Error=TL_Error,
 /*	TL.Util
 	Class of utilities
 ================================================== */
-
-TL.Util = {
-	mergeData: function(data_main, data_to_merge) {
-		var x;
-		for (x in data_to_merge) {
-			if (Object.prototype.hasOwnProperty.call(data_to_merge, x)) {
-				data_main[x] = data_to_merge[x];
-			}
-		}
-		return data_main;
-	},
-
-	// like TL.Util.mergeData but takes an arbitrarily long list of sources to merge.
-	extend: function (/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
-		var sources = Array.prototype.slice.call(arguments, 1);
-		for (var j = 0, len = sources.length, src; j < len; j++) {
-			src = sources[j] || {};
-			TL.Util.mergeData(dest, src);
-		}
-		return dest;
-	},
-
-	isEven: function(n) {
-	  return n == parseFloat(n)? !(n%2) : void 0;
-	},
-
-	isTrue: function(s) {
-		if (s == null) return false;
-		return s == true || String(s).toLowerCase() == 'true' || Number(s) == 1;
-	},
-
-	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
-		var _n = defaultVal || 0;
-
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].data[prop] == id) {
-				_n = i;
-			}
-		};
-
-		return _n;
-	},
-
-	convertUnixTime: function(str) {
-		var _date, _months, _year, _month, _day, _time, _date_array = [],
-			_date_str = {
-				ymd:"",
-				time:"",
-				time_array:[],
-				date_array:[],
-				full_array:[]
-			};
-
-		_date_str.ymd = str.split(" ")[0];
-		_date_str.time = str.split(" ")[1];
-		_date_str.date_array = _date_str.ymd.split("-");
-		_date_str.time_array = _date_str.time.split(":");
-		_date_str.full_array = _date_str.date_array.concat(_date_str.time_array)
-
-		for(var i = 0; i < _date_str.full_array.length; i++) {
-			_date_array.push( parseInt(_date_str.full_array[i]) )
-		}
-
-		_date = new Date(_date_array[0], _date_array[1], _date_array[2], _date_array[3], _date_array[4], _date_array[5]);
-		_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-		_year = _date.getFullYear();
-		_month = _months[_date.getMonth()];
-		_day = _date.getDate();
-		_time = _month + ', ' + _day + ' ' + _year;
-
-		return _time;
-	},
-
-	setData: function (obj, data) {
-		obj.data = TL.Util.extend({}, obj.data, data);
-		if (obj.data.unique_id === "") {
-			obj.data.unique_id = TL.Util.unique_ID(6);
-		}
-	},
-
-	stamp: (function () {
-		var lastId = 0, key = '_tl_id';
-
-
-		return function (/*Object*/ obj) {
-			obj[key] = obj[key] || ++lastId;
-			return obj[key];
-		};
-	}()),
-
-	isArray: (function () {
-	    // Use compiler's own isArray when available
-	    if (Array.isArray) {
-	        return Array.isArray;
-	    }
-
-	    // Retain references to variables for performance
-	    // optimization
-	    var objectToStringFn = Object.prototype.toString,
-	        arrayToStringResult = objectToStringFn.call([]);
-
-	    return function (subject) {
-	        return objectToStringFn.call(subject) === arrayToStringResult;
-	    };
-	}()),
-
-    getRandomNumber: function(range) {
-   		return Math.floor(Math.random() * range);
-   	},
-
-	unique_ID: function(size, prefix) {
-
-		var getRandomNumber = function(range) {
-			return Math.floor(Math.random() * range);
-		};
-
-		var getRandomChar = function() {
-			var chars = "abcdefghijklmnopqurstuvwxyz";
-			return chars.substr( getRandomNumber(32), 1 );
-		};
-
-		var randomID = function(size) {
-			var str = "";
-			for(var i = 0; i < size; i++) {
-				str += getRandomChar();
-			}
-			return str;
-		};
-
-		if (prefix) {
-			return prefix + "-" + randomID(size);
-		} else {
-			return "tl-" + randomID(size);
-		}
-	},
-
-	ensureUniqueKey: function(obj, candidate) {
-		if (!candidate) { candidate = TL.Util.unique_ID(6); }
-
-		if (!(candidate in obj)) { return candidate; }
-
-		var root = candidate.match(/^(.+)(-\d+)?$/)[1];
-		var similar_ids = [];
-		// get an alternative
-		for (key in obj) {
-			if (key.match(/^(.+?)(-\d+)?$/)[1] == root) {
-				similar_ids.push(key);
-			}
-		}
-		candidate = root + "-" + (similar_ids.length + 1);
-
-		for (var counter = similar_ids.length; similar_ids.indexOf(candidate) != -1; counter++) {
-			candidate = root + '-' + counter;
-		}
-
-		return candidate;
-	},
-
-
-	htmlify: function(str) {
-		//if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
-		if (str.match(/<p>[\s\S]*?<\/p>/)) {
-
-			return str;
-		} else {
-			return "<p>" + str + "</p>";
-		}
-	},
-
-	unhtmlify: function(str) {
-		str = str.replace(/(<[^>]*>)+/g, '');
-		return str.replace('"', "'");
-	},
-
-	/*	* Turns plain text links into real links
+TL.Util={mergeData:function(t,e){var i;for(i in e)Object.prototype.hasOwnProperty.call(e,i)&&(t[i]=e[i]);return t},
+// like TL.Util.mergeData but takes an arbitrarily long list of sources to merge.
+extend:function(/*Object*/t){for(// merge src properties into dest
+var e=Array.prototype.slice.call(arguments,1),i=0,n=e.length,a;i<n;i++)a=e[i]||{},TL.Util.mergeData(t,a);return t},isEven:function(t){return t==parseFloat(t)?!(t%2):void 0},isTrue:function(t){return null!=t&&(1==t||"true"==String(t).toLowerCase()||1==Number(t))},findArrayNumberByUniqueID:function(t,e,i,n){for(var a=n||0,s=0;s<e.length;s++)e[s].data[i]==t&&(a=s);return a},convertUnixTime:function(t){var e,i,n,a,s,o,r=[],l={ymd:"",time:"",time_array:[],date_array:[],full_array:[]};l.ymd=t.split(" ")[0],l.time=t.split(" ")[1],l.date_array=l.ymd.split("-"),l.time_array=l.time.split(":"),l.full_array=l.date_array.concat(l.time_array);for(var h=0;h<l.full_array.length;h++)r.push(parseInt(l.full_array[h]));return i=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],n=(e=new Date(r[0],r[1],r[2],r[3],r[4],r[5])).getFullYear(),o=(a=i[e.getMonth()])+", "+(s=e.getDate())+" "+n},setData:function(t,e){t.data=TL.Util.extend({},t.data,e),""===t.data.unique_id&&(t.data.unique_id=TL.Util.unique_ID(6))},stamp:function(){var e=0,i="_tl_id";return function(/*Object*/t){return t[i]=t[i]||++e,t[i]}}(),isArray:function(){
+// Use compiler's own isArray when available
+if(Array.isArray)return Array.isArray;
+// Retain references to variables for performance
+// optimization
+var e=Object.prototype.toString,i=e.call([]);return function(t){return e.call(t)===i}}(),getRandomNumber:function(t){return Math.floor(Math.random()*t)},unique_ID:function(t,e){var i=function(t){return Math.floor(Math.random()*t)},n=function(){var t;return"abcdefghijklmnopqurstuvwxyz".substr(i(32),1)},a=function(t){for(var e="",i=0;i<t;i++)e+=n();return e};return e?e+"-"+a(t):"tl-"+a(t)},ensureUniqueKey:function(t,e){if(e||(e=TL.Util.unique_ID(6)),!(e in t))return e;var i=e.match(/^(.+)(-\d+)?$/)[1],n=[];
+// get an alternative
+for(key in t)key.match(/^(.+?)(-\d+)?$/)[1]==i&&n.push(key);e=i+"-"+(n.length+1);for(var a=n.length;-1!=n.indexOf(e);a++)e=i+"-"+a;return e},htmlify:function(t){
+//if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
+return t.match(/<p>[\s\S]*?<\/p>/)?t:"<p>"+t+"</p>"},unhtmlify:function(t){return(t=t.replace(/(<[^>]*>)+/g,"")).replace('"',"'")},
+/*	* Turns plain text links into real links
 	================================================== */
-	linkify: function(text,targets,is_touch) {
-
-        var make_link = function(url, link_text, prefix) {
-            if (!prefix) {
-                prefix = "";
-            }
-            var MAX_LINK_TEXT_LENGTH = 30;
-            if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
-                link_text = link_text.substring(0,MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
-            }
-            return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
-        }
-		// http://, https://, ftp://
-		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
-
-		// www. sans http:// or https://
-		var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
-
-		// Email addresses
-		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
-
-
-		return text
-			.replace(urlPattern, function(match, url_sans_protocol, offset, string) {
-                // Javascript doesn't support negative lookbehind assertions, so
-                // we need to handle risk of matching URLs in legit hrefs
-                if (offset > 0) {
-                    var prechar = string[offset-1];
-                    if (prechar == '"' || prechar == "'" || prechar == "=") {
-                        return match;
-                    }
-                }
-                return make_link(match, url_sans_protocol);
-            })
-			.replace(pseudoUrlPattern, function(match, beforePseudo, pseudoUrl, offset, string) {
-                return make_link('http://' + pseudoUrl, pseudoUrl, beforePseudo);
-            })
-			.replace(emailAddressPattern, function(match, email, offset, string) {
-                return make_link('mailto:' + email, email);
-            });
-	},
-
-	unlinkify: function(text) {
-		if(!text) return text;
-		text = text.replace(/<a\b[^>]*>/i,"");
-		text = text.replace(/<\/a>/i, "");
-		return text;
-	},
-
-	getParamString: function (obj) {
-		var params = [];
-		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
-				params.push(i + '=' + obj[i]);
-			}
-		}
-		return '?' + params.join('&');
-	},
-
-	formatNum: function (num, digits) {
-		var pow = Math.pow(10, digits || 5);
-		return Math.round(num * pow) / pow;
-	},
-
-	falseFn: function () {
-		return false;
-	},
-
-	requestAnimFrame: (function () {
-		function timeoutDefer(callback) {
-			window.setTimeout(callback, 1000 / 60);
-		}
-
-		var requestFn = window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			timeoutDefer;
-
-		return function (callback, context, immediate, contextEl) {
-			callback = context ? TL.Util.bind(callback, context) : callback;
-			if (immediate && requestFn === timeoutDefer) {
-				callback();
-			} else {
-				requestFn(callback, contextEl);
-			}
-		};
-	}()),
-
-	bind: function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
-		return function () {
-			return fn.apply(obj, arguments);
-		};
-	},
-
-	template: function (str, data) {
-		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
-			var value = data[key];
-			if (!data.hasOwnProperty(key)) {
-			    throw new TL.Error("template_value_err", str);
-			}
-			return value;
-		});
-	},
-
-	hexToRgb: function(hex) {
-	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-        if (TL.Util.css_named_colors[hex.toLowerCase()]) {
-            hex = TL.Util.css_named_colors[hex.toLowerCase()];
-        }
-	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-	        return r + r + g + g + b + b;
-	    });
-
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? {
-	        r: parseInt(result[1], 16),
-	        g: parseInt(result[2], 16),
-	        b: parseInt(result[3], 16)
-	    } : null;
-	},
-	// given an object with r, g, and b keys, or a string of the form 'rgb(mm,nn,ll)', return a CSS hex string including the leading '#' character
-	rgbToHex: function(rgb) {
-		var r,g,b;
-		if (typeof(rgb) == 'object') {
-			r = rgb.r;
-			g = rgb.g;
-			b = rgb.b;
-		} else if (typeof(rgb.match) == 'function'){
-			var parts = rgb.match(/^rgb\((\d+),(\d+),(\d+)\)$/);
-			if (parts) {
-				r = parts[1];
-				g = parts[2];
-				b = parts[3];
-			}
-		}
-		if (isNaN(r) || isNaN(b) || isNaN(g)) {
-			throw new TL.Error("invalid_rgb_err");
-		}
-		return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
-	},
-	colorObjToHex: function(o) {
-		var parts = [o.r, o.g, o.b];
-		return TL.Util.rgbToHex("rgb(" + parts.join(',') + ")")
-	},
-    css_named_colors: {
-        "aliceblue": "#f0f8ff",
-        "antiquewhite": "#faebd7",
-        "aqua": "#00ffff",
-        "aquamarine": "#7fffd4",
-        "azure": "#f0ffff",
-        "beige": "#f5f5dc",
-        "bisque": "#ffe4c4",
-        "black": "#000000",
-        "blanchedalmond": "#ffebcd",
-        "blue": "#0000ff",
-        "blueviolet": "#8a2be2",
-        "brown": "#a52a2a",
-        "burlywood": "#deb887",
-        "cadetblue": "#5f9ea0",
-        "chartreuse": "#7fff00",
-        "chocolate": "#d2691e",
-        "coral": "#ff7f50",
-        "cornflowerblue": "#6495ed",
-        "cornsilk": "#fff8dc",
-        "crimson": "#dc143c",
-        "cyan": "#00ffff",
-        "darkblue": "#00008b",
-        "darkcyan": "#008b8b",
-        "darkgoldenrod": "#b8860b",
-        "darkgray": "#a9a9a9",
-        "darkgreen": "#006400",
-        "darkkhaki": "#bdb76b",
-        "darkmagenta": "#8b008b",
-        "darkolivegreen": "#556b2f",
-        "darkorange": "#ff8c00",
-        "darkorchid": "#9932cc",
-        "darkred": "#8b0000",
-        "darksalmon": "#e9967a",
-        "darkseagreen": "#8fbc8f",
-        "darkslateblue": "#483d8b",
-        "darkslategray": "#2f4f4f",
-        "darkturquoise": "#00ced1",
-        "darkviolet": "#9400d3",
-        "deeppink": "#ff1493",
-        "deepskyblue": "#00bfff",
-        "dimgray": "#696969",
-        "dodgerblue": "#1e90ff",
-        "firebrick": "#b22222",
-        "floralwhite": "#fffaf0",
-        "forestgreen": "#228b22",
-        "fuchsia": "#ff00ff",
-        "gainsboro": "#dcdcdc",
-        "ghostwhite": "#f8f8ff",
-        "gold": "#ffd700",
-        "goldenrod": "#daa520",
-        "gray": "#808080",
-        "green": "#008000",
-        "greenyellow": "#adff2f",
-        "honeydew": "#f0fff0",
-        "hotpink": "#ff69b4",
-        "indianred": "#cd5c5c",
-        "indigo": "#4b0082",
-        "ivory": "#fffff0",
-        "khaki": "#f0e68c",
-        "lavender": "#e6e6fa",
-        "lavenderblush": "#fff0f5",
-        "lawngreen": "#7cfc00",
-        "lemonchiffon": "#fffacd",
-        "lightblue": "#add8e6",
-        "lightcoral": "#f08080",
-        "lightcyan": "#e0ffff",
-        "lightgoldenrodyellow": "#fafad2",
-        "lightgray": "#d3d3d3",
-        "lightgreen": "#90ee90",
-        "lightpink": "#ffb6c1",
-        "lightsalmon": "#ffa07a",
-        "lightseagreen": "#20b2aa",
-        "lightskyblue": "#87cefa",
-        "lightslategray": "#778899",
-        "lightsteelblue": "#b0c4de",
-        "lightyellow": "#ffffe0",
-        "lime": "#00ff00",
-        "limegreen": "#32cd32",
-        "linen": "#faf0e6",
-        "magenta": "#ff00ff",
-        "maroon": "#800000",
-        "mediumaquamarine": "#66cdaa",
-        "mediumblue": "#0000cd",
-        "mediumorchid": "#ba55d3",
-        "mediumpurple": "#9370db",
-        "mediumseagreen": "#3cb371",
-        "mediumslateblue": "#7b68ee",
-        "mediumspringgreen": "#00fa9a",
-        "mediumturquoise": "#48d1cc",
-        "mediumvioletred": "#c71585",
-        "midnightblue": "#191970",
-        "mintcream": "#f5fffa",
-        "mistyrose": "#ffe4e1",
-        "moccasin": "#ffe4b5",
-        "navajowhite": "#ffdead",
-        "navy": "#000080",
-        "oldlace": "#fdf5e6",
-        "olive": "#808000",
-        "olivedrab": "#6b8e23",
-        "orange": "#ffa500",
-        "orangered": "#ff4500",
-        "orchid": "#da70d6",
-        "palegoldenrod": "#eee8aa",
-        "palegreen": "#98fb98",
-        "paleturquoise": "#afeeee",
-        "palevioletred": "#db7093",
-        "papayawhip": "#ffefd5",
-        "peachpuff": "#ffdab9",
-        "peru": "#cd853f",
-        "pink": "#ffc0cb",
-        "plum": "#dda0dd",
-        "powderblue": "#b0e0e6",
-        "purple": "#800080",
-        "rebeccapurple": "#663399",
-        "red": "#ff0000",
-        "rosybrown": "#bc8f8f",
-        "royalblue": "#4169e1",
-        "saddlebrown": "#8b4513",
-        "salmon": "#fa8072",
-        "sandybrown": "#f4a460",
-        "seagreen": "#2e8b57",
-        "seashell": "#fff5ee",
-        "sienna": "#a0522d",
-        "silver": "#c0c0c0",
-        "skyblue": "#87ceeb",
-        "slateblue": "#6a5acd",
-        "slategray": "#708090",
-        "snow": "#fffafa",
-        "springgreen": "#00ff7f",
-        "steelblue": "#4682b4",
-        "tan": "#d2b48c",
-        "teal": "#008080",
-        "thistle": "#d8bfd8",
-        "tomato": "#ff6347",
-        "turquoise": "#40e0d0",
-        "violet": "#ee82ee",
-        "wheat": "#f5deb3",
-        "white": "#ffffff",
-        "whitesmoke": "#f5f5f5",
-        "yellow": "#ffff00",
-        "yellowgreen": "#9acd32"
-    },
-	ratio: {
-		square: function(size) {
-			var s = {
-				w: 0,
-				h: 0
-			}
-			if (size.w > size.h && size.h > 0) {
-				s.h = size.h;
-				s.w = size.h;
-			} else {
-				s.w = size.w;
-				s.h = size.w;
-			}
-			return s;
-		},
-
-		r16_9: function(size) {
-			if (size.w !== null && size.w !== "") {
-				return Math.round((size.w / 16) * 9);
-			} else if (size.h !== null && size.h !== "") {
-				return Math.round((size.h / 9) * 16);
-			} else {
-				return 0;
-			}
-		},
-		r4_3: function(size) {
-			if (size.w !== null && size.w !== "") {
-				return Math.round((size.w / 4) * 3);
-			} else if (size.h !== null && size.h !== "") {
-				return Math.round((size.h / 3) * 4);
-			}
-		}
-	},
-	getObjectAttributeByIndex: function(obj, index) {
-		if(typeof obj != 'undefined') {
-			var i = 0;
-			for (var attr in obj){
-				if (index === i){
-					return obj[attr];
-				}
-				i++;
-			}
-			return "";
-		} else {
-			return "";
-		}
-
-	},
-	getUrlVars: function(string) {
-		var str,
-			vars = [],
-			hash,
-			hashes;
-
-		str = string.toString();
-
-		if (str.match('&#038;')) {
-			str = str.replace("&#038;", "&");
-		} else if (str.match('&#38;')) {
-			str = str.replace("&#38;", "&");
-		} else if (str.match('&amp;')) {
-			str = str.replace("&amp;", "&");
-		}
-
-		hashes = str.slice(str.indexOf('?') + 1).split('&');
-
-		for(var i = 0; i < hashes.length; i++) {
-			hash = hashes[i].split('=');
-			vars.push(hash[0]);
-			vars[hash[0]] = hash[1];
-		}
-
-
-		return vars;
-	},
-    /**
+linkify:function(t,e,i){var s=function(t,e,i){i||(i="");var n=30;return e&&30<e.length&&(e=e.substring(0,30)+"…"),i+"<a class='tl-makelink' href='"+t+"' onclick='void(0)'>"+e+"</a>"}
+// http://, https://, ftp://
+,n=/\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim,a=/(^|[^\/>])(www\.[\S]+(\b|$))/gim,o=/([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;return t.replace(n,function(t,e,i,n){
+// Javascript doesn't support negative lookbehind assertions, so
+// we need to handle risk of matching URLs in legit hrefs
+if(0<i){var a=n[i-1];if('"'==a||"'"==a||"="==a)return t}return s(t,e)}).replace(a,function(t,e,i,n,a){return s("http://"+i,i,e)}).replace(o,function(t,e,i,n){return s("mailto:"+e,e)})},unlinkify:function(t){return t?t=(t=t.replace(/<a\b[^>]*>/i,"")).replace(/<\/a>/i,""):t},getParamString:function(t){var e=[];for(var i in t)t.hasOwnProperty(i)&&e.push(i+"="+t[i]);return"?"+e.join("&")},formatNum:function(t,e){var i=Math.pow(10,e||5);return Math.round(t*i)/i},falseFn:function(){return!1},requestAnimFrame:function(){function a(t){window.setTimeout(t,1e3/60)}var s=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||a;return function(t,e,i,n){t=e?TL.Util.bind(t,e):t,i&&s===a?t():s(t,n)}}(),bind:function(/*Function*/t,/*Object*/e){return function(){return t.apply(e,arguments)}},template:function(t,n){return t.replace(/\{ *([\w_]+) *\}/g,function(t,e){var i=n[e];if(!n.hasOwnProperty(e))throw new TL.Error("template_value_err",t);return i})},hexToRgb:function(t){
+// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+TL.Util.css_named_colors[t.toLowerCase()]&&(t=TL.Util.css_named_colors[t.toLowerCase()]);var e=/^#?([a-f\d])([a-f\d])([a-f\d])$/i;t=t.replace(e,function(t,e,i,n){return e+e+i+i+n+n});var i=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(t);return i?{r:parseInt(i[1],16),g:parseInt(i[2],16),b:parseInt(i[3],16)}:null},
+// given an object with r, g, and b keys, or a string of the form 'rgb(mm,nn,ll)', return a CSS hex string including the leading '#' character
+rgbToHex:function(t){var e,i,n;if("object"==typeof t)e=t.r,i=t.g,n=t.b;else if("function"==typeof t.match){var a=t.match(/^rgb\((\d+),(\d+),(\d+)\)$/);a&&(e=a[1],i=a[2],n=a[3])}if(isNaN(e)||isNaN(n)||isNaN(i))throw new TL.Error("invalid_rgb_err");return"#"+TL.Util.intToHexString(e)+TL.Util.intToHexString(i)+TL.Util.intToHexString(n)},colorObjToHex:function(t){var e=[t.r,t.g,t.b];return TL.Util.rgbToHex("rgb("+e.join(",")+")")},css_named_colors:{aliceblue:"#f0f8ff",antiquewhite:"#faebd7",aqua:"#00ffff",aquamarine:"#7fffd4",azure:"#f0ffff",beige:"#f5f5dc",bisque:"#ffe4c4",black:"#000000",blanchedalmond:"#ffebcd",blue:"#0000ff",blueviolet:"#8a2be2",brown:"#a52a2a",burlywood:"#deb887",cadetblue:"#5f9ea0",chartreuse:"#7fff00",chocolate:"#d2691e",coral:"#ff7f50",cornflowerblue:"#6495ed",cornsilk:"#fff8dc",crimson:"#dc143c",cyan:"#00ffff",darkblue:"#00008b",darkcyan:"#008b8b",darkgoldenrod:"#b8860b",darkgray:"#a9a9a9",darkgreen:"#006400",darkkhaki:"#bdb76b",darkmagenta:"#8b008b",darkolivegreen:"#556b2f",darkorange:"#ff8c00",darkorchid:"#9932cc",darkred:"#8b0000",darksalmon:"#e9967a",darkseagreen:"#8fbc8f",darkslateblue:"#483d8b",darkslategray:"#2f4f4f",darkturquoise:"#00ced1",darkviolet:"#9400d3",deeppink:"#ff1493",deepskyblue:"#00bfff",dimgray:"#696969",dodgerblue:"#1e90ff",firebrick:"#b22222",floralwhite:"#fffaf0",forestgreen:"#228b22",fuchsia:"#ff00ff",gainsboro:"#dcdcdc",ghostwhite:"#f8f8ff",gold:"#ffd700",goldenrod:"#daa520",gray:"#808080",green:"#008000",greenyellow:"#adff2f",honeydew:"#f0fff0",hotpink:"#ff69b4",indianred:"#cd5c5c",indigo:"#4b0082",ivory:"#fffff0",khaki:"#f0e68c",lavender:"#e6e6fa",lavenderblush:"#fff0f5",lawngreen:"#7cfc00",lemonchiffon:"#fffacd",lightblue:"#add8e6",lightcoral:"#f08080",lightcyan:"#e0ffff",lightgoldenrodyellow:"#fafad2",lightgray:"#d3d3d3",lightgreen:"#90ee90",lightpink:"#ffb6c1",lightsalmon:"#ffa07a",lightseagreen:"#20b2aa",lightskyblue:"#87cefa",lightslategray:"#778899",lightsteelblue:"#b0c4de",lightyellow:"#ffffe0",lime:"#00ff00",limegreen:"#32cd32",linen:"#faf0e6",magenta:"#ff00ff",maroon:"#800000",mediumaquamarine:"#66cdaa",mediumblue:"#0000cd",mediumorchid:"#ba55d3",mediumpurple:"#9370db",mediumseagreen:"#3cb371",mediumslateblue:"#7b68ee",mediumspringgreen:"#00fa9a",mediumturquoise:"#48d1cc",mediumvioletred:"#c71585",midnightblue:"#191970",mintcream:"#f5fffa",mistyrose:"#ffe4e1",moccasin:"#ffe4b5",navajowhite:"#ffdead",navy:"#000080",oldlace:"#fdf5e6",olive:"#808000",olivedrab:"#6b8e23",orange:"#ffa500",orangered:"#ff4500",orchid:"#da70d6",palegoldenrod:"#eee8aa",palegreen:"#98fb98",paleturquoise:"#afeeee",palevioletred:"#db7093",papayawhip:"#ffefd5",peachpuff:"#ffdab9",peru:"#cd853f",pink:"#ffc0cb",plum:"#dda0dd",powderblue:"#b0e0e6",purple:"#800080",rebeccapurple:"#663399",red:"#ff0000",rosybrown:"#bc8f8f",royalblue:"#4169e1",saddlebrown:"#8b4513",salmon:"#fa8072",sandybrown:"#f4a460",seagreen:"#2e8b57",seashell:"#fff5ee",sienna:"#a0522d",silver:"#c0c0c0",skyblue:"#87ceeb",slateblue:"#6a5acd",slategray:"#708090",snow:"#fffafa",springgreen:"#00ff7f",steelblue:"#4682b4",tan:"#d2b48c",teal:"#008080",thistle:"#d8bfd8",tomato:"#ff6347",turquoise:"#40e0d0",violet:"#ee82ee",wheat:"#f5deb3",white:"#ffffff",whitesmoke:"#f5f5f5",yellow:"#ffff00",yellowgreen:"#9acd32"},ratio:{square:function(t){var e={w:0,h:0};return t.w>t.h&&0<t.h?(e.h=t.h,e.w=t.h):(e.w=t.w,e.h=t.w),e},r16_9:function(t){return null!==t.w&&""!==t.w?Math.round(t.w/16*9):null!==t.h&&""!==t.h?Math.round(t.h/9*16):0},r4_3:function(t){return null!==t.w&&""!==t.w?Math.round(t.w/4*3):null!==t.h&&""!==t.h?Math.round(t.h/3*4):void 0}},getObjectAttributeByIndex:function(t,e){if(void 0===t)return"";var i=0;for(var n in t){if(e===i)return t[n];i++}return""},getUrlVars:function(t){var e,i=[],n,a;(e=t.toString()).match("&#038;")?e=e.replace("&#038;","&"):e.match("&#38;")?e=e.replace("&#38;","&"):e.match("&amp;")&&(e=e.replace("&amp;","&")),a=e.slice(e.indexOf("?")+1).split("&");for(var s=0;s<a.length;s++)n=a[s].split("="),i.push(n[0]),i[n[0]]=n[1];return i},
+/**
      * Remove any leading or trailing whitespace from the given string.
      * If `str` is undefined or does not have a `replace` function, return
      * an empty string.
      */
-	trim: function(str) {
-        if (str && typeof(str.replace) == 'function') {
-            return str.replace(/^\s+|\s+$/g, '');
-        }
-        return "";
-	},
-
-	slugify: function(str) {
-		// borrowed from http://stackoverflow.com/a/5782563/102476
-		str = TL.Util.trim(str);
-		str = str.toLowerCase();
-
-		// remove accents, swap ñ for n, etc
-		var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-		var to   = "aaaaaeeeeeiiiiooooouuuunc------";
-		for (var i=0, l=from.length ; i<l ; i++) {
-		str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-		}
-
-		str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-		.replace(/\s+/g, '-') // collapse whitespace and replace by -
-		.replace(/-+/g, '-'); // collapse dashes
-
-		str = str.replace(/^([0-9])/,'_$1');
-		return str;
-	},
-	maxDepth: function(ary) {
-		// given a sorted array of 2-tuples of numbers, count how many "deep" the items are.
-		// that is, what is the maximum number of tuples that occupy any one moment
-		// each tuple should also be sorted
-		var stack = [];
-		var max_depth = 0;
-		for (var i = 0; i < ary.length; i++) {
-
-			stack.push(ary[i]);
-			if (stack.length > 1) {
-				var top = stack[stack.length - 1]
-				var bottom_idx = -1;
-				for (var j = 0; j < stack.length - 1; j++) {
-					if (stack[j][1] < top[0]) {
-						bottom_idx = j;
-					}
-				};
-				if (bottom_idx >= 0) {
-					stack = stack.slice(bottom_idx + 1);
-				}
-
-			}
-
-			if (stack.length > max_depth) {
-				max_depth = stack.length;
-			}
-		};
-		return max_depth;
-	},
-
-	pad: function (val, len) {
-		val = String(val);
-		len = len || 2;
-		while (val.length < len) val = "0" + val;
-		return val;
-	},
-	intToHexString: function(i) {
-		return TL.Util.pad(parseInt(i,10).toString(16));
-	},
-    findNextGreater: function(list, current, default_value) {
-        // given a sorted list and a current value which *might* be in the list,
-        // return the next greatest value if the current value is >= the last item in the list, return default,
-        // or if default is undefined, return input value
-        for (var i = 0; i < list.length; i++) {
-            if (current < list[i]) {
-                return list[i];
-            }
-        }
-
-        return (default_value) ? default_value : current;
-    },
-
-    findNextLesser: function(list, current, default_value) {
-        // given a sorted list and a current value which *might* be in the list,
-        // return the next lesser value if the current value is <= the last item in the list, return default,
-        // or if default is undefined, return input value
-        for (var i = list.length - 1; i >= 0; i--) {
-            if (current > list[i]) {
-                return list[i];
-            }
-        }
-
-        return (default_value) ? default_value : current;
-    },
-
-	isEmptyObject: function(o) {
-		var properties = []
-		if (Object.keys) {
-			properties = Object.keys(o);
-		} else { // all this to support IE 8
-		    for (var p in o) if (Object.prototype.hasOwnProperty.call(o,p)) properties.push(p);
-    }
-		for (var i = 0; i < properties.length; i++) {
-			var k = properties[i];
-			if (o[k] != null && typeof o[k] != "string") return false;
-			if (TL.Util.trim(o[k]).length != 0) return false;
-		}
-		return true;
-	},
-	parseYouTubeTime: function(s) {
-	    // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
-		if (typeof(s) == 'string') {
-			parts = s.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i);
-			if (parts) {
-				var hours = parseInt(parts[1]) || 0;
-				var minutes = parseInt(parts[2]) || 0;
-				var seconds = parseInt(parts[3]) || 0;
-				return seconds + (minutes * 60) + (hours * 60 * 60);
-			}
-		} else if (typeof(s) == 'number') {
-			return s;
-		}
-		return 0;
-	},
-	/**
+trim:function(t){return t&&"function"==typeof t.replace?t.replace(/^\s+|\s+$/g,""):""},slugify:function(t){t=(
+// borrowed from http://stackoverflow.com/a/5782563/102476
+t=TL.Util.trim(t)).toLowerCase();for(
+// remove accents, swap ñ for n, etc
+var e="ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;",i="aaaaaeeeeeiiiiooooouuuunc------",n=0,a=e.length;n<a;n++)t=t.replace(new RegExp(e.charAt(n),"g"),i.charAt(n));// collapse dashes
+return t=(t=t.replace(/[^a-z0-9 -]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-")).replace(/^([0-9])/,"_$1")},maxDepth:function(t){for(
+// given a sorted array of 2-tuples of numbers, count how many "deep" the items are.
+// that is, what is the maximum number of tuples that occupy any one moment
+// each tuple should also be sorted
+var e=[],i=0,n=0;n<t.length;n++){if(e.push(t[n]),1<e.length){for(var a=e[e.length-1],s=-1,o=0;o<e.length-1;o++)e[o][1]<a[0]&&(s=o);0<=s&&(e=e.slice(s+1))}e.length>i&&(i=e.length)}return i},pad:function(t,e){for(t=String(t),e=e||2;t.length<e;)t="0"+t;return t},intToHexString:function(t){return TL.Util.pad(parseInt(t,10).toString(16))},findNextGreater:function(t,e,i){
+// given a sorted list and a current value which *might* be in the list,
+// return the next greatest value if the current value is >= the last item in the list, return default,
+// or if default is undefined, return input value
+for(var n=0;n<t.length;n++)if(e<t[n])return t[n];return i||e},findNextLesser:function(t,e,i){
+// given a sorted list and a current value which *might* be in the list,
+// return the next lesser value if the current value is <= the last item in the list, return default,
+// or if default is undefined, return input value
+for(var n=t.length-1;0<=n;n--)if(e>t[n])return t[n];return i||e},isEmptyObject:function(t){var e=[];if(Object.keys)e=Object.keys(t);else// all this to support IE 8
+for(var i in t)Object.prototype.hasOwnProperty.call(t,i)&&e.push(i);for(var n=0;n<e.length;n++){var a=e[n];if(null!=t[a]&&"string"!=typeof t[a])return!1;if(0!=TL.Util.trim(t[a]).length)return!1}return!0},parseYouTubeTime:function(t){
+// given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
+if("string"==typeof t){if(parts=t.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i),parts){var e=parseInt(parts[1])||0,i=parseInt(parts[2])||0,n;return(parseInt(parts[3])||0)+60*i+60*e*60}}else if("number"==typeof t)return t;return 0},
+/**
 	 * Try to make seamless the process of interpreting a URL to a web page which embeds an image for sharing purposes
 	 * as a direct image link. Some services have predictable transformations we can use rather than explain to people
 	 * this subtlety.
 	 */
-	transformImageURL: function(url) {
-		return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
-	},
-
-	base58: (function(alpha) {
-	    var alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
-	        base = alphabet.length;
-	    return {
-	        encode: function(enc) {
-	            if(typeof enc!=='number' || enc !== parseInt(enc))
-	                throw '"encode" only accepts integers.';
-	            var encoded = '';
-	            while(enc) {
-	                var remainder = enc % base;
-	                enc = Math.floor(enc / base);
-	                encoded = alphabet[remainder].toString() + encoded;
-	            }
-	            return encoded;
-	        },
-	        decode: function(dec) {
-	            if(typeof dec!=='string')
-	                throw '"decode" only accepts strings.';
-	            var decoded = 0;
-	            while(dec) {
-	                var alphabetPosition = alphabet.indexOf(dec[0]);
-	                if (alphabetPosition < 0)
-	                    throw '"decode" can\'t find "' + dec[0] + '" in the alphabet: "' + alphabet + '"';
-	                var powerOf = dec.length - 1;
-	                decoded += alphabetPosition * (Math.pow(base, powerOf));
-	                dec = dec.substring(1);
-	            }
-	            return decoded;
-	        }
-	    };
-	})()
-
-};
-
-
-/* **********************************************
-     Begin TL.Data.js
-********************************************** */
-
-// Expects TL to be visible in scope
-
-;(function(TL){
-    /* Zepto v1.1.2-15-g59d3fe5 - zepto event ajax form ie - zeptojs.com/license */
-
-    var Zepto = (function() {
-      var undefined, key, $, classList, emptyArray = [], slice = emptyArray.slice, filter = emptyArray.filter,
-        document = window.document,
-        elementDisplay = {}, classCache = {},
-        cssNumber = { 'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1,'opacity': 1, 'z-index': 1, 'zoom': 1 },
-        fragmentRE = /^\s*<(\w+|!)[^>]*>/,
-        singleTagRE = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
-        tagExpanderRE = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
-        rootNodeRE = /^(?:body|html)$/i,
-        capitalRE = /([A-Z])/g,
-
-        // special attributes that should be get/set via method calls
-        methodAttributes = ['val', 'css', 'html', 'text', 'data', 'width', 'height', 'offset'],
-
-        adjacencyOperators = [ 'after', 'prepend', 'before', 'append' ],
-        table = document.createElement('table'),
-        tableRow = document.createElement('tr'),
-        containers = {
-          'tr': document.createElement('tbody'),
-          'tbody': table, 'thead': table, 'tfoot': table,
-          'td': tableRow, 'th': tableRow,
-          '*': document.createElement('div')
-        },
-        readyRE = /complete|loaded|interactive/,
-        classSelectorRE = /^\.([\w-]+)$/,
-        idSelectorRE = /^#([\w-]*)$/,
-        simpleSelectorRE = /^[\w-]*$/,
-        class2type = {},
-        toString = class2type.toString,
-        zepto = {},
-        camelize, uniq,
-        tempParent = document.createElement('div'),
-        propMap = {
-          'tabindex': 'tabIndex',
-          'readonly': 'readOnly',
-          'for': 'htmlFor',
-          'class': 'className',
-          'maxlength': 'maxLength',
-          'cellspacing': 'cellSpacing',
-          'cellpadding': 'cellPadding',
-          'rowspan': 'rowSpan',
-          'colspan': 'colSpan',
-          'usemap': 'useMap',
-          'frameborder': 'frameBorder',
-          'contenteditable': 'contentEditable'
-        },
-        isArray = Array.isArray ||
-          function(object){ return object instanceof Array }
-
-      zepto.matches = function(element, selector) {
-        if (!selector || !element || element.nodeType !== 1) return false
-        var matchesSelector = element.webkitMatchesSelector || element.mozMatchesSelector ||
-                              element.oMatchesSelector || element.matchesSelector
-        if (matchesSelector) return matchesSelector.call(element, selector)
-        // fall back to performing a selector:
-        var match, parent = element.parentNode, temp = !parent
-        if (temp) (parent = tempParent).appendChild(element)
-        match = ~zepto.qsa(parent, selector).indexOf(element)
-        temp && tempParent.removeChild(element)
-        return match
-      }
-
-      function type(obj) {
-        return obj == null ? String(obj) :
-          class2type[toString.call(obj)] || "object"
-      }
-
-      function isFunction(value) { return type(value) == "function" }
-      function isWindow(obj)     { return obj != null && obj == obj.window }
-      function isDocument(obj)   { return obj != null && obj.nodeType == obj.DOCUMENT_NODE }
-      function isObject(obj)     { return type(obj) == "object" }
-      function isPlainObject(obj) {
-        return isObject(obj) && !isWindow(obj) && Object.getPrototypeOf(obj) == Object.prototype
-      }
-      function likeArray(obj) { return typeof obj.length == 'number' }
-
-      function compact(array) { return filter.call(array, function(item){ return item != null }) }
-      function flatten(array) { return array.length > 0 ? $.fn.concat.apply([], array) : array }
-      camelize = function(str){ return str.replace(/-+(.)?/g, function(match, chr){ return chr ? chr.toUpperCase() : '' }) }
-      function dasherize(str) {
-        return str.replace(/::/g, '/')
-               .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-               .replace(/([a-z\d])([A-Z])/g, '$1_$2')
-               .replace(/_/g, '-')
-               .toLowerCase()
-      }
-      uniq = function(array){ return filter.call(array, function(item, idx){ return array.indexOf(item) == idx }) }
-
-      function classRE(name) {
-        return name in classCache ?
-          classCache[name] : (classCache[name] = new RegExp('(^|\\s)' + name + '(\\s|$)'))
-      }
-
-      function maybeAddPx(name, value) {
-        return (typeof value == "number" && !cssNumber[dasherize(name)]) ? value + "px" : value
-      }
-
-      function defaultDisplay(nodeName) {
-        var element, display
-        if (!elementDisplay[nodeName]) {
-          element = document.createElement(nodeName)
-          document.body.appendChild(element)
-          display = getComputedStyle(element, '').getPropertyValue("display")
-          element.parentNode.removeChild(element)
-          display == "none" && (display = "block")
-          elementDisplay[nodeName] = display
-        }
-        return elementDisplay[nodeName]
-      }
-
-      function children(element) {
-        return 'children' in element ?
-          slice.call(element.children) :
-          $.map(element.childNodes, function(node){ if (node.nodeType == 1) return node })
-      }
-
-      // `$.zepto.fragment` takes a html string and an optional tag name
-      // to generate DOM nodes nodes from the given html string.
-      // The generated DOM nodes are returned as an array.
-      // This function can be overriden in plugins for example to make
-      // it compatible with browsers that don't support the DOM fully.
-      zepto.fragment = function(html, name, properties) {
-        var dom, nodes, container
-
-        // A special case optimization for a single tag
-        if (singleTagRE.test(html)) dom = $(document.createElement(RegExp.$1))
-
-        if (!dom) {
-          if (html.replace) html = html.replace(tagExpanderRE, "<$1></$2>")
-          if (name === undefined) name = fragmentRE.test(html) && RegExp.$1
-          if (!(name in containers)) name = '*'
-
-          container = containers[name]
-          container.innerHTML = '' + html
-          dom = $.each(slice.call(container.childNodes), function(){
-            container.removeChild(this)
-          })
-        }
-
-        if (isPlainObject(properties)) {
-          nodes = $(dom)
-          $.each(properties, function(key, value) {
-            if (methodAttributes.indexOf(key) > -1) nodes[key](value)
-            else nodes.attr(key, value)
-          })
-        }
-
-        return dom
-      }
-
-      // `$.zepto.Z` swaps out the prototype of the given `dom` array
-      // of nodes with `$.fn` and thus supplying all the Zepto functions
-      // to the array. Note that `__proto__` is not supported on Internet
-      // Explorer. This method can be overriden in plugins.
-      zepto.Z = function(dom, selector) {
-        dom = dom || []
-        dom.__proto__ = $.fn
-        dom.selector = selector || ''
-        return dom
-      }
-
-      // `$.zepto.isZ` should return `true` if the given object is a Zepto
-      // collection. This method can be overriden in plugins.
-      zepto.isZ = function(object) {
-        return object instanceof zepto.Z
-      }
-
-      // `$.zepto.init` is Zepto's counterpart to jQuery's `$.fn.init` and
-      // takes a CSS selector and an optional context (and handles various
-      // special cases).
-      // This method can be overriden in plugins.
-      zepto.init = function(selector, context) {
-        var dom
-        // If nothing given, return an empty Zepto collection
-        if (!selector) return zepto.Z()
-        // Optimize for string selectors
-        else if (typeof selector == 'string') {
-          selector = selector.trim()
-          // If it's a html fragment, create nodes from it
-          // Note: In both Chrome 21 and Firefox 15, DOM error 12
-          // is thrown if the fragment doesn't begin with <
-          if (selector[0] == '<' && fragmentRE.test(selector))
-            dom = zepto.fragment(selector, RegExp.$1, context), selector = null
-          // If there's a context, create a collection on that context first, and select
-          // nodes from there
-          else if (context !== undefined) return $(context).find(selector)
-          // If it's a CSS selector, use it to select nodes.
-          else dom = zepto.qsa(document, selector)
-        }
-        // If a function is given, call it when the DOM is ready
-        else if (isFunction(selector)) return $(document).ready(selector)
-        // If a Zepto collection is given, just return it
-        else if (zepto.isZ(selector)) return selector
-        else {
-          // normalize array if an array of nodes is given
-          if (isArray(selector)) dom = compact(selector)
-          // Wrap DOM nodes.
-          else if (isObject(selector))
-            dom = [selector], selector = null
-          // If it's a html fragment, create nodes from it
-          else if (fragmentRE.test(selector))
-            dom = zepto.fragment(selector.trim(), RegExp.$1, context), selector = null
-          // If there's a context, create a collection on that context first, and select
-          // nodes from there
-          else if (context !== undefined) return $(context).find(selector)
-          // And last but no least, if it's a CSS selector, use it to select nodes.
-          else dom = zepto.qsa(document, selector)
-        }
-        // create a new Zepto collection from the nodes found
-        return zepto.Z(dom, selector)
-      }
-
-      // `$` will be the base `Zepto` object. When calling this
-      // function just call `$.zepto.init, which makes the implementation
-      // details of selecting nodes and creating Zepto collections
-      // patchable in plugins.
-      $ = function(selector, context){
-        return zepto.init(selector, context)
-      }
-
-      function extend(target, source, deep) {
-        for (key in source)
-          if (deep && (isPlainObject(source[key]) || isArray(source[key]))) {
-            if (isPlainObject(source[key]) && !isPlainObject(target[key]))
-              target[key] = {}
-            if (isArray(source[key]) && !isArray(target[key]))
-              target[key] = []
-            extend(target[key], source[key], deep)
-          }
-          else if (source[key] !== undefined) target[key] = source[key]
-      }
-
-      // Copy all but undefined properties from one or more
-      // objects to the `target` object.
-      $.extend = function(target){
-        var deep, args = slice.call(arguments, 1)
-        if (typeof target == 'boolean') {
-          deep = target
-          target = args.shift()
-        }
-        args.forEach(function(arg){ extend(target, arg, deep) })
-        return target
-      }
-
-      // `$.zepto.qsa` is Zepto's CSS selector implementation which
-      // uses `document.querySelectorAll` and optimizes for some special cases, like `#id`.
-      // This method can be overriden in plugins.
-      zepto.qsa = function(element, selector){
-        var found,
-            maybeID = selector[0] == '#',
-            maybeClass = !maybeID && selector[0] == '.',
-            nameOnly = maybeID || maybeClass ? selector.slice(1) : selector, // Ensure that a 1 char tag name still gets checked
-            isSimple = simpleSelectorRE.test(nameOnly)
-        return (isDocument(element) && isSimple && maybeID) ?
-          ( (found = element.getElementById(nameOnly)) ? [found] : [] ) :
-          (element.nodeType !== 1 && element.nodeType !== 9) ? [] :
-          slice.call(
-            isSimple && !maybeID ?
-              maybeClass ? element.getElementsByClassName(nameOnly) : // If it's simple, it could be a class
-              element.getElementsByTagName(selector) : // Or a tag
-              element.querySelectorAll(selector) // Or it's not simple, and we need to query all
-          )
-      }
-
-      function filtered(nodes, selector) {
-        return selector == null ? $(nodes) : $(nodes).filter(selector)
-      }
-
-      $.contains = function(parent, node) {
-        return parent !== node && parent.contains(node)
-      }
-
-      function funcArg(context, arg, idx, payload) {
-        return isFunction(arg) ? arg.call(context, idx, payload) : arg
-      }
-
-      function setAttribute(node, name, value) {
-        value == null ? node.removeAttribute(name) : node.setAttribute(name, value)
-      }
-
-      // access className property while respecting SVGAnimatedString
-      function className(node, value){
-        var klass = node.className,
-            svg   = klass && klass.baseVal !== undefined
-
-        if (value === undefined) return svg ? klass.baseVal : klass
-        svg ? (klass.baseVal = value) : (node.className = value)
-      }
-
-      // "true"  => true
-      // "false" => false
-      // "null"  => null
-      // "42"    => 42
-      // "42.5"  => 42.5
-      // "08"    => "08"
-      // JSON    => parse if valid
-      // String  => self
-      function deserializeValue(value) {
-        var num
-        try {
-          return value ?
-            value == "true" ||
-            ( value == "false" ? false :
-              value == "null" ? null :
-              !/^0/.test(value) && !isNaN(num = Number(value)) ? num :
-              /^[\[\{]/.test(value) ? $.parseJSON(value) :
-              value )
-            : value
-        } catch(e) {
-          return value
-        }
-      }
-
-      $.type = type
-      $.isFunction = isFunction
-      $.isWindow = isWindow
-      $.isArray = isArray
-      $.isPlainObject = isPlainObject
-
-      $.isEmptyObject = function(obj) {
-        var name
-        for (name in obj) return false
-        return true
-      }
-
-      $.inArray = function(elem, array, i){
-        return emptyArray.indexOf.call(array, elem, i)
-      }
-
-      $.camelCase = camelize
-      $.trim = function(str) {
-        return str == null ? "" : String.prototype.trim.call(str)
-      }
-
-      // plugin compatibility
-      $.uuid = 0
-      $.support = { }
-      $.expr = { }
-
-      $.map = function(elements, callback){
-        var value, values = [], i, key
-        if (likeArray(elements))
-          for (i = 0; i < elements.length; i++) {
-            value = callback(elements[i], i)
-            if (value != null) values.push(value)
-          }
-        else
-          for (key in elements) {
-            value = callback(elements[key], key)
-            if (value != null) values.push(value)
-          }
-        return flatten(values)
-      }
-
-      $.each = function(elements, callback){
-        var i, key
-        if (likeArray(elements)) {
-          for (i = 0; i < elements.length; i++)
-            if (callback.call(elements[i], i, elements[i]) === false) return elements
-        } else {
-          for (key in elements)
-            if (callback.call(elements[key], key, elements[key]) === false) return elements
-        }
-
-        return elements
-      }
-
-      $.grep = function(elements, callback){
-        return filter.call(elements, callback)
-      }
-
-      if (window.JSON) $.parseJSON = JSON.parse
-
-      // Populate the class2type map
-      $.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
-        class2type[ "[object " + name + "]" ] = name.toLowerCase()
-      })
-
-      // Define methods that will be available on all
-      // Zepto collections
-      $.fn = {
-        // Because a collection acts like an array
-        // copy over these useful array functions.
-        forEach: emptyArray.forEach,
-        reduce: emptyArray.reduce,
-        push: emptyArray.push,
-        sort: emptyArray.sort,
-        indexOf: emptyArray.indexOf,
-        concat: emptyArray.concat,
-
-        // `map` and `slice` in the jQuery API work differently
-        // from their array counterparts
-        map: function(fn){
-          return $($.map(this, function(el, i){ return fn.call(el, i, el) }))
-        },
-        slice: function(){
-          return $(slice.apply(this, arguments))
-        },
-
-        ready: function(callback){
-          // need to check if document.body exists for IE as that browser reports
-          // document ready when it hasn't yet created the body element
-          if (readyRE.test(document.readyState) && document.body) callback($)
-          else document.addEventListener('DOMContentLoaded', function(){ callback($) }, false)
-          return this
-        },
-        get: function(idx){
-          return idx === undefined ? slice.call(this) : this[idx >= 0 ? idx : idx + this.length]
-        },
-        toArray: function(){ return this.get() },
-        size: function(){
-          return this.length
-        },
-        remove: function(){
-          return this.each(function(){
-            if (this.parentNode != null)
-              this.parentNode.removeChild(this)
-          })
-        },
-        each: function(callback){
-          emptyArray.every.call(this, function(el, idx){
-            return callback.call(el, idx, el) !== false
-          })
-          return this
-        },
-        filter: function(selector){
-          if (isFunction(selector)) return this.not(this.not(selector))
-          return $(filter.call(this, function(element){
-            return zepto.matches(element, selector)
-          }))
-        },
-        add: function(selector,context){
-          return $(uniq(this.concat($(selector,context))))
-        },
-        is: function(selector){
-          return this.length > 0 && zepto.matches(this[0], selector)
-        },
-        not: function(selector){
-          var nodes=[]
-          if (isFunction(selector) && selector.call !== undefined)
-            this.each(function(idx){
-              if (!selector.call(this,idx)) nodes.push(this)
-            })
-          else {
-            var excludes = typeof selector == 'string' ? this.filter(selector) :
-              (likeArray(selector) && isFunction(selector.item)) ? slice.call(selector) : $(selector)
-            this.forEach(function(el){
-              if (excludes.indexOf(el) < 0) nodes.push(el)
-            })
-          }
-          return $(nodes)
-        },
-        has: function(selector){
-          return this.filter(function(){
-            return isObject(selector) ?
-              $.contains(this, selector) :
-              $(this).find(selector).size()
-          })
-        },
-        eq: function(idx){
-          return idx === -1 ? this.slice(idx) : this.slice(idx, + idx + 1)
-        },
-        first: function(){
-          var el = this[0]
-          return el && !isObject(el) ? el : $(el)
-        },
-        last: function(){
-          var el = this[this.length - 1]
-          return el && !isObject(el) ? el : $(el)
-        },
-        find: function(selector){
-          var result, $this = this
-          if (typeof selector == 'object')
-            result = $(selector).filter(function(){
-              var node = this
-              return emptyArray.some.call($this, function(parent){
-                return $.contains(parent, node)
-              })
-            })
-          else if (this.length == 1) result = $(zepto.qsa(this[0], selector))
-          else result = this.map(function(){ return zepto.qsa(this, selector) })
-          return result
-        },
-        closest: function(selector, context){
-          var node = this[0], collection = false
-          if (typeof selector == 'object') collection = $(selector)
-          while (node && !(collection ? collection.indexOf(node) >= 0 : zepto.matches(node, selector)))
-            node = node !== context && !isDocument(node) && node.parentNode
-          return $(node)
-        },
-        parents: function(selector){
-          var ancestors = [], nodes = this
-          while (nodes.length > 0)
-            nodes = $.map(nodes, function(node){
-              if ((node = node.parentNode) && !isDocument(node) && ancestors.indexOf(node) < 0) {
-                ancestors.push(node)
-                return node
-              }
-            })
-          return filtered(ancestors, selector)
-        },
-        parent: function(selector){
-          return filtered(uniq(this.pluck('parentNode')), selector)
-        },
-        children: function(selector){
-          return filtered(this.map(function(){ return children(this) }), selector)
-        },
-        contents: function() {
-          return this.map(function() { return slice.call(this.childNodes) })
-        },
-        siblings: function(selector){
-          return filtered(this.map(function(i, el){
-            return filter.call(children(el.parentNode), function(child){ return child!==el })
-          }), selector)
-        },
-        empty: function(){
-          return this.each(function(){ this.innerHTML = '' })
-        },
-        // `pluck` is borrowed from Prototype.js
-        pluck: function(property){
-          return $.map(this, function(el){ return el[property] })
-        },
-        show: function(){
-          return this.each(function(){
-            this.style.display == "none" && (this.style.display = '')
-            if (getComputedStyle(this, '').getPropertyValue("display") == "none")
-              this.style.display = defaultDisplay(this.nodeName)
-          })
-        },
-        replaceWith: function(newContent){
-          return this.before(newContent).remove()
-        },
-        wrap: function(structure){
-          var func = isFunction(structure)
-          if (this[0] && !func)
-            var dom   = $(structure).get(0),
-                clone = dom.parentNode || this.length > 1
-
-          return this.each(function(index){
-            $(this).wrapAll(
-              func ? structure.call(this, index) :
-                clone ? dom.cloneNode(true) : dom
-            )
-          })
-        },
-        wrapAll: function(structure){
-          if (this[0]) {
-            $(this[0]).before(structure = $(structure))
-            var children
-            // drill down to the inmost element
-            while ((children = structure.children()).length) structure = children.first()
-            $(structure).append(this)
-          }
-          return this
-        },
-        wrapInner: function(structure){
-          var func = isFunction(structure)
-          return this.each(function(index){
-            var self = $(this), contents = self.contents(),
-                dom  = func ? structure.call(this, index) : structure
-            contents.length ? contents.wrapAll(dom) : self.append(dom)
-          })
-        },
-        unwrap: function(){
-          this.parent().each(function(){
-            $(this).replaceWith($(this).children())
-          })
-          return this
-        },
-        clone: function(){
-          return this.map(function(){ return this.cloneNode(true) })
-        },
-        hide: function(){
-          return this.css("display", "none")
-        },
-        toggle: function(setting){
-          return this.each(function(){
-            var el = $(this)
-            ;(setting === undefined ? el.css("display") == "none" : setting) ? el.show() : el.hide()
-          })
-        },
-        prev: function(selector){ return $(this.pluck('previousElementSibling')).filter(selector || '*') },
-        next: function(selector){ return $(this.pluck('nextElementSibling')).filter(selector || '*') },
-        html: function(html){
-          return arguments.length === 0 ?
-            (this.length > 0 ? this[0].innerHTML : null) :
-            this.each(function(idx){
-              var originHtml = this.innerHTML
-              $(this).empty().append( funcArg(this, html, idx, originHtml) )
-            })
-        },
-        text: function(text){
-          return arguments.length === 0 ?
-            (this.length > 0 ? this[0].textContent : null) :
-            this.each(function(){ this.textContent = (text === undefined) ? '' : ''+text })
-        },
-        attr: function(name, value){
-          var result
-          return (typeof name == 'string' && value === undefined) ?
-            (this.length == 0 || this[0].nodeType !== 1 ? undefined :
-              (name == 'value' && this[0].nodeName == 'INPUT') ? this.val() :
-              (!(result = this[0].getAttribute(name)) && name in this[0]) ? this[0][name] : result
-            ) :
-            this.each(function(idx){
-              if (this.nodeType !== 1) return
-              if (isObject(name)) for (key in name) setAttribute(this, key, name[key])
-              else setAttribute(this, name, funcArg(this, value, idx, this.getAttribute(name)))
-            })
-        },
-        removeAttr: function(name){
-          return this.each(function(){ this.nodeType === 1 && setAttribute(this, name) })
-        },
-        prop: function(name, value){
-          name = propMap[name] || name
-          return (value === undefined) ?
-            (this[0] && this[0][name]) :
-            this.each(function(idx){
-              this[name] = funcArg(this, value, idx, this[name])
-            })
-        },
-        data: function(name, value){
-          var data = this.attr('data-' + name.replace(capitalRE, '-$1').toLowerCase(), value)
-          return data !== null ? deserializeValue(data) : undefined
-        },
-        val: function(value){
-          return arguments.length === 0 ?
-            (this[0] && (this[0].multiple ?
-               $(this[0]).find('option').filter(function(){ return this.selected }).pluck('value') :
-               this[0].value)
-            ) :
-            this.each(function(idx){
-              this.value = funcArg(this, value, idx, this.value)
-            })
-        },
-        offset: function(coordinates){
-          if (coordinates) return this.each(function(index){
-            var $this = $(this),
-                coords = funcArg(this, coordinates, index, $this.offset()),
-                parentOffset = $this.offsetParent().offset(),
-                props = {
-                  top:  coords.top  - parentOffset.top,
-                  left: coords.left - parentOffset.left
-                }
-
-            if ($this.css('position') == 'static') props['position'] = 'relative'
-            $this.css(props)
-          })
-          if (this.length==0) return null
-          var obj = this[0].getBoundingClientRect()
-          return {
-            left: obj.left + window.pageXOffset,
-            top: obj.top + window.pageYOffset,
-            width: Math.round(obj.width),
-            height: Math.round(obj.height)
-          }
-        },
-        css: function(property, value){
-          if (arguments.length < 2) {
-            var element = this[0], computedStyle = getComputedStyle(element, '')
-            if(!element) return
-            if (typeof property == 'string')
-              return element.style[camelize(property)] || computedStyle.getPropertyValue(property)
-            else if (isArray(property)) {
-              var props = {}
-              $.each(isArray(property) ? property: [property], function(_, prop){
-                props[prop] = (element.style[camelize(prop)] || computedStyle.getPropertyValue(prop))
-              })
-              return props
-            }
-          }
-
-          var css = ''
-          if (type(property) == 'string') {
-            if (!value && value !== 0)
-              this.each(function(){ this.style.removeProperty(dasherize(property)) })
-            else
-              css = dasherize(property) + ":" + maybeAddPx(property, value)
-          } else {
-            for (key in property)
-              if (!property[key] && property[key] !== 0)
-                this.each(function(){ this.style.removeProperty(dasherize(key)) })
-              else
-                css += dasherize(key) + ':' + maybeAddPx(key, property[key]) + ';'
-          }
-
-          return this.each(function(){ this.style.cssText += ';' + css })
-        },
-        index: function(element){
-          return element ? this.indexOf($(element)[0]) : this.parent().children().indexOf(this[0])
-        },
-        hasClass: function(name){
-          if (!name) return false
-          return emptyArray.some.call(this, function(el){
-            return this.test(className(el))
-          }, classRE(name))
-        },
-        addClass: function(name){
-          if (!name) return this
-          return this.each(function(idx){
-            classList = []
-            var cls = className(this), newName = funcArg(this, name, idx, cls)
-            newName.split(/\s+/g).forEach(function(klass){
-              if (!$(this).hasClass(klass)) classList.push(klass)
-            }, this)
-            classList.length && className(this, cls + (cls ? " " : "") + classList.join(" "))
-          })
-        },
-        removeClass: function(name){
-          return this.each(function(idx){
-            if (name === undefined) return className(this, '')
-            classList = className(this)
-            funcArg(this, name, idx, classList).split(/\s+/g).forEach(function(klass){
-              classList = classList.replace(classRE(klass), " ")
-            })
-            className(this, classList.trim())
-          })
-        },
-        toggleClass: function(name, when){
-          if (!name) return this
-          return this.each(function(idx){
-            var $this = $(this), names = funcArg(this, name, idx, className(this))
-            names.split(/\s+/g).forEach(function(klass){
-              (when === undefined ? !$this.hasClass(klass) : when) ?
-                $this.addClass(klass) : $this.removeClass(klass)
-            })
-          })
-        },
-        scrollTop: function(value){
-          if (!this.length) return
-          var hasScrollTop = 'scrollTop' in this[0]
-          if (value === undefined) return hasScrollTop ? this[0].scrollTop : this[0].pageYOffset
-          return this.each(hasScrollTop ?
-            function(){ this.scrollTop = value } :
-            function(){ this.scrollTo(this.scrollX, value) })
-        },
-        scrollLeft: function(value){
-          if (!this.length) return
-          var hasScrollLeft = 'scrollLeft' in this[0]
-          if (value === undefined) return hasScrollLeft ? this[0].scrollLeft : this[0].pageXOffset
-          return this.each(hasScrollLeft ?
-            function(){ this.scrollLeft = value } :
-            function(){ this.scrollTo(value, this.scrollY) })
-        },
-        position: function() {
-          if (!this.length) return
-
-          var elem = this[0],
-            // Get *real* offsetParent
-            offsetParent = this.offsetParent(),
-            // Get correct offsets
-            offset       = this.offset(),
-            parentOffset = rootNodeRE.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset()
-
-          // Subtract element margins
-          // note: when an element has margin: auto the offsetLeft and marginLeft
-          // are the same in Safari causing offset.left to incorrectly be 0
-          offset.top  -= parseFloat( $(elem).css('margin-top') ) || 0
-          offset.left -= parseFloat( $(elem).css('margin-left') ) || 0
-
-          // Add offsetParent borders
-          parentOffset.top  += parseFloat( $(offsetParent[0]).css('border-top-width') ) || 0
-          parentOffset.left += parseFloat( $(offsetParent[0]).css('border-left-width') ) || 0
-
-          // Subtract the two offsets
-          return {
-            top:  offset.top  - parentOffset.top,
-            left: offset.left - parentOffset.left
-          }
-        },
-        offsetParent: function() {
-          return this.map(function(){
-            var parent = this.offsetParent || document.body
-            while (parent && !rootNodeRE.test(parent.nodeName) && $(parent).css("position") == "static")
-              parent = parent.offsetParent
-            return parent
-          })
-        }
-      }
-
-      // for now
-      $.fn.detach = $.fn.remove
-
-      // Generate the `width` and `height` functions
-      ;['width', 'height'].forEach(function(dimension){
-        var dimensionProperty =
-          dimension.replace(/./, function(m){ return m[0].toUpperCase() })
-
-        $.fn[dimension] = function(value){
-          var offset, el = this[0]
-          if (value === undefined) return isWindow(el) ? el['inner' + dimensionProperty] :
-            isDocument(el) ? el.documentElement['scroll' + dimensionProperty] :
-            (offset = this.offset()) && offset[dimension]
-          else return this.each(function(idx){
-            el = $(this)
-            el.css(dimension, funcArg(this, value, idx, el[dimension]()))
-          })
-        }
-      })
-
-      function traverseNode(node, fun) {
-        fun(node)
-        for (var key in node.childNodes) traverseNode(node.childNodes[key], fun)
-      }
-
-      // Generate the `after`, `prepend`, `before`, `append`,
-      // `insertAfter`, `insertBefore`, `appendTo`, and `prependTo` methods.
-      adjacencyOperators.forEach(function(operator, operatorIndex) {
-        var inside = operatorIndex % 2 //=> prepend, append
-
-        $.fn[operator] = function(){
-          // arguments can be nodes, arrays of nodes, Zepto objects and HTML strings
-          var argType, nodes = $.map(arguments, function(arg) {
-                argType = type(arg)
-                return argType == "object" || argType == "array" || arg == null ?
-                  arg : zepto.fragment(arg)
-              }),
-              parent, copyByClone = this.length > 1
-          if (nodes.length < 1) return this
-
-          return this.each(function(_, target){
-            parent = inside ? target : target.parentNode
-
-            // convert all methods to a "before" operation
-            target = operatorIndex == 0 ? target.nextSibling :
-                     operatorIndex == 1 ? target.firstChild :
-                     operatorIndex == 2 ? target :
-                     null
-
-            nodes.forEach(function(node){
-              if (copyByClone) node = node.cloneNode(true)
-              else if (!parent) return $(node).remove()
-
-              traverseNode(parent.insertBefore(node, target), function(el){
-                if (el.nodeName != null && el.nodeName.toUpperCase() === 'SCRIPT' &&
-                   (!el.type || el.type === 'text/javascript') && !el.src)
-                  window['eval'].call(window, el.innerHTML)
-              })
-            })
-          })
-        }
-
-        // after    => insertAfter
-        // prepend  => prependTo
-        // before   => insertBefore
-        // append   => appendTo
-        $.fn[inside ? operator+'To' : 'insert'+(operatorIndex ? 'Before' : 'After')] = function(html){
-          $(html)[operator](this)
-          return this
-        }
-      })
-
-      zepto.Z.prototype = $.fn
-
-      // Export internal API functions in the `$.zepto` namespace
-      zepto.uniq = uniq
-      zepto.deserializeValue = deserializeValue
-      $.zepto = zepto
-
-      return $
-    })()
-
-    window.Zepto = Zepto
-    window.$ === undefined && (window.$ = Zepto)
-
-    ;(function($){
-      var $$ = $.zepto.qsa, _zid = 1, undefined,
-          slice = Array.prototype.slice,
-          isFunction = $.isFunction,
-          isString = function(obj){ return typeof obj == 'string' },
-          handlers = {},
-          specialEvents={},
-          focusinSupported = 'onfocusin' in window,
-          focus = { focus: 'focusin', blur: 'focusout' },
-          hover = { mouseenter: 'mouseover', mouseleave: 'mouseout' }
-
-      specialEvents.click = specialEvents.mousedown = specialEvents.mouseup = specialEvents.mousemove = 'MouseEvents'
-
-      function zid(element) {
-        return element._zid || (element._zid = _zid++)
-      }
-      function findHandlers(element, event, fn, selector) {
-        event = parse(event)
-        if (event.ns) var matcher = matcherFor(event.ns)
-        return (handlers[zid(element)] || []).filter(function(handler) {
-          return handler
-            && (!event.e  || handler.e == event.e)
-            && (!event.ns || matcher.test(handler.ns))
-            && (!fn       || zid(handler.fn) === zid(fn))
-            && (!selector || handler.sel == selector)
-        })
-      }
-      function parse(event) {
-        var parts = ('' + event).split('.')
-        return {e: parts[0], ns: parts.slice(1).sort().join(' ')}
-      }
-      function matcherFor(ns) {
-        return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)')
-      }
-
-      function eventCapture(handler, captureSetting) {
-        return handler.del &&
-          (!focusinSupported && (handler.e in focus)) ||
-          !!captureSetting
-      }
-
-      function realEvent(type) {
-        return hover[type] || (focusinSupported && focus[type]) || type
-      }
-
-      function add(element, events, fn, data, selector, delegator, capture){
-        var id = zid(element), set = (handlers[id] || (handlers[id] = []))
-        events.split(/\s/).forEach(function(event){
-          if (event == 'ready') return $(document).ready(fn)
-          var handler   = parse(event)
-          handler.fn    = fn
-          handler.sel   = selector
-          // emulate mouseenter, mouseleave
-          if (handler.e in hover) fn = function(e){
-            var related = e.relatedTarget
-            if (!related || (related !== this && !$.contains(this, related)))
-              return handler.fn.apply(this, arguments)
-          }
-          handler.del   = delegator
-          var callback  = delegator || fn
-          handler.proxy = function(e){
-            e = compatible(e)
-            if (e.isImmediatePropagationStopped()) return
-            e.data = data
-            var result = callback.apply(element, e._args == undefined ? [e] : [e].concat(e._args))
-            if (result === false) e.preventDefault(), e.stopPropagation()
-            return result
-          }
-          handler.i = set.length
-          set.push(handler)
-          if ('addEventListener' in element)
-            element.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
-        })
-      }
-      function remove(element, events, fn, selector, capture){
-        var id = zid(element)
-        ;(events || '').split(/\s/).forEach(function(event){
-          findHandlers(element, event, fn, selector).forEach(function(handler){
-            delete handlers[id][handler.i]
-          if ('removeEventListener' in element)
-            element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
-          })
-        })
-      }
-
-      $.event = { add: add, remove: remove }
-
-      $.proxy = function(fn, context) {
-        if (isFunction(fn)) {
-          var proxyFn = function(){ return fn.apply(context, arguments) }
-          proxyFn._zid = zid(fn)
-          return proxyFn
-        } else if (isString(context)) {
-          return $.proxy(fn[context], fn)
-        } else {
-          throw new TypeError("expected function")
-        }
-      }
-
-      $.fn.bind = function(event, data, callback){
-        return this.on(event, data, callback)
-      }
-      $.fn.unbind = function(event, callback){
-        return this.off(event, callback)
-      }
-      $.fn.one = function(event, selector, data, callback){
-        return this.on(event, selector, data, callback, 1)
-      }
-
-      var returnTrue = function(){return true},
-          returnFalse = function(){return false},
-          ignoreProperties = /^([A-Z]|returnValue$|layer[XY]$)/,
-          eventMethods = {
-            preventDefault: 'isDefaultPrevented',
-            stopImmediatePropagation: 'isImmediatePropagationStopped',
-            stopPropagation: 'isPropagationStopped'
-          }
-
-      function compatible(event, source) {
-        if (source || !event.isDefaultPrevented) {
-          source || (source = event)
-
-          $.each(eventMethods, function(name, predicate) {
-            var sourceMethod = source[name]
-            event[name] = function(){
-              this[predicate] = returnTrue
-              return sourceMethod && sourceMethod.apply(source, arguments)
-            }
-            event[predicate] = returnFalse
-          })
-
-          if (source.defaultPrevented !== undefined ? source.defaultPrevented :
-              'returnValue' in source ? source.returnValue === false :
-              source.getPreventDefault && source.getPreventDefault())
-            event.isDefaultPrevented = returnTrue
-        }
-        return event
-      }
-
-      function createProxy(event) {
-        var key, proxy = { originalEvent: event }
-        for (key in event)
-          if (!ignoreProperties.test(key) && event[key] !== undefined) proxy[key] = event[key]
-
-        return compatible(proxy, event)
-      }
-
-      $.fn.delegate = function(selector, event, callback){
-        return this.on(event, selector, callback)
-      }
-      $.fn.undelegate = function(selector, event, callback){
-        return this.off(event, selector, callback)
-      }
-
-      $.fn.live = function(event, callback){
-        $(document.body).delegate(this.selector, event, callback)
-        return this
-      }
-      $.fn.die = function(event, callback){
-        $(document.body).undelegate(this.selector, event, callback)
-        return this
-      }
-
-      $.fn.on = function(event, selector, data, callback, one){
-        var autoRemove, delegator, $this = this
-        if (event && !isString(event)) {
-          $.each(event, function(type, fn){
-            $this.on(type, selector, data, fn, one)
-          })
-          return $this
-        }
-
-        if (!isString(selector) && !isFunction(callback) && callback !== false)
-          callback = data, data = selector, selector = undefined
-        if (isFunction(data) || data === false)
-          callback = data, data = undefined
-
-        if (callback === false) callback = returnFalse
-
-        return $this.each(function(_, element){
-          if (one) autoRemove = function(e){
-            remove(element, e.type, callback)
-            return callback.apply(this, arguments)
-          }
-
-          if (selector) delegator = function(e){
-            var evt, match = $(e.target).closest(selector, element).get(0)
-            if (match && match !== element) {
-              evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element})
-              return (autoRemove || callback).apply(match, [evt].concat(slice.call(arguments, 1)))
-            }
-          }
-
-          add(element, event, callback, data, selector, delegator || autoRemove)
-        })
-      }
-      $.fn.off = function(event, selector, callback){
-        var $this = this
-        if (event && !isString(event)) {
-          $.each(event, function(type, fn){
-            $this.off(type, selector, fn)
-          })
-          return $this
-        }
-
-        if (!isString(selector) && !isFunction(callback) && callback !== false)
-          callback = selector, selector = undefined
-
-        if (callback === false) callback = returnFalse
-
-        return $this.each(function(){
-          remove(this, event, callback, selector)
-        })
-      }
-
-      $.fn.trigger = function(event, args){
-        event = (isString(event) || $.isPlainObject(event)) ? $.Event(event) : compatible(event)
-        event._args = args
-        return this.each(function(){
-          // items in the collection might not be DOM elements
-          if('dispatchEvent' in this) this.dispatchEvent(event)
-          else $(this).triggerHandler(event, args)
-        })
-      }
-
-      // triggers event handlers on current element just as if an event occurred,
-      // doesn't trigger an actual event, doesn't bubble
-      $.fn.triggerHandler = function(event, args){
-        var e, result
-        this.each(function(i, element){
-          e = createProxy(isString(event) ? $.Event(event) : event)
-          e._args = args
-          e.target = element
-          $.each(findHandlers(element, event.type || event), function(i, handler){
-            result = handler.proxy(e)
-            if (e.isImmediatePropagationStopped()) return false
-          })
-        })
-        return result
-      }
-
-      // shortcut methods for `.bind(event, fn)` for each event type
-      ;('focusin focusout load resize scroll unload click dblclick '+
-      'mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave '+
-      'change select keydown keypress keyup error').split(' ').forEach(function(event) {
-        $.fn[event] = function(callback) {
-          return callback ?
-            this.bind(event, callback) :
-            this.trigger(event)
-        }
-      })
-
-      ;['focus', 'blur'].forEach(function(name) {
-        $.fn[name] = function(callback) {
-          if (callback) this.bind(name, callback)
-          else this.each(function(){
-            try { this[name]() }
-            catch(e) {}
-          })
-          return this
-        }
-      })
-
-      $.Event = function(type, props) {
-        if (!isString(type)) props = type, type = props.type
-        var event = document.createEvent(specialEvents[type] || 'Events'), bubbles = true
-        if (props) for (var name in props) (name == 'bubbles') ? (bubbles = !!props[name]) : (event[name] = props[name])
-        event.initEvent(type, bubbles, true)
-        return compatible(event)
-      }
-
-    })(Zepto)
-
-    ;(function($){
-      var jsonpID = 0,
-          document = window.document,
-          key,
-          name,
-          rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-          scriptTypeRE = /^(?:text|application)\/javascript/i,
-          xmlTypeRE = /^(?:text|application)\/xml/i,
-          jsonType = 'application/json',
-          htmlType = 'text/html',
-          blankRE = /^\s*$/
-
-      // trigger a custom event and return false if it was cancelled
-      function triggerAndReturn(context, eventName, data) {
-        var event = $.Event(eventName)
-        $(context).trigger(event, data)
-        return !event.isDefaultPrevented()
-      }
-
-      // trigger an Ajax "global" event
-      function triggerGlobal(settings, context, eventName, data) {
-        if (settings.global) return triggerAndReturn(context || document, eventName, data)
-      }
-
-      // Number of active Ajax requests
-      $.active = 0
-
-      function ajaxStart(settings) {
-        if (settings.global && $.active++ === 0) triggerGlobal(settings, null, 'ajaxStart')
-      }
-      function ajaxStop(settings) {
-        if (settings.global && !(--$.active)) triggerGlobal(settings, null, 'ajaxStop')
-      }
-
-      // triggers an extra global event "ajaxBeforeSend" that's like "ajaxSend" but cancelable
-      function ajaxBeforeSend(xhr, settings) {
-        var context = settings.context
-        if (settings.beforeSend.call(context, xhr, settings) === false ||
-            triggerGlobal(settings, context, 'ajaxBeforeSend', [xhr, settings]) === false)
-          return false
-
-        triggerGlobal(settings, context, 'ajaxSend', [xhr, settings])
-      }
-      function ajaxSuccess(data, xhr, settings, deferred) {
-        var context = settings.context, status = 'success'
-        settings.success.call(context, data, status, xhr)
-        if (deferred) deferred.resolveWith(context, [data, status, xhr])
-        triggerGlobal(settings, context, 'ajaxSuccess', [xhr, settings, data])
-        ajaxComplete(status, xhr, settings)
-      }
-      // type: "timeout", "error", "abort", "parsererror"
-      function ajaxError(error, type, xhr, settings, deferred) {
-        var context = settings.context
-        settings.error.call(context, xhr, type, error)
-        if (deferred) deferred.rejectWith(context, [xhr, type, error])
-        triggerGlobal(settings, context, 'ajaxError', [xhr, settings, error || type])
-        ajaxComplete(type, xhr, settings)
-      }
-      // status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
-      function ajaxComplete(status, xhr, settings) {
-        var context = settings.context
-        settings.complete.call(context, xhr, status)
-        triggerGlobal(settings, context, 'ajaxComplete', [xhr, settings])
-        ajaxStop(settings)
-      }
-
-      // Empty function, used as default callback
-      function empty() {}
-
-      $.ajaxJSONP = function(options, deferred){
-        if (!('type' in options)) return $.ajax(options)
-
-        var _callbackName = options.jsonpCallback,
-          callbackName = ($.isFunction(_callbackName) ?
-            _callbackName() : _callbackName) || ('jsonp' + (++jsonpID)),
-          script = document.createElement('script'),
-          originalCallback = window[callbackName],
-          responseData,
-          abort = function(errorType) {
-            $(script).triggerHandler('error', errorType || 'abort')
-          },
-          xhr = { abort: abort }, abortTimeout
-
-        if (deferred) deferred.promise(xhr)
-
-        $(script).on('load error', function(e, errorType){
-          clearTimeout(abortTimeout)
-          $(script).off().remove()
-
-          if (e.type == 'error' || !responseData) {
-            ajaxError(null, errorType || 'error', xhr, options, deferred)
-          } else {
-            ajaxSuccess(responseData[0], xhr, options, deferred)
-          }
-
-          window[callbackName] = originalCallback
-          if (responseData && $.isFunction(originalCallback))
-            originalCallback(responseData[0])
-
-          originalCallback = responseData = undefined
-        })
-
-        if (ajaxBeforeSend(xhr, options) === false) {
-          abort('abort')
-          return xhr
-        }
-
-        window[callbackName] = function(){
-          responseData = arguments
-        }
-
-        script.src = options.url.replace(/\?(.+)=\?/, '?$1=' + callbackName)
-        document.head.appendChild(script)
-
-        if (options.timeout > 0) abortTimeout = setTimeout(function(){
-          abort('timeout')
-        }, options.timeout)
-
-        return xhr
-      }
-
-      $.ajaxSettings = {
-        // Default type of request
-        type: 'GET',
-        // Callback that is executed before request
-        beforeSend: empty,
-        // Callback that is executed if the request succeeds
-        success: empty,
-        // Callback that is executed the the server drops error
-        error: empty,
-        // Callback that is executed on request complete (both: error and success)
-        complete: empty,
-        // The context for the callbacks
-        context: null,
-        // Whether to trigger "global" Ajax events
-        global: true,
-        // Transport
-        xhr: function () {
-          return new window.XMLHttpRequest()
-        },
-        // MIME types mapping
-        // IIS returns Javascript as "application/x-javascript"
-        accepts: {
-          script: 'text/javascript, application/javascript, application/x-javascript',
-          json:   jsonType,
-          xml:    'application/xml, text/xml',
-          html:   htmlType,
-          text:   'text/plain'
-        },
-        // Whether the request is to another domain
-        crossDomain: false,
-        // Default timeout
-        timeout: 0,
-        // Whether data should be serialized to string
-        processData: true,
-        // Whether the browser should be allowed to cache GET responses
-        cache: true
-      }
-
-      function mimeToDataType(mime) {
-        if (mime) mime = mime.split(';', 2)[0]
-        return mime && ( mime == htmlType ? 'html' :
-          mime == jsonType ? 'json' :
-          scriptTypeRE.test(mime) ? 'script' :
-          xmlTypeRE.test(mime) && 'xml' ) || 'text'
-      }
-
-      function appendQuery(url, query) {
-        if (query == '') return url
-        return (url + '&' + query).replace(/[&?]{1,2}/, '?')
-      }
-
-      // serialize payload and append it to the URL for GET requests
-      function serializeData(options) {
-        if (options.processData && options.data && $.type(options.data) != "string")
-          options.data = $.param(options.data, options.traditional)
-        if (options.data && (!options.type || options.type.toUpperCase() == 'GET'))
-          options.url = appendQuery(options.url, options.data), options.data = undefined
-      }
-
-      $.ajax = function(options){
-        var settings = $.extend({}, options || {}),
-            deferred = $.Deferred && $.Deferred()
-        for (key in $.ajaxSettings) if (settings[key] === undefined) settings[key] = $.ajaxSettings[key]
-
-        ajaxStart(settings)
-
-        if (!settings.crossDomain) settings.crossDomain = /^([\w-]+:)?\/\/([^\/]+)/.test(settings.url) &&
-          RegExp.$2 != window.location.host
-
-        if (!settings.url) settings.url = window.location.toString()
-        serializeData(settings)
-        if (settings.cache === false) settings.url = appendQuery(settings.url, '_=' + Date.now())
-
-        var dataType = settings.dataType, hasPlaceholder = /\?.+=\?/.test(settings.url)
-        if (dataType == 'jsonp' || hasPlaceholder) {
-          if (!hasPlaceholder)
-            settings.url = appendQuery(settings.url,
-              settings.jsonp ? (settings.jsonp + '=?') : settings.jsonp === false ? '' : 'callback=?')
-          return $.ajaxJSONP(settings, deferred)
-        }
-
-        var mime = settings.accepts[dataType],
-            headers = { },
-            setHeader = function(name, value) { headers[name.toLowerCase()] = [name, value] },
-            protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
-            xhr = settings.xhr(),
-            nativeSetHeader = xhr.setRequestHeader,
-            abortTimeout
-
-        if (deferred) deferred.promise(xhr)
-
-        if (!settings.crossDomain) setHeader('X-Requested-With', 'XMLHttpRequest')
-        setHeader('Accept', mime || '*/*')
-        if (mime = settings.mimeType || mime) {
-          if (mime.indexOf(',') > -1) mime = mime.split(',', 2)[0]
-          xhr.overrideMimeType && xhr.overrideMimeType(mime)
-        }
-        if (settings.contentType || (settings.contentType !== false && settings.data && settings.type.toUpperCase() != 'GET'))
-          setHeader('Content-Type', settings.contentType || 'application/x-www-form-urlencoded')
-
-        if (settings.headers) for (name in settings.headers) setHeader(name, settings.headers[name])
-        xhr.setRequestHeader = setHeader
-
-        xhr.onreadystatechange = function(){
-          if (xhr.readyState == 4) {
-            xhr.onreadystatechange = empty
-            clearTimeout(abortTimeout)
-            var result, error = false
-            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304 || (xhr.status == 0 && protocol == 'file:')) {
-              dataType = dataType || mimeToDataType(settings.mimeType || xhr.getResponseHeader('content-type'))
-              result = xhr.responseText
-
-              try {
-                // http://perfectionkills.com/global-eval-what-are-the-options/
-                if (dataType == 'script')    (1,eval)(result)
-                else if (dataType == 'xml')  result = xhr.responseXML
-                else if (dataType == 'json') result = blankRE.test(result) ? null : $.parseJSON(result)
-              } catch (e) { error = e }
-
-              if (error) ajaxError(error, 'parsererror', xhr, settings, deferred)
-              else ajaxSuccess(result, xhr, settings, deferred)
-            } else {
-              ajaxError(xhr.statusText || null, xhr.status ? 'error' : 'abort', xhr, settings, deferred)
-            }
-          }
-        }
-
-        if (ajaxBeforeSend(xhr, settings) === false) {
-          xhr.abort()
-          ajaxError(null, 'abort', xhr, settings, deferred)
-          return xhr
-        }
-
-        if (settings.xhrFields) for (name in settings.xhrFields) xhr[name] = settings.xhrFields[name]
-
-        var async = 'async' in settings ? settings.async : true
-        xhr.open(settings.type, settings.url, async, settings.username, settings.password)
-
-        for (name in headers) nativeSetHeader.apply(xhr, headers[name])
-
-        if (settings.timeout > 0) abortTimeout = setTimeout(function(){
-            xhr.onreadystatechange = empty
-            xhr.abort()
-            ajaxError(null, 'timeout', xhr, settings, deferred)
-          }, settings.timeout)
-
-        // avoid sending empty string (#319)
-        xhr.send(settings.data ? settings.data : null)
-        return xhr
-      }
-
-      // handle optional data/success arguments
-      function parseArguments(url, data, success, dataType) {
-        var hasData = !$.isFunction(data)
-        return {
-          url:      url,
-          data:     hasData  ? data : undefined,
-          success:  !hasData ? data : $.isFunction(success) ? success : undefined,
-          dataType: hasData  ? dataType || success : success
-        }
-      }
-
-      $.get = function(url, data, success, dataType){
-        return $.ajax(parseArguments.apply(null, arguments))
-      }
-
-      $.post = function(url, data, success, dataType){
-        var options = parseArguments.apply(null, arguments)
-        options.type = 'POST'
-        return $.ajax(options)
-      }
-
-      $.getJSON = function(url, data, success){
-        var options = parseArguments.apply(null, arguments)
-        options.dataType = 'json'
-        return $.ajax(options)
-      }
-
-      $.fn.load = function(url, data, success){
-        if (!this.length) return this
-        var self = this, parts = url.split(/\s/), selector,
-            options = parseArguments(url, data, success),
-            callback = options.success
-        if (parts.length > 1) options.url = parts[0], selector = parts[1]
-        options.success = function(response){
-          self.html(selector ?
-            $('<div>').html(response.replace(rscript, "")).find(selector)
-            : response)
-          callback && callback.apply(self, arguments)
-        }
-        $.ajax(options)
-        return this
-      }
-
-      var escape = encodeURIComponent
-
-      function serialize(params, obj, traditional, scope){
-        var type, array = $.isArray(obj), hash = $.isPlainObject(obj)
-        $.each(obj, function(key, value) {
-          type = $.type(value)
-          if (scope) key = traditional ? scope :
-            scope + '[' + (hash || type == 'object' || type == 'array' ? key : '') + ']'
-          // handle data in serializeArray() format
-          if (!scope && array) params.add(value.name, value.value)
-          // recurse into nested objects
-          else if (type == "array" || (!traditional && type == "object"))
-            serialize(params, value, traditional, key)
-          else params.add(key, value)
-        })
-      }
-
-      $.param = function(obj, traditional){
-        var params = []
-        params.add = function(k, v){ this.push(escape(k) + '=' + escape(v)) }
-        serialize(params, obj, traditional)
-        return params.join('&').replace(/%20/g, '+')
-      }
-    })(Zepto)
-
-    ;(function($){
-      $.fn.serializeArray = function() {
-        var result = [], el
-        $([].slice.call(this.get(0).elements)).each(function(){
-          el = $(this)
-          var type = el.attr('type')
-          if (this.nodeName.toLowerCase() != 'fieldset' &&
-            !this.disabled && type != 'submit' && type != 'reset' && type != 'button' &&
-            ((type != 'radio' && type != 'checkbox') || this.checked))
-            result.push({
-              name: el.attr('name'),
-              value: el.val()
-            })
-        })
-        return result
-      }
-
-      $.fn.serialize = function(){
-        var result = []
-        this.serializeArray().forEach(function(elm){
-          result.push(encodeURIComponent(elm.name) + '=' + encodeURIComponent(elm.value))
-        })
-        return result.join('&')
-      }
-
-      $.fn.submit = function(callback) {
-        if (callback) this.bind('submit', callback)
-        else if (this.length) {
-          var event = $.Event('submit')
-          this.eq(0).trigger(event)
-          if (!event.isDefaultPrevented()) this.get(0).submit()
-        }
-        return this
-      }
-
-    })(Zepto)
-
-    ;(function($){
-      // __proto__ doesn't exist on IE<11, so redefine
-      // the Z function to use object extension instead
-      if (!('__proto__' in {})) {
-        $.extend($.zepto, {
-          Z: function(dom, selector){
-            dom = dom || []
-            $.extend(dom, $.fn)
-            dom.selector = selector || ''
-            dom.__Z = true
-            return dom
-          },
-          // this is a kludge but works
-          isZ: function(object){
-            return $.type(object) === 'array' && '__Z' in object
-          }
-        })
-      }
-
-      // getComputedStyle shouldn't freak out when called
-      // without a valid element as argument
-      try {
-        getComputedStyle(undefined)
-      } catch(e) {
-        var nativeGetComputedStyle = getComputedStyle;
-        window.getComputedStyle = function(element, pseudoElement){
-          try {
-            return nativeGetComputedStyle(element, pseudoElement)
-          } catch(e) {
-            return null
-          }
-        }
-      }
-    })(Zepto)
-
-
-  TL.getJSON = Zepto.getJSON;
-	TL.ajax = Zepto.ajax;
-})(TL)
-
-//     Based on https://github.com/madrobby/zepto/blob/5585fe00f1828711c04208372265a5d71e3238d1/src/ajax.js
-//     Zepto.js
-//     (c) 2010-2012 Thomas Fuchs
-//     Zepto.js may be freely distributed under the MIT license.
-/*
-Copyright (c) 2010-2012 Thomas Fuchs
-http://zeptojs.com
-
-Permission is hereby granted, free of charge, to any person obtaining a copy 
-of this software and associated documentation files (the "Software"), to deal 
-in the Software without restriction, including without limitation the rights 
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
-copies of the Software, and to permit persons to whom the Software is 
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all 
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
-SOFTWARE.
-*/
-
-
-/* **********************************************
-     Begin TL.Class.js
-********************************************** */
-
+transformImageURL:function(t){return t.replace(/(.*)www.dropbox.com\/(.*)/,"$1dl.dropboxusercontent.com/$2")},base58:function(t){var a="123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ",s=a.length;return{encode:function(t){if("number"!=typeof t||t!==parseInt(t))throw'"encode" only accepts integers.';for(var e="";t;){var i=t%s;t=Math.floor(t/s),e=a[i].toString()+e}return e},decode:function(t){if("string"!=typeof t)throw'"decode" only accepts strings.';for(var e=0;t;){var i=a.indexOf(t[0]);if(i<0)throw'"decode" can\'t find "'+t[0]+'" in the alphabet: "'+a+'"';var n=t.length-1;e+=i*Math.pow(s,n),t=t.substring(1)}return e}}}()},function(uc){
+/* Zepto v1.1.2-15-g59d3fe5 - zepto event ajax form ie - zeptojs.com/license */
+var vc=function(){function r(t){return null==t?String(t):Q[$.call(t)]||"object"}function o(t){return"function"==r(t)}function s(t){return null!=t&&t==t.window}function l(t){return null!=t&&t.nodeType==t.DOCUMENT_NODE}function n(t){return"object"==r(t)}function h(t){return n(t)&&!s(t)&&Object.getPrototypeOf(t)==Object.prototype}function d(t){return"number"==typeof t.length}function a(t){return E.call(t,function(t){return null!=t})}function c(t){return 0<t.length?k.fn.concat.apply([],t):t}function u(t){return t.replace(/::/g,"/").replace(/([A-Z]+)([A-Z][a-z])/g,"$1_$2").replace(/([a-z\d])([A-Z])/g,"$1_$2").replace(/_/g,"-").toLowerCase()}function i(t){return t in e?e[t]:e[t]=new RegExp("(^|\\s)"+t+"(\\s|$)")}function m(t,e){return"number"!=typeof e||N[u(t)]?e:e+"px"}function t(t){var e,i;return C[t]||(e=S.createElement(t),S.body.appendChild(e),i=getComputedStyle(e,"").getPropertyValue("display"),e.parentNode.removeChild(e),"none"==i&&(i="block"),C[t]=i),C[t]}function _(t){return"children"in t?D.call(t.children):k.map(t.childNodes,function(t){if(1==t.nodeType)return t})}
+// `$.zepto.fragment` takes a html string and an optional tag name
+// to generate DOM nodes nodes from the given html string.
+// The generated DOM nodes are returned as an array.
+// This function can be overriden in plugins for example to make
+// it compatible with browsers that don't support the DOM fully.
+function p(t,e,i){for(b in e)i&&(h(e[b])||K(e[b]))?(h(e[b])&&!h(t[b])&&(t[b]={}),K(e[b])&&!K(t[b])&&(t[b]=[]),p(t[b],e[b],i)):e[b]!==w&&(t[b]=e[b])}
+// Copy all but undefined properties from one or more
+// objects to the `target` object.
+function f(t,e){return null==e?k(t):k(t).filter(e)}function g(t,e,i,n){return o(e)?e.call(t,i,n):e}function v(t,e,i){null==i?t.removeAttribute(e):t.setAttribute(e,i)}
+// access className property while respecting SVGAnimatedString
+function y(t,e){var i=t.className,n=i&&i.baseVal!==w;if(e===w)return n?i.baseVal:i;n?i.baseVal=e:t.className=e}
+// "true"  => true
+// "false" => false
+// "null"  => null
+// "42"    => 42
+// "42.5"  => 42.5
+// "08"    => "08"
+// JSON    => parse if valid
+// String  => self
+function T(e){var t;try{return e?"true"==e||"false"!=e&&("null"==e?null:/^0/.test(e)||isNaN(t=Number(e))?/^[\[\{]/.test(e)?k.parseJSON(e):e:t):e}catch(t){return e}}function L(t,e){for(var i in e(t),t.childNodes)L(t.childNodes[i],e)}
+// Generate the `after`, `prepend`, `before`, `append`,
+// `insertAfter`, `insertBefore`, `appendTo`, and `prependTo` methods.
+var w,b,k,x,M=[],D=M.slice,E=M.filter,S=window.document,C={},e={},N={"column-count":1,columns:1,"font-weight":1,"line-height":1,opacity:1,"z-index":1,zoom:1},I=/^\s*<(\w+|!)[^>]*>/,U=/^<(\w+)\s*\/?>(?:<\/\1>|)$/,A=/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,j=/^(?:body|html)$/i,O=/([A-Z])/g,
+// special attributes that should be get/set via method calls
+P=["val","css","html","text","data","width","height","offset"],B=["after","prepend","before","append"],z=S.createElement("table"),R=S.createElement("tr"),q={tr:S.createElement("tbody"),tbody:z,thead:z,tfoot:z,td:R,th:R,"*":S.createElement("div")},H=/complete|loaded|interactive/,F=/^\.([\w-]+)$/,Y=/^#([\w-]*)$/,W=/^[\w-]*$/,Q={},$=Q.toString,Z={},G,J,V=S.createElement("div"),X={tabindex:"tabIndex",readonly:"readOnly",for:"htmlFor",class:"className",maxlength:"maxLength",cellspacing:"cellSpacing",cellpadding:"cellPadding",rowspan:"rowSpan",colspan:"colSpan",usemap:"useMap",frameborder:"frameBorder",contenteditable:"contentEditable"},K=Array.isArray||function(t){return t instanceof Array};return Z.matches=function(t,e){if(!e||!t||1!==t.nodeType)return!1;var i=t.webkitMatchesSelector||t.mozMatchesSelector||t.oMatchesSelector||t.matchesSelector;if(i)return i.call(t,e);
+// fall back to performing a selector:
+var n,a=t.parentNode,s=!a;return s&&(a=V).appendChild(t),n=~Z.qsa(a,e).indexOf(t),s&&V.removeChild(t),n},G=function(t){return t.replace(/-+(.)?/g,function(t,e){return e?e.toUpperCase():""})},J=function(i){return E.call(i,function(t,e){return i.indexOf(t)==e})},Z.fragment=function(t,e,i){var n,a,s;
+// A special case optimization for a single tag
+return U.test(t)&&(n=k(S.createElement(RegExp.$1))),n||(t.replace&&(t=t.replace(A,"<$1></$2>")),e===w&&(e=I.test(t)&&RegExp.$1),e in q||(e="*"),(s=q[e]).innerHTML=""+t,n=k.each(D.call(s.childNodes),function(){s.removeChild(this)})),h(i)&&(a=k(n),k.each(i,function(t,e){-1<P.indexOf(t)?a[t](e):a.attr(t,e)})),n}
+// `$.zepto.Z` swaps out the prototype of the given `dom` array
+// of nodes with `$.fn` and thus supplying all the Zepto functions
+// to the array. Note that `__proto__` is not supported on Internet
+// Explorer. This method can be overriden in plugins.
+,Z.Z=function(t,e){return(t=t||[]).__proto__=k.fn,t.selector=e||"",t}
+// `$.zepto.isZ` should return `true` if the given object is a Zepto
+// collection. This method can be overriden in plugins.
+,Z.isZ=function(t){return t instanceof Z.Z}
+// `$.zepto.init` is Zepto's counterpart to jQuery's `$.fn.init` and
+// takes a CSS selector and an optional context (and handles various
+// special cases).
+// This method can be overriden in plugins.
+,Z.init=function(t,e){var i;
+// If nothing given, return an empty Zepto collection
+if(!t)return Z.Z();
+// Optimize for string selectors
+// create a new Zepto collection from the nodes found
+if("string"==typeof t)
+// If it's a html fragment, create nodes from it
+// Note: In both Chrome 21 and Firefox 15, DOM error 12
+// is thrown if the fragment doesn't begin with <
+if("<"==(t=t.trim())[0]&&I.test(t))i=Z.fragment(t,RegExp.$1,e),t=null;
+// If there's a context, create a collection on that context first, and select
+// nodes from there
+else{if(e!==w)return k(e).find(t);
+// If it's a CSS selector, use it to select nodes.
+i=Z.qsa(S,t)}else{if(o(t))return k(S).ready(t);
+// If a Zepto collection is given, just return it
+if(Z.isZ(t))return t;
+// normalize array if an array of nodes is given
+if(K(t))i=a(t);
+// Wrap DOM nodes.
+else if(n(t))i=[t],t=null;
+// If it's a html fragment, create nodes from it
+else if(I.test(t))i=Z.fragment(t.trim(),RegExp.$1,e),t=null;
+// If there's a context, create a collection on that context first, and select
+// nodes from there
+else{if(e!==w)return k(e).find(t);
+// And last but no least, if it's a CSS selector, use it to select nodes.
+i=Z.qsa(S,t)}}return Z.Z(i,t)}
+// `$` will be the base `Zepto` object. When calling this
+// function just call `$.zepto.init, which makes the implementation
+// details of selecting nodes and creating Zepto collections
+// patchable in plugins.
+,(k=function(t,e){return Z.init(t,e)}).extend=function(e){var i,t=D.call(arguments,1);return"boolean"==typeof e&&(i=e,e=t.shift()),t.forEach(function(t){p(e,t,i)}),e}
+// `$.zepto.qsa` is Zepto's CSS selector implementation which
+// uses `document.querySelectorAll` and optimizes for some special cases, like `#id`.
+// This method can be overriden in plugins.
+,Z.qsa=function(t,e){var i,n="#"==e[0],a=!n&&"."==e[0],s=n||a?e.slice(1):e,// Ensure that a 1 char tag name still gets checked
+o=W.test(s);return l(t)&&o&&n?(i=t.getElementById(s))?[i]:[]:1!==t.nodeType&&9!==t.nodeType?[]:D.call(o&&!n?a?t.getElementsByClassName(s):// If it's simple, it could be a class
+t.getElementsByTagName(e):// Or a tag
+t.querySelectorAll(e))},k.contains=function(t,e){return t!==e&&t.contains(e)},k.type=r,k.isFunction=o,k.isWindow=s,k.isArray=K,k.isPlainObject=h,k.isEmptyObject=function(t){var e;for(e in t)return!1;return!0},k.inArray=function(t,e,i){return M.indexOf.call(e,t,i)},k.camelCase=G,k.trim=function(t){return null==t?"":String.prototype.trim.call(t)}
+// plugin compatibility
+,k.uuid=0,k.support={},k.expr={},k.map=function(t,e){var i,n=[],a,s;if(d(t))for(a=0;a<t.length;a++)null!=(i=e(t[a],a))&&n.push(i);else for(s in t)null!=(i=e(t[s],s))&&n.push(i);return c(n)},k.each=function(t,e){var i,n;if(d(t)){for(i=0;i<t.length;i++)if(!1===e.call(t[i],i,t[i]))return t}else for(n in t)if(!1===e.call(t[n],n,t[n]))return t;return t},k.grep=function(t,e){return E.call(t,e)},window.JSON&&(k.parseJSON=JSON.parse),
+// Populate the class2type map
+k.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(t,e){Q["[object "+e+"]"]=e.toLowerCase()}),
+// Define methods that will be available on all
+// Zepto collections
+k.fn={
+// Because a collection acts like an array
+// copy over these useful array functions.
+forEach:M.forEach,reduce:M.reduce,push:M.push,sort:M.sort,indexOf:M.indexOf,concat:M.concat,
+// `map` and `slice` in the jQuery API work differently
+// from their array counterparts
+map:function(i){return k(k.map(this,function(t,e){return i.call(t,e,t)}))},slice:function(){return k(D.apply(this,arguments))},ready:function(t){
+// need to check if document.body exists for IE as that browser reports
+// document ready when it hasn't yet created the body element
+return H.test(S.readyState)&&S.body?t(k):S.addEventListener("DOMContentLoaded",function(){t(k)},!1),this},get:function(t){return t===w?D.call(this):this[0<=t?t:t+this.length]},toArray:function(){return this.get()},size:function(){return this.length},remove:function(){return this.each(function(){null!=this.parentNode&&this.parentNode.removeChild(this)})},each:function(i){return M.every.call(this,function(t,e){return!1!==i.call(t,e,t)}),this},filter:function(e){return o(e)?this.not(this.not(e)):k(E.call(this,function(t){return Z.matches(t,e)}))},add:function(t,e){return k(J(this.concat(k(t,e))))},is:function(t){return 0<this.length&&Z.matches(this[0],t)},not:function(e){var i=[];if(o(e)&&e.call!==w)this.each(function(t){e.call(this,t)||i.push(this)});else{var n="string"==typeof e?this.filter(e):d(e)&&o(e.item)?D.call(e):k(e);this.forEach(function(t){n.indexOf(t)<0&&i.push(t)})}return k(i)},has:function(t){return this.filter(function(){return n(t)?k.contains(this,t):k(this).find(t).size()})},eq:function(t){return-1===t?this.slice(t):this.slice(t,+t+1)},first:function(){var t=this[0];return t&&!n(t)?t:k(t)},last:function(){var t=this[this.length-1];return t&&!n(t)?t:k(t)},find:function(t){var e,i=this;return e="object"==typeof t?k(t).filter(function(){var e=this;return M.some.call(i,function(t){return k.contains(t,e)})}):1==this.length?k(Z.qsa(this[0],t)):this.map(function(){return Z.qsa(this,t)})},closest:function(t,e){var i=this[0],n=!1;for("object"==typeof t&&(n=k(t));i&&!(n?0<=n.indexOf(i):Z.matches(i,t));)i=i!==e&&!l(i)&&i.parentNode;return k(i)},parents:function(t){for(var e=[],i=this;0<i.length;)i=k.map(i,function(t){if((t=t.parentNode)&&!l(t)&&e.indexOf(t)<0)return e.push(t),t});return f(e,t)},parent:function(t){return f(J(this.pluck("parentNode")),t)},children:function(t){return f(this.map(function(){return _(this)}),t)},contents:function(){return this.map(function(){return D.call(this.childNodes)})},siblings:function(t){return f(this.map(function(t,e){return E.call(_(e.parentNode),function(t){return t!==e})}),t)},empty:function(){return this.each(function(){this.innerHTML=""})},
+// `pluck` is borrowed from Prototype.js
+pluck:function(e){return k.map(this,function(t){return t[e]})},show:function(){return this.each(function(){"none"==this.style.display&&(this.style.display=""),"none"==getComputedStyle(this,"").getPropertyValue("display")&&(this.style.display=t(this.nodeName))})},replaceWith:function(t){return this.before(t).remove()},wrap:function(e){var i=o(e);if(this[0]&&!i)var n=k(e).get(0),a=n.parentNode||1<this.length;return this.each(function(t){k(this).wrapAll(i?e.call(this,t):a?n.cloneNode(!0):n)})},wrapAll:function(t){if(this[0]){var e;
+// drill down to the inmost element
+for(k(this[0]).before(t=k(t));(e=t.children()).length;)t=e.first();k(t).append(this)}return this},wrapInner:function(a){var s=o(a);return this.each(function(t){var e=k(this),i=e.contents(),n=s?a.call(this,t):a;i.length?i.wrapAll(n):e.append(n)})},unwrap:function(){return this.parent().each(function(){k(this).replaceWith(k(this).children())}),this},clone:function(){return this.map(function(){return this.cloneNode(!0)})},hide:function(){return this.css("display","none")},toggle:function(e){return this.each(function(){var t=k(this);(e===w?"none"==t.css("display"):e)?t.show():t.hide()})},prev:function(t){return k(this.pluck("previousElementSibling")).filter(t||"*")},next:function(t){return k(this.pluck("nextElementSibling")).filter(t||"*")},html:function(i){return 0===arguments.length?0<this.length?this[0].innerHTML:null:this.each(function(t){var e=this.innerHTML;k(this).empty().append(g(this,i,t,e))})},text:function(t){return 0===arguments.length?0<this.length?this[0].textContent:null:this.each(function(){this.textContent=t===w?"":""+t})},attr:function(e,i){var t;return"string"==typeof e&&i===w?0==this.length||1!==this[0].nodeType?w:"value"==e&&"INPUT"==this[0].nodeName?this.val():!(t=this[0].getAttribute(e))&&e in this[0]?this[0][e]:t:this.each(function(t){if(1===this.nodeType)if(n(e))for(b in e)v(this,b,e[b]);else v(this,e,g(this,i,t,this.getAttribute(e)))})},removeAttr:function(t){return this.each(function(){1===this.nodeType&&v(this,t)})},prop:function(e,i){return e=X[e]||e,i===w?this[0]&&this[0][e]:this.each(function(t){this[e]=g(this,i,t,this[e])})},data:function(t,e){var i=this.attr("data-"+t.replace(O,"-$1").toLowerCase(),e);return null!==i?T(i):w},val:function(e){return 0===arguments.length?this[0]&&(this[0].multiple?k(this[0]).find("option").filter(function(){return this.selected}).pluck("value"):this[0].value):this.each(function(t){this.value=g(this,e,t,this.value)})},offset:function(s){if(s)return this.each(function(t){var e=k(this),i=g(this,s,t,e.offset()),n=e.offsetParent().offset(),a={top:i.top-n.top,left:i.left-n.left};"static"==e.css("position")&&(a.position="relative"),e.css(a)});if(0==this.length)return null;var t=this[0].getBoundingClientRect();return{left:t.left+window.pageXOffset,top:t.top+window.pageYOffset,width:Math.round(t.width),height:Math.round(t.height)}},css:function(t,e){if(arguments.length<2){var i=this[0],n=getComputedStyle(i,"");if(!i)return;if("string"==typeof t)return i.style[G(t)]||n.getPropertyValue(t);if(K(t)){var a={};return k.each(K(t)?t:[t],function(t,e){a[e]=i.style[G(e)]||n.getPropertyValue(e)}),a}}var s="";if("string"==r(t))e||0===e?s=u(t)+":"+m(t,e):this.each(function(){this.style.removeProperty(u(t))});else for(b in t)t[b]||0===t[b]?s+=u(b)+":"+m(b,t[b])+";":this.each(function(){this.style.removeProperty(u(b))});return this.each(function(){this.style.cssText+=";"+s})},index:function(t){return t?this.indexOf(k(t)[0]):this.parent().children().indexOf(this[0])},hasClass:function(t){return!!t&&M.some.call(this,function(t){return this.test(y(t))},i(t))},addClass:function(n){return n?this.each(function(t){x=[];var e=y(this),i;g(this,n,t,e).split(/\s+/g).forEach(function(t){k(this).hasClass(t)||x.push(t)},this),x.length&&y(this,e+(e?" ":"")+x.join(" "))}):this},removeClass:function(e){return this.each(function(t){if(e===w)return y(this,"");x=y(this),g(this,e,t,x).split(/\s+/g).forEach(function(t){x=x.replace(i(t)," ")}),y(this,x.trim())})},toggleClass:function(n,a){return n?this.each(function(t){var e=k(this),i;g(this,n,t,y(this)).split(/\s+/g).forEach(function(t){(a===w?!e.hasClass(t):a)?e.addClass(t):e.removeClass(t)})}):this},scrollTop:function(t){if(this.length){var e="scrollTop"in this[0];return t===w?e?this[0].scrollTop:this[0].pageYOffset:this.each(e?function(){this.scrollTop=t}:function(){this.scrollTo(this.scrollX,t)})}},scrollLeft:function(t){if(this.length){var e="scrollLeft"in this[0];return t===w?e?this[0].scrollLeft:this[0].pageXOffset:this.each(e?function(){this.scrollLeft=t}:function(){this.scrollTo(t,this.scrollY)})}},position:function(){if(this.length){var t=this[0],
+// Get *real* offsetParent
+e=this.offsetParent(),
+// Get correct offsets
+i=this.offset(),n=j.test(e[0].nodeName)?{top:0,left:0}:e.offset();
+// Subtract element margins
+// note: when an element has margin: auto the offsetLeft and marginLeft
+// are the same in Safari causing offset.left to incorrectly be 0
+// Subtract the two offsets
+return i.top-=parseFloat(k(t).css("margin-top"))||0,i.left-=parseFloat(k(t).css("margin-left"))||0,
+// Add offsetParent borders
+n.top+=parseFloat(k(e[0]).css("border-top-width"))||0,n.left+=parseFloat(k(e[0]).css("border-left-width"))||0,{top:i.top-n.top,left:i.left-n.left}}},offsetParent:function(){return this.map(function(){for(var t=this.offsetParent||S.body;t&&!j.test(t.nodeName)&&"static"==k(t).css("position");)t=t.offsetParent;return t})}},
+// for now
+k.fn.detach=k.fn.remove,["width","height"].forEach(function(n){var a=n.replace(/./,function(t){return t[0].toUpperCase()});k.fn[n]=function(e){var t,i=this[0];return e===w?s(i)?i["inner"+a]:l(i)?i.documentElement["scroll"+a]:(t=this.offset())&&t[n]:this.each(function(t){(i=k(this)).css(n,g(this,e,t,i[n]()))})}}),B.forEach(function(e,s){var o=s%2;//=> prepend, append
+k.fn[e]=function(){
+// arguments can be nodes, arrays of nodes, Zepto objects and HTML strings
+var e,i=k.map(arguments,function(t){return"object"==(e=r(t))||"array"==e||null==t?t:Z.fragment(t)}),n,a=1<this.length;return i.length<1?this:this.each(function(t,e){n=o?e:e.parentNode,
+// convert all methods to a "before" operation
+e=0==s?e.nextSibling:1==s?e.firstChild:2==s?e:null,i.forEach(function(t){if(a)t=t.cloneNode(!0);else if(!n)return k(t).remove();L(n.insertBefore(t,e),function(t){null==t.nodeName||"SCRIPT"!==t.nodeName.toUpperCase()||t.type&&"text/javascript"!==t.type||t.src||window.eval.call(window,t.innerHTML)})})})}
+// after    => insertAfter
+// prepend  => prependTo
+// before   => insertBefore
+// append   => appendTo
+,k.fn[o?e+"To":"insert"+(s?"Before":"After")]=function(t){return k(t)[e](this),this}}),Z.Z.prototype=k.fn,
+// Export internal API functions in the `$.zepto` namespace
+Z.uniq=J,Z.deserializeValue=T,k.zepto=Z,k}(),Um;window.Zepto=vc,void 0===window.$&&(window.$=vc),function(d){function c(t){return t._zid||(t._zid=e++)}function o(t,e,i,n){if((e=u(e)).ns)var a=s(e.ns);return(w[c(t)]||[]).filter(function(t){return t&&(!e.e||t.e==e.e)&&(!e.ns||a.test(t.ns))&&(!i||c(t.fn)===c(i))&&(!n||t.sel==n)})}function u(t){var e=(""+t).split(".");return{e:e[0],ns:e.slice(1).sort().join(" ")}}function s(t){return new RegExp("(?:^| )"+t.replace(" "," .* ?")+"(?: |$)")}function m(t,e){return t.del&&!i&&t.e in n||!!e}function _(t){return b[t]||i&&n[t]||t}function h(a,t,e,s,o,r,l){var i=c(a),h=w[i]||(w[i]=[]);t.split(/\s/).forEach(function(t){if("ready"==t)return d(document).ready(e);var i=u(t);i.fn=e,i.sel=o,
+// emulate mouseenter, mouseleave
+i.e in b&&(e=function(t){var e=t.relatedTarget;if(!e||e!==this&&!d.contains(this,e))return i.fn.apply(this,arguments)});var n=(i.del=r)||e;i.proxy=function(t){if(!(t=f(t)).isImmediatePropagationStopped()){t.data=s;var e=n.apply(a,t._args==v?[t]:[t].concat(t._args));return!1===e&&(t.preventDefault(),t.stopPropagation()),e}},i.i=h.length,h.push(i),"addEventListener"in a&&a.addEventListener(_(i.e),i.proxy,m(i,l))})}function p(e,t,i,n,a){var s=c(e);(t||"").split(/\s/).forEach(function(t){o(e,t,i,n).forEach(function(t){delete w[s][t.i],"removeEventListener"in e&&e.removeEventListener(_(t.e),t.proxy,m(t,a))})})}function f(n,a){return!a&&n.isDefaultPrevented||(a||(a=n),d.each(x,function(t,e){var i=a[t];n[t]=function(){return this[e]=l,i&&i.apply(a,arguments)},n[e]=k}),(a.defaultPrevented!==v?a.defaultPrevented:"returnValue"in a?!1===a.returnValue:a.getPreventDefault&&a.getPreventDefault())&&(n.isDefaultPrevented=l)),n}function g(t){var e,i={originalEvent:t};for(e in t)a.test(e)||t[e]===v||(i[e]=t[e]);return f(i,t)}var t=d.zepto.qsa,e=1,v,y=Array.prototype.slice,T=d.isFunction,L=function(t){return"string"==typeof t},w={},r={},i="onfocusin"in window,n={focus:"focusin",blur:"focusout"},b={mouseenter:"mouseover",mouseleave:"mouseout"};r.click=r.mousedown=r.mouseup=r.mousemove="MouseEvents",d.event={add:h,remove:p},d.proxy=function(t,e){if(T(t)){var i=function(){return t.apply(e,arguments)};return i._zid=c(t),i}if(L(e))return d.proxy(t[e],t);throw new TypeError("expected function")},d.fn.bind=function(t,e,i){return this.on(t,e,i)},d.fn.unbind=function(t,e){return this.off(t,e)},d.fn.one=function(t,e,i,n){return this.on(t,e,i,n,1)};var l=function(){return!0},k=function(){return!1},a=/^([A-Z]|returnValue$|layer[XY]$)/,x={preventDefault:"isDefaultPrevented",stopImmediatePropagation:"isImmediatePropagationStopped",stopPropagation:"isPropagationStopped"};d.fn.delegate=function(t,e,i){return this.on(e,t,i)},d.fn.undelegate=function(t,e,i){return this.off(e,t,i)},d.fn.live=function(t,e){return d(document.body).delegate(this.selector,t,e),this},d.fn.die=function(t,e){return d(document.body).undelegate(this.selector,t,e),this},d.fn.on=function(e,a,i,s,o){var r,l,n=this;return e&&!L(e)?(d.each(e,function(t,e){n.on(t,a,i,e,o)}),n):(L(a)||T(s)||!1===s||(s=i,i=a,a=v),(T(i)||!1===i)&&(s=i,i=v),!1===s&&(s=k),n.each(function(t,n){o&&(r=function(t){return p(n,t.type,s),s.apply(this,arguments)}),a&&(l=function(t){var e,i=d(t.target).closest(a,n).get(0);if(i&&i!==n)return e=d.extend(g(t),{currentTarget:i,liveFired:n}),(r||s).apply(i,[e].concat(y.call(arguments,1)))}),h(n,e,s,i,a,l||r)}))},d.fn.off=function(t,i,e){var n=this;return t&&!L(t)?(d.each(t,function(t,e){n.off(t,i,e)}),n):(L(i)||T(e)||!1===e||(e=i,i=v),!1===e&&(e=k),n.each(function(){p(this,t,e,i)}))},d.fn.trigger=function(t,e){return(t=L(t)||d.isPlainObject(t)?d.Event(t):f(t))._args=e,this.each(function(){
+// items in the collection might not be DOM elements
+"dispatchEvent"in this?this.dispatchEvent(t):d(this).triggerHandler(t,e)})}
+// triggers event handlers on current element just as if an event occurred,
+// doesn't trigger an actual event, doesn't bubble
+,d.fn.triggerHandler=function(i,n){var a,s;return this.each(function(t,e){(a=g(L(i)?d.Event(i):i))._args=n,a.target=e,d.each(o(e,i.type||i),function(t,e){if(s=e.proxy(a),a.isImmediatePropagationStopped())return!1})}),s}
+// shortcut methods for `.bind(event, fn)` for each event type
+,"focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select keydown keypress keyup error".split(" ").forEach(function(e){d.fn[e]=function(t){return t?this.bind(e,t):this.trigger(e)}}),["focus","blur"].forEach(function(e){d.fn[e]=function(t){return t?this.bind(e,t):this.each(function(){try{this[e]()}catch(t){}}),this}}),d.Event=function(t,e){L(t)||(t=(e=t).type);var i=document.createEvent(r[t]||"Events"),n=!0;if(e)for(var a in e)"bubbles"==a?n=!!e[a]:i[a]=e[a];return i.initEvent(t,n,!0),f(i)}}(vc),function(xk){
+// trigger a custom event and return false if it was cancelled
+function Ik(t,e,i){var n=xk.Event(e);return xk(t).trigger(n,i),!n.isDefaultPrevented()}
+// trigger an Ajax "global" event
+function Jk(t,e,i,n){if(t.global)return Ik(e||zk,i,n)}
+// Number of active Ajax requests
+function Kk(t){t.global&&0==xk.active++&&Jk(t,null,"ajaxStart")}function Lk(t){t.global&&!--xk.active&&Jk(t,null,"ajaxStop")}
+// triggers an extra global event "ajaxBeforeSend" that's like "ajaxSend" but cancelable
+function Mk(t,e){var i=e.context;if(!1===e.beforeSend.call(i,t,e)||!1===Jk(e,i,"ajaxBeforeSend",[t,e]))return!1;Jk(e,i,"ajaxSend",[t,e])}function Nk(t,e,i,n){var a=i.context,s="success";i.success.call(a,t,s,e),n&&n.resolveWith(a,[t,s,e]),Jk(i,a,"ajaxSuccess",[e,i,t]),Pk(s,e,i)}
+// type: "timeout", "error", "abort", "parsererror"
+function Ok(t,e,i,n,a){var s=n.context;n.error.call(s,i,e,t),a&&a.rejectWith(s,[i,e,t]),Jk(n,s,"ajaxError",[i,n,t||e]),Pk(e,i,n)}
+// status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
+function Pk(t,e,i){var n=i.context;i.complete.call(n,e,t),Jk(i,n,"ajaxComplete",[e,i]),Lk(i)}
+// Empty function, used as default callback
+function Qk(){}function Rk(t){return t&&(t=t.split(";",2)[0]),t&&(t==Gk?"html":t==Fk?"json":Dk.test(t)?"script":Ek.test(t)&&"xml")||"text"}function Sk(t,e){return""==e?t:(t+"&"+e).replace(/[&?]{1,2}/,"?")}
+// serialize payload and append it to the URL for GET requests
+function Tk(t){t.processData&&t.data&&"string"!=xk.type(t.data)&&(t.data=xk.param(t.data,t.traditional)),!t.data||t.type&&"GET"!=t.type.toUpperCase()||(t.url=Sk(t.url,t.data),t.data=void 0)}
+// handle optional data/success arguments
+function Uk(t,e,i,n){var a=!xk.isFunction(e);return{url:t,data:a?e:void 0,success:a?xk.isFunction(i)?i:void 0:e,dataType:a&&n||i}}function Wk(i,t,n,a){var s,o=xk.isArray(t),r=xk.isPlainObject(t);xk.each(t,function(t,e){s=xk.type(e),a&&(t=n?a:a+"["+(r||"object"==s||"array"==s?t:"")+"]"),
+// handle data in serializeArray() format
+!a&&o?i.add(e.name,e.value):"array"==s||!n&&"object"==s?Wk(i,e,n,t):i.add(t,e)})}var yk=0,zk=window.document,Ak,Bk,Ck=/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,Dk=/^(?:text|application)\/javascript/i,Ek=/^(?:text|application)\/xml/i,Fk="application/json",Gk="text/html",Hk=/^\s*$/;xk.active=0,xk.ajaxJSONP=function(i,n){if(!("type"in i))return xk.ajax(i);var t=i.jsonpCallback,a=(xk.isFunction(t)?t():t)||"jsonp"+ ++yk,s=zk.createElement("script"),o=window[a],r,e=function(t){xk(s).triggerHandler("error",t||"abort")},l={abort:e},h;return n&&n.promise(l),xk(s).on("load error",function(t,e){clearTimeout(h),xk(s).off().remove(),"error"!=t.type&&r?Nk(r[0],l,i,n):Ok(null,e||"error",l,i,n),window[a]=o,r&&xk.isFunction(o)&&o(r[0]),o=r=void 0}),!1===Mk(l,i)?e("abort"):(window[a]=function(){r=arguments},s.src=i.url.replace(/\?(.+)=\?/,"?$1="+a),zk.head.appendChild(s),0<i.timeout&&(h=setTimeout(function(){e("timeout")},i.timeout))),l},xk.ajaxSettings={
+// Default type of request
+type:"GET",
+// Callback that is executed before request
+beforeSend:Qk,
+// Callback that is executed if the request succeeds
+success:Qk,
+// Callback that is executed the the server drops error
+error:Qk,
+// Callback that is executed on request complete (both: error and success)
+complete:Qk,
+// The context for the callbacks
+context:null,
+// Whether to trigger "global" Ajax events
+global:!0,
+// Transport
+xhr:function(){return new window.XMLHttpRequest},
+// MIME types mapping
+// IIS returns Javascript as "application/x-javascript"
+accepts:{script:"text/javascript, application/javascript, application/x-javascript",json:Fk,xml:"application/xml, text/xml",html:Gk,text:"text/plain"},
+// Whether the request is to another domain
+crossDomain:!1,
+// Default timeout
+timeout:0,
+// Whether data should be serialized to string
+processData:!0,
+// Whether the browser should be allowed to cache GET responses
+cache:!0},xk.ajax=function(Pl){var Ql=xk.extend({},Pl||{}),Rl=xk.Deferred&&xk.Deferred();for(Ak in xk.ajaxSettings)void 0===Ql[Ak]&&(Ql[Ak]=xk.ajaxSettings[Ak]);Kk(Ql),Ql.crossDomain||(Ql.crossDomain=/^([\w-]+:)?\/\/([^\/]+)/.test(Ql.url)&&RegExp.$2!=window.location.host),Ql.url||(Ql.url=window.location.toString()),Tk(Ql),!1===Ql.cache&&(Ql.url=Sk(Ql.url,"_="+Date.now()));var Sl=Ql.dataType,Tl=/\?.+=\?/.test(Ql.url);if("jsonp"==Sl||Tl)return Tl||(Ql.url=Sk(Ql.url,Ql.jsonp?Ql.jsonp+"=?":!1===Ql.jsonp?"":"callback=?")),xk.ajaxJSONP(Ql,Rl);var Ul=Ql.accepts[Sl],Vl={},Wl=function(t,e){Vl[t.toLowerCase()]=[t,e]},Xl=/^([\w-]+:)\/\//.test(Ql.url)?RegExp.$1:window.location.protocol,Yl=Ql.xhr(),Zl=Yl.setRequestHeader,$l;if(Rl&&Rl.promise(Yl),Ql.crossDomain||Wl("X-Requested-With","XMLHttpRequest"),Wl("Accept",Ul||"*/*"),(Ul=Ql.mimeType||Ul)&&(-1<Ul.indexOf(",")&&(Ul=Ul.split(",",2)[0]),Yl.overrideMimeType&&Yl.overrideMimeType(Ul)),(Ql.contentType||!1!==Ql.contentType&&Ql.data&&"GET"!=Ql.type.toUpperCase())&&Wl("Content-Type",Ql.contentType||"application/x-www-form-urlencoded"),Ql.headers)for(Bk in Ql.headers)Wl(Bk,Ql.headers[Bk]);if(Yl.setRequestHeader=Wl,!(Yl.onreadystatechange=function(){if(4==Yl.readyState){Yl.onreadystatechange=Qk,clearTimeout($l);var cm,dm=!1;if(200<=Yl.status&&Yl.status<300||304==Yl.status||0==Yl.status&&"file:"==Xl){Sl=Sl||Rk(Ql.mimeType||Yl.getResponseHeader("content-type")),cm=Yl.responseText;try{
+// http://perfectionkills.com/global-eval-what-are-the-options/
+"script"==Sl?eval(cm):"xml"==Sl?cm=Yl.responseXML:"json"==Sl&&(cm=Hk.test(cm)?null:xk.parseJSON(cm))}catch(t){dm=t}dm?Ok(dm,"parsererror",Yl,Ql,Rl):Nk(cm,Yl,Ql,Rl)}else Ok(Yl.statusText||null,Yl.status?"error":"abort",Yl,Ql,Rl)}})===Mk(Yl,Ql))return Yl.abort(),Ok(null,"abort",Yl,Ql,Rl),Yl;if(Ql.xhrFields)for(Bk in Ql.xhrFields)Yl[Bk]=Ql.xhrFields[Bk];var _l=!("async"in Ql)||Ql.async;for(Bk in Yl.open(Ql.type,Ql.url,_l,Ql.username,Ql.password),Vl)Zl.apply(Yl,Vl[Bk]);return 0<Ql.timeout&&($l=setTimeout(function(){Yl.onreadystatechange=Qk,Yl.abort(),Ok(null,"timeout",Yl,Ql,Rl)},Ql.timeout)),
+// avoid sending empty string (#319)
+Yl.send(Ql.data?Ql.data:null),Yl},xk.get=function(t,e,i,n){return xk.ajax(Uk.apply(null,arguments))},xk.post=function(t,e,i,n){var a=Uk.apply(null,arguments);return a.type="POST",xk.ajax(a)},xk.getJSON=function(t,e,i){var n=Uk.apply(null,arguments);return n.dataType="json",xk.ajax(n)},xk.fn.load=function(t,e,i){if(!this.length)return this;var n=this,a=t.split(/\s/),s,o=Uk(t,e,i),r=o.success;return 1<a.length&&(o.url=a[0],s=a[1]),o.success=function(t){n.html(s?xk("<div>").html(t.replace(Ck,"")).find(s):t),r&&r.apply(n,arguments)},xk.ajax(o),this};var Vk=encodeURIComponent;xk.param=function(t,e){var i=[];return i.add=function(t,e){this.push(Vk(t)+"="+Vk(e))},Wk(i,t,e),i.join("&").replace(/%20/g,"+")}}(vc),(Um=vc).fn.serializeArray=function(){var e=[],i;return Um([].slice.call(this.get(0).elements)).each(function(){var t=(i=Um(this)).attr("type");"fieldset"!=this.nodeName.toLowerCase()&&!this.disabled&&"submit"!=t&&"reset"!=t&&"button"!=t&&("radio"!=t&&"checkbox"!=t||this.checked)&&e.push({name:i.attr("name"),value:i.val()})}),e},Um.fn.serialize=function(){var e=[];return this.serializeArray().forEach(function(t){e.push(encodeURIComponent(t.name)+"="+encodeURIComponent(t.value))}),e.join("&")},Um.fn.submit=function(t){if(t)this.bind("submit",t);else if(this.length){var e=Um.Event("submit");this.eq(0).trigger(e),e.isDefaultPrevented()||this.get(0).submit()}return this},function(i){
+// __proto__ doesn't exist on IE<11, so redefine
+// the Z function to use object extension instead
+"__proto__"in{}||i.extend(i.zepto,{Z:function(t,e){return t=t||[],i.extend(t,i.fn),t.selector=e||"",t.__Z=!0,t},
+// this is a kludge but works
+isZ:function(t){return"array"===i.type(t)&&"__Z"in t}});
+// getComputedStyle shouldn't freak out when called
+// without a valid element as argument
+try{getComputedStyle(void 0)}catch(t){var n=getComputedStyle;window.getComputedStyle=function(t,e){try{return n(t,e)}catch(t){return null}}}}(vc),uc.getJSON=vc.getJSON,uc.ajax=vc.ajax}(TL),
 /*	TL.Class
 	Class powers the OOP facilities of the library.
 ================================================== */
-TL.Class = function () {};
-
-TL.Class.extend = function (/*Object*/ props) /*-> Class*/ {
- 
-	// extended class with the new prototype
-	var NewClass = function () {
-		if (this.initialize) {
-			this.initialize.apply(this, arguments);
-		}
-	};
-
-	// instantiate class without calling constructor
-	var F = function () {};
-	F.prototype = this.prototype;
-	var proto = new F();
-
-	proto.constructor = NewClass;
-	NewClass.prototype = proto;
-
-	// add superclass access
-	NewClass.superclass = this.prototype;
-
-	// add class name
-	//proto.className = props;
-
-	//inherit parent's statics
-	for (var i in this) {
-		if (this.hasOwnProperty(i) && i !== 'prototype' && i !== 'superclass') {
-			NewClass[i] = this[i];
-		}
-	}
-
-	// mix static properties into the class
-	if (props.statics) {
-		TL.Util.extend(NewClass, props.statics);
-		delete props.statics;
-	}
-
-	// mix includes into the prototype
-	if (props.includes) {
-		TL.Util.extend.apply(null, [proto].concat(props.includes));
-		delete props.includes;
-	}
-
-	// merge options
-	if (props.options && proto.options) {
-		props.options = TL.Util.extend({}, proto.options, props.options);
-	}
-
-	// mix given properties into the prototype
-	TL.Util.extend(proto, props);
-
-	// allow inheriting further
-	NewClass.extend = TL.Class.extend;
-
-	// method for adding properties to prototype
-	NewClass.include = function (props) {
-		TL.Util.extend(this.prototype, props);
-	};
-
-	return NewClass;
-};
-
-
-/* **********************************************
-     Begin TL.Events.js
-********************************************** */
-
+TL.Class=function(){},TL.Class.extend=function(/*Object*/t){
+// extended class with the new prototype
+var e=function(){this.initialize&&this.initialize.apply(this,arguments)},i=function(){};
+// instantiate class without calling constructor
+i.prototype=this.prototype;var n=new i;
+// add class name
+//proto.className = props;
+//inherit parent's statics
+for(var a in(n.constructor=e).prototype=n,
+// add superclass access
+e.superclass=this.prototype,this)this.hasOwnProperty(a)&&"prototype"!==a&&"superclass"!==a&&(e[a]=this[a]);
+// mix static properties into the class
+return t.statics&&(TL.Util.extend(e,t.statics),delete t.statics),
+// mix includes into the prototype
+t.includes&&(TL.Util.extend.apply(null,[n].concat(t.includes)),delete t.includes),
+// merge options
+t.options&&n.options&&(t.options=TL.Util.extend({},n.options,t.options)),
+// mix given properties into the prototype
+TL.Util.extend(n,t),
+// allow inheriting further
+e.extend=TL.Class.extend,
+// method for adding properties to prototype
+e.include=function(t){TL.Util.extend(this.prototype,t)},e},
 /*	TL.Events
 	adds custom events functionality to TL classes
 ================================================== */
-TL.Events = {
-	addEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		var events = this._tl_events = this._tl_events || {};
-		events[type] = events[type] || [];
-		events[type].push({
-			action: fn,
-			context: context || this
-		});
-		return this;
-	},
-
-	hasEventListeners: function (/*String*/ type) /*-> Boolean*/ {
-		var k = '_tl_events';
-		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
-	},
-
-	removeEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		if (!this.hasEventListeners(type)) {
-			return this;
-		}
-
-		for (var i = 0, events = this._tl_events, len = events[type].length; i < len; i++) {
-			if (
-				(events[type][i].action === fn) &&
-				(!context || (events[type][i].context === context))
-			) {
-				events[type].splice(i, 1);
-				return this;
-			}
-		}
-		return this;
-	},
-
-	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
-		if (!this.hasEventListeners(type)) {
-			return this;
-		}
-
-		var event = TL.Util.mergeData({
-			type: type,
-			target: this
-		}, data);
-
-		var listeners = this._tl_events[type].slice();
-
-		for (var i = 0, len = listeners.length; i < len; i++) {
-			listeners[i].action.call(listeners[i].context || this, event);
-		}
-
-		return this;
-	}
-};
-
-TL.Events.on	= TL.Events.addEventListener;
-TL.Events.off	= TL.Events.removeEventListener;
-TL.Events.fire = TL.Events.fireEvent;
-
-
-/* **********************************************
-     Begin TL.Browser.js
-********************************************** */
-
+TL.Events={addEventListener:function(/*String*/t,/*Function*/e,/*(optional) Object*/i){var n=this._tl_events=this._tl_events||{};return n[t]=n[t]||[],n[t].push({action:e,context:i||this}),this},hasEventListeners:function(/*String*/t){var e="_tl_events";return e in this&&t in this[e]&&0<this[e][t].length},removeEventListener:function(/*String*/t,/*Function*/e,/*(optional) Object*/i){if(!this.hasEventListeners(t))return this;for(var n=0,a=this._tl_events,s=a[t].length;n<s;n++)if(a[t][n].action===e&&(!i||a[t][n].context===i))return a[t].splice(n,1),this;return this},fireEvent:function(/*String*/t,/*(optional) Object*/e){if(!this.hasEventListeners(t))return this;for(var i=TL.Util.mergeData({type:t,target:this},e),n=this._tl_events[t].slice(),a=0,s=n.length;a<s;a++)n[a].action.call(n[a].context||this,i);return this}},TL.Events.on=TL.Events.addEventListener,TL.Events.off=TL.Events.removeEventListener,TL.Events.fire=TL.Events.fireEvent,
 /*
 	Based on Leaflet Browser
 	TL.Browser handles different browser and feature detections for internal  use.
 */
-
-
-(function() {
-
-	var ua = navigator.userAgent.toLowerCase(),
-		doc = document.documentElement,
-
-		ie = 'ActiveXObject' in window,
-
-		webkit = ua.indexOf('webkit') !== -1,
-		phantomjs = ua.indexOf('phantom') !== -1,
-		android23 = ua.search('android [23]') !== -1,
-
-		mobile = typeof orientation !== 'undefined',
-		msPointer = navigator.msPointerEnabled && navigator.msMaxTouchPoints && !window.PointerEvent,
-		pointer = (window.PointerEvent && navigator.pointerEnabled && navigator.maxTouchPoints) || msPointer,
-
-		ie3d = ie && ('transition' in doc.style),
-		webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23,
-		gecko3d = 'MozPerspective' in doc.style,
-		opera3d = 'OTransition' in doc.style,
-		opera = window.opera;
-
-
-	var retina = 'devicePixelRatio' in window && window.devicePixelRatio > 1;
-
-	if (!retina && 'matchMedia' in window) {
-		var matches = window.matchMedia('(min-resolution:144dpi)');
-		retina = matches && matches.matches;
-	}
-
-	var touch = !window.L_NO_TOUCH && !phantomjs && (pointer || 'ontouchstart' in window || (window.DocumentTouch && document instanceof window.DocumentTouch));
-
-	TL.Browser = {
-		ie: ie,
-		ua: ua,
-		ie9: Boolean(ie && ua.match(/MSIE 9/i)),
-		ielt9: ie && !document.addEventListener,
-		webkit: webkit,
-		//gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
-		firefox: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
-		android: ua.indexOf('android') !== -1,
-		android23: android23,
-		chrome: ua.indexOf('chrome') !== -1,
-		edge: ua.indexOf('edge/') !== -1,
-
-		ie3d: ie3d,
-		webkit3d: webkit3d,
-		gecko3d: gecko3d,
-		opera3d: opera3d,
-		any3d: !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs,
-
-		mobile: mobile,
-		mobileWebkit: mobile && webkit,
-		mobileWebkit3d: mobile && webkit3d,
-		mobileOpera: mobile && window.opera,
-
-		touch: !! touch,
-		msPointer: !! msPointer,
-		pointer: !! pointer,
-
-		retina: !! retina,
-		orientation: function() {
-			var w = window.innerWidth,
-				h = window.innerHeight,
-				_orientation = "portrait";
-
-			if (w > h) {
-				_orientation = "landscape";
-			}
-			if (Math.abs(window.orientation) == 90) {
-				//_orientation = "landscape";
-			}
-			trace(_orientation);
-			return _orientation;
-		}
-	};
-
-}());
-
-
-/* **********************************************
-     Begin TL.Load.js
-********************************************** */
-
+function(){var t=navigator.userAgent.toLowerCase(),e=document.documentElement,i="ActiveXObject"in window,n=-1!==t.indexOf("webkit"),a=-1!==t.indexOf("phantom"),s=-1!==t.search("android [23]"),o="undefined"!=typeof orientation,r=navigator.msPointerEnabled&&navigator.msMaxTouchPoints&&!window.PointerEvent,l=window.PointerEvent&&navigator.pointerEnabled&&navigator.maxTouchPoints||r,h=i&&"transition"in e.style,d="WebKitCSSMatrix"in window&&"m11"in new window.WebKitCSSMatrix&&!s,c="MozPerspective"in e.style,u="OTransition"in e.style,m=window.opera,_="devicePixelRatio"in window&&1<window.devicePixelRatio;if(!_&&"matchMedia"in window){var p=window.matchMedia("(min-resolution:144dpi)");_=p&&p.matches}var f=!window.L_NO_TOUCH&&!a&&(l||"ontouchstart"in window||window.DocumentTouch&&document instanceof window.DocumentTouch);TL.Browser={ie:i,ua:t,ie9:Boolean(i&&t.match(/MSIE 9/i)),ielt9:i&&!document.addEventListener,webkit:n,
+//gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
+firefox:-1!==t.indexOf("gecko")&&!n&&!window.opera&&!i,android:-1!==t.indexOf("android"),android23:s,chrome:-1!==t.indexOf("chrome"),edge:-1!==t.indexOf("edge/"),ie3d:h,webkit3d:d,gecko3d:c,opera3d:u,any3d:!window.L_DISABLE_3D&&(h||d||c||u)&&!a,mobile:o,mobileWebkit:o&&n,mobileWebkit3d:o&&d,mobileOpera:o&&window.opera,touch:!!f,msPointer:!!r,pointer:!!l,retina:!!_,orientation:function(){var t=window.innerWidth,e,i="portrait";return window.innerHeight<t&&(i="landscape"),Math.abs(window.orientation),trace(i),i}}}(),
 /*	TL.Load
 	Loads External Javascript and CSS
 ================================================== */
-
-TL.Load = (function (doc) {
-	var loaded	= [];
-	
-	function isLoaded(url) {
-		
-		var i			= 0,
-			has_loaded	= false;
-		
-		for (i = 0; i < loaded.length; i++) {
-			if (loaded[i] == url) {
-				has_loaded = true;
-			}
-		}
-		
-		if (has_loaded) {
-			return true;
-		} else {
-			loaded.push(url);
-			return false;
-		}
-		
-	}
-	
-	return {
-		
-		css: function (urls, callback, obj, context) {
-			if (!isLoaded(urls)) {
-				TL.LoadIt.css(urls, callback, obj, context);
-			} else {
-				callback();
-			}
-		},
-
-		js: function (urls, callback, obj, context) {
-			if (!isLoaded(urls)) {
-				TL.LoadIt.js(urls, callback, obj, context);
-			} else {
-				callback();
-			}
-		}
-    };
-	
-})(this.document);
-
-
+TL.Load=function(t){function a(t){var e=0,i=!1;for(e=0;e<n.length;e++)n[e]==t&&(i=!0);return!!i||(n.push(t),!1)}var n=[];return{css:function(t,e,i,n){a(t)?e():TL.LoadIt.css(t,e,i,n)},js:function(t,e,i,n){a(t)?e():TL.LoadIt.js(t,e,i,n)}}}(this.document),
 /*jslint browser: true, eqeqeq: true, bitwise: true, newcap: true, immed: true, regexp: false */
-
 /*
 LazyLoad makes it easy and painless to lazily load one or more external
 JavaScript or CSS files on demand either during or after the rendering of a web
@@ -2703,32 +349,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @static
 @version 2.0.3 (git)
 */
-
-TL.LoadIt = (function (doc) {
-  // -- Private Variables ------------------------------------------------------
-
-  // User agent and feature test information.
-  var env,
-
-  // Reference to the <head> element (populated lazily).
-  head,
-
-  // Requests currently in progress, if any.
-  pending = {},
-
-  // Number of times we've polled to check whether a pending stylesheet has
-  // finished loading. If this gets too high, we're probably stalled.
-  pollCount = 0,
-
-  // Queued requests.
-  queue = {css: [], js: []},
-
-  // Reference to the browser's list of stylesheets.
-  styleSheets = doc.styleSheets;
-
-  // -- Private Methods --------------------------------------------------------
-
-  /**
+TL.LoadIt=function(_){
+// -- Private Methods --------------------------------------------------------
+/**
   Creates and returns an HTML element with the specified name and attributes.
 
   @method createNode
@@ -2737,19 +360,8 @@ TL.LoadIt = (function (doc) {
   @return {HTMLElement}
   @private
   */
-  function createNode(name, attrs) {
-    var node = doc.createElement(name), attr;
-
-    for (attr in attrs) {
-      if (attrs.hasOwnProperty(attr)) {
-        node.setAttribute(attr, attrs[attr]);
-      }
-    }
-
-    return node;
-  }
-
-  /**
+function p(t,e){var i=_.createElement(t),n;for(n in e)e.hasOwnProperty(n)&&i.setAttribute(n,e[n]);return i}
+/**
   Called when the current pending resource of the specified type has finished
   loading. Executes the associated callback (if any) and loads the next
   resource in the queue.
@@ -2757,54 +369,22 @@ TL.LoadIt = (function (doc) {
   @method finish
   @param {String} type resource type ('css' or 'js')
   @private
-  */
-  function finish(type) {
-    var p = pending[type],
-        callback,
-        urls;
-
-    if (p) {
-      callback = p.callback;
-      urls     = p.urls;
-
-      urls.shift();
-      pollCount = 0;
-
-      // If this is the last of the pending URLs, execute the callback and
-      // start the next request in the queue (if any).
-      if (!urls.length) {
-        callback && callback.call(p.context, p.obj);
-        pending[type] = null;
-        queue[type].length && load(type);
-      }
-    }
-  }
-
-  /**
+  */function f(t){var e=w[t],i,n;e&&(i=e.callback,(n=e.urls).shift(),s=0,
+// If this is the last of the pending URLs, execute the callback and
+// start the next request in the queue (if any).
+n.length||(i&&i.call(e.context,e.obj),w[t]=null,b[t].length&&a(t)))}
+/**
   Populates the <code>env</code> variable with user agent and feature test
   information.
 
   @method getEnv
   @private
-  */
-  function getEnv() {
-    var ua = navigator.userAgent;
-
-    env = {
-      // True if this browser supports disabling async mode on dynamically
-      // created script nodes. See
-      // http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
-      async: doc.createElement('script').async === true
-    };
-
-    (env.webkit = /AppleWebKit\//.test(ua))
-      || (env.ie = /MSIE/.test(ua))
-      || (env.opera = /Opera/.test(ua))
-      || (env.gecko = /Gecko\//.test(ua))
-      || (env.unknown = true);
-  }
-
-  /**
+  */function g(){var t=navigator.userAgent;((T={
+// True if this browser supports disabling async mode on dynamically
+// created script nodes. See
+// http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
+async:!0===_.createElement("script").async}).webkit=/AppleWebKit\//.test(t))||(T.ie=/MSIE/.test(t))||(T.opera=/Opera/.test(t))||(T.gecko=/Gecko\//.test(t))||(T.unknown=!0)}
+/**
   Loads the specified resources, or the next resource of the specified type
   in the queue if no resources are specified. If a resource of the specified
   type is already being loaded, the new request will be queued until the
@@ -2825,111 +405,41 @@ TL.LoadIt = (function (doc) {
   @param {Object} context (optional) if provided, the callback function will
     be executed in this object's context
   @private
-  */
-  function load(type, urls, callback, obj, context) {
-    var _finish = function () { finish(type); },
-        isCSS   = type === 'css',
-        nodes   = [],
-        i, len, node, p, pendingUrls, url;
-
-    env || getEnv();
-
-    if (urls) {
-      // If urls is a string, wrap it in an array. Otherwise assume it's an
-      // array and create a copy of it so modifications won't be made to the
-      // original.
-      urls = typeof urls === 'string' ? [urls] : urls.concat();
-
-      // Create a request object for each URL. If multiple URLs are specified,
-      // the callback will only be executed after all URLs have been loaded.
-      //
-      // Sadly, Firefox and Opera are the only browsers capable of loading
-      // scripts in parallel while preserving execution order. In all other
-      // browsers, scripts must be loaded sequentially.
-      //
-      // All browsers respect CSS specificity based on the order of the link
-      // elements in the DOM, regardless of the order in which the stylesheets
-      // are actually downloaded.
-      if (isCSS || env.async || env.gecko || env.opera) {
-        // Load in parallel.
-        queue[type].push({
-          urls    : urls,
-          callback: callback,
-          obj     : obj,
-          context : context
-        });
-      } else {
-        // Load sequentially.
-        for (i = 0, len = urls.length; i < len; ++i) {
-          queue[type].push({
-            urls    : [urls[i]],
-            callback: i === len - 1 ? callback : null, // callback is only added to the last URL
-            obj     : obj,
-            context : context
-          });
-        }
-      }
-    }
-
-    // If a previous load request of this type is currently in progress, we'll
-    // wait our turn. Otherwise, grab the next item in the queue.
-    if (pending[type] || !(p = pending[type] = queue[type].shift())) {
-      return;
-    }
-
-    head || (head = doc.head || doc.getElementsByTagName('head')[0]);
-    pendingUrls = p.urls;
-
-    for (i = 0, len = pendingUrls.length; i < len; ++i) {
-      url = pendingUrls[i];
-
-      if (isCSS) {
-          node = env.gecko ? createNode('style') : createNode('link', {
-            href: url,
-            rel : 'stylesheet'
-          });
-      } else {
-        node = createNode('script', {src: url});
-        node.async = false;
-      }
-
-      node.className = 'lazyload';
-      node.setAttribute('charset', 'utf-8');
-
-      if (env.ie && !isCSS) {
-        node.onreadystatechange = function () {
-          if (/loaded|complete/.test(node.readyState)) {
-            node.onreadystatechange = null;
-            _finish();
-          }
-        };
-      } else if (isCSS && (env.gecko || env.webkit)) {
-        // Gecko and WebKit don't support the onload event on link nodes.
-        if (env.webkit) {
-          // In WebKit, we can poll for changes to document.styleSheets to
-          // figure out when stylesheets have loaded.
-          p.urls[i] = node.href; // resolve relative URLs (or polling won't work)
-          pollWebKit();
-        } else {
-          // In Gecko, we can import the requested URL into a <style> node and
-          // poll for the existence of node.sheet.cssRules. Props to Zach
-          // Leatherman for calling my attention to this technique.
-          node.innerHTML = '@import "' + url + '";';
-          pollGecko(node);
-        }
-      } else {
-        node.onload = node.onerror = _finish;
-      }
-
-      nodes.push(node);
-    }
-
-    for (i = 0, len = nodes.length; i < len; ++i) {
-      head.appendChild(nodes[i]);
-    }
-  }
-
-  /**
+  */function a(t,e,i,n,a){var s=function(){f(t)},o="css"===t,r=[],l,h,d,c,u,m;if(T||g(),e)
+// Create a request object for each URL. If multiple URLs are specified,
+// the callback will only be executed after all URLs have been loaded.
+//
+// Sadly, Firefox and Opera are the only browsers capable of loading
+// scripts in parallel while preserving execution order. In all other
+// browsers, scripts must be loaded sequentially.
+//
+// All browsers respect CSS specificity based on the order of the link
+// elements in the DOM, regardless of the order in which the stylesheets
+// are actually downloaded.
+if(
+// If urls is a string, wrap it in an array. Otherwise assume it's an
+// array and create a copy of it so modifications won't be made to the
+// original.
+e="string"==typeof e?[e]:e.concat(),o||T.async||T.gecko||T.opera)
+// Load in parallel.
+b[t].push({urls:e,callback:i,obj:n,context:a});else
+// Load sequentially.
+for(l=0,h=e.length;l<h;++l)b[t].push({urls:[e[l]],callback:l===h-1?i:null,// callback is only added to the last URL
+obj:n,context:a});
+// If a previous load request of this type is currently in progress, we'll
+// wait our turn. Otherwise, grab the next item in the queue.
+if(!w[t]&&(c=w[t]=b[t].shift())){for(L||(L=_.head||_.getElementsByTagName("head")[0]),l=0,h=(u=c.urls).length;l<h;++l)m=u[l],o?d=T.gecko?p("style"):p("link",{href:m,rel:"stylesheet"}):(d=p("script",{src:m})).async=!1,d.className="lazyload",d.setAttribute("charset","utf-8"),T.ie&&!o?d.onreadystatechange=function(){/loaded|complete/.test(d.readyState)&&(d.onreadystatechange=null,s())}:o&&(T.gecko||T.webkit)?
+// Gecko and WebKit don't support the onload event on link nodes.
+T.webkit?(
+// In WebKit, we can poll for changes to document.styleSheets to
+// figure out when stylesheets have loaded.
+c.urls[l]=d.href,// resolve relative URLs (or polling won't work)
+y()):(
+// In Gecko, we can import the requested URL into a <style> node and
+// poll for the existence of node.sheet.cssRules. Props to Zach
+// Leatherman for calling my attention to this technique.
+d.innerHTML='@import "'+m+'";',v(d)):d.onload=d.onerror=s,r.push(d);for(l=0,h=r.length;l<h;++l)L.appendChild(r[l])}}
+/**
   Begins polling to determine when the specified stylesheet has finished loading
   in Gecko. Polling stops when all pending stylesheets have loaded or after 10
   seconds (to prevent stalls).
@@ -2942,76 +452,49 @@ TL.LoadIt = (function (doc) {
   @method pollGecko
   @param {HTMLElement} node Style node to poll.
   @private
-  */
-  function pollGecko(node) {
-    var hasRules;
-
-    try {
-      // We don't really need to store this value or ever refer to it again, but
-      // if we don't store it, Closure Compiler assumes the code is useless and
-      // removes it.
-      hasRules = !!node.sheet.cssRules;
-    } catch (ex) {
-      // An exception means the stylesheet is still loading.
-      pollCount += 1;
-
-      if (pollCount < 200) {
-        setTimeout(function () { pollGecko(node); }, 50);
-      } else {
-        // We've been polling for 10 seconds and nothing's happened. Stop
-        // polling and finish the pending requests to avoid blocking further
-        // requests.
-        hasRules && finish('css');
-      }
-
-      return;
-    }
-
-    // If we get here, the stylesheet has loaded.
-    finish('css');
-  }
-
-  /**
+  */function v(e){var i;try{
+// We don't really need to store this value or ever refer to it again, but
+// if we don't store it, Closure Compiler assumes the code is useless and
+// removes it.
+i=!!e.sheet.cssRules}catch(t){
+// An exception means the stylesheet is still loading.
+return void((s+=1)<200?setTimeout(function(){v(e)},50):
+// We've been polling for 10 seconds and nothing's happened. Stop
+// polling and finish the pending requests to avoid blocking further
+// requests.
+i&&f("css"))}
+// If we get here, the stylesheet has loaded.
+f("css")}
+/**
   Begins polling to determine when pending stylesheets have finished loading
   in WebKit. Polling stops when all pending stylesheets have loaded or after 10
   seconds (to prevent stalls).
 
   @method pollWebKit
   @private
-  */
-  function pollWebKit() {
-    var css = pending.css, i;
-
-    if (css) {
-      i = styleSheets.length;
-
-      // Look for a stylesheet matching the pending URL.
-      while (--i >= 0) {
-        if (styleSheets[i].href === css.urls[0]) {
-          finish('css');
-          break;
-        }
-      }
-
-      pollCount += 1;
-
-      if (css) {
-        if (pollCount < 200) {
-          setTimeout(pollWebKit, 50);
-        } else {
-          // We've been polling for 10 seconds and nothing's happened, which may
-          // indicate that the stylesheet has been removed from the document
-          // before it had a chance to load. Stop polling and finish the pending
-          // request to prevent blocking further requests.
-          finish('css');
-        }
-      }
-    }
-  }
-
-  return {
-
-    /**
+  */function y(){var t=w.css,e;if(t){
+// Look for a stylesheet matching the pending URL.
+for(e=i.length;0<=--e;)if(i[e].href===t.urls[0]){f("css");break}s+=1,t&&(s<200?setTimeout(y,50):
+// We've been polling for 10 seconds and nothing's happened, which may
+// indicate that the stylesheet has been removed from the document
+// before it had a chance to load. Stop polling and finish the pending
+// request to prevent blocking further requests.
+f("css"))}}
+// -- Private Variables ------------------------------------------------------
+// User agent and feature test information.
+var T,
+// Reference to the <head> element (populated lazily).
+L,
+// Requests currently in progress, if any.
+w={},
+// Number of times we've polled to check whether a pending stylesheet has
+// finished loading. If this gets too high, we're probably stalled.
+s=0,
+// Queued requests.
+b={css:[],js:[]},
+// Reference to the browser's list of stylesheets.
+i=_.styleSheets;return{
+/**
     Requests the specified CSS URL or URLs and executes the specified
     callback (if any) when they have finished loading. If an array of URLs is
     specified, the stylesheets will be loaded in parallel and the callback
@@ -3026,11 +509,8 @@ TL.LoadIt = (function (doc) {
       will be executed in this object's context
     @static
     */
-    css: function (urls, callback, obj, context) {
-      load('css', urls, callback, obj, context);
-    },
-
-    /**
+css:function(t,e,i,n){a("css",t,e,i,n)},
+/**
     Requests the specified JavaScript URL or URLs and executes the specified
     callback (if any) when they have finished loading. If an array of URLs is
     specified and the browser supports it, the scripts will be loaded in
@@ -3050,986 +530,197 @@ TL.LoadIt = (function (doc) {
       will be executed in this object's context
     @static
     */
-    js: function (urls, callback, obj, context) {
-      load('js', urls, callback, obj, context);
-    }
-
-  };
-})(this.document);
-
-
-/* **********************************************
-     Begin TL.TimelineConfig.js
-********************************************** */
-
+js:function(t,e,i,n){a("js",t,e,i,n)}}}(this.document),
 /*  TL.TimelineConfig
 separate the configuration from the display (TL.Timeline)
 to make testing easier
 ================================================== */
-TL.TimelineConfig = TL.Class.extend({
-
-	includes: [],
-	initialize: function (data) {
-		this.title = '';
-		this.scale = '';
-		this.events = [];
-		this.eras = [];
-		this.event_dict = {}; // despite name, all slides (events + title) indexed by slide.unique_id
-		this.messages = {
-			errors: [],
-			warnings: []
-		};
-
-		// Initialize the data
-		if (typeof data === 'object' && data.events) {
-			this.scale = data.scale;
-			this.events = [];
-			this._ensureValidScale(data.events);
-
-			if (data.title) {
-				var title_id = this._assignID(data.title);
-				this._tidyFields(data.title);
-				this.title = data.title;
-				this.event_dict[title_id] = this.title;
-			}
-
-			for (var i = 0; i < data.events.length; i++) {
-				try {
-					this.addEvent(data.events[i], true);
-				} catch (e) {
-				    this.logError(e);
-				}
-			}
-
-			if (data.eras) {
-				for (var i = 0; i < data.eras.length; i++) {
-					try {
-						this.addEra(data.eras[i], true);
-					} catch (e) {
-						this.logError("Era " + i + ": " + e);
-					}
-				}
-			}
-
-			TL.DateUtil.sortByDate(this.events);
-			TL.DateUtil.sortByDate(this.eras);
-
-		}
-	},
-	logError: function(msg) {
-		trace(msg);
-		this.messages.errors.push(msg);
-	},
-	/*
+TL.TimelineConfig=TL.Class.extend({includes:[],initialize:function(t){
+// Initialize the data
+if(this.title="",this.scale="",this.events=[],this.eras=[],this.event_dict={},// despite name, all slides (events + title) indexed by slide.unique_id
+this.messages={errors:[],warnings:[]},"object"==typeof t&&t.events){if(this.scale=t.scale,this.events=[],this._ensureValidScale(t.events),t.title){var e=this._assignID(t.title);this._tidyFields(t.title),this.title=t.title,this.event_dict[e]=this.title}for(var i=0;i<t.events.length;i++)try{this.addEvent(t.events[i],!0)}catch(t){this.logError(t)}if(t.eras)for(var i=0;i<t.eras.length;i++)try{this.addEra(t.eras[i],!0)}catch(t){this.logError("Era "+i+": "+t)}TL.DateUtil.sortByDate(this.events),TL.DateUtil.sortByDate(this.eras)}},logError:function(t){trace(t),this.messages.errors.push(t)},
+/*
 	 * Return any accumulated error messages. If `sep` is passed, it should be a string which will be used to join all messages, resulting in a string return value. Otherwise,
 	 * errors will be returned as an array.
 	 */
-	getErrors: function(sep) {
-		if (sep) {
-			return this.messages.errors.join(sep);
-		} else {
-			return this.messages.errors;
-		}
-	},
-	/*
+getErrors:function(t){return t?this.messages.errors.join(t):this.messages.errors},
+/*
 	 * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
 	 * such that after this is called, one can test `this.isValid()` to see if everything is OK.
 	 */
-	validate: function() {
-		if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
-			this.logError("Timeline configuration has no events.")
-		}
-
-		// make sure all eras have start and end dates
-		for (var i = 0; i < this.eras.length; i++) {
-			if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
-				var era_identifier;
-				if (this.eras[i].text && this.eras[i].text.headline) {
-					era_identifier = this.eras[i].text.headline
-				} else {
-					era_identifier = "era " + (i+1);
-				}
-				this.logError("All eras must have start and end dates. [" + era_identifier + "]") // add internationalization (I18N) and context
-			}
-		};
-	},
-
-	isValid: function() {
-		return this.messages.errors.length == 0;
-	},
-	/* Add an event (including cleaning/validation) and return the unique id.
+validate:function(){void 0!==this.events&&void 0!==this.events.length&&0!=this.events.length||this.logError("Timeline configuration has no events.");
+// make sure all eras have start and end dates
+for(var t=0;t<this.eras.length;t++){var e;if(void 0===this.eras[t].start_date||void 0===this.eras[t].end_date)e=this.eras[t].text&&this.eras[t].text.headline?this.eras[t].text.headline:"era "+(t+1),this.logError("All eras must have start and end dates. ["+e+"]")}},isValid:function(){return 0==this.messages.errors.length},
+/* Add an event (including cleaning/validation) and return the unique id.
 	* All event data validation should happen in here.
 	* Throws: TL.Error for any validation problems.
 	*/
-	addEvent: function(data, defer_sort) {
-		var event_id = this._assignID(data);
-
-		if (typeof(data.start_date) == 'undefined') {
-		    throw new TL.Error("missing_start_date_err", event_id);
-		} else {
-			this._processDates(data);
-			this._tidyFields(data);
-		}
-
-		this.events.push(data);
-		this.event_dict[event_id] = data;
-
-		if (!defer_sort) {
-			TL.DateUtil.sortByDate(this.events);
-		}
-		return event_id;
-	},
-
-	addEra: function(data, defer_sort) {
-		var event_id = this._assignID(data);
-
-		if (typeof(data.start_date) == 'undefined') {
-		    throw new TL.Error("missing_start_date_err", event_id);
-		} else {
-			this._processDates(data);
-			this._tidyFields(data);
-		}
-
-		this.eras.push(data);
-		this.event_dict[event_id] = data;
-
-		if (!defer_sort) {
-			TL.DateUtil.sortByDate(this.eras);
-		}
-		return event_id;
-	},
-
-	/**
+addEvent:function(t,e){var i=this._assignID(t);if(void 0===t.start_date)throw new TL.Error("missing_start_date_err",i);return this._processDates(t),this._tidyFields(t),this.events.push(t),this.event_dict[i]=t,e||TL.DateUtil.sortByDate(this.events),i},addEra:function(t,e){var i=this._assignID(t);if(void 0===t.start_date)throw new TL.Error("missing_start_date_err",i);return this._processDates(t),this._tidyFields(t),this.eras.push(t),this.event_dict[i]=t,e||TL.DateUtil.sortByDate(this.eras),i},
+/**
 	 * Given a slide, verify that its ID is unique, or assign it one which is.
 	 * The assignment happens in this function, and the assigned ID is also
 	 * the return value. Not thread-safe, because ids are not reserved
 	 * when assigned here.
 	 */
-	_assignID: function(slide) {
-		var slide_id = slide.unique_id;
-		if (!TL.Util.trim(slide_id)) {
-			// give it an ID if it doesn't have one
-			slide_id = (slide.text) ? TL.Util.slugify(slide.text.headline) : null;
-		}
-		// make sure it's unique and add it.
-		slide.unique_id = TL.Util.ensureUniqueKey(this.event_dict,slide_id);
-		return slide.unique_id
-	},
-
-	/**
+_assignID:function(t){var e=t.unique_id;return TL.Util.trim(e)||(
+// give it an ID if it doesn't have one
+e=t.text?TL.Util.slugify(t.text.headline):null),
+// make sure it's unique and add it.
+t.unique_id=TL.Util.ensureUniqueKey(this.event_dict,e),t.unique_id},
+/**
 	 * Given an array of slide configs (the events), ensure that each one has a distinct unique_id. The id of the title
 	 * is also passed in because in most ways it functions as an event slide, and the event IDs must also all be unique
 	 * from the title ID.
 	 */
-	_makeUniqueIdentifiers: function(title_id, array) {
-		var used = [title_id];
-
-		// establish which IDs are assigned and if any appear twice, clear out successors.
-		for (var i = 0; i < array.length; i++) {
-			if (TL.Util.trim(array[i].unique_id)) {
-				array[i].unique_id = TL.Util.slugify(array[i].unique_id); // enforce valid
-				if (used.indexOf(array[i].unique_id) == -1) {
-					used.push(array[i].unique_id);
-				} else { // it was already used, wipe it out
-					array[i].unique_id = '';
-				}
-			}
-		};
-
-		if (used.length != (array.length + 1)) {
-			// at least some are yet to be assigned
-			for (var i = 0; i < array.length; i++) {
-				if (!array[i].unique_id) {
-					// use the headline for the unique ID if it's available
-					var slug = (array[i].text) ? TL.Util.slugify(array[i].text.headline) : null;
-					if (!slug) {
-						slug = TL.Util.unique_ID(6); // or generate a random ID
-					}
-					if (used.indexOf(slug) != -1) {
-						slug = slug + '-' + i; // use the index to get a unique ID.
-					}
-					used.push(slug);
-					array[i].unique_id = slug;
-				}
-			}
-		}
-	},
-	_ensureValidScale: function(events) {
-		if(!this.scale) {
-			trace("Determining scale dynamically");
-			this.scale = "human"; // default to human unless there's a slide which is explicitly 'cosmological' or one which has a cosmological year
-
-			for (var i = 0; i < events.length; i++) {
-				if (events[i].scale == 'cosmological') {
-					this.scale = 'cosmological';
-					break;
-				}
-				if (events[i].start_date && typeof(events[i].start_date.year) != "undefined") {
-					var d = new TL.BigDate(events[i].start_date);
-					var year = d.data.date_obj.year;
-					if(year < -271820 || year >  275759) {
-						this.scale = "cosmological";
-						break;
-					}
-				}
-			}
-		}
-		var dateCls = TL.DateUtil.SCALE_DATE_CLASSES[this.scale];
-		if (!dateCls) { this.logError("Don't know how to process dates on scale "+this.scale); }
-	},
-	/*
+_makeUniqueIdentifiers:function(t,e){
+// establish which IDs are assigned and if any appear twice, clear out successors.
+for(var i=[t],n=0;n<e.length;n++)TL.Util.trim(e[n].unique_id)&&(e[n].unique_id=TL.Util.slugify(e[n].unique_id),// enforce valid
+-1==i.indexOf(e[n].unique_id)?i.push(e[n].unique_id):// it was already used, wipe it out
+e[n].unique_id="");if(i.length!=e.length+1)
+// at least some are yet to be assigned
+for(var n=0;n<e.length;n++)if(!e[n].unique_id){
+// use the headline for the unique ID if it's available
+var a=e[n].text?TL.Util.slugify(e[n].text.headline):null;a||(a=TL.Util.unique_ID(6)),-1!=i.indexOf(a)&&(a=a+"-"+n),i.push(a),e[n].unique_id=a}},_ensureValidScale:function(t){if(!this.scale){trace("Determining scale dynamically"),this.scale="human";// default to human unless there's a slide which is explicitly 'cosmological' or one which has a cosmological year
+for(var e=0;e<t.length;e++){if("cosmological"==t[e].scale){this.scale="cosmological";break}if(t[e].start_date&&void 0!==t[e].start_date.year){var i,n=new TL.BigDate(t[e].start_date).data.date_obj.year;if(n<-271820||275759<n){this.scale="cosmological";break}}}}var a;TL.DateUtil.SCALE_DATE_CLASSES[this.scale]||this.logError("Don't know how to process dates on scale "+this.scale)},
+/*
 	   Given a thing which has a start_date and optionally an end_date, make sure that it is an instance
 		 of the correct date class (for human or cosmological scale). For slides, remove redundant end dates
 		 (people frequently configure an end date which is the same as the start date).
 	 */
-	_processDates: function(slide_or_era) {
-		var dateCls = TL.DateUtil.SCALE_DATE_CLASSES[this.scale];
-		if(!(slide_or_era.start_date instanceof dateCls)) {
-			var start_date = slide_or_era.start_date;
-			slide_or_era.start_date = new dateCls(start_date);
-
-			// eliminate redundant end dates.
-			if (typeof(slide_or_era.end_date) != 'undefined' && !(slide_or_era.end_date instanceof dateCls)) {
-				var end_date = slide_or_era.end_date;
-				var equal = true;
-				for (property in start_date) {
-					equal = equal && (start_date[property] == end_date[property]);
-				}
-				if (equal) {
-					trace("End date same as start date is redundant; dropping end date");
-					delete slide_or_era.end_date;
-				} else {
-					slide_or_era.end_date = new dateCls(end_date);
-				}
-
-			}
-		}
-
-	},
-	/**
+_processDates:function(t){var e=TL.DateUtil.SCALE_DATE_CLASSES[this.scale];if(!(t.start_date instanceof e)){var i=t.start_date;
+// eliminate redundant end dates.
+if(t.start_date=new e(i),void 0!==t.end_date&&!(t.end_date instanceof e)){var n=t.end_date,a=!0;for(property in i)a=a&&i[property]==n[property];a?(trace("End date same as start date is redundant; dropping end date"),delete t.end_date):t.end_date=new e(n)}}},
+/**
 	 * Return the earliest date that this config knows about, whether it's a slide or an era
 	 */
-	getEarliestDate: function() {
-		// counting that dates were sorted in initialization
-		var date = this.events[0].start_date;
-		if (this.eras && this.eras.length > 0) {
-			if (this.eras[0].start_date.isBefore(date)) {
-				return this.eras[0].start_date;
-			}
-		}
-		return date;
-
-	},
-	/**
+getEarliestDate:function(){
+// counting that dates were sorted in initialization
+var t=this.events[0].start_date;return this.eras&&0<this.eras.length&&this.eras[0].start_date.isBefore(t)?this.eras[0].start_date:t},
+/**
 	 * Return the latest date that this config knows about, whether it's a slide or an era, taking end_dates into account.
 	 */
-	getLatestDate: function() {
-		var dates = [];
-		for (var i = 0; i < this.events.length; i++) {
-			if (this.events[i].end_date) {
-				dates.push({ date: this.events[i].end_date });
-			} else {
-				dates.push({ date: this.events[i].start_date });
-			}
-		}
-		for (var i = 0; i < this.eras.length; i++) {
-			if (this.eras[i].end_date) {
-				dates.push({ date: this.eras[i].end_date });
-			} else {
-				dates.push({ date: this.eras[i].start_date });
-			}
-		}
-		TL.DateUtil.sortByDate(dates, 'date');
-		return dates.slice(-1)[0].date;
-	},
-	_tidyFields: function(slide) {
-
-		function fillIn(obj,key,default_value) {
-			if (!default_value) default_value = '';
-			if (!obj.hasOwnProperty(key)) { obj[key] = default_value }
-		}
-
-		if (slide.group) {
-			slide.group = TL.Util.trim(slide.group);
-		}
-
-		if (!slide.text) {
-			slide.text = {};
-		}
-		fillIn(slide.text,'text');
-		fillIn(slide.text,'headline');
-	}
-});
-
-
-/* **********************************************
-     Begin TL.ConfigFactory.js
-********************************************** */
-
-/* TL.ConfigFactory.js
- * Build TimelineConfig objects from other data sources
- */
-;(function(TL){
-    /*
+getLatestDate:function(){for(var t=[],e=0;e<this.events.length;e++)this.events[e].end_date?t.push({date:this.events[e].end_date}):t.push({date:this.events[e].start_date});for(var e=0;e<this.eras.length;e++)this.eras[e].end_date?t.push({date:this.eras[e].end_date}):t.push({date:this.eras[e].start_date});return TL.DateUtil.sortByDate(t,"date"),t.slice(-1)[0].date},_tidyFields:function(t){function e(t,e,i){i||(i=""),t.hasOwnProperty(e)||(t[e]=i)}t.group&&(t.group=TL.Util.trim(t.group)),t.text||(t.text={}),e(t.text,"text"),e(t.text,"headline")}}),function(o){
+/*
      * Convert a URL to a Google Spreadsheet (typically a /pubhtml version but somewhat flexible) into an object with the spreadsheet key (ID) and worksheet ID.
 
      If `url` is actually a string which is only letters, numbers, '-' and '_', then it's assumed to be an ID already. If we had a more precise way of testing to see if the input argument was a valid key, we might apply it, but I don't know where that's documented.
 
      If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
      */
-    function parseGoogleSpreadsheetURL(url) {
-        parts = {
-            key: null,
-            worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
-        }
-        // key as url parameter (old-fashioned)
-        var key_pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
-        var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d
-
-        if (url.match(key_pat)) {
-            parts.key = url.match(key_pat)[1];
-            // can we get a worksheet from this form?
-        } else if (url.match(url_pat)) {
-            var pos = url.search(url_pat) + url.match(url_pat)[0].length;
-            var tail = url.substr(pos);
-            parts.key = tail.split('/')[0]
-            if (url.match(/\?gid=(\d+)/)) {
-                parts.worksheet = url.match(/\?gid=(\d+)/)[1];
-            }
-        } else if (url.match(/^\b[-_A-Za-z0-9]+$/)) {
-            parts.key = url;
-        }
-
-        if (parts.key) {
-            return parts;
-        } else {
-            return null;
-        }
-    }
-
-    function extractGoogleEntryData_V1(item) {
-        var item_data = {}
-        for (k in item) {
-            if (k.indexOf('gsx$') == 0) {
-                item_data[k.substr(4)] = item[k].$t;
-            }
-        }
-        if (TL.Util.isEmptyObject(item_data)) return null;
-        var d = {
-            media: {
-                caption: item_data.mediacaption || '',
-                credit: item_data.mediacredit || '',
-                url: item_data.media || '',
-                thumbnail: item_data.mediathumbnail || ''
-            },
-            text: {
-                headline: item_data.headline || '',
-                text: item_data.text || ''
-            },
-            group: item_data.tag || '',
-            type: item_data.type || ''
-        }
-        if (item_data.startdate) {
-            d['start_date'] = TL.Date.parseDate(item_data.startdate);
-        }
-        if (item_data.enddate) {
-            d['end_date'] = TL.Date.parseDate(item_data.enddate);
-        }
-
-
-        return d;
-    }
-
-    function extractGoogleEntryData_V3(item) {
-
-        function clean_integer(s) {
-            if (s) {
-                return s.replace(/[\s,]+/g,''); // doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
-            }
-        }
-
-        var item_data = {}
-        for (k in item) {
-            if (k.indexOf('gsx$') == 0) {
-                item_data[k.substr(4)] = TL.Util.trim(item[k].$t);
-            }
-        }
-        if (TL.Util.isEmptyObject(item_data)) return null;
-        var d = {
-            media: {
-                caption: item_data.mediacaption || '',
-                credit: item_data.mediacredit || '',
-                url: item_data.media || '',
-                thumbnail: item_data.mediathumbnail || ''
-            },
-            text: {
-                headline: item_data.headline || '',
-                text: item_data.text || ''
-            },
-            start_date: {
-                year: clean_integer(item_data.year),
-                month: clean_integer(item_data.month) || '',
-                day: clean_integer(item_data.day) || ''
-            },
-            end_date: {
-                year: clean_integer(item_data.endyear) || '',
-                month: clean_integer(item_data.endmonth) || '',
-                day: clean_integer(item_data.endday) || ''
-            },
-            display_date: item_data.displaydate || '',
-
-            type: item_data.type || ''
-        }
-
-        if (item_data.time) {
-            TL.Util.mergeData(d.start_date,TL.DateUtil.parseTime(item_data.time));
-        }
-
-        if (item_data.endtime) {
-            TL.Util.mergeData(d.end_date,TL.DateUtil.parseTime(item_data.endtime));
-        }
-
-
-        if (item_data.group) {
-            d.group = item_data.group;
-        }
-
-        if (d.end_date.year == '') {
-            var bad_date = d.end_date;
-            delete d.end_date;
-            if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
-                var label = d.text.headline ||
-                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
-                trace(item);
-            }
-        }
-
-        if (item_data.background) {
-            if (item_data.background.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
-                d['background'] = { 'url': item_data.background }
-            } else { // for now we'll trust it's a color
-                d['background'] = { 'color': item_data.background }
-            }
-        }
-
-        return d;
-    }
-
-    var getGoogleItemExtractor = function(data) {
-        if (typeof data.feed.entry === 'undefined'
-                || data.feed.entry.length == 0) {
-            throw new TL.Error("empty_feed_err");
-        }
-        var entry = data.feed.entry[0];
-
-        if (typeof entry.gsx$startdate !== 'undefined') {
-            // check headers V1
-            // var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
-            // for (var i = 0; i < headers_V1.length; i++) {
-            //     if (typeof entry['gsx$' + headers_V1[i]] == 'undefined') {
-            //         throw new TL.Error("invalid_data_format_err");
-            //     }
-            // }
-            return extractGoogleEntryData_V1;
-        } else if (typeof entry.gsx$year !== 'undefined') {
-            // check rest of V3 headers
-            var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','type','group','background'];
-            // for (var i = 0; i < headers_V3.length; i++) {
-            //     if (typeof entry['gsx$' + headers_V3[i]] == 'undefined') {
-            //         throw new TL.Error("invalid_data_format_err");
-            //     }
-            // }
-            return extractGoogleEntryData_V3;
-        }
-        throw new TL.Error("invalid_data_format_err");
-    }
-
-    var buildGoogleFeedURL = function(parts) {
-        return "https://spreadsheets.google.com/feeds/list/" + parts.key + "/1/public/values?alt=json";
-
-    }
-
-    var jsonFromGoogleURL = function(url) {
-        var url = buildGoogleFeedURL(parseGoogleSpreadsheetURL(url));
-            var timeline_config = { 'events': [] };
-            var data = TL.ajax({
-                url: url,
-                async: false
-            });
-            data = JSON.parse(data.responseText);
-            return googleFeedJSONtoTimelineJSON(data);
-        }
-
-    var googleFeedJSONtoTimelineJSON = function(data) {
-        var timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
-        var extract = getGoogleItemExtractor(data);
-        for (var i = 0; i < data.feed.entry.length; i++) {
-            try {
-                var event = extract(data.feed.entry[i]);
-                if (event) { // blank rows return null
-                  var row_type = 'event';
-                  if (typeof(event.type) != 'undefined') {
-                      row_type = event.type;
-                      delete event.type;
-                  }
-                  if (row_type == 'title') {
-                    if (!timeline_config.title) {
-                      timeline_config.title = event;
-                    } else {
-                      timeline_config.warnings.push("Multiple title slides detected.");
-                      timeline_config.events.push(event);
-                    }
-                  } else if (row_type == 'era') {
-                    timeline_config.eras.push(event);
-                  } else {
-                      timeline_config.events.push(event);
-                  }
-                }
-            } catch(e) {
-                if (e.message) {
-                    e = e.message;
-                }
-                timeline_config.errors.push(e + " ["+ i +"]");
-            }
-        };
-        return timeline_config;
-
-    }
-
-    var makeConfig = function(url, callback) {
-        var tc,
-            key = parseGoogleSpreadsheetURL(url);
-
-        if (key) {
-            try {
-                var json = jsonFromGoogleURL(url);
-            } catch(e) {
-                tc = new TL.TimelineConfig();
-                if (e.name == 'NetworkError') {
-                    tc.logError(new TL.Error("network_err"));
-                } else if(e.name == 'TL.Error') {
-                    tc.logError(e);
-                } else {
-                    tc.logError(new TL.Error("unknown_read_err", e.name));
-                }
-                callback(tc);
-                return;
-            }
-            tc = new TL.TimelineConfig(json);
-            if (json.errors) {
-                for (var i = 0; i < json.errors.length; i++) {
-                    tc.logError(json.errors[i]);
-                };
-            }
-            callback(tc);
-        } else {
-          TL.ajax({
-            url: url,
-            dataType: 'json',
-            success: function(data){
-            try {
-                tc = new TL.TimelineConfig(data);
-            } catch(e) {
-                tc = new TL.TimelineConfig();
-                tc.logError(e);
-            }
-            callback(tc);
-            },
-            error: function(xhr, errorType, error) {
-              tc = new TL.TimelineConfig();
-              if (errorType == 'parsererror') {
-                var error = new TL.Error("invalid_url_err");
-              } else {
-                var error = new TL.Error("unknown_read_err", errorType)
-              }
-              tc.logError(error);
-              callback(tc);
-            }
-          });
-
-        }
-    }
-
-    TL.ConfigFactory = {
-        // export for unit testing and use by authoring tool
-        parseGoogleSpreadsheetURL: parseGoogleSpreadsheetURL,
-        // export for unit testing
-        googleFeedJSONtoTimelineJSON: googleFeedJSONtoTimelineJSON,
-
-
-        fromGoogle: function(url) {
-            console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)")
-            return jsonFromGoogleURL(url);
-
-        },
-
-        /*
+function r(t){parts={key:null,worksheet:0};
+// key as url parameter (old-fashioned)
+var e=/\bkey=([-_A-Za-z0-9]+)&?/i,i=/docs.google.com\/spreadsheets(.*?)\/d\//;// fixing issue of URLs with u/0/d
+if(t.match(e))parts.key=t.match(e)[1];
+// can we get a worksheet from this form?
+else if(t.match(i)){var n=t.search(i)+t.match(i)[0].length,a=t.substr(n);parts.key=a.split("/")[0],t.match(/\?gid=(\d+)/)&&(parts.worksheet=t.match(/\?gid=(\d+)/)[1])}else t.match(/^\b[-_A-Za-z0-9]+$/)&&(parts.key=t);return parts.key?parts:null}function n(t){var e={};for(k in t)0==k.indexOf("gsx$")&&(e[k.substr(4)]=t[k].$t);if(o.Util.isEmptyObject(e))return null;var i={media:{caption:e.mediacaption||"",credit:e.mediacredit||"",url:e.media||"",thumbnail:e.mediathumbnail||""},text:{headline:e.headline||"",text:e.text||""},group:e.tag||"",type:e.type||""};return e.startdate&&(i.start_date=o.Date.parseDate(e.startdate)),e.enddate&&(i.end_date=o.Date.parseDate(e.enddate)),i}function a(t){function e(t){if(t)return t.replace(/[\s,]+/g,"");// doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
+}var i={};for(k in t)0==k.indexOf("gsx$")&&(i[k.substr(4)]=o.Util.trim(t[k].$t));if(o.Util.isEmptyObject(i))return null;var n={media:{caption:i.mediacaption||"",credit:i.mediacredit||"",url:i.media||"",thumbnail:i.mediathumbnail||""},text:{headline:i.headline||"",text:i.text||""},start_date:{year:e(i.year),month:e(i.month)||"",day:e(i.day)||""},end_date:{year:e(i.endyear)||"",month:e(i.endmonth)||"",day:e(i.endday)||""},display_date:i.displaydate||"",type:i.type||""};if(i.time&&o.Util.mergeData(n.start_date,o.DateUtil.parseTime(i.time)),i.endtime&&o.Util.mergeData(n.end_date,o.DateUtil.parseTime(i.endtime)),i.group&&(n.group=i.group),""==n.end_date.year){var a=n.end_date;if(delete n.end_date,""!=a.month||""!=a.day||""!=a.time){var s=n.text.headline||trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");trace(t)}}return i.background&&(i.background.match(/^(https?:)?\/\/?/)?// support http, https, protocol relative, site relative
+n.background={url:i.background}:// for now we'll trust it's a color
+n.background={color:i.background}),n}function s(t,e){function i(t){if(t)return t.replace(/[\s,]+/g,"");// doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
+}
+// console.log(item);
+for(var n={},a=1;a<e.length;a++){var s;
+// console.log(column_name);
+// console.log("Column:" + column_name + " Value: " + item[i]);
+if(t.length>=a)n[t[a].toLowerCase().replace(" ","")]=e[a]}var o;return{media:{caption:n.mediacaption||"",credit:n.mediacredit||"",url:n.media||"",thumbnail:n.mediathumbnail||""},text:{headline:n.headline||"",text:n.text||""},start_date:{year:i(n.year),month:i(n.month)||"",day:i(n.day)||""},end_date:{year:i(n.endyear)||"",month:i(n.endmonth)||"",day:i(n.endday)||""},display_date:n.displaydate||"",type:n.type||""}}var t=function(t){if(void 0===t.feed.entry||0==t.feed.entry.length)throw new o.Error("empty_feed_err");var e=t.feed.entry[0];if(void 0!==e.gsx$startdate)
+// check headers V1
+// var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
+// for (var i = 0; i < headers_V1.length; i++) {
+//     if (typeof entry['gsx$' + headers_V1[i]] == 'undefined') {
+//         throw new TL.Error("invalid_data_format_err");
+//     }
+// }
+return n;if(void 0===e.gsx$year)throw new o.Error("invalid_data_format_err");
+// check rest of V3 headers
+var i=["month","day","time","endmonth","endyear","endday","endtime","displaydate","headline","text","media","mediacredit","mediacaption","mediathumbnail","type","group","background"];
+// for (var i = 0; i < headers_V3.length; i++) {
+//     if (typeof entry['gsx$' + headers_V3[i]] == 'undefined') {
+//         throw new TL.Error("invalid_data_format_err");
+//     }
+// }
+return a},l=function(t){
+// var api_3 = "https://spreadsheets.google.com/feeds/list/" + parts.key + "/od6/public/values?alt=json";
+var e;return"https://sheets.googleapis.com/v4/spreadsheets/"+t.key+"/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg"},h=function(t){var t=l(r(t)),e={events:[]},i=o.ajax({url:t,async:!1});return i=JSON.parse(i.responseText),d(i)},d=function(t){for(var e={events:[],errors:[],warnings:[],eras:[]},i=1;i<t.values.length;i++){var n=s(t.values[0],t.values[i]);if(n){// blank rows return null
+var a="event";void 0!==n.type&&(a=n.type,delete n.type),"title"==a?e.title?(e.warnings.push("Multiple title slides detected."),e.events.push(n)):e.title=n:"era"==a?e.eras.push(n):e.events.push(n)}}
+// var extract = getGoogleItemExtractor(data);
+// for (var i = 0; i < data.feed.entry.length; i++) {
+//     try {
+//         var event = extract(data.feed.entry[i]);
+//         if (event) { // blank rows return null
+//           var row_type = 'event';
+//           if (typeof(event.type) != 'undefined') {
+//               row_type = event.type;
+//               delete event.type;
+//           }
+//           if (row_type == 'title') {
+//             if (!timeline_config.title) {
+//               timeline_config.title = event;
+//             } else {
+//               timeline_config.warnings.push("Multiple title slides detected.");
+//               timeline_config.events.push(event);
+//             }
+//           } else if (row_type == 'era') {
+//             timeline_config.eras.push(event);
+//           } else {
+//               timeline_config.events.push(event);
+//           }
+//         }
+//     } catch(e) {
+//         if (e.message) {
+//             e = e.message;
+//         }
+//         timeline_config.errors.push(e + " ["+ i +"]");
+//     }
+// };
+return e},e=function(t,n){var a,e;if(r(t)){try{var i=h(t)}catch(t){return a=new o.TimelineConfig,"NetworkError"==t.name?a.logError(new o.Error("network_err")):"TL.Error"==t.name?a.logError(t):a.logError(new o.Error("unknown_read_err",t.name)),void n(a)}if(a=new o.TimelineConfig(i),i.errors)for(var s=0;s<i.errors.length;s++)a.logError(i.errors[s]);n(a)}else o.ajax({url:t,dataType:"json",success:function(t){try{a=new o.TimelineConfig(t)}catch(t){(a=new o.TimelineConfig).logError(t)}n(a)},error:function(t,e,i){if(a=new o.TimelineConfig,"parsererror"==e)var i=new o.Error("invalid_url_err");else var i=new o.Error("unknown_read_err",e);a.logError(i),n(a)}})};o.ConfigFactory={
+// export for unit testing and use by authoring tool
+parseGoogleSpreadsheetURL:r,
+// export for unit testing
+googleFeedJSONtoTimelineJSON:d,fromGoogle:function(t){return console.warn("TL.ConfigFactory.fromGoogle is deprecated and will be removed soon. Use TL.ConfigFactory.makeConfig(url,callback)"),h(t)},
+/*
          * Given a URL to a Timeline data source, read the data, create a TimelineConfig
          * object, and call the given `callback` function passing the created config as
          * the only argument. This should be the main public interface to getting configs
          * from any kind of URL, Google or direct JSON.
          */
-        makeConfig: makeConfig,
-    }
-})(TL)
-
-
-/* **********************************************
-     Begin TL.Language.js
-********************************************** */
-
-TL.Language = function(options) {
-	// borrowed from http://stackoverflow.com/a/14446414/102476
-	for (k in TL.Language.languages.en) {
-		this[k] = TL.Language.languages.en[k];
-	}
-	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
-		var code = options.language;
-		if (!(code in TL.Language.languages)) {
-			if (/\.json$/.test(code)) {
-				var url = code;
-			} else {
-				var fragment = "/locale/" + code + ".json";
-				var script_path = options.script_path || TL.Timeline.source_path;
-				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
-				var url = script_path + fragment;
-			}
-			var self = this;
-			var xhr = TL.ajax({
-				url: url, async: false
-			});
-			if (xhr.status == 200) {
-				TL.Language.languages[code] = JSON.parse(xhr.responseText);
-			} else {
-				throw "Could not load language [" + code + "]: " + xhr.statusText;
-			}
-		}
-		TL.Util.mergeData(this,TL.Language.languages[code]);
-
-	}
-}
-
-TL.Language.formatNumber = function(val,mask) {
-		if (mask.match(/%(\.(\d+))?f/)) {
-			var match = mask.match(/%(\.(\d+))?f/);
-			var token = match[0];
-			if (match[2]) {
-				val = val.toFixed(match[2]);
-			}
-			return mask.replace(token,val);
-		}
-		// use mask as literal display value.
-		return mask;
-	}
-
-
-
+makeConfig:e}}(TL),TL.Language=function(t){
+// borrowed from http://stackoverflow.com/a/14446414/102476
+for(k in TL.Language.languages.en)this[k]=TL.Language.languages.en[k];if(t&&t.language&&"string"==typeof t.language&&"en"!=t.language){var e=t.language;if(!(e in TL.Language.languages)){if(/\.json$/.test(e))var i=e;else{var n="/locale/"+e+".json",a=t.script_path||TL.Timeline.source_path;/\/$/.test(a)&&(n=n.substr(1));var i=a+n}var s=this,o=TL.ajax({url:i,async:!1});if(200!=o.status)throw"Could not load language ["+e+"]: "+o.statusText;TL.Language.languages[e]=JSON.parse(o.responseText)}TL.Util.mergeData(this,TL.Language.languages[e])}},TL.Language.formatNumber=function(t,e){if(e.match(/%(\.(\d+))?f/)){var i=e.match(/%(\.(\d+))?f/),n=i[0];return i[2]&&(t=t.toFixed(i[2])),e.replace(n,t)}
+// use mask as literal display value.
+return e}
 /* TL.Util.mergeData is shallow, we have nested dicts.
    This is a simplistic handling but should work.
- */
-TL.Language.prototype.mergeData = function(lang_json) {
-	for (k in TL.Language.languages.en) {
-		if (lang_json[k]) {
-			if (typeof(this[k]) == 'object') {
-				TL.Util.mergeData(lang_json[k], this[k]);
-			} else {
-				this[k] = lang_json[k]; // strings, mostly
-			}
-		}
-	}
-}
-
-TL.Language.fallback = { messages: {} }; // placeholder to satisfy IE8 early compilation
-TL.Language.prototype.getMessage = function(k) {
-	return this.messages[k] || TL.Language.fallback.messages[k] || k;
-}
-
-TL.Language.prototype._ = TL.Language.prototype.getMessage; // keep it concise
-
-TL.Language.prototype.formatDate = function(date, format_name) {
-
-	if (date.constructor == Date) {
-		return this.formatJSDate(date, format_name);
-	}
-
-	if (date.constructor == TL.BigYear) {
-		return this.formatBigYear(date, format_name);
-	}
-
-	if (date.data && date.data.date_obj) {
-		return this.formatDate(date.data.date_obj, format_name);
-	}
-
-	trace("Unfamiliar date presented for formatting");
-	return date.toString();
-}
-
-TL.Language.prototype.formatBigYear = function(bigyear, format_name) {
-	var the_year = bigyear.year;
-	var format_list = this.bigdateformats[format_name] || this.bigdateformats['fallback'];
-
-	if (format_list) {
-		for (var i = 0; i < format_list.length; i++) {
-			var tuple = format_list[i];
-			if (Math.abs(the_year / tuple[0]) > 1) {
-				// will we ever deal with distant future dates?
-				return TL.Language.formatNumber(Math.abs(the_year / tuple[0]),tuple[1])
-			}
-		};
-
-		return the_year.toString();
-
-	} else {
-	    trace("Language file dateformats missing cosmological. Falling back.");
-	    return TL.Language.formatNumber(the_year,format_name);
-	}
-}
-
-TL.Language.prototype.formatJSDate = function(js_date, format_name) {
-	// ultimately we probably want this to work with TL.Date instead of (in addition to?) JS Date
-	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
-	var self = this;
-	var formatPeriod = function(fmt, value) {
-		var formats = self.period_labels[fmt];
-		if (formats) {
-			var fmt = (value < 12) ? formats[0] : formats[1];
-		}
-		return "<span class='tl-timeaxis-timesuffix'>" + fmt + "</span>";
-	}
-
-	var utc = false,
-		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
-		timezoneClip = /[^-+\dA-Z]/g;
-
-
-	if (!format_name) {
-		format_name = 'full';
-	}
-
-	var mask = this.dateformats[format_name] || TL.Language.fallback.dateformats[format_name];
-	if (!mask) {
-		mask = format_name; // allow custom format strings
-	}
-
-
-	var	_ = utc ? "getUTC" : "get",
-		d = js_date[_ + "Date"](),
-		D = js_date[_ + "Day"](),
-		m = js_date[_ + "Month"](),
-		y = js_date[_ + "FullYear"](),
-		H = js_date[_ + "Hours"](),
-		M = js_date[_ + "Minutes"](),
-		s = js_date[_ + "Seconds"](),
-		L = js_date[_ + "Milliseconds"](),
-		o = utc ? 0 : js_date.getTimezoneOffset(),
-		year = "",
-		flags = {
-			d:    d,
-			dd:   TL.Util.pad(d),
-			ddd:  this.date.day_abbr[D],
-			dddd: this.date.day[D],
-			m:    m + 1,
-			mm:   TL.Util.pad(m + 1),
-			mmm:  this.date.month_abbr[m],
-			mmmm: this.date.month[m],
-			yy:   String(y).slice(2),
-			yyyy: (y < 0 && this.has_negative_year_modifier()) ? Math.abs(y) : y,
-			h:    H % 12 || 12,
-			hh:   TL.Util.pad(H % 12 || 12),
-			H:    H,
-			HH:   TL.Util.pad(H),
-			M:    M,
-			MM:   TL.Util.pad(M),
-			s:    s,
-			ss:   TL.Util.pad(s),
-			l:    TL.Util.pad(L, 3),
-			L:    TL.Util.pad(L > 99 ? Math.round(L / 10) : L),
-			t:    formatPeriod('t',H),
-			tt:   formatPeriod('tt',H),
-			T:    formatPeriod('T',H),
-			TT:   formatPeriod('TT',H),
-			Z:    utc ? "UTC" : (String(js_date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
-			o:    (o > 0 ? "-" : "+") + TL.Util.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
-		};
-
-		var formatted = mask.replace(TL.Language.DATE_FORMAT_TOKENS, function ($0) {
-			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-		});
-
-		return this._applyEra(formatted, y);
-}
-
-TL.Language.prototype.has_negative_year_modifier = function() {
-	return Boolean(this.era_labels.negative_year.prefix || this.era_labels.negative_year.suffix);
-}
-
-
-TL.Language.prototype._applyEra = function(formatted_date, original_year) {
-	// trusts that the formatted_date was property created with a non-negative year if there are
-	// negative affixes to be applied
-	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
-	var result = '';
-	if (labels.prefix) { result += '<span>' + labels.prefix + '</span> ' }
-	result += formatted_date;
-	if (labels.suffix) { result += ' <span>' + labels.suffix + '</span>' }
-	return result;
-}
-
-
-TL.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
-
-TL.Language.languages = {
+ */,TL.Language.prototype.mergeData=function(t){for(k in TL.Language.languages.en)t[k]&&("object"==typeof this[k]?TL.Util.mergeData(t[k],this[k]):this[k]=t[k])},TL.Language.fallback={messages:{}},// placeholder to satisfy IE8 early compilation
+TL.Language.prototype.getMessage=function(t){return this.messages[t]||TL.Language.fallback.messages[t]||t},TL.Language.prototype._=TL.Language.prototype.getMessage,// keep it concise
+TL.Language.prototype.formatDate=function(t,e){return t.constructor==Date?this.formatJSDate(t,e):t.constructor==TL.BigYear?this.formatBigYear(t,e):t.data&&t.data.date_obj?this.formatDate(t.data.date_obj,e):(trace("Unfamiliar date presented for formatting"),t.toString())},TL.Language.prototype.formatBigYear=function(t,e){var i=t.year,n=this.bigdateformats[e]||this.bigdateformats.fallback;if(n){for(var a=0;a<n.length;a++){var s=n[a];if(1<Math.abs(i/s[0]))
+// will we ever deal with distant future dates?
+return TL.Language.formatNumber(Math.abs(i/s[0]),s[1])}return i.toString()}return trace("Language file dateformats missing cosmological. Falling back."),TL.Language.formatNumber(i,e)},TL.Language.prototype.formatJSDate=function(t,e){
+// ultimately we probably want this to work with TL.Date instead of (in addition to?) JS Date
+// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
+var n=this,i=function(t,e){var i=n.period_labels[t];if(i)var t=e<12?i[0]:i[1];return"<span class='tl-timeaxis-timesuffix'>"+t+"</span>"},a=!1,s=/\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,o=/[^-+\dA-Z]/g;e||(e="full");var r=this.dateformats[e]||TL.Language.fallback.dateformats[e];r||(r=e);var l="get",h=t.getDate(),d=t.getDay(),c=t.getMonth(),u=t.getFullYear(),m=t.getHours(),_=t.getMinutes(),p=t.getSeconds(),f=t.getMilliseconds(),g=t.getTimezoneOffset(),v="",y={d:h,dd:TL.Util.pad(h),ddd:this.date.day_abbr[d],dddd:this.date.day[d],m:c+1,mm:TL.Util.pad(c+1),mmm:this.date.month_abbr[c],mmmm:this.date.month[c],yy:String(u).slice(2),yyyy:u<0&&this.has_negative_year_modifier()?Math.abs(u):u,h:m%12||12,hh:TL.Util.pad(m%12||12),H:m,HH:TL.Util.pad(m),M:_,MM:TL.Util.pad(_),s:p,ss:TL.Util.pad(p),l:TL.Util.pad(f,3),L:TL.Util.pad(99<f?Math.round(f/10):f),t:i("t",m),tt:i("tt",m),T:i("T",m),TT:i("TT",m),Z:(String(t).match(s)||[""]).pop().replace(o,""),o:(0<g?"-":"+")+TL.Util.pad(100*Math.floor(Math.abs(g)/60)+Math.abs(g)%60,4),S:["th","st","nd","rd"][3<h%10?0:(h%100-h%10!=10)*h%10]},T=r.replace(TL.Language.DATE_FORMAT_TOKENS,function(t){return t in y?y[t]:t.slice(1,t.length-1)});return this._applyEra(T,u)},TL.Language.prototype.has_negative_year_modifier=function(){return Boolean(this.era_labels.negative_year.prefix||this.era_labels.negative_year.suffix)},TL.Language.prototype._applyEra=function(t,e){
+// trusts that the formatted_date was property created with a non-negative year if there are
+// negative affixes to be applied
+var i=e<0?this.era_labels.negative_year:this.era_labels.positive_year,n="";return i.prefix&&(n+="<span>"+i.prefix+"</span> "),n+=t,i.suffix&&(n+=" <span>"+i.suffix+"</span>"),n},TL.Language.DATE_FORMAT_TOKENS=/d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,TL.Language.languages={
 /*
 	This represents the canonical list of message keys which translation files should handle. The existence of the 'en.json' file should not mislead you.
 	It is provided more as a starting point for someone who wants to provide a
 	new translation since the form for non-default languages (JSON not JS) is slightly different from what appears below. Also, those files have some message keys grandfathered in from TimelineJS2 which we'd rather not have to
 	get "re-translated" if we use them.
 */
-	en: {
-		name: 					"English",
-		lang: 					"en",
-        api: {
-            wikipedia:          "en" // the two letter code at the beginning of the Wikipedia subdomain for this language
-        },
-		messages: {
-			loading: 			            		  "Loading",
-			wikipedia: 			            		"From Wikipedia, the free encyclopedia",
-			error: 				            			"Error",
-      contract_timeline:              "Contract Timeline",
-      return_to_title:                "Return to Title",
-      loading_content:                "Loading Content",
-      expand_timeline:                "Expand Timeline",
-      loading_timeline:               "Loading Timeline... ",
-      swipe_to_navigate:              "Swipe to Navigate<br><span class='tl-button'>OK</span>",
-      unknown_read_err:               "An unexpected error occurred trying to read your spreadsheet data",
-			invalid_url_err: 								"Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",
-      network_err:                    "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
-      empty_feed_err:                 "No data entries found",
-      missing_start_date_err:         "Missing start_date",
-      invalid_data_format_err:        "Header row has been modified.",
-      date_compare_err:               "Can't compare TL.Dates on different scales",
-      invalid_scale_err:              "Invalid scale",
-      invalid_date_err:               "Invalid date: month, day and year must be numbers.",
-      invalid_separator_error:        "Invalid time: misuse of : or . as separator.",
-      invalid_hour_err:               "Invalid time (hour)",
-      invalid_minute_err:             "Invalid time (minute)",
-      invalid_second_err:             "Invalid time (second)",
-      invalid_fractional_err:         "Invalid time (fractional seconds)",
-      invalid_second_fractional_err:  "Invalid time (seconds and fractional seconds)",
-      invalid_year_err:               "Invalid year",
-      flickr_notfound_err:            "Photo not found or private",
-      flickr_invalidurl_err:          "Invalid Flickr URL",
-      imgur_invalidurl_err:           "Invalid Imgur URL",
-      twitter_invalidurl_err:         "Invalid Twitter URL",
-      twitter_load_err:               "Unable to load Tweet",
-      twitterembed_invalidurl_err:    "Invalid Twitter Embed url",
-      wikipedia_load_err:             "Unable to load Wikipedia entry",
-      youtube_invalidurl_err:         "Invalid YouTube URL",
-      spotify_invalid_url:            "Invalid Spotify URL",
-      template_value_err:             "No value provided for variable",
-      invalid_rgb_err:                "Invalid RGB argument",
-      time_scale_scale_err:           "Don't know how to get date from time for scale",
-      axis_helper_no_options_err:     "Axis helper must be configured with options",
-      axis_helper_scale_err:          "No AxisHelper available for scale",
-      invalid_integer_option:       	"Invalid option value—must be a whole number."
-		},
-		date: {
-      month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-      day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
-		},
-		era_labels: { // specify prefix or suffix to apply to formatted date. Blanks mean no change.
-	        positive_year: {
-	        	prefix: '',
-	        	suffix: ''
-	        },
-	        negative_year: { // if either of these is specified, the year will be converted to positive before they are applied
-	        	prefix: '',
-	        	suffix: 'BCE'
-	        }
-        },
-        period_labels: {  // use of t/tt/T/TT legacy of original Timeline date format
-			t: ['a', 'p'],
-			tt: ['am', 'pm'],
-			T: ['A', 'P'],
-			TT: ['AM', 'PM']
-		},
-		dateformats: {
-			year: "yyyy",
-			month_short: "mmm",
-			month: "mmmm yyyy",
-			full_short: "mmm d",
-			full: "mmmm d',' yyyy",
-			time: "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
-			time_short: "h:MM:ss TT",
-			time_no_seconds_short: "h:MM TT",
-			time_no_minutes_short: "h TT",
-			time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
-			time_milliseconds: "l",
-			full_long: "mmm d',' yyyy 'at' h:MM TT",
-			full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
-		},
-		bigdateformats: {
-			fallback: [ // a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
-				[1000000000,"%.2f billion years ago"],
-				[1000000,"%.1f million years ago"],
-				[1000,"%.1f thousand years ago"],
-				[1, "%f years ago"]
-			],
-		    compact: [
-				[1000000000,"%.2f bya"],
-				[1000000,"%.1f mya"],
-				[1000,"%.1f kya"],
-				[1, "%f years ago"]
-			],
-		    verbose: [
-				[1000000000,"%.2f billion years ago"],
-				[1000000,"%.1f million years ago"],
-				[1000,"%.1f thousand years ago"],
-				[1, "%f years ago"]
-			]
-		}
-	}
-}
-
-TL.Language.fallback = new TL.Language();
-
-
-/* **********************************************
-     Begin TL.I18NMixins.js
-********************************************** */
-
+en:{name:"English",lang:"en",api:{wikipedia:"en"},messages:{loading:"Loading",wikipedia:"From Wikipedia, the free encyclopedia",error:"Error",contract_timeline:"Contract Timeline",return_to_title:"Return to Title",loading_content:"Loading Content",expand_timeline:"Expand Timeline",loading_timeline:"Loading Timeline... ",swipe_to_navigate:"Swipe to Navigate<br><span class='tl-button'>OK</span>",unknown_read_err:"An unexpected error occurred trying to read your spreadsheet data",invalid_url_err:"Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",network_err:"Unable to read your Google Spreadsheet. Make sure you have published it to the web.",empty_feed_err:"No data entries found",missing_start_date_err:"Missing start_date",invalid_data_format_err:"Header row has been modified.",date_compare_err:"Can't compare TL.Dates on different scales",invalid_scale_err:"Invalid scale",invalid_date_err:"Invalid date: month, day and year must be numbers.",invalid_separator_error:"Invalid time: misuse of : or . as separator.",invalid_hour_err:"Invalid time (hour)",invalid_minute_err:"Invalid time (minute)",invalid_second_err:"Invalid time (second)",invalid_fractional_err:"Invalid time (fractional seconds)",invalid_second_fractional_err:"Invalid time (seconds and fractional seconds)",invalid_year_err:"Invalid year",flickr_notfound_err:"Photo not found or private",flickr_invalidurl_err:"Invalid Flickr URL",imgur_invalidurl_err:"Invalid Imgur URL",twitter_invalidurl_err:"Invalid Twitter URL",twitter_load_err:"Unable to load Tweet",twitterembed_invalidurl_err:"Invalid Twitter Embed url",wikipedia_load_err:"Unable to load Wikipedia entry",youtube_invalidurl_err:"Invalid YouTube URL",spotify_invalid_url:"Invalid Spotify URL",template_value_err:"No value provided for variable",invalid_rgb_err:"Invalid RGB argument",time_scale_scale_err:"Don't know how to get date from time for scale",axis_helper_no_options_err:"Axis helper must be configured with options",axis_helper_scale_err:"No AxisHelper available for scale",invalid_integer_option:"Invalid option value—must be a whole number."},date:{month:["January","February","March","April","May","June","July","August","September","October","November","December"],month_abbr:["Jan.","Feb.","March","April","May","June","July","Aug.","Sept.","Oct.","Nov.","Dec."],day:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],day_abbr:["Sun.","Mon.","Tues.","Wed.","Thurs.","Fri.","Sat."]},era_labels:{// specify prefix or suffix to apply to formatted date. Blanks mean no change.
+positive_year:{prefix:"",suffix:""},negative_year:{// if either of these is specified, the year will be converted to positive before they are applied
+prefix:"",suffix:"BCE"}},period_labels:{// use of t/tt/T/TT legacy of original Timeline date format
+t:["a","p"],tt:["am","pm"],T:["A","P"],TT:["AM","PM"]},dateformats:{year:"yyyy",month_short:"mmm",month:"mmmm yyyy",full_short:"mmm d",full:"mmmm d',' yyyy",time:"h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",time_short:"h:MM:ss TT",time_no_seconds_short:"h:MM TT",time_no_minutes_short:"h TT",time_no_seconds_small_date:"h:MM TT' <small>'mmmm d',' yyyy'</small>'",time_milliseconds:"l",full_long:"mmm d',' yyyy 'at' h:MM TT",full_long_small_date:"h:MM TT' <small>mmm d',' yyyy'</small>'"},bigdateformats:{fallback:[// a list of tuples, with t[0] an order of magnitude and t[1] a format string. format string syntax may change...
+[1e9,"%.2f billion years ago"],[1e6,"%.1f million years ago"],[1e3,"%.1f thousand years ago"],[1,"%f years ago"]],compact:[[1e9,"%.2f bya"],[1e6,"%.1f mya"],[1e3,"%.1f kya"],[1,"%f years ago"]],verbose:[[1e9,"%.2f billion years ago"],[1e6,"%.1f million years ago"],[1e3,"%.1f thousand years ago"],[1,"%f years ago"]]}}},TL.Language.fallback=new TL.Language,
 /*  TL.I18NMixins
     assumes that its class has an options object with a TL.Language instance    
 ================================================== */
-TL.I18NMixins = {
-    getLanguage: function() {
-        if (this.options && this.options.language) {
-            return this.options.language;
-        }
-        trace("Expected a language option");
-        return TL.Language.fallback;
-    },
-
-    _: function(msg) {
-        return this.getLanguage()._(msg);
-    }
-}
-
-
-/* **********************************************
-     Begin TL.Ease.js
-********************************************** */
-
+TL.I18NMixins={getLanguage:function(){return this.options&&this.options.language?this.options.language:(trace("Expected a language option"),TL.Language.fallback)},_:function(t){return this.getLanguage()._(t)}},
 /* The equations defined here are open source under BSD License.
  * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
  * Adapted to single time-based by
  * Brian Crescimanno <brian.crescimanno@gmail.com>
  * Ken Snyder <kendsnyder@gmail.com>
  */
-
 /** MIT License
  *
  * KeySpline - use bezier curve for transition easing function
@@ -4060,223 +751,45 @@ TL.I18NMixins = {
  * var spline = new KeySpline(0.25, 0.1, 0.25, 1.0)
  * spline.get(x) => returns the easing value | x must be in [0, 1] range
  */
-
-TL.Easings = {
-    ease:        [0.25, 0.1, 0.25, 1.0], 
-    linear:      [0.00, 0.0, 1.00, 1.0],
-    easein:     [0.42, 0.0, 1.00, 1.0],
-    easeout:    [0.00, 0.0, 0.58, 1.0],
-    easeinout: [0.42, 0.0, 0.58, 1.0]
-};
-
-TL.Ease = {
-	KeySpline: function(a) {
-	//KeySpline: function(mX1, mY1, mX2, mY2) {
-		this.get = function(aX) {
-			if (a[0] == a[1] && a[2] == a[3]) return aX; // linear
-			return CalcBezier(GetTForX(aX), a[1], a[3]);
-		}
-
-		function A(aA1, aA2) {
-			return 1.0 - 3.0 * aA2 + 3.0 * aA1;
-		}
-
-		function B(aA1, aA2) {
-			return 3.0 * aA2 - 6.0 * aA1;
-		}
-
-		function C(aA1) {
-			return 3.0 * aA1;
-		}
-
-		// Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
-
-		function CalcBezier(aT, aA1, aA2) {
-			return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
-		}
-
-		// Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
-
-		function GetSlope(aT, aA1, aA2) {
-			return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
-		}
-
-		function GetTForX(aX) {
-			// Newton raphson iteration
-			var aGuessT = aX;
-			for (var i = 0; i < 4; ++i) {
-				var currentSlope = GetSlope(aGuessT, a[0], a[2]);
-				if (currentSlope == 0.0) return aGuessT;
-				var currentX = CalcBezier(aGuessT, a[0], a[2]) - aX;
-				aGuessT -= currentX / currentSlope;
-			}
-			return aGuessT;
-		}
-	},
-	
-	easeInSpline: function(t) {
-		var spline = new TL.Ease.KeySpline(TL.Easings.easein);
-		return spline.get(t);
-	},
-	
-	easeInOutExpo: function(t) {
-		var spline = new TL.Ease.KeySpline(TL.Easings.easein);
-		return spline.get(t);
-	},
-	
-	easeOut: function(t) {
-		return Math.sin(t * Math.PI / 2);
-	},
-	easeOutStrong: function(t) {
-		return (t == 1) ? 1 : 1 - Math.pow(2, - 10 * t);
-	},
-	easeIn: function(t) {
-		return t * t;
-	},
-	easeInStrong: function(t) {
-		return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1));
-	},
-	easeOutBounce: function(pos) {
-		if ((pos) < (1 / 2.75)) {
-			return (7.5625 * pos * pos);
-		} else if (pos < (2 / 2.75)) {
-			return (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
-		} else if (pos < (2.5 / 2.75)) {
-			return (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
-		} else {
-			return (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
-		}
-	},
-	easeInBack: function(pos) {
-		var s = 1.70158;
-		return (pos) * pos * ((s + 1) * pos - s);
-	},
-	easeOutBack: function(pos) {
-		var s = 1.70158;
-		return (pos = pos - 1) * pos * ((s + 1) * pos + s) + 1;
-	},
-	bounce: function(t) {
-		if (t < (1 / 2.75)) {
-			return 7.5625 * t * t;
-		}
-		if (t < (2 / 2.75)) {
-			return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
-		}
-		if (t < (2.5 / 2.75)) {
-			return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
-		}
-		return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
-	},
-	bouncePast: function(pos) {
-		if (pos < (1 / 2.75)) {
-			return (7.5625 * pos * pos);
-		} else if (pos < (2 / 2.75)) {
-			return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
-		} else if (pos < (2.5 / 2.75)) {
-			return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
-		} else {
-			return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
-		}
-	},
-	swingTo: function(pos) {
-		var s = 1.70158;
-		return (pos -= 1) * pos * ((s + 1) * pos + s) + 1;
-	},
-	swingFrom: function(pos) {
-		var s = 1.70158;
-		return pos * pos * ((s + 1) * pos - s);
-	},
-	elastic: function(pos) {
-		return -1 * Math.pow(4, - 8 * pos) * Math.sin((pos * 6 - 1) * (2 * Math.PI) / 2) + 1;
-	},
-	spring: function(pos) {
-		return 1 - (Math.cos(pos * 4.5 * Math.PI) * Math.exp(-pos * 6));
-	},
-	blink: function(pos, blinks) {
-		return Math.round(pos * (blinks || 5)) % 2;
-	},
-	pulse: function(pos, pulses) {
-		return (-Math.cos((pos * ((pulses || 5) - .5) * 2) * Math.PI) / 2) + .5;
-	},
-	wobble: function(pos) {
-		return (-Math.cos(pos * Math.PI * (9 * pos)) / 2) + 0.5;
-	},
-	sinusoidal: function(pos) {
-		return (-Math.cos(pos * Math.PI) / 2) + 0.5;
-	},
-	flicker: function(pos) {
-		var pos = pos + (Math.random() - 0.5) / 5;
-		return easings.sinusoidal(pos < 0 ? 0 : pos > 1 ? 1 : pos);
-	},
-	mirror: function(pos) {
-		if (pos < 0.5) return easings.sinusoidal(pos * 2);
-		else return easings.sinusoidal(1 - (pos - 0.5) * 2);
-	},
-	// accelerating from zero velocity
-	easeInQuad: function (t) { return t*t },
-	// decelerating to zero velocity
-	easeOutQuad: function (t) { return t*(2-t) },
-	// acceleration until halfway, then deceleration
-	easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
-	// accelerating from zero velocity 
-	easeInCubic: function (t) { return t*t*t },
-	// decelerating to zero velocity 
-	easeOutCubic: function (t) { return (--t)*t*t+1 },
-	// acceleration until halfway, then deceleration 
-	easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
-	// accelerating from zero velocity 
-	easeInQuart: function (t) { return t*t*t*t },
-	// decelerating to zero velocity 
-	easeOutQuart: function (t) { return 1-(--t)*t*t*t },
-	// acceleration until halfway, then deceleration
-	easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
-	// accelerating from zero velocity
-	easeInQuint: function (t) { return t*t*t*t*t },
-	// decelerating to zero velocity
-	easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
-	// acceleration until halfway, then deceleration 
-	easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
-};
-
-/*
-Math.easeInExpo = function (t, b, c, d) {
-	return c * Math.pow( 2, 10 * (t/d - 1) ) + b;
-};
-
-		
-
-// exponential easing out - decelerating to zero velocity
-
-
-Math.easeOutExpo = function (t, b, c, d) {
-	return c * ( -Math.pow( 2, -10 * t/d ) + 1 ) + b;
-};
-
-		
-
-// exponential easing in/out - accelerating until halfway, then decelerating
-
-
-Math.easeInOutExpo = function (t, b, c, d) {
-	t /= d/2;
-	if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b;
-	t--;
-	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
-};
-*/
-
-/* **********************************************
-     Begin TL.Animate.js
-********************************************** */
-
+TL.Easings={ease:[.25,.1,.25,1],linear:[0,0,1,1],easein:[.42,0,1,1],easeout:[0,0,.58,1],easeinout:[.42,0,.58,1]},TL.Ease={KeySpline:function(s){function n(t,e){return 1-3*e+3*t}function a(t,e){return 3*e-6*t}function o(t){return 3*t}
+// Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
+function r(t,e,i){return((n(e,i)*t+a(e,i))*t+o(e))*t}
+// Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
+function l(t,e,i){return 3*n(e,i)*t*t+2*a(e,i)*t+o(e)}function e(t){for(
+// Newton raphson iteration
+var e=t,i=0;i<4;++i){var n=l(e,s[0],s[2]),a;if(0==n)return e;e-=(r(e,s[0],s[2])-t)/n}return e}
+//KeySpline: function(mX1, mY1, mX2, mY2) {
+this.get=function(t){return s[0]==s[1]&&s[2]==s[3]?t:r(e(t),s[1],s[3]);// linear
+}},easeInSpline:function(t){var e;return new TL.Ease.KeySpline(TL.Easings.easein).get(t)},easeInOutExpo:function(t){var e;return new TL.Ease.KeySpline(TL.Easings.easein).get(t)},easeOut:function(t){return Math.sin(t*Math.PI/2)},easeOutStrong:function(t){return 1==t?1:1-Math.pow(2,-10*t)},easeIn:function(t){return t*t},easeInStrong:function(t){return 0==t?0:Math.pow(2,10*(t-1))},easeOutBounce:function(t){return t<1/2.75?7.5625*t*t:t<2/2.75?7.5625*(t-=1.5/2.75)*t+.75:t<2.5/2.75?7.5625*(t-=2.25/2.75)*t+.9375:7.5625*(t-=2.625/2.75)*t+.984375},easeInBack:function(t){var e=1.70158;return t*t*((e+1)*t-e)},easeOutBack:function(t){var e=1.70158;return(t-=1)*t*((e+1)*t+e)+1},bounce:function(t){return t<1/2.75?7.5625*t*t:t<2/2.75?7.5625*(t-=1.5/2.75)*t+.75:t<2.5/2.75?7.5625*(t-=2.25/2.75)*t+.9375:7.5625*(t-=2.625/2.75)*t+.984375},bouncePast:function(t){return t<1/2.75?7.5625*t*t:t<2/2.75?2-(7.5625*(t-=1.5/2.75)*t+.75):t<2.5/2.75?2-(7.5625*(t-=2.25/2.75)*t+.9375):2-(7.5625*(t-=2.625/2.75)*t+.984375)},swingTo:function(t){var e=1.70158;return(t-=1)*t*((e+1)*t+e)+1},swingFrom:function(t){var e=1.70158;return t*t*((e+1)*t-e)},elastic:function(t){return-1*Math.pow(4,-8*t)*Math.sin((6*t-1)*(2*Math.PI)/2)+1},spring:function(t){return 1-Math.cos(4.5*t*Math.PI)*Math.exp(6*-t)},blink:function(t,e){return Math.round(t*(e||5))%2},pulse:function(t,e){return-Math.cos(t*((e||5)-.5)*2*Math.PI)/2+.5},wobble:function(t){return-Math.cos(t*Math.PI*(9*t))/2+.5},sinusoidal:function(t){return-Math.cos(t*Math.PI)/2+.5},flicker:function(t){var t=t+(Math.random()-.5)/5;return easings.sinusoidal(t<0?0:1<t?1:t)},mirror:function(t){return t<.5?easings.sinusoidal(2*t):easings.sinusoidal(1-2*(t-.5))},
+// accelerating from zero velocity
+easeInQuad:function(t){return t*t},
+// decelerating to zero velocity
+easeOutQuad:function(t){return t*(2-t)},
+// acceleration until halfway, then deceleration
+easeInOutQuad:function(t){return t<.5?2*t*t:(4-2*t)*t-1},
+// accelerating from zero velocity 
+easeInCubic:function(t){return t*t*t},
+// decelerating to zero velocity 
+easeOutCubic:function(t){return--t*t*t+1},
+// acceleration until halfway, then deceleration 
+easeInOutCubic:function(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1},
+// accelerating from zero velocity 
+easeInQuart:function(t){return t*t*t*t},
+// decelerating to zero velocity 
+easeOutQuart:function(t){return 1- --t*t*t*t},
+// acceleration until halfway, then deceleration
+easeInOutQuart:function(t){return t<.5?8*t*t*t*t:1-8*--t*t*t*t},
+// accelerating from zero velocity
+easeInQuint:function(t){return t*t*t*t*t},
+// decelerating to zero velocity
+easeOutQuint:function(t){return 1+--t*t*t*t*t},
+// acceleration until halfway, then deceleration 
+easeInOutQuint:function(t){return t<.5?16*t*t*t*t*t:1+16*--t*t*t*t*t}},
 /*	TL.Animate
 	Basic animation
 ================================================== */
-
-TL.Animate = function(el, options) {
-	var animation = new tlanimate(el, options),
-		webkit_timeout;
-		/*
+TL.Animate=function(t,e){var i,n;
+/*
 		// POSSIBLE ISSUE WITH WEBKIT FUTURE BUILDS
 	var onWebKitTimeout = function() {
 
@@ -4285,190 +798,25 @@ TL.Animate = function(el, options) {
 	if (TL.Browser.webkit) {
 		webkit_timeout = setTimeout(function(){onWebKitTimeout()}, options.duration);
 	}
-	*/
-	return animation;
-};
-
-
+	*/return new tlanimate(t,e)},
 /*	Based on: Morpheus
 	https://github.com/ded/morpheus - (c) Dustin Diaz 2011
 	License MIT
 ================================================== */
-window.tlanimate = (function() {
-
-	var doc = document,
-		win = window,
-		perf = win.performance,
-		perfNow = perf && (perf.now || perf.webkitNow || perf.msNow || perf.mozNow),
-		now = perfNow ? function () { return perfNow.call(perf) } : function () { return +new Date() },
-		html = doc.documentElement,
-		fixTs = false, // feature detected below
-		thousand = 1000,
-		rgbOhex = /^rgb\(|#/,
-		relVal = /^([+\-])=([\d\.]+)/,
-		numUnit = /^(?:[\+\-]=?)?\d+(?:\.\d+)?(%|in|cm|mm|em|ex|pt|pc|px)$/,
-		rotate = /rotate\(((?:[+\-]=)?([\-\d\.]+))deg\)/,
-		scale = /scale\(((?:[+\-]=)?([\d\.]+))\)/,
-		skew = /skew\(((?:[+\-]=)?([\-\d\.]+))deg, ?((?:[+\-]=)?([\-\d\.]+))deg\)/,
-		translate = /translate\(((?:[+\-]=)?([\-\d\.]+))px, ?((?:[+\-]=)?([\-\d\.]+))px\)/,
-		// these elements do not require 'px'
-		unitless = { lineHeight: 1, zoom: 1, zIndex: 1, opacity: 1, transform: 1};
-
-  // which property name does this browser use for transform
-	var transform = function () {
-		var styles = doc.createElement('a').style,
-			props = ['webkitTransform', 'MozTransform', 'OTransform', 'msTransform', 'Transform'],
-			i;
-
-		for (i = 0; i < props.length; i++) {
-			if (props[i] in styles) return props[i]
-		};
-	}();
-
-	// does this browser support the opacity property?
-	var opacity = function () {
-		return typeof doc.createElement('a').style.opacity !== 'undefined'
-	}();
-
-	// initial style is determined by the elements themselves
-	var getStyle = doc.defaultView && doc.defaultView.getComputedStyle ?
-	function (el, property) {
-		property = property == 'transform' ? transform : property
-		property = camelize(property)
-		var value = null,
-			computed = doc.defaultView.getComputedStyle(el, '');
-
-		computed && (value = computed[property]);
-		return el.style[property] || value;
-	} : html.currentStyle ?
-
-    function (el, property) {
-		property = camelize(property)
-
-		if (property == 'opacity') {
-			var val = 100
-			try {
-				val = el.filters['DXImageTransform.Microsoft.Alpha'].opacity
-			} catch (e1) {
-				try {
-					val = el.filters('alpha').opacity
-				} catch (e2) {
-
-				}
-			}
-			return val / 100
-		}
-		var value = el.currentStyle ? el.currentStyle[property] : null
-		return el.style[property] || value
-	} :
-
-    function (el, property) {
-		return el.style[camelize(property)]
-    }
-
-  var frame = function () {
-    // native animation frames
-    // http://webstuff.nfshost.com/anim-timing/Overview.html
-    // http://dev.chromium.org/developers/design-documents/requestanimationframe-implementation
-    return win.requestAnimationFrame  ||
-      win.webkitRequestAnimationFrame ||
-      win.mozRequestAnimationFrame    ||
-      win.msRequestAnimationFrame     ||
-      win.oRequestAnimationFrame      ||
-      function (callback) {
-        win.setTimeout(function () {
-          callback(+new Date())
-        }, 17) // when I was 17..
-      }
-  }()
-
-  var children = []
-
-	frame(function(timestamp) {
-	  	// feature-detect if rAF and now() are of the same scale (epoch or high-res),
-		// if not, we have to do a timestamp fix on each frame
-		fixTs = timestamp > 1e12 != now() > 1e12
-	})
-
-  function has(array, elem, i) {
-    if (Array.prototype.indexOf) return array.indexOf(elem)
-    for (i = 0; i < array.length; ++i) {
-      if (array[i] === elem) return i
-    }
-  }
-
-  function render(timestamp) {
-    var i, count = children.length
-    // if we're using a high res timer, make sure timestamp is not the old epoch-based value.
-    // http://updates.html5rocks.com/2012/05/requestAnimationFrame-API-now-with-sub-millisecond-precision
-    if (perfNow && timestamp > 1e12) timestamp = now()
-	if (fixTs) timestamp = now()
-    for (i = count; i--;) {
-      children[i](timestamp)
-    }
-    children.length && frame(render)
-  }
-
-  function live(f) {
-    if (children.push(f) === 1) frame(render)
-  }
-
-  function die(f) {
-    var rest, index = has(children, f)
-    if (index >= 0) {
-      rest = children.slice(index + 1)
-      children.length = index
-      children = children.concat(rest)
-    }
-  }
-
-  function parseTransform(style, base) {
-    var values = {}, m
-    if (m = style.match(rotate)) values.rotate = by(m[1], base ? base.rotate : null)
-    if (m = style.match(scale)) values.scale = by(m[1], base ? base.scale : null)
-    if (m = style.match(skew)) {values.skewx = by(m[1], base ? base.skewx : null); values.skewy = by(m[3], base ? base.skewy : null)}
-    if (m = style.match(translate)) {values.translatex = by(m[1], base ? base.translatex : null); values.translatey = by(m[3], base ? base.translatey : null)}
-    return values
-  }
-
-  function formatTransform(v) {
-    var s = ''
-    if ('rotate' in v) s += 'rotate(' + v.rotate + 'deg) '
-    if ('scale' in v) s += 'scale(' + v.scale + ') '
-    if ('translatex' in v) s += 'translate(' + v.translatex + 'px,' + v.translatey + 'px) '
-    if ('skewx' in v) s += 'skew(' + v.skewx + 'deg,' + v.skewy + 'deg)'
-    return s
-  }
-
-  function rgb(r, g, b) {
-    return '#' + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)
-  }
-
-  // convert rgb and short hex to long hex
-  function toHex(c) {
-    var m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
-    return (m ? rgb(m[1], m[2], m[3]) : c)
-      .replace(/#(\w)(\w)(\w)$/, '#$1$1$2$2$3$3') // short skirt to long jacket
-  }
-
-  // change font-size => fontSize etc.
-  function camelize(s) {
-    return s.replace(/-(.)/g, function (m, m1) {
-      return m1.toUpperCase()
-    })
-  }
-
-  // aren't we having it?
-  function fun(f) {
-    return typeof f == 'function'
-  }
-
-  function nativeTween(t) {
-    // default to a pleasant-to-the-eye easeOut (like native animations)
-    return Math.sin(t * Math.PI / 2)
-  }
-
-  /**
+window.tlanimate=function(){function n(t,e,i){if(Array.prototype.indexOf)return t.indexOf(e);for(i=0;i<t.length;++i)if(t[i]===e)return i}function a(t){var e,i=P.length;
+// if we're using a high res timer, make sure timestamp is not the old epoch-based value.
+// http://updates.html5rocks.com/2012/05/requestAnimationFrame-API-now-with-sub-millisecond-precision
+for(r&&1e12<t&&(t=g()),d&&(t=g()),e=i;e--;)P[e](t);P.length&&O(a)}function e(t){1===P.push(t)&&O(a)}function _(t){var e,i=n(P,t);0<=i&&(e=P.slice(i+1),P.length=i,P=P.concat(e))}function L(t,e){var i={},n;return(n=t.match(u))&&(i.rotate=S(n[1],e?e.rotate:null)),(n=t.match(m))&&(i.scale=S(n[1],e?e.scale:null)),(n=t.match(y))&&(i.skewx=S(n[1],e?e.skewx:null),i.skewy=S(n[3],e?e.skewy:null)),(n=t.match(T))&&(i.translatex=S(n[1],e?e.translatex:null),i.translatey=S(n[3],e?e.translatey:null)),i}function w(t){var e="";return"rotate"in t&&(e+="rotate("+t.rotate+"deg) "),"scale"in t&&(e+="scale("+t.scale+") "),"translatex"in t&&(e+="translate("+t.translatex+"px,"+t.translatey+"px) "),"skewx"in t&&(e+="skew("+t.skewx+"deg,"+t.skewy+"deg)"),e}function i(t,e,i){return"#"+(1<<24|t<<16|e<<8|i).toString(16).slice(1)}
+// convert rgb and short hex to long hex
+function b(t){var e=t.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);return(e?i(e[1],e[2],e[3]):t).replace(/#(\w)(\w)(\w)$/,"#$1$1$2$2$3$3");// short skirt to long jacket
+}
+// change font-size => fontSize etc.
+function k(t){return t.replace(/-(.)/g,function(t,e){return e.toUpperCase()})}
+// aren't we having it?
+function x(t){return"function"==typeof t}function p(t){
+// default to a pleasant-to-the-eye easeOut (like native animations)
+return Math.sin(t*Math.PI/2)}
+/**
     * Core tween method that requests each frame
     * @param duration: time in milliseconds. defaults to 1000
     * @param fn: tween frame callback function receiving 'position'
@@ -4477,43 +825,12 @@ window.tlanimate = (function() {
     * @param from {optional}: integer to start from
     * @param to {optional}: integer to end at
     * @returns method to stop the animation
-    */
-  function tween(duration, fn, done, ease, from, to) {
-    ease = fun(ease) ? ease : morpheus.easings[ease] || nativeTween
-    var time = duration || thousand
-      , self = this
-      , diff = to - from
-      , start = now()
-      , stop = 0
-      , end = 0
-
-    function run(t) {
-      var delta = t - start
-      if (delta > time || stop) {
-        to = isFinite(to) ? to : 1
-        stop ? end && fn(to) : fn(to)
-        die(run)
-        return done && done.apply(self)
-      }
-      // if you don't specify a 'to' you can use tween as a generic delta tweener
-      // cool, eh?
-      isFinite(to) ?
-        fn((diff * ease(delta / time)) + from) :
-        fn(ease(delta / time))
-    }
-
-    live(run)
-
-    return {
-      stop: function (jump) {
-        stop = 1
-        end = jump // jump to end of animation?
-        if (!jump) done = null // remove callback if not jumping to end
-      }
-    }
-  }
-
-  /**
+    */function M(t,i,n,a,s,o){function r(t){var e=t-c;if(l<e||u)return o=isFinite(o)?o:1,u?m&&i(o):i(o),_(r),n&&n.apply(h);
+// if you don't specify a 'to' you can use tween as a generic delta tweener
+// cool, eh?
+isFinite(o)?i(d*a(e/l)+s):i(a(e/l))}a=x(a)?a:f.easings[a]||p;var l=t||v,h=this,d=o-s,c=g(),u=0,m=0;return e(r),{stop:function(t){u=1,// jump to end of animation?
+(m=t)||(n=null)}}}
+/**
     * generic bezier method for animating x|y coordinates
     * minimum of 2 points required (start and end).
     * first point start, last point end
@@ -4522,61 +839,18 @@ window.tlanimate = (function() {
        [[0, 0], [100, 200], [200, 100]]
     * @param pos: current be(tween) position represented as float  0 - 1
     * @return [x, y]
-    */
-  function bezier(points, pos) {
-    var n = points.length, r = [], i, j
-    for (i = 0; i < n; ++i) {
-      r[i] = [points[i][0], points[i][1]]
-    }
-    for (j = 1; j < n; ++j) {
-      for (i = 0; i < n - j; ++i) {
-        r[i][0] = (1 - pos) * r[i][0] + pos * r[parseInt(i + 1, 10)][0]
-        r[i][1] = (1 - pos) * r[i][1] + pos * r[parseInt(i + 1, 10)][1]
-      }
-    }
-    return [r[0][0], r[0][1]]
-  }
-
-  // this gets you the next hex in line according to a 'position'
-  function nextColor(pos, start, finish) {
-    var r = [], i, e, from, to
-    for (i = 0; i < 6; i++) {
-      from = Math.min(15, parseInt(start.charAt(i),  16))
-      to   = Math.min(15, parseInt(finish.charAt(i), 16))
-      e = Math.floor((to - from) * pos + from)
-      e = e > 15 ? 15 : e < 0 ? 0 : e
-      r[i] = e.toString(16)
-    }
-    return '#' + r.join('')
-  }
-
-  // this retreives the frame value within a sequence
-  function getTweenVal(pos, units, begin, end, k, i, v) {
-    if (k == 'transform') {
-      v = {}
-      for (var t in begin[i][k]) {
-        v[t] = (t in end[i][k]) ? Math.round(((end[i][k][t] - begin[i][k][t]) * pos + begin[i][k][t]) * thousand) / thousand : begin[i][k][t]
-      }
-      return v
-    } else if (typeof begin[i][k] == 'string') {
-      return nextColor(pos, begin[i][k], end[i][k])
-    } else {
-      // round so we don't get crazy long floats
-      v = Math.round(((end[i][k] - begin[i][k]) * pos + begin[i][k]) * thousand) / thousand
-      // some css properties don't require a unit (like zIndex, lineHeight, opacity)
-      if (!(k in unitless)) v += units[i][k] || 'px'
-      return v
-    }
-  }
-
-  // support for relative movement via '+=n' or '-=n'
-  function by(val, start, m, r, i) {
-    return (m = relVal.exec(val)) ?
-      (i = parseFloat(m[2])) && (start + (m[1] == '+' ? 1 : -1) * i) :
-      parseFloat(val)
-  }
-
-  /**
+    */function D(t,e){var i=t.length,n=[],a,s;for(a=0;a<i;++a)n[a]=[t[a][0],t[a][1]];for(s=1;s<i;++s)for(a=0;a<i-s;++a)n[a][0]=(1-e)*n[a][0]+e*n[parseInt(a+1,10)][0],n[a][1]=(1-e)*n[a][1]+e*n[parseInt(a+1,10)][1];return[n[0][0],n[0][1]]}
+// this gets you the next hex in line according to a 'position'
+function l(t,e,i){var n=[],a,s,o,r;for(a=0;a<6;a++)o=Math.min(15,parseInt(e.charAt(a),16)),r=Math.min(15,parseInt(i.charAt(a),16)),s=15<(s=Math.floor((r-o)*t+o))?15:s<0?0:s,n[a]=s.toString(16);return"#"+n.join("")}
+// this retreives the frame value within a sequence
+function E(t,e,i,n,a,s,o){if("transform"!=a)return"string"==typeof i[s][a]?l(t,i[s][a],n[s][a]):(
+// round so we don't get crazy long floats
+o=Math.round(((n[s][a]-i[s][a])*t+i[s][a])*v)/v,
+// some css properties don't require a unit (like zIndex, lineHeight, opacity)
+a in I||(o+=e[s][a]||"px"),o);for(var r in o={},i[s][a])o[r]=r in n[s][a]?Math.round(((n[s][a][r]-i[s][a][r])*t+i[s][a][r])*v)/v:i[s][a][r];return o}
+// support for relative movement via '+=n' or '-=n'
+function S(t,e,i,n,a){return(i=c.exec(t))?(a=parseFloat(i[2]))&&e+("+"==i[1]?1:-1)*a:parseFloat(t)}
+/**
     * morpheus:
     * @param element(s): HTMLElement(s)
     * @param options: mixed bag between CSS Style properties & animation options
@@ -4589,2302 +863,326 @@ window.tlanimate = (function() {
     *  - complete: a callback method for when all elements have finished
     *  - bezier: array of arrays containing x|y coordinates that define the bezier points. defaults to none
     *     - this may also be a function that receives element to be animated. it must return a value
-    */
-  function morpheus(elements, options) {
-    var els = elements ? (els = isFinite(elements.length) ? elements : [elements]) : [], i
-      , complete = options.complete
-      , duration = options.duration
-      , ease = options.easing
-      , points = options.bezier
-      , begin = []
-      , end = []
-      , units = []
-      , bez = []
-      , originalLeft
-      , originalTop
-
-    if (points) {
-      // remember the original values for top|left
-      originalLeft = options.left;
-      originalTop = options.top;
-      delete options.right;
-      delete options.bottom;
-      delete options.left;
-      delete options.top;
-    }
-
-    for (i = els.length; i--;) {
-
-      // record beginning and end states to calculate positions
-      begin[i] = {}
-      end[i] = {}
-      units[i] = {}
-
-      // are we 'moving'?
-      if (points) {
-
-        var left = getStyle(els[i], 'left')
-          , top = getStyle(els[i], 'top')
-          , xy = [by(fun(originalLeft) ? originalLeft(els[i]) : originalLeft || 0, parseFloat(left)),
-                  by(fun(originalTop) ? originalTop(els[i]) : originalTop || 0, parseFloat(top))]
-
-        bez[i] = fun(points) ? points(els[i], xy) : points
-        bez[i].push(xy)
-        bez[i].unshift([
-          parseInt(left, 10),
-          parseInt(top, 10)
-        ])
-      }
-
-      for (var k in options) {
-        switch (k) {
-        case 'complete':
-        case 'duration':
-        case 'easing':
-        case 'bezier':
-          continue
-        }
-        var v = getStyle(els[i], k), unit
-          , tmp = fun(options[k]) ? options[k](els[i]) : options[k]
-        if (typeof tmp == 'string' &&
-            rgbOhex.test(tmp) &&
-            !rgbOhex.test(v)) {
-          delete options[k]; // remove key :(
-          continue; // cannot animate colors like 'orange' or 'transparent'
-                    // only #xxx, #xxxxxx, rgb(n,n,n)
-        }
-
-        begin[i][k] = k == 'transform' ? parseTransform(v) :
-          typeof tmp == 'string' && rgbOhex.test(tmp) ?
-            toHex(v).slice(1) :
-            parseFloat(v)
-        end[i][k] = k == 'transform' ? parseTransform(tmp, begin[i][k]) :
-          typeof tmp == 'string' && tmp.charAt(0) == '#' ?
-            toHex(tmp).slice(1) :
-            by(tmp, parseFloat(v));
-        // record original unit
-        (typeof tmp == 'string') && (unit = tmp.match(numUnit)) && (units[i][k] = unit[1])
-      }
-    }
-    // ONE TWEEN TO RULE THEM ALL
-    return tween.apply(els, [duration, function (pos, v, xy) {
-      // normally not a fan of optimizing for() loops, but we want something
-      // fast for animating
-      for (i = els.length; i--;) {
-        if (points) {
-          xy = bezier(bez[i], pos)
-          els[i].style.left = xy[0] + 'px'
-          els[i].style.top = xy[1] + 'px'
-        }
-        for (var k in options) {
-          v = getTweenVal(pos, units, begin, end, k, i)
-          k == 'transform' ?
-            els[i].style[transform] = formatTransform(v) :
-            k == 'opacity' && !opacity ?
-              (els[i].style.filter = 'alpha(opacity=' + (v * 100) + ')') :
-              (els[i].style[camelize(k)] = v)
-        }
-      }
-    }, complete, ease])
-  }
-
-  // expose useful methods
-  morpheus.tween = tween
-  morpheus.getStyle = getStyle
-  morpheus.bezier = bezier
-  morpheus.transform = transform
-  morpheus.parseTransform = parseTransform
-  morpheus.formatTransform = formatTransform
-  morpheus.easings = {}
-
-  return morpheus
-})();
-
-
-/* **********************************************
-     Begin TL.Point.js
-********************************************** */
-
+    */function f(t,a){var s=t?s=isFinite(t.length)?t:[t]:[],o,e=a.complete,i=a.duration,n=a.easing,r=a.bezier,l=[],h=[],d=[],c=[],u,m;for(r&&(
+// remember the original values for top|left
+u=a.left,m=a.top,delete a.right,delete a.bottom,delete a.left,delete a.top),o=s.length;o--;){
+// are we 'moving'?
+if(
+// record beginning and end states to calculate positions
+l[o]={},h[o]={},d[o]={},r){var _=j(s[o],"left"),p=j(s[o],"top"),f=[S(x(u)?u(s[o]):u||0,parseFloat(_)),S(x(m)?m(s[o]):m||0,parseFloat(p))];c[o]=x(r)?r(s[o],f):r,c[o].push(f),c[o].unshift([parseInt(_,10),parseInt(p,10)])}for(var g in a){switch(g){case"complete":case"duration":case"easing":case"bezier":continue}var v=j(s[o],g),y,T=x(a[g])?a[g](s[o]):a[g];"string"!=typeof T||!C.test(T)||C.test(v)?(l[o][g]="transform"==g?L(v):"string"==typeof T&&C.test(T)?b(v).slice(1):parseFloat(v),h[o][g]="transform"==g?L(T,l[o][g]):"string"==typeof T&&"#"==T.charAt(0)?b(T).slice(1):S(T,parseFloat(v)),
+// record original unit
+"string"==typeof T&&(y=T.match(N))&&(d[o][g]=y[1])):delete a[g]}}
+// ONE TWEEN TO RULE THEM ALL
+return M.apply(s,[i,function(t,e,i){
+// normally not a fan of optimizing for() loops, but we want something
+// fast for animating
+for(o=s.length;o--;)for(var n in r&&(i=D(c[o],t),s[o].style.left=i[0]+"px",s[o].style.top=i[1]+"px"),a)e=E(t,d,l,h,n,o),"transform"==n?s[o].style[U]=w(e):"opacity"!=n||A?s[o].style[k(n)]=e:s[o].style.filter="alpha(opacity="+100*e+")"},e,n])}
+// expose useful methods
+var s=document,o=window,t=o.performance,r=t&&(t.now||t.webkitNow||t.msNow||t.mozNow),g=r?function(){return r.call(t)}:function(){return+new Date},h=s.documentElement,d=!1,// feature detected below
+v=1e3,C=/^rgb\(|#/,c=/^([+\-])=([\d\.]+)/,N=/^(?:[\+\-]=?)?\d+(?:\.\d+)?(%|in|cm|mm|em|ex|pt|pc|px)$/,u=/rotate\(((?:[+\-]=)?([\-\d\.]+))deg\)/,m=/scale\(((?:[+\-]=)?([\d\.]+))\)/,y=/skew\(((?:[+\-]=)?([\-\d\.]+))deg, ?((?:[+\-]=)?([\-\d\.]+))deg\)/,T=/translate\(((?:[+\-]=)?([\-\d\.]+))px, ?((?:[+\-]=)?([\-\d\.]+))px\)/,
+// these elements do not require 'px'
+I={lineHeight:1,zoom:1,zIndex:1,opacity:1,transform:1},U=function(){var t=s.createElement("a").style,e=["webkitTransform","MozTransform","OTransform","msTransform","Transform"],i;for(i=0;i<e.length;i++)if(e[i]in t)return e[i]}(),A=void 0!==s.createElement("a").style.opacity,j=s.defaultView&&s.defaultView.getComputedStyle?function(t,e){e=k(e="transform"==e?U:e);var i=null,n=s.defaultView.getComputedStyle(t,"");return n&&(i=n[e]),t.style[e]||i}:h.currentStyle?function(e,t){if("opacity"==(t=k(t))){var i=100;try{i=e.filters["DXImageTransform.Microsoft.Alpha"].opacity}catch(t){try{i=e.filters("alpha").opacity}catch(t){}}return i/100}var n=e.currentStyle?e.currentStyle[t]:null;return e.style[t]||n}:function(t,e){return t.style[k(e)]},O=o.requestAnimationFrame||o.webkitRequestAnimationFrame||o.mozRequestAnimationFrame||o.msRequestAnimationFrame||o.oRequestAnimationFrame||function(t){o.setTimeout(function(){t(+new Date)},17);// when I was 17..
+},P=[];
+// which property name does this browser use for transform
+return O(function(t){
+// feature-detect if rAF and now() are of the same scale (epoch or high-res),
+// if not, we have to do a timestamp fix on each frame
+d=1e12<t!=1e12<g()}),f.tween=M,f.getStyle=j,f.bezier=D,f.transform=U,f.parseTransform=L,f.formatTransform=w,f.easings={},f}(),
 /*	TL.Point
 	Inspired by Leaflet
 	TL.Point represents a point with x and y coordinates.
 ================================================== */
-
-TL.Point = function (/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
-	this.x = (round ? Math.round(x) : x);
-	this.y = (round ? Math.round(y) : y);
-};
-
-TL.Point.prototype = {
-	add: function (point) {
-		return this.clone()._add(point);
-	},
-
-	_add: function (point) {
-		this.x += point.x;
-		this.y += point.y;
-		return this;
-	},
-
-	subtract: function (point) {
-		return this.clone()._subtract(point);
-	},
-
-	// destructive subtract (faster)
-	_subtract: function (point) {
-		this.x -= point.x;
-		this.y -= point.y;
-		return this;
-	},
-
-	divideBy: function (num, round) {
-		return new TL.Point(this.x / num, this.y / num, round);
-	},
-
-	multiplyBy: function (num) {
-		return new TL.Point(this.x * num, this.y * num);
-	},
-
-	distanceTo: function (point) {
-		var x = point.x - this.x,
-			y = point.y - this.y;
-		return Math.sqrt(x * x + y * y);
-	},
-
-	round: function () {
-		return this.clone()._round();
-	},
-
-	// destructive round
-	_round: function () {
-		this.x = Math.round(this.x);
-		this.y = Math.round(this.y);
-		return this;
-	},
-
-	clone: function () {
-		return new TL.Point(this.x, this.y);
-	},
-
-	toString: function () {
-		return 'Point(' +
-				TL.Util.formatNum(this.x) + ', ' +
-				TL.Util.formatNum(this.y) + ')';
-	}
-};
-
-/* **********************************************
-     Begin TL.DomMixins.js
-********************************************** */
-
+TL.Point=function(/*Number*/t,/*Number*/e,/*Boolean*/i){this.x=i?Math.round(t):t,this.y=i?Math.round(e):e},TL.Point.prototype={add:function(t){return this.clone()._add(t)},_add:function(t){return this.x+=t.x,this.y+=t.y,this},subtract:function(t){return this.clone()._subtract(t)},
+// destructive subtract (faster)
+_subtract:function(t){return this.x-=t.x,this.y-=t.y,this},divideBy:function(t,e){return new TL.Point(this.x/t,this.y/t,e)},multiplyBy:function(t){return new TL.Point(this.x*t,this.y*t)},distanceTo:function(t){var e=t.x-this.x,i=t.y-this.y;return Math.sqrt(e*e+i*i)},round:function(){return this.clone()._round()},
+// destructive round
+_round:function(){return this.x=Math.round(this.x),this.y=Math.round(this.y),this},clone:function(){return new TL.Point(this.x,this.y)},toString:function(){return"Point("+TL.Util.formatNum(this.x)+", "+TL.Util.formatNum(this.y)+")"}},
 /*	TL.DomMixins
 	DOM methods used regularly
 	Assumes there is a _el.container and animator
 ================================================== */
-TL.DomMixins = {
-	
-	/*	Adding, Hiding, Showing etc
+TL.DomMixins={
+/*	Adding, Hiding, Showing etc
 	================================================== */
-	show: function(animate) {
-		if (animate) {
-			/*
-			this.animator = TL.Animate(this._el.container, {
-				left: 		-(this._el.container.offsetWidth * n) + "px",
-				duration: 	this.options.duration,
-				easing: 	this.options.ease
-			});
-			*/
-		} else {
-			this._el.container.style.display = "block";
-		}
-	},
-	
-	hide: function(animate) {
-		this._el.container.style.display = "none";
-	},
-	
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-		this.onAdd();
-	},
-	
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-		this.onRemove();
-	},
-	
-	/*	Animate to Position
+show:function(t){t||(this._el.container.style.display="block")},hide:function(t){this._el.container.style.display="none"},addTo:function(t){t.appendChild(this._el.container),this.onAdd()},removeFrom:function(t){t.removeChild(this._el.container),this.onRemove()},
+/*	Animate to Position
 	================================================== */
-	animatePosition: function(pos, el) {
-		var ani = {
-			duration: 	this.options.duration,
-			easing: 	this.options.ease
-		};
-		for (var name in pos) {
-			if (pos.hasOwnProperty(name)) {
-				ani[name] = pos[name] + "px";
-			}
-		}
-		
-		if (this.animator) {
-			this.animator.stop();
-		}
-		this.animator = TL.Animate(el, ani);
-	},
-	
-	/*	Events
+animatePosition:function(t,e){var i={duration:this.options.duration,easing:this.options.ease};for(var n in t)t.hasOwnProperty(n)&&(i[n]=t[n]+"px");this.animator&&this.animator.stop(),this.animator=TL.Animate(e,i)},
+/*	Events
 	================================================== */
-	
-	onLoaded: function() {
-		this.fire("loaded", this.data);
-	},
-	
-	onAdd: function() {
-		this.fire("added", this.data);
-	},
-
-	onRemove: function() {
-		this.fire("removed", this.data);
-	},
-	
-	/*	Set the Position
+onLoaded:function(){this.fire("loaded",this.data)},onAdd:function(){this.fire("added",this.data)},onRemove:function(){this.fire("removed",this.data)},
+/*	Set the Position
 	================================================== */
-	setPosition: function(pos, el) {
-		for (var name in pos) {
-			if (pos.hasOwnProperty(name)) {
-				if (el) {
-					el.style[name] = pos[name] + "px";
-				} else {
-					this._el.container.style[name] = pos[name] + "px";
-				};
-			}
-		}
-	},
-	
-	getPosition: function() {
-		return TL.Dom.getPosition(this._el.container);
-	}
-	
-};
-
-
-/* **********************************************
-     Begin TL.Dom.js
-********************************************** */
-
+setPosition:function(t,e){for(var i in t)t.hasOwnProperty(i)&&(e?e.style[i]=t[i]+"px":this._el.container.style[i]=t[i]+"px")},getPosition:function(){return TL.Dom.getPosition(this._el.container)}},
 /*	TL.Dom
 	Utilities for working with the DOM
 ================================================== */
-
-TL.Dom = {
-
-	get: function(id) {
-		return (typeof id === 'string' ? document.getElementById(id) : id);
-	},
-
-	getByClass: function(id) {
-		if (id) {
-			return document.getElementsByClassName(id);
-		}
-	},
-
-	create: function(tagName, className, container) {
-		var el = document.createElement(tagName);
-		el.className = className;
-		if (container) {
-			container.appendChild(el);
-		}
-		return el;
-	},
-
-	createText: function(content, container) {
-		var el = document.createTextNode(content);
-		if (container) {
-			container.appendChild(el);
-		}
-		return el;
-	},
-
-	getTranslateString: function (point) {
-		return TL.Dom.TRANSLATE_OPEN +
-				point.x + 'px,' + point.y + 'px' +
-				TL.Dom.TRANSLATE_CLOSE;
-	},
-
-	setPosition: function (el, point) {
-		el._tl_pos = point;
-		if (TL.Browser.webkit3d) {
-			el.style[TL.Dom.TRANSFORM] =  TL.Dom.getTranslateString(point);
-
-			if (TL.Browser.android) {
-				el.style['-webkit-perspective'] = '1000';
-				el.style['-webkit-backface-visibility'] = 'hidden';
-			}
-		} else {
-			el.style.left = point.x + 'px';
-			el.style.top = point.y + 'px';
-		}
-	},
-
-	getPosition: function(el){
-	    var pos = {
-	    	x: 0,
-			y: 0
-	    }
-	    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-	        pos.x += el.offsetLeft// - el.scrollLeft;
-	        pos.y += el.offsetTop// - el.scrollTop;
-	        el = el.offsetParent;
-	    }
-	    return pos;
-	},
-
-	testProp: function(props) {
-		var style = document.documentElement.style;
-
-		for (var i = 0; i < props.length; i++) {
-			if (props[i] in style) {
-				return props[i];
-			}
-		}
-		return false;
-	}
-
-};
-
-TL.Util.mergeData(TL.Dom, {
-	TRANSITION: TL.Dom.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM: TL.Dom.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
-
-	TRANSLATE_OPEN: 'translate' + (TL.Browser.webkit3d ? '3d(' : '('),
-	TRANSLATE_CLOSE: TL.Browser.webkit3d ? ',0)' : ')'
-});
-
-
-/* **********************************************
-     Begin TL.DomUtil.js
-********************************************** */
-
+TL.Dom={get:function(t){return"string"==typeof t?document.getElementById(t):t},getByClass:function(t){if(t)return document.getElementsByClassName(t)},create:function(t,e,i){var n=document.createElement(t);return n.className=e,i&&i.appendChild(n),n},createText:function(t,e){var i=document.createTextNode(t);return e&&e.appendChild(i),i},getTranslateString:function(t){return TL.Dom.TRANSLATE_OPEN+t.x+"px,"+t.y+"px"+TL.Dom.TRANSLATE_CLOSE},setPosition:function(t,e){t._tl_pos=e,TL.Browser.webkit3d?(t.style[TL.Dom.TRANSFORM]=TL.Dom.getTranslateString(e),TL.Browser.android&&(t.style["-webkit-perspective"]="1000",t.style["-webkit-backface-visibility"]="hidden")):(t.style.left=e.x+"px",t.style.top=e.y+"px")},getPosition:function(t){for(var e={x:0,y:0};t&&!isNaN(t.offsetLeft)&&!isNaN(t.offsetTop);)e.x+=t.offsetLeft,// - el.scrollLeft;
+e.y+=t.offsetTop,// - el.scrollTop;
+t=t.offsetParent;return e},testProp:function(t){for(var e=document.documentElement.style,i=0;i<t.length;i++)if(t[i]in e)return t[i];return!1}},TL.Util.mergeData(TL.Dom,{TRANSITION:TL.Dom.testProp(["transition","webkitTransition","OTransition","MozTransition","msTransition"]),TRANSFORM:TL.Dom.testProp(["transformProperty","WebkitTransform","OTransform","MozTransform","msTransform"]),TRANSLATE_OPEN:"translate"+(TL.Browser.webkit3d?"3d(":"("),TRANSLATE_CLOSE:TL.Browser.webkit3d?",0)":")"}),
 /*	TL.DomUtil
 	Inspired by Leaflet
 	TL.DomUtil contains various utility functions for working with DOM
 ================================================== */
-
-
-TL.DomUtil = {
-	get: function (id) {
-		return (typeof id === 'string' ? document.getElementById(id) : id);
-	},
-
-	getStyle: function (el, style) {
-		var value = el.style[style];
-		if (!value && el.currentStyle) {
-			value = el.currentStyle[style];
-		}
-		if (!value || value === 'auto') {
-			var css = document.defaultView.getComputedStyle(el, null);
-			value = css ? css[style] : null;
-		}
-		return (value === 'auto' ? null : value);
-	},
-
-	getViewportOffset: function (element) {
-		var top = 0,
-			left = 0,
-			el = element,
-			docBody = document.body;
-
-		do {
-			top += el.offsetTop || 0;
-			left += el.offsetLeft || 0;
-
-			if (el.offsetParent === docBody &&
-					TL.DomUtil.getStyle(el, 'position') === 'absolute') {
-				break;
-			}
-			el = el.offsetParent;
-		} while (el);
-
-		el = element;
-
-		do {
-			if (el === docBody) {
-				break;
-			}
-
-			top -= el.scrollTop || 0;
-			left -= el.scrollLeft || 0;
-
-			el = el.parentNode;
-		} while (el);
-
-		return new TL.Point(left, top);
-	},
-
-	create: function (tagName, className, container) {
-		var el = document.createElement(tagName);
-		el.className = className;
-		if (container) {
-			container.appendChild(el);
-		}
-		return el;
-	},
-
-	disableTextSelection: function () {
-		if (document.selection && document.selection.empty) {
-			document.selection.empty();
-		}
-		if (!this._onselectstart) {
-			this._onselectstart = document.onselectstart;
-			document.onselectstart = TL.Util.falseFn;
-		}
-	},
-
-	enableTextSelection: function () {
-		document.onselectstart = this._onselectstart;
-		this._onselectstart = null;
-	},
-
-	hasClass: function (el, name) {
-		return (el.className.length > 0) &&
-				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
-	},
-
-	addClass: function (el, name) {
-		if (!TL.DomUtil.hasClass(el, name)) {
-			el.className += (el.className ? ' ' : '') + name;
-		}
-	},
-
-	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
-			if (match === name) {
-				return '';
-			}
-			return w;
-		}).replace(/^\s+/, '');
-	},
-
-	setOpacity: function (el, value) {
-		if (TL.Browser.ie) {
-			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
-		} else {
-			el.style.opacity = value;
-		}
-	},
-
-
-	testProp: function (props) {
-		var style = document.documentElement.style;
-
-		for (var i = 0; i < props.length; i++) {
-			if (props[i] in style) {
-				return props[i];
-			}
-		}
-		return false;
-	},
-
-	getTranslateString: function (point) {
-
-		return TL.DomUtil.TRANSLATE_OPEN +
-				point.x + 'px,' + point.y + 'px' +
-				TL.DomUtil.TRANSLATE_CLOSE;
-	},
-
-	getScaleString: function (scale, origin) {
-		var preTranslateStr = TL.DomUtil.getTranslateString(origin),
-			scaleStr = ' scale(' + scale + ') ',
-			postTranslateStr = TL.DomUtil.getTranslateString(origin.multiplyBy(-1));
-
-		return preTranslateStr + scaleStr + postTranslateStr;
-	},
-
-	setPosition: function (el, point) {
-		el._tl_pos = point;
-		if (TL.Browser.webkit3d) {
-			el.style[TL.DomUtil.TRANSFORM] =  TL.DomUtil.getTranslateString(point);
-
-			if (TL.Browser.android) {
-				el.style['-webkit-perspective'] = '1000';
-				el.style['-webkit-backface-visibility'] = 'hidden';
-			}
-		} else {
-			el.style.left = point.x + 'px';
-			el.style.top = point.y + 'px';
-		}
-	},
-
-	getPosition: function (el) {
-		return el._tl_pos;
-	}
-};
-
-/* **********************************************
-     Begin TL.DomEvent.js
-********************************************** */
-
+TL.DomUtil={get:function(t){return"string"==typeof t?document.getElementById(t):t},getStyle:function(t,e){var i=t.style[e];if(!i&&t.currentStyle&&(i=t.currentStyle[e]),!i||"auto"===i){var n=document.defaultView.getComputedStyle(t,null);i=n?n[e]:null}return"auto"===i?null:i},getViewportOffset:function(t){var e=0,i=0,n=t,a=document.body;do{if(e+=n.offsetTop||0,i+=n.offsetLeft||0,n.offsetParent===a&&"absolute"===TL.DomUtil.getStyle(n,"position"))break;n=n.offsetParent}while(n);n=t;do{if(n===a)break;e-=n.scrollTop||0,i-=n.scrollLeft||0,n=n.parentNode}while(n);return new TL.Point(i,e)},create:function(t,e,i){var n=document.createElement(t);return n.className=e,i&&i.appendChild(n),n},disableTextSelection:function(){document.selection&&document.selection.empty&&document.selection.empty(),this._onselectstart||(this._onselectstart=document.onselectstart,document.onselectstart=TL.Util.falseFn)},enableTextSelection:function(){document.onselectstart=this._onselectstart,this._onselectstart=null},hasClass:function(t,e){return 0<t.className.length&&new RegExp("(^|\\s)"+e+"(\\s|$)").test(t.className)},addClass:function(t,e){TL.DomUtil.hasClass(t,e)||(t.className+=(t.className?" ":"")+e)},removeClass:function(t,i){t.className=t.className.replace(/(\S+)\s*/g,function(t,e){return e===i?"":t}).replace(/^\s+/,"")},setOpacity:function(t,e){TL.Browser.ie?t.style.filter="alpha(opacity="+Math.round(100*e)+")":t.style.opacity=e},testProp:function(t){for(var e=document.documentElement.style,i=0;i<t.length;i++)if(t[i]in e)return t[i];return!1},getTranslateString:function(t){return TL.DomUtil.TRANSLATE_OPEN+t.x+"px,"+t.y+"px"+TL.DomUtil.TRANSLATE_CLOSE},getScaleString:function(t,e){var i,n,a;return TL.DomUtil.getTranslateString(e)+(" scale("+t+") ")+TL.DomUtil.getTranslateString(e.multiplyBy(-1))},setPosition:function(t,e){t._tl_pos=e,TL.Browser.webkit3d?(t.style[TL.DomUtil.TRANSFORM]=TL.DomUtil.getTranslateString(e),TL.Browser.android&&(t.style["-webkit-perspective"]="1000",t.style["-webkit-backface-visibility"]="hidden")):(t.style.left=e.x+"px",t.style.top=e.y+"px")},getPosition:function(t){return t._tl_pos}},
 /*	TL.DomEvent
 	Inspired by Leaflet 
 	DomEvent contains functions for working with DOM events.
 ================================================== */
 // TODO stamp
-
-TL.DomEvent = {
-	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
-		var id = TL.Util.stamp(fn),
-			key = '_tl_' + type + id;
-
-		if (obj[key]) {
-			return;
-		}
-
-		var handler = function (e) {
-			return fn.call(context || obj, e || TL.DomEvent._getEvent());
-		};
-
-		if (TL.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
-			this.addDoubleTapListener(obj, handler, id);
-		} else if ('addEventListener' in obj) {
-			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-				var originalHandler = handler,
-					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
-				handler = function (e) {
-					if (!TL.DomEvent._checkMouse(obj, e)) {
-						return;
-					}
-					return originalHandler(e);
-				};
-				obj.addEventListener(newType, handler, false);
-			} else {
-				obj.addEventListener(type, handler, false);
-			}
-		} else if ('attachEvent' in obj) {
-			obj.attachEvent("on" + type, handler);
-		}
-
-		obj[key] = handler;
-	},
-
-	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
-		var id = TL.Util.stamp(fn),
-			key = '_tl_' + type + id,
-			handler = obj[key];
-
-		if (!handler) {
-			return;
-		}
-
-		if (TL.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
-			this.removeDoubleTapListener(obj, id);
-		} else if ('removeEventListener' in obj) {
-			if (type === 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false);
-				obj.removeEventListener(type, handler, false);
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
-			} else {
-				obj.removeEventListener(type, handler, false);
-			}
-		} else if ('detachEvent' in obj) {
-			obj.detachEvent("on" + type, handler);
-		}
-		obj[key] = null;
-	},
-
-	_checkMouse: function (el, e) {
-		var related = e.relatedTarget;
-
-		if (!related) {
-			return true;
-		}
-
-		try {
-			while (related && (related !== el)) {
-				related = related.parentNode;
-			}
-		} catch (err) {
-			return false;
-		}
-
-		return (related !== el);
-	},
-
-	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function () {
-		var e = window.event;
-		if (!e) {
-			var caller = arguments.callee.caller;
-			while (caller) {
-				e = caller['arguments'][0];
-				if (e && window.Event === e.constructor) {
-					break;
-				}
-				caller = caller.caller;
-			}
-		}
-		return e;
-	},
-	/*jshint noarg:false */
-
-	stopPropagation: function (/*Event*/ e) {
-		if (e.stopPropagation) {
-			e.stopPropagation();
-		} else {
-			e.cancelBubble = true;
-		}
-	},
-	
-	// TODO TL.Draggable.START
-	disableClickPropagation: function (/*HTMLElement*/ el) {
-		TL.DomEvent.addListener(el, TL.Draggable.START, TL.DomEvent.stopPropagation);
-		TL.DomEvent.addListener(el, 'click', TL.DomEvent.stopPropagation);
-		TL.DomEvent.addListener(el, 'dblclick', TL.DomEvent.stopPropagation);
-	},
-
-	preventDefault: function (/*Event*/ e) {
-		if (e.preventDefault) {
-			e.preventDefault();
-		} else {
-			e.returnValue = false;
-		}
-	},
-
-	stop: function (e) {
-		TL.DomEvent.preventDefault(e);
-		TL.DomEvent.stopPropagation(e);
-	},
-
-
-	getWheelDelta: function (e) {
-		var delta = 0;
-		if (e.wheelDelta) {
-			delta = e.wheelDelta / 120;
-		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
-		return delta;
-	}
-};
-
-
-
-
-/* **********************************************
-     Begin TL.StyleSheet.js
-********************************************** */
-
+TL.DomEvent={
+/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
+addListener:function(/*HTMLElement*/e,/*String*/t,/*Function*/i,/*Object*/n){var a=TL.Util.stamp(i),s="_tl_"+t+a;if(!e[s]){var o=function(t){return i.call(n||e,t||TL.DomEvent._getEvent())};if(TL.Browser.touch&&"dblclick"===t&&this.addDoubleTapListener)this.addDoubleTapListener(e,o,a);else if("addEventListener"in e)if("mousewheel"===t)e.addEventListener("DOMMouseScroll",o,!1),e.addEventListener(t,o,!1);else if("mouseenter"===t||"mouseleave"===t){var r=o,l="mouseenter"===t?"mouseover":"mouseout";o=function(t){if(TL.DomEvent._checkMouse(e,t))return r(t)},e.addEventListener(l,o,!1)}else e.addEventListener(t,o,!1);else"attachEvent"in e&&e.attachEvent("on"+t,o);e[s]=o}},removeListener:function(/*HTMLElement*/t,/*String*/e,/*Function*/i){var n=TL.Util.stamp(i),a="_tl_"+e+n,s=t[a];s&&(TL.Browser.touch&&"dblclick"===e&&this.removeDoubleTapListener?this.removeDoubleTapListener(t,n):"removeEventListener"in t?"mousewheel"===e?(t.removeEventListener("DOMMouseScroll",s,!1),t.removeEventListener(e,s,!1)):"mouseenter"===e||"mouseleave"===e?t.removeEventListener("mouseenter"===e?"mouseover":"mouseout",s,!1):t.removeEventListener(e,s,!1):"detachEvent"in t&&t.detachEvent("on"+e,s),t[a]=null)},_checkMouse:function(t,e){var i=e.relatedTarget;if(!i)return!0;try{for(;i&&i!==t;)i=i.parentNode}catch(t){return!1}return i!==t},
+/*jshint noarg:false */ // evil magic for IE
+_getEvent:function(){var t=window.event;if(!t)for(var e=arguments.callee.caller;e&&(!(t=e.arguments[0])||window.Event!==t.constructor);)e=e.caller;return t},
+/*jshint noarg:false */
+stopPropagation:function(/*Event*/t){t.stopPropagation?t.stopPropagation():t.cancelBubble=!0},
+// TODO TL.Draggable.START
+disableClickPropagation:function(/*HTMLElement*/t){TL.DomEvent.addListener(t,TL.Draggable.START,TL.DomEvent.stopPropagation),TL.DomEvent.addListener(t,"click",TL.DomEvent.stopPropagation),TL.DomEvent.addListener(t,"dblclick",TL.DomEvent.stopPropagation)},preventDefault:function(/*Event*/t){t.preventDefault?t.preventDefault():t.returnValue=!1},stop:function(t){TL.DomEvent.preventDefault(t),TL.DomEvent.stopPropagation(t)},getWheelDelta:function(t){var e=0;return t.wheelDelta&&(e=t.wheelDelta/120),t.detail&&(e=-t.detail/3),e}},
 /*	TL.StyleSheet
 	Style Sheet Object
 ================================================== */
-
-TL.StyleSheet = TL.Class.extend({
-	
-	includes: [TL.Events],
-	
-	_el: {},
-	
-	/*	Constructor
+TL.StyleSheet=TL.Class.extend({includes:[TL.Events],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function() {
-		// Borrowed from: http://davidwalsh.name/add-rules-stylesheets
-		this.style = document.createElement("style");
-		
-		// WebKit hack :(
-		this.style.appendChild(document.createTextNode(""));
-		
-		// Add the <style> element to the page
-		document.head.appendChild(this.style);
-		
-		this.sheet = this.style.sheet;
-		
-	},
-	
-	addRule: function(selector, rules, index) {
-		var _index = 0;
-		
-		if (index) {
-			_index = index;
-		}
-		
-		if("insertRule" in this.sheet) {
-			this.sheet.insertRule(selector + "{" + rules + "}", _index);
-		}
-		else if("addRule" in this.sheet) {
-			this.sheet.addRule(selector, rules, _index);
-		}
-	},
-	
-
-	/*	Events
+initialize:function(){
+// Borrowed from: http://davidwalsh.name/add-rules-stylesheets
+this.style=document.createElement("style"),
+// WebKit hack :(
+this.style.appendChild(document.createTextNode("")),
+// Add the <style> element to the page
+document.head.appendChild(this.style),this.sheet=this.style.sheet},addRule:function(t,e,i){var n=0;i&&(n=i),"insertRule"in this.sheet?this.sheet.insertRule(t+"{"+e+"}",n):"addRule"in this.sheet&&this.sheet.addRule(t,e,n)},
+/*	Events
 	================================================== */
-	onLoaded: function(error) {
-		this._state.loaded = true;
-		this.fire("loaded", this.data);
-	}
-	
-});
-
-/* **********************************************
-     Begin TL.Date.js
-********************************************** */
-
+onLoaded:function(t){this._state.loaded=!0,this.fire("loaded",this.data)}}),
 /*	TL.Date
 	Date object
 	MONTHS are 1-BASED, not 0-BASED (different from Javascript date objects)
 ================================================== */
-
 //
 // Class for human dates
 //
-
-TL.Date = TL.Class.extend({
-
-    // @data = ms, JS Date object, or JS dictionary with date properties
-	initialize: function (data, format, format_short) {
-	    if (typeof(data) == 'number') {
-			this.data = {
-				format:     "yyyy mmmm",
-				date_obj:   new Date(data)
-			};
-	    } else if(Date == data.constructor) {
-			this.data = {
-				format:     "yyyy mmmm",
-				date_obj:   data
-			};
-	    } else {
-	        this.data = JSON.parse(JSON.stringify(data)); // clone don't use by reference.
-            this._createDateObj();
-	    }
-
-		this._setFormat(format, format_short);
-    },
-
-	setDateFormat: function(format) {
-		this.data.format = format;
-	},
-
-	getDisplayDate: function(language, format) {
-	    if (this.data.display_date) {
-	        return this.data.display_date;
-	    }
-        if (!language) {
-            language = TL.Language.fallback;
-        }
-        if (language.constructor != TL.Language) {
-            trace("First argument to getDisplayDate must be TL.Language");
-            language = TL.Language.fallback;
-        }
-
-        var format_key = format || this.data.format;
-        return language.formatDate(this.data.date_obj, format_key);
-	},
-
-	getMillisecond: function() {
-		return this.getTime();
-	},
-
-	getTime: function() {
-		return this.data.date_obj.getTime();
-	},
-
-	isBefore: function(other_date) {
-        if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
-            throw new TL.Error("date_compare_err") // but should be able to compare 'cosmological scale' dates once we get to that...
-        }
-        if ('isBefore' in this.data.date_obj) {
-            return this.data.date_obj['isBefore'](other_date.data.date_obj);
-        }
-        return this.data.date_obj < other_date.data.date_obj
-	},
-
-	isAfter: function(other_date) {
-        if (!this.data.date_obj.constructor == other_date.data.date_obj.constructor) {
-            throw new TL.Error("date_compare_err") // but should be able to compare 'cosmological scale' dates once we get to that...
-        }
-        if ('isAfter' in this.data.date_obj) {
-            return this.data.date_obj['isAfter'](other_date.data.date_obj);
-        }
-        return this.data.date_obj > other_date.data.date_obj
-	},
-
-    // Return a new TL.Date which has been 'floored' at the given scale.
-    // @scale = string value from TL.Date.SCALES
-    floor: function(scale) {
-        var d = new Date(this.data.date_obj.getTime());
-        for (var i = 0; i < TL.Date.SCALES.length; i++) {
-             // for JS dates, we iteratively apply flooring functions
-            TL.Date.SCALES[i][2](d);
-            if (TL.Date.SCALES[i][0] == scale) return new TL.Date(d);
-        };
-
-        throw new TL.Error("invalid_scale_err", scale);
-    },
-
-	/*	Private Methods
+TL.Date=TL.Class.extend({
+// @data = ms, JS Date object, or JS dictionary with date properties
+initialize:function(t,e,i){"number"==typeof t?this.data={format:"yyyy mmmm",date_obj:new Date(t)}:Date==t.constructor?this.data={format:"yyyy mmmm",date_obj:t}:(this.data=JSON.parse(JSON.stringify(t)),// clone don't use by reference.
+this._createDateObj()),this._setFormat(e,i)},setDateFormat:function(t){this.data.format=t},getDisplayDate:function(t,e){if(this.data.display_date)return this.data.display_date;t||(t=TL.Language.fallback),t.constructor!=TL.Language&&(trace("First argument to getDisplayDate must be TL.Language"),t=TL.Language.fallback);var i=e||this.data.format;return t.formatDate(this.data.date_obj,i)},getMillisecond:function(){return this.getTime()},getTime:function(){return this.data.date_obj.getTime()},isBefore:function(t){if(!this.data.date_obj.constructor==t.data.date_obj.constructor)throw new TL.Error("date_compare_err");// but should be able to compare 'cosmological scale' dates once we get to that...
+return"isBefore"in this.data.date_obj?this.data.date_obj.isBefore(t.data.date_obj):this.data.date_obj<t.data.date_obj},isAfter:function(t){if(!this.data.date_obj.constructor==t.data.date_obj.constructor)throw new TL.Error("date_compare_err");// but should be able to compare 'cosmological scale' dates once we get to that...
+return"isAfter"in this.data.date_obj?this.data.date_obj.isAfter(t.data.date_obj):this.data.date_obj>t.data.date_obj},
+// Return a new TL.Date which has been 'floored' at the given scale.
+// @scale = string value from TL.Date.SCALES
+floor:function(t){for(var e=new Date(this.data.date_obj.getTime()),i=0;i<TL.Date.SCALES.length;i++)if(
+// for JS dates, we iteratively apply flooring functions
+TL.Date.SCALES[i][2](e),TL.Date.SCALES[i][0]==t)return new TL.Date(e);throw new TL.Error("invalid_scale_err",t)},
+/*	Private Methods
 	================================================== */
-
-    _getDateData: function() {
-        var _date = {
-            year: 			0,
-            month: 			1, // stupid JS dates
-            day: 			1,
-            hour: 			0,
-            minute: 		0,
-            second: 		0,
-            millisecond: 	0
-		};
-
-		// Merge data
-		TL.Util.mergeData(_date, this.data);
-
- 		// Make strings into numbers
-		var DATE_PARTS = TL.Date.DATE_PARTS;
-
- 		for (var ix in DATE_PARTS) {
- 		    var x = TL.Util.trim(_date[DATE_PARTS[ix]]);
- 		    if (!x.match(/^-?\d*$/)) {
- 		        throw new TL.Error("invalid_date_err", DATE_PARTS[ix] + " = '" + _date[DATE_PARTS[ix]] + "'");
- 		    }
- 		    
-			var parsed = parseInt(_date[DATE_PARTS[ix]]);
-			if (isNaN(parsed)) {
-                parsed = (ix == 4 || ix == 5) ? 1 : 0; // month and day have diff baselines
-            }
-			_date[DATE_PARTS[ix]] = parsed;
-		}
-
-		if (_date.month > 0 && _date.month <= 12) { // adjust for JS's weirdness
-			_date.month = _date.month - 1;
-		}
-
-		return _date;
-    },
-
-	_createDateObj: function() {
-	    var _date = this._getDateData();
-        this.data.date_obj = new Date(_date.year, _date.month, _date.day, _date.hour, _date.minute, _date.second, _date.millisecond);
-        if (this.data.date_obj.getFullYear() != _date.year) {
-            // Javascript has stupid defaults for two-digit years
-            this.data.date_obj.setFullYear(_date.year);
-        }
-	},
-
-    /*  Find Best Format
+_getDateData:function(){var t={year:0,month:1,// stupid JS dates
+day:1,hour:0,minute:0,second:0,millisecond:0};
+// Merge data
+TL.Util.mergeData(t,this.data);
+// Make strings into numbers
+var e=TL.Date.DATE_PARTS;for(var i in e){var n;if(!TL.Util.trim(t[e[i]]).match(/^-?\d*$/))throw new TL.Error("invalid_date_err",e[i]+" = '"+t[e[i]]+"'");var a=parseInt(t[e[i]]);isNaN(a)&&(a=4==i||5==i?1:0),t[e[i]]=a}return 0<t.month&&t.month<=12&&(// adjust for JS's weirdness
+t.month=t.month-1),t},_createDateObj:function(){var t=this._getDateData();this.data.date_obj=new Date(t.year,t.month,t.day,t.hour,t.minute,t.second,t.millisecond),this.data.date_obj.getFullYear()!=t.year&&
+// Javascript has stupid defaults for two-digit years
+this.data.date_obj.setFullYear(t.year)},
+/*  Find Best Format
      * this may not work with 'cosmologic' dates, or with TL.Date if we
      * support constructing them based on JS Date and time
     ================================================== */
-    findBestFormat: function(variant) {
-        var eval_array = TL.Date.DATE_PARTS,
-            format = "";
-
-        for (var i = 0; i < eval_array.length; i++) {
-            if ( this.data[eval_array[i]]) {
-                if (variant) {
-                    if (!(variant in TL.Date.BEST_DATEFORMATS)) {
-                        variant = 'short'; // legacy
-                    }
-                } else {
-                    variant = 'base'
-                }
-                return TL.Date.BEST_DATEFORMATS[variant][eval_array[i]];
-            }
-        };
-        return "";
-    },
-    _setFormat: function(format, format_short) {
-		if (format) {
-			this.data.format = format;
-		} else if (!this.data.format) {
-			this.data.format = this.findBestFormat();
-		}
-
-		if (format_short) {
-			this.data.format_short = format_short;
-		} else if (!this.data.format_short) {
-			this.data.format_short = this.findBestFormat(true);
-		}
-    }
-});
-
+findBestFormat:function(t){for(var e=TL.Date.DATE_PARTS,i="",n=0;n<e.length;n++)if(this.data[e[n]])return t?t in TL.Date.BEST_DATEFORMATS||(t="short"):t="base",TL.Date.BEST_DATEFORMATS[t][e[n]];return""},_setFormat:function(t,e){t?this.data.format=t:this.data.format||(this.data.format=this.findBestFormat()),e?this.data.format_short=e:this.data.format_short||(this.data.format_short=this.findBestFormat(!0))}}),
 // offer something that can figure out the right date class to return
-TL.Date.makeDate = function(data) {
-    var date = new TL.Date(data);
-    if (!isNaN(date.getTime())) {
-        return date;
-    }
-    return new TL.BigDate(data);
-}
-
-TL.BigYear = TL.Class.extend({
-    initialize: function (year) {
-        this.year = parseInt(year);
-        if (isNaN(this.year)) {
-            throw new TL.Error('invalid_year_err', year);
-        }
-    },
-
-    isBefore: function(that) {
-        return this.year < that.year;
-    },
-
-    isAfter: function(that) {
-        return this.year > that.year;
-    },
-
-    getTime: function() {
-        return this.year;
-    }
-});
-
-(function(cls){
-    // human scales
-    cls.SCALES = [ // ( name, units_per_tick, flooring function )
-        ['millisecond',1, function(d) { }],
-        ['second',1000, function(d) { d.setMilliseconds(0);}],
-        ['minute',1000 * 60, function(d) { d.setSeconds(0);}],
-        ['hour',1000 * 60 * 60, function(d) { d.setMinutes(0);}],
-        ['day',1000 * 60 * 60 * 24, function(d) { d.setHours(0);}],
-        ['month',1000 * 60 * 60 * 24 * 30, function(d) { d.setDate(1);}],
-        ['year',1000 * 60 * 60 * 24 * 365, function(d) { d.setMonth(0);}],
-        ['decade',1000 * 60 * 60 * 24 * 365 * 10, function(d) {
-            var real_year = d.getFullYear();
-            d.setFullYear( real_year - (real_year % 10))
-        }],
-        ['century',1000 * 60 * 60 * 24 * 365 * 100, function(d) {
-            var real_year = d.getFullYear();
-            d.setFullYear( real_year - (real_year % 100))
-        }],
-        ['millennium',1000 * 60 * 60 * 24 * 365 * 1000, function(d) {
-            var real_year = d.getFullYear();
-            d.setFullYear( real_year - (real_year % 1000))
-        }]
-    ];
-
-    // Date parts from highest to lowest precision
-    cls.DATE_PARTS = ["millisecond", "second", "minute", "hour", "day", "month", "year"];
-
-    var ISO8601_SHORT_PATTERN = /^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/;
-    // regex below from
-    // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
-    var ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
-
-    /* For now, rather than extract parts from regexp, lets trust the browser.
+TL.Date.makeDate=function(t){var e=new TL.Date(t);return isNaN(e.getTime())?new TL.BigDate(t):e},TL.BigYear=TL.Class.extend({initialize:function(t){if(this.year=parseInt(t),isNaN(this.year))throw new TL.Error("invalid_year_err",t)},isBefore:function(t){return this.year<t.year},isAfter:function(t){return this.year>t.year},getTime:function(){return this.year}}),function(r){
+// human scales
+r.SCALES=[// ( name, units_per_tick, flooring function )
+["millisecond",1,function(t){}],["second",1e3,function(t){t.setMilliseconds(0)}],["minute",6e4,function(t){t.setSeconds(0)}],["hour",36e5,function(t){t.setMinutes(0)}],["day",864e5,function(t){t.setHours(0)}],["month",2592e6,function(t){t.setDate(1)}],["year",31536e6,function(t){t.setMonth(0)}],["decade",31536e7,function(t){var e=t.getFullYear();t.setFullYear(e-e%10)}],["century",31536e8,function(t){var e=t.getFullYear();t.setFullYear(e-e%100)}],["millennium",31536e9,function(t){var e=t.getFullYear();t.setFullYear(e-e%1e3)}]],
+// Date parts from highest to lowest precision
+r.DATE_PARTS=["millisecond","second","minute","hour","day","month","year"];var l=/^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/,h=/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
+// regex below from
+// http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
+/* For now, rather than extract parts from regexp, lets trust the browser.
      * Famous last words...
      * What about UTC vs local time?
      * see also http://stackoverflow.com/questions/10005374/ecmascript-5-date-parse-results-for-iso-8601-test-cases
      */
-    cls.parseISODate = function(str) {
-        var d = new Date(str);
-        if (isNaN(d)) {
-            throw new TL.Error("invalid_date_err", str);
-        }
-        return {
-            year: d.getFullYear(),
-            month: d.getMonth() + 1,
-            day: d.getDate(),
-            hour: d.getHours(),
-            minute: d.getMinutes(),
-            second: d.getSeconds(),
-            millisecond: d.getMilliseconds()
-        }
-
-    }
-
-    cls.parseDate = function(str) {
-
-        if (str.match(ISO8601_SHORT_PATTERN)) {
-            // parse short specifically to avoid timezone offset confusion
-            // most browsers assume short is UTC, not local time.
-            var parts = str.match(ISO8601_SHORT_PATTERN).slice(1);
-            var d = { year: parts[0].replace('+','')} // year can be negative
-            if (parts[1]) { d['month'] = parts[1].replace('-',''); }
-            if (parts[2]) { d['day'] = parts[2].replace('-',''); }
-            return d;
-        }
-
-        if (str.match(ISO8601_PATTERN)) {
-            return cls.parseISODate(str);
-        }
-
-        if (str.match(/^\-?\d+$/)) {
-            return { year: str }
-        }
-
-        var parsed = {}
-        if (str.match(/\d+\/\d+\/\d+/)) { // mm/yy/dddd
-            var date = str.match(/\d+\/\d+\/\d+/)[0];
-            str = TL.Util.trim(str.replace(date,''));
-            var date_parts = date.split('/');
-            parsed.month = date_parts[0];
-            parsed.day = date_parts[1];
-            parsed.year = date_parts[2];
-        }
-
-        if (str.match(/\d+\/\d+/)) { // mm/yy
-            var date = str.match(/\d+\/\d+/)[0];
-            str = TL.Util.trim(str.replace(date,''));
-            var date_parts = date.split('/');
-            parsed.month = date_parts[0];
-            parsed.year = date_parts[1];
-        }
-        // todo: handle hours, minutes, seconds, millis other date formats, etc...
-        if (str.match(':')) {
-            var time_parts = str.split(':');
-            parsed.hour = time_parts[0];
-            parsed.minute = time_parts[1];
-            if (time_parts[2]) {
-                second_parts = time_parts[2].split('.');
-                parsed.second = second_parts[0];
-                parsed.millisecond = second_parts[1];
-            }
-        }
-        return parsed;
-    }
-
-    cls.BEST_DATEFORMATS = {
-        base: {
-            millisecond: 'time_short',
-            second: 'time',
-            minute: 'time_no_seconds_small_date',
-            hour: 'time_no_seconds_small_date',
-            day: 'full',
-            month: 'month',
-            year: 'year',
-            decade: 'year',
-            century: 'year',
-            millennium: 'year',
-            age: 'fallback',
-            epoch: 'fallback',
-            era: 'fallback',
-            eon: 'fallback',
-            eon2: 'fallback'
-        },
-
-        short: {
-            millisecond: 'time_short',
-            second: 'time_short',
-            minute: 'time_no_seconds_short',
-            hour: 'time_no_minutes_short',
-            day: 'full_short',
-            month: 'month_short',
-            year: 'year',
-            decade: 'year',
-            century: 'year',
-            millennium: 'year',
-            age: 'fallback',
-            epoch: 'fallback',
-            era: 'fallback',
-            eon: 'fallback',
-            eon2: 'fallback'
-        }
-    }
-
-
-})(TL.Date)
-
-
+r.parseISODate=function(t){var e=new Date(t);if(isNaN(e))throw new TL.Error("invalid_date_err",t);return{year:e.getFullYear(),month:e.getMonth()+1,day:e.getDate(),hour:e.getHours(),minute:e.getMinutes(),second:e.getSeconds(),millisecond:e.getMilliseconds()}},r.parseDate=function(t){if(t.match(l)){
+// parse short specifically to avoid timezone offset confusion
+// most browsers assume short is UTC, not local time.
+var e=t.match(l).slice(1),i={year:e[0].replace("+","")};// year can be negative
+return e[1]&&(i.month=e[1].replace("-","")),e[2]&&(i.day=e[2].replace("-","")),i}if(t.match(h))return r.parseISODate(t);if(t.match(/^\-?\d+$/))return{year:t};var n={};if(t.match(/\d+\/\d+\/\d+/)){// mm/yy/dddd
+var a=t.match(/\d+\/\d+\/\d+/)[0];t=TL.Util.trim(t.replace(a,""));var s=a.split("/");n.month=s[0],n.day=s[1],n.year=s[2]}if(t.match(/\d+\/\d+/)){// mm/yy
+var a=t.match(/\d+\/\d+/)[0];t=TL.Util.trim(t.replace(a,""));var s=a.split("/");n.month=s[0],n.year=s[1]}
+// todo: handle hours, minutes, seconds, millis other date formats, etc...
+if(t.match(":")){var o=t.split(":");n.hour=o[0],n.minute=o[1],o[2]&&(second_parts=o[2].split("."),n.second=second_parts[0],n.millisecond=second_parts[1])}return n},r.BEST_DATEFORMATS={base:{millisecond:"time_short",second:"time",minute:"time_no_seconds_small_date",hour:"time_no_seconds_small_date",day:"full",month:"month",year:"year",decade:"year",century:"year",millennium:"year",age:"fallback",epoch:"fallback",era:"fallback",eon:"fallback",eon2:"fallback"},short:{millisecond:"time_short",second:"time_short",minute:"time_no_seconds_short",hour:"time_no_minutes_short",day:"full_short",month:"month_short",year:"year",decade:"year",century:"year",millennium:"year",age:"fallback",epoch:"fallback",era:"fallback",eon:"fallback",eon2:"fallback"}}}(TL.Date),
 //
 // Class for cosmological dates
 //
-TL.BigDate = TL.Date.extend({
-
-    // @data = TL.BigYear object or JS dictionary with date properties
-    initialize: function(data, format, format_short) {
-        if (TL.BigYear == data.constructor) {
-            this.data = {
-                date_obj:   data
-            }
-        } else {
-            this.data = JSON.parse(JSON.stringify(data));
-            this._createDateObj();
-        }
-
-        this._setFormat(format, format_short);
-    },
-
-    // Create date_obj
-    _createDateObj: function() {
-	    var _date = this._getDateData();
-        this.data.date_obj = new TL.BigYear(_date.year);
-    },
-
-    // Return a new TL.BigDate which has been 'floored' at the given scale.
-    // @scale = string value from TL.BigDate.SCALES
-    floor: function(scale) {
-        for (var i = 0; i < TL.BigDate.SCALES.length; i++) {
-            if (TL.BigDate.SCALES[i][0] == scale) {
-                var floored = TL.BigDate.SCALES[i][2](this.data.date_obj);
-                return new TL.BigDate(floored);
-            }
-        };
-
-        throw new TL.Error("invalid_scale_err", scale);
-    }
-});
-
-(function(cls){
-    // cosmo units are years, not millis
-    var AGE = 1000000;
-    var EPOCH = AGE * 10;
-    var ERA = EPOCH * 10;
-    var EON = ERA * 10;
-
-    var Floorer = function(unit) {
-        return function(a_big_year) {
-            var year = a_big_year.getTime();
-            return new TL.BigYear(Math.floor(year/unit) * unit);
-        }
-    }
-
-    // cosmological scales
-    cls.SCALES = [ // ( name, units_per_tick, flooring function )
-				['year',1, new Floorer(1)],
-				['decade',10, new Floorer(10)],
-				['century',100, new Floorer(100)],
-				['millennium',1000, new Floorer(1000)],
-        ['age',AGE, new Floorer(AGE)],          // 1M years
-        ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
-        ['era',ERA, new Floorer(ERA)],          // 100M years
-        ['eon',EON, new Floorer(EON)]           // 1B years
-    ];
-
-})(TL.BigDate)
-
-
-/* **********************************************
-     Begin TL.DateUtil.js
-********************************************** */
-
+TL.BigDate=TL.Date.extend({
+// @data = TL.BigYear object or JS dictionary with date properties
+initialize:function(t,e,i){TL.BigYear==t.constructor?this.data={date_obj:t}:(this.data=JSON.parse(JSON.stringify(t)),this._createDateObj()),this._setFormat(e,i)},
+// Create date_obj
+_createDateObj:function(){var t=this._getDateData();this.data.date_obj=new TL.BigYear(t.year)},
+// Return a new TL.BigDate which has been 'floored' at the given scale.
+// @scale = string value from TL.BigDate.SCALES
+floor:function(t){for(var e=0;e<TL.BigDate.SCALES.length;e++)if(TL.BigDate.SCALES[e][0]==t){var i=TL.BigDate.SCALES[e][2](this.data.date_obj);return new TL.BigDate(i)}throw new TL.Error("invalid_scale_err",t)}}),function(t){
+// cosmo units are years, not millis
+var e=1e6,i=1e7,n=1e8,a=1e9,s=function(i){return function(t){var e=t.getTime();return new TL.BigYear(Math.floor(e/i)*i)}}
+// cosmological scales;
+t.SCALES=[// ( name, units_per_tick, flooring function )
+["year",1,new s(1)],["decade",10,new s(10)],["century",100,new s(100)],["millennium",1e3,new s(1e3)],["age",e,new s(e)],// 1M years
+["epoch",i,new s(i)],// 10M years
+["era",n,new s(n)],// 100M years
+["eon",a,new s(a)]]}(TL.BigDate),
 /*	TL.DateUtil
 	Utilities for parsing time
 ================================================== */
-
-
-TL.DateUtil = {
-	get: function (id) {
-		return (typeof id === 'string' ? document.getElementById(id) : id);
-	},
-
-	sortByDate: function(array,prop_name) { // only for use with slide data objects
-		var prop_name = prop_name || 'start_date';
-		array.sort(function(a,b){
-			if (a[prop_name].isBefore(b[prop_name])) return -1;
-			if (a[prop_name].isAfter(b[prop_name])) return 1;
-			return 0;
-		});
-	},
-
-	parseTime: function(time_str) {
-		var parsed = {
-			hour: null, minute: null, second: null, millisecond: null // conform to keys in TL.Date
-		}
-		var period = null;
-		var match = time_str.match(/(\s*[AaPp]\.?[Mm]\.?\s*)$/);
-		if (match) {
-			period = TL.Util.trim(match[0]);
-			time_str = TL.Util.trim(time_str.substring(0,time_str.lastIndexOf(period)));
-		}
-
-		var parts = [];
-		var no_separators = time_str.match(/^\s*(\d{1,2})(\d{2})\s*$/);
-		if (no_separators) {
-			parts = no_separators.slice(1);
-		} else {
-			parts = time_str.split(':');
-			if (parts.length == 1) {
-				parts = time_str.split('.');
-			}
-		}
-
-		if (parts.length > 4) { 
-		    throw new TL.Error("invalid_separator_error");
-		}
-
-		parsed.hour = parseInt(parts[0]);
-
-		if (period && period.toLowerCase()[0] == 'p' && parsed.hour != 12) {
-			parsed.hour += 12;
-		} else if (period && period.toLowerCase()[0] == 'a' && parsed.hour == 12) {
-			parsed.hour = 0;
-		}
-
-
-		if (isNaN(parsed.hour) || parsed.hour < 0 || parsed.hour > 23) {
-			throw new TL.Error("invalid_hour_err", parsed.hour);
-		}
-
-		if (parts.length > 1) {
-			parsed.minute = parseInt(parts[1]);
-			if (isNaN(parsed.minute)) { 
-			    throw new TL.Error("invalid_minute_err", parsed.minute); 
-			}
-		}
-
-		if (parts.length > 2) {
-			var sec_parts = parts[2].split(/[\.,]/);
-			parts = sec_parts.concat(parts.slice(3)) // deal with various methods of specifying fractional seconds
-			if (parts.length > 2) { 
-			    throw new TL.Error("invalid_second_fractional_err");
-			}
-			parsed.second = parseInt(parts[0]);
-			if (isNaN(parsed.second)) { 
-			    throw new TL.Error("invalid_second_err");
-			}
-			if (parts.length == 2) {
-				var frac_secs = parseInt(parts[1]);
-				if (isNaN(frac_secs)) { 
-				    throw new TL.Error("invalid_fractional_err");
-				}
-				parsed.millisecond = 100 * frac_secs;
-			}
-		}
-
-		return parsed;
-	},
-
-	SCALE_DATE_CLASSES: {
-		human: TL.Date,
-		cosmological: TL.BigDate
-	}
-
-
-};
-
-
-/* **********************************************
-     Begin TL.Draggable.js
-********************************************** */
-
+TL.DateUtil={get:function(t){return"string"==typeof t?document.getElementById(t):t},sortByDate:function(t,i){// only for use with slide data objects
+var i=i||"start_date";t.sort(function(t,e){return t[i].isBefore(e[i])?-1:t[i].isAfter(e[i])?1:0})},parseTime:function(t){var e={hour:null,minute:null,second:null,millisecond:null},i=null,n=t.match(/(\s*[AaPp]\.?[Mm]\.?\s*)$/);n&&(i=TL.Util.trim(n[0]),t=TL.Util.trim(t.substring(0,t.lastIndexOf(i))));var a=[],s=t.match(/^\s*(\d{1,2})(\d{2})\s*$/);if(s?a=s.slice(1):1==(a=t.split(":")).length&&(a=t.split(".")),4<a.length)throw new TL.Error("invalid_separator_error");if(e.hour=parseInt(a[0]),i&&"p"==i.toLowerCase()[0]&&12!=e.hour?e.hour+=12:i&&"a"==i.toLowerCase()[0]&&12==e.hour&&(e.hour=0),isNaN(e.hour)||e.hour<0||23<e.hour)throw new TL.Error("invalid_hour_err",e.hour);if(1<a.length&&(e.minute=parseInt(a[1]),isNaN(e.minute)))throw new TL.Error("invalid_minute_err",e.minute);if(2<a.length){var o;// deal with various methods of specifying fractional seconds
+if(2<(a=a[2].split(/[\.,]/).concat(a.slice(3))).length)throw new TL.Error("invalid_second_fractional_err");if(e.second=parseInt(a[0]),isNaN(e.second))throw new TL.Error("invalid_second_err");if(2==a.length){var r=parseInt(a[1]);if(isNaN(r))throw new TL.Error("invalid_fractional_err");e.millisecond=100*r}}return e},SCALE_DATE_CLASSES:{human:TL.Date,cosmological:TL.BigDate}},
 /*	TL.Draggable
 	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
 	TODO Enable constraints
 ================================================== */
-
-TL.Draggable = TL.Class.extend({
-	
-	includes: TL.Events,
-	
-	_el: {},
-	
-	mousedrag: {
-		down:		"mousedown",
-		up:			"mouseup",
-		leave:		"mouseleave",
-		move:		"mousemove"
-	},
-	
-	touchdrag: {
-		down:		"touchstart",
-		up:			"touchend",
-		leave:		"mouseleave",
-		move:		"touchmove"
-	},
-
-	initialize: function (drag_elem, options, move_elem) {
-		
-		// DOM ELements 
-		this._el = {
-			drag: drag_elem,
-			move: drag_elem
-		};
-		
-		if (move_elem) {
-			this._el.move = move_elem;
-		}
-		
-		
-		//Options
-		this.options = {
-			enable:	{
-				x: true,
-				y: true
-			},
-			constraint: {
-				top: false,
-				bottom: false,
-				left: false,
-				right: false
-			},
-			momentum_multiplier: 	2000,
-			duration: 				1000,
-			ease: 					TL.Ease.easeInOutQuint
-		};
-		
-		
-		// Animation Object
-		this.animator = null;
-		
-		// Drag Event Type
-		this.dragevent = this.mousedrag;
-		
-		if (TL.Browser.touch) {
-			this.dragevent = this.touchdrag;
-		}
-		
-		// Draggable Data
-		this.data = {
-			sliding:		false,
-			direction: 		"none",
-			pagex: {
-				start:		0,
-				end:		0
-			},
-			pagey: {
-				start:		0,
-				end:		0
-			},
-			pos: {
-				start: {
-					x: 0,
-					y:0
-				},
-				end: {
-					x: 0,
-					y:0
-				}
-			},
-			new_pos: {
-				x: 0,
-				y: 0
-			},
-			new_pos_parent: {
-				x: 0,
-				y: 0
-			},
-			time: {
-				start:		0,
-				end:		0
-			},
-			touch:			false
-		};
-		
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		
-		
-	},
-	
-	enable: function(e) {
-		
-		this.data.pos.start = 0; 
-		this._el.move.style.left = this.data.pos.start.x + "px";
-		this._el.move.style.top = this.data.pos.start.y + "px";
-		this._el.move.style.position = "absolute";
-	},
-	
-	disable: function() {
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
-	},
-	
-	stopMomentum: function() {
-		if (this.animator) {
-			this.animator.stop();
-		}
-
-	},
-	
-	updateConstraint: function(c) {
-		this.options.constraint = c;
-		
-	},
-	
-	/*	Private Methods
+TL.Draggable=TL.Class.extend({includes:TL.Events,_el:{},mousedrag:{down:"mousedown",up:"mouseup",leave:"mouseleave",move:"mousemove"},touchdrag:{down:"touchstart",up:"touchend",leave:"mouseleave",move:"touchmove"},initialize:function(t,e,i){
+// DOM ELements 
+this._el={drag:t,move:t},i&&(this._el.move=i),
+//Options
+this.options={enable:{x:!0,y:!0},constraint:{top:!1,bottom:!1,left:!1,right:!1},momentum_multiplier:2e3,duration:1e3,ease:TL.Ease.easeInOutQuint},
+// Animation Object
+this.animator=null,
+// Drag Event Type
+this.dragevent=this.mousedrag,TL.Browser.touch&&(this.dragevent=this.touchdrag),
+// Draggable Data
+this.data={sliding:!1,direction:"none",pagex:{start:0,end:0},pagey:{start:0,end:0},pos:{start:{x:0,y:0},end:{x:0,y:0}},new_pos:{x:0,y:0},new_pos_parent:{x:0,y:0},time:{start:0,end:0},touch:!1},
+// Merge Data and Options
+TL.Util.mergeData(this.options,e)},enable:function(t){this.data.pos.start=0,this._el.move.style.left=this.data.pos.start.x+"px",this._el.move.style.top=this.data.pos.start.y+"px",this._el.move.style.position="absolute"},disable:function(){TL.DomEvent.removeListener(this._el.drag,this.dragevent.down,this._onDragStart,this),TL.DomEvent.removeListener(this._el.drag,this.dragevent.up,this._onDragEnd,this)},stopMomentum:function(){this.animator&&this.animator.stop()},updateConstraint:function(t){this.options.constraint=t},
+/*	Private Methods
 	================================================== */
-	_onDragStart: function(e) {
-		if (TL.Browser.touch) {
-			if (e.originalEvent) {
-				this.data.pagex.start = e.originalEvent.touches[0].screenX;
-				this.data.pagey.start = e.originalEvent.touches[0].screenY;
-			} else {
-				this.data.pagex.start = e.targetTouches[0].screenX;
-				this.data.pagey.start = e.targetTouches[0].screenY;
-			}
-		} else {
-			this.data.pagex.start = e.pageX;
-			this.data.pagey.start = e.pageY;
-		}
-		
-		// Center element to finger or mouse
-		if (this.options.enable.x) {
-			this._el.move.style.left = this.data.pagex.start - (this._el.move.offsetWidth / 2) + "px";
-		}
-		
-		if (this.options.enable.y) {
-			this._el.move.style.top = this.data.pagey.start - (this._el.move.offsetHeight / 2) + "px";
-		}
-		
-		this.data.pos.start = TL.Dom.getPosition(this._el.drag);
-		this.data.time.start = new Date().getTime();
-		
-		this.fire("dragstart", this.data);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
-	},
-	
-	_onDragEnd: function(e) {
-		this.data.sliding = false;
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
-		this.fire("dragend", this.data);
-		
-		//  momentum
-		this._momentum();
-	},
-	
-	_onDragMove: function(e) {
-		e.preventDefault();
-		this.data.sliding = true;
-		
-		if (TL.Browser.touch) {
-			if (e.originalEvent) {
-				this.data.pagex.end = e.originalEvent.touches[0].screenX;
-				this.data.pagey.end = e.originalEvent.touches[0].screenY;
-			} else {
-				this.data.pagex.end = e.targetTouches[0].screenX;
-				this.data.pagey.end = e.targetTouches[0].screenY;
-			}
-
-		} else {
-			this.data.pagex.end = e.pageX;
-			this.data.pagey.end = e.pageY;
-		}
-		
-		this.data.pos.end = TL.Dom.getPosition(this._el.drag);
-		this.data.new_pos.x = -(this.data.pagex.start - this.data.pagex.end - this.data.pos.start.x);
-		this.data.new_pos.y = -(this.data.pagey.start - this.data.pagey.end - this.data.pos.start.y );
-		
-		if (this.options.enable.x) {
-			this._el.move.style.left = this.data.new_pos.x + "px";
-		}
-		
-		if (this.options.enable.y) {
-			this._el.move.style.top = this.data.new_pos.y + "px";
-		}
-		
-		this.fire("dragmove", this.data);
-	},
-	
-	_momentum: function() {
-		var pos_adjust = {
-				x: 0,
-				y: 0,
-				time: 0
-			},
-			pos_change = {
-				x: 0,
-				y: 0,
-				time: 0
-			},
-			swipe = false,
-			swipe_direction = "";
-		
-		
-		if (TL.Browser.touch) {
-			// Treat mobile multiplier differently
-			//this.options.momentum_multiplier = this.options.momentum_multiplier * 2;
-		}
-		
-		pos_adjust.time = (new Date().getTime() - this.data.time.start) * 10;
-		pos_change.time = (new Date().getTime() - this.data.time.start) * 10;
-		
-		pos_change.x = this.options.momentum_multiplier * (Math.abs(this.data.pagex.end) - Math.abs(this.data.pagex.start));
-		pos_change.y = this.options.momentum_multiplier * (Math.abs(this.data.pagey.end) - Math.abs(this.data.pagey.start));
-		
-		pos_adjust.x = Math.round(pos_change.x / pos_change.time);
-		pos_adjust.y = Math.round(pos_change.y / pos_change.time);
-		
-		this.data.new_pos.x = Math.min(this.data.pos.end.x + pos_adjust.x);
-		this.data.new_pos.y = Math.min(this.data.pos.end.y + pos_adjust.y);
-
-		
-		if (!this.options.enable.x) {
-			this.data.new_pos.x = this.data.pos.start.x;
-		} else if (this.data.new_pos.x < 0) {
-			this.data.new_pos.x = 0;
-		}
-		
-		if (!this.options.enable.y) {
-			this.data.new_pos.y = this.data.pos.start.y;
-		} else if (this.data.new_pos.y < 0) {
-			this.data.new_pos.y = 0;
-		}
-		
-		// Detect Swipe
-		if (pos_change.time < 3000) {
-			swipe = true;
-		}
-		
-		// Detect Direction
-		if (Math.abs(pos_change.x) > 10000) {
-			this.data.direction = "left";
-			if (pos_change.x > 0) {
-				this.data.direction = "right";
-			}
-		}
-		// Detect Swipe
-		if (Math.abs(pos_change.y) > 10000) {
-			this.data.direction = "up";
-			if (pos_change.y > 0) {
-				this.data.direction = "down";
-			}
-		}
-		this._animateMomentum();
-		if (swipe) {
-			this.fire("swipe_" + this.data.direction, this.data);
-		}
-		
-	},
-	
-	
-	_animateMomentum: function() {
-		var pos = {
-				x: this.data.new_pos.x,
-				y: this.data.new_pos.y
-			},
-			animate = {
-				duration: 	this.options.duration,
-				easing: 	TL.Ease.easeOutStrong
-			};
-		
-		if (this.options.enable.y) {
-			if (this.options.constraint.top || this.options.constraint.bottom) {
-				if (pos.y > this.options.constraint.bottom) {
-					pos.y = this.options.constraint.bottom;
-				} else if (pos.y < this.options.constraint.top) {
-					pos.y = this.options.constraint.top;
-				}
-			}
-			animate.top = Math.floor(pos.y) + "px";
-		}
-		
-		if (this.options.enable.x) {
-			if (this.options.constraint.left || this.options.constraint.right) {
-				if (pos.x > this.options.constraint.left) {
-					pos.x = this.options.constraint.left;
-				} else if (pos.x < this.options.constraint.right) {
-					pos.x = this.options.constraint.right;
-				}
-			}
-			animate.left = Math.floor(pos.x) + "px";
-		}
-		
-		this.animator = TL.Animate(this._el.move, animate);
-		
-		this.fire("momentum", this.data);
-	}
-});
-
-
-/* **********************************************
-     Begin TL.Swipable.js
-********************************************** */
-
+_onDragStart:function(t){TL.Browser.touch?t.originalEvent?(this.data.pagex.start=t.originalEvent.touches[0].screenX,this.data.pagey.start=t.originalEvent.touches[0].screenY):(this.data.pagex.start=t.targetTouches[0].screenX,this.data.pagey.start=t.targetTouches[0].screenY):(this.data.pagex.start=t.pageX,this.data.pagey.start=t.pageY),
+// Center element to finger or mouse
+this.options.enable.x&&(this._el.move.style.left=this.data.pagex.start-this._el.move.offsetWidth/2+"px"),this.options.enable.y&&(this._el.move.style.top=this.data.pagey.start-this._el.move.offsetHeight/2+"px"),this.data.pos.start=TL.Dom.getPosition(this._el.drag),this.data.time.start=(new Date).getTime(),this.fire("dragstart",this.data),TL.DomEvent.addListener(this._el.drag,this.dragevent.move,this._onDragMove,this),TL.DomEvent.addListener(this._el.drag,this.dragevent.leave,this._onDragEnd,this)},_onDragEnd:function(t){this.data.sliding=!1,TL.DomEvent.removeListener(this._el.drag,this.dragevent.move,this._onDragMove,this),TL.DomEvent.removeListener(this._el.drag,this.dragevent.leave,this._onDragEnd,this),this.fire("dragend",this.data),
+//  momentum
+this._momentum()},_onDragMove:function(t){t.preventDefault(),this.data.sliding=!0,TL.Browser.touch?t.originalEvent?(this.data.pagex.end=t.originalEvent.touches[0].screenX,this.data.pagey.end=t.originalEvent.touches[0].screenY):(this.data.pagex.end=t.targetTouches[0].screenX,this.data.pagey.end=t.targetTouches[0].screenY):(this.data.pagex.end=t.pageX,this.data.pagey.end=t.pageY),this.data.pos.end=TL.Dom.getPosition(this._el.drag),this.data.new_pos.x=-(this.data.pagex.start-this.data.pagex.end-this.data.pos.start.x),this.data.new_pos.y=-(this.data.pagey.start-this.data.pagey.end-this.data.pos.start.y),this.options.enable.x&&(this._el.move.style.left=this.data.new_pos.x+"px"),this.options.enable.y&&(this._el.move.style.top=this.data.new_pos.y+"px"),this.fire("dragmove",this.data)},_momentum:function(){var t={x:0,y:0,time:0},e={x:0,y:0,time:0},i=!1,n="";TL.Browser.touch,t.time=10*((new Date).getTime()-this.data.time.start),e.time=10*((new Date).getTime()-this.data.time.start),e.x=this.options.momentum_multiplier*(Math.abs(this.data.pagex.end)-Math.abs(this.data.pagex.start)),e.y=this.options.momentum_multiplier*(Math.abs(this.data.pagey.end)-Math.abs(this.data.pagey.start)),t.x=Math.round(e.x/e.time),t.y=Math.round(e.y/e.time),this.data.new_pos.x=Math.min(this.data.pos.end.x+t.x),this.data.new_pos.y=Math.min(this.data.pos.end.y+t.y),this.options.enable.x?this.data.new_pos.x<0&&(this.data.new_pos.x=0):this.data.new_pos.x=this.data.pos.start.x,this.options.enable.y?this.data.new_pos.y<0&&(this.data.new_pos.y=0):this.data.new_pos.y=this.data.pos.start.y,
+// Detect Swipe
+e.time<3e3&&(i=!0),
+// Detect Direction
+1e4<Math.abs(e.x)&&(this.data.direction="left",0<e.x&&(this.data.direction="right")),
+// Detect Swipe
+1e4<Math.abs(e.y)&&(this.data.direction="up",0<e.y&&(this.data.direction="down")),this._animateMomentum(),i&&this.fire("swipe_"+this.data.direction,this.data)},_animateMomentum:function(){var t={x:this.data.new_pos.x,y:this.data.new_pos.y},e={duration:this.options.duration,easing:TL.Ease.easeOutStrong};this.options.enable.y&&((this.options.constraint.top||this.options.constraint.bottom)&&(t.y>this.options.constraint.bottom?t.y=this.options.constraint.bottom:t.y<this.options.constraint.top&&(t.y=this.options.constraint.top)),e.top=Math.floor(t.y)+"px"),this.options.enable.x&&((this.options.constraint.left||this.options.constraint.right)&&(t.x>this.options.constraint.left?t.x=this.options.constraint.left:t.x<this.options.constraint.right&&(t.x=this.options.constraint.right)),e.left=Math.floor(t.x)+"px"),this.animator=TL.Animate(this._el.move,e),this.fire("momentum",this.data)}}),
 /*	TL.Swipable
 	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
 	TODO Enable constraints
 ================================================== */
-
-TL.Swipable = TL.Class.extend({
-	
-	includes: TL.Events,
-	
-	_el: {},
-	
-	mousedrag: {
-		down:		"mousedown",
-		up:			"mouseup",
-		leave:		"mouseleave",
-		move:		"mousemove"
-	},
-	
-	touchdrag: {
-		down:		"touchstart",
-		up:			"touchend",
-		leave:		"mouseleave",
-		move:		"touchmove"
-	},
-
-	initialize: function (drag_elem, move_elem, options) {
-		
-		// DOM ELements 
-		this._el = {
-			drag: drag_elem,
-			move: drag_elem
-		};
-		
-		if (move_elem) {
-			this._el.move = move_elem;
-		}
-		
-		
-		//Options
-		this.options = {
-			snap: false,
-			enable:	{
-				x: true,
-				y: true
-			},
-			constraint: {
-				top: false,
-				bottom: false,
-				left: 0,
-				right: false
-			},
-			momentum_multiplier: 	2000,
-			duration: 				1000,
-			ease: 					TL.Ease.easeInOutQuint
-		};
-		
-		
-		// Animation Object
-		this.animator = null;
-		
-		// Drag Event Type
-		this.dragevent = this.mousedrag;
-		
-		if (TL.Browser.touch) {
-			this.dragevent = this.touchdrag;
-		}
-		
-		// Draggable Data
-		this.data = {
-			sliding:		false,
-			direction: 		"none",
-			pagex: {
-				start:		0,
-				end:		0
-			},
-			pagey: {
-				start:		0,
-				end:		0
-			},
-			pos: {
-				start: {
-					x: 0,
-					y:0
-				},
-				end: {
-					x: 0,
-					y:0
-				}
-			},
-			new_pos: {
-				x: 0,
-				y: 0
-			},
-			new_pos_parent: {
-				x: 0,
-				y: 0
-			},
-			time: {
-				start:		0,
-				end:		0
-			},
-			touch:			false
-		};
-		
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		
-		
-	},
-	
-	enable: function(e) {
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
-		
-		this.data.pos.start = 0; //TL.Dom.getPosition(this._el.move);
-		this._el.move.style.left = this.data.pos.start.x + "px";
-		this._el.move.style.top = this.data.pos.start.y + "px";
-		this._el.move.style.position = "absolute";
-		//this._el.move.style.zIndex = "11";
-		//this._el.move.style.cursor = "move";
-	},
-	
-	disable: function() {
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
-	},
-	
-	stopMomentum: function() {
-		if (this.animator) {
-			this.animator.stop();
-		}
-
-	},
-	
-	updateConstraint: function(c) {
-		this.options.constraint = c;
-		
-		// Temporary until issues are fixed
-		
-	},
-	
-	/*	Private Methods
+TL.Swipable=TL.Class.extend({includes:TL.Events,_el:{},mousedrag:{down:"mousedown",up:"mouseup",leave:"mouseleave",move:"mousemove"},touchdrag:{down:"touchstart",up:"touchend",leave:"mouseleave",move:"touchmove"},initialize:function(t,e,i){
+// DOM ELements 
+this._el={drag:t,move:t},e&&(this._el.move=e),
+//Options
+this.options={snap:!1,enable:{x:!0,y:!0},constraint:{top:!1,bottom:!1,left:0,right:!1},momentum_multiplier:2e3,duration:1e3,ease:TL.Ease.easeInOutQuint},
+// Animation Object
+this.animator=null,
+// Drag Event Type
+this.dragevent=this.mousedrag,TL.Browser.touch&&(this.dragevent=this.touchdrag),
+// Draggable Data
+this.data={sliding:!1,direction:"none",pagex:{start:0,end:0},pagey:{start:0,end:0},pos:{start:{x:0,y:0},end:{x:0,y:0}},new_pos:{x:0,y:0},new_pos_parent:{x:0,y:0},time:{start:0,end:0},touch:!1},
+// Merge Data and Options
+TL.Util.mergeData(this.options,i)},enable:function(t){TL.DomEvent.addListener(this._el.drag,this.dragevent.down,this._onDragStart,this),TL.DomEvent.addListener(this._el.drag,this.dragevent.up,this._onDragEnd,this),this.data.pos.start=0,//TL.Dom.getPosition(this._el.move);
+this._el.move.style.left=this.data.pos.start.x+"px",this._el.move.style.top=this.data.pos.start.y+"px",this._el.move.style.position="absolute"},disable:function(){TL.DomEvent.removeListener(this._el.drag,this.dragevent.down,this._onDragStart,this),TL.DomEvent.removeListener(this._el.drag,this.dragevent.up,this._onDragEnd,this)},stopMomentum:function(){this.animator&&this.animator.stop()},updateConstraint:function(t){this.options.constraint=t;
+// Temporary until issues are fixed
+},
+/*	Private Methods
 	================================================== */
-	_onDragStart: function(e) {
-		
-		if (this.animator) {
-			this.animator.stop();
-		}
-		
-		if (TL.Browser.touch) {
-			if (e.originalEvent) {
-				this.data.pagex.start = e.originalEvent.touches[0].screenX;
-				this.data.pagey.start = e.originalEvent.touches[0].screenY;
-			} else {
-				this.data.pagex.start = e.targetTouches[0].screenX;
-				this.data.pagey.start = e.targetTouches[0].screenY;
-			}
-		} else {
-			this.data.pagex.start = e.pageX;
-			this.data.pagey.start = e.pageY;
-		}
-		
-		// Center element to finger or mouse
-		if (this.options.enable.x) {
-			//this._el.move.style.left = this.data.pagex.start - (this._el.move.offsetWidth / 2) + "px";
-		}
-		
-		if (this.options.enable.y) {
-			//this._el.move.style.top = this.data.pagey.start - (this._el.move.offsetHeight / 2) + "px";
-		}
-		
-		this.data.pos.start = {x:this._el.move.offsetLeft, y:this._el.move.offsetTop};
-		
-		
-		this.data.time.start 			= new Date().getTime();
-		
-		this.fire("dragstart", this.data);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
-	},
-	
-	_onDragEnd: function(e) {
-		this.data.sliding = false;
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
-		this.fire("dragend", this.data);
-		
-		//  momentum
-		this._momentum();
-	},
-	
-	_onDragMove: function(e) {
-		var change = {
-			x:0,
-			y:0
-		}
-		//e.preventDefault();
-		this.data.sliding = true;
-		
-		if (TL.Browser.touch) {
-			if (e.originalEvent) {
-				this.data.pagex.end = e.originalEvent.touches[0].screenX;
-				this.data.pagey.end = e.originalEvent.touches[0].screenY;
-			} else {
-				this.data.pagex.end = e.targetTouches[0].screenX;
-				this.data.pagey.end = e.targetTouches[0].screenY;
-			}
-
-		} else {
-			this.data.pagex.end = e.pageX;
-			this.data.pagey.end = e.pageY;
-		}
-		
-		change.x = this.data.pagex.start - this.data.pagex.end;
-		change.y = this.data.pagey.start - this.data.pagey.end;
-		
-		this.data.pos.end = {x:this._el.drag.offsetLeft, y:this._el.drag.offsetTop};
-		
-		this.data.new_pos.x = -(change.x - this.data.pos.start.x);
-		this.data.new_pos.y = -(change.y - this.data.pos.start.y );
-		
-		if (this.options.enable.x && ( Math.abs(change.x) > Math.abs(change.y) ) ) {
-			e.preventDefault();
-			this._el.move.style.left = this.data.new_pos.x + "px";
-		}
-		
-		if (this.options.enable.y && ( Math.abs(change.y) > Math.abs(change.y) ) ) {
-			e.preventDefault();
-			this._el.move.style.top = this.data.new_pos.y + "px";
-		}
-		
-		this.fire("dragmove", this.data);
-	},
-	
-	_momentum: function() {
-		var pos_adjust = {
-				x: 0,
-				y: 0,
-				time: 0
-			},
-			pos_change = {
-				x: 0,
-				y: 0,
-				time: 0
-			},
-			swipe_detect = {
-				x: false,
-				y: false
-			},
-			swipe = false,
-			swipe_direction = "";
-		
-		
-		this.data.direction = null;
-		
-		pos_adjust.time = (new Date().getTime() - this.data.time.start) * 10;
-		pos_change.time = (new Date().getTime() - this.data.time.start) * 10;
-		
-		pos_change.x = this.options.momentum_multiplier * (Math.abs(this.data.pagex.end) - Math.abs(this.data.pagex.start));
-		pos_change.y = this.options.momentum_multiplier * (Math.abs(this.data.pagey.end) - Math.abs(this.data.pagey.start));
-		
-		pos_adjust.x = Math.round(pos_change.x / pos_change.time);
-		pos_adjust.y = Math.round(pos_change.y / pos_change.time);
-		
-		this.data.new_pos.x = Math.min(this.data.new_pos.x + pos_adjust.x);
-		this.data.new_pos.y = Math.min(this.data.new_pos.y + pos_adjust.y);
-		
-		if (!this.options.enable.x) {
-			this.data.new_pos.x = this.data.pos.start.x;
-		} else if (this.options.constraint.left && this.data.new_pos.x > this.options.constraint.left) {
-			this.data.new_pos.x = this.options.constraint.left;
-		}
-		
-		if (!this.options.enable.y) {
-			this.data.new_pos.y = this.data.pos.start.y;
-		} else if (this.data.new_pos.y < 0) {
-			this.data.new_pos.y = 0;
-		}
-		
-		// Detect Swipe
-		if (pos_change.time < 2000) {
-			swipe = true;
-		}
-		
-		
-		if (this.options.enable.x && this.options.enable.y) {
-			if (Math.abs(pos_change.x) > Math.abs(pos_change.y)) {
-				swipe_detect.x = true;
-			} else {
-				swipe_detect.y = true;
-			}
-		} else if (this.options.enable.x) {
-			if (Math.abs(pos_change.x) > Math.abs(pos_change.y)) {
-				swipe_detect.x = true;
-			}
-		} else {
-			if (Math.abs(pos_change.y) > Math.abs(pos_change.x)) {
-				swipe_detect.y = true;
-			}
-		}
-		
-		// Detect Direction and long swipe
-		if (swipe_detect.x) {
-			
-			// Long Swipe
-			if (Math.abs(pos_change.x) > (this._el.drag.offsetWidth/2)) {
-				swipe = true;
-			}
-			
-			if (Math.abs(pos_change.x) > 10000) {
-				this.data.direction = "left";
-				if (pos_change.x > 0) {
-					this.data.direction = "right";
-				}
-			}
-		}
-		
-		if (swipe_detect.y) {
-			
-			// Long Swipe
-			if (Math.abs(pos_change.y) > (this._el.drag.offsetHeight/2)) {
-				swipe = true;
-			}
-			
-			if (Math.abs(pos_change.y) > 10000) {
-				this.data.direction = "up";
-				if (pos_change.y > 0) {
-					this.data.direction = "down";
-				}
-			}
-		}
-		
-		if (pos_change.time < 1000 ) {
-			
-		} else {
-			this._animateMomentum();
-		}
-		
-		if (swipe && this.data.direction) {
-			this.fire("swipe_" + this.data.direction, this.data);
-		} else if (this.data.direction) {
-			this.fire("swipe_nodirection", this.data);
-		} else if (this.options.snap) {
-			this.animator.stop();
-			
-			this.animator = TL.Animate(this._el.move, {
-				top: 		this.data.pos.start.y,
-				left: 		this.data.pos.start.x,
-				duration: 	this.options.duration,
-				easing: 	TL.Ease.easeOutStrong
-			});
-		}
-		
-	},
-	
-	
-	_animateMomentum: function() {
-		var pos = {
-				x: this.data.new_pos.x,
-				y: this.data.new_pos.y
-			},
-			animate = {
-				duration: 	this.options.duration,
-				easing: 	TL.Ease.easeOutStrong
-			};
-		
-		if (this.options.enable.y) {
-			if (this.options.constraint.top || this.options.constraint.bottom) {
-				if (pos.y > this.options.constraint.bottom) {
-					pos.y = this.options.constraint.bottom;
-				} else if (pos.y < this.options.constraint.top) {
-					pos.y = this.options.constraint.top;
-				}
-			}
-			animate.top = Math.floor(pos.y) + "px";
-		}
-		
-		if (this.options.enable.x) {
-			if (this.options.constraint.left && pos.x >= this.options.constraint.left) {
-				pos.x = this.options.constraint.left;
-			}
-			if (this.options.constraint.right && pos.x < this.options.constraint.right) {
-				pos.x = this.options.constraint.right;
-			}
-
-			animate.left = Math.floor(pos.x) + "px";
-		}
-		
-		this.animator = TL.Animate(this._el.move, animate);
-		
-		this.fire("momentum", this.data);
-	}
-});
-
-
-/* **********************************************
-     Begin TL.MenuBar.js
-********************************************** */
-
+_onDragStart:function(t){this.animator&&this.animator.stop(),TL.Browser.touch?t.originalEvent?(this.data.pagex.start=t.originalEvent.touches[0].screenX,this.data.pagey.start=t.originalEvent.touches[0].screenY):(this.data.pagex.start=t.targetTouches[0].screenX,this.data.pagey.start=t.targetTouches[0].screenY):(this.data.pagex.start=t.pageX,this.data.pagey.start=t.pageY),this.options.enable.x,this.options.enable.y,this.data.pos.start={x:this._el.move.offsetLeft,y:this._el.move.offsetTop},this.data.time.start=(new Date).getTime(),this.fire("dragstart",this.data),TL.DomEvent.addListener(this._el.drag,this.dragevent.move,this._onDragMove,this),TL.DomEvent.addListener(this._el.drag,this.dragevent.leave,this._onDragEnd,this)},_onDragEnd:function(t){this.data.sliding=!1,TL.DomEvent.removeListener(this._el.drag,this.dragevent.move,this._onDragMove,this),TL.DomEvent.removeListener(this._el.drag,this.dragevent.leave,this._onDragEnd,this),this.fire("dragend",this.data),
+//  momentum
+this._momentum()},_onDragMove:function(t){var e={x:0,y:0};
+//e.preventDefault();
+this.data.sliding=!0,TL.Browser.touch?t.originalEvent?(this.data.pagex.end=t.originalEvent.touches[0].screenX,this.data.pagey.end=t.originalEvent.touches[0].screenY):(this.data.pagex.end=t.targetTouches[0].screenX,this.data.pagey.end=t.targetTouches[0].screenY):(this.data.pagex.end=t.pageX,this.data.pagey.end=t.pageY),e.x=this.data.pagex.start-this.data.pagex.end,e.y=this.data.pagey.start-this.data.pagey.end,this.data.pos.end={x:this._el.drag.offsetLeft,y:this._el.drag.offsetTop},this.data.new_pos.x=-(e.x-this.data.pos.start.x),this.data.new_pos.y=-(e.y-this.data.pos.start.y),this.options.enable.x&&Math.abs(e.x)>Math.abs(e.y)&&(t.preventDefault(),this._el.move.style.left=this.data.new_pos.x+"px"),this.options.enable.y&&Math.abs(e.y)>Math.abs(e.y)&&(t.preventDefault(),this._el.move.style.top=this.data.new_pos.y+"px"),this.fire("dragmove",this.data)},_momentum:function(){var t={x:0,y:0,time:0},e={x:0,y:0,time:0},i={x:!1,y:!1},n=!1,a="";this.data.direction=null,t.time=10*((new Date).getTime()-this.data.time.start),e.time=10*((new Date).getTime()-this.data.time.start),e.x=this.options.momentum_multiplier*(Math.abs(this.data.pagex.end)-Math.abs(this.data.pagex.start)),e.y=this.options.momentum_multiplier*(Math.abs(this.data.pagey.end)-Math.abs(this.data.pagey.start)),t.x=Math.round(e.x/e.time),t.y=Math.round(e.y/e.time),this.data.new_pos.x=Math.min(this.data.new_pos.x+t.x),this.data.new_pos.y=Math.min(this.data.new_pos.y+t.y),this.options.enable.x?this.options.constraint.left&&this.data.new_pos.x>this.options.constraint.left&&(this.data.new_pos.x=this.options.constraint.left):this.data.new_pos.x=this.data.pos.start.x,this.options.enable.y?this.data.new_pos.y<0&&(this.data.new_pos.y=0):this.data.new_pos.y=this.data.pos.start.y,
+// Detect Swipe
+e.time<2e3&&(n=!0),this.options.enable.x&&this.options.enable.y?Math.abs(e.x)>Math.abs(e.y)?i.x=!0:i.y=!0:this.options.enable.x?Math.abs(e.x)>Math.abs(e.y)&&(i.x=!0):Math.abs(e.y)>Math.abs(e.x)&&(i.y=!0),
+// Detect Direction and long swipe
+i.x&&(
+// Long Swipe
+Math.abs(e.x)>this._el.drag.offsetWidth/2&&(n=!0),1e4<Math.abs(e.x)&&(this.data.direction="left",0<e.x&&(this.data.direction="right"))),i.y&&(
+// Long Swipe
+Math.abs(e.y)>this._el.drag.offsetHeight/2&&(n=!0),1e4<Math.abs(e.y)&&(this.data.direction="up",0<e.y&&(this.data.direction="down"))),e.time<1e3||this._animateMomentum(),n&&this.data.direction?this.fire("swipe_"+this.data.direction,this.data):this.data.direction?this.fire("swipe_nodirection",this.data):this.options.snap&&(this.animator.stop(),this.animator=TL.Animate(this._el.move,{top:this.data.pos.start.y,left:this.data.pos.start.x,duration:this.options.duration,easing:TL.Ease.easeOutStrong}))},_animateMomentum:function(){var t={x:this.data.new_pos.x,y:this.data.new_pos.y},e={duration:this.options.duration,easing:TL.Ease.easeOutStrong};this.options.enable.y&&((this.options.constraint.top||this.options.constraint.bottom)&&(t.y>this.options.constraint.bottom?t.y=this.options.constraint.bottom:t.y<this.options.constraint.top&&(t.y=this.options.constraint.top)),e.top=Math.floor(t.y)+"px"),this.options.enable.x&&(this.options.constraint.left&&t.x>=this.options.constraint.left&&(t.x=this.options.constraint.left),this.options.constraint.right&&t.x<this.options.constraint.right&&(t.x=this.options.constraint.right),e.left=Math.floor(t.x)+"px"),this.animator=TL.Animate(this._el.move,e),this.fire("momentum",this.data)}}),
 /*	TL.MenuBar
 	Draggable component to control size
 ================================================== */
-
-TL.MenuBar = TL.Class.extend({
-
-	includes: [TL.Events, TL.DomMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.MenuBar=TL.Class.extend({includes:[TL.Events,TL.DomMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(elem, parent_elem, options) {
-		// DOM ELEMENTS
-		this._el = {
-			parent: {},
-			container: {},
-			button_backtostart: {},
-			button_zoomin: {},
-			button_zoomout: {},
-			arrow: {},
-			line: {},
-			coverbar: {},
-			grip: {}
-		};
-
-		this.collapsed = false;
-
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-		} else {
-			this._el.container = TL.Dom.get(elem);
-		}
-
-		if (parent_elem) {
-			this._el.parent = parent_elem;
-		}
-
-		//Options
-		this.options = {
-			width: 					600,
-			height: 				600,
-			duration: 				1000,
-			ease: 					TL.Ease.easeInOutQuint,
-			menubar_default_y: 		0
-		};
-
-		// Animation
-		this.animator = {};
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-
-		this._initLayout();
-		this._initEvents();
-	},
-
-	/*	Public
+initialize:function(t,e,i){
+// DOM ELEMENTS
+this._el={parent:{},container:{},button_backtostart:{},button_zoomin:{},button_zoomout:{},arrow:{},line:{},coverbar:{},grip:{}},this.collapsed=!1,this._el.container="object"==typeof t?t:TL.Dom.get(t),e&&(this._el.parent=e),
+//Options
+this.options={width:600,height:600,duration:1e3,ease:TL.Ease.easeInOutQuint,menubar_default_y:0},
+// Animation
+this.animator={},
+// Merge Data and Options
+TL.Util.mergeData(this.options,i),this._initLayout(),this._initEvents()},
+/*	Public
 	================================================== */
-	show: function(d) {
-
-		var duration = this.options.duration;
-		if (d) {
-			duration = d;
-		}
-		/*
+show:function(t){var e=this.options.duration;t&&(e=t)
+/*
 		this.animator = TL.Animate(this._el.container, {
 			top: 		this.options.menubar_default_y + "px",
 			duration: 	duration,
 			easing: 	TL.Ease.easeOutStrong
 		});
-		*/
-	},
-
-	hide: function(top) {
-		/*
+		*/},hide:function(t){
+/*
 		this.animator = TL.Animate(this._el.container, {
 			top: 		top,
 			duration: 	this.options.duration,
 			easing: 	TL.Ease.easeOutStrong
 		});
-		*/
-	},
-
-	toogleZoomIn: function(show) {
-		if (show) {
-      TL.DomUtil.removeClass(this._el.button_zoomin,'tl-menubar-button-inactive');
-		} else {
-      TL.DomUtil.addClass(this._el.button_zoomin,'tl-menubar-button-inactive');
-		}
-	},
-
-	toogleZoomOut: function(show) {
-		if (show) {
-      TL.DomUtil.removeClass(this._el.button_zoomout,'tl-menubar-button-inactive');
-		} else {
-      TL.DomUtil.addClass(this._el.button_zoomout,'tl-menubar-button-inactive');
-		}
-	},
-
-	setSticky: function(y) {
-		this.options.menubar_default_y = y;
-	},
-
-	/*	Color
+		*/},toogleZoomIn:function(t){t?TL.DomUtil.removeClass(this._el.button_zoomin,"tl-menubar-button-inactive"):TL.DomUtil.addClass(this._el.button_zoomin,"tl-menubar-button-inactive")},toogleZoomOut:function(t){t?TL.DomUtil.removeClass(this._el.button_zoomout,"tl-menubar-button-inactive"):TL.DomUtil.addClass(this._el.button_zoomout,"tl-menubar-button-inactive")},setSticky:function(t){this.options.menubar_default_y=t},
+/*	Color
 	================================================== */
-	setColor: function(inverted) {
-		if (inverted) {
-			this._el.container.className = 'tl-menubar tl-menubar-inverted';
-		} else {
-			this._el.container.className = 'tl-menubar';
-		}
-	},
-
-	/*	Update Display
+setColor:function(t){this._el.container.className=t?"tl-menubar tl-menubar-inverted":"tl-menubar"},
+/*	Update Display
 	================================================== */
-	updateDisplay: function(w, h, a, l) {
-		this._updateDisplay(w, h, a, l);
-	},
-
-
-	/*	Events
+updateDisplay:function(t,e,i,n){this._updateDisplay(t,e,i,n)},
+/*	Events
 	================================================== */
-	_onButtonZoomIn: function(e) {
-		this.fire("zoom_in", e);
-	},
-
-	_onButtonZoomOut: function(e) {
-		this.fire("zoom_out", e);
-	},
-
-	_onButtonBackToStart: function(e) {
-		this.fire("back_to_start", e);
-	},
-
-
-	/*	Private Methods
+_onButtonZoomIn:function(t){this.fire("zoom_in",t)},_onButtonZoomOut:function(t){this.fire("zoom_out",t)},_onButtonBackToStart:function(t){this.fire("back_to_start",t)},
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-
-		// Create Layout
-		this._el.button_zoomin 							= TL.Dom.create('span', 'tl-menubar-button', this._el.container);
-		this._el.button_zoomout 						= TL.Dom.create('span', 'tl-menubar-button', this._el.container);
-		this._el.button_backtostart 					= TL.Dom.create('span', 'tl-menubar-button', this._el.container);
-
-		if (TL.Browser.mobile) {
-			this._el.container.setAttribute("ontouchstart"," ");
-		}
-
-		this._el.button_backtostart.innerHTML		= "<span class='tl-icon-goback'></span>";
-		this._el.button_zoomin.innerHTML			= "<span class='tl-icon-zoom-in'></span>";
-		this._el.button_zoomout.innerHTML			= "<span class='tl-icon-zoom-out'></span>";
-
-
-	},
-
-	_initEvents: function () {
-		TL.DomEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		TL.DomEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomIn, this);
-		TL.DomEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
-	},
-
-	// Update Display
-	_updateDisplay: function(width, height, animate) {
-
-		if (width) {
-			this.options.width = width;
-		}
-		if (height) {
-			this.options.height = height;
-		}
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Message.js
-********************************************** */
-
+_initLayout:function(){
+// Create Layout
+this._el.button_zoomin=TL.Dom.create("span","tl-menubar-button",this._el.container),this._el.button_zoomout=TL.Dom.create("span","tl-menubar-button",this._el.container),this._el.button_backtostart=TL.Dom.create("span","tl-menubar-button",this._el.container),TL.Browser.mobile&&this._el.container.setAttribute("ontouchstart"," "),this._el.button_backtostart.innerHTML="<span class='tl-icon-goback'></span>",this._el.button_zoomin.innerHTML="<span class='tl-icon-zoom-in'></span>",this._el.button_zoomout.innerHTML="<span class='tl-icon-zoom-out'></span>"},_initEvents:function(){TL.DomEvent.addListener(this._el.button_backtostart,"click",this._onButtonBackToStart,this),TL.DomEvent.addListener(this._el.button_zoomin,"click",this._onButtonZoomIn,this),TL.DomEvent.addListener(this._el.button_zoomout,"click",this._onButtonZoomOut,this)},
+// Update Display
+_updateDisplay:function(t,e,i){t&&(this.options.width=t),e&&(this.options.height=e)}}),
 /*	TL.Message
 	
 ================================================== */
- 
-TL.Message = TL.Class.extend({
-	
-	includes: [TL.Events, TL.DomMixins, TL.I18NMixins],
-	
-	_el: {},
-	
-	/*	Constructor
+TL.Message=TL.Class.extend({includes:[TL.Events,TL.DomMixins,TL.I18NMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options, add_to_container) {
-		// DOM ELEMENTS
-		this._el = {
-			parent: {},
-			container: {},
-			message_container: {},
-			loading_icon: {},
-			message: {}
-		};
-	
-		//Options
-		this.options = {
-			width: 					600,
-			height: 				600,
-			message_class: 			"tl-message",
-			message_icon_class: 	"tl-loading-icon"
-		};
-		
-		this._add_to_container = add_to_container || {}; // save ref
-		
-		// Merge Data and Options
-		TL.Util.mergeData(this.data, data);
-		TL.Util.mergeData(this.options, options);
-		
-		this._el.container = TL.Dom.create("div", this.options.message_class);
-		
-		if (add_to_container) {
-			add_to_container.appendChild(this._el.container);
-			this._el.parent = add_to_container;
-		}
-		
-		// Animation
-		this.animator = {};
-				
-		this._initLayout();
-		this._initEvents();
-	},
-	
-	/*	Public
+initialize:function(t,e,i){
+// DOM ELEMENTS
+this._el={parent:{},container:{},message_container:{},loading_icon:{},message:{}},
+//Options
+this.options={width:600,height:600,message_class:"tl-message",message_icon_class:"tl-loading-icon"},this._add_to_container=i||{},// save ref
+// Merge Data and Options
+TL.Util.mergeData(this.data,t),TL.Util.mergeData(this.options,e),this._el.container=TL.Dom.create("div",this.options.message_class),i&&(i.appendChild(this._el.container),this._el.parent=i),
+// Animation
+this.animator={},this._initLayout(),this._initEvents()},
+/*	Public
 	================================================== */
-	updateMessage: function(t) {
-		this._updateMessage(t);
-	},
-	
-	
-	/*	Update Display
+updateMessage:function(t){this._updateMessage(t)},
+/*	Update Display
 	================================================== */
-	updateDisplay: function(w, h) {
-		this._updateDisplay(w, h);
-	},
-	
-	_updateMessage: function(t) {
-		if (!t) {
-			this._el.message.innerHTML = this._('loading');
-		} else {
-			this._el.message.innerHTML = t;
-		}
-		
-		// Re-add to DOM?
-		if(!this._el.parent.atrributes && this._add_to_container.attributes) {
-		    this._add_to_container.appendChild(this._el.container);
-		    this._el.parent = this._add_to_container;
-		}
-	},
-	
-
-	/*	Events
+updateDisplay:function(t,e){this._updateDisplay(t,e)},_updateMessage:function(t){this._el.message.innerHTML=t||this._("loading"),
+// Re-add to DOM?
+!this._el.parent.atrributes&&this._add_to_container.attributes&&(this._add_to_container.appendChild(this._el.container),this._el.parent=this._add_to_container)},
+/*	Events
 	================================================== */
-
-	
-	_onMouseClick: function() {
-		this.fire("clicked", this.options);
-	},
-	
-	_onRemove: function() {
-	    this._el.parent = {};
-	},
-
-
-	/*	Private Methods
+_onMouseClick:function(){this.fire("clicked",this.options)},_onRemove:function(){this._el.parent={}},
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		
-		// Create Layout
-		this._el.message_container = TL.Dom.create("div", "tl-message-container", this._el.container);
-		this._el.loading_icon = TL.Dom.create("div", this.options.message_icon_class, this._el.message_container);
-		this._el.message = TL.Dom.create("div", "tl-message-content", this._el.message_container);
-		
-		this._updateMessage();
-		
-	},
-	
-	_initEvents: function () {
-		TL.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
-		TL.DomEvent.addListener(this, 'removed', this._onRemove, this);
-	},
-	
-	// Update Display
-	_updateDisplay: function(width, height, animate) {
-		
-	}
-	
-});
-
-/* **********************************************
-     Begin TL.MediaType.js
-********************************************** */
-
+_initLayout:function(){
+// Create Layout
+this._el.message_container=TL.Dom.create("div","tl-message-container",this._el.container),this._el.loading_icon=TL.Dom.create("div",this.options.message_icon_class,this._el.message_container),this._el.message=TL.Dom.create("div","tl-message-content",this._el.message_container),this._updateMessage()},_initEvents:function(){TL.DomEvent.addListener(this._el.container,"click",this._onMouseClick,this),TL.DomEvent.addListener(this,"removed",this._onRemove,this)},
+// Update Display
+_updateDisplay:function(t,e,i){}}),
 /*    TL.MediaType
     Determines the type of media the url string is.
     returns an object with .type and .id
@@ -6899,3347 +1197,731 @@ TL.Message = TL.Class.extend({
     TODO
     Allow array so a slideshow can be a mediatype
 ================================================== */
-TL.MediaType = function(m, image_only) {
-    var media = {},
-        media_types =     [
-            {
-                type:         "youtube",
-                name:         "YouTube",
-                match_str:     "^(https?:)?\/*(www.)?youtube|youtu\.be",
-                cls:         TL.Media.YouTube
-            },
-            {
-                type:         "vimeo",
-                name:         "Vimeo",
-                match_str:     "^(https?:)?\/*(player.)?vimeo\.com",
-                cls:         TL.Media.Vimeo
-            },
-            {
-                type:         "dailymotion",
-                name:         "DailyMotion",
-                match_str:     "^(https?:)?\/*(www.)?dailymotion\.com",
-                cls:         TL.Media.DailyMotion
-            },
-            {
-                type:         "vine",
-                name:         "Vine",
-                match_str:     "^(https?:)?\/*(www.)?vine\.co",
-                cls:         TL.Media.Vine
-            },
-            {
-                type:         "soundcloud",
-                name:         "SoundCloud",
-                match_str:     "^(https?:)?\/*(player.)?soundcloud\.com",
-                cls:         TL.Media.SoundCloud
-            },
-            {
-                type:         "twitter",
-                name:         "Twitter",
-                match_str:     "^(https?:)?\/*(www.)?twitter\.com",
-                cls:         TL.Media.Twitter
-            },
-            {
-                type:         "twitterembed",
-                name:         "TwitterEmbed",
-                match_str:     "<blockquote class=['\"]twitter-tweet['\"]",
-                cls:         TL.Media.Twitter
-            },
-            {
-                type:         "googlemaps",
-                name:         "Google Map",
-                match_str:     /google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
-                cls:         TL.Media.GoogleMap
-            },
-            {
-                type:         "googleplus",
-                name:         "Google+",
-                match_str:     "^(https?:)?\/*plus.google",
-                cls:         TL.Media.GooglePlus
-            },
-            {
-                type:         "flickr",
-                name:         "Flickr",
-                match_str:     "^(https?:)?\/*(www.)?flickr.com\/photos",
-                cls:         TL.Media.Flickr
-            },
-            {
-                type:         "flickr",
-                name:         "Flickr",
-                match_str:     "^(https?:\/\/)?flic.kr\/.*",
-                cls:         TL.Media.Flickr
-            },
-            {
-                type:         "instagram",
-                name:         "Instagram",
-                match_str:     /^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
-                cls:         TL.Media.Instagram
-            },
-            {
-                type:         "profile",
-                name:         "Profile",
-                match_str:     /^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
-                cls:         TL.Media.Profile
-            },
-            {
-                type:       "documentcloud",
-                name:       "Document Cloud",
-                match_str:  /documentcloud.org\//,
-                cls:        TL.Media.DocumentCloud
-            },
-            {
-                type:         "image",
-                name:         "Image",
-                match_str:     /(jpg|jpeg|png|gif|svg)(\?.*)?$/i,
-                cls:         TL.Media.Image
-            },
-            {
-                type:         "imgur",
-                name:         "Imgur",
-                match_str:     /^.*imgur.com\/.+$|<blockquote class=['\"]imgur-embed-pub['\"]/i,
-                cls:         TL.Media.Imgur
-            },
-            {
-                type:         "googledocs",
-                name:         "Google Doc",
-                match_str:     "^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
-                cls:         TL.Media.GoogleDoc
-            },
-            {
-                type:         "pdf",
-                name:         "PDF",
-                match_str:     /^.*\.pdf(\?.*)?(\#.*)?/,
-                cls:         TL.Media.PDF
-            },
-            {
-                type:         "wikipedia",
-                name:         "Wikipedia",
-                match_str:     "^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
-                cls:         TL.Media.Wikipedia
-            },
-            {
-                type:         "spotify",
-                name:         "spotify",
-                match_str:     "spotify",
-                cls:         TL.Media.Spotify
-            },
-            {
-                type:         "iframe",
-                name:         "iFrame",
-                match_str:     "iframe",
-                cls:         TL.Media.IFrame
-            },
-            {
-                type:         "storify",
-                name:         "Storify",
-                match_str:     "storify",
-                cls:         TL.Media.Storify
-            },
-            {
-                type:         "blockquote",
-                name:         "Quote",
-                match_str:     "blockquote",
-                cls:         TL.Media.Blockquote
-            },
-            // {
-            //     type:         "website",
-            //     name:         "Website",
-            //     match_str:     "https?://",
-            //     cls:         TL.Media.Website
-            // },
-            {
-                type:         "video",
-                name:         "Video",
-                match_str:     /(mp4)(\?.*)?$/i,
-                cls:         TL.Media.Video
-            },
-            {
-              type:         "wistia",
-              name:         "Wistia",
-              match_str:     /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/i,
-              cls:         TL.Media.Wistia
-            },
-            {
-                type:         "audio",
-                name:         "Audio",
-                match_str:     /(mp3|wav|m4a)(\?.*)?$/i,
-                cls:         TL.Media.Audio
-            },
-            {
-                type:         "imageblank",
-                name:         "Imageblank",
-                match_str:     "",
-                cls:         TL.Media.Image
-            }
-        ];
-
-    if(image_only) {
-        if (m instanceof Array) {
-            return false;
-        }
-        for (var i = 0; i < media_types.length; i++) {
-            switch(media_types[i].type) {
-                case "flickr":
-                case "image":
-                case "instagram":
-                    if (m.url.match(media_types[i].match_str)) {
-                        media = media_types[i];
-                        return media;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    } else {
-        for (var i = 0; i < media_types.length; i++) {
-            if (m instanceof Array) {
-                return media = {
-                    type:         "slider",
-                    cls:         TL.Media.Slider
-                };
-            } else if (m.url.match(media_types[i].match_str)) {
-                media         = media_types[i];
-                return media;
-            }
-        }
-    }
-    return false;
-}
-
-
-/* **********************************************
-     Begin TL.Media.js
-********************************************** */
-
+TL.MediaType=function(t,e){var i={},n=[{type:"youtube",name:"YouTube",match_str:"^(https?:)?/*(www.)?youtube|youtu.be",cls:TL.Media.YouTube},{type:"vimeo",name:"Vimeo",match_str:"^(https?:)?/*(player.)?vimeo.com",cls:TL.Media.Vimeo},{type:"dailymotion",name:"DailyMotion",match_str:"^(https?:)?/*(www.)?dailymotion.com",cls:TL.Media.DailyMotion},{type:"vine",name:"Vine",match_str:"^(https?:)?/*(www.)?vine.co",cls:TL.Media.Vine},{type:"soundcloud",name:"SoundCloud",match_str:"^(https?:)?/*(player.)?soundcloud.com",cls:TL.Media.SoundCloud},{type:"twitter",name:"Twitter",match_str:"^(https?:)?/*(www.)?twitter.com",cls:TL.Media.Twitter},{type:"twitterembed",name:"TwitterEmbed",match_str:"<blockquote class=['\"]twitter-tweet['\"]",cls:TL.Media.Twitter},{type:"googlemaps",name:"Google Map",match_str:/google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,cls:TL.Media.GoogleMap},{type:"googleplus",name:"Google+",match_str:"^(https?:)?/*plus.google",cls:TL.Media.GooglePlus},{type:"flickr",name:"Flickr",match_str:"^(https?:)?/*(www.)?flickr.com/photos",cls:TL.Media.Flickr},{type:"flickr",name:"Flickr",match_str:"^(https?://)?flic.kr/.*",cls:TL.Media.Flickr},{type:"instagram",name:"Instagram",match_str:/^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,cls:TL.Media.Instagram},{type:"profile",name:"Profile",match_str:/^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,cls:TL.Media.Profile},{type:"documentcloud",name:"Document Cloud",match_str:/documentcloud.org\//,cls:TL.Media.DocumentCloud},{type:"image",name:"Image",match_str:/(jpg|jpeg|png|gif|svg)(\?.*)?$/i,cls:TL.Media.Image},{type:"imgur",name:"Imgur",match_str:/^.*imgur.com\/.+$|<blockquote class=['\"]imgur-embed-pub['\"]/i,cls:TL.Media.Imgur},{type:"googledocs",name:"Google Doc",match_str:"^(https?:)?/*[^.]*.google.com/[^/]*/d/[^/]*/[^/]*?usp=sharing|^(https?:)?/*drive.google.com/open?id=[^&]*&authuser=0|^(https?:)?/*drive.google.com/open?id=[^&]*|^(https?:)?/*[^.]*.googledrive.com/host/[^/]*/",cls:TL.Media.GoogleDoc},{type:"pdf",name:"PDF",match_str:/^.*\.pdf(\?.*)?(\#.*)?/,cls:TL.Media.PDF},{type:"wikipedia",name:"Wikipedia",match_str:"^(https?:)?/*(www.)?wikipedia.org|^(https?:)?/*([a-z][a-z].)?wikipedia.org",cls:TL.Media.Wikipedia},{type:"spotify",name:"spotify",match_str:"spotify",cls:TL.Media.Spotify},{type:"iframe",name:"iFrame",match_str:"iframe",cls:TL.Media.IFrame},{type:"storify",name:"Storify",match_str:"storify",cls:TL.Media.Storify},{type:"blockquote",name:"Quote",match_str:"blockquote",cls:TL.Media.Blockquote},
+// {
+//     type:         "website",
+//     name:         "Website",
+//     match_str:     "https?://",
+//     cls:         TL.Media.Website
+// },
+{type:"video",name:"Video",match_str:/(mp4)(\?.*)?$/i,cls:TL.Media.Video},{type:"wistia",name:"Wistia",match_str:/https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/i,cls:TL.Media.Wistia},{type:"audio",name:"Audio",match_str:/(mp3|wav|m4a)(\?.*)?$/i,cls:TL.Media.Audio},{type:"imageblank",name:"Imageblank",match_str:"",cls:TL.Media.Image}];if(e){if(t instanceof Array)return!1;for(var a=0;a<n.length;a++)switch(n[a].type){case"flickr":case"image":case"instagram":if(t.url.match(n[a].match_str))return i=n[a];break;default:break}}else for(var a=0;a<n.length;a++){if(t instanceof Array)return i={type:"slider",cls:TL.Media.Slider};if(t.url.match(n[a].match_str))return i=n[a]}return!1},
 /*	TL.Media
 	Main media template for media assets.
 	Takes a data object and populates a dom object
 ================================================== */
 // TODO add link
-
-TL.Media = TL.Class.extend({
-
-	includes: [TL.Events, TL.I18NMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.Media=TL.Class.extend({includes:[TL.Events,TL.I18NMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options, add_to_container) {
-		// DOM ELEMENTS
-		this._el = {
-			container: {},
-			content_container: {},
-			content: {},
-			content_item: {},
-			content_link: {},
-			caption: null,
-			credit: null,
-			parent: {},
-			link: null
-		};
-
-		// Player (If Needed)
-		this.player = null;
-
-		// Timer (If Needed)
-		this.timer = null;
-		this.load_timer = null;
-
-		// Message
-		this.message = null;
-
-		// Media ID
-		this.media_id = null;
-
-		// State
-		this._state = {
-			loaded: false,
-			show_meta: false,
-			media_loaded: false
-		};
-
-		// Data
-		this.data = {
-			unique_id: 			null,
-			url: 				null,
-			credit:				null,
-			caption:			null,
-			credit_alternate: 	null,
-			caption_alternate: 	null,
-			link: 				null,
-			link_target: 		null
-		};
-
-		//Options
-		this.options = {
-			api_key_flickr: 		"f2cc870b4d233dd0a5bfe73fd0d64ef0",
-			api_key_googlemaps: "AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",
-			api_key_embedly: 		"", // ae2da610d1454b66abdf2e6a4c44026d
-			credit_height: 			0,
-			caption_height: 		0,
-			background:         0   // is background media (for slide)
-		};
-
-		this.animator = {};
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		TL.Util.mergeData(this.data, data);
-
-        // Don't create DOM elements if this is background media
-        if(!this.options.background) {
-            this._el.container = TL.Dom.create("div", "tl-media");
-
-            if (this.data.unique_id) {
-                this._el.container.id = this.data.unique_id;
-            }
-
-            this._initLayout();
-
-            if (add_to_container) {
-                add_to_container.appendChild(this._el.container);
-                this._el.parent = add_to_container;
-            }
-        }
-	},
-
-	loadMedia: function() {
-		var self = this;
-
-		if (!this._state.loaded) {
-			try {
-				this.load_timer = setTimeout(function() {
-		            self.loadingMessage();
-					self._loadMedia();
-					// self._state.loaded = true; handled in onLoaded()
-					self._updateDisplay();
-				}, 1200);
-			} catch (e) {
-				trace("Error loading media for ", this._media);
-				trace(e);
-			}
-		}
-	},
-
-  _updateMessage: function(msg) {
-      if(this.message) {
-          this.message.updateMessage(msg);
-      }
-  },
-
-	loadingMessage: function() {
-	    this._updateMessage(this._('loading') + " " + this.options.media_name);
-	},
-
-	errorMessage: function(msg) {
-		if (msg) {
-			msg = this._('error') + ": " + msg;
-		} else {
-			msg = this._('error');
-		}
-		this._updateMessage(msg);
-	},
-
-	updateMediaDisplay: function(layout) {
-		if (this._state.loaded && !this.options.background) {
-
-			if (TL.Browser.mobile) {
-				this._el.content_item.style.maxHeight = (this.options.height/2) + "px";
-			} else {
-				this._el.content_item.style.maxHeight = this.options.height - this.options.credit_height - this.options.caption_height - 30 + "px";
-			}
-
-			//this._el.content_item.style.maxWidth = this.options.width + "px";
-			this._el.container.style.maxWidth = this.options.width + "px";
-			// Fix for max-width issues in Firefox
-			if (TL.Browser.firefox) {
-				if (this._el.content_item.offsetWidth > this._el.content_item.offsetHeight) {
-					//this._el.content_item.style.width = "100%";
-				}
-			}
-
-			this._updateMediaDisplay(layout);
-
-			if (this._state.media_loaded) {
-				if (this._el.credit) {
-					this._el.credit.style.width		= this._el.content_item.offsetWidth + "px";
-				}
-				if (this._el.caption) {
-					this._el.caption.style.width		= this._el.content_item.offsetWidth + "px";
-				}
-			}
-
-		}
-	},
-
-	/*	Media Specific
+initialize:function(t,e,i){
+// DOM ELEMENTS
+this._el={container:{},content_container:{},content:{},content_item:{},content_link:{},caption:null,credit:null,parent:{},link:null},
+// Player (If Needed)
+this.player=null,
+// Timer (If Needed)
+this.timer=null,this.load_timer=null,
+// Message
+this.message=null,
+// Media ID
+this.media_id=null,
+// State
+this._state={loaded:!1,show_meta:!1,media_loaded:!1},
+// Data
+this.data={unique_id:null,url:null,credit:null,caption:null,credit_alternate:null,caption_alternate:null,link:null,link_target:null},
+//Options
+this.options={api_key_flickr:"f2cc870b4d233dd0a5bfe73fd0d64ef0",api_key_googlemaps:"AIzaSyB9dW8e_iRrATFa8g24qB6BDBGdkrLDZYI",api_key_embedly:"",// ae2da610d1454b66abdf2e6a4c44026d
+credit_height:0,caption_height:0,background:0},this.animator={},
+// Merge Data and Options
+TL.Util.mergeData(this.options,e),TL.Util.mergeData(this.data,t),
+// Don't create DOM elements if this is background media
+this.options.background||(this._el.container=TL.Dom.create("div","tl-media"),this.data.unique_id&&(this._el.container.id=this.data.unique_id),this._initLayout(),i&&(i.appendChild(this._el.container),this._el.parent=i))},loadMedia:function(){var t=this;if(!this._state.loaded)try{this.load_timer=setTimeout(function(){t.loadingMessage(),t._loadMedia(),
+// self._state.loaded = true; handled in onLoaded()
+t._updateDisplay()},1200)}catch(t){trace("Error loading media for ",this._media),trace(t)}},_updateMessage:function(t){this.message&&this.message.updateMessage(t)},loadingMessage:function(){this._updateMessage(this._("loading")+" "+this.options.media_name)},errorMessage:function(t){t=t?this._("error")+": "+t:this._("error"),this._updateMessage(t)},updateMediaDisplay:function(t){this._state.loaded&&!this.options.background&&(TL.Browser.mobile?this._el.content_item.style.maxHeight=this.options.height/2+"px":this._el.content_item.style.maxHeight=this.options.height-this.options.credit_height-this.options.caption_height-30+"px",
+//this._el.content_item.style.maxWidth = this.options.width + "px";
+this._el.container.style.maxWidth=this.options.width+"px",
+// Fix for max-width issues in Firefox
+TL.Browser.firefox&&(this._el.content_item.offsetWidth,this._el.content_item.offsetHeight),this._updateMediaDisplay(t),this._state.media_loaded&&(this._el.credit&&(this._el.credit.style.width=this._el.content_item.offsetWidth+"px"),this._el.caption&&(this._el.caption.style.width=this._el.content_item.offsetWidth+"px")))},
+/*	Media Specific
 	================================================== */
-    _loadMedia: function() {
-        // All overrides must call this.onLoaded() to set state
-        this.onLoaded();
-    },
-
-    _updateMediaDisplay: function(l) {
-        //this._el.content_item.style.maxHeight = (this.options.height - this.options.credit_height - this.options.caption_height - 16) + "px";
-        if(TL.Browser.firefox) {
-            this._el.content_item.style.maxWidth = this.options.width + "px";
-            this._el.content_item.style.width = "auto";
-        }
-    },
-
-    _getMeta: function() {
-
-    },
-
-    _getImageURL: function(w, h) {
-        // Image-based media types should return <img>-compatible src url
-        return "";
-    },
-
-	/*	Public
+_loadMedia:function(){
+// All overrides must call this.onLoaded() to set state
+this.onLoaded()},_updateMediaDisplay:function(t){
+//this._el.content_item.style.maxHeight = (this.options.height - this.options.credit_height - this.options.caption_height - 16) + "px";
+TL.Browser.firefox&&(this._el.content_item.style.maxWidth=this.options.width+"px",this._el.content_item.style.width="auto")},_getMeta:function(){},_getImageURL:function(t,e){
+// Image-based media types should return <img>-compatible src url
+return""},
+/*	Public
 	================================================== */
-	show: function() {
-
-	},
-
-	hide: function() {
-
-	},
-
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-		this.onAdd();
-	},
-
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-		this.onRemove();
-	},
-
-  getImageURL: function(w, h) {
-      return this._getImageURL(w, h);
-  },
-
-	// Update Display
-	updateDisplay: function(w, h, l) {
-		this._updateDisplay(w, h, l);
-	},
-
-	stopMedia: function() {
-		this._stopMedia();
-	},
-
-	loadErrorDisplay: function(message) {
-		try {
-			this._el.content.removeChild(this._el.content_item);
-		} catch(e) {
-			// if this._el.content_item isn't a child of this._el then just keep truckin
-		}
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-loaderror", this._el.content);
-		this._el.content_item.innerHTML = "<div class='tl-icon-" + this.options.media_type + "'></div><p>" + message + "</p>";
-
-		// After Loaded
-		this.onLoaded(true);
-	},
-
-	/*	Events
+show:function(){},hide:function(){},addTo:function(t){t.appendChild(this._el.container),this.onAdd()},removeFrom:function(t){t.removeChild(this._el.container),this.onRemove()},getImageURL:function(t,e){return this._getImageURL(t,e)},
+// Update Display
+updateDisplay:function(t,e,i){this._updateDisplay(t,e,i)},stopMedia:function(){this._stopMedia()},loadErrorDisplay:function(t){try{this._el.content.removeChild(this._el.content_item)}catch(t){
+// if this._el.content_item isn't a child of this._el then just keep truckin
+}this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-loaderror",this._el.content),this._el.content_item.innerHTML="<div class='tl-icon-"+this.options.media_type+"'></div><p>"+t+"</p>",
+// After Loaded
+this.onLoaded(!0)},
+/*	Events
 	================================================== */
-	onLoaded: function(error) {
-		this._state.loaded = true;
-		this.fire("loaded", this.data);
-		if (this.message) {
-			this.message.hide();
-		}
-		if (!(error || this.options.background)) {
-			this.showMeta();
-		}
-		this.updateDisplay();
-	},
-
-	onMediaLoaded: function(e) {
-		this._state.media_loaded = true;
-		this.fire("media_loaded", this.data);
-		if (this._el.credit) {
-			this._el.credit.style.width		= this._el.content_item.offsetWidth + "px";
-		}
-		if (this._el.caption) {
-			this._el.caption.style.width		= this._el.content_item.offsetWidth + "px";
-		}
-	},
-
-	showMeta: function(credit, caption) {
-		this._state.show_meta = true;
-		// Credit
-		if (this.data.credit && this.data.credit != "") {
-			this._el.credit					= TL.Dom.create("div", "tl-credit", this._el.content_container);
-			this._el.credit.innerHTML		= this.options.autolink == true ? TL.Util.linkify(this.data.credit) : this.data.credit;
-			this.options.credit_height 		= this._el.credit.offsetHeight;
-		}
-
-		// Caption
-		if (this.data.caption && this.data.caption != "") {
-			this._el.caption				= TL.Dom.create("div", "tl-caption", this._el.content_container);
-			this._el.caption.innerHTML		= this.options.autolink == true ? TL.Util.linkify(this.data.caption) : this.data.caption;
-			this.options.caption_height 	= this._el.caption.offsetHeight;
-		}
-
-		if (!this.data.caption || !this.data.credit) {
-			this.getMeta();
-		}
-
-	},
-
-	getMeta: function() {
-		this._getMeta();
-	},
-
-	updateMeta: function() {
-		if (!this.data.credit && this.data.credit_alternate) {
-			this._el.credit					= TL.Dom.create("div", "tl-credit", this._el.content_container);
-			this._el.credit.innerHTML		= this.data.credit_alternate;
-			this.options.credit_height 		= this._el.credit.offsetHeight;
-		}
-
-		if (!this.data.caption && this.data.caption_alternate) {
-			this._el.caption				= TL.Dom.create("div", "tl-caption", this._el.content_container);
-			this._el.caption.innerHTML		= this.data.caption_alternate;
-			this.options.caption_height 	= this._el.caption.offsetHeight;
-		}
-
-		this.updateDisplay();
-	},
-
-	onAdd: function() {
-		this.fire("added", this.data);
-	},
-
-	onRemove: function() {
-		this.fire("removed", this.data);
-	},
-
-	/*	Private Methods
+onLoaded:function(t){this._state.loaded=!0,this.fire("loaded",this.data),this.message&&this.message.hide(),t||this.options.background||this.showMeta(),this.updateDisplay()},onMediaLoaded:function(t){this._state.media_loaded=!0,this.fire("media_loaded",this.data),this._el.credit&&(this._el.credit.style.width=this._el.content_item.offsetWidth+"px"),this._el.caption&&(this._el.caption.style.width=this._el.content_item.offsetWidth+"px")},showMeta:function(t,e){this._state.show_meta=!0,
+// Credit
+this.data.credit&&""!=this.data.credit&&(this._el.credit=TL.Dom.create("div","tl-credit",this._el.content_container),this._el.credit.innerHTML=1==this.options.autolink?TL.Util.linkify(this.data.credit):this.data.credit,this.options.credit_height=this._el.credit.offsetHeight),
+// Caption
+this.data.caption&&""!=this.data.caption&&(this._el.caption=TL.Dom.create("div","tl-caption",this._el.content_container),this._el.caption.innerHTML=1==this.options.autolink?TL.Util.linkify(this.data.caption):this.data.caption,this.options.caption_height=this._el.caption.offsetHeight),this.data.caption&&this.data.credit||this.getMeta()},getMeta:function(){this._getMeta()},updateMeta:function(){!this.data.credit&&this.data.credit_alternate&&(this._el.credit=TL.Dom.create("div","tl-credit",this._el.content_container),this._el.credit.innerHTML=this.data.credit_alternate,this.options.credit_height=this._el.credit.offsetHeight),!this.data.caption&&this.data.caption_alternate&&(this._el.caption=TL.Dom.create("div","tl-caption",this._el.content_container),this._el.caption.innerHTML=this.data.caption_alternate,this.options.caption_height=this._el.caption.offsetHeight),this.updateDisplay()},onAdd:function(){this.fire("added",this.data)},onRemove:function(){this.fire("removed",this.data)},
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-
-		// Message
-		this.message = new TL.Message({}, this.options);
-		this.message.addTo(this._el.container);
-
-		// Create Layout
-		this._el.content_container = TL.Dom.create("div", "tl-media-content-container", this._el.container);
-
-		// Link
-		if (this.data.link && this.data.link != "") {
-
-			this._el.link = TL.Dom.create("a", "tl-media-link", this._el.content_container);
-			this._el.link.href = this.data.link;
-			if (this.data.link_target && this.data.link_target != "") {
-				this._el.link.target = this.data.link_target;
-			} else {
-				this._el.link.target = "_blank";
-			}
-
-			this._el.content = TL.Dom.create("div", "tl-media-content", this._el.link);
-
-		} else {
-			this._el.content = TL.Dom.create("div", "tl-media-content", this._el.content_container);
-		}
-
-
-	},
-
-	// Update Display
-	_updateDisplay: function(w, h, l) {
-		if (w) {
-			this.options.width = w;
-
-		}
-		//this._el.container.style.width = this.options.width + "px";
-		if (h) {
-			this.options.height = h;
-		}
-
-		if (l) {
-			this.options.layout = l;
-		}
-
-		if (this._el.credit) {
-			this.options.credit_height 		= this._el.credit.offsetHeight;
-		}
-		if (this._el.caption) {
-			this.options.caption_height 	= this._el.caption.offsetHeight + 5;
-		}
-
-		this.updateMediaDisplay(this.options.layout);
-
-	},
-
-	_stopMedia: function() {
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Blockquote.js
-********************************************** */
-
+_initLayout:function(){
+// Message
+this.message=new TL.Message({},this.options),this.message.addTo(this._el.container),
+// Create Layout
+this._el.content_container=TL.Dom.create("div","tl-media-content-container",this._el.container),
+// Link
+this.data.link&&""!=this.data.link?(this._el.link=TL.Dom.create("a","tl-media-link",this._el.content_container),this._el.link.href=this.data.link,this.data.link_target&&""!=this.data.link_target?this._el.link.target=this.data.link_target:this._el.link.target="_blank",this._el.content=TL.Dom.create("div","tl-media-content",this._el.link)):this._el.content=TL.Dom.create("div","tl-media-content",this._el.content_container)},
+// Update Display
+_updateDisplay:function(t,e,i){t&&(this.options.width=t),
+//this._el.container.style.width = this.options.width + "px";
+e&&(this.options.height=e),i&&(this.options.layout=i),this._el.credit&&(this.options.credit_height=this._el.credit.offsetHeight),this._el.caption&&(this.options.caption_height=this._el.caption.offsetHeight+5),this.updateMediaDisplay(this.options.layout)},_stopMedia:function(){}}),
 /*	TL.Media.Blockquote
 ================================================== */
-
-TL.Media.Blockquote = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.Blockquote=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {		
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-blockquote", this._el.content);
-		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
-		
-		// Get Media ID
-		this.media_id = this.data.url;
-		
-		// API Call
-		this._el.content_item.innerHTML = this.media_id;
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	updateMediaDisplay: function() {
-		
-	},
-	
-	_updateMediaDisplay: function() {
-		
-	}
-
-	
-});
-
-
-/* **********************************************
-     Begin TL.Media.DailyMotion.js
-********************************************** */
-
+_loadMedia:function(){
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-blockquote",this._el.content),this._el.content_container.className="tl-media-content-container tl-media-content-container-text",
+// Get Media ID
+this.media_id=this.data.url,
+// API Call
+this._el.content_item.innerHTML=this.media_id,
+// After Loaded
+this.onLoaded()},updateMediaDisplay:function(){},_updateMediaDisplay:function(){}}),
 /*	TL.Media.DailyMotion
 ================================================== */
-
-TL.Media.DailyMotion = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.DailyMotion=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-dailymotion", this._el.content);
-
-		// Get Media ID
-		if (this.data.url.match("video")) {
-			this.media_id = this.data.url.split("video\/")[1].split(/[?&]/)[0];
-		} else {
-			this.media_id = this.data.url.split("embed\/")[1].split(/[?&]/)[0];
-		}
-
-		// API URL
-		api_url = "https://www.dailymotion.com/embed/video/" + this.media_id+"?api=postMessage";
-
-		// API Call
-		this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"
-
-		// After Loaded
-		this.onLoaded();
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-	},
-
-	_stopMedia: function() {
-		this._el.content_item.querySelector("iframe").contentWindow.postMessage('{"command":"pause","parameters":[]}', "*");
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.DocumentCloud.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-dailymotion",this._el.content),
+// Get Media ID
+this.data.url.match("video")?this.media_id=this.data.url.split("video/")[1].split(/[?&]/)[0]:this.media_id=this.data.url.split("embed/")[1].split(/[?&]/)[0],
+// API URL
+t="https://www.dailymotion.com/embed/video/"+this.media_id+"?api=postMessage",
+// API Call
+this._el.content_item.innerHTML="<iframe autostart='false' frameborder='0' width='100%' height='100%' src='"+t+"'></iframe>",
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth})+"px"},_stopMedia:function(){this._el.content_item.querySelector("iframe").contentWindow.postMessage('{"command":"pause","parameters":[]}',"*")}}),
 /*	TL.Media.DocumentCloud
 ================================================== */
-
-TL.Media.DocumentCloud = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.DocumentCloud=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var self = this;
-
-		// Create Dom elements
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-documentcloud tl-media-shadow", this._el.content);
-		this._el.content_item.id = TL.Util.unique_ID(7)
-
-		// Check url
-		if(this.data.url.match(/\.html$/)) {
-		    this.data.url = this._transformURL(this.data.url);
-		} else if(!(this.data.url.match(/.(json|js)$/))) {
-		    trace("DOCUMENT CLOUD IN URL BUT INVALID SUFFIX");
-		}
-
-		// Load viewer API
-        TL.Load.js([
-					'https://assets.documentcloud.org/viewer/loader.js',
-					'https://assets.documentcloud.org/viewer/viewer.js'],
-            function() {	
-	            self.createMedia();
-			}
-		);
-	},
-
-	// Viewer API needs js, not html
-	_transformURL: function(url) {
-        return url.replace(/(.*)\.html$/, '$1.js')
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-        this._el.content_item.style.height = this.options.height + "px";
-		//this._el.content_item.style.width = this.options.width + "px";
-	},
-
-	createMedia: function() {
-		// DocumentCloud API call
-		DV.load(this.data.url, {
-		    container: '#'+this._el.content_item.id,
-		    showSidebar: false
-		});
-		this.onLoaded();
-	},
-
-
-
-	/*	Events
-	================================================== */
-
-
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Flickr.js
-********************************************** */
-
+_loadMedia:function(){var t=this;
+// Create Dom elements
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-documentcloud tl-media-shadow",this._el.content),this._el.content_item.id=TL.Util.unique_ID(7),
+// Check url
+this.data.url.match(/\.html$/)?this.data.url=this._transformURL(this.data.url):this.data.url.match(/.(json|js)$/)||trace("DOCUMENT CLOUD IN URL BUT INVALID SUFFIX"),
+// Load viewer API
+TL.Load.js(["https://assets.documentcloud.org/viewer/loader.js","https://assets.documentcloud.org/viewer/viewer.js"],function(){t.createMedia()})},
+// Viewer API needs js, not html
+_transformURL:function(t){return t.replace(/(.*)\.html$/,"$1.js")},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=this.options.height+"px";
+//this._el.content_item.style.width = this.options.width + "px";
+},createMedia:function(){
+// DocumentCloud API call
+DV.load(this.data.url,{container:"#"+this._el.content_item.id,showSidebar:!1}),this.onLoaded()}}),
 /*	TL.Media.Flickr
 
 ================================================== */
-
-TL.Media.Flickr = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Flickr=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		try {
-		    // Get Media ID
-		    this.establishMediaID();
-
-            // API URL
-            api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
-
-            // API Call
-            TL.getJSON(api_url, function(d) {
-                if (d.stat == "ok") {
-                    self.sizes = d.sizes.size; // store sizes info
-
-                    if(!self.options.background) {
-                        self.createMedia();
-                    }
-
-                    self.onLoaded();
-                } else {
-                    self.loadErrorDisplay(self._("flickr_notfound_err"));
-                }
-            });
-		} catch(e) {
-		    self.loadErrorDisplay(self._(e.message_key));
-		}
-	},
-
-	establishMediaID: function() {
-		if (this.data.url.match(/flic.kr\/.+/i)) {
-			var encoded = this.data.url.split('/').slice(-1)[0];
-			this.media_id = TL.Util.base58.decode(encoded);
-		} else {
-			var marker = 'flickr.com/photos/';
-			var idx = this.data.url.indexOf(marker);
-			if (idx == -1) { throw new TL.Error("flickr_invalidurl_err"); }
-			var pos = idx + marker.length;
-			this.media_id = this.data.url.substr(pos).split("/")[1];
-		}
-	},
-
-	createMedia: function() {
-	    var self = this;
-
-		// Link
-		this._el.content_link = TL.Dom.create("a", "", this._el.content);
-		this._el.content_link.href = this.data.url;
-		this._el.content_link.target = "_blank";
-
-		// Photo
-		this._el.content_item = TL.Dom.create("img", "tl-media-item tl-media-image tl-media-flickr tl-media-shadow", this._el.content_link);
-
-		if (this.data.alt) {
-			this._el.content_item.alt = this.data.alt;
-		} else if (this.data.caption) {
-			this._el.content_item.alt = TL.Util.unhtmlify(this.data.caption);
-		}
-
-		if (this.data.title) {
-			this._el.content_item.title = this.data.title;
-		} else if (this.data.caption) {
-			this._el.content_item.title = TL.Util.unhtmlify(this.data.caption);
-		}
-
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-		// Set Image Source
-		this._el.content_item.src = this.getImageURL(this.options.width, this.options.height);
-	},
-
-    getImageURL: function(w, h) {
-        var best_size 	= this.size_label(h),
-            source = this.sizes[this.sizes.length - 2].source;
-
-		for(var i = 0; i < this.sizes.length; i++) {
-			if (this.sizes[i].label == best_size) {
-				source = this.sizes[i].source;
-			}
-		}
-
-		return source;
-    },
-
-	_getMeta: function() {
-		var self = this,
-		api_url;
-
-		// API URL
-		api_url = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=" + this.options.api_key_flickr + "&photo_id=" + this.media_id + "&format=json&jsoncallback=?";
-
-		// API Call
-		TL.getJSON(api_url, function(d) {
-			self.data.credit_alternate = "<a href='" + self.data.url + "' target='_blank'>" + d.photo.owner.realname + "</a>";
-			self.data.caption_alternate = d.photo.title._content + " " + d.photo.description._content;
-			self.updateMeta();
-		});
-	},
-
-	size_label: function(s) {
-		var _size = "";
-
-		if (s <= 75) {
-			if (s <= 0) {
-				_size = "Large";
-			} else {
-				_size = "Thumbnail";
-			}
-		} else if (s <= 180) {
-			_size = "Small";
-		} else if (s <= 240) {
-			_size = "Small 320";
-		} else if (s <= 375) {
-			_size = "Medium";
-		} else if (s <= 480) {
-			_size = "Medium 640";
-		} else if (s <= 600) {
-			_size = "Large";
-		} else {
-			_size = "Large";
-		}
-
-		return _size;
-	}
-
-
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.GoogleDoc.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;try{
+// Get Media ID
+this.establishMediaID(),
+// API URL
+t="https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key="+this.options.api_key_flickr+"&photo_id="+this.media_id+"&format=json&jsoncallback=?",
+// API Call
+TL.getJSON(t,function(t){"ok"==t.stat?(e.sizes=t.sizes.size,// store sizes info
+e.options.background||e.createMedia(),e.onLoaded()):e.loadErrorDisplay(e._("flickr_notfound_err"))})}catch(t){e.loadErrorDisplay(e._(t.message_key))}},establishMediaID:function(){if(this.data.url.match(/flic.kr\/.+/i)){var t=this.data.url.split("/").slice(-1)[0];this.media_id=TL.Util.base58.decode(t)}else{var e="flickr.com/photos/",i=this.data.url.indexOf(e);if(-1==i)throw new TL.Error("flickr_invalidurl_err");var n=i+e.length;this.media_id=this.data.url.substr(n).split("/")[1]}},createMedia:function(){var e=this;
+// Link
+this._el.content_link=TL.Dom.create("a","",this._el.content),this._el.content_link.href=this.data.url,this._el.content_link.target="_blank",
+// Photo
+this._el.content_item=TL.Dom.create("img","tl-media-item tl-media-image tl-media-flickr tl-media-shadow",this._el.content_link),this.data.alt?this._el.content_item.alt=this.data.alt:this.data.caption&&(this._el.content_item.alt=TL.Util.unhtmlify(this.data.caption)),this.data.title?this._el.content_item.title=this.data.title:this.data.caption&&(this._el.content_item.title=TL.Util.unhtmlify(this.data.caption)),
+// Media Loaded Event
+this._el.content_item.addEventListener("load",function(t){e.onMediaLoaded()}),
+// Set Image Source
+this._el.content_item.src=this.getImageURL(this.options.width,this.options.height)},getImageURL:function(t,e){for(var i=this.size_label(e),n=this.sizes[this.sizes.length-2].source,a=0;a<this.sizes.length;a++)this.sizes[a].label==i&&(n=this.sizes[a].source);return n},_getMeta:function(){var e=this,t;
+// API URL
+t="https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key="+this.options.api_key_flickr+"&photo_id="+this.media_id+"&format=json&jsoncallback=?",
+// API Call
+TL.getJSON(t,function(t){e.data.credit_alternate="<a href='"+e.data.url+"' target='_blank'>"+t.photo.owner.realname+"</a>",e.data.caption_alternate=t.photo.title._content+" "+t.photo.description._content,e.updateMeta()})},size_label:function(t){var e="";return e=t<=75?t<=0?"Large":"Thumbnail":t<=180?"Small":t<=240?"Small 320":t<=375?"Medium":t<=480?"Medium 640":"Large"}}),
 /*	TL.Media.GoogleDoc
 
 ================================================== */
-
-TL.Media.GoogleDoc = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.GoogleDoc=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var url,
-			self = this;
-		
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
-		
-		// Get Media ID
-		if (this.data.url.match("open\?id\=")) {
-			this.media_id = this.data.url.split("open\?id\=")[1];
-			if (this.data.url.match("\&authuser\=0")) {
-				url = this.media_id.match("\&authuser\=0")[0];
-			};
-		} else if (this.data.url.match(/file\/d\/([^/]*)\/?/)) {
-			var doc_id = this.data.url.match(/file\/d\/([^/]*)\/?/)[1];
-			url = 'https://drive.google.com/file/d/' + doc_id + '/preview'
-		} else {
-			url = this.data.url;
-		}
-		
-		// this URL makes something suitable for an img src but what if it's not an image?
-		// api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
-		
-		this._el.content_item.innerHTML	=	"<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>";
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = this.options.height + "px";
-	}
-
-	
-});
-
-
-/* **********************************************
-     Begin TL.Media.GooglePlus.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+// Get Media ID
+if(this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe",this._el.content),this.data.url.match("open?id="))this.media_id=this.data.url.split("open?id=")[1],this.data.url.match("&authuser=0")&&(t=this.media_id.match("&authuser=0")[0]);else if(this.data.url.match(/file\/d\/([^/]*)\/?/)){var i;t="https://drive.google.com/file/d/"+this.data.url.match(/file\/d\/([^/]*)\/?/)[1]+"/preview"}else t=this.data.url;
+// this URL makes something suitable for an img src but what if it's not an image?
+// api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
+this._el.content_item.innerHTML="<iframe class='doc' frameborder='0' width='100%' height='100%' src='"+t+"'></iframe>",
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=this.options.height+"px"}}),
 /*	TL.Media.GooglePlus
 ================================================== */
-
-TL.Media.GooglePlus = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.GooglePlus=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-		
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-googleplus", this._el.content);
-		
-		// Get Media ID
-		this.media_id = this.data.url;
-		
-		// API URL
-		api_url = this.media_id;
-		
-		// API Call
-		this._el.content_item.innerHTML = "<iframe frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"		
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = this.options.height + "px";
-	}
-
-	
-});
-
-
-/* **********************************************
-     Begin TL.Media.IFrame.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-googleplus",this._el.content),
+// Get Media ID
+this.media_id=this.data.url,
+// API URL
+t=this.media_id,
+// API Call
+this._el.content_item.innerHTML="<iframe frameborder='0' width='100%' height='100%' src='"+t+"'></iframe>",
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=this.options.height+"px"}}),
 /*	TL.Media.IFrame
 ================================================== */
-
-TL.Media.IFrame = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.IFrame=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-				
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
-		
-		// Get Media ID
-		this.media_id = this.data.url;
-		
-		// API URL
-		api_url = this.media_id;
-		
-		// API Call
-		this._el.content_item.innerHTML = api_url;
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = this.options.height + "px";
-	}
-	
-});
-
-
-/* **********************************************
-     Begin TL.Media.Image.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe",this._el.content),
+// Get Media ID
+this.media_id=this.data.url,
+// API URL
+t=this.media_id,
+// API Call
+this._el.content_item.innerHTML=t,
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=this.options.height+"px"}}),
 /*	TL.Media.Image
 	Produces image assets.
 	Takes a data object and populates a dom object
 ================================================== */
-
-TL.Media.Image = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Image=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-
-        // Create media?
-        if(!this.options.background) {
-            this.createMedia();
-        }
-
-        // After loaded
-		this.onLoaded();
-	},
-
-    createMedia: function() {
-        var self = this,
-            image_class = "tl-media-item tl-media-image tl-media-shadow";
-
-		if (this.data.url.match(/.png(\?.*)?$/) || this.data.url.match(/.svg(\?.*)?$/)) {
-			image_class = "tl-media-item tl-media-image"
-		}
-
- 		// Link
-		if (this.data.link) {
-			this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
-			this._el.content_link.href 			= this.data.link;
-			this._el.content_link.target 		= "_blank";
-			this._el.content_item				= TL.Dom.create("img", image_class, this._el.content_link);
-		} else {
-			this._el.content_item				= TL.Dom.create("img", image_class, this._el.content);
-		}
-
-		if (this.data.alt) {
-			this._el.content_item.alt = this.data.alt;
-		} else if (this.data.caption) {
-			this._el.content_item.alt = TL.Util.unhtmlify(this.data.caption);
-		}
-
-		if (this.data.title) {
-			this._el.content_item.title = this.data.title;
-		} else if (this.data.caption) {
-			this._el.content_item.title = TL.Util.unhtmlify(this.data.caption);
-		}
-
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-		this._el.content_item.src			= this.getImageURL();
-    },
-
-    getImageURL: function(w, h) {
-        return TL.Util.transformImageURL(this.data.url);
-    },
-
-	_updateMediaDisplay: function(layout) {
-		if(TL.Browser.firefox) {
-			//this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
-			this._el.content_item.style.width = "auto";
-		}
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Imgur.js
-********************************************** */
-
+_loadMedia:function(){
+// Loading Message
+this.loadingMessage(),
+// Create media?
+this.options.background||this.createMedia(),
+// After loaded
+this.onLoaded()},createMedia:function(){var e=this,t="tl-media-item tl-media-image tl-media-shadow";(this.data.url.match(/.png(\?.*)?$/)||this.data.url.match(/.svg(\?.*)?$/))&&(t="tl-media-item tl-media-image"),
+// Link
+this.data.link?(this._el.content_link=TL.Dom.create("a","",this._el.content),this._el.content_link.href=this.data.link,this._el.content_link.target="_blank",this._el.content_item=TL.Dom.create("img",t,this._el.content_link)):this._el.content_item=TL.Dom.create("img",t,this._el.content),this.data.alt?this._el.content_item.alt=this.data.alt:this.data.caption&&(this._el.content_item.alt=TL.Util.unhtmlify(this.data.caption)),this.data.title?this._el.content_item.title=this.data.title:this.data.caption&&(this._el.content_item.title=TL.Util.unhtmlify(this.data.caption)),
+// Media Loaded Event
+this._el.content_item.addEventListener("load",function(t){e.onMediaLoaded()}),this._el.content_item.src=this.getImageURL()},getImageURL:function(t,e){return TL.Util.transformImageURL(this.data.url)},_updateMediaDisplay:function(t){TL.Browser.firefox&&(
+//this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
+this._el.content_item.style.width="auto")}}),
 /*	TL.Media.Flickr
 
 ================================================== */
-
-TL.Media.Imgur = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Imgur=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		try {
-			var self = this;
-
-			if (this.data.url.match("<blockquote class=['\"]imgur-embed-pub['\"]")){
-				var found = this.data.url.match(/(imgur\.com)\/(\w+)/);
-				this.media_id = found[2];
-				this.data.url = "http://imgur.com/gallery/" + this.media_id;
-			}
-			else if (this.data.url){
-				this.media_id = this.data.url.split('/').slice(-1)[0];
-			}
-
-	        TL.Load.js([
-						'https://s.imgur.com/min/embed.js'], 
-					function(){
-						self.createMedia();
-					}
-			);
-
-		} catch(e) {
-		    this.loadErrorDisplay(this._("imgur_invalidurl_err"));
-		}
-	},
-
-	createMedia: function() {
-	    var self = this;
-		var api_url = "https://api.imgur.com/oembed.json?url=" + this.data.url;
-
-		// Content div
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-image tl-media-imgur",
-																								this._el.content);
-
-		// API Call
-
-          TL.ajax({
-          	type: 'GET',
-            url: api_url,
-            dataType: 'json',
-            success: function(data){
-            try {
-                self._el.content_item.innerHTML	= data.html;
-            	setInterval(function(){
-            		if(document.querySelector("blockquote.imgur-embed-pub") == null){
-            			clearInterval();
-            		}
-            		else{
-            			imgurEmbed.createIframe();
-            			document.getElementById("imageElement").removeAttribute("style");
-            			document.getElementById("image").removeAttribute("style");
-            		}
-            	}, 2000);
-            } catch(e) {
-            }
-            },
-            error: function(xhr, errorType, error) {
-              tc = new TL.TimelineConfig();
-              if (errorType == 'parsererror') {
-                var error = new TL.Error("invalid_url_err");
-              } else {
-                var error = new TL.Error("unknown_read_err", errorType);
-              }
-              self.loadErrorDisplay(self._("imgur_invalidurl_err"));
-              tc.logError(error);
-            }
-          });
-
-         this.onLoaded();
-
-	},
-
-
-
-	_updateMediaDisplay: function() {
-		//this.el.content_item = document.getElementById(this._el.content_item.id);
-		this._el.content_item.style.width = this.options.width + "px";
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this.options.width}) + "px";
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Instagram.js
-********************************************** */
-
+_loadMedia:function(){try{var t=this;if(this.data.url.match("<blockquote class=['\"]imgur-embed-pub['\"]")){var e=this.data.url.match(/(imgur\.com)\/(\w+)/);this.media_id=e[2],this.data.url="http://imgur.com/gallery/"+this.media_id}else this.data.url&&(this.media_id=this.data.url.split("/").slice(-1)[0]);TL.Load.js(["https://s.imgur.com/min/embed.js"],function(){t.createMedia()})}catch(t){this.loadErrorDisplay(this._("imgur_invalidurl_err"))}},createMedia:function(){var n=this,t="https://api.imgur.com/oembed.json?url="+this.data.url;
+// Content div
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-image tl-media-imgur",this._el.content),
+// API Call
+TL.ajax({type:"GET",url:t,dataType:"json",success:function(t){try{n._el.content_item.innerHTML=t.html,setInterval(function(){null==document.querySelector("blockquote.imgur-embed-pub")?clearInterval():(imgurEmbed.createIframe(),document.getElementById("imageElement").removeAttribute("style"),document.getElementById("image").removeAttribute("style"))},2e3)}catch(t){}},error:function(t,e,i){if(tc=new TL.TimelineConfig,"parsererror"==e)var i=new TL.Error("invalid_url_err");else var i=new TL.Error("unknown_read_err",e);n.loadErrorDisplay(n._("imgur_invalidurl_err")),tc.logError(i)}}),this.onLoaded()},_updateMediaDisplay:function(){
+//this.el.content_item = document.getElementById(this._el.content_item.id);
+this._el.content_item.style.width=this.options.width+"px",this._el.content_item.style.height=TL.Util.ratio.r16_9({w:this.options.width})+"px"}}),
 /*	TL.Media.Instagram
 
 ================================================== */
-
-TL.Media.Instagram = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Instagram=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		// Get Media ID
-		this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
-
-		if(!this.options.background) {
-		    this.createMedia();
-		}
-
-		// After Loaded
-		this.onLoaded();
-	},
-
-    createMedia: function() {
-        var self = this;
-
-		// Link
-		this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
-		this._el.content_link.href 			= this.data.url;
-		this._el.content_link.target 		= "_blank";
-
-		// Photo
-		this._el.content_item				= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-instagram tl-media-shadow", this._el.content_link);
-
-		if (this.data.alt) {
-			this._el.content_item.alt = this.data.alt;
-		} else if (this.data.caption) {
-			this._el.content_item.alt = TL.Util.unhtmlify(this.data.caption);
-		}
-
-		if (this.data.title) {
-			this._el.content_item.title = this.data.title;
-		} else if (this.data.caption) {
-			this._el.content_item.title = TL.Util.unhtmlify(this.data.caption);
-		}
-
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-	    this._el.content_item.src = this.getImageURL(this._el.content.offsetWidth);
-    },
-
-    getImageURL: function(w, h) {
-        return "https://instagram.com/p/" + this.media_id + "/media/?size=" + this.sizes(w);
-    },
-
-	_getMeta: function() {
-		var self = this,
-		    api_url;
-
-		// API URL
-		api_url = "https://api.instagram.com/oembed?url=https://instagr.am/p/" + this.media_id + "&callback=?";
-
-		// API Call
-		TL.getJSON(api_url, function(d) {
-			self.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
-			self.data.caption_alternate = d.title;
-			self.updateMeta();
-		});
-	},
-
-	sizes: function(s) {
-		var _size = "";
-		if (s <= 150) {
-			_size = "t";
-		} else if (s <= 306) {
-			_size = "m";
-		} else {
-			_size = "l";
-		}
-
-		return _size;
-	}
-
-
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.GoogleMap.js
-********************************************** */
-
+_loadMedia:function(){
+// Get Media ID
+this.media_id=this.data.url.split("/p/")[1].split("/")[0],this.options.background||this.createMedia(),
+// After Loaded
+this.onLoaded()},createMedia:function(){var e=this;
+// Link
+this._el.content_link=TL.Dom.create("a","",this._el.content),this._el.content_link.href=this.data.url,this._el.content_link.target="_blank",
+// Photo
+this._el.content_item=TL.Dom.create("img","tl-media-item tl-media-image tl-media-instagram tl-media-shadow",this._el.content_link),this.data.alt?this._el.content_item.alt=this.data.alt:this.data.caption&&(this._el.content_item.alt=TL.Util.unhtmlify(this.data.caption)),this.data.title?this._el.content_item.title=this.data.title:this.data.caption&&(this._el.content_item.title=TL.Util.unhtmlify(this.data.caption)),
+// Media Loaded Event
+this._el.content_item.addEventListener("load",function(t){e.onMediaLoaded()}),this._el.content_item.src=this.getImageURL(this._el.content.offsetWidth)},getImageURL:function(t,e){return"https://instagram.com/p/"+this.media_id+"/media/?size="+this.sizes(t)},_getMeta:function(){var e=this,t;
+// API URL
+t="https://api.instagram.com/oembed?url=https://instagr.am/p/"+this.media_id+"&callback=?",
+// API Call
+TL.getJSON(t,function(t){e.data.credit_alternate="<a href='"+t.author_url+"' target='_blank'>"+t.author_name+"</a>",e.data.caption_alternate=t.title,e.updateMeta()})},sizes:function(t){var e="";return e=t<=150?"t":t<=306?"m":"l"}}),
 /*  TL.Media.Map
 ================================================== */
-
-TL.Media.GoogleMap = TL.Media.extend({
-	includes: [TL.Events],
-
-	/*  Load the media
+TL.Media.GoogleMap=TL.Media.extend({includes:[TL.Events],
+/*  Load the media
 	================================================== */
-	_loadMedia: function() {
-
-		// Create Dom element
-		this._el.content_item   = TL.Dom.create("div", "tl-media-item tl-media-map tl-media-shadow", this._el.content);
-
-		// Get Media ID
-		this.media_id = this.data.url;
-
-		// API Call
-		this.mapframe = TL.Dom.create("iframe", "", this._el.content_item);
-		window.stash = this;
-		this.mapframe.width       = "100%";
-		this.mapframe.height      = "100%";
-		this.mapframe.frameBorder = "0";
-		this.mapframe.src         = this.makeGoogleMapsEmbedURL(this.media_id, this.options.api_key_googlemaps);
-		
-		
-		// After Loaded
-		this.onLoaded();
-	},
-
-	_updateMediaDisplay: function() {
-		if (this._state.loaded) {
-			var dimensions = TL.Util.ratio.square({w:this._el.content_item.offsetWidth});
-			this._el.content_item.style.height = dimensions.h + "px";
-		}
-	},
-	
-	makeGoogleMapsEmbedURL: function(url,api_key) {
-		// Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
-		var Streetview = false;
-
-		function determineMapMode(url){
-			function parseDisplayMode(display_mode, param_string) {
-				// Set the zoom param
-				if (display_mode.slice(-1) == "z") {
-					param_string["zoom"] = display_mode;
-					// Set the maptype to something other than "roadmap"
-				} else if (display_mode.slice(-1) == "m") {
-					// TODO: make this somehow interpret the correct zoom level
-					// until then fake it by using Google's default zoom level
-					param_string["zoom"] = 14;
-					param_string["maptype"] = "satellite";
-					// Set all the fun streetview params
-				} else if (display_mode.slice(-1) == "t") {
-					Streetview = true;
-					// streetview uses "location" instead of "center"
-					// "place" mode doesn't have the center param, so we may need to grab that now
-					if (mapmode == "place") {
-						var center = url.match(regexes["place"])[3] + "," + url.match(regexes["place"])[4];
-					} else {
-						var center = param_string["center"];
-						delete param_string["center"];
-					}
-					// Clear out all the other params -- this is so hacky
-					param_string = {};
-					param_string["location"] = center;
-					streetview_params = display_mode.split(",");
-					for (param in param_defs["streetview"]) {
-						var i = parseInt(param) + 1;
-						if (param_defs["streetview"][param] == "pitch" && streetview_params[i] == "90t"){
-							// Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
-							// https://developers.google.com/maps/documentation/javascript/streetview
-							param_string[param_defs["streetview"][param]] = 0;
-						} else {
-							param_string[param_defs["streetview"][param]] = streetview_params[i].slice(0,-1);
-						}
-					}
-
-				}
-				return param_string;
-			}
-			function determineMapModeURL(mapmode, match) {
-				var param_string = {};
-				var url_root = match[1], display_mode = match[match.length - 1];
-				for (param in param_defs[mapmode]) {
-					// skip first 2 matches, because they reflect the URL and not params
-					var i = parseInt(param)+2;
-					if (param_defs[mapmode][param] == "center") {
-						param_string[param_defs[mapmode][param]] = match[i] + "," + match[++i];
-					} else {
-						param_string[param_defs[mapmode][param]] = match[i];
-					}
-				}
-
-				param_string = parseDisplayMode(display_mode, param_string);
-				param_string["key"] = api_key;
-				if (Streetview == true) {
-					mapmode = "streetview";
-				} else {
-				}
-				return (url_root + "/embed/v1/" + mapmode + TL.Util.getParamString(param_string));
-			}
-
-
-			mapmode = "view";
-			if (url.match(regexes["place"])) {
-				mapmode = "place";
-			} else if (url.match(regexes["directions"])) {
-				mapmode = "directions";
-			} else if (url.match(regexes["search"])) {
-				mapmode = "search";
-			}
-			return determineMapModeURL(mapmode, url.match(regexes[mapmode]));
-
-		}
-
-		// These must be in the order they appear in the original URL
-		// "key" param not included since it's not in the URL structure
-		// Streetview "location" param not included since it's captured as "center"
-		// Place "center" param ...um...
-		var param_defs = {
-			"view": ["center"],
-			"place": ["q", "center"],
-			"directions": ["origin", "destination", "center"],
-			"search": ["q", "center"],
-			"streetview": ["fov", "heading", "pitch"]
-		};
-		// Set up regex parts to make updating these easier if Google changes them
-		var root_url_regex = /(https:\/\/.+google.+?\/maps)/;
-		var coords_regex = /@([-\d.]+),([-\d.]+)/;
-		var address_regex = /([\w\W]+)/;
-
-		// Data doesn't seem to get used for anything
-		var data_regex = /data=[\S]*/;
-
-		// Capture the parameters that determine what map tiles to use
-		// In roadmap view, mode URLs include zoom paramater (e.g. "14z")
-		// In satellite (or "earth") view, URLs include a distance parameter (e.g. "84511m")
-		// In streetview, URLs include paramaters like "3a,75y,49.76h,90t" -- see http://stackoverflow.com/a/22988073
-		var display_mode_regex = /,((?:[-\d.]+[zmayht],?)*)/;
-
-		var regexes = {
-			view: new RegExp(root_url_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-			place: new RegExp(root_url_regex.source + "/place/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-			directions: new RegExp(root_url_regex.source + "/dir/" + address_regex.source + "/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source),
-			search: new RegExp(root_url_regex.source + "/search/" + address_regex.source + "/" + coords_regex.source + display_mode_regex.source)
-		};
-		return determineMapMode(url);
-	}
-   
-});
-
-
-/* **********************************************
-     Begin TL.Media.PDF.js
-********************************************** */
-
+_loadMedia:function(){
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-map tl-media-shadow",this._el.content),
+// Get Media ID
+this.media_id=this.data.url,
+// API Call
+this.mapframe=TL.Dom.create("iframe","",this._el.content_item),(window.stash=this).mapframe.width="100%",this.mapframe.height="100%",this.mapframe.frameBorder="0",this.mapframe.src=this.makeGoogleMapsEmbedURL(this.media_id,this.options.api_key_googlemaps),
+// After Loaded
+this.onLoaded()},_updateMediaDisplay:function(){if(this._state.loaded){var t=TL.Util.ratio.square({w:this._el.content_item.offsetWidth});this._el.content_item.style.height=t.h+"px"}},makeGoogleMapsEmbedURL:function(t,r){function e(a){function o(t,e){
+// Set the zoom param
+if("z"==t.slice(-1))e.zoom=t;
+// Set the maptype to something other than "roadmap"
+else if("m"==t.slice(-1))
+// TODO: make this somehow interpret the correct zoom level
+// until then fake it by using Google's default zoom level
+e.zoom=14,e.maptype="satellite";else if("t"==t.slice(-1)){
+// streetview uses "location" instead of "center"
+// "place" mode doesn't have the center param, so we may need to grab that now
+if(l=!0,"place"==mapmode)var i=a.match(d.place)[3]+","+a.match(d.place)[4];else{var i=e.center;delete e.center}
+// Clear out all the other params -- this is so hacky
+for(param in(e={}).location=i,streetview_params=t.split(","),h.streetview){var n=parseInt(param)+1;"pitch"==h.streetview[param]&&"90t"==streetview_params[n]?
+// Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
+// https://developers.google.com/maps/documentation/javascript/streetview
+e[h.streetview[param]]=0:e[h.streetview[param]]=streetview_params[n].slice(0,-1)}}return e}function t(t,e){var i={},n=e[1],a=e[e.length-1];for(param in h[t]){
+// skip first 2 matches, because they reflect the URL and not params
+var s=parseInt(param)+2;"center"==h[t][param]?i[h[t][param]]=e[s]+","+e[++s]:i[h[t][param]]=e[s]}return(i=o(a,i)).key=r,1==l&&(t="streetview"),n+"/embed/v1/"+t+TL.Util.getParamString(i)}return mapmode="view",a.match(d.place)?mapmode="place":a.match(d.directions)?mapmode="directions":a.match(d.search)&&(mapmode="search"),t(mapmode,a.match(d[mapmode]))}
+// These must be in the order they appear in the original URL
+// "key" param not included since it's not in the URL structure
+// Streetview "location" param not included since it's captured as "center"
+// Place "center" param ...um...
+// Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
+var l=!1,h={view:["center"],place:["q","center"],directions:["origin","destination","center"],search:["q","center"],streetview:["fov","heading","pitch"]},i=/(https:\/\/.+google.+?\/maps)/,n=/@([-\d.]+),([-\d.]+)/,a=/([\w\W]+)/,s=/data=[\S]*/,o=/,((?:[-\d.]+[zmayht],?)*)/,d={view:new RegExp(i.source+"/"+n.source+o.source),place:new RegExp(i.source+"/place/"+a.source+"/"+n.source+o.source),directions:new RegExp(i.source+"/dir/"+a.source+"/"+a.source+"/"+n.source+o.source),search:new RegExp(i.source+"/search/"+a.source+"/"+n.source+o.source)};return e(t)}}),
 /*	TL.Media.PDF
  * Chrome and Firefox on both OSes and Safari all support PDFs as iframe src.
  * This prompts for a download on IE10/11. We should investigate using
  * https://mozilla.github.io/pdf.js/ to support showing PDFs on IE.
 ================================================== */
-
-TL.Media.PDF = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.PDF=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var url = TL.Util.transformImageURL(this.data.url),
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe", this._el.content);
-		var markup = "";
-		// not assigning media_id attribute. Seems like a holdover which is no longer used.
-		if (TL.Browser.ie || TL.Browser.edge || url.match(/dl.dropboxusercontent.com/)) {
-			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + url + "&amp;embedded=true'></iframe>";
-		} else {
-			markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>"
-		}
-		this._el.content_item.innerHTML	= markup
-		this.onLoaded();
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = this.options.height + "px";
-	}
-
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Profile.js
-********************************************** */
-
+_loadMedia:function(){var t=TL.Util.transformImageURL(this.data.url),e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe",this._el.content);var i="";
+// not assigning media_id attribute. Seems like a holdover which is no longer used.
+i=TL.Browser.ie||TL.Browser.edge||t.match(/dl.dropboxusercontent.com/)?"<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url="+t+"&amp;embedded=true'></iframe>":"<iframe class='doc' frameborder='0' width='100%' height='100%' src='"+t+"'></iframe>",this._el.content_item.innerHTML=i,this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=this.options.height+"px"}}),
 /*	TL.Media.Profile
 
 ================================================== */
-
-TL.Media.Profile = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.Profile=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		
-		this._el.content_item				= TL.Dom.create("img", "tl-media-item tl-media-image tl-media-profile tl-media-shadow", this._el.content);
-		this._el.content_item.src			= this.data.url;
-		
-		this.onLoaded();
-	},
-	
-	_updateMediaDisplay: function(layout) {
-		
-		
-		if(TL.Browser.firefox) {
-			this._el.content_item.style.maxWidth = (this.options.width/2) - 40 + "px";
-		}
-	}
-	
-});
-
-/* **********************************************
-     Begin TL.Media.Slider.js
-********************************************** */
-
+_loadMedia:function(){this._el.content_item=TL.Dom.create("img","tl-media-item tl-media-image tl-media-profile tl-media-shadow",this._el.content),this._el.content_item.src=this.data.url,this.onLoaded()},_updateMediaDisplay:function(t){TL.Browser.firefox&&(this._el.content_item.style.maxWidth=this.options.width/2-40+"px")}}),
 /*	TL.Media.SLider
 	Produces a Slider
 	Takes a data object and populates a dom object
 	TODO
 	Placeholder
 ================================================== */
-
-TL.Media.Slider = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.Slider=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		
-		this._el.content_item				= TL.Dom.create("img", "tl-media-item tl-media-image", this._el.content);
-		this._el.content_item.src			= this.data.url;
-		
-		this.onLoaded();
-	}
-	
-});
-
-/* **********************************************
-     Begin TL.Media.SoundCloud.js
-********************************************** */
-
+_loadMedia:function(){this._el.content_item=TL.Dom.create("img","tl-media-item tl-media-image",this._el.content),this._el.content_item.src=this.data.url,this.onLoaded()}});
 /*	TL.Media.SoundCloud
 ================================================== */
-
-var soundCoudCreated = false;
-
-TL.Media.SoundCloud = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+var soundCoudCreated=!1,mediaID;TL.Media.SoundCloud=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-soundcloud tl-media-shadow", this._el.content);
-
-		// Get Media ID
-		this.media_id = this.data.url;
-
-		// API URL
-		api_url = "https://soundcloud.com/oembed?url=" + this.media_id + "&format=js&callback=?"
-
-		// API Call
-		TL.getJSON(api_url, function(d) {
-			TL.Load.js("https://w.soundcloud.com/player/api.js", function() {//load soundcloud api for pausing.
-				self.createMedia(d);
-			});
-		});
-
-	},
-
-	createMedia: function(d) {
-		this._el.content_item.innerHTML = d.html;
-
-		this.soundCloudCreated = true;
-
-		self.widget = SC.Widget(this._el.content_item.querySelector("iframe"));//create widget for api use
-
-		// After Loaded
-		this.onLoaded();
-	},
-
-	_stopMedia: function() {
-		if (this.soundCloudCreated)
-		{
-			self.widget.pause();
-		}
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Spotify.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-soundcloud tl-media-shadow",this._el.content),
+// Get Media ID
+this.media_id=this.data.url,
+// API URL
+t="https://soundcloud.com/oembed?url="+this.media_id+"&format=js&callback=?",
+// API Call
+TL.getJSON(t,function(t){TL.Load.js("https://w.soundcloud.com/player/api.js",function(){//load soundcloud api for pausing.
+e.createMedia(t)})})},createMedia:function(t){this._el.content_item.innerHTML=t.html,this.soundCloudCreated=!0,self.widget=SC.Widget(this._el.content_item.querySelector("iframe")),//create widget for api use
+// After Loaded
+this.onLoaded()},_stopMedia:function(){this.soundCloudCreated&&self.widget.pause()}}),
 /*	TL.Media.Spotify
 ================================================== */
-
-TL.Media.Spotify = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Spotify=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-spotify", this._el.content);
-
-		// Get Media ID
-		if (this.data.url.match(/^spotify:track/) || this.data.url.match(/^spotify:album/) || this.data.url.match(/^spotify:user:.+:playlist:/)) {
-			this.media_id = this.data.url;
-		}
-
-		if (this.data.url.match(/spotify\.com\/track\/(.+)/)) {
-			this.media_id = "spotify:track:" + this.data.url.match(/spotify\.com\/track\/(.+)/)[1];
-		} else if (this.data.url.match(/spotify\.com\/album\/(.+)/)) {
-			this.media_id = "spotify:album:" + this.data.url.match(/spotify\.com\/album\/(.+)/)[1];
-		} else if (this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)) {
-			var user = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[1];
-			var playlist = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[2];
-			this.media_id = "spotify:user:" + user + ":playlist:" + playlist;
-		} else if (this.data.url.match(/spotify\.com\/artist\/(.+)/)) {
-			var artist = this.data.url.match(/spotify\.com\/artist\/(.+)/)[1];
-			this.media_id = "spotify:artist:" + artist;
-		}
-
-
-		if (this.media_id) {
-			// API URL
-			api_url = "https://embed.spotify.com/?uri=" + this.media_id + "&theme=white&view=coverart";
-
-			this.player = TL.Dom.create("iframe", "tl-media-shadow", this._el.content_item);
-			this.player.width 		= "100%";
-			this.player.height 		= "100%";
-			this.player.frameBorder = "0";
-			this.player.src 		= api_url;
-
-			// After Loaded
-			this.onLoaded();
-
-		} else {
-				this.loadErrorDisplay(this._('spotify_invalid_url'));
-		}
-	},
-
-	// Update Media Display
-
-	_updateMediaDisplay: function(l) {
-		var _height = this.options.height,
-			_player_height = 0,
-			_player_width = 0;
-
-		if (TL.Browser.mobile) {
-			_height = (this.options.height/2);
-		} else {
-			_height = this.options.height - this.options.credit_height - this.options.caption_height - 30;
-		}
-
-		this._el.content_item.style.maxHeight = "none";
-		trace(_height);
-		trace(this.options.width)
-		if (_height > this.options.width) {
-			trace("height is greater")
-			_player_height = this.options.width + 80 + "px";
-			_player_width = this.options.width + "px";
-		} else {
-			trace("width is greater")
-			trace(this.options.width)
-			_player_height = _height + "px";
-			_player_width = _height - 80 + "px";
-		}
-
-
-		this.player.style.width = _player_width;
-		this.player.style.height = _player_height;
-
-		if (this._el.credit) {
-			this._el.credit.style.width		= _player_width;
-		}
-		if (this._el.caption) {
-			this._el.caption.style.width		= _player_width;
-		}
-	},
-
-
-	_stopMedia: function() {
-		// Need spotify stop code
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Storify.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+if(this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-spotify",this._el.content),
+// Get Media ID
+(this.data.url.match(/^spotify:track/)||this.data.url.match(/^spotify:album/)||this.data.url.match(/^spotify:user:.+:playlist:/))&&(this.media_id=this.data.url),this.data.url.match(/spotify\.com\/track\/(.+)/))this.media_id="spotify:track:"+this.data.url.match(/spotify\.com\/track\/(.+)/)[1];else if(this.data.url.match(/spotify\.com\/album\/(.+)/))this.media_id="spotify:album:"+this.data.url.match(/spotify\.com\/album\/(.+)/)[1];else if(this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)){var i=this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[1],n=this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[2];this.media_id="spotify:user:"+i+":playlist:"+n}else if(this.data.url.match(/spotify\.com\/artist\/(.+)/)){var a=this.data.url.match(/spotify\.com\/artist\/(.+)/)[1];this.media_id="spotify:artist:"+a}this.media_id?(
+// API URL
+t="https://embed.spotify.com/?uri="+this.media_id+"&theme=white&view=coverart",this.player=TL.Dom.create("iframe","tl-media-shadow",this._el.content_item),this.player.width="100%",this.player.height="100%",this.player.frameBorder="0",this.player.src=t,
+// After Loaded
+this.onLoaded()):this.loadErrorDisplay(this._("spotify_invalid_url"))},
+// Update Media Display
+_updateMediaDisplay:function(t){var e=this.options.height,i=0,n=0;e=TL.Browser.mobile?this.options.height/2:this.options.height-this.options.credit_height-this.options.caption_height-30,this._el.content_item.style.maxHeight="none",trace(e),trace(this.options.width),n=e>this.options.width?(trace("height is greater"),i=this.options.width+80+"px",this.options.width+"px"):(trace("width is greater"),trace(this.options.width),i=e+"px",e-80+"px"),this.player.style.width=n,this.player.style.height=i,this._el.credit&&(this._el.credit.style.width=n),this._el.caption&&(this._el.caption.style.width=n)},_stopMedia:function(){
+// Need spotify stop code
+}}),
 /*	TL.Media.Storify
 ================================================== */
-
-TL.Media.Storify = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
+TL.Media.Storify=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var content;
-				
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-storify", this._el.content);
-		
-		// Get Media ID
-		this.media_id = this.data.url;
-		
-		// Content
-		content =	"<iframe frameborder='0' width='100%' height='100%' src='" + this.media_id + "/embed'></iframe>";
-		content +=	"<script src='" + this.media_id + ".js'></script>";
-		
-		// API Call
-		this._el.content_item.innerHTML = content;
-		
-		// After Loaded
-		this.onLoaded();
-	},
-	
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = this.options.height + "px";
-	}
-	
-	
-});
-
-
-/* **********************************************
-     Begin TL.Media.Text.js
-********************************************** */
-
-TL.Media.Text = TL.Class.extend({
-	
-	includes: [TL.Events],
-	
-	// DOM ELEMENTS
-	_el: {
-		container: {},
-		content_container: {},
-		content: {},
-		headline: {},
-		date: {}
-	},
-	
-	// Data
-	data: {
-		unique_id: 			"",
-		headline: 			"headline",
-		text: 				"text"
-	},
-	
-	// Options
-	options: {
-		title: 			false
-	},
-	
-	/*	Constructor
+_loadMedia:function(){var t;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-storify",this._el.content),
+// Get Media ID
+this.media_id=this.data.url,
+// Content
+t="<iframe frameborder='0' width='100%' height='100%' src='"+this.media_id+"/embed'></iframe>",t+="<script src='"+this.media_id+".js'><\/script>",
+// API Call
+this._el.content_item.innerHTML=t,
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=this.options.height+"px"}}),TL.Media.Text=TL.Class.extend({includes:[TL.Events],
+// DOM ELEMENTS
+_el:{container:{},content_container:{},content:{},headline:{},date:{}},
+// Data
+data:{unique_id:"",headline:"headline",text:"text"},
+// Options
+options:{title:!1},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options, add_to_container) {
-		
-		TL.Util.setData(this, data);
-		
-		// Merge Options
-		TL.Util.mergeData(this.options, options);
-		
-		this._el.container = TL.Dom.create("div", "tl-text");
-		this._el.container.id = this.data.unique_id;
-		
-		this._initLayout();
-		
-		if (add_to_container) {
-			add_to_container.appendChild(this._el.container);
-		};
-		
-	},
-	
-	/*	Adding, Hiding, Showing etc
+initialize:function(t,e,i){TL.Util.setData(this,t),
+// Merge Options
+TL.Util.mergeData(this.options,e),this._el.container=TL.Dom.create("div","tl-text"),this._el.container.id=this.data.unique_id,this._initLayout(),i&&i.appendChild(this._el.container)},
+/*	Adding, Hiding, Showing etc
 	================================================== */
-	show: function() {
-		
-	},
-	
-	hide: function() {
-		
-	},
-	
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-		//this.onAdd();
-	},
-	
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-	},
-	
-	headlineHeight: function() {
-		return this._el.headline.offsetHeight + 40;
-	},
-	
-	addDateText: function(str) {
-		this._el.date.innerHTML = str;
-	},
-	
-	/*	Events
+show:function(){},hide:function(){},addTo:function(t){t.appendChild(this._el.container);
+//this.onAdd();
+},removeFrom:function(t){t.removeChild(this._el.container)},headlineHeight:function(){return this._el.headline.offsetHeight+40},addDateText:function(t){this._el.date.innerHTML=t},
+/*	Events
 	================================================== */
-	onLoaded: function() {
-		this.fire("loaded", this.data);
-	},
-	
-	onAdd: function() {
-		this.fire("added", this.data);
-	},
-
-	onRemove: function() {
-		this.fire("removed", this.data);
-	},
-	
-	/*	Private Methods
+onLoaded:function(){this.fire("loaded",this.data)},onAdd:function(){this.fire("added",this.data)},onRemove:function(){this.fire("removed",this.data)},
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		
-		// Create Layout
-		this._el.content_container			= TL.Dom.create("div", "tl-text-content-container", this._el.container);
-		
-		// Date
-		this._el.date 				= TL.Dom.create("h3", "tl-headline-date", this._el.content_container);
-		
-		// Headline
-		if (this.data.headline != "") {
-			var headline_class = "tl-headline";
-			if (this.options.title) {
-				headline_class = "tl-headline tl-headline-title";
-			}
-			this._el.headline				= TL.Dom.create("h2", headline_class, this._el.content_container);
-			this._el.headline.innerHTML		= this.data.headline;
-		}
-
-		// Text
-		if (this.data.text != "") {
-			var text_content = "";
-
-			text_content += TL.Util.htmlify(this.options.autolink == true ? TL.Util.linkify(this.data.text) : this.data.text);
-			trace(this.data.text);
-			this._el.content				= TL.Dom.create("div", "tl-text-content", this._el.content_container);
-			this._el.content.innerHTML		= text_content;
-			trace(text_content);
-			trace(this._el.content)
-		}
-
-		// Fire event that the slide is loaded
-		this.onLoaded();
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Twitter.js
-********************************************** */
-
+_initLayout:function(){
+// Headline
+if(
+// Create Layout
+this._el.content_container=TL.Dom.create("div","tl-text-content-container",this._el.container),
+// Date
+this._el.date=TL.Dom.create("h3","tl-headline-date",this._el.content_container),""!=this.data.headline){var t="tl-headline";this.options.title&&(t="tl-headline tl-headline-title"),this._el.headline=TL.Dom.create("h2",t,this._el.content_container),this._el.headline.innerHTML=this.data.headline}
+// Text
+if(""!=this.data.text){var e="";e+=TL.Util.htmlify(1==this.options.autolink?TL.Util.linkify(this.data.text):this.data.text),trace(this.data.text),this._el.content=TL.Dom.create("div","tl-text-content",this._el.content_container),this._el.content.innerHTML=e,trace(e),trace(this._el.content)}
+// Fire event that the slide is loaded
+this.onLoaded()}}),
 /*	TL.Media.Twitter
 	Produces Twitter Display
 ================================================== */
-
-TL.Media.Twitter = TL.Media.extend({
-	
-	includes: [TL.Events],
-    
-
-	
-	/*	Load the media
+TL.Media.Twitter=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-					
-		// Create Dom element
-		this._el.content_item = TL.Dom.create("div", "tl-media-twitter", this._el.content);
-		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
-        		
-		// Get Media ID
-        if(this.data.url.match("^(https?:)?\/*(www.)?twitter\.com"))
-        {
-		if (this.data.url.match("status\/")) {
-			this.media_id = this.data.url.split("status\/")[1];
-		} else if (this.data.url.match("statuses\/")) {
-			this.media_id = this.data.url.split("statuses\/")[1];
-		} else {
-			this.media_id = "";
-		}
-        }
-        
-        else if(this.data.url.match("<blockquote class=['\"]twitter-tweet['\"]")) {
-		
-        var found = this.data.url.match(/(status|statuses)\/(\d+)/);
-		if (found && found.length > 2) {
-		    this.media_id = found[2];
-		} else {
-		    self.loadErrorDisplay(self._("twitterembed_invalidurl_err"));
-		    return;
-		}
-    }
-        
-		// API URL
-		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
-		
-		// API Call
-		TL.ajax({
-			type: 'GET',
-			url: api_url,
-			dataType: 'json', //json data type
-			success: function(d){
-				self.createMedia(d);
-			},
-			error:function(xhr, type){
-				var error_text = "";
-				error_text += self._("twitter_load_err") + "<br/>" + self.media_id + "<br/>" + type;
-				self.loadErrorDisplay(error_text);
-			}
-		});
-		 
-	},
-	
-	createMedia: function(d) {
-        trace("create_media")	
-		var tweet				= "",
-			tweet_text			= "",
-			tweetuser			= "",
-			tweet_status_temp 	= "",
-			tweet_status_url 	= "",
-			tweet_status_date 	= "",
-            self = this;
-			
-		//	TWEET CONTENT
-		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>";
-		tweetuser			= d.author_url.split("twitter.com\/")[1];
-		tweet_status_temp 	= d.html.split("<\/p>\&mdash;")[1].split("<a href=\"")[1];
-		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
-		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
-		
-		// Open links in new window
-		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
-        
-        if (tweet_text.includes("pic.twitter.com")) {
-            
-            TL.Load.js('https://platform.twitter.com/widgets.js', function() {
-                twttr.widgets.createTweet(self.media_id, self._el.content_item,
-                {
-                    conversation : 'none',    // or all
-                    linkColor    : '#cc0000', // default is blue
-                    theme        : 'light'    // or dark
-                })
-            });
-            
-            this.onLoaded();
-            
-        } else {
-
-            // 	TWEET CONTENT
-            tweet += tweet_text;
-
-            //	TWEET AUTHOR
-            tweet += "<div class='vcard'>";
-            tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
-            tweet += "<img src='" + "' class='tl-media-item tl-media-image' target='_blank'>" + "</a>";
-            tweet += "<div class='author'>";
-            tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
-            tweet += "<span class='avatar'></span>";
-            tweet += "<span class='fn'>" + d.author_name + " <span class='tl-icon-twitter'></span></span>";
-            tweet += "<span class='nickname'>@" + tweetuser + "<span class='thumbnail-inline'></span></span>";
-            tweet += "</a>";
-            tweet += "</div>";
-            tweet += "</div>";
-
-
-            // Add to DOM
-            this._el.content_item.innerHTML	= tweet;
-
-            // After Loaded
-            this.onLoaded();
-        }
-    },
-	
-    
-	updateMediaDisplay: function() {
-		
-	},
-	
-	_updateMediaDisplay: function() {
-		
-	},
-    
-	
-	
-	
-});
-
-
-/* **********************************************
-     Begin TL.Media.TwitterEmbed.js
-********************************************** */
-
-/*	TL.Media.TwitterEmbed
-	Produces Twitter Display
-================================================== */
-
-        var mediaID;
-
-TL.Media.TwitterEmbed = TL.Media.extend({
-	includes: [TL.Events],
-    
-
-	
-	/*	Load the media
+_loadMedia:function(){var t,n=this;
+// Create Dom element
+// Get Media ID
+if(this._el.content_item=TL.Dom.create("div","tl-media-twitter",this._el.content),this._el.content_container.className="tl-media-content-container tl-media-content-container-text",this.data.url.match("^(https?:)?/*(www.)?twitter.com"))this.data.url.match("status/")?this.media_id=this.data.url.split("status/")[1]:this.data.url.match("statuses/")?this.media_id=this.data.url.split("statuses/")[1]:this.media_id="";else if(this.data.url.match("<blockquote class=['\"]twitter-tweet['\"]")){var e=this.data.url.match(/(status|statuses)\/(\d+)/);if(!(e&&2<e.length))return void n.loadErrorDisplay(n._("twitterembed_invalidurl_err"));this.media_id=e[2]}
+// API URL
+t="https://api.twitter.com/1/statuses/oembed.json?id="+this.media_id+"&omit_script=true&include_entities=true&callback=?",
+// API Call
+TL.ajax({type:"GET",url:t,dataType:"json",//json data type
+success:function(t){n.createMedia(t)},error:function(t,e){var i="";i+=n._("twitter_load_err")+"<br/>"+n.media_id+"<br/>"+e,n.loadErrorDisplay(i)}})},createMedia:function(t){trace("create_media");var e="",i="",n="",a="",s="",o="",r=this;
+//	TWEET CONTENT
+i=t.html.split("</p>&mdash;")[0]+"</p></blockquote>",n=t.author_url.split("twitter.com/")[1],s=(a=t.html.split("</p>&mdash;")[1].split('<a href="')[1]).split('">')[0],o=a.split('">')[1].split("</a>")[0],(
+// Open links in new window
+i=i.replace(/<a href/gi,'<a target="_blank" href')).includes("pic.twitter.com")?TL.Load.js("https://platform.twitter.com/widgets.js",function(){twttr.widgets.createTweet(r.media_id,r._el.content_item,{conversation:"none",// or all
+linkColor:"#cc0000",// default is blue
+theme:"light"})}):(
+// 	TWEET CONTENT
+e+=i,
+//	TWEET AUTHOR
+e+="<div class='vcard'>",e+="<a href='"+s+"' class='twitter-date' target='_blank'>"+o+"</a>",e+="<img src='' class='tl-media-item tl-media-image' target='_blank'></a>",e+="<div class='author'>",e+="<a class='screen-name url' href='"+t.author_url+"' target='_blank'>",e+="<span class='avatar'></span>",e+="<span class='fn'>"+t.author_name+" <span class='tl-icon-twitter'></span></span>",e+="<span class='nickname'>@"+n+"<span class='thumbnail-inline'></span></span>",e+="</a>",e+="</div>",e+="</div>",
+// Add to DOM
+this._el.content_item.innerHTML=e),this.onLoaded()},updateMediaDisplay:function(){},_updateMediaDisplay:function(){}}),TL.Media.TwitterEmbed=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-					
-		// Create Dom element
-		this._el.content_item = TL.Dom.create("div", "tl-media-twitter", this._el.content);
-		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
-		
-		// Get Media ID
-		var found = this.data.url.match(/(status|statuses)\/(\d+)/);
-		if (found && found.length > 2) {
-		    this.media_id = found[2];
-		} else {
-		    self.loadErrorDisplay(self._("twitterembed_invalidurl_err"));
-		    return;
-		}
-
-		// API URL
-		api_url = "https://api.twitter.com/1/statuses/oembed.json?id=" + this.media_id + "&omit_script=true&include_entities=true&callback=?";
-        
-        window.twttr = (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0],
-            t = window.twttr || {};
-            if (d.getElementById(id)) return t;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "https://platform.twitter.com/widgets.js";
-            fjs.parentNode.insertBefore(js, fjs);
-
-            t._e = [];
-            t.ready = function(f) {
-            t._e.push(f);
-            };
-
-            return t;
-        }(document, "script", "twitter-wjs"));
-        
-        mediaID = this.media_id;
-		
-		// API Call
-		TL.ajax({
-			type: 'GET',
-			url: api_url,
-			dataType: 'json', //json data type
-			success: function(d){
-				self.createMedia(d);
-			},
-			error:function(xhr, type){
-				var error_text = "";
-				error_text += self._("twitter_load_err") + "<br/>" + self.media_id + "<br/>" + type;
-				self.loadErrorDisplay(error_text);
-			}
-		});
-		 
-	},
-	
-	createMedia: function(d) {	
-		trace("create_media")	
-		var tweet				= "",
-			tweet_text			= "",
-			tweetuser			= "",
-			tweet_status_temp 	= "",
-			tweet_status_url 	= "",
-			tweet_status_date 	= "";
-			
-		//	TWEET CONTENT
-		tweet_text 			= d.html.split("<\/p>\&mdash;")[0] + "</p></blockquote>";
-        console.log(tweet_text);
-		tweetuser			= d.author_url.split("twitter.com\/")[1];
-		tweet_status_temp 	= d.html.split("<\/p>\&mdash;")[1].split("<a href=\"")[1];
-		tweet_status_url 	= tweet_status_temp.split("\"\>")[0];
-		tweet_status_date 	= tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
-		
-		// Open links in new window
-		tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
-        
-        if (tweet_text.includes("pic.twitter.com")) {
-            twttr.ready(
-                function(evt) {
-                    tweet = document.getElementsByClassName("tl-media-twitter")[0];
-                    var id = String(mediaID);
-                    twttr.widgets.createTweet(id, tweet,
-                        {
-                            conversation : 'none',    // or all
-                            linkColor    : '#cc0000', // default is blue
-                            theme        : 'light'    // or dark
-                        })
-                    .then(function (evt) {
-                        this.onLoaded();
-                    });
-                }
-            );
-            this._el.content_item.innerHTML	= tweet;
-            this.onLoaded();
-        } else{
-            // 	TWEET CONTENT
-            tweet += tweet_text;
-
-            //	TWEET AUTHOR
-            tweet += "<div class='vcard'>";
-            tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
-            tweet += "<div class='author'>";
-            tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
-            tweet += "<span class='avatar'></span>";
-            tweet += "<span class='fn'>" + d.author_name + " <span class='tl-icon-twitter'></span></span>";
-            tweet += "<span class='nickname'>@" + tweetuser + "<span class='thumbnail-inline'></span></span>";
-            tweet += "</a>";
-            tweet += "</div>";
-            tweet += "</div>";
-
-
-            // Add to DOM
-            this._el.content_item.innerHTML	= tweet;
-
-            // After Loaded
-            this.onLoaded();
-        }
-			
-	},
-	
-	updateMediaDisplay: function() {
-		
-	},
-	
-	_updateMediaDisplay: function() {
-		
-	}
-	
-	
-	
-});
-
-/* **********************************************
-     Begin TL.Media.Vimeo.js
-********************************************** */
-
+_loadMedia:function(){var t,n=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-twitter",this._el.content),this._el.content_container.className="tl-media-content-container tl-media-content-container-text";
+// Get Media ID
+var e=this.data.url.match(/(status|statuses)\/(\d+)/),i,a,s,o,r,l;e&&2<e.length?(this.media_id=e[2],
+// API URL
+t="https://api.twitter.com/1/statuses/oembed.json?id="+this.media_id+"&omit_script=true&include_entities=true&callback=?",window.twttr=(i=document,a="script",s="twitter-wjs",r=i.getElementsByTagName(a)[0],l=window.twttr||{},i.getElementById(s)||((o=i.createElement(a)).id=s,o.src="https://platform.twitter.com/widgets.js",r.parentNode.insertBefore(o,r),l._e=[],l.ready=function(t){l._e.push(t)}),l),mediaID=this.media_id,
+// API Call
+TL.ajax({type:"GET",url:t,dataType:"json",//json data type
+success:function(t){n.createMedia(t)},error:function(t,e){var i="";i+=n._("twitter_load_err")+"<br/>"+n.media_id+"<br/>"+e,n.loadErrorDisplay(i)}})):n.loadErrorDisplay(n._("twitterembed_invalidurl_err"))},createMedia:function(t){trace("create_media");var i="",e="",n="",a="",s="",o="";
+//	TWEET CONTENT
+e=t.html.split("</p>&mdash;")[0]+"</p></blockquote>",console.log(e),n=t.author_url.split("twitter.com/")[1],s=(a=t.html.split("</p>&mdash;")[1].split('<a href="')[1]).split('">')[0],o=a.split('">')[1].split("</a>")[0],(
+// Open links in new window
+e=e.replace(/<a href/gi,'<a target="_blank" href')).includes("pic.twitter.com")?twttr.ready(function(t){i=document.getElementsByClassName("tl-media-twitter")[0];var e=String(mediaID);twttr.widgets.createTweet(e,i,{conversation:"none",// or all
+linkColor:"#cc0000",// default is blue
+theme:"light"}).then(function(t){this.onLoaded()})}):(
+// 	TWEET CONTENT
+i+=e,
+//	TWEET AUTHOR
+i+="<div class='vcard'>",i+="<a href='"+s+"' class='twitter-date' target='_blank'>"+o+"</a>",i+="<div class='author'>",i+="<a class='screen-name url' href='"+t.author_url+"' target='_blank'>",i+="<span class='avatar'></span>",i+="<span class='fn'>"+t.author_name+" <span class='tl-icon-twitter'></span></span>",i+="<span class='nickname'>@"+n+"<span class='thumbnail-inline'></span></span>",i+="</a>",i+="</div>",i+="</div>"),this._el.content_item.innerHTML=i,this.onLoaded()},updateMediaDisplay:function(){},_updateMediaDisplay:function(){}}),
 /*	TL.Media.Vimeo
 ================================================== */
-
-TL.Media.Vimeo = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Vimeo=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-vimeo tl-media-shadow", this._el.content);
-
-		// Get Media ID
-		this.media_id = this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];
-
-		// API URL
-		api_url = "https://player.vimeo.com/video/" + this.media_id + "?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff";
-
-		this.player = TL.Dom.create("iframe", "", this._el.content_item);
-
-		// Media Loaded Event
-		this.player.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-		this.player.width 		= "100%";
-		this.player.height 		= "100%";
-		this.player.frameBorder = "0";
-		this.player.src 		= api_url;
-
-		this.player.setAttribute('allowfullscreen', '');
-		this.player.setAttribute('webkitallowfullscreen', '');
-		this.player.setAttribute('mozallowfullscreen', '');
-
-		// After Loaded
-		this.onLoaded();
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-	},
-
-	_stopMedia: function() {
-
-		try {
-			this.player.contentWindow.postMessage(JSON.stringify({method: "pause"}), "https://player.vimeo.com");
-		}
-		catch(err) {
-			trace(err);
-		}
-	}
-});
-
-
-/* **********************************************
-     Begin TL.Media.Vine.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-vimeo tl-media-shadow",this._el.content),
+// Get Media ID
+this.media_id=this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];var i=null;
+// Get start time
+this.data.url.match(/#t=([^&]+).*/)&&(i=this.data.url.match(/#t=([^&]+).*/)[1]),
+// API URL
+t="https://player.vimeo.com/video/"+this.media_id+"?api=1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff",i&&(t=t+="&amp;#t="+i),this.player=TL.Dom.create("iframe","",this._el.content_item),
+// Media Loaded Event
+this.player.addEventListener("load",function(t){e.onMediaLoaded()}),this.player.width="100%",this.player.height="100%",this.player.frameBorder="0",this.player.src=t,this.player.setAttribute("allowfullscreen",""),this.player.setAttribute("webkitallowfullscreen",""),this.player.setAttribute("mozallowfullscreen",""),
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth})+"px"},_stopMedia:function(){try{this.player.contentWindow.postMessage(JSON.stringify({method:"pause"}),"https://player.vimeo.com")}catch(t){trace(t)}}}),
 /*	TL.Media.Vine
 
 ================================================== */
-
-TL.Media.Vine = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Vine=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-vine tl-media-shadow", this._el.content);
-
-		// Get Media ID
-		this.media_id = this.data.url.split("vine.co/v/")[1];
-
-		// API URL
-		api_url = "https://vine.co/v/" + this.media_id + "/embed/simple";
-
-		// API Call
-		this._el.content_item.innerHTML = "<iframe frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe><script async src='https://platform.vine.co/static/scripts/embed.js' charset='utf-8'></script>"		
-
-		// After Loaded
-		this.onLoaded();
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		var size = TL.Util.ratio.square({w:this._el.content_item.offsetWidth , h:this.options.height});
-		this._el.content_item.style.height = size.h + "px";
-	},
-
-	_stopMedia: function() {
-		this._el.content_item.querySelector("iframe").contentWindow.postMessage('pause', '*');
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Website.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-vine tl-media-shadow",this._el.content),
+// Get Media ID
+this.media_id=this.data.url.split("vine.co/v/")[1],
+// API URL
+t="https://vine.co/v/"+this.media_id+"/embed/simple",
+// API Call
+this._el.content_item.innerHTML="<iframe frameborder='0' width='100%' height='100%' src='"+t+"'></iframe><script async src='https://platform.vine.co/static/scripts/embed.js' charset='utf-8'><\/script>",
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){var t=TL.Util.ratio.square({w:this._el.content_item.offsetWidth,h:this.options.height});this._el.content_item.style.height=t.h+"px"},_stopMedia:function(){this._el.content_item.querySelector("iframe").contentWindow.postMessage("pause","*")}}),
 /*	TL.Media.Website
 	Uses Embedly
 	http://embed.ly/docs/api/extract/endpoints/1/extract
 ================================================== */
-
-TL.Media.Website = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Website=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var self = this;
-
-		// Get Media ID
-		this.media_id = this.data.url.replace(/.*?:\/\//g, "");
-
-		if (this.options.api_key_embedly) {
-			// API URL
-			api_url = "https://api.embed.ly/1/extract?key=" + this.options.api_key_embedly + "&url=" + this.media_id + "&callback=?";
-
-			// API Call
-			TL.getJSON(api_url, function(d) {
-				self.createMedia(d);
-			});
-		} else {
-			this.createCardContent();
-		}
-	},
-
-	createCardContent: function() {
-		(function(w, d){
-			var id='embedly-platform', n = 'script';
-			if (!d.getElementById(id)){
-			 w.embedly = w.embedly || function() {(w.embedly.q = w.embedly.q || []).push(arguments);};
-			 var e = d.createElement(n); e.id = id; e.async=1;
-			 e.src = ('https:' === document.location.protocol ? 'https' : 'http') + '://cdn.embedly.com/widgets/platform.js';
-			 var s = d.getElementsByTagName(n)[0];
-			 s.parentNode.insertBefore(e, s);
-			}
-		})(window, document);
-
-		var content = "<a href=\"" + this.data.url + "\" class=\"embedly-card\">" + this.data.url + "</a>";
-		this._setContent(content);
-
-	},
-	createMedia: function(d) { // this costs API credits...
-		var content = "";
-
-
-		content		+=	"<h4><a href='" + this.data.url + "' target='_blank'>" + d.title + "</a></h4>";
-		if (d.images) {
-			if (d.images[0]) {
-				trace(d.images[0].url);
-				content		+=	"<img src='" + d.images[0].url + "' />";
-			}
-		}
-		if (d.favicon_url) {
-			content		+=	"<img class='tl-media-website-icon' src='" + d.favicon_url + "' />";
-		}
-		content		+=	"<span class='tl-media-website-description'>" + d.provider_name + "</span><br/>";
-		content		+=	"<p>" + d.description + "</p>";
-
-		this._setContent(content);
-	},
-
-	_setContent: function(content) {
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-website", this._el.content);
-		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
-		this._el.content_item.innerHTML = content;
-
-		// After Loaded
-		this.onLoaded();
-
-	},
-
-	updateMediaDisplay: function() {
-
-	},
-
-	_updateMediaDisplay: function() {
-
-	}
-
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Wikipedia.js
-********************************************** */
-
+_loadMedia:function(){var e=this;
+// Get Media ID
+this.media_id=this.data.url.replace(/.*?:\/\//g,""),this.options.api_key_embedly?(
+// API URL
+api_url="https://api.embed.ly/1/extract?key="+this.options.api_key_embedly+"&url="+this.media_id+"&callback=?",
+// API Call
+TL.getJSON(api_url,function(t){e.createMedia(t)})):this.createCardContent()},createCardContent:function(){!function(t,e){var i="embedly-platform",n="script";if(!e.getElementById(i)){t.embedly=t.embedly||function(){(t.embedly.q=t.embedly.q||[]).push(arguments)};var a=e.createElement(n);a.id=i,a.async=1,a.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";var s=e.getElementsByTagName(n)[0];s.parentNode.insertBefore(a,s)}}(window,document);var t='<a href="'+this.data.url+'" class="embedly-card">'+this.data.url+"</a>";this._setContent(t)},createMedia:function(t){// this costs API credits...
+var e="";e+="<h4><a href='"+this.data.url+"' target='_blank'>"+t.title+"</a></h4>",t.images&&t.images[0]&&(trace(t.images[0].url),e+="<img src='"+t.images[0].url+"' />"),t.favicon_url&&(e+="<img class='tl-media-website-icon' src='"+t.favicon_url+"' />"),e+="<span class='tl-media-website-description'>"+t.provider_name+"</span><br/>",e+="<p>"+t.description+"</p>",this._setContent(e)},_setContent:function(t){
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-website",this._el.content),this._el.content_container.className="tl-media-content-container tl-media-content-container-text",this._el.content_item.innerHTML=t,
+// After Loaded
+this.onLoaded()},updateMediaDisplay:function(){},_updateMediaDisplay:function(){}}),
 /*	TL.Media.Wikipedia
 ================================================== */
-
-TL.Media.Wikipedia = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Wikipedia=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			api_language,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-wikipedia", this._el.content);
-		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
-
-		// Get Media ID
-		this.media_id	 = this.data.url.split("wiki\/")[1].split("#")[0].replace("_", " ");
-		this.media_id	 = this.media_id.replace(" ", "%20");
-		api_language	 = this.data.url.split("//")[1].split(".wikipedia")[0];
-
-		// API URL
-		api_url = "https://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts|pageimages&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
-
-		// API Call
-		TL.ajax({
-			type: 'GET',
-			url: api_url,
-			dataType: 'json', //json data type
-
-			success: function(d){
-				self.createMedia(d);
-			},
-			error:function(xhr, type){
-				var error_text = "";
-				error_text += self._("wikipedia_load_err") + "<br/>" + self.media_id + "<br/>" + type;
-				self.loadErrorDisplay(error_text);
-			}
-		});
-
-	},
-
-	createMedia: function(d) {
-		var wiki = "";
-
-		if (d.query) {
-			var content = "",
-				wiki = {
-					entry: {},
-					title: "",
-					text: "",
-					extract: "",
-					paragraphs: 1,
-					page_image: "",
-					text_array: []
-				};
-
-			wiki.entry		 = TL.Util.getObjectAttributeByIndex(d.query.pages, 0);
-			wiki.extract	 = wiki.entry.extract;
-			wiki.title		 = wiki.entry.title;
-			wiki.page_image	 = wiki.entry.thumbnail;
-
-			if (wiki.extract.match("<p>")) {
-				wiki.text_array = wiki.extract.split("<p>");
-			} else {
-				wiki.text_array.push(wiki.extract);
-			}
-
-			for(var i = 0; i < wiki.text_array.length; i++) {
-				if (i+1 <= wiki.paragraphs && i+1 < wiki.text_array.length) {
-					wiki.text	+= "<p>" + wiki.text_array[i+1];
-				}
-			}
-
-
-			content		+=	"<span class='tl-icon-wikipedia'></span>";
-			content		+=	"<div class='tl-wikipedia-title'><h4><a href='" + this.data.url + "' target='_blank'>" + wiki.title + "</a></h4>";
-			content		+=	"<span class='tl-wikipedia-source'>" + this._('wikipedia') + "</span></div>";
-
-			if (wiki.page_image) {
-				//content 	+= 	"<img class='tl-wikipedia-pageimage' src='" + wiki.page_image.source +"'>";
-			}
-
-			content		+=	wiki.text;
-
-			if (wiki.extract.match("REDIRECT")) {
-
-			} else {
-				// Add to DOM
-				this._el.content_item.innerHTML	= content;
-				// After Loaded
-				this.onLoaded();
-			}
-
-
-		}
-
-	},
-
-	updateMediaDisplay: function() {
-
-	},
-
-	_updateMediaDisplay: function() {
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Wistia.js
-********************************************** */
-
+_loadMedia:function(){var t,e,n=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-wikipedia",this._el.content),this._el.content_container.className="tl-media-content-container tl-media-content-container-text",
+// Get Media ID
+this.media_id=this.data.url.split("wiki/")[1].split("#")[0].replace("_"," "),this.media_id=this.media_id.replace(" ","%20"),
+// API URL
+t="https://"+(e=this.data.url.split("//")[1].split(".wikipedia")[0])+".wikipedia.org/w/api.php?action=query&prop=extracts|pageimages&redirects=&titles="+this.media_id+"&exintro=1&format=json&callback=?",
+// API Call
+TL.ajax({type:"GET",url:t,dataType:"json",//json data type
+success:function(t){n.createMedia(t)},error:function(t,e){var i="";i+=n._("wikipedia_load_err")+"<br/>"+n.media_id+"<br/>"+e,n.loadErrorDisplay(i)}})},createMedia:function(t){var e="";if(t.query){var i="",e;(e={entry:{},title:"",text:"",extract:"",paragraphs:1,page_image:"",text_array:[]}).entry=TL.Util.getObjectAttributeByIndex(t.query.pages,0),e.extract=e.entry.extract,e.title=e.entry.title,e.page_image=e.entry.thumbnail,e.extract.match("<p>")?e.text_array=e.extract.split("<p>"):e.text_array.push(e.extract);for(var n=0;n<e.text_array.length;n++)n+1<=e.paragraphs&&n+1<e.text_array.length&&(e.text+="<p>"+e.text_array[n+1]);i+="<span class='tl-icon-wikipedia'></span>",i+="<div class='tl-wikipedia-title'><h4><a href='"+this.data.url+"' target='_blank'>"+e.title+"</a></h4>",i+="<span class='tl-wikipedia-source'>"+this._("wikipedia")+"</span></div>",e.page_image,i+=e.text,e.extract.match("REDIRECT")||(
+// Add to DOM
+this._el.content_item.innerHTML=i,
+// After Loaded
+this.onLoaded())}},updateMediaDisplay:function(){},_updateMediaDisplay:function(){}}),
 /*	TL.Media.Wistia
 ================================================== */
-
-TL.Media.Wistia = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Wistia=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var api_url,
-			self = this;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-wistia tl-media-shadow", this._el.content);
-
-		// Get Media ID
-		this.media_id = this.data.url.split(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/medias\/(.*)/)[3];
-
-		// API URL
-		api_url = "https://fast.wistia.com/embed/iframe/" + this.media_id + "?version=v1&controlsVisibleOnLoad=true&playerColor=aae3d8";
-
-    this.player = TL.Dom.create("iframe", "", this._el.content_item);
-
-    // Media Loaded Event
-		this.player.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-		this.player.width 		= "100%";
-		this.player.height 		= "100%";
-		this.player.frameBorder = "0";
-		this.player.src 		= api_url;
-
-		this.player.setAttribute('allowfullscreen', '');
-		this.player.setAttribute('webkitallowfullscreen', '');
-		this.player.setAttribute('mozallowfullscreen', '');
-
-		// After Loaded
-		this.onLoaded();
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-	},
-
-	_stopMedia: function() {
-		try {
-			this.player.contentWindow.postMessage(JSON.stringify({method: "pause"}), "https://player.vimeo.com");
-		}
-		catch(err) {
-			trace(err);
-		}
-	}
-});
-
-
-/* **********************************************
-     Begin TL.Media.YouTube.js
-********************************************** */
-
+_loadMedia:function(){var t,e=this;
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-iframe tl-media-wistia tl-media-shadow",this._el.content),
+// Get Media ID
+this.media_id=this.data.url.split(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/medias\/(.*)/)[3],
+// API URL
+t="https://fast.wistia.com/embed/iframe/"+this.media_id+"?version=v1&controlsVisibleOnLoad=true&playerColor=aae3d8",this.player=TL.Dom.create("iframe","",this._el.content_item),
+// Media Loaded Event
+this.player.addEventListener("load",function(t){e.onMediaLoaded()}),this.player.width="100%",this.player.height="100%",this.player.frameBorder="0",this.player.src=t,this.player.setAttribute("allowfullscreen",""),this.player.setAttribute("webkitallowfullscreen",""),this.player.setAttribute("mozallowfullscreen",""),
+// After Loaded
+this.onLoaded()},
+// Update Media Display
+_updateMediaDisplay:function(){this._el.content_item.style.height=TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth})+"px"},_stopMedia:function(){try{this.player.contentWindow.postMessage(JSON.stringify({method:"pause"}),"https://player.vimeo.com")}catch(t){trace(t)}}}),
 /*	TL.Media.YouTube
 ================================================== */
-
-TL.Media.YouTube = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.YouTube=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		var self = this,
-			url_vars;
-
-		this.youtube_loaded = false;
-
-		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-youtube tl-media-shadow", this._el.content);
-		this._el.content_item.id = TL.Util.unique_ID(7)
-
-		// URL Vars
-		url_vars = TL.Util.getUrlVars(this.data.url);
-
-		// Get Media ID
-		this.media_id = {};
-
-		if (this.data.url.match('v=')) {
-			this.media_id.id	= url_vars["v"];
-		} else if (this.data.url.match('\/embed\/')) {
-			this.media_id.id	= this.data.url.split("embed\/")[1].split(/[?&]/)[0];
-		} else if (this.data.url.match(/v\/|v=|youtu\.be\//)){
-			this.media_id.id	= this.data.url.split(/v\/|v=|youtu\.be\//)[1].split(/[?&]/)[0];
-		} else {
-			trace("YOUTUBE IN URL BUT NOT A VALID VIDEO");
-		}
-
-		this.media_id.start		= parseInt(url_vars["start"]);	
-
-		if (isNaN(this.media_id.start)){
-			this.media_id.start		= TL.Util.parseYouTubeTime(url_vars["t"]);
-		}
-
-		this.media_id.end		= parseInt(url_vars["end"]);
-
-		this.media_id.hd		= Boolean(typeof(url_vars["hd"]) != 'undefined');
-
-
-		// API Call
-		TL.Load.js('https://www.youtube.com/iframe_api', function() {
-			self.createMedia();
-		});
-
-	},
-
-	// Update Media Display
-	_updateMediaDisplay: function() {
-		//this.el.content_item = document.getElementById(this._el.content_item.id);
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this.options.width}) + "px";
-		this._el.content_item.style.width = this.options.width + "px";
-	},
-
-	_stopMedia: function() {
-		if (this.youtube_loaded) {
-			try {
-			    if(this.player.getPlayerState() == YT.PlayerState.PLAYING) {
-			        this.player.pauseVideo();
-			    }
-			}
-			catch(err) {
-				trace(err);
-			}
-
-		}
-	},
-	createMedia: function() {
-		var self = this;
-
-		clearTimeout(this.timer);
-
-		if(typeof YT != 'undefined' && typeof YT.Player != 'undefined') {
-			// Create Player
-			this.player = new YT.Player(this._el.content_item.id, {
-				playerVars: {
-					enablejsapi:		1,
-					color: 				'white',
-					autohide: 			1,
-					showinfo:			0,
-					theme:				'light',
-					start:				this.media_id.start,
-					end:  				this.media_id.end,
-					fs: 				0,
-					rel:				0
-				},
-				videoId: this.media_id.id,
-				events: {
-					onReady: 			function() {
-						self.onPlayerReady();
-						// After Loaded
-						self.onLoaded();
-					},
-					'onStateChange': 	self.onStateChange
-				}
-			});
-		} else {
-			this.timer = setTimeout(function() {
-				self.createMedia();
-			}, 1000);
-		}
-	},
-
-	/*	Events
+_loadMedia:function(){var t=this,e;this.youtube_loaded=!1,
+// Create Dom element
+this._el.content_item=TL.Dom.create("div","tl-media-item tl-media-youtube tl-media-shadow",this._el.content),this._el.content_item.id=TL.Util.unique_ID(7),
+// URL Vars
+e=TL.Util.getUrlVars(this.data.url),
+// Get Media ID
+this.media_id={},this.data.url.match("v=")?this.media_id.id=e.v:this.data.url.match("/embed/")?this.media_id.id=this.data.url.split("embed/")[1].split(/[?&]/)[0]:this.data.url.match(/v\/|v=|youtu\.be\//)?this.media_id.id=this.data.url.split(/v\/|v=|youtu\.be\//)[1].split(/[?&]/)[0]:trace("YOUTUBE IN URL BUT NOT A VALID VIDEO"),
+// Get start second
+this.data.url.match("start=")?this.media_id.start=parseInt(this.data.url.split("start=")[1],10):this.data.url.match("t=")&&(this.media_id.start=parseInt(this.data.url.split("t=")[1],10)),
+//Get end second
+this.data.url.match("end=")&&(this.media_id.end=parseInt(this.data.url.split("end=")[1],10)),this.media_id.hd=Boolean(void 0!==e.hd),
+// API Call
+TL.Load.js("https://www.youtube.com/iframe_api",function(){t.createMedia()})},
+// Update Media Display
+_updateMediaDisplay:function(){
+//this.el.content_item = document.getElementById(this._el.content_item.id);
+this._el.content_item.style.height=TL.Util.ratio.r16_9({w:this.options.width})+"px",this._el.content_item.style.width=this.options.width+"px"},_stopMedia:function(){if(this.youtube_loaded)try{this.player.getPlayerState()==YT.PlayerState.PLAYING&&this.player.pauseVideo()}catch(t){trace(t)}},createMedia:function(){var t=this;clearTimeout(this.timer),"undefined"!=typeof YT&&void 0!==YT.Player?
+// Create Player
+this.player=new YT.Player(this._el.content_item.id,{playerVars:{enablejsapi:1,color:"white",controls:1,start:this.media_id.start,end:this.media_id.end,fs:1},videoId:this.media_id.id,events:{onReady:function(){t.onPlayerReady(),
+// After Loaded
+t.onLoaded()},onStateChange:t.onStateChange}}):this.timer=setTimeout(function(){t.createMedia()},1e3)},
+/*	Events
 	================================================== */
-	onPlayerReady: function(e) {
-		this.youtube_loaded = true;
-		this._el.content_item = document.getElementById(this._el.content_item.id);
-		this.onMediaLoaded();
-
-	},
-
-	onStateChange: function(e) {
-        if(e.data == YT.PlayerState.ENDED) {
-            e.target.seekTo(0);
-            e.target.pauseVideo();
-        }				
-	}
-
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Audio.js
-********************************************** */
-
+onPlayerReady:function(t){this.youtube_loaded=!0,this._el.content_item=document.getElementById(this._el.content_item.id),this.onMediaLoaded()},onStateChange:function(t){t.data==YT.PlayerState.ENDED&&(t.target.seekTo(0),t.target.pauseVideo())}}),
 /*	TL.Media.Audio
 	Produces audio assets.
 	Takes a data object and populates a dom object
 ================================================== */
-
-TL.Media.Audio = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Audio=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-
-        // Create media?
-        if(!this.options.background) {
-            this.createMedia();
-        }
-
-        // After loaded
-		this.onLoaded();
-	},
-
-  createMedia: function() {
-    var self = this,
-        audio_class = "tl-media-item tl-media-audio tl-media-shadow";
-
- 		// Link
-		if (this.data.link) {
-			this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
-			this._el.content_link.href 		= this.data.link;
-			this._el.content_link.target 	= "_blank";
-			this._el.content_item					= TL.Dom.create("audio", audio_class, this._el.content_link);
-		} else {
-			this._el.content_item					= TL.Dom.create("audio", audio_class, this._el.content);
-		}
-
-		this._el.content_item.controls = true;
-		this._el.source_item = TL.Dom.create("source", "", this._el.content_item);
-
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-		this._el.source_item.src = this.data.url;
-		this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
-		this._el.content_item.innerHTML += "Your browser doesn't support HTML5 audio with " + this._el.source_item.type;
-  },
-
-	_updateMediaDisplay: function(layout) {
-		if(TL.Browser.firefox) {
-			this._el.content_item.style.width = "auto";
-		}
-	},
-
-	_getType: function(url, reg) {
-		var ext = url.match(reg);
-		var type = "audio/"
-		switch(ext[1]) {
-			case "mp3":
-				type += "mpeg";
-				break;
-			case "wav":
-				type += "wav";
-				break;
-			case "m4a":
-				type += "mp4";
-				break;
-			default:
-				type = "audio";
-				break;
-		}
-		return type
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Media.Video.js
-********************************************** */
-
+_loadMedia:function(){
+// Loading Message
+this.loadingMessage(),
+// Create media?
+this.options.background||this.createMedia(),
+// After loaded
+this.onLoaded()},createMedia:function(){var e=this,t="tl-media-item tl-media-audio tl-media-shadow";
+// Link
+this.data.link?(this._el.content_link=TL.Dom.create("a","",this._el.content),this._el.content_link.href=this.data.link,this._el.content_link.target="_blank",this._el.content_item=TL.Dom.create("audio",t,this._el.content_link)):this._el.content_item=TL.Dom.create("audio",t,this._el.content),this._el.content_item.controls=!0,this._el.source_item=TL.Dom.create("source","",this._el.content_item),
+// Media Loaded Event
+this._el.content_item.addEventListener("load",function(t){e.onMediaLoaded()}),this._el.source_item.src=this.data.url,this._el.source_item.type=this._getType(this.data.url,this.data.mediatype.match_str),this._el.content_item.innerHTML+="Your browser doesn't support HTML5 audio with "+this._el.source_item.type},_updateMediaDisplay:function(t){TL.Browser.firefox&&(this._el.content_item.style.width="auto")},_getType:function(t,e){var i,n="audio/";switch(t.match(e)[1]){case"mp3":n+="mpeg";break;case"wav":n+="wav";break;case"m4a":n+="mp4";break;default:n="audio";break}return n}}),
 /*	TL.Media.Video
 	Produces video assets.
 	Takes a data object and populates a dom object
 ================================================== */
-
-TL.Media.Video = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
+TL.Media.Video=TL.Media.extend({includes:[TL.Events],
+/*	Load the media
 	================================================== */
-	_loadMedia: function() {
-		// Loading Message
-		this.loadingMessage();
-
-        // Create media?
-        if(!this.options.background) {
-            this.createMedia();
-        }
-
-        // After loaded
-		this.onLoaded();
-	},
-
-  createMedia: function() {
-    var self = this,
-        video_class = "tl-media-item tl-media-video tl-media-shadow";
-
- 		// Link
-		if (this.data.link) {
-			this._el.content_link 				= TL.Dom.create("a", "", this._el.content);
-			this._el.content_link.href 		= this.data.link;
-			this._el.content_link.target 	= "_blank";
-			this._el.content_item					= TL.Dom.create("video", video_class, this._el.content_link);
-		} else {
-			this._el.content_item					= TL.Dom.create("video", video_class, this._el.content);
-		}
-
-		this._el.content_item.controls = true;
-		this._el.source_item = TL.Dom.create("source", "", this._el.content_item);
-
-		// Media Loaded Event
-		this._el.content_item.addEventListener('load', function(e) {
-			self.onMediaLoaded();
-		});
-
-		this._el.source_item.src = this.data.url;
-		this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
-		this._el.content_item.innerHTML += "Your browser doesn't support HTML5 video with " + this._el.source_item.type;
-  },
-
-	_updateMediaDisplay: function(layout) {
-		if(TL.Browser.firefox) {
-			this._el.content_item.style.width = "auto";
-		}
-	},
-
-	_getType: function(url, reg) {
-		var ext = url.match(reg);
-		var type = "video/"
-		switch(ext[1]) {
-			case "mp4":
-				type += "mp4";
-				break;
-			default:
-				type = "video";
-				break;
-		}
-		return type
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.Slide.js
-********************************************** */
-
+_loadMedia:function(){
+// Loading Message
+this.loadingMessage(),
+// Create media?
+this.options.background||this.createMedia(),
+// After loaded
+this.onLoaded()},createMedia:function(){var e=this,t="tl-media-item tl-media-video tl-media-shadow";
+// Link
+this.data.link?(this._el.content_link=TL.Dom.create("a","",this._el.content),this._el.content_link.href=this.data.link,this._el.content_link.target="_blank",this._el.content_item=TL.Dom.create("video",t,this._el.content_link)):this._el.content_item=TL.Dom.create("video",t,this._el.content),this._el.content_item.controls=!0,this._el.source_item=TL.Dom.create("source","",this._el.content_item),
+// Media Loaded Event
+this._el.content_item.addEventListener("load",function(t){e.onMediaLoaded()}),this._el.source_item.src=this.data.url,this._el.source_item.type=this._getType(this.data.url,this.data.mediatype.match_str),this._el.content_item.innerHTML+="Your browser doesn't support HTML5 video with "+this._el.source_item.type},_updateMediaDisplay:function(t){TL.Browser.firefox&&(this._el.content_item.style.width="auto")},_getType:function(t,e){var i,n="video/";switch(t.match(e)[1]){case"mp4":n+="mp4";break;default:n="video";break}return n}}),
 /*	TL.Slide
 	Creates a slide. Takes a data object and
 	populates the slide with content.
 ================================================== */
-
-TL.Slide = TL.Class.extend({
-
-	includes: [TL.Events, TL.DomMixins, TL.I18NMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.Slide=TL.Class.extend({includes:[TL.Events,TL.DomMixins,TL.I18NMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options, title_slide) {
-		// DOM Elements
-		this._el = {
-			container: {},
-			scroll_container: {},
-			background: {},
-			content_container: {},
-			content: {}
-		};
-
-		// Components
-		this._media 		= null;
-		this._mediaclass	= {};
-		this._text			= {};
-		this._background_media = null;
-
-		// State
-		this._state = {
-			loaded: 		false
-		};
-
-		this.has = {
-			headline: 	false,
-			text: 		false,
-			media: 		false,
-			title: 		false,
-			background: {
-				image: false,
-				color: false,
-				color_value :""
-			}
-		}
-
-		this.has.title = title_slide;
-
-		// Data
-		this.data = {
-			unique_id: 				null,
-			background: 			null,
-			start_date: 			null,
-			end_date: 				null,
-			location: 				null,
-			text: 					null,
-			media: 					null,
-            autolink: true
-		};
-
-		// Options
-		this.options = {
-			// animation
-			duration: 			1000,
-			slide_padding_lr: 	40,
-			ease: 				TL.Ease.easeInSpline,
-			width: 				600,
-			height: 			600,
-			skinny_size: 		650,
-			media_name: 		""
-		};
-
-		// Actively Displaying
-		this.active = false;
-
-		// Animation Object
-		this.animator = {};
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		TL.Util.mergeData(this.data, data);
-
-		this._initLayout();
-		this._initEvents();
-
-
-	},
-
-	/*	Adding, Hiding, Showing etc
+initialize:function(t,e,i){
+// DOM Elements
+this._el={container:{},scroll_container:{},background:{},content_container:{},content:{}},
+// Components
+this._media=null,this._mediaclass={},this._text={},this._background_media=null,
+// State
+this._state={loaded:!1},this.has={headline:!1,text:!1,media:!1,title:!1,background:{image:!1,color:!1,color_value:""}},this.has.title=i,
+// Data
+this.data={unique_id:null,background:null,start_date:null,end_date:null,location:null,text:null,media:null,autolink:!0},
+// Options
+this.options={
+// animation
+duration:1e3,slide_padding_lr:40,ease:TL.Ease.easeInSpline,width:600,height:600,skinny_size:650,media_name:""},
+// Actively Displaying
+this.active=!1,
+// Animation Object
+this.animator={},
+// Merge Data and Options
+TL.Util.mergeData(this.options,e),TL.Util.mergeData(this.data,t),this._initLayout(),this._initEvents()},
+/*	Adding, Hiding, Showing etc
 	================================================== */
-	show: function() {
-		this.animator = TL.Animate(this._el.slider_container, {
-			left: 		-(this._el.container.offsetWidth * n) + "px",
-			duration: 	this.options.duration,
-			easing: 	this.options.ease
-		});
-	},
-
-	hide: function() {
-
-	},
-
-	setActive: function(is_active) {
-		this.active = is_active;
-
-		if (this.active) {
-			if (this.data.background) {
-				this.fire("background_change", this.has.background);
-			}
-			this.loadMedia();
-		} else {
-			this.stopMedia();
-		}
-	},
-
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-		//this.onAdd();
-	},
-
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-	},
-
-	updateDisplay: function(w, h, l) {
-		this._updateDisplay(w, h, l);
-	},
-
-	loadMedia: function() {
-        var self = this;
-
-		if (this._media && !this._state.loaded) {
-			this._media.loadMedia();
-			this._state.loaded = true;
-		}
-
-		if(this._background_media && !this._background_media._state.loaded) {
-		    this._background_media.on("loaded", function() {
-		        self._updateBackgroundDisplay();
-		    });
-		    this._background_media.loadMedia();
-		}
-	},
-
-	stopMedia: function() {
-		if (this._media && this._state.loaded) {
-			this._media.stopMedia();
-		}
-	},
-
-	getBackground: function() {
-		return this.has.background;
-	},
-
-	scrollToTop: function() {
-		this._el.container.scrollTop = 0;
-	},
-
-	getFormattedDate: function() {
-
-		if (TL.Util.trim(this.data.display_date).length > 0) {
-			return this.data.display_date;
-		}
-		var date_text = "";
-
-		if(!this.has.title) {
-            if (this.data.end_date) {
-                date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
-            }
-            if (this.data.start_date) {
-                date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
-            }
-        }
-		return date_text;
-	},
-
-	/*	Events
+show:function(){this.animator=TL.Animate(this._el.slider_container,{left:-this._el.container.offsetWidth*n+"px",duration:this.options.duration,easing:this.options.ease})},hide:function(){},setActive:function(t){this.active=t,this.active?(this.data.background&&this.fire("background_change",this.has.background),this.loadMedia()):this.stopMedia()},addTo:function(t){t.appendChild(this._el.container);
+//this.onAdd();
+},removeFrom:function(t){t.removeChild(this._el.container)},updateDisplay:function(t,e,i){this._updateDisplay(t,e,i)},loadMedia:function(){var t=this;this._media&&!this._state.loaded&&(this._media.loadMedia(),this._state.loaded=!0),this._background_media&&!this._background_media._state.loaded&&(this._background_media.on("loaded",function(){t._updateBackgroundDisplay()}),this._background_media.loadMedia())},stopMedia:function(){this._media&&this._state.loaded&&this._media.stopMedia()},getBackground:function(){return this.has.background},scrollToTop:function(){this._el.container.scrollTop=0},getFormattedDate:function(){if(0<TL.Util.trim(this.data.display_date).length)return this.data.display_date;var t="";return this.has.title||(this.data.end_date&&(t=" &mdash; "+this.data.end_date.getDisplayDate(this.getLanguage())),this.data.start_date&&(t=this.data.start_date.getDisplayDate(this.getLanguage())+t)),t},
+/*	Events
 	================================================== */
-
-
-	/*	Private Methods
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		// Create Layout
-		this._el.container 				= TL.Dom.create("div", "tl-slide");
-
-		if (this.has.title) {
-			this._el.container.className = "tl-slide tl-slide-titleslide";
-		}
-
-		if (this.data.unique_id) {
-			this._el.container.id 		= this.data.unique_id;
-		}
-		this._el.scroll_container 		= TL.Dom.create("div", "tl-slide-scrollable-container", this._el.container);
-		this._el.content_container		= TL.Dom.create("div", "tl-slide-content-container", this._el.scroll_container);
-		this._el.content				= TL.Dom.create("div", "tl-slide-content", this._el.content_container);
-		this._el.background				= TL.Dom.create("div", "tl-slide-background", this._el.container);
-		// Style Slide Background
-		if (this.data.background) {
-			if (this.data.background.url) {
-		    var media_type = TL.MediaType(this.data.background, true);
-		    if(media_type) {
-          this._background_media = new media_type.cls(this.data.background, {background: 1});
-
-          this.has.background.image 					= true;
-          this._el.container.className 				+= ' tl-full-image-background';
-          this.has.background.color_value 		= "#000";
-          this._el.background.style.display 	= "block";
-        }
-			}
-			if (this.data.background.color) {
-				this.has.background.color 					= true;
-				this._el.container.className 				+= ' tl-full-color-background';
-				this.has.background.color_value 			= this.data.background.color;
-				//this._el.container.style.backgroundColor = this.data.background.color;
-				//this._el.background.style.backgroundColor 	= this.data.background.color;
-				//this._el.background.style.display 			= "block";
-			}
-			if (this.data.background.text_background) {
-				this._el.container.className 				+= ' tl-text-background';
-			}
-
-		}
-
-
-
-		// Determine Assets for layout and loading
-		if (this.data.media && this.data.media.url && this.data.media.url != "") {
-			this.has.media = true;
-		}
-		if (this.data.text && this.data.text.text) {
-			this.has.text = true;
-		}
-		if (this.data.text && this.data.text.headline) {
-			this.has.headline = true;
-		}
-
-		// Create Media
-		if (this.has.media) {
-			// Determine the media type
-			this.data.media.mediatype = TL.MediaType(this.data.media);
-			this.options.media_name 	= this.data.media.mediatype.name;
-			this.options.media_type 	= this.data.media.mediatype.type;
-      this.options.autolink 		= this.data.autolink;
-
-			// Create a media object using the matched class name
-			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
-		}
-
-		// Create Text
-		if (this.has.text || this.has.headline) {
-			this._text = new TL.Media.Text(this.data.text, {title:this.has.title,language: this.options.language, autolink: this.data.autolink });
-			this._text.addDateText(this.getFormattedDate());
-		}
-
-
-
-		// Add to DOM
-		if (!this.has.text && !this.has.headline && this.has.media) {
-			TL.DomUtil.addClass(this._el.container, 'tl-slide-media-only');
-			this._media.addTo(this._el.content);
-		} else if (this.has.headline && this.has.media && !this.has.text) {
-			TL.DomUtil.addClass(this._el.container, 'tl-slide-media-only');
-			this._text.addTo(this._el.content);
-			this._media.addTo(this._el.content);
-		} else if (this.has.text && this.has.media) {
-			this._media.addTo(this._el.content);
-			this._text.addTo(this._el.content);
-		} else if (this.has.text || this.has.headline) {
-			TL.DomUtil.addClass(this._el.container, 'tl-slide-text-only');
-			this._text.addTo(this._el.content);
-		}
-
-		// Fire event that the slide is loaded
-		this.onLoaded();
-
-	},
-
-	_initEvents: function() {
-
-	},
-
-	// Update Display
-	_updateDisplay: function(width, height, layout) {
-		var content_width,
-			content_padding_left = this.options.slide_padding_lr,
-			content_padding_right = this.options.slide_padding_lr;
-
-		if (width) {
-			this.options.width 					= width;
-		} else {
-			this.options.width 					= this._el.container.offsetWidth;
-		}
-
-		content_width = this.options.width - (this.options.slide_padding_lr * 2);
-
-		if(TL.Browser.mobile && (this.options.width <= this.options.skinny_size)) {
-			content_padding_left = 0;
-			content_padding_right = 0;
-			content_width = this.options.width;
-		} else if (layout == "landscape") {
-
-		} else if (this.options.width <= this.options.skinny_size) {
-			content_padding_left = 50;
-			content_padding_right = 50;
-			content_width = this.options.width - content_padding_left - content_padding_right;
-		} else {
-
-		}
-
-		this._el.content.style.paddingLeft 	= content_padding_left + "px";
-		this._el.content.style.paddingRight = content_padding_right + "px";
-		this._el.content.style.width		= content_width + "px";
-
-		if (height) {
-			this.options.height = height;
-			//this._el.scroll_container.style.height		= this.options.height + "px";
-
-		} else {
-			this.options.height = this._el.container.offsetHeight;
-		}
-
-		if (this._media) {
-
-			if (!this.has.text && this.has.headline) {
-				this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
-			} else if (!this.has.text && !this.has.headline) {
-				this._media.updateDisplay(content_width, this.options.height, layout);
-			} else if (this.options.width <= this.options.skinny_size) {
-				this._media.updateDisplay(content_width, this.options.height, layout);
-			} else {
-				this._media.updateDisplay(content_width/2, this.options.height, layout);
-			}
-		}
-
-		this._updateBackgroundDisplay();
-	},
-
-	_updateBackgroundDisplay: function() {
-	    if(this._background_media && this._background_media._state.loaded) {
-	        this._el.background.style.backgroundImage 	= "url('" + this._background_media.getImageURL(this.options.width, this.options.height) + "')";
-	    }
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.SlideNav.js
-********************************************** */
-
+_initLayout:function(){
+// Style Slide Background
+if(
+// Create Layout
+this._el.container=TL.Dom.create("div","tl-slide"),this.has.title&&(this._el.container.className="tl-slide tl-slide-titleslide"),this.data.unique_id&&(this._el.container.id=this.data.unique_id),this._el.scroll_container=TL.Dom.create("div","tl-slide-scrollable-container",this._el.container),this._el.content_container=TL.Dom.create("div","tl-slide-content-container",this._el.scroll_container),this._el.content=TL.Dom.create("div","tl-slide-content",this._el.content_container),this._el.background=TL.Dom.create("div","tl-slide-background",this._el.container),this.data.background){if(this.data.background.url){var t=TL.MediaType(this.data.background,!0);t&&(this._background_media=new t.cls(this.data.background,{background:1}),this.has.background.image=!0,this._el.container.className+=" tl-full-image-background",this.has.background.color_value="#000",this._el.background.style.display="block")}this.data.background.color&&(this.has.background.color=!0,this._el.container.className+=" tl-full-color-background",this.has.background.color_value=this.data.background.color),this.data.background.text_background&&(this._el.container.className+=" tl-text-background")}
+// Determine Assets for layout and loading
+this.data.media&&this.data.media.url&&""!=this.data.media.url&&(this.has.media=!0),this.data.text&&this.data.text.text&&(this.has.text=!0),this.data.text&&this.data.text.headline&&(this.has.headline=!0),
+// Create Media
+this.has.media&&(
+// Determine the media type
+this.data.media.mediatype=TL.MediaType(this.data.media),this.options.media_name=this.data.media.mediatype.name,this.options.media_type=this.data.media.mediatype.type,this.options.autolink=this.data.autolink,
+// Create a media object using the matched class name
+this._media=new this.data.media.mediatype.cls(this.data.media,this.options)),
+// Create Text
+(this.has.text||this.has.headline)&&(this._text=new TL.Media.Text(this.data.text,{title:this.has.title,language:this.options.language,autolink:this.data.autolink}),this._text.addDateText(this.getFormattedDate())),
+// Add to DOM
+this.has.text||this.has.headline||!this.has.media?this.has.headline&&this.has.media&&!this.has.text?(TL.DomUtil.addClass(this._el.container,"tl-slide-media-only"),this._text.addTo(this._el.content),this._media.addTo(this._el.content)):this.has.text&&this.has.media?(this._media.addTo(this._el.content),this._text.addTo(this._el.content)):(this.has.text||this.has.headline)&&(TL.DomUtil.addClass(this._el.container,"tl-slide-text-only"),this._text.addTo(this._el.content)):(TL.DomUtil.addClass(this._el.container,"tl-slide-media-only"),this._media.addTo(this._el.content)),
+// Fire event that the slide is loaded
+this.onLoaded()},_initEvents:function(){},
+// Update Display
+_updateDisplay:function(t,e,i){var n,a=this.options.slide_padding_lr,s=this.options.slide_padding_lr;this.options.width=t||this._el.container.offsetWidth,n=this.options.width-2*this.options.slide_padding_lr,TL.Browser.mobile&&this.options.width<=this.options.skinny_size?(s=a=0,n=this.options.width):"landscape"==i||this.options.width<=this.options.skinny_size&&(s=a=50,n=this.options.width-a-s),this._el.content.style.paddingLeft=a+"px",this._el.content.style.paddingRight=s+"px",this._el.content.style.width=n+"px",this.options.height=e||this._el.container.offsetHeight,this._media&&(!this.has.text&&this.has.headline?this._media.updateDisplay(n,this.options.height-this._text.headlineHeight(),i):this.has.text||this.has.headline?this.options.width<=this.options.skinny_size?this._media.updateDisplay(n,this.options.height,i):this._media.updateDisplay(n/2,this.options.height,i):this._media.updateDisplay(n,this.options.height,i)),this._updateBackgroundDisplay()},_updateBackgroundDisplay:function(){this._background_media&&this._background_media._state.loaded&&(this._el.background.style.backgroundImage="url('"+this._background_media.getImageURL(this.options.width,this.options.height)+"')")}}),
 /*	TL.SlideNav
 	encapsulate DOM display/events for the 
 	'next' and 'previous' buttons on a slide.
 ================================================== */
 // TODO null out data
-
-TL.SlideNav = TL.Class.extend({
-	
-	includes: [TL.Events, TL.DomMixins],
-	
-	_el: {},
-	
-	/*	Constructor
+TL.SlideNav=TL.Class.extend({includes:[TL.Events,TL.DomMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options, add_to_container) {
-		// DOM ELEMENTS
-		this._el = {
-			container: {},
-			content_container: {},
-			icon: {},
-			title: {},
-			description: {}
-		};
-	
-		// Media Type
-		this.mediatype = {};
-		
-		// Data
-		this.data = {
-			title: "Navigation",
-			description: "Description",
-			date: "Date"
-		};
-	
-		//Options
-		this.options = {
-			direction: 			"previous"
-		};
-	
-		this.animator = null;
-		
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		TL.Util.mergeData(this.data, data);
-		
-		
-		this._el.container = TL.Dom.create("div", "tl-slidenav-" + this.options.direction);
-		
-		if (TL.Browser.mobile) {
-			this._el.container.setAttribute("ontouchstart"," ");
-		}
-		
-		this._initLayout();
-		this._initEvents();
-		
-		if (add_to_container) {
-			add_to_container.appendChild(this._el.container);
-		};
-		
-	},
-	
-	/*	Update Content
+initialize:function(t,e,i){
+// DOM ELEMENTS
+this._el={container:{},content_container:{},icon:{},title:{},description:{}},
+// Media Type
+this.mediatype={},
+// Data
+this.data={title:"Navigation",description:"Description",date:"Date"},
+//Options
+this.options={direction:"previous"},this.animator=null,
+// Merge Data and Options
+TL.Util.mergeData(this.options,e),TL.Util.mergeData(this.data,t),this._el.container=TL.Dom.create("div","tl-slidenav-"+this.options.direction),TL.Browser.mobile&&this._el.container.setAttribute("ontouchstart"," "),this._initLayout(),this._initEvents(),i&&i.appendChild(this._el.container)},
+/*	Update Content
 	================================================== */
-	update: function(slide) {
-		var d = {
-			title: "",
-			description: "",
-			date: slide.getFormattedDate()
-		};
-		
-		if (slide.data.text) {
-			if (slide.data.text.headline) {
-				d.title = slide.data.text.headline;
-			}
-		}
-
-		this._update(d);
-	},
-	
-	/*	Color
+update:function(t){var e={title:"",description:"",date:t.getFormattedDate()};t.data.text&&t.data.text.headline&&(e.title=t.data.text.headline),this._update(e)},
+/*	Color
 	================================================== */
-	setColor: function(inverted) {
-		if (inverted) {
-			this._el.content_container.className = 'tl-slidenav-content-container tl-slidenav-inverted';
-		} else {
-			this._el.content_container.className = 'tl-slidenav-content-container';
-		}
-	},
-	
-	/*	Events
+setColor:function(t){this._el.content_container.className=t?"tl-slidenav-content-container tl-slidenav-inverted":"tl-slidenav-content-container"},
+/*	Events
 	================================================== */
-	_onMouseClick: function() {
-		this.fire("clicked", this.options);
-	},
-	
-	/*	Private Methods
+_onMouseClick:function(){this.fire("clicked",this.options)},
+/*	Private Methods
 	================================================== */
-	_update: function(d) {
-		// update data
-		this.data = TL.Util.mergeData(this.data, d);
-		
-		// Title
-		this._el.title.innerHTML = TL.Util.unlinkify(this.data.title);
-		
-		// Date
-		this._el.description.innerHTML	= TL.Util.unlinkify(this.data.date);
-	},
-	
-	_initLayout: function () {
-		
-		// Create Layout
-		this._el.content_container			= TL.Dom.create("div", "tl-slidenav-content-container", this._el.container);
-		this._el.icon						= TL.Dom.create("div", "tl-slidenav-icon", this._el.content_container);
-		this._el.title						= TL.Dom.create("div", "tl-slidenav-title", this._el.content_container);
-		this._el.description				= TL.Dom.create("div", "tl-slidenav-description", this._el.content_container);
-		
-		this._el.icon.innerHTML				= "&nbsp;"
-		
-		this._update();
-	},
-	
-	_initEvents: function () {
-		TL.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
-	}
-	
-	
-});
-
-/* **********************************************
-     Begin TL.StorySlider.js
-********************************************** */
-
+_update:function(t){
+// update data
+this.data=TL.Util.mergeData(this.data,t),
+// Title
+this._el.title.innerHTML=TL.Util.unlinkify(this.data.title),
+// Date
+this._el.description.innerHTML=TL.Util.unlinkify(this.data.date)},_initLayout:function(){
+// Create Layout
+this._el.content_container=TL.Dom.create("div","tl-slidenav-content-container",this._el.container),this._el.icon=TL.Dom.create("div","tl-slidenav-icon",this._el.content_container),this._el.title=TL.Dom.create("div","tl-slidenav-title",this._el.content_container),this._el.description=TL.Dom.create("div","tl-slidenav-description",this._el.content_container),this._el.icon.innerHTML="&nbsp;",this._update()},_initEvents:function(){TL.DomEvent.addListener(this._el.container,"click",this._onMouseClick,this)}}),
 /*	StorySlider
 	is the central class of the API - it is used to create a StorySlider
 
@@ -10254,2681 +1936,511 @@ TL.SlideNav = TL.Class.extend({
 
 
 ================================================== */
-
-TL.StorySlider = TL.Class.extend({
-
-	includes: [TL.Events, TL.I18NMixins],
-
-	/*	Private Methods
+TL.StorySlider=TL.Class.extend({includes:[TL.Events,TL.I18NMixins],
+/*	Private Methods
 	================================================== */
-	initialize: function (elem, data, options, init) {
-
-		// DOM ELEMENTS
-		this._el = {
-			container: {},
-			background: {},
-			slider_container_mask: {},
-			slider_container: {},
-			slider_item_container: {}
-		};
-
-		this._nav = {};
-		this._nav.previous = {};
-		this._nav.next = {};
-
-		// Slide Spacing
-		this.slide_spacing = 0;
-
-		// Slides Array
-		this._slides = [];
-
-		// Swipe Object
-		this._swipable;
-
-		// Preload Timer
-		this.preloadTimer;
-
-		// Message
-		this._message;
-
-		// Current Slide
-		this.current_id = '';
-
-		// Data Object
-		this.data = {};
-
-		this.options = {
-			id: 					"",
-			layout: 				"portrait",
-			width: 					600,
-			height: 				600,
-			default_bg_color: 		{r:255, g:255, b:255},
-			slide_padding_lr: 		40, 			// padding on slide of slide
-			start_at_slide: 		1,
-			slide_default_fade: 	"0%", 			// landscape fade
-			// animation
-			duration: 				1000,
-			ease: 					TL.Ease.easeInOutQuint,
-			// interaction
-			dragging: 				true,
-			trackResize: 			true
-		};
-
-		// Main element ID
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-			this.options.id = TL.Util.unique_ID(6, "tl");
-		} else {
-			this.options.id = elem;
-			this._el.container = TL.Dom.get(elem);
-		}
-
-		if (!this._el.container.id) {
-			this._el.container.id = this.options.id;
-		}
-
-		// Animation Object
-		this.animator = null;
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		TL.Util.mergeData(this.data, data);
-
-		if (init) {
-			this.init();
-		}
-	},
-
-	init: function() {
-		this._initLayout();
-		this._initEvents();
-		this._initData();
-		this._updateDisplay();
-
-		// Go to initial slide
-		this.goTo(this.options.start_at_slide);
-
-		this._onLoaded();
-	},
-
-	/* Slides
+initialize:function(t,e,i,n){
+// DOM ELEMENTS
+this._el={container:{},background:{},slider_container_mask:{},slider_container:{},slider_item_container:{}},this._nav={},this._nav.previous={},this._nav.next={},
+// Slide Spacing
+this.slide_spacing=0,
+// Slides Array
+this._slides=[],
+// Swipe Object
+this._swipable,
+// Preload Timer
+this.preloadTimer,
+// Message
+this._message,
+// Current Slide
+this.current_id="",
+// Data Object
+this.data={},this.options={id:"",layout:"portrait",width:600,height:600,default_bg_color:{r:255,g:255,b:255},slide_padding_lr:40,// padding on slide of slide
+start_at_slide:1,slide_default_fade:"0%",// landscape fade
+// animation
+duration:1e3,ease:TL.Ease.easeInOutQuint,
+// interaction
+dragging:!0,trackResize:!0},
+// Main element ID
+"object"==typeof t?(this._el.container=t,this.options.id=TL.Util.unique_ID(6,"tl")):(this.options.id=t,this._el.container=TL.Dom.get(t)),this._el.container.id||(this._el.container.id=this.options.id),
+// Animation Object
+this.animator=null,
+// Merge Data and Options
+TL.Util.mergeData(this.options,i),TL.Util.mergeData(this.data,e),n&&this.init()},init:function(){this._initLayout(),this._initEvents(),this._initData(),this._updateDisplay(),
+// Go to initial slide
+this.goTo(this.options.start_at_slide),this._onLoaded()},
+/* Slides
 	================================================== */
-	_addSlide:function(slide) {
-		slide.addTo(this._el.slider_item_container);
-		slide.on('added', this._onSlideAdded, this);
-		slide.on('background_change', this._onBackgroundChange, this);
-	},
-
-	_createSlide: function(d, title_slide, n) {
-		var slide = new TL.Slide(d, this.options, title_slide);
-		this._addSlide(slide);
-		if(n < 0) {
-		    this._slides.push(slide);
-		} else {
-		    this._slides.splice(n, 0, slide);
-		}
-	},
-
-	_createSlides: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].unique_id == "") {
-				array[i].unique_id = TL.Util.unique_ID(6, "tl-slide");
-			}
-            this._createSlide(array[i], false, -1);
-		}
-	},
-
-	_removeSlide: function(slide) {
-		slide.removeFrom(this._el.slider_item_container);
-		slide.off('added', this._onSlideRemoved, this);
-		slide.off('background_change', this._onBackgroundChange);
-	},
-
-	_destroySlide: function(n) {
-		this._removeSlide(this._slides[n]);
-		this._slides.splice(n, 1);
-	},
-
-    _findSlideIndex: function(n) {
-        var _n = n;
-		if (typeof n == 'string' || n instanceof String) {
-			_n = TL.Util.findArrayNumberByUniqueID(n, this._slides, "unique_id");
-		}
-		return _n;
-    },
-
-	/*	Public
+_addSlide:function(t){t.addTo(this._el.slider_item_container),t.on("added",this._onSlideAdded,this),t.on("background_change",this._onBackgroundChange,this)},_createSlide:function(t,e,i){var n=new TL.Slide(t,this.options,e);this._addSlide(n),i<0?this._slides.push(n):this._slides.splice(i,0,n)},_createSlides:function(t){for(var e=0;e<t.length;e++)""==t[e].unique_id&&(t[e].unique_id=TL.Util.unique_ID(6,"tl-slide")),this._createSlide(t[e],!1,-1)},_removeSlide:function(t){t.removeFrom(this._el.slider_item_container),t.off("added",this._onSlideRemoved,this),t.off("background_change",this._onBackgroundChange)},_destroySlide:function(t){this._removeSlide(this._slides[t]),this._slides.splice(t,1)},_findSlideIndex:function(t){var e=t;return("string"==typeof t||t instanceof String)&&(e=TL.Util.findArrayNumberByUniqueID(t,this._slides,"unique_id")),e},
+/*	Public
 	================================================== */
-	updateDisplay: function(w, h, a, l) {
-		this._updateDisplay(w, h, a, l);
-	},
-
-	// Create a slide
-	createSlide: function(d, n) {
-		this._createSlide(d, false, n);
-	},
-
-	// Create Many Slides from an array
-	createSlides: function(array) {
-		this._createSlides(array);
-	},
-
-	// Destroy slide by index
-	destroySlide: function(n) {
-	    this._destroySlide(n);
-	},
-
-	// Destroy slide by id
-	destroySlideId: function(id) {
-	    this.destroySlide(this._findSlideIndex(id));
-	},
-
-	/*	Navigation
+updateDisplay:function(t,e,i,n){this._updateDisplay(t,e,i,n)},
+// Create a slide
+createSlide:function(t,e){this._createSlide(t,!1,e)},
+// Create Many Slides from an array
+createSlides:function(t){this._createSlides(t)},
+// Destroy slide by index
+destroySlide:function(t){this._destroySlide(t)},
+// Destroy slide by id
+destroySlideId:function(t){this.destroySlide(this._findSlideIndex(t))},
+/*	Navigation
 	================================================== */
-	goTo: function(n, fast, displayupdate) {
-		n = parseInt(n);
-		if (isNaN(n)) n = 0;
-
-		var self = this;
-
-		this.changeBackground({color_value:"", image:false});
-
-		// Clear Preloader Timer
-		if (this.preloadTimer) {
-			clearTimeout(this.preloadTimer);
-		}
-
-		// Set Slide Active State
-		for (var i = 0; i < this._slides.length; i++) {
-			this._slides[i].setActive(false);
-		}
-
-		if (n < this._slides.length && n >= 0) {
-			this.current_id = this._slides[n].data.unique_id;
-
-			// Stop animation
-			if (this.animator) {
-				this.animator.stop();
-			}
-			if (this._swipable) {
-				this._swipable.stopMomentum();
-			}
-
-			if (fast) {
-				this._el.slider_container.style.left = -(this.slide_spacing * n) + "px";
-				this._onSlideChange(displayupdate);
-			} else {
-				this.animator = TL.Animate(this._el.slider_container, {
-					left: 		-(this.slide_spacing * n) + "px",
-					duration: 	this.options.duration,
-					easing: 	this.options.ease,
-					complete: 	this._onSlideChange(displayupdate)
-				});
-			}
-
-			// Set Slide Active State
-			this._slides[n].setActive(true);
-
-			// Update Navigation and Info
-			if (this._slides[n + 1]) {
-				this.showNav(this._nav.next, true);
-				this._nav.next.update(this._slides[n + 1]);
-			} else {
-				this.showNav(this._nav.next, false);
-			}
-			if (this._slides[n - 1]) {
-				this.showNav(this._nav.previous, true);
-				this._nav.previous.update(this._slides[n - 1]);
-			} else {
-				this.showNav(this._nav.previous, false);
-			}
-
-			// Preload Slides
-			this.preloadTimer = setTimeout(function() {
-				self.preloadSlides(n);
-			}, this.options.duration);
-		}
-	},
-
-	goToId: function(id, fast, displayupdate) {
-		this.goTo(this._findSlideIndex(id), fast, displayupdate);
-	},
-
-	preloadSlides: function(n) {
-		if (this._slides[n + 1]) {
-			this._slides[n + 1].loadMedia();
-			this._slides[n + 1].scrollToTop();
-		}
-		if (this._slides[n + 2]) {
-			this._slides[n + 2].loadMedia();
-			this._slides[n + 2].scrollToTop();
-		}
-		if (this._slides[n - 1]) {
-			this._slides[n - 1].loadMedia();
-			this._slides[n - 1].scrollToTop();
-		}
-		if (this._slides[n - 2]) {
-			this._slides[n - 2].loadMedia();
-			this._slides[n - 2].scrollToTop();
-		}
-	},
-
-	next: function() {
-	    var n = this._findSlideIndex(this.current_id);
-		if ((n + 1) < (this._slides.length)) {
-			this.goTo(n + 1);
-		} else {
-			this.goTo(n);
-		}
-	},
-
-	previous: function() {
-	    var n = this._findSlideIndex(this.current_id);
-		if (n - 1 >= 0) {
-			this.goTo(n - 1);
-		} else {
-			this.goTo(n);
-		}
-	},
-
-	showNav: function(nav_obj, show) {
-
-		if (this.options.width <= 500 && TL.Browser.mobile) {
-
-		} else {
-			if (show) {
-				nav_obj.show();
-			} else {
-				nav_obj.hide();
-			}
-
-		}
-	},
-
-
-
-	changeBackground: function(bg) {
-		var bg_color = {r:256, g:256, b:256},
-			bg_color_rgb;
-
-		if (bg.color_value && bg.color_value != "") {
-			bg_color = TL.Util.hexToRgb(bg.color_value);
-			if (!bg_color) {
-				trace("Invalid color value " + bg.color_value);
-				bg_color = this.options.default_bg_color;
-			}
-		} else {
-			bg_color = this.options.default_bg_color;
-			bg.color_value = "rgb(" + bg_color.r + " , " + bg_color.g + ", " + bg_color.b + ")";
-		}
-
-		bg_color_rgb 	= bg_color.r + "," + bg_color.g + "," + bg_color.b;
-		this._el.background.style.backgroundImage = "none";
-
-
-		if (bg.color_value) {
-			this._el.background.style.backgroundColor = bg.color_value;
-		} else {
-			this._el.background.style.backgroundColor = "transparent";
-		}
-
-		if (bg_color.r < 255 || bg_color.g < 255 || bg_color.b < 255 || bg.image) {
-			this._nav.next.setColor(true);
-			this._nav.previous.setColor(true);
-		} else {
-			this._nav.next.setColor(false);
-			this._nav.previous.setColor(false);
-		}
-	},
-	/*	Private Methods
+goTo:function(t,e,i){t=parseInt(t),isNaN(t)&&(t=0);var n=this;this.changeBackground({color_value:"",image:!1}),
+// Clear Preloader Timer
+this.preloadTimer&&clearTimeout(this.preloadTimer);
+// Set Slide Active State
+for(var a=0;a<this._slides.length;a++)this._slides[a].setActive(!1);t<this._slides.length&&0<=t&&(this.current_id=this._slides[t].data.unique_id,
+// Stop animation
+this.animator&&this.animator.stop(),this._swipable&&this._swipable.stopMomentum(),e?(this._el.slider_container.style.left=-this.slide_spacing*t+"px",this._onSlideChange(i)):this.animator=TL.Animate(this._el.slider_container,{left:-this.slide_spacing*t+"px",duration:this.options.duration,easing:this.options.ease,complete:this._onSlideChange(i)}),
+// Set Slide Active State
+this._slides[t].setActive(!0),
+// Update Navigation and Info
+this._slides[t+1]?(this.showNav(this._nav.next,!0),this._nav.next.update(this._slides[t+1])):this.showNav(this._nav.next,!1),this._slides[t-1]?(this.showNav(this._nav.previous,!0),this._nav.previous.update(this._slides[t-1])):this.showNav(this._nav.previous,!1),
+// Preload Slides
+this.preloadTimer=setTimeout(function(){n.preloadSlides(t)},this.options.duration))},goToId:function(t,e,i){this.goTo(this._findSlideIndex(t),e,i)},preloadSlides:function(t){this._slides[t+1]&&(this._slides[t+1].loadMedia(),this._slides[t+1].scrollToTop()),this._slides[t+2]&&(this._slides[t+2].loadMedia(),this._slides[t+2].scrollToTop()),this._slides[t-1]&&(this._slides[t-1].loadMedia(),this._slides[t-1].scrollToTop()),this._slides[t-2]&&(this._slides[t-2].loadMedia(),this._slides[t-2].scrollToTop())},next:function(){var t=this._findSlideIndex(this.current_id);t+1<this._slides.length?this.goTo(t+1):this.goTo(t)},previous:function(){var t=this._findSlideIndex(this.current_id);0<=t-1?this.goTo(t-1):this.goTo(t)},showNav:function(t,e){this.options.width<=500&&TL.Browser.mobile||(e?t.show():t.hide())},changeBackground:function(t){var e={r:256,g:256,b:256},i;t.color_value&&""!=t.color_value?(e=TL.Util.hexToRgb(t.color_value))||(trace("Invalid color value "+t.color_value),e=this.options.default_bg_color):(e=this.options.default_bg_color,t.color_value="rgb("+e.r+" , "+e.g+", "+e.b+")"),i=e.r+","+e.g+","+e.b,this._el.background.style.backgroundImage="none",t.color_value?this._el.background.style.backgroundColor=t.color_value:this._el.background.style.backgroundColor="transparent",e.r<255||e.g<255||e.b<255||t.image?(this._nav.next.setColor(!0),this._nav.previous.setColor(!0)):(this._nav.next.setColor(!1),this._nav.previous.setColor(!1))},
+/*	Private Methods
 	================================================== */
-
-	// Update Display
-	_updateDisplay: function(width, height, animate, layout) {
-		var nav_pos, _layout;
-
-		if(typeof layout === 'undefined'){
-			_layout = this.options.layout;
-		} else {
-			_layout = layout;
-		}
-
-		this.options.layout = _layout;
-
-		this.slide_spacing = this.options.width*2;
-
-		if (width) {
-			this.options.width = width;
-		} else {
-			this.options.width = this._el.container.offsetWidth;
-		}
-
-		if (height) {
-			this.options.height = height;
-		} else {
-			this.options.height = this._el.container.offsetHeight;
-		}
-
-		//this._el.container.style.height = this.options.height;
-
-		// position navigation
-		nav_pos = (this.options.height/2);
-		this._nav.next.setPosition({top:nav_pos});
-		this._nav.previous.setPosition({top:nav_pos});
-
-
-		// Position slides
-		for (var i = 0; i < this._slides.length; i++) {
-			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
-			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});
-
-		};
-
-		// Go to the current slide
-		this.goToId(this.current_id, true, true);
-	},
-
-	// Reposition and redraw slides
-    _updateDrawSlides: function() {
-	    var _layout = this.options.layout;
-
-		for (var i = 0; i < this._slides.length; i++) {
-			this._slides[i].updateDisplay(this.options.width, this.options.height, _layout);
-			this._slides[i].setPosition({left:(this.slide_spacing * i), top:0});
-		};
-
-		this.goToId(this.current_id, true, false);
-	},
-
-
-	/*	Init
+// Update Display
+_updateDisplay:function(t,e,i,n){var a,s;s=void 0===n?this.options.layout:n,this.options.layout=s,this.slide_spacing=2*this.options.width,this.options.width=t||this._el.container.offsetWidth,this.options.height=e||this._el.container.offsetHeight,
+//this._el.container.style.height = this.options.height;
+// position navigation
+a=this.options.height/2,this._nav.next.setPosition({top:a}),this._nav.previous.setPosition({top:a});
+// Position slides
+for(var o=0;o<this._slides.length;o++)this._slides[o].updateDisplay(this.options.width,this.options.height,s),this._slides[o].setPosition({left:this.slide_spacing*o,top:0});
+// Go to the current slide
+this.goToId(this.current_id,!0,!0)},
+// Reposition and redraw slides
+_updateDrawSlides:function(){for(var t=this.options.layout,e=0;e<this._slides.length;e++)this._slides[e].updateDisplay(this.options.width,this.options.height,t),this._slides[e].setPosition({left:this.slide_spacing*e,top:0});this.goToId(this.current_id,!0,!1)},
+/*	Init
 	================================================== */
-	_initLayout: function () {
-
-		TL.DomUtil.addClass(this._el.container, 'tl-storyslider');
-
-		// Create Layout
-		this._el.slider_container_mask		= TL.Dom.create('div', 'tl-slider-container-mask', this._el.container);
-		this._el.background 				= TL.Dom.create('div', 'tl-slider-background tl-animate', this._el.container);
-		this._el.slider_container			= TL.Dom.create('div', 'tl-slider-container tlanimate', this._el.slider_container_mask);
-		this._el.slider_item_container		= TL.Dom.create('div', 'tl-slider-item-container', this._el.slider_container);
-
-
-		// Update Size
-		this.options.width = this._el.container.offsetWidth;
-		this.options.height = this._el.container.offsetHeight;
-
-		// Create Navigation
-		this._nav.previous = new TL.SlideNav({title: "Previous", description: "description"}, {direction:"previous"});
-		this._nav.next = new TL.SlideNav({title: "Next",description: "description"}, {direction:"next"});
-
-		// add the navigation to the dom
-		this._nav.next.addTo(this._el.container);
-		this._nav.previous.addTo(this._el.container);
-
-
-
-		this._el.slider_container.style.left="0px";
-
-		if (TL.Browser.touch) {
-			//this._el.slider_touch_mask = TL.Dom.create('div', 'tl-slider-touch-mask', this._el.slider_container_mask);
-			this._swipable = new TL.Swipable(this._el.slider_container_mask, this._el.slider_container, {
-				enable: {x:true, y:false},
-				snap: 	true
-			});
-			this._swipable.enable();
-
-			// Message
-			this._message = new TL.Message({}, {
-				message_class: 		"tl-message-full",
-				message_icon_class: "tl-icon-swipe-left"
-			});
-			this._message.updateMessage(this._("swipe_to_navigate"));
-			this._message.addTo(this._el.container);
-		}
-
-	},
-
-	_initEvents: function () {
-		this._nav.next.on('clicked', this._onNavigation, this);
-		this._nav.previous.on('clicked', this._onNavigation, this);
-
-		if (this._message) {
-			this._message.on('clicked', this._onMessageClick, this);
-		}
-
-		if (this._swipable) {
-			this._swipable.on('swipe_left', this._onNavigation, this);
-			this._swipable.on('swipe_right', this._onNavigation, this);
-			this._swipable.on('swipe_nodirection', this._onSwipeNoDirection, this);
-		}
-
-
-	},
-
-	_initData: function() {
-	    if(this.data.title) {
-	        this._createSlide(this.data.title, true, -1);
-	    }
-        this._createSlides(this.data.events);
-	},
-
-	/*	Events
+_initLayout:function(){TL.DomUtil.addClass(this._el.container,"tl-storyslider"),
+// Create Layout
+this._el.slider_container_mask=TL.Dom.create("div","tl-slider-container-mask",this._el.container),this._el.background=TL.Dom.create("div","tl-slider-background tl-animate",this._el.container),this._el.slider_container=TL.Dom.create("div","tl-slider-container tlanimate",this._el.slider_container_mask),this._el.slider_item_container=TL.Dom.create("div","tl-slider-item-container",this._el.slider_container),
+// Update Size
+this.options.width=this._el.container.offsetWidth,this.options.height=this._el.container.offsetHeight,
+// Create Navigation
+this._nav.previous=new TL.SlideNav({title:"Previous",description:"description"},{direction:"previous"}),this._nav.next=new TL.SlideNav({title:"Next",description:"description"},{direction:"next"}),
+// add the navigation to the dom
+this._nav.next.addTo(this._el.container),this._nav.previous.addTo(this._el.container),this._el.slider_container.style.left="0px",TL.Browser.touch&&(
+//this._el.slider_touch_mask = TL.Dom.create('div', 'tl-slider-touch-mask', this._el.slider_container_mask);
+this._swipable=new TL.Swipable(this._el.slider_container_mask,this._el.slider_container,{enable:{x:!0,y:!1},snap:!0}),this._swipable.enable(),
+// Message
+this._message=new TL.Message({},{message_class:"tl-message-full",message_icon_class:"tl-icon-swipe-left"}),this._message.updateMessage(this._("swipe_to_navigate")),this._message.addTo(this._el.container))},_initEvents:function(){this._nav.next.on("clicked",this._onNavigation,this),this._nav.previous.on("clicked",this._onNavigation,this),this._message&&this._message.on("clicked",this._onMessageClick,this),this._swipable&&(this._swipable.on("swipe_left",this._onNavigation,this),this._swipable.on("swipe_right",this._onNavigation,this),this._swipable.on("swipe_nodirection",this._onSwipeNoDirection,this))},_initData:function(){this.data.title&&this._createSlide(this.data.title,!0,-1),this._createSlides(this.data.events)},
+/*	Events
 	================================================== */
-	_onBackgroundChange: function(e) {
-	    var n = this._findSlideIndex(this.current_id);
-		var slide_background = this._slides[n].getBackground();
-		this.changeBackground(e);
-		this.fire("colorchange", slide_background);
-	},
-
-	_onMessageClick: function(e) {
-		this._message.hide();
-	},
-
-	_onSwipeNoDirection: function(e) {
-		this.goToId(this.current_id);
-	},
-
-	_onNavigation: function(e) {
-
-		if (e.direction == "next" || e.direction == "left") {
-			this.next();
-		} else if (e.direction == "previous" || e.direction == "right") {
-			this.previous();
-		}
-		this.fire("nav_" + e.direction, this.data);
-	},
-
-	_onSlideAdded: function(e) {
-		trace("slideadded")
-		this.fire("slideAdded", this.data);
-	},
-
-	_onSlideRemoved: function(e) {
-		this.fire("slideRemoved", this.data);
-	},
-
-	_onSlideChange: function(displayupdate) {
-		if (!displayupdate) {
-			this.fire("change", {unique_id: this.current_id});
-		}
-	},
-
-	_onMouseClick: function(e) {
-
-	},
-
-	_fireMouseEvent: function (e) {
-		if (!this._loaded) {
-			return;
-		}
-
-		var type = e.type;
-		type = (type === 'mouseenter' ? 'mouseover' : (type === 'mouseleave' ? 'mouseout' : type));
-
-		if (!this.hasEventListeners(type)) {
-			return;
-		}
-
-		if (type === 'contextmenu') {
-			TL.DomEvent.preventDefault(e);
-		}
-
-		this.fire(type, {
-			latlng: "something", //this.mouseEventToLatLng(e),
-			layerPoint: "something else" //this.mouseEventToLayerPoint(e)
-		});
-	},
-
-	_onLoaded: function() {
-		this.fire("loaded", this.data);
-	}
-
-
-});
-
-
-/* **********************************************
-     Begin TL.TimeNav.js
-********************************************** */
-
+_onBackgroundChange:function(t){var e=this._findSlideIndex(this.current_id),i=this._slides[e].getBackground();this.changeBackground(t),this.fire("colorchange",i)},_onMessageClick:function(t){this._message.hide()},_onSwipeNoDirection:function(t){this.goToId(this.current_id)},_onNavigation:function(t){"next"==t.direction||"left"==t.direction?this.next():"previous"!=t.direction&&"right"!=t.direction||this.previous(),this.fire("nav_"+t.direction,this.data)},_onSlideAdded:function(t){trace("slideadded"),this.fire("slideAdded",this.data)},_onSlideRemoved:function(t){this.fire("slideRemoved",this.data)},_onSlideChange:function(t){t||this.fire("change",{unique_id:this.current_id})},_onMouseClick:function(t){},_fireMouseEvent:function(t){if(this._loaded){var e=t.type;e="mouseenter"===e?"mouseover":"mouseleave"===e?"mouseout":e,this.hasEventListeners(e)&&("contextmenu"===e&&TL.DomEvent.preventDefault(t),this.fire(e,{latlng:"something",//this.mouseEventToLatLng(e),
+layerPoint:"something else"}))}},_onLoaded:function(){this.fire("loaded",this.data)}}),
 /*	TL.TimeNav
 
 ================================================== */
-
-TL.TimeNav = TL.Class.extend({
-
-	includes: [TL.Events, TL.DomMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.TimeNav=TL.Class.extend({includes:[TL.Events,TL.DomMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function (elem, timeline_config, options, init) {
-		// DOM ELEMENTS
-		this._el = {
-			parent: {},
-			container: {},
-			slider: {},
-			slider_background: {},
-			line: {},
-			marker_container_mask: {},
-			marker_container: {},
-			marker_item_container: {},
-			timeaxis: {},
-			timeaxis_background: {},
-			attribution: {}
-		};
-
-		this.collapsed = false;
-
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-		} else {
-			this._el.container = TL.Dom.get(elem);
-		}
-
-		this.config = timeline_config;
-
-		//Options
-		this.options = {
-			width: 					600,
-			height: 				600,
-			duration: 				1000,
-			ease: 					TL.Ease.easeInOutQuint,
-			has_groups: 			false,
-			optimal_tick_width: 	50,
-			scale_factor: 			2, 				// How many screen widths wide should the timeline be
-			marker_padding: 		5,
-			timenav_height_min: 	150, 			// Minimum timenav height
-			marker_height_min: 		30, 			// Minimum Marker Height
-			marker_width_min: 		100, 			// Minimum Marker Width
-			zoom_sequence:          [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
-		};
-
-		// Animation
-		this.animator = null;
-
-		// Ready state
-		this.ready = false;
-
-		// Markers Array
-		this._markers = [];
-
-		// Eras Array
-		this._eras = [];
-		this.has_eras = false;
-
-		// Groups Array
-		this._groups = [];
-
-		// Row Height
-		this._calculated_row_height = 100;
-
-		// Current Marker
-		this.current_id = "";
-
-		// TimeScale
-		this.timescale = {};
-
-		// TimeAxis
-		this.timeaxis = {};
-		this.axishelper = {};
-
-		// Max Rows
-		this.max_rows = 6;
-
-		// Animate CSS
-		this.animate_css = false;
-
-		// Swipe Object
-		this._swipable;
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-
-		if (init) {
-			this.init();
-		}
-	},
-
-	init: function() {
-		this._initLayout();
-		this._initEvents();
-		this._initData();
-		this._updateDisplay();
-
-		this._onLoaded();
-	},
-
-	/*	Public
+initialize:function(t,e,i,n){
+// DOM ELEMENTS
+this._el={parent:{},container:{},slider:{},slider_background:{},line:{},marker_container_mask:{},marker_container:{},marker_item_container:{},timeaxis:{},timeaxis_background:{},attribution:{}},this.collapsed=!1,this._el.container="object"==typeof t?t:TL.Dom.get(t),this.config=e,
+//Options
+this.options={width:600,height:600,duration:1e3,ease:TL.Ease.easeInOutQuint,has_groups:!1,optimal_tick_width:50,scale_factor:2,// How many screen widths wide should the timeline be
+marker_padding:5,timenav_height_min:150,// Minimum timenav height
+marker_height_min:30,// Minimum Marker Height
+marker_width_min:100,// Minimum Marker Width
+zoom_sequence:[.5,1,2,3,5,8,13,21,34,55,89]},
+// Animation
+this.animator=null,
+// Ready state
+this.ready=!1,
+// Markers Array
+this._markers=[],
+// Eras Array
+this._eras=[],this.has_eras=!1,
+// Groups Array
+this._groups=[],
+// Row Height
+this._calculated_row_height=100,
+// Current Marker
+this.current_id="",
+// TimeScale
+this.timescale={},
+// TimeAxis
+this.timeaxis={},this.axishelper={},
+// Max Rows
+this.max_rows=6,
+// Animate CSS
+this.animate_css=!1,
+// Swipe Object
+this._swipable,
+// Merge Data and Options
+TL.Util.mergeData(this.options,i),n&&this.init()},init:function(){this._initLayout(),this._initEvents(),this._initData(),this._updateDisplay(),this._onLoaded()},
+/*	Public
 	================================================== */
-	positionMarkers: function() {
-		this._positionMarkers();
-	},
-
-	/*	Update Display
+positionMarkers:function(){this._positionMarkers()},
+/*	Update Display
 	================================================== */
-	updateDisplay: function(w, h, a, l) {
-		this._updateDisplay(w, h, a, l);
-	},
-
-
-	/*	TimeScale
+updateDisplay:function(t,e,i,n){this._updateDisplay(t,e,i,n)},
+/*	TimeScale
 	================================================== */
-	_getTimeScale: function() {
-		/* maybe the establishing config values (marker_height_min and max_rows) should be
+_getTimeScale:function(){
+/* maybe the establishing config values (marker_height_min and max_rows) should be
 		separated from making a TimeScale object, which happens in another spot in this file with duplicate mapping of properties of this TimeNav into the TimeScale options object? */
-		// Set Max Rows
-		var marker_height_min = 0;
-		try {
-			marker_height_min = parseInt(this.options.marker_height_min);
-		} catch(e) {
-			trace("Invalid value for marker_height_min option.");
-			marker_height_min = 30;
-		}
-		if (marker_height_min == 0) {
-			trace("marker_height_min option must not be zero.")
-			marker_height_min = 30;
-		}
-		this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / marker_height_min);
-		if (this.max_rows < 1) {
-			this.max_rows = 1;
-		}
-		return new TL.TimeScale(this.config, {
-            display_width: this._el.container.offsetWidth,
-            screen_multiplier: this.options.scale_factor,
-            max_rows: this.max_rows
-
-		});
-	},
-
-	_updateTimeScale: function(new_scale) {
-		this.options.scale_factor = new_scale;
-		this._updateDrawTimeline();
-	},
-
-	zoomIn: function() { // move the the next "higher" scale factor
-		var new_scale = TL.Util.findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
-		this.setZoomFactor(new_scale);
-	},
-
-	zoomOut: function() { // move the the next "lower" scale factor
-		var new_scale = TL.Util.findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
-		this.setZoomFactor(new_scale);
-	},
-
-	setZoom: function(level) {
-		var zoom_factor = this.options.zoom_sequence[level];
-		if (typeof(zoom_factor) == 'number') {
-			this.setZoomFactor(zoom_factor);
-		} else {
-			console.warn("Invalid zoom level. Please use an index number between 0 and " + (this.options.zoom_sequence.length - 1));
-		}
-	},
-
-	setZoomFactor: function(factor) {
-		if (factor <= this.options.zoom_sequence[0]) {
-			this.fire("zoomtoggle", {zoom:"out", show:false});
-		} else {
-			this.fire("zoomtoggle", {zoom:"out", show:true});
-		}
-
-		if (factor >= this.options.zoom_sequence[this.options.zoom_sequence.length-1]) {
-			this.fire("zoomtoggle", {zoom:"in", show:false});
-		} else {
-			this.fire("zoomtoggle", {zoom:"in", show:true});
-		}
-
-		if (factor == 0) {
-			console.warn("Zoom factor must be greater than zero. Using 0.1");
-			factor = 0.1;
-		}
-		this.options.scale_factor = factor;
-		//this._updateDrawTimeline(true);
-		this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
-	},
-
-	/*	Groups
+// Set Max Rows
+var e=0;try{e=parseInt(this.options.marker_height_min)}catch(t){trace("Invalid value for marker_height_min option."),e=30}return 0==e&&(trace("marker_height_min option must not be zero."),e=30),this.max_rows=Math.round((this.options.height-this._el.timeaxis_background.offsetHeight-this.options.marker_padding)/e),this.max_rows<1&&(this.max_rows=1),new TL.TimeScale(this.config,{display_width:this._el.container.offsetWidth,screen_multiplier:this.options.scale_factor,max_rows:this.max_rows})},_updateTimeScale:function(t){this.options.scale_factor=t,this._updateDrawTimeline()},zoomIn:function(){// move the the next "higher" scale factor
+var t=TL.Util.findNextGreater(this.options.zoom_sequence,this.options.scale_factor);this.setZoomFactor(t)},zoomOut:function(){// move the the next "lower" scale factor
+var t=TL.Util.findNextLesser(this.options.zoom_sequence,this.options.scale_factor);this.setZoomFactor(t)},setZoom:function(t){var e=this.options.zoom_sequence[t];"number"==typeof e?this.setZoomFactor(e):console.warn("Invalid zoom level. Please use an index number between 0 and "+(this.options.zoom_sequence.length-1))},setZoomFactor:function(t){t<=this.options.zoom_sequence[0]?this.fire("zoomtoggle",{zoom:"out",show:!1}):this.fire("zoomtoggle",{zoom:"out",show:!0}),t>=this.options.zoom_sequence[this.options.zoom_sequence.length-1]?this.fire("zoomtoggle",{zoom:"in",show:!1}):this.fire("zoomtoggle",{zoom:"in",show:!0}),0==t&&(console.warn("Zoom factor must be greater than zero. Using 0.1"),t=.1),this.options.scale_factor=t,
+//this._updateDrawTimeline(true);
+this.goToId(this.current_id,!this._updateDrawTimeline(!0),!0)},
+/*	Groups
 	================================================== */
-	_createGroups: function() {
-		this._groups = [];
-		var group_labels = this.timescale.getGroupLabels();
-
-		if (group_labels) {
-			this.options.has_groups = true;
-			for (var i = 0; i < group_labels.length; i++) {
-				this._createGroup(group_labels[i]);
-			}
-		}
-
-	},
-
-	_createGroup: function(group_label) {
-		var group = new TL.TimeGroup(group_label);
-		this._addGroup(group);
-		this._groups.push(group);
-	},
-
-	_addGroup:function(group) {
-		group.addTo(this._el.container);
-
-	},
-
-	_positionGroups: function() {
-		if (this.options.has_groups) {
-			var available_height 	= (this.options.height - this._el.timeaxis_background.offsetHeight ),
-				group_height 		= Math.floor((available_height /this.timescale.getNumberOfRows()) - this.options.marker_padding),
-				group_labels		= this.timescale.getGroupLabels();
-
-			for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
-				var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
-				var group_hide = false;
-				if (group_y > (available_height- this.options.marker_padding)) {
-					group_hide = true;
-				}
-
-				this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding/2);
-				this._groups[i].setAlternateRowColor(TL.Util.isEven(i), group_hide);
-
-				group_rows += this._groups[i].data.rows;    // account for groups spanning multiple rows
-			}
-		}
-	},
-
-	/*	Markers
+_createGroups:function(){this._groups=[];var t=this.timescale.getGroupLabels();if(t){this.options.has_groups=!0;for(var e=0;e<t.length;e++)this._createGroup(t[e])}},_createGroup:function(t){var e=new TL.TimeGroup(t);this._addGroup(e),this._groups.push(e)},_addGroup:function(t){t.addTo(this._el.container)},_positionGroups:function(){if(this.options.has_groups)for(var t=this.options.height-this._el.timeaxis_background.offsetHeight,e=Math.floor(t/this.timescale.getNumberOfRows()-this.options.marker_padding),i=this.timescale.getGroupLabels(),n=0,a=0;n<this._groups.length;n++){var s=Math.floor(a*(e+this.options.marker_padding)),o=!1;s>t-this.options.marker_padding&&(o=!0),this._groups[n].setRowPosition(s,this._calculated_row_height+this.options.marker_padding/2),this._groups[n].setAlternateRowColor(TL.Util.isEven(n),o),a+=this._groups[n].data.rows}},
+/*	Markers
 	================================================== */
-	_addMarker:function(marker) {
-		marker.addTo(this._el.marker_item_container);
-		marker.on('markerclick', this._onMarkerClick, this);
-		marker.on('added', this._onMarkerAdded, this);
-	},
-
-	_createMarker: function(data, n) {
-		var marker = new TL.TimeMarker(data, this.options);
-		this._addMarker(marker);
-		if(n < 0) {
-		    this._markers.push(marker);
-		} else {
-		    this._markers.splice(n, 0, marker);
-		}
-	},
-
-	_createMarkers: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			this._createMarker(array[i], -1);
-		}
-	},
-
-	_removeMarker: function(marker) {
-		marker.removeFrom(this._el.marker_item_container);
-		//marker.off('added', this._onMarkerRemoved, this);
-	},
-
-	_destroyMarker: function(n) {
-	    this._removeMarker(this._markers[n]);
-	    this._markers.splice(n, 1);
-	},
-
-	_positionMarkers: function(fast) {
-		// POSITION X
-		for (var i = 0; i < this._markers.length; i++) {
-			var pos = this.timescale.getPositionInfo(i);
-			if (fast) {
-				this._markers[i].setClass("tl-timemarker tl-timemarker-fast");
-			} else {
-				this._markers[i].setClass("tl-timemarker");
-			}
-			this._markers[i].setPosition({left:pos.start});
-			this._markers[i].setWidth(pos.width);
-		};
-
-	},
-
-	_calculateMarkerHeight: function(h) {
-		return ((h /this.timescale.getNumberOfRows()) - this.options.marker_padding);
-	},
-
-	_calculateRowHeight: function(h) {
-		return (h /this.timescale.getNumberOfRows());
-	},
-
-	_calculateAvailableHeight: function() {
-		return (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
-	},
-
-	_calculateMinimumTimeNavHeight: function() {
-		return (this.timescale.getNumberOfRows() * this.options.marker_height_min) + this._el.timeaxis_background.offsetHeight + (this.options.marker_padding);
-
-	},
-
-	getMinimumHeight: function() {
-		return this._calculateMinimumTimeNavHeight();
-	},
-
-	_assignRowsToMarkers: function() {
-		var available_height 	= this._calculateAvailableHeight(),
-			marker_height 		= this._calculateMarkerHeight(available_height);
-
-
-		this._positionGroups();
-
-		this._calculated_row_height = this._calculateRowHeight(available_height);
-
-		for (var i = 0; i < this._markers.length; i++) {
-
-			// Set Height
-			this._markers[i].setHeight(marker_height);
-
-			//Position by Row
-			var row = this.timescale.getPositionInfo(i).row;
-
-			var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
-
-			var remainder_height = available_height - marker_y + this.options.marker_padding;
-			this._markers[i].setRowPosition(marker_y, remainder_height);
-		};
-
-	},
-
-	_resetMarkersActive: function() {
-		for (var i = 0; i < this._markers.length; i++) {
-			this._markers[i].setActive(false);
-		};
-	},
-
-	_findMarkerIndex: function(n) {
-	    var _n = -1;
-		if (typeof n == 'string' || n instanceof String) {
-			_n = TL.Util.findArrayNumberByUniqueID(n, this._markers, "unique_id", _n);
-		}
-		return _n;
-	},
-
-	/*	ERAS
+_addMarker:function(t){t.addTo(this._el.marker_item_container),t.on("markerclick",this._onMarkerClick,this),t.on("added",this._onMarkerAdded,this)},_createMarker:function(t,e){var i=new TL.TimeMarker(t,this.options);this._addMarker(i),e<0?this._markers.push(i):this._markers.splice(e,0,i)},_createMarkers:function(t){for(var e=0;e<t.length;e++)this._createMarker(t[e],-1)},_removeMarker:function(t){t.removeFrom(this._el.marker_item_container);
+//marker.off('added', this._onMarkerRemoved, this);
+},_destroyMarker:function(t){this._removeMarker(this._markers[t]),this._markers.splice(t,1)},_positionMarkers:function(t){
+// POSITION X
+for(var e=0;e<this._markers.length;e++){var i=this.timescale.getPositionInfo(e);t?this._markers[e].setClass("tl-timemarker tl-timemarker-fast"):this._markers[e].setClass("tl-timemarker"),this._markers[e].setPosition({left:i.start}),this._markers[e].setWidth(i.width)}},_calculateMarkerHeight:function(t){return t/this.timescale.getNumberOfRows()-this.options.marker_padding},_calculateRowHeight:function(t){return t/this.timescale.getNumberOfRows()},_calculateAvailableHeight:function(){return this.options.height-this._el.timeaxis_background.offsetHeight-this.options.marker_padding},_calculateMinimumTimeNavHeight:function(){return this.timescale.getNumberOfRows()*this.options.marker_height_min+this._el.timeaxis_background.offsetHeight+this.options.marker_padding},getMinimumHeight:function(){return this._calculateMinimumTimeNavHeight()},_assignRowsToMarkers:function(){var t=this._calculateAvailableHeight(),e=this._calculateMarkerHeight(t);this._positionGroups(),this._calculated_row_height=this._calculateRowHeight(t);for(var i=0;i<this._markers.length;i++){
+// Set Height
+this._markers[i].setHeight(e);
+//Position by Row
+var n=this.timescale.getPositionInfo(i).row,a=Math.floor(n*(e+this.options.marker_padding))+this.options.marker_padding,s=t-a+this.options.marker_padding;this._markers[i].setRowPosition(a,s)}},_resetMarkersActive:function(){for(var t=0;t<this._markers.length;t++)this._markers[t].setActive(!1)},_findMarkerIndex:function(t){var e=-1;return("string"==typeof t||t instanceof String)&&(e=TL.Util.findArrayNumberByUniqueID(t,this._markers,"unique_id",e)),e},
+/*	ERAS
 	================================================== */
-	_createEras: function(array) {
-		for (var i = 0; i < array.length; i++) {
-			this._createEra(array[i], -1);
-		}
-	},
-
-	_createEra: function(data, n) {
-		var era = new TL.TimeEra(data, this.options);
-		this._addEra(era);
-		if(n < 0) {
-		    this._eras.push(era);
-		} else {
-		    this._eras.splice(n, 0, era);
-		}
-	},
-
-	_addEra:function(era) {
-		era.addTo(this._el.marker_item_container);
-		era.on('added', this._onEraAdded, this);
-	},
-
-	_removeEra: function(era) {
-		era.removeFrom(this._el.marker_item_container);
-		//marker.off('added', this._onMarkerRemoved, this);
-	},
-
-	_destroyEra: function(n) {
-	    this._removeEra(this._eras[n]);
-	    this._eras.splice(n, 1);
-	},
-
-	_positionEras: function(fast) {
-
-		var era_color = 0;
-		// POSITION X
-		for (var i = 0; i < this._eras.length; i++) {
-			var pos = {
-				start:0,
-				end:0,
-				width:0
-			};
-
-			pos.start = this.timescale.getPosition(this._eras[i].data.start_date.getTime());
-			pos.end = this.timescale.getPosition(this._eras[i].data.end_date.getTime());
-			pos.width = pos.end - pos.start;
-
-			if (fast) {
-				this._eras[i].setClass("tl-timeera tl-timeera-fast");
-			} else {
-				this._eras[i].setClass("tl-timeera");
-			}
-			this._eras[i].setPosition({left:pos.start});
-			this._eras[i].setWidth(pos.width);
-
-			era_color++;
-			if (era_color > 5) {
-				era_color = 0;
-			}
-			this._eras[i].setColor(era_color);
-		};
-
-	},
-
-	/*	Public
+_createEras:function(t){for(var e=0;e<t.length;e++)this._createEra(t[e],-1)},_createEra:function(t,e){var i=new TL.TimeEra(t,this.options);this._addEra(i),e<0?this._eras.push(i):this._eras.splice(e,0,i)},_addEra:function(t){t.addTo(this._el.marker_item_container),t.on("added",this._onEraAdded,this)},_removeEra:function(t){t.removeFrom(this._el.marker_item_container);
+//marker.off('added', this._onMarkerRemoved, this);
+},_destroyEra:function(t){this._removeEra(this._eras[t]),this._eras.splice(t,1)},_positionEras:function(t){
+// POSITION X
+for(var e=0,i=0;i<this._eras.length;i++){var n={start:0,end:0,width:0};n.start=this.timescale.getPosition(this._eras[i].data.start_date.getTime()),n.end=this.timescale.getPosition(this._eras[i].data.end_date.getTime()),n.width=n.end-n.start,t?this._eras[i].setClass("tl-timeera tl-timeera-fast"):this._eras[i].setClass("tl-timeera"),this._eras[i].setPosition({left:n.start}),this._eras[i].setWidth(n.width),5<++e&&(e=0),this._eras[i].setColor(e)}},
+/*	Public
 	================================================== */
-
-	// Create a marker
-	createMarker: function(d, n) {
-	    this._createMarker(d, n);
-	},
-
-	// Create many markers from an array
-	createMarkers: function(array) {
-	    this._createMarkers(array);
-	},
-
-	// Destroy marker by index
-	destroyMarker: function(n) {
-	    this._destroyMarker(n);
-	},
-
-	// Destroy marker by id
-	destroyMarkerId: function(id) {
-	    this.destroyMarker(this._findMarkerIndex(id));
-	},
-
-	/*	Navigation
+// Create a marker
+createMarker:function(t,e){this._createMarker(t,e)},
+// Create many markers from an array
+createMarkers:function(t){this._createMarkers(t)},
+// Destroy marker by index
+destroyMarker:function(t){this._destroyMarker(t)},
+// Destroy marker by id
+destroyMarkerId:function(t){this.destroyMarker(this._findMarkerIndex(t))},
+/*	Navigation
 	================================================== */
-	goTo: function(n, fast, css_animation) {
-		var self = 	this,
-			_ease = this.options.ease,
-			_duration = this.options.duration,
-			_n = (n < 0) ? 0 : n;
-
-		// Set Marker active state
-		this._resetMarkersActive();
-		if(n >= 0 && n < this._markers.length) {
-		    this._markers[n].setActive(true);
-		}
-		// Stop animation
-		if (this.animator) {
-			this.animator.stop();
-		}
-
-		if (fast) {
-			this._el.slider.className = "tl-timenav-slider";
-			this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
-		} else {
-			if (css_animation) {
-				this._el.slider.className = "tl-timenav-slider tl-timenav-slider-animate";
-				this.animate_css = true;
-				this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width/2) + "px";
-			} else {
-				this._el.slider.className = "tl-timenav-slider";
-				this.animator = TL.Animate(this._el.slider, {
-					left: 		-this._markers[_n].getLeft() + (this.options.width/2) + "px",
-					duration: 	_duration,
-					easing: 	_ease
-				});
-			}
-		}
-
-		if(n >= 0 && n < this._markers.length) {
-		    this.current_id = this._markers[n].data.unique_id;
-		} else {
-		    this.current_id = '';
-		}
-	},
-
-	goToId: function(id, fast, css_animation) {
-		this.goTo(this._findMarkerIndex(id), fast, css_animation);
-	},
-
-	/*	Events
+goTo:function(t,e,i){var n=this,a=this.options.ease,s=this.options.duration,o=t<0?0:t;
+// Set Marker active state
+this._resetMarkersActive(),0<=t&&t<this._markers.length&&this._markers[t].setActive(!0),
+// Stop animation
+this.animator&&this.animator.stop(),e?(this._el.slider.className="tl-timenav-slider",this._el.slider.style.left=-this._markers[o].getLeft()+this.options.width/2+"px"):i?(this._el.slider.className="tl-timenav-slider tl-timenav-slider-animate",this.animate_css=!0,this._el.slider.style.left=-this._markers[o].getLeft()+this.options.width/2+"px"):(this._el.slider.className="tl-timenav-slider",this.animator=TL.Animate(this._el.slider,{left:-this._markers[o].getLeft()+this.options.width/2+"px",duration:s,easing:a})),0<=t&&t<this._markers.length?this.current_id=this._markers[t].data.unique_id:this.current_id=""},goToId:function(t,e,i){this.goTo(this._findMarkerIndex(t),e,i)},
+/*	Events
 	================================================== */
-	_onLoaded: function() {
-		this.ready = true;
-		this.fire("loaded", this.config);
-	},
-
-	_onMarkerAdded: function(e) {
-		this.fire("dateAdded", this.config);
-	},
-
-	_onEraAdded: function(e) {
-		this.fire("eraAdded", this.config);
-	},
-
-	_onMarkerRemoved: function(e) {
-		this.fire("dateRemoved", this.config);
-	},
-
-	_onMarkerClick: function(e) {
-		// Go to the clicked marker
-		this.goToId(e.unique_id);
-		this.fire("change", {unique_id: e.unique_id});
-	},
-
-	_onMouseScroll: function(e) {
-
-		var delta		= 0,
-			scroll_to	= 0,
-			constraint 	= {
-				right: 	-(this.timescale.getPixelWidth() - (this.options.width/2)),
-				left: 	this.options.width/2
-			};
-		if (!e) {
-			e = window.event;
-		}
-		if (e.originalEvent) {
-			e = e.originalEvent;
-		}
-
-		// Webkit and browsers able to differntiate between up/down and left/right scrolling
-		if (typeof e.wheelDeltaX != 'undefined' ) {
-			delta = e.wheelDeltaY/6;
-			if (Math.abs(e.wheelDeltaX) > Math.abs(e.wheelDeltaY)) {
-				delta = e.wheelDeltaX/6;
-			} else {
-				//delta = e.wheelDeltaY/6;
-				delta = 0;
-			}
-		}
-		if (delta) {
-			if (e.preventDefault) {
-				 e.preventDefault();
-			}
-			e.returnValue = false;
-		}
-		// Stop from scrolling too far
-		scroll_to = parseInt(this._el.slider.style.left.replace("px", "")) + delta;
-
-
-		if (scroll_to > constraint.left) {
-			scroll_to = constraint.left;
-		} else if (scroll_to < constraint.right) {
-			scroll_to = constraint.right;
-		}
-
-		if (this.animate_css) {
-			this._el.slider.className = "tl-timenav-slider";
-			this.animate_css = false;
-		}
-
-		this._el.slider.style.left = scroll_to + "px";
-
-	},
-
-	_onDragMove: function(e) {
-		if (this.animate_css) {
-			this._el.slider.className = "tl-timenav-slider";
-			this.animate_css = false;
-		}
-
-	},
-
-	/*	Private Methods
+_onLoaded:function(){this.ready=!0,this.fire("loaded",this.config)},_onMarkerAdded:function(t){this.fire("dateAdded",this.config)},_onEraAdded:function(t){this.fire("eraAdded",this.config)},_onMarkerRemoved:function(t){this.fire("dateRemoved",this.config)},_onMarkerClick:function(t){
+// Go to the clicked marker
+this.goToId(t.unique_id),this.fire("change",{unique_id:t.unique_id})},_onMouseScroll:function(t){var e=0,i=0,n={right:-(this.timescale.getPixelWidth()-this.options.width/2),left:this.options.width/2};t||(t=window.event),t.originalEvent&&(t=t.originalEvent),
+// Webkit and browsers able to differntiate between up/down and left/right scrolling
+void 0!==t.wheelDeltaX&&(e=t.wheelDeltaY/6,e=Math.abs(t.wheelDeltaX)>Math.abs(t.wheelDeltaY)?t.wheelDeltaX/6:0),e&&(t.preventDefault&&t.preventDefault(),t.returnValue=!1),(
+// Stop from scrolling too far
+i=parseInt(this._el.slider.style.left.replace("px",""))+e)>n.left?i=n.left:i<n.right&&(i=n.right),this.animate_css&&(this._el.slider.className="tl-timenav-slider",this.animate_css=!1),this._el.slider.style.left=i+"px"},_onDragMove:function(t){this.animate_css&&(this._el.slider.className="tl-timenav-slider",this.animate_css=!1)},
+/*	Private Methods
 	================================================== */
-	// Update Display
-	_updateDisplay: function(width, height, animate) {
-
-		if (width) {
-			this.options.width = width;
-		}
-		if (height && height != this.options.height) {
-			this.options.height = height;
-			this.timescale = this._getTimeScale();
-		}
-
-		// Size Markers
-		this._assignRowsToMarkers();
-
-		// Size swipable area
-		this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
-		this._el.slider_background.style.left = -(this.options.width/2) + "px";
-		this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
-
-		// Update Swipable constraint
-		this._swipable.updateConstraint({top: false,bottom: false,left: (this.options.width/2),right: -(this.timescale.getPixelWidth() - (this.options.width/2))});
-
-		// Go to the current slide
-		this.goToId(this.current_id, true);
-	},
-
-	_drawTimeline: function(fast) {
-		this.timescale = this._getTimeScale();
-		this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
-		this._positionMarkers(fast);
-		this._assignRowsToMarkers();
-		this._createGroups();
-		this._positionGroups();
-
-		if (this.has_eras) {
-
-			this._positionEras(fast);
-		}
-	},
-
-	_updateDrawTimeline: function(check_update) {
-		var do_update = false;
-
-		// Check to see if redraw is needed
-		if (check_update) {
-			/* keep this aligned with _getTimeScale or reduce code duplication */
-			var temp_timescale = new TL.TimeScale(this.config, {
-	            display_width: this._el.container.offsetWidth,
-	            screen_multiplier: this.options.scale_factor,
-	            max_rows: this.max_rows
-
-			});
-
-			if (this.timescale.getMajorScale() == temp_timescale.getMajorScale()
-			 && this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
-				do_update = true;
-			}
-		} else {
-			do_update = true;
-		}
-
-		// Perform update or redraw
-		if (do_update) {
-			this.timescale = this._getTimeScale();
-			this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
-			this._positionMarkers();
-			this._assignRowsToMarkers();
-			this._positionGroups();
-			if (this.has_eras) {
-				this._positionEras();
-			}
-			this._updateDisplay();
-		} else {
-			this._drawTimeline(true);
-		}
-
-		return do_update;
-
-	},
-
-
-	/*	Init
+// Update Display
+_updateDisplay:function(t,e,i){t&&(this.options.width=t),e&&e!=this.options.height&&(this.options.height=e,this.timescale=this._getTimeScale()),
+// Size Markers
+this._assignRowsToMarkers(),
+// Size swipable area
+this._el.slider_background.style.width=this.timescale.getPixelWidth()+this.options.width+"px",this._el.slider_background.style.left=-this.options.width/2+"px",this._el.slider.style.width=this.timescale.getPixelWidth()+this.options.width+"px",
+// Update Swipable constraint
+this._swipable.updateConstraint({top:!1,bottom:!1,left:this.options.width/2,right:-(this.timescale.getPixelWidth()-this.options.width/2)}),
+// Go to the current slide
+this.goToId(this.current_id,!0)},_drawTimeline:function(t){this.timescale=this._getTimeScale(),this.timeaxis.drawTicks(this.timescale,this.options.optimal_tick_width),this._positionMarkers(t),this._assignRowsToMarkers(),this._createGroups(),this._positionGroups(),this.has_eras&&this._positionEras(t)},_updateDrawTimeline:function(t){var e=!1;
+// Check to see if redraw is needed
+if(t){
+/* keep this aligned with _getTimeScale or reduce code duplication */
+var i=new TL.TimeScale(this.config,{display_width:this._el.container.offsetWidth,screen_multiplier:this.options.scale_factor,max_rows:this.max_rows});this.timescale.getMajorScale()==i.getMajorScale()&&this.timescale.getMinorScale()==i.getMinorScale()&&(e=!0)}else e=!0;
+// Perform update or redraw
+return e?(this.timescale=this._getTimeScale(),this.timeaxis.positionTicks(this.timescale,this.options.optimal_tick_width),this._positionMarkers(),this._assignRowsToMarkers(),this._positionGroups(),this.has_eras&&this._positionEras(),this._updateDisplay()):this._drawTimeline(!0),e},
+/*	Init
 	================================================== */
-	_initLayout: function () {
-		// Create Layout
-		this._el.attribution 				= TL.Dom.create('div', 'tl-attribution', this._el.container);
-		this._el.line						= TL.Dom.create('div', 'tl-timenav-line', this._el.container);
-		this._el.slider						= TL.Dom.create('div', 'tl-timenav-slider', this._el.container);
-		this._el.slider_background			= TL.Dom.create('div', 'tl-timenav-slider-background', this._el.slider);
-		this._el.marker_container_mask		= TL.Dom.create('div', 'tl-timenav-container-mask', this._el.slider);
-		this._el.marker_container			= TL.Dom.create('div', 'tl-timenav-container', this._el.marker_container_mask);
-		this._el.marker_item_container		= TL.Dom.create('div', 'tl-timenav-item-container', this._el.marker_container);
-		this._el.timeaxis 					= TL.Dom.create('div', 'tl-timeaxis', this._el.slider);
-		this._el.timeaxis_background 		= TL.Dom.create('div', 'tl-timeaxis-background', this._el.container);
-
-
-		// Knight Lab Logo
-		this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='tl-knightlab-logo'></span>Timeline JS</a>"
-
-		// Time Axis
-		this.timeaxis = new TL.TimeAxis(this._el.timeaxis, this.options);
-
-		// Swipable
-		this._swipable = new TL.Swipable(this._el.slider_background, this._el.slider, {
-			enable: {x:true, y:false},
-			constraint: {top: false,bottom: false,left: (this.options.width/2),right: false},
-			snap: 	false
-		});
-		this._swipable.enable();
-
-	},
-
-	_initEvents: function () {
-		// Drag Events
-		this._swipable.on('dragmove', this._onDragMove, this);
-
-		// Scroll Events
-		TL.DomEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
-		TL.DomEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
-	},
-
-	_initData: function() {
-		// Create Markers and then add them
-		this._createMarkers(this.config.events);
-
-		if (this.config.eras) {
-			this.has_eras = true;
-			this._createEras(this.config.eras);
-		}
-
-		this._drawTimeline();
-
-	}
-
-
-});
-
-
-/* **********************************************
-     Begin TL.TimeMarker.js
-********************************************** */
-
+_initLayout:function(){
+// Create Layout
+this._el.attribution=TL.Dom.create("div","tl-attribution",this._el.container),this._el.line=TL.Dom.create("div","tl-timenav-line",this._el.container),this._el.slider=TL.Dom.create("div","tl-timenav-slider",this._el.container),this._el.slider_background=TL.Dom.create("div","tl-timenav-slider-background",this._el.slider),this._el.marker_container_mask=TL.Dom.create("div","tl-timenav-container-mask",this._el.slider),this._el.marker_container=TL.Dom.create("div","tl-timenav-container",this._el.marker_container_mask),this._el.marker_item_container=TL.Dom.create("div","tl-timenav-item-container",this._el.marker_container),this._el.timeaxis=TL.Dom.create("div","tl-timeaxis",this._el.slider),this._el.timeaxis_background=TL.Dom.create("div","tl-timeaxis-background",this._el.container),
+// Knight Lab Logo
+this._el.attribution.innerHTML="<a href='http://timeline.knightlab.com' target='_blank'><span class='tl-knightlab-logo'></span>Timeline JS</a>",
+// Time Axis
+this.timeaxis=new TL.TimeAxis(this._el.timeaxis,this.options),
+// Swipable
+this._swipable=new TL.Swipable(this._el.slider_background,this._el.slider,{enable:{x:!0,y:!1},constraint:{top:!1,bottom:!1,left:this.options.width/2,right:!1},snap:!1}),this._swipable.enable()},_initEvents:function(){
+// Drag Events
+this._swipable.on("dragmove",this._onDragMove,this),
+// Scroll Events
+TL.DomEvent.addListener(this._el.container,"mousewheel",this._onMouseScroll,this),TL.DomEvent.addListener(this._el.container,"DOMMouseScroll",this._onMouseScroll,this)},_initData:function(){
+// Create Markers and then add them
+this._createMarkers(this.config.events),this.config.eras&&(this.has_eras=!0,this._createEras(this.config.eras)),this._drawTimeline()}}),
 /*	TL.TimeMarker
 
 ================================================== */
-
-TL.TimeMarker = TL.Class.extend({
-
-	includes: [TL.Events, TL.DomMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.TimeMarker=TL.Class.extend({includes:[TL.Events,TL.DomMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options) {
-
-		// DOM Elements
-		this._el = {
-			container: {},
-			content_container: {},
-			media_container: {},
-			timespan: {},
-			line_left: {},
-			line_right: {},
-			content: {},
-			text: {},
-			media: {},
-		};
-
-		// Components
-		this._text			= {};
-
-		// State
-		this._state = {
-			loaded: 		false
-		};
-
-
-		// Data
-		this.data = {
-			unique_id: 			"",
-			background: 		null,
-			date: {
-				year:			0,
-				month:			0,
-				day: 			0,
-				hour: 			0,
-				minute: 		0,
-				second: 		0,
-				millisecond: 	0,
-				thumbnail: 		"",
-				format: 		""
-			},
-			text: {
-				headline: 		"",
-				text: 			""
-			},
-			media: 				null
-		};
-
-		// Options
-		this.options = {
-			duration: 			1000,
-			ease: 				TL.Ease.easeInSpline,
-			width: 				600,
-			height: 			600,
-			marker_width_min: 	100 			// Minimum Marker Width
-		};
-
-		// Actively Displaying
-		this.active = false;
-
-		// Animation Object
-		this.animator = {};
-
-		// End date
-		this.has_end_date = false;
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		TL.Util.mergeData(this.data, data);
-
-		this._initLayout();
-		this._initEvents();
-
-
-	},
-
-	/*	Adding, Hiding, Showing etc
+initialize:function(t,e){
+// DOM Elements
+this._el={container:{},content_container:{},media_container:{},timespan:{},line_left:{},line_right:{},content:{},text:{},media:{}},
+// Components
+this._text={},
+// State
+this._state={loaded:!1},
+// Data
+this.data={unique_id:"",background:null,date:{year:0,month:0,day:0,hour:0,minute:0,second:0,millisecond:0,thumbnail:"",format:""},text:{headline:"",text:""},media:null},
+// Options
+this.options={duration:1e3,ease:TL.Ease.easeInSpline,width:600,height:600,marker_width_min:100},
+// Actively Displaying
+this.active=!1,
+// Animation Object
+this.animator={},
+// End date
+this.has_end_date=!1,
+// Merge Data and Options
+TL.Util.mergeData(this.options,e),TL.Util.mergeData(this.data,t),this._initLayout(),this._initEvents()},
+/*	Adding, Hiding, Showing etc
 	================================================== */
-	show: function() {
-
-	},
-
-	hide: function() {
-
-	},
-
-	setActive: function(is_active) {
-		this.active = is_active;
-
-		if (this.active && this.has_end_date) {
-			this._el.container.className = 'tl-timemarker tl-timemarker-with-end tl-timemarker-active';
-		} else if (this.active){
-			this._el.container.className = 'tl-timemarker tl-timemarker-active';
-		} else if (this.has_end_date){
-			this._el.container.className = 'tl-timemarker tl-timemarker-with-end';
-		} else {
-			this._el.container.className = 'tl-timemarker';
-		}
-	},
-
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-	},
-
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-	},
-
-	updateDisplay: function(w, h) {
-		this._updateDisplay(w, h);
-	},
-
-	loadMedia: function() {
-
-		if (this._media && !this._state.loaded) {
-			this._media.loadMedia();
-			this._state.loaded = true;
-		}
-	},
-
-	stopMedia: function() {
-		if (this._media && this._state.loaded) {
-			this._media.stopMedia();
-		}
-	},
-
-	getLeft: function() {
-		return this._el.container.style.left.slice(0, -2);
-	},
-
-	getTime: function() { // TODO does this need to know about the end date?
-		return this.data.start_date.getTime();
-	},
-
-	getEndTime: function() {
-
-		if (this.data.end_date) {
-			return this.data.end_date.getTime();
-		} else {
-			return false;
-		}
-	},
-
-	setHeight: function(h) {
-		var text_line_height = 12,
-			text_lines = 1;
-
-		this._el.content_container.style.height = h  + "px";
-		this._el.timespan_content.style.height = h + "px";
-		// Handle Line height for better display of text
-		if (h <= 30) {
-			this._el.content.className = "tl-timemarker-content tl-timemarker-content-small";
-		} else {
-			this._el.content.className = "tl-timemarker-content";
-		}
-
-		if (h <= 56) {
-			TL.DomUtil.addClass(this._el.content_container, "tl-timemarker-content-container-small");
-		} else {
-			TL.DomUtil.removeClass(this._el.content_container, "tl-timemarker-content-container-small");
-		}
-
-		// Handle number of lines visible vertically
-
-		if (TL.Browser.webkit) {
-			text_lines = Math.floor(h / (text_line_height + 2));
-			if (text_lines < 1) {
-				text_lines = 1;
-			}
-			this._text.className = "tl-headline";
-			this._text.style.webkitLineClamp = text_lines;
-		} else {
-			text_lines = h / text_line_height;
-			if (text_lines > 1) {
-				this._text.className = "tl-headline tl-headline-fadeout";
-			} else {
-				this._text.className = "tl-headline";
-			}
-			this._text.style.height = (text_lines * text_line_height)  + "px";
-		}
-
-	},
-
-	setWidth: function(w) {
-		if (this.data.end_date) {
-			this._el.container.style.width = w + "px";
-
-			if (w > this.options.marker_width_min) {
-				this._el.content_container.style.width = w + "px";
-				this._el.content_container.className = "tl-timemarker-content-container tl-timemarker-content-container-long";
-			} else {
-				this._el.content_container.style.width = this.options.marker_width_min + "px";
-				this._el.content_container.className = "tl-timemarker-content-container";
-			}
-		}
-
-	},
-
-	setClass: function(n) {
-		this._el.container.className = n;
-	},
-
-	setRowPosition: function(n, remainder) {
-		this.setPosition({top:n});
-		this._el.timespan.style.height = remainder + "px";
-
-		if (remainder < 56) {
-			//TL.DomUtil.removeClass(this._el.content_container, "tl-timemarker-content-container-small");
-		}
-	},
-
-	/*	Events
+show:function(){},hide:function(){},setActive:function(t){this.active=t,this.active&&this.has_end_date?this._el.container.className="tl-timemarker tl-timemarker-with-end tl-timemarker-active":this.active?this._el.container.className="tl-timemarker tl-timemarker-active":this.has_end_date?this._el.container.className="tl-timemarker tl-timemarker-with-end":this._el.container.className="tl-timemarker"},addTo:function(t){t.appendChild(this._el.container)},removeFrom:function(t){t.removeChild(this._el.container)},updateDisplay:function(t,e){this._updateDisplay(t,e)},loadMedia:function(){this._media&&!this._state.loaded&&(this._media.loadMedia(),this._state.loaded=!0)},stopMedia:function(){this._media&&this._state.loaded&&this._media.stopMedia()},getLeft:function(){return this._el.container.style.left.slice(0,-2)},getTime:function(){// TODO does this need to know about the end date?
+return this.data.start_date.getTime()},getEndTime:function(){return!!this.data.end_date&&this.data.end_date.getTime()},setHeight:function(t){var e=12,i=1;this._el.content_container.style.height=t+"px",this._el.timespan_content.style.height=t+"px",
+// Handle Line height for better display of text
+this._el.content.className=t<=30?"tl-timemarker-content tl-timemarker-content-small":"tl-timemarker-content",t<=56?TL.DomUtil.addClass(this._el.content_container,"tl-timemarker-content-container-small"):TL.DomUtil.removeClass(this._el.content_container,"tl-timemarker-content-container-small"),
+// Handle number of lines visible vertically
+TL.Browser.webkit?((i=Math.floor(t/14))<1&&(i=1),this._text.className="tl-headline",this._text.style.webkitLineClamp=i):(i=t/12,this._text.className=1<i?"tl-headline tl-headline-fadeout":"tl-headline",this._text.style.height=12*i+"px")},setWidth:function(t){this.data.end_date&&(this._el.container.style.width=t+"px",t>this.options.marker_width_min?(this._el.content_container.style.width=t+"px",this._el.content_container.className="tl-timemarker-content-container tl-timemarker-content-container-long"):(this._el.content_container.style.width=this.options.marker_width_min+"px",this._el.content_container.className="tl-timemarker-content-container"))},setClass:function(t){this._el.container.className=t},setRowPosition:function(t,e){this.setPosition({top:t}),this._el.timespan.style.height=e+"px"},
+/*	Events
 	================================================== */
-	_onMarkerClick: function(e) {
-		this.fire("markerclick", {unique_id:this.data.unique_id});
-	},
-
-	/*	Private Methods
+_onMarkerClick:function(t){this.fire("markerclick",{unique_id:this.data.unique_id})},
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		//trace(this.data)
-		// Create Layout
-		this._el.container 				= TL.Dom.create("div", "tl-timemarker");
-		if (this.data.unique_id) {
-			this._el.container.id 		= this.data.unique_id + "-marker";
-		}
-
-		if (this.data.end_date) {
-			this.has_end_date = true;
-			this._el.container.className = 'tl-timemarker tl-timemarker-with-end';
-		}
-
-		this._el.timespan				= TL.Dom.create("div", "tl-timemarker-timespan", this._el.container);
-		this._el.timespan_content		= TL.Dom.create("div", "tl-timemarker-timespan-content", this._el.timespan);
-		this._el.content_container		= TL.Dom.create("div", "tl-timemarker-content-container", this._el.container);
-
-		this._el.content				= TL.Dom.create("div", "tl-timemarker-content", this._el.content_container);
-
-		this._el.line_left				= TL.Dom.create("div", "tl-timemarker-line-left", this._el.timespan);
-		this._el.line_right				= TL.Dom.create("div", "tl-timemarker-line-right", this._el.timespan);
-
-		// Thumbnail or Icon
-		if (this.data.media) {
-			this._el.media_container	= TL.Dom.create("div", "tl-timemarker-media-container", this._el.content);
-			// ugh. needs an overhaul
-			var mtd = {url: this.data.media.thumbnail};
-			var thumbnail_media_type = (this.data.media.thumbnail) ? TL.MediaType(mtd, true) : null;
-			if (thumbnail_media_type) {
-				var thumbnail_media = new thumbnail_media_type.cls(mtd);
-				thumbnail_media.on("loaded", function() {
-					this._el.media				= TL.Dom.create("img", "tl-timemarker-media", this._el.media_container);
-					this._el.media.src			= thumbnail_media.getImageURL();
-				}.bind(this));
-				thumbnail_media.loadMedia();
-			} else {
-				var media_type = TL.MediaType(this.data.media).type;
-				this._el.media				= TL.Dom.create("span", "tl-icon-" + media_type, this._el.media_container);
-
-			}
-
-		}
-
-
-		// Text
-		this._el.text					= TL.Dom.create("div", "tl-timemarker-text", this._el.content);
-		this._text						= TL.Dom.create("h2", "tl-headline", this._el.text);
-		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
-		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.text);
-		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.media.caption);
-		}
-
-
-
-		// Fire event that the slide is loaded
-		this.onLoaded();
-
-	},
-
-	_initEvents: function() {
-		TL.DomEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
-	},
-
-	// Update Display
-	_updateDisplay: function(width, height, layout) {
-
-		if (width) {
-			this.options.width 					= width;
-		}
-
-		if (height) {
-			this.options.height = height;
-		}
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.TimeEra.js
-********************************************** */
-
+_initLayout:function(){
+// Thumbnail or Icon
+if(
+//trace(this.data)
+// Create Layout
+this._el.container=TL.Dom.create("div","tl-timemarker"),this.data.unique_id&&(this._el.container.id=this.data.unique_id+"-marker"),this.data.end_date&&(this.has_end_date=!0,this._el.container.className="tl-timemarker tl-timemarker-with-end"),this._el.timespan=TL.Dom.create("div","tl-timemarker-timespan",this._el.container),this._el.timespan_content=TL.Dom.create("div","tl-timemarker-timespan-content",this._el.timespan),this._el.content_container=TL.Dom.create("div","tl-timemarker-content-container",this._el.container),this._el.content=TL.Dom.create("div","tl-timemarker-content",this._el.content_container),this._el.line_left=TL.Dom.create("div","tl-timemarker-line-left",this._el.timespan),this._el.line_right=TL.Dom.create("div","tl-timemarker-line-right",this._el.timespan),this.data.media){this._el.media_container=TL.Dom.create("div","tl-timemarker-media-container",this._el.content);
+// ugh. needs an overhaul
+var t={url:this.data.media.thumbnail},e=this.data.media.thumbnail?TL.MediaType(t,!0):null;if(e){var i=new e.cls(t);i.on("loaded",function(){this._el.media=TL.Dom.create("img","tl-timemarker-media",this._el.media_container),this._el.media.src=i.getImageURL()}.bind(this)),i.loadMedia()}else{var n=TL.MediaType(this.data.media).type;this._el.media=TL.Dom.create("span","tl-icon-"+n,this._el.media_container)}}
+// Text
+this._el.text=TL.Dom.create("div","tl-timemarker-text",this._el.content),this._text=TL.Dom.create("h2","tl-headline",this._el.text),this.data.text.headline&&""!=this.data.text.headline?this._text.innerHTML=TL.Util.unlinkify(this.data.text.headline):this.data.text.text&&""!=this.data.text.text?this._text.innerHTML=TL.Util.unlinkify(this.data.text.text):this.data.media&&this.data.media.caption&&""!=this.data.media.caption&&(this._text.innerHTML=TL.Util.unlinkify(this.data.media.caption)),
+// Fire event that the slide is loaded
+this.onLoaded()},_initEvents:function(){TL.DomEvent.addListener(this._el.container,"click",this._onMarkerClick,this)},
+// Update Display
+_updateDisplay:function(t,e,i){t&&(this.options.width=t),e&&(this.options.height=e)}}),
 /*	TL.TimeMarker
 
 ================================================== */
-
-TL.TimeEra = TL.Class.extend({
-
-	includes: [TL.Events, TL.DomMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.TimeEra=TL.Class.extend({includes:[TL.Events,TL.DomMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data, options) {
-
-		// DOM Elements
-		this._el = {
-			container: {},
-			background: {},
-			content_container: {},
-			content: {},
-			text: {}
-		};
-
-		// Components
-		this._text			= {};
-
-		// State
-		this._state = {
-			loaded: 		false
-		};
-
-
-		// Data
-		this.data = {
-			unique_id: 			"",
-			date: {
-				year:			0,
-				month:			0,
-				day: 			0,
-				hour: 			0,
-				minute: 		0,
-				second: 		0,
-				millisecond: 	0,
-				thumbnail: 		"",
-				format: 		""
-			},
-			text: {
-				headline: 		"",
-				text: 			""
-			}
-		};
-
-		// Options
-		this.options = {
-			duration: 			1000,
-			ease: 				TL.Ease.easeInSpline,
-			width: 				600,
-			height: 			600,
-			marker_width_min: 	100 			// Minimum Marker Width
-		};
-
-		// Actively Displaying
-		this.active = false;
-
-		// Animation Object
-		this.animator = {};
-
-		// End date
-		this.has_end_date = false;
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-		TL.Util.mergeData(this.data, data);
-
-		this._initLayout();
-		this._initEvents();
-
-
-	},
-
-	/*	Adding, Hiding, Showing etc
+initialize:function(t,e){
+// DOM Elements
+this._el={container:{},background:{},content_container:{},content:{},text:{}},
+// Components
+this._text={},
+// State
+this._state={loaded:!1},
+// Data
+this.data={unique_id:"",date:{year:0,month:0,day:0,hour:0,minute:0,second:0,millisecond:0,thumbnail:"",format:""},text:{headline:"",text:""}},
+// Options
+this.options={duration:1e3,ease:TL.Ease.easeInSpline,width:600,height:600,marker_width_min:100},
+// Actively Displaying
+this.active=!1,
+// Animation Object
+this.animator={},
+// End date
+this.has_end_date=!1,
+// Merge Data and Options
+TL.Util.mergeData(this.options,e),TL.Util.mergeData(this.data,t),this._initLayout(),this._initEvents()},
+/*	Adding, Hiding, Showing etc
 	================================================== */
-	show: function() {
-
-	},
-
-	hide: function() {
-
-	},
-
-	setActive: function(is_active) {
-
-	},
-
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-	},
-
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-	},
-
-	updateDisplay: function(w, h) {
-		this._updateDisplay(w, h);
-	},
-
-	getLeft: function() {
-		return this._el.container.style.left.slice(0, -2);
-	},
-
-	getTime: function() { // TODO does this need to know about the end date?
-		return this.data.start_date.getTime();
-	},
-
-	getEndTime: function() {
-
-		if (this.data.end_date) {
-			return this.data.end_date.getTime();
-		} else {
-			return false;
-		}
-	},
-
-	setHeight: function(h) {
-		var text_line_height = 12,
-			text_lines = 1;
-
-		this._el.content_container.style.height = h  + "px";
-		this._el.content.className = "tl-timeera-content";
-
-		// Handle number of lines visible vertically
-
-		if (TL.Browser.webkit) {
-			text_lines = Math.floor(h / (text_line_height + 2));
-			if (text_lines < 1) {
-				text_lines = 1;
-			}
-			this._text.className = "tl-headline";
-			this._text.style.webkitLineClamp = text_lines;
-		} else {
-			text_lines = h / text_line_height;
-			if (text_lines > 1) {
-				this._text.className = "tl-headline tl-headline-fadeout";
-			} else {
-				this._text.className = "tl-headline";
-			}
-			this._text.style.height = (text_lines * text_line_height)  + "px";
-		}
-
-	},
-
-	setWidth: function(w) {
-		if (this.data.end_date) {
-			this._el.container.style.width = w + "px";
-
-			if (w > this.options.marker_width_min) {
-				this._el.content_container.style.width = w + "px";
-				this._el.content_container.className = "tl-timeera-content-container tl-timeera-content-container-long";
-			} else {
-				this._el.content_container.style.width = this.options.marker_width_min + "px";
-				this._el.content_container.className = "tl-timeera-content-container";
-			}
-		}
-
-	},
-
-	setClass: function(n) {
-		this._el.container.className = n;
-	},
-
-	setRowPosition: function(n, remainder) {
-		this.setPosition({top:n});
-
-		if (remainder < 56) {
-			//TL.DomUtil.removeClass(this._el.content_container, "tl-timeera-content-container-small");
-		}
-	},
-
-	setColor: function(color_num) {
-		this._el.container.className = 'tl-timeera tl-timeera-color' + color_num;
-	},
-
-	/*	Events
+show:function(){},hide:function(){},setActive:function(t){},addTo:function(t){t.appendChild(this._el.container)},removeFrom:function(t){t.removeChild(this._el.container)},updateDisplay:function(t,e){this._updateDisplay(t,e)},getLeft:function(){return this._el.container.style.left.slice(0,-2)},getTime:function(){// TODO does this need to know about the end date?
+return this.data.start_date.getTime()},getEndTime:function(){return!!this.data.end_date&&this.data.end_date.getTime()},setHeight:function(t){var e=12,i=1;this._el.content_container.style.height=t+"px",this._el.content.className="tl-timeera-content",
+// Handle number of lines visible vertically
+TL.Browser.webkit?((i=Math.floor(t/14))<1&&(i=1),this._text.className="tl-headline",this._text.style.webkitLineClamp=i):(i=t/12,this._text.className=1<i?"tl-headline tl-headline-fadeout":"tl-headline",this._text.style.height=12*i+"px")},setWidth:function(t){this.data.end_date&&(this._el.container.style.width=t+"px",t>this.options.marker_width_min?(this._el.content_container.style.width=t+"px",this._el.content_container.className="tl-timeera-content-container tl-timeera-content-container-long"):(this._el.content_container.style.width=this.options.marker_width_min+"px",this._el.content_container.className="tl-timeera-content-container"))},setClass:function(t){this._el.container.className=t},setRowPosition:function(t,e){this.setPosition({top:t})},setColor:function(t){this._el.container.className="tl-timeera tl-timeera-color"+t},
+/*	Events
 	================================================== */
-
-
-	/*	Private Methods
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		//trace(this.data)
-		// Create Layout
-		this._el.container 				= TL.Dom.create("div", "tl-timeera");
-		if (this.data.unique_id) {
-			this._el.container.id 		= this.data.unique_id + "-era";
-		}
-
-		if (this.data.end_date) {
-			this.has_end_date = true;
-			this._el.container.className = 'tl-timeera tl-timeera-with-end';
-		}
-
-		this._el.content_container		= TL.Dom.create("div", "tl-timeera-content-container", this._el.container);
-
-		this._el.background 			= TL.Dom.create("div", "tl-timeera-background", this._el.content_container);
-
-		this._el.content				= TL.Dom.create("div", "tl-timeera-content", this._el.content_container);
-
-		
-
-		// Text
-		this._el.text					= TL.Dom.create("div", "tl-timeera-text", this._el.content);
-		this._text						= TL.Dom.create("h2", "tl-headline", this._el.text);
-		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML		= TL.Util.unlinkify(this.data.text.headline);
-		} 
-
-
-
-		// Fire event that the slide is loaded
-		this.onLoaded();
-
-	},
-
-	_initEvents: function() {
-		
-	},
-
-	// Update Display
-	_updateDisplay: function(width, height, layout) {
-
-		if (width) {
-			this.options.width 					= width;
-		}
-
-		if (height) {
-			this.options.height = height;
-		}
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.TimeGroup.js
-********************************************** */
-
+_initLayout:function(){
+//trace(this.data)
+// Create Layout
+this._el.container=TL.Dom.create("div","tl-timeera"),this.data.unique_id&&(this._el.container.id=this.data.unique_id+"-era"),this.data.end_date&&(this.has_end_date=!0,this._el.container.className="tl-timeera tl-timeera-with-end"),this._el.content_container=TL.Dom.create("div","tl-timeera-content-container",this._el.container),this._el.background=TL.Dom.create("div","tl-timeera-background",this._el.content_container),this._el.content=TL.Dom.create("div","tl-timeera-content",this._el.content_container),
+// Text
+this._el.text=TL.Dom.create("div","tl-timeera-text",this._el.content),this._text=TL.Dom.create("h2","tl-headline",this._el.text),this.data.text.headline&&""!=this.data.text.headline&&(this._text.innerHTML=TL.Util.unlinkify(this.data.text.headline)),
+// Fire event that the slide is loaded
+this.onLoaded()},_initEvents:function(){},
+// Update Display
+_updateDisplay:function(t,e,i){t&&(this.options.width=t),e&&(this.options.height=e)}}),
 /*	TL.TimeGroup
 	
 ================================================== */
- 
-TL.TimeGroup = TL.Class.extend({
-	
-	includes: [TL.Events, TL.DomMixins],
-	
-	_el: {},
-	
-	/*	Constructor
+TL.TimeGroup=TL.Class.extend({includes:[TL.Events,TL.DomMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(data) {
-		
-		// DOM ELEMENTS
-		this._el = {
-			parent: {},
-			container: {},
-			message: {}
-		};
-		
-		//Options
-		this.options = {
-			width: 					600,
-			height: 				600
-		};
-		
-		// Data
-		this.data = {
-			label: "",
-			rows: 1
-		};
-		
-		
-		this._el.container = TL.Dom.create("div", "tl-timegroup"); 
-		
-		// Merge Data
-		TL.Util.mergeData(this.data, data);
-		
-		// Animation
-		this.animator = {};
-		
-		
-		this._initLayout();
-		this._initEvents();
-	},
-	
-	/*	Public
+initialize:function(t){
+// DOM ELEMENTS
+this._el={parent:{},container:{},message:{}},
+//Options
+this.options={width:600,height:600},
+// Data
+this.data={label:"",rows:1},this._el.container=TL.Dom.create("div","tl-timegroup"),
+// Merge Data
+TL.Util.mergeData(this.data,t),
+// Animation
+this.animator={},this._initLayout(),this._initEvents()},
+/*	Public
 	================================================== */
-	
-	
-	
-	/*	Update Display
+/*	Update Display
 	================================================== */
-	updateDisplay: function(w, h) {
-		
-	},
-	
-	setRowPosition: function(n, h) {
-		// trace(n);
-		// trace(this._el.container)
-		this.options.height = h * this.data.rows;
-		this.setPosition({top:n});
-		this._el.container.style.height = this.options.height + "px";
-		
-	},
-	
-	setAlternateRowColor: function(alternate, hide) {
-		var class_name = "tl-timegroup";
-		if (alternate) {
-			class_name += " tl-timegroup-alternate";
-		}
-		if (hide) {
-			class_name += " tl-timegroup-hidden";
-		}
-		this._el.container.className = class_name;
-	},
-	
-	/*	Events
+updateDisplay:function(t,e){},setRowPosition:function(t,e){
+// trace(n);
+// trace(this._el.container)
+this.options.height=e*this.data.rows,this.setPosition({top:t}),this._el.container.style.height=this.options.height+"px"},setAlternateRowColor:function(t,e){var i="tl-timegroup";t&&(i+=" tl-timegroup-alternate"),e&&(i+=" tl-timegroup-hidden"),this._el.container.className=i},
+/*	Events
 	================================================== */
-
-	
-	_onMouseClick: function() {
-		this.fire("clicked", this.options);
-	},
-
-	
-	/*	Private Methods
+_onMouseClick:function(){this.fire("clicked",this.options)},
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		
-		// Create Layout
-		this._el.message = TL.Dom.create("div", "tl-timegroup-message", this._el.container);
-		this._el.message.innerHTML = this.data.label;
-		
-		
-	},
-	
-	_initEvents: function () {
-		TL.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
-	},
-	
-	// Update Display
-	_updateDisplay: function(width, height, animate) {
-		
-	}
-	
-});
-
-/* **********************************************
-     Begin TL.TimeScale.js
-********************************************** */
-
+_initLayout:function(){
+// Create Layout
+this._el.message=TL.Dom.create("div","tl-timegroup-message",this._el.container),this._el.message.innerHTML=this.data.label},_initEvents:function(){TL.DomEvent.addListener(this._el.container,"click",this._onMouseClick,this)},
+// Update Display
+_updateDisplay:function(t,e,i){}}),
 /*  TL.TimeScale
     Strategies for laying out the timenav
     make a new one if the slides change
 
     TODOS: deal with clustering
 ================================================== */
-TL.TimeScale = TL.Class.extend({
-
-    initialize: function (timeline_config, options) {
-
-        var slides = timeline_config.events;
-        this._scale = timeline_config.scale;
-
-        options = TL.Util.mergeData({ // establish defaults
-            display_width: 500,
-            screen_multiplier: 3,
-            max_rows: null
-        }, options);
-
-        this._display_width = options.display_width;
-        this._screen_multiplier = options.screen_multiplier;
-        this._pixel_width = this._screen_multiplier * this._display_width;
-
-        this._group_labels = undefined;
-        this._positions = [];
-        this._pixels_per_milli = 0;
-
-        this._earliest = timeline_config.getEarliestDate().getTime();
-        this._latest = timeline_config.getLatestDate().getTime();
-        this._span_in_millis = this._latest - this._earliest;
-        if (this._span_in_millis <= 0) {
-            this._span_in_millis = this._computeDefaultSpan(timeline_config);
-        }
-        this._average = (this._span_in_millis)/slides.length;
-
-        this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
-
-        this._axis_helper = TL.AxisHelper.getBestHelper(this);
-
-        this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
-        this._computePositionInfo(slides, options.max_rows);
-    },
-
-    _computeDefaultSpan: function(timeline_config) {
-        // this gets called when all events are at the same instant,
-        // or maybe when the span_in_millis is > 0 but still below a desired threshold
-        // TODO: does this need smarts about eras?
-        if (timeline_config.scale == 'human') {
-            var formats = {}
-            for (var i = 0; i < timeline_config.events.length; i++) {
-                var fmt = timeline_config.events[i].start_date.findBestFormat();
-                formats[fmt] = (formats[fmt]) ? formats[fmt] + 1 : 1;
-            };
-
-            for (var i = TL.Date.SCALES.length - 1; i >= 0; i--) {
-                if (formats.hasOwnProperty(TL.Date.SCALES[i][0])) {
-                    var scale = TL.Date.SCALES[TL.Date.SCALES.length - 1]; // default
-                    if (TL.Date.SCALES[i+1]) {
-                        scale = TL.Date.SCALES[i+1]; // one larger than the largest in our data
-                    }
-                    return scale[1]
-                }
-            };
-            return 365 * 24 * 60 * 60 * 1000; // default to a year?
-        }
-
-        return 200000; // what is the right handling for cosmo dates?
-    },
-    getGroupLabels: function() { /*
+TL.TimeScale=TL.Class.extend({initialize:function(t,e){var i=t.events;this._scale=t.scale,e=TL.Util.mergeData({// establish defaults
+display_width:500,screen_multiplier:3,max_rows:null},e),this._display_width=e.display_width,this._screen_multiplier=e.screen_multiplier,this._pixel_width=this._screen_multiplier*this._display_width,this._group_labels=void 0,this._positions=[],this._pixels_per_milli=0,this._earliest=t.getEarliestDate().getTime(),this._latest=t.getLatestDate().getTime(),this._span_in_millis=this._latest-this._earliest,this._span_in_millis<=0&&(this._span_in_millis=this._computeDefaultSpan(t)),this._average=this._span_in_millis/i.length,this._pixels_per_milli=this.getPixelWidth()/this._span_in_millis,this._axis_helper=TL.AxisHelper.getBestHelper(this),this._scaled_padding=1/this.getPixelsPerTick()*(this._display_width/2),this._computePositionInfo(i,e.max_rows)},_computeDefaultSpan:function(t){
+// this gets called when all events are at the same instant,
+// or maybe when the span_in_millis is > 0 but still below a desired threshold
+// TODO: does this need smarts about eras?
+if("human"!=t.scale)return 2e5;// what is the right handling for cosmo dates?
+for(var e={},i=0;i<t.events.length;i++){var n=t.events[i].start_date.findBestFormat();e[n]=e[n]?e[n]+1:1}for(var i=TL.Date.SCALES.length-1;0<=i;i--)if(e.hasOwnProperty(TL.Date.SCALES[i][0])){var a=TL.Date.SCALES[TL.Date.SCALES.length-1];// default
+return TL.Date.SCALES[i+1]&&(a=TL.Date.SCALES[i+1]),a[1]}return 31536e6;// default to a year?
+},getGroupLabels:function(){
+/*
         return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
             * label (the string as specified in one or more 'group' properties of events in the configuration)
             * rows (the number of rows occupied by events associated with the label. )
         */
-        return (this._group_labels || []);
-    },
-
-    getScale: function() {
-        return this._scale;
-    },
-
-    getNumberOfRows: function() {
-        return this._number_of_rows
-    },
-
-    getPixelWidth: function() {
-        return this._pixel_width;
-    },
-
-    getPosition: function(time_in_millis) {
-        // be careful using millis, as they won't scale to cosmological time.
-        // however, we're moving to make the arg to this whatever value
-        // comes from TL.Date.getTime() which could be made smart about that --
-        // so it may just be about the naming.
-        return ( time_in_millis - this._earliest ) * this._pixels_per_milli
-    },
-
-    getPositionInfo: function(idx) {
-        return this._positions[idx];
-    },
-
-    getPixelsPerTick: function() {
-        return this._axis_helper.getPixelsPerTick(this._pixels_per_milli);
-    },
-
-    getTicks: function() {
-        return {
-            major: this._axis_helper.getMajorTicks(this),
-            minor: this._axis_helper.getMinorTicks(this) }
-    },
-
-    getDateFromTime: function(t) {
-        if(this._scale == 'human') {
-            return new TL.Date(t);
-        } else if(this._scale == 'cosmological') {
-            return new TL.BigDate(new TL.BigYear(t));
-        }
-        throw new TL.Error("time_scale_scale_err", this._scale);
-    },
-
-    getMajorScale: function() {
-        return this._axis_helper.major.name;
-    },
-
-    getMinorScale: function() {
-        return this._axis_helper.minor.name;
-    },
-
-    _assessGroups: function(slides) {
-        var groups = [];
-        var empty_group = false;
-        for (var i = 0; i < slides.length; i++) {
-            if(slides[i].group) {
-                if(groups.indexOf(slides[i].group) < 0) {
-                    groups.push(slides[i].group);
-                } else {
-                    empty_group = true;
-                }
-            }
-        };
-        if (groups.length && empty_group) {
-            groups.push('');
-        }
-        return groups;
-    },
-
-    /*  Compute the marker row positions, minimizing the number of
+return this._group_labels||[]},getScale:function(){return this._scale},getNumberOfRows:function(){return this._number_of_rows},getPixelWidth:function(){return this._pixel_width},getPosition:function(t){
+// be careful using millis, as they won't scale to cosmological time.
+// however, we're moving to make the arg to this whatever value
+// comes from TL.Date.getTime() which could be made smart about that --
+// so it may just be about the naming.
+return(t-this._earliest)*this._pixels_per_milli},getPositionInfo:function(t){return this._positions[t]},getPixelsPerTick:function(){return this._axis_helper.getPixelsPerTick(this._pixels_per_milli)},getTicks:function(){return{major:this._axis_helper.getMajorTicks(this),minor:this._axis_helper.getMinorTicks(this)}},getDateFromTime:function(t){if("human"==this._scale)return new TL.Date(t);if("cosmological"==this._scale)return new TL.BigDate(new TL.BigYear(t));throw new TL.Error("time_scale_scale_err",this._scale)},getMajorScale:function(){return this._axis_helper.major.name},getMinorScale:function(){return this._axis_helper.minor.name},_assessGroups:function(t){for(var e=[],i=!1,n=0;n<t.length;n++)t[n].group&&(e.indexOf(t[n].group)<0?e.push(t[n].group):i=!0);return e.length&&i&&e.push(""),e},
+/*  Compute the marker row positions, minimizing the number of
         overlaps.
 
         @positions = list of objects from this._positions
         @rows_left = number of rows available (assume > 0)
     */
-    _computeRowInfo: function(positions, rows_left) {
-        var lasts_in_row = [];
-        var n_overlaps = 0;
-
-        for (var i = 0; i < positions.length; i++) {
-            var pos_info = positions[i];
-            var overlaps = [];
-
-            // See if we can add item to an existing row without
-            // overlapping the previous item in that row
-            delete pos_info.row;
-
-            for (var j = 0; j < lasts_in_row.length; j++) {
-                overlaps.push(lasts_in_row[j].end - pos_info.start);
-                if(overlaps[j] <= 0) {
-                    pos_info.row = j;
-                    lasts_in_row[j] = pos_info;
-                    break;
-                }
-            }
-
-            // If we couldn't add to an existing row without overlap...
-            if (typeof(pos_info.row) == 'undefined') {
-                if (rows_left === null) {
-                    // Make a new row
-                    pos_info.row = lasts_in_row.length;
-                    lasts_in_row.push(pos_info);
-                } else if (rows_left > 0) {
-                    // Make a new row
-                    pos_info.row = lasts_in_row.length;
-                    lasts_in_row.push(pos_info);
-                    rows_left--;
-                } else {
-                    // Add to existing row with minimum overlap.
-                    var min_overlap = Math.min.apply(null, overlaps);
-                    var idx = overlaps.indexOf(min_overlap);
-                    pos_info.row = idx;
-                    if (pos_info.end > lasts_in_row[idx].end) {
-                        lasts_in_row[idx] = pos_info;
-                    }
-                    n_overlaps++;
-                }
-            }
-        }
-
-        return {n_rows: lasts_in_row.length, n_overlaps: n_overlaps};
-    },
-
-    /*  Compute marker positions.  If using groups, this._number_of_rows
+_computeRowInfo:function(t,e){for(var i=[],n=0,a=0;a<t.length;a++){var s=t[a],o=[];
+// See if we can add item to an existing row without
+// overlapping the previous item in that row
+delete s.row;for(var r=0;r<i.length;r++)if(o.push(i[r].end-s.start),o[r]<=0){i[s.row=r]=s;break}
+// If we couldn't add to an existing row without overlap...
+if(void 0===s.row)if(null===e)
+// Make a new row
+s.row=i.length,i.push(s);else if(0<e)
+// Make a new row
+s.row=i.length,i.push(s),e--;else{
+// Add to existing row with minimum overlap.
+var l=Math.min.apply(null,o),h=o.indexOf(l);s.row=h,s.end>i[h].end&&(i[h]=s),n++}}return{n_rows:i.length,n_overlaps:n}},
+/*  Compute marker positions.  If using groups, this._number_of_rows
         will never be less than the number of groups.
 
         @max_rows = total number of available rows
         @default_marker_width should be in pixels
     */
-    _computePositionInfo: function(slides, max_rows, default_marker_width) {
-        default_marker_width = default_marker_width || 100;
-
-        var groups = [];
-        var empty_group = false;
-
-        // Set start/end/width; enumerate groups
-        for (var i = 0; i < slides.length; i++) {
-            var pos_info = {
-                start: this.getPosition(slides[i].start_date.getTime())
-            };
-            this._positions.push(pos_info);
-
-            if (typeof(slides[i].end_date) != 'undefined') {
-                var end_pos = this.getPosition(slides[i].end_date.getTime());
-                pos_info.width = end_pos - pos_info.start;
-                if (pos_info.width > default_marker_width) {
-                    pos_info.end = pos_info.start + pos_info.width;
-                } else {
-                    pos_info.end = pos_info.start + default_marker_width;
-                }
-            } else {
-                pos_info.width = default_marker_width;
-                pos_info.end = pos_info.start + default_marker_width;
-            }
-
-            if(slides[i].group) {
-                if(groups.indexOf(slides[i].group) < 0) {
-                    groups.push(slides[i].group);
-                }
-            } else {
-                empty_group = true;
-            }
-        }
-
-        if(!(groups.length)) {
-            var result = this._computeRowInfo(this._positions, max_rows);
-            this._number_of_rows = result.n_rows;
-        } else {
-            if(empty_group) {
-                groups.push("");
-            }
-
-            // Init group info
-            var group_info = [];
-
-            for(var i = 0; i < groups.length; i++) {
-                group_info[i] = {
-                    label: groups[i],
-                    idx: i,
-                    positions: [],
-                    n_rows: 1,      // default
-                    n_overlaps: 0
-                };
-            }
-
-            for(var i = 0; i < this._positions.length; i++) {
-                var pos_info = this._positions[i];
-
-                pos_info.group = groups.indexOf(slides[i].group || "");
-                pos_info.row = 0;
-
-                var gi = group_info[pos_info.group];
-                for(var j = gi.positions.length - 1; j >= 0; j--) {
-                    if(gi.positions[j].end > pos_info.start) {
-                        gi.n_overlaps++;
-                    }
-                }
-
-                gi.positions.push(pos_info);
-            }
-
-            var n_rows = groups.length; // start with 1 row per group
-
-            while(true) {
-                // Count free rows available
-                var rows_left = Math.max(0, max_rows - n_rows);
-                if(!rows_left) {
-                    break;  // no free rows, nothing to do
-                }
-
-                // Sort by # overlaps, idx
-               group_info.sort(function(a, b) {
-                    if(a.n_overlaps > b.n_overlaps) {
-                        return -1;
-                    } else if(a.n_overlaps < b.n_overlaps) {
-                        return 1;
-                    }
-                    return a.idx - b.idx;
-                });
-                if(!group_info[0].n_overlaps) {
-                    break; // no overlaps, nothing to do
-                }
-
-                // Distribute free rows among groups with overlaps
-                var n_rows = 0;
-                for(var i = 0; i < group_info.length; i++) {
-                    var gi = group_info[i];
-
-                    if(gi.n_overlaps && rows_left) {
-                        var res = this._computeRowInfo(gi.positions,  gi.n_rows + 1);
-                        gi.n_rows = res.n_rows;     // update group info
-                        gi.n_overlaps = res.n_overlaps;
-                        rows_left--;                // update rows left
-                    }
-
-                    n_rows += gi.n_rows;            // update rows used
-                }
-            }
-
-            // Set number of rows
-            this._number_of_rows = n_rows;
-
-            // Set group labels; offset row positions
-            this._group_labels = [];
-
-            group_info.sort(function(a, b) {return a.idx - b.idx; });
-
-            for(var i = 0, row_offset = 0; i < group_info.length; i++) {
-                this._group_labels.push({
-                    label: group_info[i].label,
-                    rows: group_info[i].n_rows
-                });
-
-                for(var j = 0; j < group_info[i].positions.length; j++) {
-                    var pos_info = group_info[i].positions[j];
-                    pos_info.row += row_offset;
-                }
-
-                row_offset += group_info[i].n_rows;
-            }
-        }
-
-    }
-});
-
-
-/* **********************************************
-     Begin TL.TimeAxis.js
-********************************************** */
-
+_computePositionInfo:function(t,e,i){i=i||100;
+// Set start/end/width; enumerate groups
+for(var n=[],a=!1,s=0;s<t.length;s++){var o={start:this.getPosition(t[s].start_date.getTime())};if(this._positions.push(o),void 0!==t[s].end_date){var r=this.getPosition(t[s].end_date.getTime());o.width=r-o.start,o.width>i?o.end=o.start+o.width:o.end=o.start+i}else o.width=i,o.end=o.start+i;t[s].group?n.indexOf(t[s].group)<0&&n.push(t[s].group):a=!0}if(n.length){a&&n.push("");
+// Init group info
+for(var l=[],s=0;s<n.length;s++)l[s]={label:n[s],idx:s,positions:[],n_rows:1,// default
+n_overlaps:0};for(var s=0;s<this._positions.length;s++){var o;(o=this._positions[s]).group=n.indexOf(t[s].group||""),o.row=0;for(var h,d=(h=l[o.group]).positions.length-1;0<=d;d--)h.positions[d].end>o.start&&h.n_overlaps++;h.positions.push(o)}// start with 1 row per group
+for(var c=n.length;;){
+// Count free rows available
+var u=Math.max(0,e-c);if(!u)break;// no free rows, nothing to do
+// Sort by # overlaps, idx
+if(l.sort(function(t,e){return t.n_overlaps>e.n_overlaps?-1:t.n_overlaps<e.n_overlaps?1:t.idx-e.idx}),!l[0].n_overlaps)break;// no overlaps, nothing to do
+// Distribute free rows among groups with overlaps
+for(var c=0,s=0;s<l.length;s++){var h;if((h=l[s]).n_overlaps&&u){var m=this._computeRowInfo(h.positions,h.n_rows+1);h.n_rows=m.n_rows,// update group info
+h.n_overlaps=m.n_overlaps,u--}c+=h.n_rows}}
+// Set number of rows
+this._number_of_rows=c,
+// Set group labels; offset row positions
+this._group_labels=[],l.sort(function(t,e){return t.idx-e.idx});for(var s=0,_=0;s<l.length;s++){this._group_labels.push({label:l[s].label,rows:l[s].n_rows});for(var d=0;d<l[s].positions.length;d++){var o;(o=l[s].positions[d]).row+=_}_+=l[s].n_rows}}else{var p=this._computeRowInfo(this._positions,e);this._number_of_rows=p.n_rows}}}),
 /*	TL.TimeAxis
 	Display element for showing timescale ticks
 ================================================== */
-
-TL.TimeAxis = TL.Class.extend({
-
-	includes: [TL.Events, TL.DomMixins, TL.I18NMixins],
-
-	_el: {},
-
-	/*	Constructor
+TL.TimeAxis=TL.Class.extend({includes:[TL.Events,TL.DomMixins,TL.I18NMixins],_el:{},
+/*	Constructor
 	================================================== */
-	initialize: function(elem, options) {
-		// DOM Elements
-		this._el = {
-			container: {},
-			content_container: {},
-			major: {},
-			minor: {},
-		};
-
-		// Components
-		this._text			= {};
-
-		// State
-		this._state = {
-			loaded: 		false
-		};
-
-
-		// Data
-		this.data = {};
-
-		// Options
-		this.options = {
-			duration: 				1000,
-			ease: 					TL.Ease.easeInSpline,
-			width: 					600,
-			height: 				600
-		};
-
-		// Actively Displaying
-		this.active = false;
-
-		// Animation Object
-		this.animator = {};
-
-		// Axis Helper
-		this.axis_helper = {};
-
-		// Minor tick dom element array
-		this.minor_ticks = [];
-
-		// Minor tick dom element array
-		this.major_ticks = [];
-
-		// Date Format Lookup, map TL.Date.SCALES names to...
-		this.dateformat_lookup = {
-	        millisecond: 'time_milliseconds',     // ...TL.Language.<code>.dateformats
-	        second: 'time_short',
-	        minute: 'time_no_seconds_short',
-	        hour: 'time_no_minutes_short',
-	        day: 'full_short',
-	        month: 'month_short',
-	        year: 'year',
-	        decade: 'year',
-	        century: 'year',
-	        millennium: 'year',
-	        age: 'compact',  // ...TL.Language.<code>.bigdateformats
-	        epoch: 'compact',
-	        era: 'compact',
-	        eon: 'compact',
-	        eon2: 'compact'
-	    }
-
-		// Main element
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-		} else {
-			this._el.container = TL.Dom.get(elem);
-		}
-
-		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
-
-		this._initLayout();
-		this._initEvents();
-
-	},
-
-	/*	Adding, Hiding, Showing etc
+initialize:function(t,e){
+// DOM Elements
+this._el={container:{},content_container:{},major:{},minor:{}},
+// Components
+this._text={},
+// State
+this._state={loaded:!1},
+// Data
+this.data={},
+// Options
+this.options={duration:1e3,ease:TL.Ease.easeInSpline,width:600,height:600},
+// Actively Displaying
+this.active=!1,
+// Animation Object
+this.animator={},
+// Axis Helper
+this.axis_helper={},
+// Minor tick dom element array
+this.minor_ticks=[],
+// Minor tick dom element array
+this.major_ticks=[],
+// Date Format Lookup, map TL.Date.SCALES names to...
+this.dateformat_lookup={millisecond:"time_milliseconds",// ...TL.Language.<code>.dateformats
+second:"time_short",minute:"time_no_seconds_short",hour:"time_no_minutes_short",day:"full_short",month:"month_short",year:"year",decade:"year",century:"year",millennium:"year",age:"compact",// ...TL.Language.<code>.bigdateformats
+epoch:"compact",era:"compact",eon:"compact",eon2:"compact"},
+// Main element
+this._el.container="object"==typeof t?t:TL.Dom.get(t),
+// Merge Data and Options
+TL.Util.mergeData(this.options,e),this._initLayout(),this._initEvents()},
+/*	Adding, Hiding, Showing etc
 	================================================== */
-	show: function() {
-
-	},
-
-	hide: function() {
-
-	},
-
-	addTo: function(container) {
-		container.appendChild(this._el.container);
-	},
-
-	removeFrom: function(container) {
-		container.removeChild(this._el.container);
-	},
-
-	updateDisplay: function(w, h) {
-		this._updateDisplay(w, h);
-	},
-
-	getLeft: function() {
-		return this._el.container.style.left.slice(0, -2);
-	},
-
-	drawTicks: function(timescale, optimal_tick_width) {
-
-		var ticks = timescale.getTicks();
-
-		var controls = {
-			minor: {
-				el: this._el.minor,
-				dateformat: this.dateformat_lookup[ticks['minor'].name],
-				ts_ticks: ticks['minor'].ticks,
-				tick_elements: this.minor_ticks
-			},
-			major: {
-				el: this._el.major,
-				dateformat: this.dateformat_lookup[ticks['major'].name],
-				ts_ticks: ticks['major'].ticks,
-				tick_elements: this.major_ticks
-			}
-		}
-		// FADE OUT
-		this._el.major.className = "tl-timeaxis-major";
-		this._el.minor.className = "tl-timeaxis-minor";
-		this._el.major.style.opacity = 0;
-		this._el.minor.style.opacity = 0;
-
-		// CREATE MAJOR TICKS
-		this.major_ticks = this._createTickElements(
-			ticks['major'].ticks,
-			this._el.major,
-			this.dateformat_lookup[ticks['major'].name]
-		);
-
-		// CREATE MINOR TICKS
-		this.minor_ticks = this._createTickElements(
-			ticks['minor'].ticks,
-			this._el.minor,
-			this.dateformat_lookup[ticks['minor'].name],
-			ticks['major'].ticks
-		);
-
-		this.positionTicks(timescale, optimal_tick_width, true);
-
-		// FADE IN
-		this._el.major.className = "tl-timeaxis-major tl-animate-opacity tl-timeaxis-animate-opacity";
-		this._el.minor.className = "tl-timeaxis-minor tl-animate-opacity tl-timeaxis-animate-opacity";
-		this._el.major.style.opacity = 1;
-		this._el.minor.style.opacity = 1;
-	},
-
-	_createTickElements: function(ts_ticks,tick_element,dateformat,ticks_to_skip) {
-		tick_element.innerHTML = "";
-		var skip_times = {};
-
-		var yearZero = new Date(-1,13,-30);
-		skip_times[yearZero.getTime()] = true;
-
-		if (ticks_to_skip){
-			for (var i = 0; i < ticks_to_skip.length; i++) {
-				skip_times[ticks_to_skip[i].getTime()] = true;
-			}
-		}
-
-		var tick_elements = []
-		for (var i = 0; i < ts_ticks.length; i++) {
-			var ts_tick = ts_ticks[i];
-			if (!(ts_tick.getTime() in skip_times)) {
-				var tick = TL.Dom.create("div", "tl-timeaxis-tick", tick_element),
-					tick_text 	= TL.Dom.create("span", "tl-timeaxis-tick-text tl-animate-opacity", tick);
-
-				tick_text.innerHTML = ts_tick.getDisplayDate(this.getLanguage(), dateformat);
-
-				tick_elements.push({
-					tick:tick,
-					tick_text:tick_text,
-					display_date:ts_tick.getDisplayDate(this.getLanguage(), dateformat),
-					date:ts_tick
-				});
-			}
-		}
-		return tick_elements;
-	},
-
-	positionTicks: function(timescale, optimal_tick_width, no_animate) {
-
-		// Handle Animation
-		if (no_animate) {
-			this._el.major.className = "tl-timeaxis-major";
-			this._el.minor.className = "tl-timeaxis-minor";
-		} else {
-			this._el.major.className = "tl-timeaxis-major tl-timeaxis-animate";
-			this._el.minor.className = "tl-timeaxis-minor tl-timeaxis-animate";
-		}
-
-		this._positionTickArray(this.major_ticks, timescale, optimal_tick_width);
-		this._positionTickArray(this.minor_ticks, timescale, optimal_tick_width);
-
-	},
-
-	_positionTickArray: function(tick_array, timescale, optimal_tick_width) {
-		// Poition Ticks & Handle density of ticks
-		if (tick_array[1] && tick_array[0]) {
-			var distance = ( timescale.getPosition(tick_array[1].date.getMillisecond()) - timescale.getPosition(tick_array[0].date.getMillisecond()) ),
-				fraction_of_array = 1;
-
-
-			if (distance < optimal_tick_width) {
-				fraction_of_array = Math.round(optimal_tick_width/timescale.getPixelsPerTick());
-			}
-
-			var show = 1;
-
-			for (var i = 0; i < tick_array.length; i++) {
-
-				var tick = tick_array[i];
-
-				// Poition Ticks
-				tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-				tick.tick_text.innerHTML = tick.display_date;
-
-				// Handle density of ticks
-				if (fraction_of_array > 1) {
-					if (show >= fraction_of_array) {
-						show = 1;
-						tick.tick_text.style.opacity = 1;
-						tick.tick.className = "tl-timeaxis-tick";
-					} else {
-						show++;
-						tick.tick_text.style.opacity = 0;
-						tick.tick.className = "tl-timeaxis-tick tl-timeaxis-tick-hidden";
-					}
-				} else {
-					tick.tick_text.style.opacity = 1;
-					tick.tick.className = "tl-timeaxis-tick";
-				}
-
-			};
-		}
-	},
-
-	/*	Events
+show:function(){},hide:function(){},addTo:function(t){t.appendChild(this._el.container)},removeFrom:function(t){t.removeChild(this._el.container)},updateDisplay:function(t,e){this._updateDisplay(t,e)},getLeft:function(){return this._el.container.style.left.slice(0,-2)},drawTicks:function(t,e){var i=t.getTicks(),n={minor:{el:this._el.minor,dateformat:this.dateformat_lookup[i.minor.name],ts_ticks:i.minor.ticks,tick_elements:this.minor_ticks},major:{el:this._el.major,dateformat:this.dateformat_lookup[i.major.name],ts_ticks:i.major.ticks,tick_elements:this.major_ticks}};
+// FADE OUT
+this._el.major.className="tl-timeaxis-major",this._el.minor.className="tl-timeaxis-minor",this._el.major.style.opacity=0,this._el.minor.style.opacity=0,
+// CREATE MAJOR TICKS
+this.major_ticks=this._createTickElements(i.major.ticks,this._el.major,this.dateformat_lookup[i.major.name]),
+// CREATE MINOR TICKS
+this.minor_ticks=this._createTickElements(i.minor.ticks,this._el.minor,this.dateformat_lookup[i.minor.name],i.major.ticks),this.positionTicks(t,e,!0),
+// FADE IN
+this._el.major.className="tl-timeaxis-major tl-animate-opacity tl-timeaxis-animate-opacity",this._el.minor.className="tl-timeaxis-minor tl-animate-opacity tl-timeaxis-animate-opacity",this._el.major.style.opacity=1,this._el.minor.style.opacity=1},_createTickElements:function(t,e,i,n){e.innerHTML="";var a={},s;if(a[new Date(-1,13,-30).getTime()]=!0,n)for(var o=0;o<n.length;o++)a[n[o].getTime()]=!0;for(var r=[],o=0;o<t.length;o++){var l=t[o];if(!(l.getTime()in a)){var h=TL.Dom.create("div","tl-timeaxis-tick",e),d=TL.Dom.create("span","tl-timeaxis-tick-text tl-animate-opacity",h);d.innerHTML=l.getDisplayDate(this.getLanguage(),i),r.push({tick:h,tick_text:d,display_date:l.getDisplayDate(this.getLanguage(),i),date:l})}}return r},positionTicks:function(t,e,i){
+// Handle Animation
+this._el.minor.className=i?(this._el.major.className="tl-timeaxis-major","tl-timeaxis-minor"):(this._el.major.className="tl-timeaxis-major tl-timeaxis-animate","tl-timeaxis-minor tl-timeaxis-animate"),this._positionTickArray(this.major_ticks,t,e),this._positionTickArray(this.minor_ticks,t,e)},_positionTickArray:function(t,e,i){
+// Poition Ticks & Handle density of ticks
+if(t[1]&&t[0]){var n,a=1;e.getPosition(t[1].date.getMillisecond())-e.getPosition(t[0].date.getMillisecond())<i&&(a=Math.round(i/e.getPixelsPerTick()));for(var s=1,o=0;o<t.length;o++){var r=t[o];
+// Poition Ticks
+r.tick.style.left=e.getPosition(r.date.getMillisecond())+"px",r.tick_text.innerHTML=r.display_date,
+// Handle density of ticks
+r.tick.className=1<a?a<=s?(s=1,r.tick_text.style.opacity=1,"tl-timeaxis-tick"):(s++,r.tick_text.style.opacity=0,"tl-timeaxis-tick tl-timeaxis-tick-hidden"):(r.tick_text.style.opacity=1,"tl-timeaxis-tick")}}},
+/*	Events
 	================================================== */
-
-
-	/*	Private Methods
+/*	Private Methods
 	================================================== */
-	_initLayout: function () {
-		this._el.content_container		= TL.Dom.create("div", "tl-timeaxis-content-container", this._el.container);
-		this._el.major					= TL.Dom.create("div", "tl-timeaxis-major", this._el.content_container);
-		this._el.minor					= TL.Dom.create("div", "tl-timeaxis-minor", this._el.content_container);
-
-		// Fire event that the slide is loaded
-		this.onLoaded();
-	},
-
-	_initEvents: function() {
-
-	},
-
-	// Update Display
-	_updateDisplay: function(width, height, layout) {
-
-		if (width) {
-			this.options.width 					= width;
-		}
-
-		if (height) {
-			this.options.height = height;
-		}
-
-	}
-
-});
-
-
-/* **********************************************
-     Begin TL.AxisHelper.js
-********************************************** */
-
+_initLayout:function(){this._el.content_container=TL.Dom.create("div","tl-timeaxis-content-container",this._el.container),this._el.major=TL.Dom.create("div","tl-timeaxis-major",this._el.content_container),this._el.minor=TL.Dom.create("div","tl-timeaxis-minor",this._el.content_container),
+// Fire event that the slide is loaded
+this.onLoaded()},_initEvents:function(){},
+// Update Display
+_updateDisplay:function(t,e,i){t&&(this.options.width=t),e&&(this.options.height=e)}}),
 /*  TL.AxisHelper
     Strategies for laying out the timenav
     markers and time axis
     Intended as a private class -- probably only known to TimeScale
 ================================================== */
-TL.AxisHelper = TL.Class.extend({
-    initialize: function (options) {
-		if (options) {
-            this.scale = options.scale;
-	        this.minor = options.minor;
-	        this.major = options.major;
-		} else {
-            throw new TL.Error("axis_helper_no_options_err")
-        }
-       
-    },
-    
-    getPixelsPerTick: function(pixels_per_milli) {
-        return pixels_per_milli * this.minor.factor;
-    },
-
-    getMajorTicks: function(timescale) {
-		return this._getTicks(timescale, this.major)
-    },
-
-    getMinorTicks: function(timescale) {
-        return this._getTicks(timescale, this.minor)
-    },
-
-    _getTicks: function(timescale, option) {
-
-        var factor_scale = timescale._scaled_padding * option.factor;
-        var first_tick_time = timescale._earliest - factor_scale;
-        var last_tick_time = timescale._latest + factor_scale;
-        var ticks = []
-        for (var i = first_tick_time; i < last_tick_time; i += option.factor) {
-            ticks.push(timescale.getDateFromTime(i).floor(option.name));
-        }
-
-        return {
-            name: option.name,
-            ticks: ticks
-        }
-
-    }
-
-});
-
-(function(cls){ // add some class-level behavior
-
-    var HELPERS = {};
-    
-    var setHelpers = function(scale_type, scales) {
-        HELPERS[scale_type] = [];
-        
-        for (var idx = 0; idx < scales.length - 1; idx++) {
-            var minor = scales[idx];
-            var major = scales[idx+1];
-            HELPERS[scale_type].push(new cls({
-                scale: minor[3],
-                minor: { name: minor[0], factor: minor[1]},
-                major: { name: major[0], factor: major[1]}
-            }));
-        }
-    };
-    
-    setHelpers('human', TL.Date.SCALES);
-    setHelpers('cosmological', TL.BigDate.SCALES);
-    
-    cls.HELPERS = HELPERS;
-    
-    cls.getBestHelper = function(ts,optimal_tick_width) {
-        if (typeof(optimal_tick_width) != 'number' ) {
-            optimal_tick_width = 100;
-        }
-        var ts_scale = ts.getScale();
-        var helpers = HELPERS[ts_scale];
-        
-        if (!helpers) {
-            throw new TL.Error("axis_helper_scale_err", ts_scale);
-        }
-        
-        var prev = null;
-        for (var idx = 0; idx < helpers.length; idx++) {
-            var curr = helpers[idx];
-            var pixels_per_tick = curr.getPixelsPerTick(ts._pixels_per_milli);
-            if (pixels_per_tick > optimal_tick_width)  {
-                if (prev == null) return curr;
-                var curr_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                var prev_dist = Math.abs(optimal_tick_width - pixels_per_tick);
-                if (curr_dist < prev_dist) {
-                    return curr;
-                } else {
-                    return prev;
-                }
-            }
-            prev = curr;
-        }
-        return helpers[helpers.length - 1]; // last resort           
-    }
-})(TL.AxisHelper);
-
-
-/* **********************************************
-     Begin TL.Timeline.js
-********************************************** */
-
+TL.AxisHelper=TL.Class.extend({initialize:function(t){if(!t)throw new TL.Error("axis_helper_no_options_err");this.scale=t.scale,this.minor=t.minor,this.major=t.major},getPixelsPerTick:function(t){return t*this.minor.factor},getMajorTicks:function(t){return this._getTicks(t,this.major)},getMinorTicks:function(t){return this._getTicks(t,this.minor)},_getTicks:function(t,e){for(var i=t._scaled_padding*e.factor,n=t._earliest-i,a=t._latest+i,s=[],o=n;o<a;o+=e.factor)s.push(t.getDateFromTime(o).floor(e.name));return{name:e.name,ticks:s}}}),function(s){// add some class-level behavior
+var d={},t=function(t,e){d[t]=[];for(var i=0;i<e.length-1;i++){var n=e[i],a=e[i+1];d[t].push(new s({scale:n[3],minor:{name:n[0],factor:n[1]},major:{name:a[0],factor:a[1]}}))}};t("human",TL.Date.SCALES),t("cosmological",TL.BigDate.SCALES),s.HELPERS=d,s.getBestHelper=function(t,e){"number"!=typeof e&&(e=100);var i=t.getScale(),n=d[i];if(!n)throw new TL.Error("axis_helper_scale_err",i);for(var a=null,s=0;s<n.length;s++){var o=n[s],r=o.getPixelsPerTick(t._pixels_per_milli),l,h;if(e<r)return null==a?o:Math.abs(e-r)<Math.abs(e-r)?o:a;a=o}return n[n.length-1];// last resort           
+}}(TL.AxisHelper),
 /*  TimelineJS
 Designed and built by Zach Wise at KnightLab
 
@@ -12941,428 +2453,178 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 TODO
 
 */
-
 /*  Required Files
 CodeKit Import
 https://incident57.com/codekit/
 ================================================== */
-
 // CORE
-	// @codekit-prepend "core/TL.js";
-	// @codekit-prepend "core/TL.Error.js";
-	// @codekit-prepend "core/TL.Util.js";
-	// @codekit-prepend "data/TL.Data.js";
-	// @codekit-prepend "core/TL.Class.js";
-	// @codekit-prepend "core/TL.Events.js";
-	// @codekit-prepend "core/TL.Browser.js";
-	// @codekit-prepend "core/TL.Load.js";
-	// @codekit-prepend "core/TL.TimelineConfig.js";
-	// @codekit-prepend "core/TL.ConfigFactory.js";
-
-
+// @codekit-prepend "core/TL.js";
+// @codekit-prepend "core/TL.Error.js";
+// @codekit-prepend "core/TL.Util.js";
+// @codekit-prepend "data/TL.Data.js";
+// @codekit-prepend "core/TL.Class.js";
+// @codekit-prepend "core/TL.Events.js";
+// @codekit-prepend "core/TL.Browser.js";
+// @codekit-prepend "core/TL.Load.js";
+// @codekit-prepend "core/TL.TimelineConfig.js";
+// @codekit-prepend "core/TL.ConfigFactory.js";
 // LANGUAGE
-	// @codekit-prepend "language/TL.Language.js";
-	// @codekit-prepend "language/TL.I18NMixins.js";
-
+// @codekit-prepend "language/TL.Language.js";
+// @codekit-prepend "language/TL.I18NMixins.js";
 // ANIMATION
-	// @codekit-prepend "animation/TL.Ease.js";
-	// @codekit-prepend "animation/TL.Animate.js";
-
+// @codekit-prepend "animation/TL.Ease.js";
+// @codekit-prepend "animation/TL.Animate.js";
 // DOM
-	// @codekit-prepend "dom/TL.Point.js";
-	// @codekit-prepend "dom/TL.DomMixins.js";
-	// @codekit-prepend "dom/TL.Dom.js";
-	// @codekit-prepend "dom/TL.DomUtil.js";
-	// @codekit-prepend "dom/TL.DomEvent.js";
-	// @codekit-prepend "dom/TL.StyleSheet.js";
-
+// @codekit-prepend "dom/TL.Point.js";
+// @codekit-prepend "dom/TL.DomMixins.js";
+// @codekit-prepend "dom/TL.Dom.js";
+// @codekit-prepend "dom/TL.DomUtil.js";
+// @codekit-prepend "dom/TL.DomEvent.js";
+// @codekit-prepend "dom/TL.StyleSheet.js";
 // Date
-	// @codekit-prepend "date/TL.Date.js";
-	// @codekit-prepend "date/TL.DateUtil.js";
-
+// @codekit-prepend "date/TL.Date.js";
+// @codekit-prepend "date/TL.DateUtil.js";
 // UI
-	// @codekit-prepend "ui/TL.Draggable.js";
-	// @codekit-prepend "ui/TL.Swipable.js";
-	// @codekit-prepend "ui/TL.MenuBar.js";
-	// @codekit-prepend "ui/TL.Message.js";
-
+// @codekit-prepend "ui/TL.Draggable.js";
+// @codekit-prepend "ui/TL.Swipable.js";
+// @codekit-prepend "ui/TL.MenuBar.js";
+// @codekit-prepend "ui/TL.Message.js";
 // MEDIA
-	// @codekit-prepend "media/TL.MediaType.js";
-	// @codekit-prepend "media/TL.Media.js";
-
+// @codekit-prepend "media/TL.MediaType.js";
+// @codekit-prepend "media/TL.Media.js";
 // MEDIA TYPES
-	// @codekit-prepend "media/types/TL.Media.Blockquote.js";
-	// @codekit-prepend "media/types/TL.Media.DailyMotion.js";
-	// @codekit-prepend "media/types/TL.Media.DocumentCloud.js";
-	// @codekit-prepend "media/types/TL.Media.Flickr.js";
-	// @codekit-prepend "media/types/TL.Media.GoogleDoc.js";
-	// @codekit-prepend "media/types/TL.Media.GooglePlus.js";
-	// @codekit-prepend "media/types/TL.Media.IFrame.js";
-	// @codekit-prepend "media/types/TL.Media.Image.js";
-	// @codekit-prepend "media/types/TL.Media.Imgur.js";
-	// @codekit-prepend "media/types/TL.Media.Instagram.js";
-	// @codekit-prepend "media/types/TL.Media.GoogleMap.js";
-	// @codekit-prepend "media/types/TL.Media.PDF.js";
-	// @codekit-prepend "media/types/TL.Media.Profile.js";
-	// @codekit-prepend "media/types/TL.Media.Slider.js";
-	// @codekit-prepend "media/types/TL.Media.SoundCloud.js";
-	// @codekit-prepend "media/types/TL.Media.Spotify.js";
-	// @codekit-prepend "media/types/TL.Media.Storify.js";
-	// @codekit-prepend "media/types/TL.Media.Text.js";
-	// @codekit-prepend "media/types/TL.Media.Twitter.js";
-	// @codekit-prepend "media/types/TL.Media.TwitterEmbed.js";
-	// @codekit-prepend "media/types/TL.Media.Vimeo.js";
-	// @codekit-prepend "media/types/TL.Media.Vine.js";
-	// @codekit-prepend "media/types/TL.Media.Website.js";
-	// @codekit-prepend "media/types/TL.Media.Wikipedia.js";
-	// @codekit-prepend "media/types/TL.Media.Wistia.js";
-	// @codekit-prepend "media/types/TL.Media.YouTube.js";
-	// @codekit-prepend "media/types/TL.Media.Audio.js";
-	// @codekit-prepend "media/types/TL.Media.Video.js";
-
+// @codekit-prepend "media/types/TL.Media.Blockquote.js";
+// @codekit-prepend "media/types/TL.Media.DailyMotion.js";
+// @codekit-prepend "media/types/TL.Media.DocumentCloud.js";
+// @codekit-prepend "media/types/TL.Media.Flickr.js";
+// @codekit-prepend "media/types/TL.Media.GoogleDoc.js";
+// @codekit-prepend "media/types/TL.Media.GooglePlus.js";
+// @codekit-prepend "media/types/TL.Media.IFrame.js";
+// @codekit-prepend "media/types/TL.Media.Image.js";
+// @codekit-prepend "media/types/TL.Media.Imgur.js";
+// @codekit-prepend "media/types/TL.Media.Instagram.js";
+// @codekit-prepend "media/types/TL.Media.GoogleMap.js";
+// @codekit-prepend "media/types/TL.Media.PDF.js";
+// @codekit-prepend "media/types/TL.Media.Profile.js";
+// @codekit-prepend "media/types/TL.Media.Slider.js";
+// @codekit-prepend "media/types/TL.Media.SoundCloud.js";
+// @codekit-prepend "media/types/TL.Media.Spotify.js";
+// @codekit-prepend "media/types/TL.Media.Storify.js";
+// @codekit-prepend "media/types/TL.Media.Text.js";
+// @codekit-prepend "media/types/TL.Media.Twitter.js";
+// @codekit-prepend "media/types/TL.Media.TwitterEmbed.js";
+// @codekit-prepend "media/types/TL.Media.Vimeo.js";
+// @codekit-prepend "media/types/TL.Media.Vine.js";
+// @codekit-prepend "media/types/TL.Media.Website.js";
+// @codekit-prepend "media/types/TL.Media.Wikipedia.js";
+// @codekit-prepend "media/types/TL.Media.Wistia.js";
+// @codekit-prepend "media/types/TL.Media.YouTube.js";
+// @codekit-prepend "media/types/TL.Media.Audio.js";
+// @codekit-prepend "media/types/TL.Media.Video.js";
 // STORYSLIDER
-	// @codekit-prepend "slider/TL.Slide.js";
-	// @codekit-prepend "slider/TL.SlideNav.js";
-	// @codekit-prepend "slider/TL.StorySlider.js";
-
+// @codekit-prepend "slider/TL.Slide.js";
+// @codekit-prepend "slider/TL.SlideNav.js";
+// @codekit-prepend "slider/TL.StorySlider.js";
 // TIMENAV
-	// @codekit-prepend "timenav/TL.TimeNav.js";
-	// @codekit-prepend "timenav/TL.TimeMarker.js";
-	// @codekit-prepend "timenav/TL.TimeEra.js";
-	// @codekit-prepend "timenav/TL.TimeGroup.js";
-	// @codekit-prepend "timenav/TL.TimeScale.js";
-	// @codekit-prepend "timenav/TL.TimeAxis.js";
-	// @codekit-prepend "timenav/TL.AxisHelper.js";
-
-
-TL.Timeline = TL.Class.extend({
-	includes: [TL.Events, TL.I18NMixins],
-
-	/*  Private Methods
+// @codekit-prepend "timenav/TL.TimeNav.js";
+// @codekit-prepend "timenav/TL.TimeMarker.js";
+// @codekit-prepend "timenav/TL.TimeEra.js";
+// @codekit-prepend "timenav/TL.TimeGroup.js";
+// @codekit-prepend "timenav/TL.TimeScale.js";
+// @codekit-prepend "timenav/TL.TimeAxis.js";
+// @codekit-prepend "timenav/TL.AxisHelper.js";
+TL.Timeline=TL.Class.extend({includes:[TL.Events,TL.I18NMixins],
+/*  Private Methods
 	================================================== */
-	initialize: function (elem, data, options) {
-		var self = this;
-		if (!options) { options = {}};
-		// Version
-		this.version = "3.2.6";
-
-		// Ready
-		this.ready = false;
-
-		// DOM ELEMENTS
-		this._el = {
-			container: {},
-			storyslider: {},
-			timenav: {},
-			menubar: {}
-		};
-
-		// Determine Container Element
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-		} else {
-			this._el.container = TL.Dom.get(elem);
-		}
-
-		// Slider
-		this._storyslider = {};
-
-		// Style Sheet
-		this._style_sheet = new TL.StyleSheet();
-
-		// TimeNav
-		this._timenav = {};
-
-		// Menu Bar
-		this._menubar = {};
-
-		// Loaded State
-		this._loaded = {storyslider:false, timenav:false};
-
-		// Data Object
-		this.config = null;
-
-		this.options = {
-			script_path: 				"",
-			height: 					this._el.container.offsetHeight,
-			width: 						this._el.container.offsetWidth,
-			debug: 						false,
-			is_embed: 					false,
-			is_full_embed: 				false,
-			hash_bookmark: false,
-			default_bg_color: 			{r:255, g:255, b:255},
-			scale_factor: 				2,						// How many screen widths wide should the timeline be
-			layout: 					"landscape",			// portrait or landscape
-			timenav_position: 			"bottom",				// timeline on top or bottom
-			optimal_tick_width: 		60,						// optimal distance (in pixels) between ticks on axis
-			base_class: 				"tl-timeline", 		// removing tl-timeline will break all default stylesheets...
-			timenav_height: 			null,
-			timenav_height_percentage: 	25,						// Overrides timenav height as a percentage of the screen
-			timenav_mobile_height_percentage: 40, 				// timenav height as a percentage on mobile devices
-			timenav_height_min: 		175,					// Minimum timenav height
-			marker_height_min: 			30,						// Minimum Marker Height
-			marker_width_min: 			100,					// Minimum Marker Width
-			marker_padding: 			5,						// Top Bottom Marker Padding
-			start_at_slide: 			0,
-			start_at_end: 				false,
-			menubar_height: 			0,
-			skinny_size: 				650,
-			medium_size: 				800,
-			relative_date: 				false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
-			use_bc: 					false,					// Use declared suffix on dates earlier than 0
-			// animation
-			duration: 					1000,
-			ease: 						TL.Ease.easeInOutQuint,
-			// interaction
-			dragging: 					true,
-			trackResize: 				true,
-			map_type: 					"stamen:toner-lite",
-			slide_padding_lr: 			100,					// padding on slide of slide
-			slide_default_fade: 		"0%",					// landscape fade
-			zoom_sequence: 				[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
-			language: 					"en",
-			ga_property_id: 			null,
-			track_events: 				['back_to_start','nav_next','nav_previous','zoom_in','zoom_out' ]
-		};
-
-		// Animation Objects
-		this.animator_timenav = null;
-		this.animator_storyslider = null;
-		this.animator_menubar = null;
-
-		// Add message to DOM
-		this.message = new TL.Message({}, {message_class: "tl-message-full"}, this._el.container);
-
-		// Merge Options
-		if (typeof(options.default_bg_color) == "string") {
-			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
-			if (parsed) {
-				options.default_bg_color = parsed;
-			} else {
-				delete options.default_bg_color
-				trace("Invalid default background color. Ignoring.");
-			}
-		}
-		TL.Util.mergeData(this.options, options);
-
-		window.addEventListener("resize", function(e){
-			self.updateDisplay();
-		});
-
-		// Set Debug Mode
-		TL.debug = this.options.debug;
-
-		// Apply base class to container
-		TL.DomUtil.addClass(this._el.container, 'tl-timeline');
-
-		if (this.options.is_embed) {
-			TL.DomUtil.addClass(this._el.container, 'tl-timeline-embed');
-		}
-
-		if (this.options.is_full_embed) {
-			TL.DomUtil.addClass(this._el.container, 'tl-timeline-full-embed');
-		}
-
-		document.addEventListener("keydown", function(event) {
-			var keyName = event.key;
-			var currentSlide = self._getSlideIndex(self.current_id);
-			var _n = self.config.events.length - 1;
-			var lastSlide = self.config.title ? _n + 1 : _n;
-			var firstSlide = 0;
-
-			if (keyName == 'ArrowLeft'){
-				if (currentSlide!=firstSlide){
-					self.goToPrev();
-				}
-			}
-			else if (keyName == 'ArrowRight'){
-				if (currentSlide!=lastSlide){
-					self.goToNext();
-				}
-			}
-		});
-
-		// Use Relative Date Calculations
-		// NOT YET IMPLEMENTED
-		if(this.options.relative_date) {
-			if (typeof(moment) !== 'undefined') {
-				self._loadLanguage(data);
-			} else {
-				TL.Load.js(this.options.script_path + "/library/moment.js", function() {
-					self._loadLanguage(data);
-					trace("LOAD MOMENTJS")
-				});
-			}
-		} else {
-			self._loadLanguage(data);
-		}
-
-	},
-	_translateError: function(e) {
-	    if(e.hasOwnProperty('stack')) {
-	        trace(e.stack);
-	    }
-	    if(e.message_key) {
-	        return this._(e.message_key) + (e.detail ? ' [' + e.detail +']' : '')
-	    }
-	    return e;
-	},
-
-	/*  Load Language
+initialize:function(t,e,i){var o=this;
+// Merge Options
+if(i||(i={}),
+// Version
+this.version="3.2.6",
+// Ready
+this.ready=!1,
+// DOM ELEMENTS
+this._el={container:{},storyslider:{},timenav:{},menubar:{}},
+// Determine Container Element
+this._el.container="object"==typeof t?t:TL.Dom.get(t),
+// Slider
+this._storyslider={},
+// Style Sheet
+this._style_sheet=new TL.StyleSheet,
+// TimeNav
+this._timenav={},
+// Menu Bar
+this._menubar={},
+// Loaded State
+this._loaded={storyslider:!1,timenav:!1},
+// Data Object
+this.config=null,this.options={script_path:"",height:this._el.container.offsetHeight,width:this._el.container.offsetWidth,debug:!1,is_embed:!1,is_full_embed:!1,hash_bookmark:!1,default_bg_color:{r:255,g:255,b:255},scale_factor:2,// How many screen widths wide should the timeline be
+layout:"landscape",// portrait or landscape
+timenav_position:"bottom",// timeline on top or bottom
+optimal_tick_width:60,// optimal distance (in pixels) between ticks on axis
+base_class:"tl-timeline",// removing tl-timeline will break all default stylesheets...
+timenav_height:null,timenav_height_percentage:25,// Overrides timenav height as a percentage of the screen
+timenav_mobile_height_percentage:40,// timenav height as a percentage on mobile devices
+timenav_height_min:175,// Minimum timenav height
+marker_height_min:30,// Minimum Marker Height
+marker_width_min:100,// Minimum Marker Width
+marker_padding:5,// Top Bottom Marker Padding
+start_at_slide:0,start_at_end:!1,menubar_height:0,skinny_size:650,medium_size:800,relative_date:!1,// Use momentjs to show a relative date from the slide.text.date.created_time field
+use_bc:!1,// Use declared suffix on dates earlier than 0
+// animation
+duration:1e3,ease:TL.Ease.easeInOutQuint,
+// interaction
+dragging:!0,trackResize:!0,map_type:"stamen:toner-lite",slide_padding_lr:100,// padding on slide of slide
+slide_default_fade:"0%",// landscape fade
+zoom_sequence:[.5,1,2,3,5,8,13,21,34,55,89],// Array of Fibonacci numbers for TimeNav zoom levels
+language:"en",ga_property_id:null,track_events:["back_to_start","nav_next","nav_previous","zoom_in","zoom_out"]},
+// Animation Objects
+this.animator_timenav=null,this.animator_storyslider=null,this.animator_menubar=null,
+// Add message to DOM
+this.message=new TL.Message({},{message_class:"tl-message-full"},this._el.container),"string"==typeof i.default_bg_color){var n=TL.Util.hexToRgb(i.default_bg_color);// will clear it out if its invalid
+n?i.default_bg_color=n:(delete i.default_bg_color,trace("Invalid default background color. Ignoring."))}TL.Util.mergeData(this.options,i),window.addEventListener("resize",function(t){o.updateDisplay()}),
+// Set Debug Mode
+TL.debug=this.options.debug,
+// Apply base class to container
+TL.DomUtil.addClass(this._el.container,"tl-timeline"),this.options.is_embed&&TL.DomUtil.addClass(this._el.container,"tl-timeline-embed"),this.options.is_full_embed&&TL.DomUtil.addClass(this._el.container,"tl-timeline-full-embed"),document.addEventListener("keydown",function(t){var e=t.key,i=o._getSlideIndex(o.current_id),n=o.config.events.length-1,a=o.config.title?n+1:n,s=0;"ArrowLeft"==e?0!=i&&o.goToPrev():"ArrowRight"==e&&i!=a&&o.goToNext()}),
+// Use Relative Date Calculations
+// NOT YET IMPLEMENTED
+this.options.relative_date?"undefined"!=typeof moment?o._loadLanguage(e):TL.Load.js(this.options.script_path+"/library/moment.js",function(){o._loadLanguage(e),trace("LOAD MOMENTJS")}):o._loadLanguage(e)},_translateError:function(t){return t.hasOwnProperty("stack")&&trace(t.stack),t.message_key?this._(t.message_key)+(t.detail?" ["+t.detail+"]":""):t},
+/*  Load Language
 	================================================== */
-	_loadLanguage: function(data) {
-		try {
-		    this.options.language = new TL.Language(this.options);
-
-		    this._initData(data);
-		} catch(e) {
-		    this.showMessage(this._translateError(e));
-		}
-	},
-
-
-	/*  Navigation
+_loadLanguage:function(t){try{this.options.language=new TL.Language(this.options),this._initData(t)}catch(t){this.showMessage(this._translateError(t))}},
+/*  Navigation
 	================================================== */
-
-	// Goto slide with id
-	goToId: function(id) {
-		if (this.current_id != id) {
-			this.current_id = id;
-			this._timenav.goToId(this.current_id);
-			this._storyslider.goToId(this.current_id, false, true);
-			this.fire("change", {unique_id: this.current_id}, this);
-		}
-	},
-
-	// Goto slide n
-	goTo: function(n) {
-		if(this.config.title) {
-			if(n == 0) {
-				this.goToId(this.config.title.unique_id);
-			} else {
-				this.goToId(this.config.events[n - 1].unique_id);
-			}
-		} else {
-			this.goToId(this.config.events[n].unique_id);
-		}
-	},
-
-	// Goto first slide
-	goToStart: function() {
-		this.goTo(0);
-	},
-
-	// Goto last slide
-	goToEnd: function() {
-		var _n = this.config.events.length - 1;
-		this.goTo(this.config.title ? _n + 1 : _n);
-	},
-
-	// Goto previous slide
-	goToPrev: function() {
-		this.goTo(this._getSlideIndex(this.current_id) - 1);
-	},
-
-	// Goto next slide
-	goToNext: function() {
-		this.goTo(this._getSlideIndex(this.current_id) + 1);
-	},
-
-	/* Event maniupluation
+// Goto slide with id
+goToId:function(t){this.current_id!=t&&(this.current_id=t,this._timenav.goToId(this.current_id),this._storyslider.goToId(this.current_id,!1,!0),this.fire("change",{unique_id:this.current_id},this))},
+// Goto slide n
+goTo:function(t){this.config.title?0==t?this.goToId(this.config.title.unique_id):this.goToId(this.config.events[t-1].unique_id):this.goToId(this.config.events[t].unique_id)},
+// Goto first slide
+goToStart:function(){this.goTo(0)},
+// Goto last slide
+goToEnd:function(){var t=this.config.events.length-1;this.goTo(this.config.title?t+1:t)},
+// Goto previous slide
+goToPrev:function(){this.goTo(this._getSlideIndex(this.current_id)-1)},
+// Goto next slide
+goToNext:function(){this.goTo(this._getSlideIndex(this.current_id)+1)},
+/* Event maniupluation
 	================================================== */
-
-	// Add an event
-	add: function(data) {
-		var unique_id = this.config.addEvent(data);
-
-		var n = this._getEventIndex(unique_id);
-		var d = this.config.events[n];
-
-		this._storyslider.createSlide(d, this.config.title ? n+1 : n);
-		this._storyslider._updateDrawSlides();
-
-		this._timenav.createMarker(d, n);
-		this._timenav._updateDrawTimeline(false);
-
-		this.fire("added", {unique_id: unique_id});
-	},
-
-	// Remove an event
-	remove: function(n) {
-		if(n >= 0  && n < this.config.events.length) {
-			// If removing the current, nav to new one first
-			if(this.config.events[n].unique_id == this.current_id) {
-				if(n < this.config.events.length - 1) {
-					this.goTo(n + 1);
-				} else {
-					this.goTo(n - 1);
-				}
-			}
-
-			var event = this.config.events.splice(n, 1);
-			delete this.config.event_dict[event[0].unique_id];
-			this._storyslider.destroySlide(this.config.title ? n+1 : n);
-			this._storyslider._updateDrawSlides();
-
-			this._timenav.destroyMarker(n);
-			this._timenav._updateDrawTimeline(false);
-
-			this.fire("removed", {unique_id: event[0].unique_id});
-		}
-	},
-
-	removeId: function(id) {
-		this.remove(this._getEventIndex(id));
-	},
-
-	/* Get slide data
+// Add an event
+add:function(t){var e=this.config.addEvent(t),i=this._getEventIndex(e),n=this.config.events[i];this._storyslider.createSlide(n,this.config.title?i+1:i),this._storyslider._updateDrawSlides(),this._timenav.createMarker(n,i),this._timenav._updateDrawTimeline(!1),this.fire("added",{unique_id:e})},
+// Remove an event
+remove:function(t){if(0<=t&&t<this.config.events.length){
+// If removing the current, nav to new one first
+this.config.events[t].unique_id==this.current_id&&(t<this.config.events.length-1?this.goTo(t+1):this.goTo(t-1));var e=this.config.events.splice(t,1);delete this.config.event_dict[e[0].unique_id],this._storyslider.destroySlide(this.config.title?t+1:t),this._storyslider._updateDrawSlides(),this._timenav.destroyMarker(t),this._timenav._updateDrawTimeline(!1),this.fire("removed",{unique_id:e[0].unique_id})}},removeId:function(t){this.remove(this._getEventIndex(t))},
+/* Get slide data
 	================================================== */
-
-	getData: function(n) {
-		if(this.config.title) {
-			if(n == 0) {
-				return this.config.title;
-			} else if(n > 0 && n <= this.config.events.length) {
-				return this.config.events[n - 1];
-			}
-		} else if(n >= 0 && n < this.config.events.length) {
-			return this.config.events[n];
-		}
-		return null;
-	},
-
-	getDataById: function(id) {
-		return this.getData(this._getSlideIndex(id));
-	},
-
-	/* Get slide object
+getData:function(t){if(this.config.title){if(0==t)return this.config.title;if(0<t&&t<=this.config.events.length)return this.config.events[t-1]}else if(0<=t&&t<this.config.events.length)return this.config.events[t];return null},getDataById:function(t){return this.getData(this._getSlideIndex(t))},
+/* Get slide object
 	================================================== */
-
-	getSlide: function(n) {
-		if(n >= 0 && n < this._storyslider._slides.length) {
-			return this._storyslider._slides[n];
-		}
-		return null;
-	},
-
-	getSlideById: function(id) {
-		return this.getSlide(this._getSlideIndex(id));
-	},
-
-	getCurrentSlide: function() {
-		return this.getSlideById(this.current_id);
-	},
-
-
-	/*  Display
+getSlide:function(t){return 0<=t&&t<this._storyslider._slides.length?this._storyslider._slides[t]:null},getSlideById:function(t){return this.getSlide(this._getSlideIndex(t))},getCurrentSlide:function(){return this.getSlideById(this.current_id)},
+/*  Display
 	================================================== */
-	updateDisplay: function() {
-		if (this.ready) {
-			this._updateDisplay();
-		}
-	},
-
-  	/*
+updateDisplay:function(){this.ready&&this._updateDisplay()},
+/*
   		Compute the height of the navigation section of the Timeline, taking into account
   		the possibility of an explicit height or height percentage, but also honoring the
   		`timenav_height_min` option value. If `timenav_height` is specified it takes precedence over `timenav_height_percentage` but in either case, if the resultant pixel height is less than `options.timenav_height_min` then the value of `options.timenav_height_min` will be returned. (A minor adjustment is made to the returned value to account for marker padding.)
@@ -13372,110 +2634,37 @@ TL.Timeline = TL.Class.extend({
   		@timenav_height_percentage (optional): an integer between 1 and 100
 
   	 */
-	_calculateTimeNavHeight: function(timenav_height, timenav_height_percentage) {
-
-		var height = 0;
-
-		if (timenav_height) {
-			height = timenav_height;
-		} else {
-			if (this.options.timenav_height_percentage || timenav_height_percentage) {
-				if (timenav_height_percentage) {
-					height = Math.round((this.options.height/100)*timenav_height_percentage);
-				} else {
-					height = Math.round((this.options.height/100)*this.options.timenav_height_percentage);
-				}
-
-			}
-		}
-
-		// Set new minimum based on how many rows needed
-		if (this._timenav.ready) {
-			if (this.options.timenav_height_min < this._timenav.getMinimumHeight()) {
-				this.options.timenav_height_min = this._timenav.getMinimumHeight();
-			}
-		}
-
-		// If height is less than minimum set it to minimum
-		if (height < this.options.timenav_height_min) {
-			height = this.options.timenav_height_min;
-		}
-
-		height = height - (this.options.marker_padding * 2);
-
-		return height;
-	},
-
-	/*  Private Methods
+_calculateTimeNavHeight:function(t,e){var i=0;return t?i=t:(this.options.timenav_height_percentage||e)&&(i=e?Math.round(this.options.height/100*e):Math.round(this.options.height/100*this.options.timenav_height_percentage)),
+// Set new minimum based on how many rows needed
+this._timenav.ready&&this.options.timenav_height_min<this._timenav.getMinimumHeight()&&(this.options.timenav_height_min=this._timenav.getMinimumHeight()),
+// If height is less than minimum set it to minimum
+i<this.options.timenav_height_min&&(i=this.options.timenav_height_min),i-=2*this.options.marker_padding},
+/*  Private Methods
 	================================================== */
-
-	// Update View
-	_updateDisplay: function(timenav_height, animate, d) {
-		var duration    = this.options.duration,
-		display_class   = this.options.base_class,
-		menu_position   = 0,
-		self      = this;
-
-		if (d) {
-			duration = d;
-		}
-
-		// Update width and height
-		this.options.width = this._el.container.offsetWidth;
-		this.options.height = this._el.container.offsetHeight;
-
-		// Check if skinny
-		if (this.options.width <= this.options.skinny_size) {
-			display_class += " tl-skinny";
-			this.options.layout = "portrait";
-		} else if (this.options.width <= this.options.medium_size) {
-			display_class += " tl-medium";
-			this.options.layout = "landscape";
-		} else {
-			this.options.layout = "landscape";
-		}
-
-		// Detect Mobile and Update Orientation on Touch devices
-		if (TL.Browser.touch) {
-			this.options.layout = TL.Browser.orientation();
-		}
-
-		if (TL.Browser.mobile) {
-			display_class += " tl-mobile";
-			// Set TimeNav Height
-			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, this.options.timenav_mobile_height_percentage);
-		} else {
-			// Set TimeNav Height
-			this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
-		}
-
-		// LAYOUT
-		if (this.options.layout == "portrait") {
-			// Portrait
-			display_class += " tl-layout-portrait";
-
-		} else {
-			// Landscape
-			display_class += " tl-layout-landscape";
-
-		}
-
-		// Set StorySlider Height
-		this.options.storyslider_height = (this.options.height - this.options.timenav_height);
-
-		// Positon Menu
-		if (this.options.timenav_position == "top") {
-			menu_position = ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (39/2) ;
-		} else {
-			menu_position = Math.round(this.options.storyslider_height + 1 + ( Math.ceil(this.options.timenav_height)/2 ) - (this._el.menubar.offsetHeight/2) - (35/2));
-		}
-
-
-		if (animate) {
-
-			// Animate TimeNav
-
-			/*
+// Update View
+_updateDisplay:function(t,e,i){var n=this.options.duration,a=this.options.base_class,s=0,o=this;i&&(n=i),
+// Update width and height
+this.options.width=this._el.container.offsetWidth,this.options.height=this._el.container.offsetHeight,
+// Check if skinny
+this.options.width<=this.options.skinny_size?(a+=" tl-skinny",this.options.layout="portrait"):(this.options.width<=this.options.medium_size&&(a+=" tl-medium"),this.options.layout="landscape"),
+// Detect Mobile and Update Orientation on Touch devices
+TL.Browser.touch&&(this.options.layout=TL.Browser.orientation()),TL.Browser.mobile?(a+=" tl-mobile",
+// Set TimeNav Height
+this.options.timenav_height=this._calculateTimeNavHeight(t,this.options.timenav_mobile_height_percentage)):
+// Set TimeNav Height
+this.options.timenav_height=this._calculateTimeNavHeight(t),
+// LAYOUT
+"portrait"==this.options.layout?
+// Portrait
+a+=" tl-layout-portrait":
+// Landscape
+a+=" tl-layout-landscape",
+// Set StorySlider Height
+this.options.storyslider_height=this.options.height-this.options.timenav_height,
+// Positon Menu
+s="top"==this.options.timenav_position?Math.ceil(this.options.timenav_height)/2-this._el.menubar.offsetHeight/2-19.5:Math.round(this.options.storyslider_height+1+Math.ceil(this.options.timenav_height)/2-this._el.menubar.offsetHeight/2-17.5),e?(
+// Animate TimeNav
+/*
 			if (this.animator_timenav) {
 			this.animator_timenav.stop();
 			}
@@ -13489,390 +2678,75 @@ TL.Timeline = TL.Class.extend({
 			}
 			});
 			*/
-
-			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-
-			// Animate StorySlider
-			if (this.animator_storyslider) {
-				this.animator_storyslider.stop();
-			}
-			this.animator_storyslider = TL.Animate(this._el.storyslider, {
-				height:   this.options.storyslider_height + "px",
-				duration:   duration/2,
-				easing:   TL.Ease.easeOutStrong
-			});
-
-			// Animate Menubar
-			if (this.animator_menubar) {
-				this.animator_menubar.stop();
-			}
-
-			this.animator_menubar = TL.Animate(this._el.menubar, {
-				top:  menu_position + "px",
-				duration:   duration/2,
-				easing:   TL.Ease.easeOutStrong
-			});
-
-		} else {
-			// TimeNav
-			this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
-
-			// StorySlider
-			this._el.storyslider.style.height = this.options.storyslider_height + "px";
-
-			// Menubar
-			this._el.menubar.style.top = menu_position + "px";
-		}
-
-		if (this.message) {
-			this.message.updateDisplay(this.options.width, this.options.height);
-		}
-		// Update Component Displays
-		this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
-		this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
-
-		if (this.options.language.direction == 'rtl') {
-			display_class += ' tl-rtl';
-		}
-
-
-		// Apply class
-		this._el.container.className = display_class;
-
-	},
-
-	// Update hashbookmark in the url bar
-	_updateHashBookmark: function(id) {
-		var hash = "#" + "event-" + id.toString();
-		if (window.location.protocol != 'file:') {
-			window.history.replaceState(null, "Browsing TimelineJS", hash);
-		}
-		this.fire("hash_updated", {unique_id:this.current_id, hashbookmark:"#" + "event-" + id.toString()}, this);
-	},
-
-	/*  Init
+this._el.timenav.style.height=Math.ceil(this.options.timenav_height)+"px",
+// Animate StorySlider
+this.animator_storyslider&&this.animator_storyslider.stop(),this.animator_storyslider=TL.Animate(this._el.storyslider,{height:this.options.storyslider_height+"px",duration:n/2,easing:TL.Ease.easeOutStrong}),
+// Animate Menubar
+this.animator_menubar&&this.animator_menubar.stop(),this.animator_menubar=TL.Animate(this._el.menubar,{top:s+"px",duration:n/2,easing:TL.Ease.easeOutStrong})):(
+// TimeNav
+this._el.timenav.style.height=Math.ceil(this.options.timenav_height)+"px",
+// StorySlider
+this._el.storyslider.style.height=this.options.storyslider_height+"px",
+// Menubar
+this._el.menubar.style.top=s+"px"),this.message&&this.message.updateDisplay(this.options.width,this.options.height),
+// Update Component Displays
+this._timenav.updateDisplay(this.options.width,this.options.timenav_height,e),this._storyslider.updateDisplay(this.options.width,this.options.storyslider_height,e,this.options.layout),"rtl"==this.options.language.direction&&(a+=" tl-rtl"),
+// Apply class
+this._el.container.className=a},
+// Update hashbookmark in the url bar
+_updateHashBookmark:function(t){var e="#event-"+t.toString();"file:"!=window.location.protocol&&window.history.replaceState(null,"Browsing TimelineJS",e),this.fire("hash_updated",{unique_id:this.current_id,hashbookmark:"#event-"+t.toString()},this)},
+/*  Init
 	================================================== */
-	// Initialize the data
-	_initData: function(data) {
-		var self = this;
-
-		if (typeof data == 'string') {
-			var self = this;
-			TL.ConfigFactory.makeConfig(data, function(config) {
-				self.setConfig(config);
-			});
-		} else if (TL.TimelineConfig == data.constructor) {
-			this.setConfig(data);
-		} else {
-			this.setConfig(new TL.TimelineConfig(data));
-		}
-	},
-
-	setConfig: function(config) {
-		this.config = config;
-		this.config.validate();
-		this._validateOptions();
-		if (this.config.isValid()) {
-		    try {
-			    this._onDataLoaded();
-			} catch(e) {
-			    this.showMessage("<strong>"+ this._('error') +":</strong> " + this._translateError(e));
-			}
-		} else {
-		    var translated_errs = [];
-
-		    for(var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
-		        translated_errs.push(this._translateError(errs[i]));
-		    }
-
-			this.showMessage("<strong>"+ this._('error') +":</strong> " + translated_errs.join('<br>'));
-			// should we set 'self.ready'? if not, it won't resize,
-			// but most resizing would only work
-			// if more setup happens
-		}
-	},
-	_validateOptions: function() {
-		// assumes that this.options and this.config have been set.
-		var INTEGER_PROPERTIES = ['timenav_height', 'timenav_height_min', 'marker_height_min', 'marker_width_min', 'marker_padding', 'start_at_slide', 'slide_padding_lr'  ];
-
-		for (var i = 0; i < INTEGER_PROPERTIES.length; i++) {
-				var opt = INTEGER_PROPERTIES[i];
-				var value = this.options[opt];
-				valid = true;
-				if (typeof(value) == 'number') {
-					valid = (value == parseInt(value))
-				} else if (typeof(value) == "string") {
-					valid = (value.match(/^\s*(\-?\d+)?\s*$/));
-				}
-				if (!valid) {
-					this.config.logError({ message_key: 'invalid_integer_option', detail: opt });
-				}
-		}
-	},
-	// Initialize the layout
-	_initLayout: function () {
-		var self = this;
-
-        this.message.removeFrom(this._el.container);
-		this._el.container.innerHTML = "";
-
-		// Create Layout
-		if (this.options.timenav_position == "top") {
-			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
-			this._el.storyslider	= TL.Dom.create('div', 'tl-storyslider', this._el.container);
-		} else {
-			this._el.storyslider  	= TL.Dom.create('div', 'tl-storyslider', this._el.container);
-			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
-		}
-
-		this._el.menubar			= TL.Dom.create('div', 'tl-menubar', this._el.container);
-
-
-		// Initial Default Layout
-		this.options.width        = this._el.container.offsetWidth;
-		this.options.height       = this._el.container.offsetHeight;
-		// this._el.storyslider.style.top  = "1px";
-
-		// Set TimeNav Height
-		this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
-
-		// Create TimeNav
-		this._timenav = new TL.TimeNav(this._el.timenav, this.config, this.options);
-		this._timenav.on('loaded', this._onTimeNavLoaded, this);
-		this._timenav.on('update_timenav_min', this._updateTimeNavHeightMin, this);
-		this._timenav.options.height = this.options.timenav_height;
-		this._timenav.init();
-
-        // intial_zoom cannot be applied before the timenav has been created
-        if (this.options.initial_zoom) {
-            // at this point, this.options refers to the merged set of options
-            this.setZoom(this.options.initial_zoom);
-        }
-
-		// Create StorySlider
-		this._storyslider = new TL.StorySlider(this._el.storyslider, this.config, this.options);
-		this._storyslider.on('loaded', this._onStorySliderLoaded, this);
-		this._storyslider.init();
-
-		// Create Menu Bar
-		this._menubar = new TL.MenuBar(this._el.menubar, this._el.container, this.options);
-
-		// LAYOUT
-		if (this.options.layout == "portrait") {
-			this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
-		} else {
-			this.options.storyslider_height = (this.options.height - 1);
-		}
-
-
-		// Update Display
-		this._updateDisplay(this._timenav.options.height, true, 2000);
-
-	},
-
-  /* Depends upon _initLayout because these events are on things the layout initializes */
-	_initEvents: function () {
-		// TimeNav Events
-		this._timenav.on('change', this._onTimeNavChange, this);
-		this._timenav.on('zoomtoggle', this._onZoomToggle, this);
-
-		// StorySlider Events
-		this._storyslider.on('change', this._onSlideChange, this);
-		this._storyslider.on('colorchange', this._onColorChange, this);
-		this._storyslider.on('nav_next', this._onStorySliderNext, this);
-		this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
-
-		// Menubar Events
-		this._menubar.on('zoom_in', this._onZoomIn, this);
-		this._menubar.on('zoom_out', this._onZoomOut, this);
-		this._menubar.on('back_to_start', this._onBackToStart, this);
-
-	},
-
-	/* Analytics
+// Initialize the data
+_initData:function(t){var e=this;if("string"==typeof t){var e=this;TL.ConfigFactory.makeConfig(t,function(t){e.setConfig(t)})}else TL.TimelineConfig==t.constructor?this.setConfig(t):this.setConfig(new TL.TimelineConfig(t))},setConfig:function(t){if(this.config=t,this.config.validate(),this._validateOptions(),this.config.isValid())try{this._onDataLoaded()}catch(t){this.showMessage("<strong>"+this._("error")+":</strong> "+this._translateError(t))}else{for(var e=[],i=0,n=this.config.getErrors();i<n.length;i++)e.push(this._translateError(n[i]));this.showMessage("<strong>"+this._("error")+":</strong> "+e.join("<br>"))}},_validateOptions:function(){for(
+// assumes that this.options and this.config have been set.
+var t=["timenav_height","timenav_height_min","marker_height_min","marker_width_min","marker_padding","start_at_slide","slide_padding_lr"],e=0;e<t.length;e++){var i=t[e],n=this.options[i];valid=!0,"number"==typeof n?valid=n==parseInt(n):"string"==typeof n&&(valid=n.match(/^\s*(\-?\d+)?\s*$/)),valid||this.config.logError({message_key:"invalid_integer_option",detail:i})}},
+// Initialize the layout
+_initLayout:function(){var t=this;this.message.removeFrom(this._el.container),this._el.container.innerHTML="",
+// Create Layout
+"top"==this.options.timenav_position?(this._el.timenav=TL.Dom.create("div","tl-timenav",this._el.container),this._el.storyslider=TL.Dom.create("div","tl-storyslider",this._el.container)):(this._el.storyslider=TL.Dom.create("div","tl-storyslider",this._el.container),this._el.timenav=TL.Dom.create("div","tl-timenav",this._el.container)),this._el.menubar=TL.Dom.create("div","tl-menubar",this._el.container),
+// Initial Default Layout
+this.options.width=this._el.container.offsetWidth,this.options.height=this._el.container.offsetHeight,
+// this._el.storyslider.style.top  = "1px";
+// Set TimeNav Height
+this.options.timenav_height=this._calculateTimeNavHeight(this.options.timenav_height),
+// Create TimeNav
+this._timenav=new TL.TimeNav(this._el.timenav,this.config,this.options),this._timenav.on("loaded",this._onTimeNavLoaded,this),this._timenav.on("update_timenav_min",this._updateTimeNavHeightMin,this),this._timenav.options.height=this.options.timenav_height,this._timenav.init(),
+// intial_zoom cannot be applied before the timenav has been created
+this.options.initial_zoom&&
+// at this point, this.options refers to the merged set of options
+this.setZoom(this.options.initial_zoom),
+// Create StorySlider
+this._storyslider=new TL.StorySlider(this._el.storyslider,this.config,this.options),this._storyslider.on("loaded",this._onStorySliderLoaded,this),this._storyslider.init(),
+// Create Menu Bar
+this._menubar=new TL.MenuBar(this._el.menubar,this._el.container,this.options),
+// LAYOUT
+"portrait"==this.options.layout?this.options.storyslider_height=this.options.height-this.options.timenav_height-1:this.options.storyslider_height=this.options.height-1,
+// Update Display
+this._updateDisplay(this._timenav.options.height,!0,2e3)},
+/* Depends upon _initLayout because these events are on things the layout initializes */
+_initEvents:function(){
+// TimeNav Events
+this._timenav.on("change",this._onTimeNavChange,this),this._timenav.on("zoomtoggle",this._onZoomToggle,this),
+// StorySlider Events
+this._storyslider.on("change",this._onSlideChange,this),this._storyslider.on("colorchange",this._onColorChange,this),this._storyslider.on("nav_next",this._onStorySliderNext,this),this._storyslider.on("nav_previous",this._onStorySliderPrevious,this),
+// Menubar Events
+this._menubar.on("zoom_in",this._onZoomIn,this),this._menubar.on("zoom_out",this._onZoomOut,this),this._menubar.on("back_to_start",this._onBackToStart,this)},
+/* Analytics
 	================================================== */
-	_initGoogleAnalytics: function() {
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		ga('create', this.options.ga_property_id, 'auto');
-	},
-
-	_initAnalytics: function() {
-		if (this.options.ga_property_id === null) { return; }
-		this._initGoogleAnalytics();
-        ga('send', 'pageview');
-		var events = this.options.track_events;
-		for (i=0; i < events.length; i++) {
-			var event_ = events[i];
-			this.addEventListener(event_, function(e) {
-				ga('send', 'event', e.type, 'clicked');
-			});
-		}
-	},
-
-	_onZoomToggle: function(e) {
-		if (e.zoom == "in") {
-			this._menubar.toogleZoomIn(e.show);
-		} else if (e.zoom == "out") {
-			this._menubar.toogleZoomOut(e.show);
-		}
-
-	},
-
-	/* Get index of event by id
+_initGoogleAnalytics:function(){var t,e,i,n,a,s,o;t=window,e=document,i="script",n="//www.google-analytics.com/analytics.js",a="ga",t.GoogleAnalyticsObject=a,t.ga=t.ga||function(){(t.ga.q=t.ga.q||[]).push(arguments)},t.ga.l=1*new Date,s=e.createElement(i),o=e.getElementsByTagName(i)[0],s.async=1,s.src=n,o.parentNode.insertBefore(s,o),ga("create",this.options.ga_property_id,"auto"),ga("set","anonymizeIp",!0)},_initAnalytics:function(){if(null!==this.options.ga_property_id){this._initGoogleAnalytics(),ga("send","pageview");var t=this.options.track_events;for(i=0;i<t.length;i++){var e=t[i];this.addEventListener(e,function(t){ga("send","event",t.type,"clicked")})}}},_onZoomToggle:function(t){"in"==t.zoom?this._menubar.toogleZoomIn(t.show):"out"==t.zoom&&this._menubar.toogleZoomOut(t.show)},
+/* Get index of event by id
 	================================================== */
-	_getEventIndex: function(id) {
-		for(var i = 0; i < this.config.events.length; i++) {
-			if(id == this.config.events[i].unique_id) {
-				return i;
-			}
-		}
-		return -1;
-	},
-
-	/*  Get index of slide by id
+_getEventIndex:function(t){for(var e=0;e<this.config.events.length;e++)if(t==this.config.events[e].unique_id)return e;return-1},
+/*  Get index of slide by id
 	================================================== */
-	_getSlideIndex: function(id) {
-		if(this.config.title && this.config.title.unique_id == id) {
-			return 0;
-		}
-		for(var i = 0; i < this.config.events.length; i++) {
-			if(id == this.config.events[i].unique_id) {
-				return this.config.title ? i+1 : i;
-			}
-		}
-		return -1;
-	},
-
-	/*  Events
+_getSlideIndex:function(t){if(this.config.title&&this.config.title.unique_id==t)return 0;for(var e=0;e<this.config.events.length;e++)if(t==this.config.events[e].unique_id)return this.config.title?e+1:e;return-1},
+/*  Events
 	================================================== */
-
-	_onDataLoaded: function(e) {
-		this.fire("dataloaded");
-		this._initLayout();
-		this._initEvents();
-		this._initAnalytics();
-		if (this.message) {
-			this.message.hide();
-		}
-
-		this.ready = true;
-
-	},
-
-	showMessage: function(msg) {
-		if (this.message) {
-			this.message.updateMessage(msg);
-		} else {
-			trace("No message display available.")
-			trace(msg);
-		}
-	},
-
-	_onColorChange: function(e) {
-		this.fire("color_change", {unique_id:this.current_id}, this);
-		if (e.color || e.image) {
-
-		} else {
-
-		}
-	},
-
-	_onSlideChange: function(e) {
-		if (this.current_id != e.unique_id) {
-			this.current_id = e.unique_id;
-			this._timenav.goToId(this.current_id);
-			this._onChange(e);
-		}
-	},
-
-	_onTimeNavChange: function(e) {
-		if (this.current_id != e.unique_id) {
-			this.current_id = e.unique_id;
-			this._storyslider.goToId(this.current_id);
-			this._onChange(e);
-		}
-	},
-
-	_onChange: function(e) {
-		this.fire("change", {unique_id:this.current_id}, this);
-		if (this.options.hash_bookmark && this.current_id) {
-			this._updateHashBookmark(this.current_id);
-		}
-	},
-
-	_onBackToStart: function(e) {
-		this._storyslider.goTo(0);
-		this.fire("back_to_start", {unique_id:this.current_id}, this);
-	},
-
-	/**
+_onDataLoaded:function(t){this.fire("dataloaded"),this._initLayout(),this._initEvents(),this._initAnalytics(),this.message&&this.message.hide(),this.ready=!0},showMessage:function(t){this.message?this.message.updateMessage(t):(trace("No message display available."),trace(t))},_onColorChange:function(t){this.fire("color_change",{unique_id:this.current_id},this),t.color||t.image},_onSlideChange:function(t){this.current_id!=t.unique_id&&(this.current_id=t.unique_id,this._timenav.goToId(this.current_id),this._onChange(t))},_onTimeNavChange:function(t){this.current_id!=t.unique_id&&(this.current_id=t.unique_id,this._storyslider.goToId(this.current_id),this._onChange(t))},_onChange:function(t){this.fire("change",{unique_id:this.current_id},this),this.options.hash_bookmark&&this.current_id&&this._updateHashBookmark(this.current_id)},_onBackToStart:function(t){this._storyslider.goTo(0),this.fire("back_to_start",{unique_id:this.current_id},this)},
+/**
 	 * Zoom in and zoom out should be part of the public API.
 	 */
-	zoomIn: function() {
-	    this._timenav.zoomIn();
-	},
-	zoomOut: function() {
-	    this._timenav.zoomOut();
-	},
-
-	setZoom: function(level) {
-	    this._timenav.setZoom(level);
-	},
-
-	_onZoomIn: function(e) {
-		this._timenav.zoomIn();
-		this.fire("zoom_in", {zoom_level:this._timenav.options.scale_factor}, this);
-	},
-
-	_onZoomOut: function(e) {
-		this._timenav.zoomOut();
-		this.fire("zoom_out", {zoom_level:this._timenav.options.scale_factor}, this);
-	},
-
-	_onTimeNavLoaded: function() {
-		this._loaded.timenav = true;
-		this._onLoaded();
-	},
-
-	_onStorySliderLoaded: function() {
-		this._loaded.storyslider = true;
-		this._onLoaded();
-	},
-
-	_onStorySliderNext: function(e) {
-		this.fire("nav_next", e);
-	},
-
-	_onStorySliderPrevious: function(e) {
-		this.fire("nav_previous", e);
-	},
-
-	_onLoaded: function() {
-		if (this._loaded.storyslider && this._loaded.timenav) {
-			this.fire("loaded", this.config);
-			// Go to proper slide
-			if (this.options.hash_bookmark && window.location.hash != "") {
-				this.goToId(window.location.hash.replace("#event-", ""));
-			} else {
-				if( TL.Util.isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length ) {
-					this.goToEnd();
-				} else {
-					this.goTo(this.options.start_at_slide);
-				}
-				if (this.options.hash_bookmark ) {
-					this._updateHashBookmark(this.current_id);
-				}
-			}
-
-		}
-	}
-
-});
-
-TL.Timeline.source_path = (function() {
-	var script_tags = document.getElementsByTagName('script');
-	var src = script_tags[script_tags.length-1].src;
-	return src.substr(0,src.lastIndexOf('/'));
-})();
-
+zoomIn:function(){this._timenav.zoomIn()},zoomOut:function(){this._timenav.zoomOut()},setZoom:function(t){this._timenav.setZoom(t)},_onZoomIn:function(t){this._timenav.zoomIn(),this.fire("zoom_in",{zoom_level:this._timenav.options.scale_factor},this)},_onZoomOut:function(t){this._timenav.zoomOut(),this.fire("zoom_out",{zoom_level:this._timenav.options.scale_factor},this)},_onTimeNavLoaded:function(){this._loaded.timenav=!0,this._onLoaded()},_onStorySliderLoaded:function(){this._loaded.storyslider=!0,this._onLoaded()},_onStorySliderNext:function(t){this.fire("nav_next",t)},_onStorySliderPrevious:function(t){this.fire("nav_previous",t)},_onLoaded:function(){this._loaded.storyslider&&this._loaded.timenav&&(this.fire("loaded",this.config),
+// Go to proper slide
+this.options.hash_bookmark&&""!=window.location.hash?this.goToId(window.location.hash.replace("#event-","")):(TL.Util.isTrue(this.options.start_at_end)||this.options.start_at_slide>this.config.events.length?this.goToEnd():this.goTo(this.options.start_at_slide),this.options.hash_bookmark&&this._updateHashBookmark(this.current_id)))}}),TL.Timeline.source_path=function(){var t=document.getElementsByTagName("script"),e=t[t.length-1].src;return e.substr(0,e.lastIndexOf("/"))}();
