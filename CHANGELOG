@@ -1,3 +1,6 @@
+3.6.5 (2019-05-01)
+* Revert construction of Google feeds URL to pre-3.6.4 pattern which should be more universally correct.
+
 3.6.4 (2019-04-30)
 * Fall back to Google Sheets API v4 when 500 error found using v3 (Workaround for Google API failure)
 * Issue #598 - use 24-hr time for Portuguese

@@ -182,7 +182,7 @@
         if (api_version == 'v4') {
             return "https://sheets.googleapis.com/v4/spreadsheets/" + key + "/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg";
         } else {
-            return "https://spreadsheets.google.com/feeds/list/" + key + "/od6/public/values?alt=json";
+            return "https://spreadsheets.google.com/feeds/list/" + key + "/1/public/values?alt=json";
         }
     }
 
