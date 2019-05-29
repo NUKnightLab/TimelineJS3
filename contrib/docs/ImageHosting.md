@@ -13,7 +13,7 @@ Most of the services listed in this document are paid services. The following ar
   * GitHub
   * AWS S3 and EC2
   
-See below for more information about each of these. Please exercise due diligance in researching costs for whatever platform
+See below for more information about each of these. Please exercise due diligence in researching costs for whatever platform
 you choose. Some services, for example, will charge for data transfer, meaning hits to a popular Timeline could add up.
 
 ## Service types
