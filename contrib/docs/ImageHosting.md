@@ -29,21 +29,25 @@ There are 3 main categories of services that will be covered below:
 #### Flickr
 
 https://www.flickr.com/
+
 Use the URL of the image page.
 
 #### Instagram
 
 https://www.instagram.com/
+
 Use the URL of the image page.
 
 #### Google Photo (ie. photos.google.com, Not Google Drive)
 
 https://photos.google.com/
+
 Note: do not use the share link or image URL. Instead, open the specific image and right-click the image to get the link.
 
 #### *Not Recommended:* Imgur
 
 https://imgur.com/
+
 Although the image URL from Imgur is supported as a media type in Timeline, we no longer recommend Imgur as an image hosting
 service for Timeline. Imgur has increasingly been placing cross-domain restrictions on their images. This is not something we
 have control over, but would have to be addressed with Imgur support. If you are experiencing issues with Imgur images not
@@ -58,6 +62,7 @@ Dropbox no longer hosts images in a way that is compatible with Timeline.
 #### Box (experimental)
 
 https://box.com/
+
 Experimental: It should work, but your mileage may vary. To use a Box hosted image:
 
  * Click the Share button to open the share dialog for the image.
@@ -82,16 +87,19 @@ https://aws.amazon.com/s3/
 #### DigitalOcean Spaces
 
 https://www.digitalocean.com/products/spaces/
+
 Not tested, but expected to work
 
 #### Firebase cloud storage
 
 https://firebase.google.com/docs/storage
+
 Not tested, but expected to work
 
 #### Google Cloud Platform storage
 
 https://cloud.google.com/storage/
+
 GCP seems to offer a number of different storage options. We have not tested this, but Cloud Storage (Browser storage) seems likely to be the right option here.
 
 
