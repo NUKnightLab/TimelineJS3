@@ -1,23 +1,20 @@
 /*
     needed imports: 
-        TL.Dom (obsolete?)
-        TL.StyleSheet
-        TL.Ease.easeInOutQuint
-        TL.Ease.easeOutStrong
         TL.Message
-        TL.Util.hexToRgb
-        TL.Util.mergeData
-        TL.Util.isTrue
         TL.DomUtil.addClass
         TL.Load.js
         TL.Language
         TL.Browser
-        TL.Animate
         TL.TimelineConfig
         TL.TimeNav
         TL.StorySlider
         TL.MenuBar
 */
+import * as DOM from "../dom/DOM"
+import { hexToRgb, mergeData, isTrue } from "../core/Util"
+import { easeInOutQuint, easeOutStrong } from "../animation/Ease"
+import { Animate } from "../animation/Animate"
+
 class Timeline {
     constructor(elem, data, options) {
         this.ready = false;
@@ -28,18 +25,10 @@ class Timeline {
 			menubar: {}
 		};
 
-		// Determine Container Element
-		if (typeof elem === 'object') {
-			this._el.container = elem;
-		} else {
-			this._el.container = TL.Dom.get(elem);
-		}
+		this._el.container = DOM.get(elem);
 
 		// Slider
 		this._storyslider = {};
-
-		// Style Sheet
-		this._style_sheet = new TL.StyleSheet();
 
 		// TimeNav
 		this._timenav = {};
@@ -83,7 +72,7 @@ class Timeline {
 			use_bc: 					false,					// Use declared suffix on dates earlier than 0
 			// animation
 			duration: 					1000,
-			ease: 						TL.Ease.easeInOutQuint,
+			ease: 						easeInOutQuint,
 			// interaction
 			dragging: 					true,
 			trackResize: 				true,
@@ -102,11 +91,11 @@ class Timeline {
 		this.animator_menubar = null;
 
 		// Add message to DOM
-		this.message = new TL.Message({}, {message_class: "tl-message-full"}, this._el.container);
+		this.message = new Message({}, {message_class: "tl-message-full"}, this._el.container);
 
 		// Merge Options
 		if (typeof(options.default_bg_color) == "string") {
-			var parsed = TL.Util.hexToRgb(options.default_bg_color); // will clear it out if its invalid
+			var parsed = hexToRgb(options.default_bg_color); // will clear it out if its invalid
 			if (parsed) {
 				options.default_bg_color = parsed;
 			} else {
@@ -114,7 +103,7 @@ class Timeline {
 				trace("Invalid default background color. Ignoring.");
 			}
 		}
-		TL.Util.mergeData(this.options, options);
+		mergeData(this.options, options);
 
 		window.addEventListener("resize", function(e){
 			self.updateDisplay();
@@ -450,10 +439,10 @@ class Timeline {
 			if (this.animator_storyslider) {
 				this.animator_storyslider.stop();
 			}
-			this.animator_storyslider = TL.Animate(this._el.storyslider, {
+			this.animator_storyslider = Animate(this._el.storyslider, {
 				height:   this.options.storyslider_height + "px",
 				duration:   duration/2,
-				easing:   TL.Ease.easeOutStrong
+				easing:   easeOutStrong
 			});
 
 			// Animate Menubar
@@ -461,10 +450,10 @@ class Timeline {
 				this.animator_menubar.stop();
 			}
 
-			this.animator_menubar = TL.Animate(this._el.menubar, {
+			this.animator_menubar = Animate(this._el.menubar, {
 				top:  menu_position + "px",
 				duration:   duration/2,
-				easing:   TL.Ease.easeOutStrong
+				easing:   easeOutStrong
 			});
 
 		} else {
@@ -572,14 +561,14 @@ class Timeline {
 
 		// Create Layout
 		if (this.options.timenav_position == "top") {
-			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
-			this._el.storyslider	= TL.Dom.create('div', 'tl-storyslider', this._el.container);
+			this._el.timenav		= DOM.create('div', 'tl-timenav', this._el.container);
+			this._el.storyslider	= DOM.create('div', 'tl-storyslider', this._el.container);
 		} else {
-			this._el.storyslider  	= TL.Dom.create('div', 'tl-storyslider', this._el.container);
-			this._el.timenav		= TL.Dom.create('div', 'tl-timenav', this._el.container);
+			this._el.storyslider  	= DOM.create('div', 'tl-storyslider', this._el.container);
+			this._el.timenav		= DOM.create('div', 'tl-timenav', this._el.container);
 		}
 
-		this._el.menubar			= TL.Dom.create('div', 'tl-menubar', this._el.container);
+		this._el.menubar			= DOM.create('div', 'tl-menubar', this._el.container);
 
 
 		// Initial Default Layout
@@ -810,7 +799,7 @@ class Timeline {
 			if (this.options.hash_bookmark && window.location.hash != "") {
 				this.goToId(window.location.hash.replace("#event-", ""));
 			} else {
-				if( TL.Util.isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length ) {
+				if( isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length ) {
 					this.goToEnd();
 				} else {
 					this.goTo(this.options.start_at_slide);

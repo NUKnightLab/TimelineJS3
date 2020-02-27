@@ -1,12 +1,15 @@
 {
   "name": "TimelineJS3",
-  "version": "3.4.0",
+  "version": "3.6.5",
   "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
   "dependencies": {
     "less": "^2.1.1",
     "less-plugin-clean-css": "^1.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NUKnightLab/TimelineJS3.git"
@@ -17,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/NUKnightLab/TimelineJS3/issues"
   },
-  "homepage": "https://github.com/NUKnightLab/TimelineJS3#readme"
+  "homepage": "https://timeline.knightlab.com",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  }
 }

@@ -78,4 +78,4 @@ let TRANSFORM = testProp(['transformProperty', 'WebkitTransform', 'OTransform', 
 let TRANSLATE_OPEN = 'translate' + (Browser.webkit3d ? '3d(' : '(')
 let TRANSLATE_CLOSE = Browser.webkit3d ? ',0)' : ')'
 
-export { get }
+export { get, create, getPosition }
