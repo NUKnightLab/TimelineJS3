@@ -1,7 +1,9 @@
+// simple test environment to make sure some things work
 import * as DOM from "../dom/DOM"
 import { hexToRgb, mergeData, isTrue } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import { Message } from "../ui/Message"
+import { Language } from "../language/Language"
 /*
     needed imports: 
         TL.Ease.easeInOutQuint
@@ -24,11 +26,9 @@ class Timeline {
       console.log(foo)
       console.log(`isTrue ${isTrue('true')}`);
       this.elem.innerHTML = `<b>Hello World ${foo}</b>`;
-      this.message = new Message(
-          {},
-          { message_class: "tl-message-full" },
-          this.elem
-      );
+      var msg_options = mergeData(options, { message_class: "tl-message-full" })
+      this.message = new Message({}, msg_options, this.elem);
+      this.language = new Language(options)
     }
 }
 

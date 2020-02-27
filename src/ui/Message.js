@@ -1,17 +1,16 @@
-/*	TL.Message
+/*	Message
 	
 ================================================== */
-import {TLClass} from "../core/Class"
+import { TLClass } from "../core/TLClass"
 import { mergeData } from "../core/Util"
 import { create as domCreate } from "../dom/DOM"
 import { Events } from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
-// TODO: retore I18N
-// import { I18NMixins } from "../language/I18NMixins"
+import { DOMEvent } from "../dom/DOMEvent"
+import { I18NMixins } from "../language/I18NMixins"
 
 export let Message = TLClass.extend({
-           //	includes: [TL.Events, TL.DomMixins, TL.I18NMixins],
-           includes: [Events, DOMMixins],
+           includes: [Events, DOMMixins, I18NMixins],
 
            _el: {},
 
@@ -35,10 +34,11 @@ export let Message = TLClass.extend({
                    message_icon_class: "tl-loading-icon"
                };
 
-               this._add_to_container = add_to_container || {}; // save ref
+			   this.data = data || {}
+
+			   this._add_to_container = add_to_container || {}; // save ref
 
                // Merge Data and Options
-               mergeData(this.data, data);
                mergeData(this.options, options);
 
                this._el.container = domCreate(
@@ -72,9 +72,7 @@ export let Message = TLClass.extend({
 
            _updateMessage: function(t) {
                if (!t) {
-				   this._el.message.innerHTML = "loading"; 
-				// TODO: restore I18N
-                //    this._el.message.innerHTML = this._("loading");
+	               this._el.message.innerHTML = this._("loading");
                } else {
                    this._el.message.innerHTML = t;
                }
@@ -124,10 +122,9 @@ export let Message = TLClass.extend({
            },
 
            _initEvents: function() {
-               // TODO: import these
-               // TL.DomEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
-               // TL.DomEvent.addListener(this, 'removed', this._onRemove, this);
-           },
+				DOMEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
+				DOMEvent.addListener(this, 'removed', this._onRemove, this);
+            },
 
            // Update Display
            _updateDisplay: function(width, height, animate) {}

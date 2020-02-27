@@ -1,7 +1,7 @@
-/*	TL.Util
+/*	Util
 	Class of utilities
 ================================================== */
-
+import { TLError } from "../core/TLError"
 var TIMELINE_DEBUG = true; // how to adapt this to "global"
 
 const css_named_colors = {
@@ -180,7 +180,7 @@ export function rgbToHex(rgb) {
 		}
 	}
 	if (isNaN(r) || isNaN(b) || isNaN(g)) {
-		throw new TL.Error("invalid_rgb_err");
+		throw new TLError("invalid_rgb_err");
 	}
 	return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
 }
@@ -221,6 +221,37 @@ export function trace(msg) {
         }
     }
 };
+
+export function pad(val, len) {
+	val = String(val);
+	len = len || 2;
+	while (val.length < len) val = "0" + val;
+	return val;
+}
+
+export const stamp = (function () {
+		var lastId = 0, key = '_tl_id';
+
+		return function (/*Object*/ obj) {
+			obj[key] = obj[key] || ++lastId;
+			return obj[key];
+		};
+	}())
+
+/**
+ * Remove any leading or trailing whitespace from the given string.
+ * If `str` is undefined or does not have a `replace` function, return
+ * an empty string.
+ */
+export function trim(str) {
+	if (str && typeof(str.replace) == 'function') {
+		return str.replace(/^\s+|\s+$/g, '');
+	}
+	return "";
+}
+
+
+//---- below yet to be processed
 
 
 let Util = { // convert to export
@@ -277,16 +308,6 @@ let Util = { // convert to export
 			obj.data.unique_id = TL.Util.unique_ID(6);
 		}
 	},
-
-	stamp: (function () {
-		var lastId = 0, key = '_tl_id';
-
-
-		return function (/*Object*/ obj) {
-			obj[key] = obj[key] || ++lastId;
-			return obj[key];
-		};
-	}()),
 
 	isArray: (function () {
 	    // Use compiler's own isArray when available
@@ -474,7 +495,7 @@ let Util = { // convert to export
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
 			if (!data.hasOwnProperty(key)) {
-			    throw new TL.Error("template_value_err", str);
+			    throw new TLError("template_value_err", str);
 			}
 			return value;
 		});
@@ -560,18 +581,6 @@ let Util = { // convert to export
 
 		return vars;
 	},
-    /**
-     * Remove any leading or trailing whitespace from the given string.
-     * If `str` is undefined or does not have a `replace` function, return
-     * an empty string.
-     */
-	trim: function(str) {
-        if (str && typeof(str.replace) == 'function') {
-            return str.replace(/^\s+|\s+$/g, '');
-        }
-        return "";
-	},
-
 	slugify: function(str) {
 		// borrowed from http://stackoverflow.com/a/5782563/102476
 		str = TL.Util.trim(str);
@@ -621,12 +630,6 @@ let Util = { // convert to export
 		return max_depth;
 	},
 
-	pad: function (val, len) {
-		val = String(val);
-		len = len || 2;
-		while (val.length < len) val = "0" + val;
-		return val;
-	},
 	intToHexString: function(i) {
 		return TL.Util.pad(parseInt(i,10).toString(16));
 	},

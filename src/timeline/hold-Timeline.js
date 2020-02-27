@@ -105,6 +105,10 @@ class Timeline {
 		}
 		mergeData(this.options, options);
 
+		if (!(this.options.script_path)) {
+			this.options.script_path = this.determineScriptPath()
+		}
+
 		window.addEventListener("resize", function(e){
 			self.updateDisplay();
 		});
@@ -167,6 +171,17 @@ class Timeline {
 	    }
 	    return e;
 	}
+
+	/**
+	 * Not ideal, but if users don't specify the script path, we try to figure it out.
+	 * The script path is needed to load other languages
+	 */
+	determineScriptPath() {
+		var script_tags = document.getElementsByTagName('script');
+		var src = script_tags[script_tags.length-1].src;
+		return src.substr(0,src.lastIndexOf('/'));
+	}
+
 
 	/*  Load Language
 	================================================== */

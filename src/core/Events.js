@@ -1,4 +1,4 @@
-/*	TL.Events
+/*	Events
 	adds custom events functionality to TL classes
 ================================================== */
 

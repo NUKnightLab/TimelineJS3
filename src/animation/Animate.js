@@ -1,4 +1,4 @@
-/*	TL.Animate
+/*	Animate
   Basic animation
   once we've switched to an npm buildable model
   we could probably replace this with a true dependency upon
@@ -8,17 +8,8 @@
 export function Animate(el, options) {
 	var animation = new tlanimate(el, options),
 		webkit_timeout;
-		/*
-		// POSSIBLE ISSUE WITH WEBKIT FUTURE BUILDS
-	var onWebKitTimeout = function() {
 
-		animation.stop(true);
-	}
-	if (TL.Browser.webkit) {
-		webkit_timeout = setTimeout(function(){onWebKitTimeout()}, options.duration);
-	}
-	*/
-	return animation;
+    return animation;
 };
 
 

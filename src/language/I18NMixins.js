@@ -1,9 +1,9 @@
-/*  TL.I18NMixins
-    assumes that its class has an options object with a TL.Language instance    
+/*  I18NMixins
+    assumes that its class has an options object with a Language instance    
 ================================================== */
 import { trace } from "../core/Util"
 import { fallback } from "../language/Language"
-I18NMixins = {
+const I18NMixins = {
     getLanguage: function() {
         if (this.options && this.options.language) {
             return this.options.language;

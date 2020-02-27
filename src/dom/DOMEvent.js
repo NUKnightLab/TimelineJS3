@@ -1,24 +1,26 @@
-/*	TL.DomEvent
+/*	DOMEvent
 	Inspired by Leaflet 
 	DomEvent contains functions for working with DOM events.
 ================================================== */
-// TODO stamp
+import { Draggable } from "../ui/Draggable"
+import { touch as BROWSER_TOUCH } from "../core/Browser";
+import { stamp } from "../core/Util"
 
-TL.DomEvent = {
+var DOMEvent = {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
-		var id = TL.Util.stamp(fn),
-			key = '_tl_' + type + id;
+		var id = stamp(fn),
+            key = "_tl_" + type + id;
 
 		if (obj[key]) {
 			return;
 		}
 
 		var handler = function (e) {
-			return fn.call(context || obj, e || TL.DomEvent._getEvent());
+			return fn.call(context || obj, e || DOMEvent._getEvent());
 		};
 
-		if (TL.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+		if (Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			this.addDoubleTapListener(obj, handler, id);
 		} else if ('addEventListener' in obj) {
 			if (type === 'mousewheel') {
@@ -28,9 +30,9 @@ TL.DomEvent = {
 				var originalHandler = handler,
 					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
 				handler = function (e) {
-					if (!TL.DomEvent._checkMouse(obj, e)) {
-						return;
-					}
+					if (!DOMEvent._checkMouse(obj, e)) {
+                        return;
+                    }
 					return originalHandler(e);
 				};
 				obj.addEventListener(newType, handler, false);
@@ -45,15 +47,15 @@ TL.DomEvent = {
 	},
 
 	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
-		var id = TL.Util.stamp(fn),
-			key = '_tl_' + type + id,
-			handler = obj[key];
+		var id = stamp(fn),
+            key = "_tl_" + type + id,
+            handler = obj[key];
 
 		if (!handler) {
 			return;
 		}
 
-		if (TL.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
+		if (BROWSER_TOUCH && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 		} else if ('removeEventListener' in obj) {
 			if (type === 'mousewheel') {
@@ -113,11 +115,10 @@ TL.DomEvent = {
 		}
 	},
 	
-	// TODO TL.Draggable.START
 	disableClickPropagation: function (/*HTMLElement*/ el) {
-		TL.DomEvent.addListener(el, TL.Draggable.START, TL.DomEvent.stopPropagation);
-		TL.DomEvent.addListener(el, 'click', TL.DomEvent.stopPropagation);
-		TL.DomEvent.addListener(el, 'dblclick', TL.DomEvent.stopPropagation);
+		DOMEvent.addListener(el, Draggable.START, DOMEvent.stopPropagation);
+		DOMEvent.addListener(el, "click", DOMEvent.stopPropagation);
+		DOMEvent.addListener(el, "dblclick", DOMEvent.stopPropagation);
 	},
 
 	preventDefault: function (/*Event*/ e) {
@@ -129,8 +130,8 @@ TL.DomEvent = {
 	},
 
 	stop: function (e) {
-		TL.DomEvent.preventDefault(e);
-		TL.DomEvent.stopPropagation(e);
+		DOMEvent.preventDefault(e);
+		DOMEvent.stopPropagation(e);
 	},
 
 
@@ -146,4 +147,4 @@ TL.DomEvent = {
 	}
 };
 
-
+export { DOMEvent }

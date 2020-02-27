@@ -1,8 +1,10 @@
-import { mergeData } from "../core/Util"
+import { mergeData, pad } from "../core/Util"
+import { ajax } from "../net/Net"
+import { BigYear } from "../date/TLDate"
 
 function Language(options) {
 	// borrowed from http://stackoverflow.com/a/14446414/102476
-	for (k in LANGUAGES.en) {
+	for (let k in LANGUAGES.en) {
 		this[k] = LANGUAGES.en[k];
 	}
 	if (options && options.language && typeof(options.language) == 'string' && options.language != 'en') {
@@ -12,12 +14,12 @@ function Language(options) {
 				var url = code;
 			} else {
 				var fragment = "/locale/" + code + ".json";
-				var script_path = options.script_path; // TODO || TL.Timeline.source_path;
+				var script_path = options.script_path;
 				if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
 				var url = script_path + fragment;
 			}
 			var self = this;
-			var xhr = TL.ajax({
+			var xhr = ajax({
 				url: url, async: false
 			});
 			if (xhr.status == 200) {
@@ -31,7 +33,7 @@ function Language(options) {
 	}
 }
 
-TL.Language.formatNumber = function(val,mask) {
+Language.formatNumber = function(val,mask) {
 		if (mask.match(/%(\.(\d+))?f/)) {
 			var match = mask.match(/%(\.(\d+))?f/);
 			var token = match[0];
@@ -46,10 +48,10 @@ TL.Language.formatNumber = function(val,mask) {
 
 
 
-/* TL.Util.mergeData is shallow, we have nested dicts.
+/* Util.mergeData is shallow, we have nested dicts.
    This is a simplistic handling but should work.
  */
-TL.Language.prototype.mergeData = function(lang_json) {
+Language.prototype.mergeData = function(lang_json) {
 	for (k in LANGUAGES.en) {
 		if (lang_json[k]) {
 			if (typeof(this[k]) == 'object') {
@@ -61,20 +63,20 @@ TL.Language.prototype.mergeData = function(lang_json) {
 	}
 }
 
-TL.Language.fallback = { messages: {} }; // placeholder to satisfy IE8 early compilation
-TL.Language.prototype.getMessage = function(k) {
-	return this.messages[k] || TL.Language.fallback.messages[k] || k;
+Language.fallback = { messages: {} }; // placeholder to satisfy IE8 early compilation
+Language.prototype.getMessage = function(k) {
+	return this.messages[k] || Language.fallback.messages[k] || k;
 }
 
-TL.Language.prototype._ = TL.Language.prototype.getMessage; // keep it concise
+Language.prototype._ = Language.prototype.getMessage; // keep it concise
 
-TL.Language.prototype.formatDate = function(date, format_name) {
+Language.prototype.formatDate = function(date, format_name) {
 
 	if (date.constructor == Date) {
 		return this.formatJSDate(date, format_name);
 	}
 
-	if (date.constructor == TL.BigYear) {
+	if (date.constructor == BigYear) {
 		return this.formatBigYear(date, format_name);
 	}
 
@@ -86,7 +88,7 @@ TL.Language.prototype.formatDate = function(date, format_name) {
 	return date.toString();
 }
 
-TL.Language.prototype.formatBigYear = function(bigyear, format_name) {
+Language.prototype.formatBigYear = function(bigyear, format_name) {
 	var the_year = bigyear.year;
 	var format_list = this.bigdateformats[format_name] || this.bigdateformats['fallback'];
 
@@ -95,7 +97,7 @@ TL.Language.prototype.formatBigYear = function(bigyear, format_name) {
 			var tuple = format_list[i];
 			if (Math.abs(the_year / tuple[0]) > 1) {
 				// will we ever deal with distant future dates?
-				return TL.Language.formatNumber(Math.abs(the_year / tuple[0]),tuple[1])
+				return Language.formatNumber(Math.abs(the_year / tuple[0]),tuple[1])
 			}
 		};
 
@@ -103,12 +105,12 @@ TL.Language.prototype.formatBigYear = function(bigyear, format_name) {
 
 	} else {
 	    trace("Language file dateformats missing cosmological. Falling back.");
-	    return TL.Language.formatNumber(the_year,format_name);
+	    return Language.formatNumber(the_year,format_name);
 	}
 }
 
-TL.Language.prototype.formatJSDate = function(js_date, format_name) {
-	// ultimately we probably want this to work with TL.Date instead of (in addition to?) JS Date
+Language.prototype.formatJSDate = function(js_date, format_name) {
+	// ultimately we probably want this to work with TLDate instead of (in addition to?) JS Date
 	// utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
 	var self = this;
 	var formatPeriod = function(fmt, value) {
@@ -128,7 +130,7 @@ TL.Language.prototype.formatJSDate = function(js_date, format_name) {
 		format_name = 'full';
 	}
 
-	var mask = this.dateformats[format_name] || TL.Language.fallback.dateformats[format_name];
+	var mask = this.dateformats[format_name] || Language.fallback.dateformats[format_name];
 	if (!mask) {
 		mask = format_name; // allow custom format strings
 	}
@@ -147,47 +149,47 @@ TL.Language.prototype.formatJSDate = function(js_date, format_name) {
 		year = "",
 		flags = {
 			d:    d,
-			dd:   TL.Util.pad(d),
+			dd:   pad(d),
 			ddd:  this.date.day_abbr[D],
 			dddd: this.date.day[D],
 			m:    m + 1,
-			mm:   TL.Util.pad(m + 1),
+			mm:   pad(m + 1),
 			mmm:  this.date.month_abbr[m],
 			mmmm: this.date.month[m],
 			yy:   String(y).slice(2),
 			yyyy: (y < 0 && this.has_negative_year_modifier()) ? Math.abs(y) : y,
 			h:    H % 12 || 12,
-			hh:   TL.Util.pad(H % 12 || 12),
+			hh:   pad(H % 12 || 12),
 			H:    H,
-			HH:   TL.Util.pad(H),
+			HH:   pad(H),
 			M:    M,
-			MM:   TL.Util.pad(M),
+			MM:   pad(M),
 			s:    s,
-			ss:   TL.Util.pad(s),
-			l:    TL.Util.pad(L, 3),
-			L:    TL.Util.pad(L > 99 ? Math.round(L / 10) : L),
+			ss:   pad(s),
+			l:    pad(L, 3),
+			L:    pad(L > 99 ? Math.round(L / 10) : L),
 			t:    formatPeriod('t',H),
 			tt:   formatPeriod('tt',H),
 			T:    formatPeriod('T',H),
 			TT:   formatPeriod('TT',H),
 			Z:    utc ? "UTC" : (String(js_date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
-			o:    (o > 0 ? "-" : "+") + TL.Util.pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+			o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
 			S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
 		};
 
-		var formatted = mask.replace(TL.Language.DATE_FORMAT_TOKENS, function ($0) {
+		var formatted = mask.replace(Language.DATE_FORMAT_TOKENS, function ($0) {
 			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
 		});
 
 		return this._applyEra(formatted, y);
 }
 
-TL.Language.prototype.has_negative_year_modifier = function() {
+Language.prototype.has_negative_year_modifier = function() {
 	return Boolean(this.era_labels.negative_year.prefix || this.era_labels.negative_year.suffix);
 }
 
 
-TL.Language.prototype._applyEra = function(formatted_date, original_year) {
+Language.prototype._applyEra = function(formatted_date, original_year) {
 	// trusts that the formatted_date was property created with a non-negative year if there are
 	// negative affixes to be applied
 	var labels = (original_year < 0) ? this.era_labels.negative_year : this.era_labels.positive_year;
@@ -199,9 +201,9 @@ TL.Language.prototype._applyEra = function(formatted_date, original_year) {
 }
 
 
-TL.Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
+Language.DATE_FORMAT_TOKENS = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g;
 
-LANGUAGES = {
+var LANGUAGES = {
     /*
 	This represents the canonical list of message keys which translation files should handle. The existence of the 'en.json' file should not mislead you.
 	It is provided more as a starting point for someone who wants to provide a
@@ -236,7 +238,8 @@ LANGUAGES = {
             empty_feed_err: "No data entries found",
             missing_start_date_err: "Missing start_date",
             invalid_data_format_err: "Header row has been modified.",
-            date_compare_err: "Can't compare TL.Dates on different scales",
+            date_compare_err:
+                "Can't compare timeline date objects on different scales",
             invalid_scale_err: "Invalid scale",
             invalid_date_err:
                 "Invalid date: month, day and year must be numbers.",
@@ -375,4 +378,6 @@ LANGUAGES = {
     }
 };
 
-TL.Language.fallback = new TL.Language();
+let fallback = new Language();
+Language.fallback = fallback;
+export { Language, fallback }
