@@ -20,28 +20,28 @@ var DOMEvent = {
 			return fn.call(context || obj, e || DOMEvent._getEvent());
 		};
 
-		if (Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
-			this.addDoubleTapListener(obj, handler, id);
-		} else if ('addEventListener' in obj) {
-			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-				var originalHandler = handler,
-					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
-				handler = function (e) {
-					if (!DOMEvent._checkMouse(obj, e)) {
+		if (BROWSER_TOUCH && type === "dblclick" && this.addDoubleTapListener) {
+            this.addDoubleTapListener(obj, handler, id);
+        } else if ("addEventListener" in obj) {
+            if (type === "mousewheel") {
+                obj.addEventListener("DOMMouseScroll", handler, false);
+                obj.addEventListener(type, handler, false);
+            } else if (type === "mouseenter" || type === "mouseleave") {
+                var originalHandler = handler,
+                    newType = type === "mouseenter" ? "mouseover" : "mouseout";
+                handler = function(e) {
+                    if (!DOMEvent._checkMouse(obj, e)) {
                         return;
                     }
-					return originalHandler(e);
-				};
-				obj.addEventListener(newType, handler, false);
-			} else {
-				obj.addEventListener(type, handler, false);
-			}
-		} else if ('attachEvent' in obj) {
-			obj.attachEvent("on" + type, handler);
-		}
+                    return originalHandler(e);
+                };
+                obj.addEventListener(newType, handler, false);
+            } else {
+                obj.addEventListener(type, handler, false);
+            }
+        } else if ("attachEvent" in obj) {
+            obj.attachEvent("on" + type, handler);
+        }
 
 		obj[key] = handler;
 	},

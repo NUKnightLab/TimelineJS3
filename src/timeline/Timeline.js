@@ -21,14 +21,11 @@ import { Language } from "../language/Language"
 class Timeline {
     constructor(elem, data, options) {
       this.elem = DOM.get(elem)
-      let foo = hexToRgb("#00ffcc");
-      mergeData(foo,{'bar': 'baz', 'quux': 'woop'})
-      console.log(foo)
-      console.log(`isTrue ${isTrue('true')}`);
-      this.elem.innerHTML = `<b>Hello World ${foo}</b>`;
+      this.options = options;
+      this.options.language = new Language(options);
+      this.elem.innerHTML = `<b>Hello World</b>`;
       var msg_options = mergeData(options, { message_class: "tl-message-full" })
       this.message = new Message({}, msg_options, this.elem);
-      this.language = new Language(options)
     }
 }
 

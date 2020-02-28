@@ -6,7 +6,14 @@ import { fallback } from "../language/Language"
 const I18NMixins = {
     getLanguage: function() {
         if (this.options && this.options.language) {
-            return this.options.language;
+            if (typeof this.options.language == 'object') {
+                return this.options.language;
+            } else {
+                trace(
+                    `this.options.language should be object, but is ${typeof this
+                        .options.language}`
+                );
+            }
         }
         trace("Expected a language option");
         return fallback;

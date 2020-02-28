@@ -453,7 +453,7 @@ function Floorer(unit) {
 }
 
 // cosmological scales
-BIG_DATE_SCALES = [ // ( name, units_per_tick, flooring function )
+const BIG_DATE_SCALES = [ // ( name, units_per_tick, flooring function )
     ['year',1, new Floorer(1)],
     ['decade',10, new Floorer(10)],
     ['century',100, new Floorer(100)],

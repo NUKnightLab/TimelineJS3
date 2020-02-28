@@ -1,13 +1,20 @@
 {
   "name": "TimelineJS3",
   "version": "3.6.5",
+  "license": "MPL-2.0",
   "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
   "dependencies": {
     "less": "^2.1.1",
     "less-plugin-clean-css": "^1.2.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-jest": "^25.1.0",
+    "babel-preset-env": "^1.7.0",
     "copy-webpack-plugin": "^5.1.1",
+    "jest": "^25.1.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   },
@@ -17,13 +24,12 @@
   },
   "keywords": [],
   "author": "",
-  "license": "Mozilla Public License 2.0",
   "bugs": {
     "url": "https://github.com/NUKnightLab/TimelineJS3/issues"
   },
   "homepage": "https://timeline.knightlab.com",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack"
   }
 }
