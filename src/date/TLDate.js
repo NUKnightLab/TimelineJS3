@@ -120,61 +120,6 @@ function parseISODate(str) {
     };
 };
 
-function parseDate(str) {
-    if (str.match(ISO8601_SHORT_PATTERN)) {
-        // parse short specifically to avoid timezone offset confusion
-        // most browsers assume short is UTC, not local time.
-        var parts = str.match(ISO8601_SHORT_PATTERN).slice(1);
-        var d = { year: parts[0].replace("+", "") }; // year can be negative
-        if (parts[1]) {
-            d["month"] = parts[1].replace("-", "");
-        }
-        if (parts[2]) {
-            d["day"] = parts[2].replace("-", "");
-        }
-        return d;
-    }
-
-    if (str.match(ISO8601_PATTERN)) {
-        return cls.parseISODate(str);
-    }
-
-    if (str.match(/^\-?\d+$/)) {
-        return { year: str };
-    }
-
-    var parsed = {};
-    if (str.match(/\d+\/\d+\/\d+/)) {
-        // mm/yy/dddd
-        var date = str.match(/\d+\/\d+\/\d+/)[0];
-        str = trim(str.replace(date, ""));
-        var date_parts = date.split("/");
-        parsed.month = date_parts[0];
-        parsed.day = date_parts[1];
-        parsed.year = date_parts[2];
-    }
-
-    if (str.match(/\d+\/\d+/)) {
-        // mm/yy
-        var date = str.match(/\d+\/\d+/)[0];
-        str = trim(str.replace(date, ""));
-        var date_parts = date.split("/");
-        parsed.month = date_parts[0];
-        parsed.year = date_parts[1];
-    }
-    // todo: handle hours, minutes, seconds, millis other date formats, etc...
-    if (str.match(":")) {
-        var time_parts = str.split(":");
-        parsed.hour = time_parts[0];
-        parsed.minute = time_parts[1];
-        if (time_parts[2]) {
-            second_parts = time_parts[2].split(".");
-            parsed.second = second_parts[0];
-            parsed.millisecond = second_parts[1];
-        }
-    }
-    return parsed;
-};
 
 const BEST_DATEFORMATS = {
     base: {
@@ -412,6 +357,62 @@ export function makeDate(data) {
     }
     return new BigDate(data);
 }
+
+export function parseDate(str) {
+    if (str.match(ISO8601_SHORT_PATTERN)) {
+        // parse short specifically to avoid timezone offset confusion
+        // most browsers assume short is UTC, not local time.
+        var parts = str.match(ISO8601_SHORT_PATTERN).slice(1);
+        var d = { year: parts[0].replace("+", "") }; // year can be negative
+        if (parts[1]) {
+            d["month"] = parts[1].replace("-", "");
+        }
+        if (parts[2]) {
+            d["day"] = parts[2].replace("-", "");
+        }
+        return d;
+    }
+
+    if (str.match(ISO8601_PATTERN)) {
+        return cls.parseISODate(str);
+    }
+
+    if (str.match(/^\-?\d+$/)) {
+        return { year: str };
+    }
+
+    var parsed = {};
+    if (str.match(/\d+\/\d+\/\d+/)) {
+        // mm/yy/dddd
+        var date = str.match(/\d+\/\d+\/\d+/)[0];
+        str = trim(str.replace(date, ""));
+        var date_parts = date.split("/");
+        parsed.month = date_parts[0];
+        parsed.day = date_parts[1];
+        parsed.year = date_parts[2];
+    }
+
+    if (str.match(/\d+\/\d+/)) {
+        // mm/yy
+        var date = str.match(/\d+\/\d+/)[0];
+        str = trim(str.replace(date, ""));
+        var date_parts = date.split("/");
+        parsed.month = date_parts[0];
+        parsed.year = date_parts[1];
+    }
+    // todo: handle hours, minutes, seconds, millis other date formats, etc...
+    if (str.match(":")) {
+        var time_parts = str.split(":");
+        parsed.hour = time_parts[0];
+        parsed.minute = time_parts[1];
+        if (time_parts[2]) {
+            second_parts = time_parts[2].split(".");
+            parsed.second = second_parts[0];
+            parsed.millisecond = second_parts[1];
+        }
+    }
+    return parsed;
+};
 
 export const BigYear = TLClass.extend({
     initialize: function(year) {

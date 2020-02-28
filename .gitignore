@@ -9,4 +9,4 @@ build/website
 build
 *.log
 dist
-
+.vscode

@@ -147,6 +147,11 @@ const css_named_colors = {
 	"yellow": "#ffff00",
 	"yellowgreen": "#9acd32"
 }
+
+function intToHexString(i) {
+	return pad(parseInt(i,10).toString(16));
+}
+
 export function hexToRgb(hex) {
 	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
 	if (css_named_colors[hex.toLowerCase()]) {
@@ -182,7 +187,7 @@ export function rgbToHex(rgb) {
 	if (isNaN(r) || isNaN(b) || isNaN(g)) {
 		throw new TLError("invalid_rgb_err");
 	}
-	return "#" + TL.Util.intToHexString(r) + TL.Util.intToHexString(g) + TL.Util.intToHexString(b);
+	return "#" + intToHexString(r) + intToHexString(g) + intToHexString(b);
 }
 
 export function mergeData(data_main, data_to_merge) {
@@ -532,10 +537,6 @@ let Util = { // convert to export
 		});
 	},
 
-	colorObjToHex: function(o) {
-		var parts = [o.r, o.g, o.b];
-		return TL.Util.rgbToHex("rgb(" + parts.join(',') + ")")
-	},
 
 	ratio: {
 		square: function(size) {
@@ -632,9 +633,6 @@ let Util = { // convert to export
 		return str;
 	},
 
-	intToHexString: function(i) {
-		return TL.Util.pad(parseInt(i,10).toString(16));
-	},
     findNextGreater: function(list, current, default_value) {
         // given a sorted list and a current value which *might* be in the list,
         // return the next greatest value if the current value is >= the last item in the list, return default,
