@@ -8,3 +8,5 @@ codekit-config.json
 build/website
 build
 *.log
+dist
+.vscode
