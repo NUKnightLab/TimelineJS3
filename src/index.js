@@ -1,1 +1,1 @@
-export {Timeline} from "./timeline/Timeline"
+export {Timeline, debug} from "./timeline/Timeline"

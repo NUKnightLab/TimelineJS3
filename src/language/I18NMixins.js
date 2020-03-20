@@ -10,12 +10,12 @@ const I18NMixins = {
                 return this.options.language;
             } else {
                 trace(
-                    `this.options.language should be object, but is ${typeof this
+                    `I18NMixins.getLanguage: this.options.language should be object, but is ${typeof this
                         .options.language}`
                 );
             }
         }
-        trace("Expected a language option");
+        trace("I18NMixins.getLanguage: Expected a language option");
         return fallback;
     },
 
