@@ -122,7 +122,7 @@
       // `$.zepto.fragment` takes a html string and an optional tag name
       // to generate DOM nodes nodes from the given html string.
       // The generated DOM nodes are returned as an array.
-      // This function can be overriden in plugins for example to make
+      // This function can be overridden in plugins for example to make
       // it compatible with browsers that don't support the DOM fully.
       zepto.fragment = function(html, name, properties) {
         var dom, nodes, container
@@ -156,7 +156,7 @@
       // `$.zepto.Z` swaps out the prototype of the given `dom` array
       // of nodes with `$.fn` and thus supplying all the Zepto functions
       // to the array. Note that `__proto__` is not supported on Internet
-      // Explorer. This method can be overriden in plugins.
+      // Explorer. This method can be overridden in plugins.
       zepto.Z = function(dom, selector) {
         dom = dom || []
         dom.__proto__ = $.fn
@@ -165,7 +165,7 @@
       }
 
       // `$.zepto.isZ` should return `true` if the given object is a Zepto
-      // collection. This method can be overriden in plugins.
+      // collection. This method can be overridden in plugins.
       zepto.isZ = function(object) {
         return object instanceof zepto.Z
       }
@@ -173,7 +173,7 @@
       // `$.zepto.init` is Zepto's counterpart to jQuery's `$.fn.init` and
       // takes a CSS selector and an optional context (and handles various
       // special cases).
-      // This method can be overriden in plugins.
+      // This method can be overridden in plugins.
       zepto.init = function(selector, context) {
         var dom
         // If nothing given, return an empty Zepto collection
@@ -249,7 +249,7 @@
 
       // `$.zepto.qsa` is Zepto's CSS selector implementation which
       // uses `document.querySelectorAll` and optimizes for some special cases, like `#id`.
-      // This method can be overriden in plugins.
+      // This method can be overridden in plugins.
       zepto.qsa = function(element, selector){
         var found,
             maybeID = selector[0] == '#',

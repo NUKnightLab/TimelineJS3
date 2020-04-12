@@ -80,7 +80,7 @@ var vc=function(){function r(t){return null==t?String(t):Q[$.call(t)]||"object"}
 // `$.zepto.fragment` takes a html string and an optional tag name
 // to generate DOM nodes nodes from the given html string.
 // The generated DOM nodes are returned as an array.
-// This function can be overriden in plugins for example to make
+// This function can be overridden in plugins for example to make
 // it compatible with browsers that don't support the DOM fully.
 function p(t,e,i){for(b in e)i&&(h(e[b])||K(e[b]))?(h(e[b])&&!h(t[b])&&(t[b]={}),K(e[b])&&!K(t[b])&&(t[b]=[]),p(t[b],e[b],i)):e[b]!==w&&(t[b]=e[b])}
 // Copy all but undefined properties from one or more
@@ -109,15 +109,15 @@ return U.test(t)&&(n=k(S.createElement(RegExp.$1))),n||(t.replace&&(t=t.replace(
 // `$.zepto.Z` swaps out the prototype of the given `dom` array
 // of nodes with `$.fn` and thus supplying all the Zepto functions
 // to the array. Note that `__proto__` is not supported on Internet
-// Explorer. This method can be overriden in plugins.
+// Explorer. This method can be overridden in plugins.
 ,Z.Z=function(t,e){return(t=t||[]).__proto__=k.fn,t.selector=e||"",t}
 // `$.zepto.isZ` should return `true` if the given object is a Zepto
-// collection. This method can be overriden in plugins.
+// collection. This method can be overridden in plugins.
 ,Z.isZ=function(t){return t instanceof Z.Z}
 // `$.zepto.init` is Zepto's counterpart to jQuery's `$.fn.init` and
 // takes a CSS selector and an optional context (and handles various
 // special cases).
-// This method can be overriden in plugins.
+// This method can be overridden in plugins.
 ,Z.init=function(t,e){var i;
 // If nothing given, return an empty Zepto collection
 if(!t)return Z.Z();
@@ -153,7 +153,7 @@ i=Z.qsa(S,t)}}return Z.Z(i,t)}
 ,(k=function(t,e){return Z.init(t,e)}).extend=function(e){var i,t=D.call(arguments,1);return"boolean"==typeof e&&(i=e,e=t.shift()),t.forEach(function(t){p(e,t,i)}),e}
 // `$.zepto.qsa` is Zepto's CSS selector implementation which
 // uses `document.querySelectorAll` and optimizes for some special cases, like `#id`.
-// This method can be overriden in plugins.
+// This method can be overridden in plugins.
 ,Z.qsa=function(t,e){var i,n="#"==e[0],a=!n&&"."==e[0],s=n||a?e.slice(1):e,// Ensure that a 1 char tag name still gets checked
 o=W.test(s);return l(t)&&o&&n?(i=t.getElementById(s))?[i]:[]:1!==t.nodeType&&9!==t.nodeType?[]:D.call(o&&!n?a?t.getElementsByClassName(s):// If it's simple, it could be a class
 t.getElementsByTagName(e):// Or a tag
