@@ -9,6 +9,9 @@
 
      If we're pretty sure this isn't a bare key or a url that could be used to find a Google spreadsheet then return null.
      */
+    var my_google_API_key   = 'AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg',
+        desiredSheet        = 'od1';
+
     function parseGoogleSpreadsheetURL(url) {
         parts = {
             key: null,
@@ -178,16 +181,24 @@
         throw new TL.Error("invalid_data_format_err");
     }
 
-    var buildGoogleFeedURL = function(key, api_version) {
+    var buildGoogleSheetNamesURL = function(key, api_version) {
         if (api_version == 'v4') {
-            return "https://sheets.googleapis.com/v4/spreadsheets/" + key + "/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg";
+            return "https://sheets.googleapis.com/v4/spreadsheets/" + key + "?&fields=sheets.properties&key="+my_google_API_key;
         } else {
-            return "https://spreadsheets.google.com/feeds/list/" + key + "/1/public/values?alt=json";
+            return "https://spreadsheets.google.com/feeds/worksheets/" + key + "/public/values?alt=json";
+        }
+    }
+
+    var buildGoogleFeedURL = function(key, api_version, sheet_name) {
+        if (api_version == 'v4') {
+            return "https://sheets.googleapis.com/v4/spreadsheets/" + key + "/values/"+sheet_name+"!A1:R1000?key="+my_google_API_key;
+        } else {
+            return "https://spreadsheets.google.com/feeds/list/" + key + "/"+sheet_name+"/public/values?alt=json";
         }
     }
 
     var jsonFromGoogleURL = function(google_url) {
-        var api_version = 'v3';
+        var api_version = 'v3'; // first API version to attempt
         var parts = parseGoogleSpreadsheetURL(google_url);
         if (parts && parts.key) {
             var spreadsheet_key = parts.key;
@@ -195,45 +206,91 @@
             throw new TL.Error('invalid_url_err', google_url);
         }
 
-        var url = buildGoogleFeedURL(spreadsheet_key, api_version);
+        // Fetch names of all worksheets in the document:
+        var sheetnamesUrl   = buildGoogleSheetNamesURL(spreadsheet_key, api_version);
+        console.log("trying "+api_version+" - " + google_url);
 
-        var response = TL.ajax({
-            url: url,
+        var responseSheets = TL.ajax({
+            url: sheetnamesUrl,
             async: false
         });
-        
-        // tricky because errors can be in the response object or in the parsed data...
+        console.log('response to API call', api_version+':', responseSheets.status);
 
-        if (response.status != 200) {
-            console.log("Error fetching data " + api_version + ": " + response.status + " - " + response.statusText);
-            api_version = 'v4';
-            var url = buildGoogleFeedURL(spreadsheet_key, api_version);
-            console.log("trying v4 - " + google_url);
-            var response = TL.ajax({
-                url: url,
+        // If failed, retry on another version of the Google Sheets API:
+        // tricky because errors can be in the response object or in the parsed data...
+        if (responseSheets.status != 200) {
+            console.log("Error fetching sheet names " + api_version + ": " + responseSheets.status + " - " + responseSheets.statusText);
+            
+            // try the other version:
+            if (api_version === 'v3') {
+                api_version = 'v4';
+            } else if (api_version === 'v4') {
+                api_version = 'v3';
+            }
+            
+            var sheetnamesUrl   = buildGoogleSheetNamesURL(spreadsheet_key, api_version);
+            console.log("instead trying "+api_version+" - " + google_url);
+
+            var responseSheets = TL.ajax({
+                url: sheetnamesUrl,
                 async: false
             });
 
-            if (response.status == 403) {
+            if (responseSheets.status == 403) {
                 throw new TL.Error('invalid_url_share_required');
-            } else if (response.status != 200) {
-                var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
+            } else if (responseSheets.status != 200) {
+                var msg = "Error fetching sheet names " + api_version + ": " + responseSheets.status + " - " + responseSheets.statusText;
                 console.log(msg);
                 throw new TL.Error("google_error", msg);
             }
-        } 
-
-
-        var data = JSON.parse(response.responseText);
-
-        if (data.error) {
-            var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
-            console.log(msg);
-            console.log(data.error);
-            throw new TL.Error("google_error", msg);
         }
 
-        return googleFeedJSONtoTimelineJSON(data);
+        // Assuming a response was acquired, now assemble a list of worksheet names:
+        var sheetsArray = JSON.parse(responseSheets.responseText);
+        var sheetNames = [];
+
+        if (api_version === 'v3') {
+            console.log(sheetsArray.feed.entry);
+            for ( var z = 0; z < Object.keys(sheetsArray.feed.entry).length; z++ ) {
+                sheetNames.push(sheetsArray.feed.entry[z].title.$t);
+            }
+        } else if (api_version === 'v4') {
+            console.log(sheetsArray.sheets);
+            for ( var z = 0; z < Object.keys(sheetsArray.sheets).length; z++ ) {
+                sheetNames.push(sheetsArray.sheets[z].properties.title);
+            }
+        }
+        console.log(sheetNames); // show the array of acquired names
+
+        if (sheetNames.includes(desiredSheet)) { 
+
+            if (api_version === 'v3') { 
+                var feedUrl = buildGoogleFeedURL( spreadsheet_key, api_version, (sheetNames.indexOf(desiredSheet)+1) );
+            } else if (api_version === 'v4') {
+                var feedUrl = buildGoogleFeedURL(spreadsheet_key, api_version, desiredSheet);
+            }
+            var response = TL.ajax({
+                url: feedUrl,
+                async: false
+            });
+            
+            var data = JSON.parse(response.responseText);
+
+            if (data.error) {
+                var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
+                console.log(msg);
+                console.log(data.error);
+                throw new TL.Error("google_error", msg);
+            }
+
+            return googleFeedJSONtoTimelineJSON(data);
+
+        } else {
+            var msg = "Error fetching sheet " + desiredSheet + ": it does not exist.";
+            console.log(msg);
+            throw new TL.Error("google_error", msg);
+        }
+            
     }
 
     function extractGoogleEntryData_V4(column, item) {
