@@ -67,3 +67,8 @@ div.question p, div.question ul {
 div.question p:first-child {
   font-weight: bolder;
 }
+
+img.make-step-2 {
+  float: left;
+  margin-right: 7px;
+}
