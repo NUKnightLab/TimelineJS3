@@ -2,131 +2,123 @@
 	
 ================================================== */
 import { TLClass } from "../core/TLClass"
-import { mergeData } from "../core/Util"
+import { mergeData, classMixin } from "../core/Util"
 import { create as domCreate } from "../dom/DOM"
 import { Events } from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
 import { I18NMixins } from "../language/I18NMixins"
 
-export let Message = TLClass.extend({
-           includes: [Events, DOMMixins, I18NMixins],
+/**
+ * A class for displaying messages to users.
+ */
+export class Message{
 
-           _el: {},
+    /**
+     * Initialized a Message object with the container where it appears and, 
+     *     optionally, a JS object of options.
+     * @param {HTMLElement} container 
+     * @param {object} [options] 
+     */
+    constructor(container, options) {
+        // DOM ELEMENTS
+        this._el = {
+            parent: {},
+            container: {},
+            message_container: {},
+            loading_icon: {},
+            message: {}
+        };
 
-           /*	Constructor
-	================================================== */
-           initialize: function(data, options, add_to_container) {
-               // DOM ELEMENTS
-               this._el = {
-                   parent: {},
-                   container: {},
-                   message_container: {},
-                   loading_icon: {},
-                   message: {}
-               };
+        //Options
+        this.options = {
+            width: 600,
+            height: 600,
+            message_class: "tl-message",
+            message_icon_class: "tl-loading-icon"
+        };
 
-               //Options
-               this.options = {
-                   width: 600,
-                   height: 600,
-                   message_class: "tl-message",
-                   message_icon_class: "tl-loading-icon"
-               };
+        this.container = container
 
-			   this.data = data || {}
+        mergeData(this.options, options);
 
-			   this._add_to_container = add_to_container || {}; // save ref
+        this._el.container = domCreate(
+            "div",
+            this.options.message_class
+        );
 
-               // Merge Data and Options
-               mergeData(this.options, options);
+        if (container) {
+            container.appendChild(this._el.container);
+            this._el.parent = container;
+        }
 
-               this._el.container = domCreate(
-                   "div",
-                   this.options.message_class
-               );
+        // Animation
+        this.animator = {};
 
-               if (add_to_container) {
-                   add_to_container.appendChild(this._el.container);
-                   this._el.parent = add_to_container;
-               }
+        this._initLayout();
+        this._initEvents();
+    }
 
-               // Animation
-               this.animator = {};
+    setLanguage(language) {
+        this.language = language;
+    }
 
-               this._initLayout();
-               this._initEvents();
-           },
+    updateMessage(t) {
+        if (!t) {
+            this._el.message.innerHTML = this._("loading");
+        } else {
+            this._el.message.innerHTML = t;
+        }
 
-           /*	Public
-	================================================== */
-           updateMessage: function(t) {
-               this._updateMessage(t);
-           },
+        // Re-add to DOM?
+        if (
+            !this._el.parent.atributes &&
+            this.container.attributes
+        ) {
+            this.container.appendChild(this._el.container);
+            this._el.parent = this.container;
+        }
+    }
 
-           /*	Update Display
-	================================================== */
-           updateDisplay: function(w, h) {
-               this._updateDisplay(w, h);
-           },
+        /*	Update Display
+================================================== */
+    updateDisplay(w, h) {
+        // no-op but probably should be implemented
+    }
 
-           _updateMessage: function(t) {
-               if (!t) {
-	               this._el.message.innerHTML = this._("loading");
-               } else {
-                   this._el.message.innerHTML = t;
-               }
+    _onMouseClick() {
+        this.fire("clicked", this.options);
+    }
 
-               // Re-add to DOM?
-               if (
-                   !this._el.parent.atrributes &&
-                   this._add_to_container.attributes
-               ) {
-                   this._add_to_container.appendChild(this._el.container);
-                   this._el.parent = this._add_to_container;
-               }
-           },
+    _onRemove() {
+        this._el.parent = {};
+    }
 
-           /*	Events
-	================================================== */
+    _initLayout() {
+        // Create Layout
+        this._el.message_container = domCreate(
+            "div",
+            "tl-message-container",
+            this._el.container
+        );
+        this._el.loading_icon = domCreate(
+            "div",
+            this.options.message_icon_class,
+            this._el.message_container
+        );
+        this._el.message = domCreate(
+            "div",
+            "tl-message-content",
+            this._el.message_container
+        );
 
-           _onMouseClick: function() {
-               this.fire("clicked", this.options);
-           },
+        this.updateMessage();
+    }
 
-           _onRemove: function() {
-               this._el.parent = {};
-           },
+    _initEvents() {
+        DOMEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
+        DOMEvent.addListener(this, 'removed', this._onRemove, this);
+    }
 
-           /*	Private Methods
-	================================================== */
-           _initLayout: function() {
-               // Create Layout
-               this._el.message_container = domCreate(
-                   "div",
-                   "tl-message-container",
-                   this._el.container
-               );
-               this._el.loading_icon = domCreate(
-                   "div",
-                   this.options.message_icon_class,
-                   this._el.message_container
-               );
-               this._el.message = domCreate(
-                   "div",
-                   "tl-message-content",
-                   this._el.message_container
-               );
-
-               this._updateMessage();
-           },
-
-           _initEvents: function() {
-				DOMEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
-				DOMEvent.addListener(this, 'removed', this._onRemove, this);
-            },
-
-           // Update Display
-           _updateDisplay: function(width, height, animate) {}
-       });
-
+}
+classMixin(Message, I18NMixins); // TODO class-ify these: Events, DOMMixins

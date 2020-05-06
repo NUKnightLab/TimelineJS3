@@ -285,7 +285,102 @@ export function maxDepth(ary) {
 	return max_depth;
 }
 
+/**
+ * Implement mixin behavior. Based on 
+ *     https://blog.bitsrc.io/understanding-mixins-in-javascript-de5d3e02b466
+ * @param {class} cls 
+ * @param  {...class} src 
+ */
+export function classMixin(cls, ...src) {
+	for (let _cl of src) {
+		for (var key of Object.getOwnPropertyNames(_cl.prototype)) {
+			cls.prototype[key] = _cl.prototype[key]
+		}
+	}
+}
 
+export function ensureUniqueKey(obj, candidate) {
+	if (!candidate) { candidate = TL.Util.unique_ID(6); }
+
+	if (!(candidate in obj)) { return candidate; }
+
+	var root = candidate.match(/^(.+)(-\d+)?$/)[1];
+	var similar_ids = [];
+	// get an alternative
+	for (key in obj) {
+		if (key.match(/^(.+?)(-\d+)?$/)[1] == root) {
+			similar_ids.push(key);
+		}
+	}
+	candidate = root + "-" + (similar_ids.length + 1);
+
+	for (var counter = similar_ids.length; similar_ids.indexOf(candidate) != -1; counter++) {
+		candidate = root + '-' + counter;
+	}
+
+	return candidate;
+}
+
+export function isEmptyObject(o) {
+	var properties = []
+	if (Object.keys) {
+		properties = Object.keys(o);
+	} else { // all this to support IE 8
+		for (var p in o) if (Object.prototype.hasOwnProperty.call(o, p)) properties.push(p);
+	}
+	for (var i = 0; i < properties.length; i++) {
+		var k = properties[i];
+		if (o[k] != null && typeof o[k] != "string") return false;
+		if (trim(o[k]).length != 0) return false;
+	}
+	return true;
+}
+
+export function slugify(str) {
+	// borrowed from http://stackoverflow.com/a/5782563/102476
+	str = trim(str);
+	str = str.toLowerCase();
+
+	// remove accents, swap ñ for n, etc
+	var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+	var to = "aaaaaeeeeeiiiiooooouuuunc------";
+	for (var i = 0, l = from.length; i < l; i++) {
+		str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+	}
+
+	str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+		.replace(/\s+/g, '-') // collapse whitespace and replace by -
+		.replace(/-+/g, '-'); // collapse dashes
+
+	str = str.replace(/^([0-9])/, '_$1');
+	return str;
+}
+
+export function unique_ID(size, prefix) {
+
+	var getRandomNumber = function (range) {
+		return Math.floor(Math.random() * range);
+	};
+
+	var getRandomChar = function () {
+		var chars = "abcdefghijklmnopqurstuvwxyz";
+		return chars.substr(getRandomNumber(32), 1);
+	};
+
+	var randomID = function (size) {
+		var str = "";
+		for (var i = 0; i < size; i++) {
+			str += getRandomChar();
+		}
+		return str;
+	};
+
+	if (prefix) {
+		return prefix + "-" + randomID(size);
+	} else {
+		return "tl-" + randomID(size);
+	}
+}
 
 //---- below yet to be processed
 
@@ -365,53 +460,6 @@ let Util = { // convert to export
    		return Math.floor(Math.random() * range);
    	},
 
-	unique_ID: function(size, prefix) {
-
-		var getRandomNumber = function(range) {
-			return Math.floor(Math.random() * range);
-		};
-
-		var getRandomChar = function() {
-			var chars = "abcdefghijklmnopqurstuvwxyz";
-			return chars.substr( getRandomNumber(32), 1 );
-		};
-
-		var randomID = function(size) {
-			var str = "";
-			for(var i = 0; i < size; i++) {
-				str += getRandomChar();
-			}
-			return str;
-		};
-
-		if (prefix) {
-			return prefix + "-" + randomID(size);
-		} else {
-			return "tl-" + randomID(size);
-		}
-	},
-
-	ensureUniqueKey: function(obj, candidate) {
-		if (!candidate) { candidate = TL.Util.unique_ID(6); }
-
-		if (!(candidate in obj)) { return candidate; }
-
-		var root = candidate.match(/^(.+)(-\d+)?$/)[1];
-		var similar_ids = [];
-		// get an alternative
-		for (key in obj) {
-			if (key.match(/^(.+?)(-\d+)?$/)[1] == root) {
-				similar_ids.push(key);
-			}
-		}
-		candidate = root + "-" + (similar_ids.length + 1);
-
-		for (var counter = similar_ids.length; similar_ids.indexOf(candidate) != -1; counter++) {
-			candidate = root + '-' + counter;
-		}
-
-		return candidate;
-	},
 
 
 	htmlify: function(str) {
@@ -613,25 +661,6 @@ let Util = { // convert to export
 
 		return vars;
 	},
-	slugify: function(str) {
-		// borrowed from http://stackoverflow.com/a/5782563/102476
-		str = TL.Util.trim(str);
-		str = str.toLowerCase();
-
-		// remove accents, swap ñ for n, etc
-		var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-		var to   = "aaaaaeeeeeiiiiooooouuuunc------";
-		for (var i=0, l=from.length ; i<l ; i++) {
-		str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-		}
-
-		str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-		.replace(/\s+/g, '-') // collapse whitespace and replace by -
-		.replace(/-+/g, '-'); // collapse dashes
-
-		str = str.replace(/^([0-9])/,'_$1');
-		return str;
-	},
 
     findNextGreater: function(list, current, default_value) {
         // given a sorted list and a current value which *might* be in the list,
@@ -659,20 +688,7 @@ let Util = { // convert to export
         return (default_value) ? default_value : current;
     },
 
-	isEmptyObject: function(o) {
-		var properties = []
-		if (Object.keys) {
-			properties = Object.keys(o);
-		} else { // all this to support IE 8
-		    for (var p in o) if (Object.prototype.hasOwnProperty.call(o,p)) properties.push(p);
-    }
-		for (var i = 0; i < properties.length; i++) {
-			var k = properties[i];
-			if (o[k] != null && typeof o[k] != "string") return false;
-			if (TL.Util.trim(o[k]).length != 0) return false;
-		}
-		return true;
-	},
+
 	parseYouTubeTime: function(s) {
 	    // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
 		if (typeof(s) == 'string') {

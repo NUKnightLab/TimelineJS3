@@ -1,4 +1,27 @@
-import { hexToRgb, rgbToHex, maxDepth, trim, isTrue } from "../Util";
+import { hexToRgb, rgbToHex, maxDepth, trim, isTrue, isEmptyObject } from "../Util";
+
+test("isEmptyObject",() => {
+    //"no keys should be empty"
+    let o = {}
+    expect(isEmptyObject(o)).toBeTruthy()
+
+    // "empty string should be empty"
+    o.foo = "  ";
+    expect(isEmptyObject(o)).toBeTruthy()
+
+    // "2 empty strings should be empty"
+    o.bar = "";
+    expect(isEmptyObject(o)).toBeTruthy()
+
+    // "add null, still should be empty"
+    o.baz = null;
+    expect(isEmptyObject(o)).toBeTruthy()
+
+    // "adding a string " becomes true
+    o.foo = "  not empty  ";
+    expect(isEmptyObject(o)).toBeFalsy()
+    
+})
 
 /* testing hexToRgb and rgbToHex function */
 
@@ -198,18 +221,6 @@ test("isTrue 1 is true",() => {
         assert.equal(TL.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
       })
 
-      QUnit.test("TL.Util.isEmptyObject", function(assert) {
-          o = {}
-          assert.ok(TL.Util.isEmptyObject(o),"no keys should be empty");
-          o.foo = "  ";
-          assert.ok(TL.Util.isEmptyObject(o),"empty string should be empty");
-          o.bar = "";
-          assert.ok(TL.Util.isEmptyObject(o),"2 empty strings should be empty");
-          o.baz = null;
-          assert.ok(TL.Util.isEmptyObject(o),"add null, still should be empty");
-          o.foo = "  not empty  ";
-          assert.equal(TL.Util.isEmptyObject(o), false, "adding a string ")
-      })
 
       QUnit.test("TL.Util.parseYouTubeTime", function(assert) {
           assert.equal(TL.Util.parseYouTubeTime('5s'),5,"parse seconds only")

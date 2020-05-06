@@ -1,23 +1,25 @@
 // simple test environment to make sure some things work
 import * as DOM from "../dom/DOM"
 import { addClass } from "../dom/DOMUtil"
-import { hexToRgb, mergeData, isTrue } from "../core/Util";
+import { hexToRgb, mergeData, classMixin, isTrue } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import { Message } from "../ui/Message"
-import { Language } from "../language/Language"
-import { Loader } from "../core/Load"
+import { Language, fallback } from "../language/Language"
+import { I18NMixins } from "../language/I18NMixins";
+import { makeConfig } from "../core/ConfigFactory"
+import { TimelineConfig } from "../core/TimelineConfig"
+
 /*
     needed imports: 
         TL.Browser
         TL.Animate
-        TL.TimelineConfig
         TL.TimeNav
         TL.StorySlider
         TL.MenuBar
 */
 
 function make_keydown_handler(timeline) {
-  return function(event) {
+  return function (event) {
     var keyName = event.key;
     var currentSlide = timeline._getSlideIndex(self.current_id);
     var _n = timeline.config.events.length - 1;
@@ -37,6 +39,16 @@ function make_keydown_handler(timeline) {
   }
 }
 
+/**
+ * Primary entry point for using TimelineJS.
+ * @constructor
+ * @param {HTMLElement|string} elem - the HTML element, or its ID, to which 
+ *     the Timeline should be bound
+ * @param {object} - a JavaScript object conforming to the TimelineJS 
+ *     configuration format
+ * @param {object} [options] - a JavaScript object specifying 
+ *     presentation options
+ */
 class Timeline {
   constructor(elem, data, options) {
     this.ready = false;
@@ -46,6 +58,8 @@ class Timeline {
       timenav: {},
       menubar: {}
     };
+
+    this.language = fallback;
 
     // Slider
     this._storyslider = {};
@@ -88,7 +102,6 @@ class Timeline {
       menubar_height: 0,
       skinny_size: 650,
       medium_size: 800,
-      relative_date: false,					// Use momentjs to show a relative date from the slide.text.date.created_time field
       use_bc: false,					// Use declared suffix on dates earlier than 0
       // animation
       duration: 1000,
@@ -110,8 +123,7 @@ class Timeline {
     this.animator_storyslider = null;
     this.animator_menubar = null;
 
-    var msg_options = mergeData(this.options, { message_class: "tl-message-full" })
-    this.message = new Message({}, msg_options, this.elem);
+    this.message = new Message(this._el.container, { message_class: "tl-message-full" });
 
     // Merge Options
     if (options && typeof (options.default_bg_color) == "string") {
@@ -156,7 +168,69 @@ class Timeline {
   }
 
   _loadLanguage(data) {
-    console.log("_loadLanguage is not yet implemented")
+    try {
+      var lang = this.options.language
+      var script_path = this.options.script_path
+      this.language = new Language(lang, script_path)
+      this.message.setLanguage(this.language)
+      console.log('_loadLanguage')
+      console.log(this.language)
+      this.showMessage(this._('loading_timeline'))
+      this._initData(data)
+    } catch (e) {
+      this.showMessage(this._translateError(e))
+    }
+  }
+
+  /**
+   * Initialize the data for this timeline. If data is a URL, pass it to ConfigFactory
+   * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise, 
+   * assume it's a JSON object in the right format, and wrap it in a new TimelineConfig.
+   * @param {string|TimelineConfig|object} data
+   */
+  _initData(data) {
+    if (typeof data == 'string') {
+      makeConfig(data, function (config) {
+        this.setConfig(config);
+      }.bind(this));
+    } else if (TL.TimelineConfig == data.constructor) {
+      this.setConfig(data);
+    } else {
+      this.setConfig(new TL.TimelineConfig(data));
+    }
+  }
+
+  /**
+   * Given an input, if it is a Timeline Error object, look up the
+   * appropriate error in the current language and return it, optionally 
+   * with detail that also comes in the object. Alternatively, pass back
+   * the input, which is expected to be a string ready to display.
+   * @param {Error|string} e - an Error object which can be localized, 
+   *     or a string message
+   */
+  _translateError(e) {
+
+    if (e.hasOwnProperty('stack')) {
+      trace(e.stack);
+    }
+    if (e.message_key) {
+      return this._(e.message_key) + (e.detail ? ' [' + e.detail + ']' : '')
+    }
+    return e;
+
+  }
+
+  /**
+   * Display a message in the Timeline window.
+   * @param {string} msg 
+   */
+  showMessage(msg) {
+    if (this.message) {
+      this.message.updateMessage(msg);
+    } else {
+      trace("No message display available.")
+      trace(msg);
+    }
   }
 	/**
 	 * Not ideal, but if users don't specify the script path, we try to figure it out.
@@ -167,11 +241,57 @@ class Timeline {
     var src = script_tags[script_tags.length - 1].src;
     if (src) {
       return src.substr(0, src.lastIndexOf('/'));
-    } 
+    }
     return '';
   }
 
+
+  setConfig(config) {
+    this.config = config;
+    this.config.validate();
+    this._validateOptions();
+    if (this.config.isValid()) {
+      this.showMessage("config is valid")
+      // try {
+      //   this._onDataLoaded();
+      // } catch (e) {
+      //   this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
+      // }
+    } else {
+      var translated_errs = [];
+
+      for (var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
+        translated_errs.push(this._translateError(errs[i]));
+      }
+
+      this.showMessage("<strong>" + this._('error') + ":</strong> " + translated_errs.join('<br>'));
+      // should we set 'self.ready'? if not, it won't resize,
+      // but most resizing would only work
+      // if more setup happens
+    }
+  }
+
+  _validateOptions() {
+    // assumes that this.options and this.config have been set.
+    var INTEGER_PROPERTIES = ['timenav_height', 'timenav_height_min', 'marker_height_min', 'marker_width_min', 'marker_padding', 'start_at_slide', 'slide_padding_lr'];
+
+    for (var i = 0; i < INTEGER_PROPERTIES.length; i++) {
+      var opt = INTEGER_PROPERTIES[i];
+      var value = this.options[opt];
+      let valid = true;
+      if (typeof (value) == 'number') {
+        valid = (value == parseInt(value))
+      } else if (typeof (value) == "string") {
+        valid = (value.match(/^\s*(\-?\d+)?\s*$/));
+      }
+      if (!valid) {
+        this.config.logError({ message_key: 'invalid_integer_option', detail: opt });
+      }
+    }
+  } 
 }
+
+classMixin(Timeline, I18NMixins) // TODO mixin Events after its a class
 
 var debug = false; // can we fiddle with this and if others do, does that propogate?
 export { Timeline, debug }
