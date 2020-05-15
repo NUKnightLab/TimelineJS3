@@ -6,10 +6,7 @@
 ================================================== */
 
 export function Animate(el, options) {
-	var animation = new tlanimate(el, options),
-		webkit_timeout;
-
-    return animation;
+	return tlanimate(el, options)
 };
 
 
@@ -17,7 +14,7 @@ export function Animate(el, options) {
 	https://github.com/ded/morpheus - (c) Dustin Diaz 2011
 	License MIT
 ================================================== */
-function tlanimate() {
+const tlanimate = function () {
 
 	var doc = document,
 		win = window,
@@ -421,4 +418,4 @@ function tlanimate() {
   morpheus.easings = {}
 
   return morpheus
-}
+}() // must be executed at initialization

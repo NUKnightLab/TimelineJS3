@@ -5,10 +5,10 @@
 import { getPosition } from "../dom/DOM"
 import { Animate } from "../animation/Animate"
 
-let DOMMixins = {
+export class DOMMixins {
     /*	Adding, Hiding, Showing etc
 	================================================== */
-    show: function(animate) {
+    show(animate) {
         if (animate) {
             /*
 			this.animator = Animate(this._el.container, {
@@ -20,25 +20,25 @@ let DOMMixins = {
         } else {
             this._el.container.style.display = "block";
         }
-    },
+    }
 
-    hide: function(animate) {
+    hide(animate) {
         this._el.container.style.display = "none";
-    },
+    }
 
-    addTo: function(container) {
+    addTo(container) {
         container.appendChild(this._el.container);
         this.onAdd();
-    },
+    }
 
-    removeFrom: function(container) {
+    removeFrom(container) {
         container.removeChild(this._el.container);
         this.onRemove();
-    },
+    }
 
     /*	Animate to Position
 	================================================== */
-    animatePosition: function(pos, el) {
+    animatePosition(pos, el) {
         var ani = {
             duration: this.options.duration,
             easing: this.options.ease
@@ -53,26 +53,26 @@ let DOMMixins = {
             this.animator.stop();
         }
         this.animator = Animate(el, ani);
-    },
+    }
 
     /*	Events
 	================================================== */
 
-    onLoaded: function() {
+    onLoaded() {
         this.fire("loaded", this.data);
-    },
+    }
 
-    onAdd: function() {
+    onAdd() {
         this.fire("added", this.data);
-    },
+    }
 
-    onRemove: function() {
+    onRemove() {
         this.fire("removed", this.data);
-    },
+    }
 
     /*	Set the Position
 	================================================== */
-    setPosition: function(pos, el) {
+    setPosition(pos, el) {
         for (var name in pos) {
             if (pos.hasOwnProperty(name)) {
                 if (el) {
@@ -82,11 +82,9 @@ let DOMMixins = {
                 }
             }
         }
-    },
+    }
 
-    getPosition: function() {
+    getPosition() {
         return getPosition(this._el.container);
     }
-};
-
-export { DOMMixins };
+}

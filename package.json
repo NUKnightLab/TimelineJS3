@@ -13,10 +13,13 @@
     "@babel/preset-env": "^7.8.6",
     "babel-jest": "^25.1.0",
     "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
+    "html-webpack-plugin": "^4.3.0",
     "jest": "^25.1.0",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,7 @@
   "homepage": "https://timeline.knightlab.com",
   "scripts": {
     "test": "jest",
-    "build": "webpack"
+    "build": "webpack",
+    "start": "webpack-dev-server --open"
   }
 }

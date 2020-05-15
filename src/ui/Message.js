@@ -3,8 +3,8 @@
 ================================================== */
 import { TLClass } from "../core/TLClass"
 import { mergeData, classMixin } from "../core/Util"
-import { create as domCreate } from "../dom/DOM"
-import { Events } from "../core/Events"
+import * as DOM from "../dom/DOM"
+import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
 import { I18NMixins } from "../language/I18NMixins"
@@ -12,7 +12,7 @@ import { I18NMixins } from "../language/I18NMixins"
 /**
  * A class for displaying messages to users.
  */
-export class Message{
+export default class Message{
 
     /**
      * Initialized a Message object with the container where it appears and, 
@@ -42,7 +42,7 @@ export class Message{
 
         mergeData(this.options, options);
 
-        this._el.container = domCreate(
+        this._el.container = DOM.create(
             "div",
             this.options.message_class
         );
@@ -96,17 +96,17 @@ export class Message{
 
     _initLayout() {
         // Create Layout
-        this._el.message_container = domCreate(
+        this._el.message_container = DOM.create(
             "div",
             "tl-message-container",
             this._el.container
         );
-        this._el.loading_icon = domCreate(
+        this._el.loading_icon = DOM.create(
             "div",
             this.options.message_icon_class,
             this._el.message_container
         );
-        this._el.message = domCreate(
+        this._el.message = DOM.create(
             "div",
             "tl-message-content",
             this._el.message_container
@@ -121,4 +121,4 @@ export class Message{
     }
 
 }
-classMixin(Message, I18NMixins); // TODO class-ify these: Events, DOMMixins
+classMixin(Message, I18NMixins, Events, DOMMixins); 

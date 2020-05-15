@@ -1,22 +1,21 @@
 // simple test environment to make sure some things work
 import * as DOM from "../dom/DOM"
 import { addClass } from "../dom/DOMUtil"
-import { hexToRgb, mergeData, classMixin, isTrue } from "../core/Util";
+import { hexToRgb, mergeData, classMixin, isTrue, trace } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
-import { Message } from "../ui/Message"
+import Message from "../ui/Message"
 import { Language, fallback } from "../language/Language"
 import { I18NMixins } from "../language/I18NMixins";
+import Events from "../core/Events";
 import { makeConfig } from "../core/ConfigFactory"
 import { TimelineConfig } from "../core/TimelineConfig"
+import { TimeNav } from "../timenav/TimeNav"
+import * as Browser from "../core/Browser"
+import { Animate } from "../animation/Animate"
+import { StorySlider } from "../slider/StorySlider"
+import { MenuBar } from "../ui/MenuBar"
 
-/*
-    needed imports: 
-        TL.Browser
-        TL.Animate
-        TL.TimeNav
-        TL.StorySlider
-        TL.MenuBar
-*/
+let debug = false; // can we fiddle with this and if others do, does that propogate?
 
 function make_keydown_handler(timeline) {
   return function (event) {
@@ -146,8 +145,7 @@ class Timeline {
       this.updateDisplay();
     }.bind(this));
 
-    // TODO: fix this to not use TL
-    // TL.debug = this.options.debug;
+    debug = this.options.debug;
 
     // Apply base class to container
     addClass(this._el.container, 'tl-timeline');
@@ -160,10 +158,7 @@ class Timeline {
       addClass(this._el.container, 'tl-timeline-full-embed');
     }
 
-
-    // TODO pick up here
     this._loadLanguage(data);
-
 
   }
 
@@ -193,10 +188,10 @@ class Timeline {
       makeConfig(data, function (config) {
         this.setConfig(config);
       }.bind(this));
-    } else if (TL.TimelineConfig == data.constructor) {
+    } else if (TimelineConfig == data.constructor) {
       this.setConfig(data);
     } else {
-      this.setConfig(new TL.TimelineConfig(data));
+      this.setConfig(new TimelineConfig(data));
     }
   }
 
@@ -251,12 +246,12 @@ class Timeline {
     this.config.validate();
     this._validateOptions();
     if (this.config.isValid()) {
-      this.showMessage("config is valid")
-      // try {
-      //   this._onDataLoaded();
-      // } catch (e) {
-      //   this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
-      // }
+      try {
+        this._onDataLoaded();
+      } catch (e) {
+        debugger
+        this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
+      }
     } else {
       var translated_errs = [];
 
@@ -269,6 +264,344 @@ class Timeline {
       // but most resizing would only work
       // if more setup happens
     }
+  }
+
+  _onDataLoaded() {
+    this.fire("dataloaded");
+    this._initLayout();
+    this._initEvents();
+    // this._initAnalytics();
+    // if (this.message) {
+    //   this.message.hide();
+    // }
+
+    // this.ready = true;
+
+  }
+
+  _initLayout() {
+    var self = this;
+
+    this.message.removeFrom(this._el.container);
+    this._el.container.innerHTML = "";
+
+    // Create Layout
+    if (this.options.timenav_position == "top") {
+      this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+      this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
+    } else {
+      this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
+      this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+    }
+
+    this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
+
+
+    // Initial Default Layout
+    this.options.width = this._el.container.offsetWidth;
+    this.options.height = this._el.container.offsetHeight;
+    // this._el.storyslider.style.top  = "1px";
+
+    // Set TimeNav Height
+    this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
+
+    // Create TimeNav
+    this._timenav = new TimeNav(this._el.timenav, this.config, this.options);
+    this._timenav.on('loaded', this._onTimeNavLoaded, this);
+    this._timenav.options.height = this.options.timenav_height;
+    this._timenav.init();
+
+    // intial_zoom cannot be applied before the timenav has been created
+    if (this.options.initial_zoom) {
+      // at this point, this.options refers to the merged set of options
+      this.setZoom(this.options.initial_zoom);
+    }
+
+    // Create StorySlider
+    this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options);
+    this._storyslider.on('loaded', this._onStorySliderLoaded, this);
+    this._storyslider.init();
+
+    // Create Menu Bar
+    this._menubar = new MenuBar(this._el.menubar, this._el.container, this.options);
+
+    // LAYOUT
+    if (this.options.layout == "portrait") {
+      this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
+    } else {
+      this.options.storyslider_height = (this.options.height - 1);
+    }
+
+
+    // Update Display
+    this._updateDisplay(this._timenav.options.height, true, 2000);
+
+  }
+
+  _initEvents() {
+    // TimeNav Events
+    this._timenav.on('change', this._onTimeNavChange, this);
+    this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+
+    // StorySlider Events
+    this._storyslider.on('change', this._onSlideChange, this);
+    this._storyslider.on('colorchange', this._onColorChange, this);
+    this._storyslider.on('nav_next', this._onStorySliderNext, this);
+    this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
+
+    // Menubar Events
+    this._menubar.on('zoom_in', this._onZoomIn, this);
+    this._menubar.on('zoom_out', this._onZoomOut, this);
+    this._menubar.on('back_to_start', this._onBackToStart, this);
+
+  }
+
+  _onColorChange(e) {
+    this.fire("color_change", { unique_id: this.current_id }, this);
+  }
+
+  _onSlideChange(e) {
+    if (this.current_id != e.unique_id) {
+      this.current_id = e.unique_id;
+      this._timenav.goToId(this.current_id);
+      this._onChange(e);
+    }
+  }
+
+  _onTimeNavChange(e) {
+    if (this.current_id != e.unique_id) {
+      this.current_id = e.unique_id;
+      this._storyslider.goToId(this.current_id);
+      this._onChange(e);
+    }
+  }
+
+  _onZoomToggle(e) {
+    if (e.zoom == "in") {
+      this._menubar.toogleZoomIn(e.show);
+    } else if (e.zoom == "out") {
+      this._menubar.toogleZoomOut(e.show);
+    }
+
+  }
+
+
+
+  _onChange(e) {
+    this.fire("change", { unique_id: this.current_id }, this);
+    if (this.options.hash_bookmark && this.current_id) {
+      this._updateHashBookmark(this.current_id);
+    }
+  }
+
+  _onBackToStart(e) {
+    this._storyslider.goTo(0);
+    this.fire("back_to_start", { unique_id: this.current_id }, this);
+  }
+
+	/**
+	 * Zoom in and zoom out should be part of the public API.
+	 */
+  zoomIn() {
+    this._timenav.zoomIn();
+  }
+  zoomOut() {
+    this._timenav.zoomOut();
+  }
+
+  setZoom(level) {
+    this._timenav.setZoom(level);
+  }
+
+  _onZoomIn(e) {
+    this._timenav.zoomIn();
+    this.fire("zoom_in", { zoom_level: this._timenav.options.scale_factor }, this);
+  }
+
+  _onZoomOut(e) {
+    this._timenav.zoomOut();
+    this.fire("zoom_out", { zoom_level: this._timenav.options.scale_factor }, this);
+  }
+
+  _onTimeNavLoaded() {
+    this._loaded.timenav = true;
+    this._onLoaded();
+  }
+
+  _onStorySliderLoaded() {
+    this._loaded.storyslider = true;
+    this._onLoaded();
+  }
+
+  _onStorySliderNext(e) {
+    this.fire("nav_next", e);
+  }
+
+  _onStorySliderPrevious(e) {
+    this.fire("nav_previous", e);
+  }
+
+
+  _updateDisplay(timenav_height, animate, d) {
+    var duration = this.options.duration,
+      display_class = this.options.base_class,
+      menu_position = 0,
+      self = this;
+
+    if (d) {
+      duration = d;
+    }
+
+    // Update width and height
+    this.options.width = this._el.container.offsetWidth;
+    this.options.height = this._el.container.offsetHeight;
+
+    // Check if skinny
+    if (this.options.width <= this.options.skinny_size) {
+      display_class += " tl-skinny";
+      this.options.layout = "portrait";
+    } else if (this.options.width <= this.options.medium_size) {
+      display_class += " tl-medium";
+      this.options.layout = "landscape";
+    } else {
+      this.options.layout = "landscape";
+    }
+
+    // Detect Mobile and Update Orientation on Touch devices
+    if (Browser.touch) {
+      this.options.layout = Browser.orientation();
+    }
+
+    if (Browser.mobile) {
+      display_class += " tl-mobile";
+      // Set TimeNav Height
+      this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, this.options.timenav_mobile_height_percentage);
+    } else {
+      // Set TimeNav Height
+      this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
+    }
+
+    // LAYOUT
+    if (this.options.layout == "portrait") {
+      // Portrait
+      display_class += " tl-layout-portrait";
+
+    } else {
+      // Landscape
+      display_class += " tl-layout-landscape";
+
+    }
+
+    // Set StorySlider Height
+    this.options.storyslider_height = (this.options.height - this.options.timenav_height);
+
+    // Positon Menu
+    if (this.options.timenav_position == "top") {
+      menu_position = (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (39 / 2);
+    } else {
+      menu_position = Math.round(this.options.storyslider_height + 1 + (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (35 / 2));
+    }
+
+
+    if (animate) {
+
+      this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
+
+      // Animate StorySlider
+      if (this.animator_storyslider) {
+        this.animator_storyslider.stop();
+      }
+      this.animator_storyslider = Animate(this._el.storyslider, {
+        height: this.options.storyslider_height + "px",
+        duration: duration / 2,
+        easing: easeOutStrong
+      });
+
+      // Animate Menubar
+      if (this.animator_menubar) {
+        this.animator_menubar.stop();
+      }
+
+      this.animator_menubar = Animate(this._el.menubar, {
+        top: menu_position + "px",
+        duration: duration / 2,
+        easing: easeOutStrong
+      });
+
+    } else {
+      // TimeNav
+      this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
+
+      // StorySlider
+      this._el.storyslider.style.height = this.options.storyslider_height + "px";
+
+      // Menubar
+      this._el.menubar.style.top = menu_position + "px";
+    }
+
+    if (this.message) {
+      this.message.updateDisplay(this.options.width, this.options.height);
+    }
+    // Update Component Displays
+    this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
+    this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
+
+    if (this.options.language.direction == 'rtl') {
+      display_class += ' tl-rtl';
+    }
+
+
+    // Apply class
+    this._el.container.className = display_class;
+
+  }
+
+  /**
+   * Compute the height of the navigation section of the Timeline, taking 
+   *     into account the possibility of an explicit height or height 
+   *     percentage, but also honoring the `timenav_height_min` option 
+   *     value. If `timenav_height` is specified it takes precedence over 
+   *     `timenav_height_percentage` but in either case, if the resultant 
+   *     pixel height is less than `options.timenav_height_min` then the 
+   *     value of `options.timenav_height_min` will be returned. (A minor 
+   *     adjustment is made to the returned value to account for marker 
+   *     padding.)
+   * 
+   * @param {number} [timenav_height] - an integer value for the desired height in pixels
+   * @param {number} [timenav_height_percentage] - an integer between 1 and 100
+   */
+  _calculateTimeNavHeight(timenav_height, timenav_height_percentage) {
+
+    var height = 0;
+
+    if (timenav_height) {
+      height = timenav_height;
+    } else {
+      if (this.options.timenav_height_percentage || timenav_height_percentage) {
+        if (timenav_height_percentage) {
+          height = Math.round((this.options.height / 100) * timenav_height_percentage);
+        } else {
+          height = Math.round((this.options.height / 100) * this.options.timenav_height_percentage);
+        }
+
+      }
+    }
+
+    // Set new minimum based on how many rows needed
+    if (this._timenav.ready) {
+      if (this.options.timenav_height_min < this._timenav.getMinimumHeight()) {
+        this.options.timenav_height_min = this._timenav.getMinimumHeight();
+      }
+    }
+
+    // If height is less than minimum set it to minimum
+    if (height < this.options.timenav_height_min) {
+      height = this.options.timenav_height_min;
+    }
+
+    height = height - (this.options.marker_padding * 2);
+
+    return height;
   }
 
   _validateOptions() {
@@ -289,10 +622,113 @@ class Timeline {
       }
     }
   } 
+
+    /*  Get index of slide by id
+  ================================================== */
+  _getSlideIndex(id) {
+    if (this.config.title && this.config.title.unique_id == id) {
+      return 0;
+    }
+    for (var i = 0; i < this.config.events.length; i++) {
+      if (id == this.config.events[i].unique_id) {
+        return this.config.title ? i + 1 : i;
+      }
+    }
+    return -1;
+  }
+
+  _onTimeNavLoaded() {
+    this._loaded.timenav = true;
+    this._onLoaded();
+  }
+
+  _onStorySliderLoaded() {
+    this._loaded.storyslider = true;
+    this._onLoaded();
+  }
+
+  _onLoaded() {
+    if (this._loaded.storyslider && this._loaded.timenav) {
+      this.fire("loaded", this.config);
+      // Go to proper slide
+      if (this.options.hash_bookmark && window.location.hash != "") {
+        this.goToId(window.location.hash.replace("#event-", ""));
+      } else {
+        if (isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length) {
+          this.goToEnd();
+        } else {
+          this.goTo(this.options.start_at_slide);
+        }
+        if (this.options.hash_bookmark) {
+          this._updateHashBookmark(this.current_id);
+        }
+      }
+
+    }
+  }
+
+  // Update hashbookmark in the url bar
+  _updateHashBookmark(id) {
+    var hash = "#" + "event-" + id.toString();
+    window.history.replaceState(null, "Browsing TimelineJS", hash);
+    this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
+  }
+
+
+  // Goto slide with id
+  goToId(id) {
+    if (this.current_id != id) {
+      this.current_id = id;
+      this._timenav.goToId(this.current_id);
+      this._storyslider.goToId(this.current_id, false, true);
+      this.fire("change", { unique_id: this.current_id }, this);
+    }
+  }
+
+  // Goto slide n
+  goTo(n) {
+    if (this.config.title) {
+      if (n == 0) {
+        this.goToId(this.config.title.unique_id);
+      } else {
+        this.goToId(this.config.events[n - 1].unique_id);
+      }
+    } else {
+      this.goToId(this.config.events[n].unique_id);
+    }
+  }
+
+  // Goto first slide
+  goToStart() {
+    this.goTo(0);
+  }
+
+  // Goto last slide
+  goToEnd() {
+    var _n = this.config.events.length - 1;
+    this.goTo(this.config.title ? _n + 1 : _n);
+  }
+
+  // Goto previous slide
+  goToPrev() {
+    this.goTo(this._getSlideIndex(this.current_id) - 1);
+  }
+
+  // Goto next slide
+  goToNext() {
+    this.goTo(this._getSlideIndex(this.current_id) + 1);
+  }
+
+  updateDisplay() {
+    if (this.ready) {
+      this._updateDisplay();
+    }
+  }
+
+
 }
 
-classMixin(Timeline, I18NMixins) // TODO mixin Events after its a class
+classMixin(Timeline, I18NMixins, Events)
 
-var debug = false; // can we fiddle with this and if others do, does that propogate?
 export { Timeline, debug }
 

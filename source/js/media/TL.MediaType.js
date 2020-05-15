@@ -12,7 +12,7 @@
     TODO
     Allow array so a slideshow can be a mediatype
 ================================================== */
-TL.MediaType = function(m, image_only) {
+ export function lookupMediaType(m, image_only) {
     var media = {},
         media_types =     [
             {

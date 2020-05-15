@@ -4,14 +4,15 @@
 ================================================== */
 import { TLClass } from "../core/TLClass"
 import { Language } from "../language/Language"
-import { TLError } from "../core/TLError";
-import { mergeData, trim } from "../core/Util"
+import TLError from "../core/TLError"
+
+import { mergeData, trim, trace } from "../core/Util"
 
 //
 // Class for human dates
 //
 
-const SCALES = [
+export const SCALES = [
     // ( name, units_per_tick, flooring function )
     ["millisecond", 1, function(d) {}],
     [
@@ -400,7 +401,7 @@ export function parseDate(str) {
         parsed.month = date_parts[0];
         parsed.year = date_parts[1];
     }
-    // todo: handle hours, minutes, seconds, millis other date formats, etc...
+
     if (str.match(":")) {
         var time_parts = str.split(":");
         parsed.hour = time_parts[0];
@@ -454,7 +455,7 @@ function Floorer(unit) {
 }
 
 // cosmological scales
-const BIG_DATE_SCALES = [ // ( name, units_per_tick, flooring function )
+export const BIG_DATE_SCALES = [ // ( name, units_per_tick, flooring function )
     ['year',1, new Floorer(1)],
     ['decade',10, new Floorer(10)],
     ['century',100, new Floorer(100)],

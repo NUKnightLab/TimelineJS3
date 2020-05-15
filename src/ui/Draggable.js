@@ -2,39 +2,36 @@
 	Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
 ================================================== */
 import { TLClass } from "../core/TLClass"
-import { Events } from "../core/Events"
+import Events from "../core/Events"
 import { touch as BROWSER_TOUCH } from "../core/Browser"
-import { mergeData } from "../core/Util"
+import { mergeData, classMixin } from "../core/Util"
 import { getPosition } from "../dom/DOM"
 import { DOMEvent } from "../dom/DOMEvent"
 import { Animate } from "../animation/Animate"
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease"
 
-var Draggable = TLClass.extend({
-    includes: Events,
+export class Draggable{
 
-    _el: {},
-
-    mousedrag: {
-        down: "mousedown",
-        up: "mouseup",
-        leave: "mouseleave",
-        move: "mousemove"
-    },
-
-    touchdrag: {
-        down: "touchstart",
-        up: "touchend",
-        leave: "mouseleave",
-        move: "touchmove"
-    },
-
-    initialize: function(drag_elem, options, move_elem) {
+    constructor(drag_elem, options, move_elem) {
         // DOM ELements
         this._el = {
             drag: drag_elem,
             move: drag_elem
-        };
+        }
+
+        this.mousedrag = {
+            down: "mousedown",
+            up: "mouseup",
+            leave: "mouseleave",
+            move: "mousemove"
+        }
+
+        this.touchdrag = {
+            down: "touchstart",
+            up: "touchend",
+            leave: "mouseleave",
+            move: "touchmove"
+        }
 
         if (move_elem) {
             this._el.move = move_elem;
@@ -106,16 +103,16 @@ var Draggable = TLClass.extend({
 
         // Merge Data and Options
         mergeData(this.options, options);
-    },
+    }
 
-    enable: function(e) {
+    enable(e) {
         this.data.pos.start = 0;
         this._el.move.style.left = this.data.pos.start.x + "px";
         this._el.move.style.top = this.data.pos.start.y + "px";
         this._el.move.style.position = "absolute";
-    },
+    }
 
-    disable: function() {
+    disable() {
         DOMEvent.removeListener(
             this._el.drag,
             this.dragevent.down,
@@ -128,21 +125,21 @@ var Draggable = TLClass.extend({
             this._onDragEnd,
             this
         );
-    },
+    }
 
-    stopMomentum: function() {
+    stopMomentum() {
         if (this.animator) {
             this.animator.stop();
         }
-    },
+    }
 
-    updateConstraint: function(c) {
+    updateConstraint(c) {
         this.options.constraint = c;
-    },
+    }
 
     /*	Private Methods
 	================================================== */
-    _onDragStart: function(e) {
+    _onDragStart(e) {
         if (BROWSER_TOUCH) {
             if (e.originalEvent) {
                 this.data.pagex.start = e.originalEvent.touches[0].screenX;
@@ -183,9 +180,9 @@ var Draggable = TLClass.extend({
             this._onDragEnd,
             this
         );
-    },
+    }
 
-    _onDragEnd: function(e) {
+    _onDragEnd(e) {
         this.data.sliding = false;
         DOMEvent.removeListener(
             this._el.drag,
@@ -203,9 +200,9 @@ var Draggable = TLClass.extend({
 
         //  momentum
         this._momentum();
-    },
+    }
 
-    _onDragMove: function(e) {
+    _onDragMove(e) {
         e.preventDefault();
         this.data.sliding = true;
 
@@ -243,9 +240,9 @@ var Draggable = TLClass.extend({
         }
 
         this.fire("dragmove", this.data);
-    },
+    }
 
-    _momentum: function() {
+    _momentum() {
         var pos_adjust = {
                 x: 0,
                 y: 0,
@@ -315,9 +312,9 @@ var Draggable = TLClass.extend({
         if (swipe) {
             this.fire("swipe_" + this.data.direction, this.data);
         }
-    },
+    }
 
-    _animateMomentum: function() {
+    _animateMomentum() {
         var pos = {
                 x: this.data.new_pos.x,
                 y: this.data.new_pos.y
@@ -353,6 +350,6 @@ var Draggable = TLClass.extend({
 
         this.fire("momentum", this.data);
     }
-});
+}
 
-export { Draggable };
+classMixin(Events)

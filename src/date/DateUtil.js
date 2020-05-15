@@ -1,4 +1,5 @@
-import { TLError } from "../core/TLError";
+import TLError from "../core/TLError"
+
 import { TLDate, BigDate } from "../date/TLDate"
 import { trim } from "../core/Util"
 
@@ -16,7 +17,7 @@ function get(id) {
 }
 
 
-function parseTime(time_str) {
+export function parseTime(time_str) {
 	var parsed = {
 		hour: null, minute: null, second: null, millisecond: null // conform to keys in TLDate
 	}

@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Bundled TimelineJS test page</title>
+        <link rel="stylesheet" href="http://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+        <script>
+            function ready(fn) {
+                if (document.readyState != 'loading'){
+                    fn();
+                } else {
+                    document.addEventListener('DOMContentLoaded', fn);
+                }
+            }
+            ready(function() {
+                window.timeline = new TL.Timeline('foobar','https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml')
+            })
+        </script>
+    </head>
+    <body>
+        <h1>Timeline Ho</h1>
+        <div id='foobar'></div>
+    </body>
+</html>

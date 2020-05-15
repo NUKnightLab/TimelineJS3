@@ -1,8 +1,9 @@
 import { TimelineConfig } from "../core/TimelineConfig"
 import { trim, isEmptyObject, mergeData, trace } from "../core/Util";
 import { TLDate } from "../date/TLDate"
-import { TLError } from "../core/TLError"
+import TLError from "../core/TLError"
 import { ajax } from "../net/Net"
+import { parseTime } from "../date/DateUtil"
 
 export function parseGoogleSpreadsheetURL(url) {
     let parts = {
@@ -109,11 +110,11 @@ function extractGoogleEntryData_V3(item) {
     }
 
     if (item_data.time) {
-        mergeData(d.start_date, TL.DateUtil.parseTime(item_data.time));
+        mergeData(d.start_date, parseTime(item_data.time));
     }
 
     if (item_data.endtime) {
-        mergeData(d.end_date, TL.DateUtil.parseTime(item_data.endtime));
+        mergeData(d.end_date, parseTime(item_data.endtime));
     }
 
 
@@ -275,11 +276,11 @@ function extractGoogleEntryData_V4(column, item) {
 
 
     if (item_data.time) {
-        mergeData(event.start_date, TL.DateUtil.parseTime(item[3]));
+        mergeData(event.start_date, parseTime(item[3]));
     }
 
     if (item_data.endtime) {
-        mergeData(event.end_date, TL.DateUtil.parseTime(item_data.endtime));
+        mergeData(event.end_date, parseTime(item_data.endtime));
     }
 
     if (item_data.group) {

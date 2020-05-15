@@ -1,7 +1,10 @@
 /*	Util
 	Class of utilities
+
+isEven, findArrayNumberByUniqueID
+
 ================================================== */
-import { TLError } from "../core/TLError"
+import TLError from "../core/TLError"
 var TIMELINE_DEBUG = true; // how to adapt this to "global"
 
 const css_named_colors = {
@@ -300,14 +303,14 @@ export function classMixin(cls, ...src) {
 }
 
 export function ensureUniqueKey(obj, candidate) {
-	if (!candidate) { candidate = TL.Util.unique_ID(6); }
+	if (!candidate) { candidate = unique_ID(6); }
 
 	if (!(candidate in obj)) { return candidate; }
 
 	var root = candidate.match(/^(.+)(-\d+)?$/)[1];
 	var similar_ids = [];
 	// get an alternative
-	for (key in obj) {
+	for (let key in obj) {
 		if (key.match(/^(.+?)(-\d+)?$/)[1] == root) {
 			similar_ids.push(key);
 		}
@@ -382,26 +385,137 @@ export function unique_ID(size, prefix) {
 	}
 }
 
+export function findNextGreater(list, current, default_value) {
+	// given a sorted list and a current value which *might* be in the list,
+	// return the next greatest value if the current value is >= the last item in the list, return default,
+	// or if default is undefined, return input value
+	for (var i = 0; i < list.length; i++) {
+		if (current < list[i]) {
+			return list[i];
+		}
+	}
+
+	return (default_value) ? default_value : current;
+}
+
+export function findNextLesser(list, current, default_value) {
+	// given a sorted list and a current value which *might* be in the list,
+	// return the next lesser value if the current value is <= the last item in the list, return default,
+	// or if default is undefined, return input value
+	for (var i = list.length - 1; i >= 0; i--) {
+		if (current > list[i]) {
+			return list[i];
+		}
+	}
+
+	return (default_value) ? default_value : current;
+}
+
+export function isEven(n) {
+	return n == parseFloat(n) ? !(n % 2) : void 0;
+}
+
+export function findArrayNumberByUniqueID(id, array, prop, defaultVal) {
+	var _n = defaultVal || 0;
+
+	for (var i = 0; i < array.length; i++) {
+		if (array[i].data[prop] == id) {
+			_n = i;
+		}
+	};
+
+	return _n;
+}
+
+export function unlinkify(text) {
+	if (!text) return text;
+	text = text.replace(/<a\b[^>]*>/i, "");
+	text = text.replace(/<\/a>/i, "");
+	return text;
+}
+
+export function setData(obj, data) {
+	obj.data = extend({}, obj.data, data);
+	if (obj.data.unique_id === "") {
+		obj.data.unique_id = unique_ID(6);
+	}
+}
+
+export function htmlify(str) {
+	//if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
+	if (str.match(/<p>[\s\S]*?<\/p>/)) {
+
+		return str;
+	} else {
+		return "<p>" + str + "</p>";
+	}
+}
+
+export function unhtmlify(str) {
+	str = str.replace(/(<[^>]*>)+/g, '');
+	return str.replace('"', "'");
+}
+
+/*	* Turns plain text links into real links
+================================================== */
+export function linkify(text, targets, is_touch) {
+
+	var make_link = function (url, link_text, prefix) {
+		if (!prefix) {
+			prefix = "";
+		}
+		var MAX_LINK_TEXT_LENGTH = 30;
+		if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
+			link_text = link_text.substring(0, MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
+		}
+		return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
+	}
+	// http://, https://, ftp://
+	var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
+
+	// www. sans http:// or https://
+	var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
+
+	// Email addresses
+	var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
+
+
+	return text
+		.replace(urlPattern, function (match, url_sans_protocol, offset, string) {
+			// Javascript doesn't support negative lookbehind assertions, so
+			// we need to handle risk of matching URLs in legit hrefs
+			if (offset > 0) {
+				var prechar = string[offset - 1];
+				if (prechar == '"' || prechar == "'" || prechar == "=") {
+					return match;
+				}
+			}
+			return make_link(match, url_sans_protocol);
+		})
+		.replace(pseudoUrlPattern, function (match, beforePseudo, pseudoUrl, offset, string) {
+			return make_link('http://' + pseudoUrl, pseudoUrl, beforePseudo);
+		})
+		.replace(emailAddressPattern, function (match, email, offset, string) {
+			return make_link('mailto:' + email, email);
+		});
+}
+
+/**
+ * Try to make seamless the process of interpreting a URL to a web page which embeds an image for sharing purposes
+ * as a direct image link. Some services have predictable transformations we can use rather than explain to people
+ * this subtlety.
+ */
+export function transformImageURL(url) {
+	return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
+}
+
+
+
+
 //---- below yet to be processed
 
 
 let Util = { // convert to export
-
-	isEven: function(n) {
-	  return n == parseFloat(n)? !(n%2) : void 0;
-	},
-
-	findArrayNumberByUniqueID: function(id, array, prop, defaultVal) {
-		var _n = defaultVal || 0;
-
-		for (var i = 0; i < array.length; i++) {
-			if (array[i].data[prop] == id) {
-				_n = i;
-			}
-		};
-
-		return _n;
-	},
 
 	convertUnixTime: function(str) {
 		var _date, _months, _year, _month, _day, _time, _date_array = [],
@@ -433,13 +547,6 @@ let Util = { // convert to export
 		return _time;
 	},
 
-	setData: function (obj, data) {
-		obj.data = extend({}, obj.data, data);
-		if (obj.data.unique_id === "") {
-			obj.data.unique_id = TL.Util.unique_ID(6);
-		}
-	},
-
 	isArray: (function () {
 	    // Use compiler's own isArray when available
 	    if (Array.isArray) {
@@ -462,71 +569,6 @@ let Util = { // convert to export
 
 
 
-	htmlify: function(str) {
-		//if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
-		if (str.match(/<p>[\s\S]*?<\/p>/)) {
-
-			return str;
-		} else {
-			return "<p>" + str + "</p>";
-		}
-	},
-
-	unhtmlify: function(str) {
-		str = str.replace(/(<[^>]*>)+/g, '');
-		return str.replace('"', "'");
-	},
-
-	/*	* Turns plain text links into real links
-	================================================== */
-	linkify: function(text,targets,is_touch) {
-
-        var make_link = function(url, link_text, prefix) {
-            if (!prefix) {
-                prefix = "";
-            }
-            var MAX_LINK_TEXT_LENGTH = 30;
-            if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
-                link_text = link_text.substring(0,MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
-            }
-            return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
-        }
-		// http://, https://, ftp://
-		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
-
-		// www. sans http:// or https://
-		var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
-
-		// Email addresses
-		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
-
-
-		return text
-			.replace(urlPattern, function(match, url_sans_protocol, offset, string) {
-                // Javascript doesn't support negative lookbehind assertions, so
-                // we need to handle risk of matching URLs in legit hrefs
-                if (offset > 0) {
-                    var prechar = string[offset-1];
-                    if (prechar == '"' || prechar == "'" || prechar == "=") {
-                        return match;
-                    }
-                }
-                return make_link(match, url_sans_protocol);
-            })
-			.replace(pseudoUrlPattern, function(match, beforePseudo, pseudoUrl, offset, string) {
-                return make_link('http://' + pseudoUrl, pseudoUrl, beforePseudo);
-            })
-			.replace(emailAddressPattern, function(match, email, offset, string) {
-                return make_link('mailto:' + email, email);
-            });
-	},
-
-	unlinkify: function(text) {
-		if(!text) return text;
-		text = text.replace(/<a\b[^>]*>/i,"");
-		text = text.replace(/<\/a>/i, "");
-		return text;
-	},
 
 	getParamString: function (obj) {
 		var params = [];
@@ -546,28 +588,6 @@ let Util = { // convert to export
 	falseFn: function () {
 		return false;
 	},
-
-	requestAnimFrame: (function () {
-		function timeoutDefer(callback) {
-			window.setTimeout(callback, 1000 / 60);
-		}
-
-		var requestFn = window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			timeoutDefer;
-
-		return function (callback, context, immediate, contextEl) {
-			callback = context ? TL.Util.bind(callback, context) : callback;
-			if (immediate && requestFn === timeoutDefer) {
-				callback();
-			} else {
-				requestFn(callback, contextEl);
-			}
-		};
-	}()),
 
 	bind: function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
 		return function () {
@@ -662,33 +682,6 @@ let Util = { // convert to export
 		return vars;
 	},
 
-    findNextGreater: function(list, current, default_value) {
-        // given a sorted list and a current value which *might* be in the list,
-        // return the next greatest value if the current value is >= the last item in the list, return default,
-        // or if default is undefined, return input value
-        for (var i = 0; i < list.length; i++) {
-            if (current < list[i]) {
-                return list[i];
-            }
-        }
-
-        return (default_value) ? default_value : current;
-    },
-
-    findNextLesser: function(list, current, default_value) {
-        // given a sorted list and a current value which *might* be in the list,
-        // return the next lesser value if the current value is <= the last item in the list, return default,
-        // or if default is undefined, return input value
-        for (var i = list.length - 1; i >= 0; i--) {
-            if (current > list[i]) {
-                return list[i];
-            }
-        }
-
-        return (default_value) ? default_value : current;
-    },
-
-
 	parseYouTubeTime: function(s) {
 	    // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
 		if (typeof(s) == 'string') {
@@ -704,15 +697,6 @@ let Util = { // convert to export
 		}
 		return 0;
 	},
-	/**
-	 * Try to make seamless the process of interpreting a URL to a web page which embeds an image for sharing purposes
-	 * as a direct image link. Some services have predictable transformations we can use rather than explain to people
-	 * this subtlety.
-	 */
-	transformImageURL: function(url) {
-		return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
-	},
-
 	base58: (function(alpha) {
 	    var alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
 	        base = alphabet.length;

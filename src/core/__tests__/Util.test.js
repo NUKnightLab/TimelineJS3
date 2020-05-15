@@ -1,4 +1,7 @@
-import { hexToRgb, rgbToHex, maxDepth, trim, isTrue, isEmptyObject } from "../Util";
+import { hexToRgb, rgbToHex, maxDepth, 
+    trim, isTrue, isEmptyObject, 
+    findNextGreater, findNextLesser, 
+    ensureUniqueKey, linkify } from "../Util";
 
 test("isEmptyObject",() => {
     //"no keys should be empty"
@@ -167,62 +170,76 @@ test("isTrue 1 is true",() => {
     expect(isTrue(1)).toBe(true)
 })
 
+test("various findNextGreater and findNextLesser tests",() => {
+    var l = [1, 5, 10, 20, 35];
+    expect(findNextGreater(l, 1)).toBe(5) // "5 is next greatest after 1"
+    expect(findNextGreater(l, 5)).toBe(10) // "10 is next greatest after 5"
+    expect(findNextGreater(l, 10)).toBe(20) // "20 is next greatest after 10"
+    expect(findNextGreater(l, 15)).toBe(20) // "correctly handle a curr val which isn't in the list"
+    expect(findNextGreater(l, 35)).toBe(35) // "handle value at end of list"
+    expect(findNextGreater(l, 40)).toBe(40) // "handle value greater than max in list"
+    expect(findNextGreater(l, 40, 35)).toBe(35) // "handle greater than max in list with default"
+
+    expect(findNextLesser(l, 1)).toBe(1) // "1 is least"
+    expect(findNextLesser(l, 5)).toBe(1) // "1 is least after 5"
+    expect(findNextLesser(l, 10)).toBe(5) // "20 is next greatest after 10"
+    expect(findNextLesser(l, 15)).toBe(10) // "10 is less than 15 (which isn't in list)"
+    expect(findNextLesser(l, 35)).toBe(20) // "20 less than 35"
+    expect(findNextLesser(l, 40)).toBe(35) // "35 is less than 40"
+    expect(findNextLesser(l, 0, 0)).toBe(0) // "handle less than min in list without default"
+    expect(findNextLesser(l, 0, -10)).toBe(-10) // "handle less than min in list with default"
+})
+
+test("ensureUniqueKey tests",() => {
+    var o = { foo: 1, bar: 2 }
+    expect(ensureUniqueKey(o, 'foo') in o).toBeFalsy() // what comes back should not have been in there
+    expect(ensureUniqueKey(o, 'baz')).toBe('baz')   // "not in there, give it back"
+    expect(ensureUniqueKey(o, 'foo')).toBe('foo-2') // "treat existing as 1-based"
+
+    o['foo-2'] = 3;
+    expect(ensureUniqueKey(o, 'foo') in o).toBeFalsy() // what comes back should not have been in there
+
+    var random = ensureUniqueKey(o, '');
+    expect(trim(random)).toBeTruthy() // "Should get a non-empty string"
+    expect(random in o).toBeFalsy() // "empty string should get non-empty unique");
+    
+})
+
+test("linkify",() => {
+    var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
+    var linked = linkify(text);
+    expect(linked.startsWith('This is some text with a URL in it <a')).toBeTruthy()
+    expect(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/)).toBeTruthy()
+    expect(linked.match(/>knightlab.northwestern.edu<\/a>/)).toBeTruthy()
+
+    text = "This is some text with www.google.com in it";
+    var linked = linkify(text);
+    expect(linked.startsWith('This is some text with <a')).toBeTruthy()
+    expect(linked.match(/href=['"]http:\/\/www.google.com['"]/)).toBeTruthy()
+    expect(linked.match(/>www.google.com<\/a>/)).toBeTruthy()
+
+    text = "This is some text with support@knightlab.zendesk.com in it";
+    var linked = linkify(text);
+    expect(linked.startsWith('This is some text with <a')).toBeTruthy()
+    expect(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/)).toBeTruthy()
+    expect(linked.match(/>support@knightlab.zendesk.com<\/a>/)).toBeTruthy()
+
+    text = "This is text which already has <a href='http://google.com'>a link</a> in it."
+    var not_linked = linkify(text);
+    expect(not_linked).toBe(text)
+
+    text = 'This is text which already has <a href="http://google.com">a link</a> in it.'
+    var not_linked = linkify(text);
+    expect(not_linked).toBe(text)
+
+    text = 'This is text which already has <a href=http://google.com>a link</a> in it.'
+    var not_linked = linkify(text);
+    expect(not_linked).toBe(text)
+    
+})
 /**
-.Util.linkify", function(assert) {
-        var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
-        var linked = TL.Util.linkify(text);
-        assert.ok(linked.startsWith('This is some text with a URL in it <a'), "should start the same and then have a link -> " + linked);
-        assert.ok(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/), "should have an href -> " + linked);
-        assert.ok(linked.match(/>knightlab.northwestern.edu<\/a>/), "should have an href " + linked);
 
-        text = "This is some text with www.google.com in it";
-        var linked = TL.Util.linkify(text);
-        assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
-        assert.ok(linked.match(/href=['"]http:\/\/www.google.com['"]/), "should have an href");
-        assert.ok(linked.match(/>www.google.com<\/a>/), "should have the right link text");
-
-        text = "This is some text with support@knightlab.zendesk.com in it";
-        var linked = TL.Util.linkify(text);
-        assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
-        assert.ok(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/), "should have an href " + linked);
-        assert.ok(linked.match(/>support@knightlab.zendesk.com<\/a>/), "should have the right link text " + linked);
-
-        text = "This is text which already has <a href='http://google.com'>a link</a> in it."
-        var not_linked = TL.Util.linkify(text);
-        assert.equal(not_linked,text,'linkify should not have changed anything.')
-
-        text = 'This is text which already has <a href="http://google.com">a link</a> in it.'
-        var not_linked = TL.Util.linkify(text);
-        assert.equal(not_linked,text,'linkify should not have changed anything.')
-
-        text = 'This is text which already has <a href=http://google.com>a link</a> in it.'
-        var not_linked = TL.Util.linkify(text);
-        assert.equal(not_linked,text,'linkify should not have changed anything.')
-
-      })
-
-      QUnit.test("TL.Util.findNextGreater", function(assert) {
-        var l = [1, 5, 10, 20, 35];
-        assert.equal(TL.Util.findNextGreater(l,1),5, "5 is next greatest after 1");
-        assert.equal(TL.Util.findNextGreater(l,5),10, "10 is next greatest after 5");
-        assert.equal(TL.Util.findNextGreater(l,10),20, "20 is next greatest after 10");
-        assert.equal(TL.Util.findNextGreater(l,15),20, "correctly handle a curr val which isn't in the list");
-        assert.equal(TL.Util.findNextGreater(l,35),35, "handle value at end of list");
-        assert.equal(TL.Util.findNextGreater(l,40),40, "handle value greater than max in list");
-        assert.equal(TL.Util.findNextGreater(l,40, 35),35, "handle greater than max in list with default");
-
-        assert.equal(TL.Util.findNextLesser(l,1),1, "1 is least");
-        assert.equal(TL.Util.findNextLesser(l,5),1, "1 is least after 5");
-        assert.equal(TL.Util.findNextLesser(l,10),5, "20 is next greatest after 10");
-        assert.equal(TL.Util.findNextLesser(l,15),10, "10 is less than 15 (which isn't in list)");
-        assert.equal(TL.Util.findNextLesser(l,35),20, "20 less than 35");
-        assert.equal(TL.Util.findNextLesser(l,40),35, "35 is less than 40");
-        assert.equal(TL.Util.findNextLesser(l,0, 0),0, "handle less than min in list without default");
-        assert.equal(TL.Util.findNextLesser(l,0, -10),-10, "handle less than min in list with default");
-      })
-
-
-      QUnit.test("TL.Util.parseYouTubeTime", function(assert) {
+QUnit.test("TL.Util.parseYouTubeTime", function(assert) {
           assert.equal(TL.Util.parseYouTubeTime('5s'),5,"parse seconds only")
           assert.equal(TL.Util.parseYouTubeTime('1m5s'),65,"parse m/s")
           assert.equal(TL.Util.parseYouTubeTime('2h4m5s'),7445,"parse h/m/s")
@@ -234,24 +251,12 @@ test("isTrue 1 is true",() => {
           assert.equal(TL.Util.parseYouTubeTime(5),5,"handle number")
       });
 
-      QUnit.test("TL.Util.ensureUniqueKey", function(assert) {
-          var o = { foo: 1, bar: 2 }
-          assert.ok(!(TL.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
-          assert.equal(TL.Util.ensureUniqueKey(o, 'baz'), 'baz', "not in there, give it back");
-          assert.equal(TL.Util.ensureUniqueKey(o, 'foo'), 'foo-2', "treat existing as 1-based");
-          o['foo-2'] = 3;
-          assert.ok(!(TL.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
-          var random = TL.Util.ensureUniqueKey(o, '');
-          assert.ok(TL.Util.trim(random), "Should get a non-empty string");
-          assert.ok(!(random in o), "empty string should get non-empty unique");
-      });
 
  */
 
 
 /* to port from unit-tests.html
     linkify
-    findNextGreater
     isEmptyObject
     parseYouTubeTime
     ensureUniqueKey

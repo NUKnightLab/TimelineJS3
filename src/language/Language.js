@@ -1,4 +1,4 @@
-import { mergeData, pad } from "../core/Util"
+import { mergeData, pad, trace } from "../core/Util"
 import { ajax } from "../net/Net"
 import { BigYear } from "../date/TLDate"
 

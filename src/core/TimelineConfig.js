@@ -1,7 +1,7 @@
 import { sortByDate, SCALE_DATE_CLASSES } from "../date/DateUtil"
 import { BigDate } from "../date/TLDate"
 import { trim, ensureUniqueKey, slugify, unique_ID, trace } from "../core/Util"
-import { TLError } from "../core/TLError"
+import TLError from "../core/TLError"
 
 export class TimelineConfig{
     constructor(data) {
@@ -230,7 +230,7 @@ export class TimelineConfig{
             if (typeof (slide_or_era.end_date) != 'undefined' && !(slide_or_era.end_date instanceof dateCls)) {
                 var end_date = slide_or_era.end_date;
                 var equal = true;
-                for (property in start_date) {
+                for (let property in start_date) {
                     equal = equal && (start_date[property] == end_date[property]);
                 }
                 if (equal) {

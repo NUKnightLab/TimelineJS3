@@ -1,43 +1,37 @@
-import { classMixin } from "../core/Util"
-import { Events } from "../core/Events"
+import { classMixin, mergeData } from "../core/Util"
+import Events from "../core/Events"
+import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
+import { Animate } from "../animation/Animate"
+import { touch as BROWSER_TOUCH } from "../core/Browser";
+import { DOMEvent } from "../dom/DOMEvent"
 
-/*	TL.Swipable
-	TL.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
-	TODO Enable constraints
-================================================== */
+export default class Swipable {
 
-TL.Swipable = TL.Class.extend({
-	
-	includes: TL.Events,
-	
-	_el: {},
-	
-	mousedrag: {
-		down:		"mousedown",
-		up:			"mouseup",
-		leave:		"mouseleave",
-		move:		"mousemove"
-	},
-	
-	touchdrag: {
-		down:		"touchstart",
-		up:			"touchend",
-		leave:		"mouseleave",
-		move:		"touchmove"
-	},
-
-	initialize: function (drag_elem, move_elem, options) {
+	constructor(drag_elem, move_elem, options) {
 		
 		// DOM ELements 
 		this._el = {
 			drag: drag_elem,
 			move: drag_elem
 		};
-		
+
+		this.mousedrag = {
+			down:		"mousedown",
+			up:			"mouseup",
+			leave:		"mouseleave",
+			move:		"mousemove"
+		}
+
+		this.touchdrag = {
+			down:		"touchstart",
+			up:			"touchend",
+			leave:		"mouseleave",
+			move:		"touchmove"
+		}
+
 		if (move_elem) {
 			this._el.move = move_elem;
 		}
-		
 		
 		//Options
 		this.options = {
@@ -54,7 +48,7 @@ TL.Swipable = TL.Class.extend({
 			},
 			momentum_multiplier: 	2000,
 			duration: 				1000,
-			ease: 					TL.Ease.easeInOutQuint
+			ease: 					easeInOutQuint
 		};
 		
 		
@@ -64,7 +58,7 @@ TL.Swipable = TL.Class.extend({
 		// Drag Event Type
 		this.dragevent = this.mousedrag;
 		
-		if (TL.Browser.touch) {
+		if (BROWSER_TOUCH) {
 			this.dragevent = this.touchdrag;
 		}
 		
@@ -106,51 +100,51 @@ TL.Swipable = TL.Class.extend({
 		};
 		
 		// Merge Data and Options
-		TL.Util.mergeData(this.options, options);
+		mergeData(this.options, options);
 		
 		
-	},
+	}
 	
-	enable: function(e) {
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
+	enable(e) {
+		DOMEvent.addListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
+		DOMEvent.addListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
 		
-		this.data.pos.start = 0; //TL.Dom.getPosition(this._el.move);
+		this.data.pos.start = 0; 
 		this._el.move.style.left = this.data.pos.start.x + "px";
 		this._el.move.style.top = this.data.pos.start.y + "px";
 		this._el.move.style.position = "absolute";
 		//this._el.move.style.zIndex = "11";
 		//this._el.move.style.cursor = "move";
-	},
+	}
 	
-	disable: function() {
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
-	},
+	disable() {
+		DOMEvent.removeListener(this._el.drag, this.dragevent.down, this._onDragStart, this);
+		DOMEvent.removeListener(this._el.drag, this.dragevent.up, this._onDragEnd, this);
+	}
 	
-	stopMomentum: function() {
+	stopMomentum() {
 		if (this.animator) {
 			this.animator.stop();
 		}
 
-	},
+	}
 	
-	updateConstraint: function(c) {
+	updateConstraint(c) {
 		this.options.constraint = c;
 		
 		// Temporary until issues are fixed
 		
-	},
+	}
 	
 	/*	Private Methods
 	================================================== */
-	_onDragStart: function(e) {
+	_onDragStart(e) {
 		
 		if (this.animator) {
 			this.animator.stop();
 		}
 		
-		if (TL.Browser.touch) {
+		if (BROWSER_TOUCH) {
 			if (e.originalEvent) {
 				this.data.pagex.start = e.originalEvent.touches[0].screenX;
 				this.data.pagey.start = e.originalEvent.touches[0].screenY;
@@ -178,21 +172,21 @@ TL.Swipable = TL.Class.extend({
 		this.data.time.start 			= new Date().getTime();
 		
 		this.fire("dragstart", this.data);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
-		TL.DomEvent.addListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
-	},
+		DOMEvent.addListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
+		DOMEvent.addListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
+	}
 	
-	_onDragEnd: function(e) {
+	_onDragEnd(e) {
 		this.data.sliding = false;
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
-		TL.DomEvent.removeListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
+		DOMEvent.removeListener(this._el.drag, this.dragevent.move, this._onDragMove, this);
+		DOMEvent.removeListener(this._el.drag, this.dragevent.leave, this._onDragEnd, this);
 		this.fire("dragend", this.data);
 		
 		//  momentum
 		this._momentum();
-	},
+	}
 	
-	_onDragMove: function(e) {
+	_onDragMove(e) {
 		var change = {
 			x:0,
 			y:0
@@ -200,7 +194,7 @@ TL.Swipable = TL.Class.extend({
 		//e.preventDefault();
 		this.data.sliding = true;
 		
-		if (TL.Browser.touch) {
+		if (BROWSER_TOUCH) {
 			if (e.originalEvent) {
 				this.data.pagex.end = e.originalEvent.touches[0].screenX;
 				this.data.pagey.end = e.originalEvent.touches[0].screenY;
@@ -233,9 +227,9 @@ TL.Swipable = TL.Class.extend({
 		}
 		
 		this.fire("dragmove", this.data);
-	},
+	}
 	
-	_momentum: function() {
+	_momentum() {
 		var pos_adjust = {
 				x: 0,
 				y: 0,
@@ -346,25 +340,25 @@ TL.Swipable = TL.Class.extend({
 		} else if (this.options.snap) {
 			this.animator.stop();
 			
-			this.animator = TL.Animate(this._el.move, {
+			this.animator = Animate(this._el.move, {
 				top: 		this.data.pos.start.y,
 				left: 		this.data.pos.start.x,
 				duration: 	this.options.duration,
-				easing: 	TL.Ease.easeOutStrong
+				easing: 	easeOutStrong
 			});
 		}
 		
-	},
+	}
 	
 	
-	_animateMomentum: function() {
+	_animateMomentum() {
 		var pos = {
 				x: this.data.new_pos.x,
 				y: this.data.new_pos.y
 			},
 			animate = {
 				duration: 	this.options.duration,
-				easing: 	TL.Ease.easeOutStrong
+				easing: 	easeOutStrong
 			};
 		
 		if (this.options.enable.y) {
@@ -389,8 +383,10 @@ TL.Swipable = TL.Class.extend({
 			animate.left = Math.floor(pos.x) + "px";
 		}
 		
-		this.animator = TL.Animate(this._el.move, animate);
+		this.animator = Animate(this._el.move, animate);
 		
 		this.fire("momentum", this.data);
 	}
-});
+}
+
+classMixin(Swipable, Events)
