@@ -222,10 +222,6 @@ export function trace(msg) {
     if (TIMELINE_DEBUG) {
         if (window.console) {
             console.log(msg);
-        } else if (typeof jsTrace != "undefined") {
-            jsTrace.send(msg);
-        } else {
-            //alert(msg);
         }
     }
 };
@@ -509,6 +505,92 @@ export function transformImageURL(url) {
 	return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
 }
 
+export const ratio = {
+	square: (size) => {
+		var s = {
+			w: 0,
+			h: 0
+		}
+		if (size.w > size.h && size.h > 0) {
+			s.h = size.h;
+			s.w = size.h;
+		} else {
+			s.w = size.w;
+			s.h = size.w;
+		}
+		return s;
+	},
+	r16_9: (size) => {
+		if (size.w !== null && size.w !== "") {
+			return Math.round((size.w / 16) * 9);
+		} else if (size.h !== null && size.h !== "") {
+			return Math.round((size.h / 9) * 16);
+		} else {
+			return 0;
+		}
+	},
+	r4_3: (size) => {
+		if (size.w !== null && size.w !== "") {
+			return Math.round((size.w / 4) * 3);
+		} else if (size.h !== null && size.h !== "") {
+			return Math.round((size.h / 3) * 4);
+		}
+	}
+}
+
+export function getUrlVars(string) {
+	var str,
+		vars = [],
+		hash,
+		hashes;
+
+	str = string.toString();
+
+	if (str.match('&#038;')) {
+		str = str.replace("&#038;", "&");
+	} else if (str.match('&#38;')) {
+		str = str.replace("&#38;", "&");
+	} else if (str.match('&amp;')) {
+		str = str.replace("&amp;", "&");
+	}
+
+	hashes = str.slice(str.indexOf('?') + 1).split('&');
+
+	for (var i = 0; i < hashes.length; i++) {
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	}
+
+
+	return vars;
+}
+
+export function getParamString(obj) {
+	var params = [];
+	for (var i in obj) {
+		if (obj.hasOwnProperty(i)) {
+			params.push(i + '=' + obj[i]);
+		}
+	}
+	return '?' + params.join('&');
+}
+
+export function getObjectAttributeByIndex(obj, index) {
+	if (typeof obj != 'undefined') {
+		var i = 0;
+		for (var attr in obj) {
+			if (index === i) {
+				return obj[attr];
+			}
+			i++;
+		}
+		return "";
+	} else {
+		return "";
+	}
+
+}
 
 
 
@@ -570,16 +652,6 @@ let Util = { // convert to export
 
 
 
-	getParamString: function (obj) {
-		var params = [];
-		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
-				params.push(i + '=' + obj[i]);
-			}
-		}
-		return '?' + params.join('&');
-	},
-
 	formatNum: function (num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
@@ -606,83 +678,9 @@ let Util = { // convert to export
 	},
 
 
-	ratio: {
-		square: function(size) {
-			var s = {
-				w: 0,
-				h: 0
-			}
-			if (size.w > size.h && size.h > 0) {
-				s.h = size.h;
-				s.w = size.h;
-			} else {
-				s.w = size.w;
-				s.h = size.w;
-			}
-			return s;
-		},
-
-		r16_9: function(size) {
-			if (size.w !== null && size.w !== "") {
-				return Math.round((size.w / 16) * 9);
-			} else if (size.h !== null && size.h !== "") {
-				return Math.round((size.h / 9) * 16);
-			} else {
-				return 0;
-			}
-		},
-		r4_3: function(size) {
-			if (size.w !== null && size.w !== "") {
-				return Math.round((size.w / 4) * 3);
-			} else if (size.h !== null && size.h !== "") {
-				return Math.round((size.h / 3) * 4);
-			}
-		}
-	},
-	getObjectAttributeByIndex: function(obj, index) {
-		if(typeof obj != 'undefined') {
-			var i = 0;
-			for (var attr in obj){
-				if (index === i){
-					return obj[attr];
-				}
-				i++;
-			}
-			return "";
-		} else {
-			return "";
-		}
-
-	},
-	getUrlVars: function(string) {
-		var str,
-			vars = [],
-			hash,
-			hashes;
-
-		str = string.toString();
-
-		if (str.match('&#038;')) {
-			str = str.replace("&#038;", "&");
-		} else if (str.match('&#38;')) {
-			str = str.replace("&#38;", "&");
-		} else if (str.match('&amp;')) {
-			str = str.replace("&amp;", "&");
-		}
-
-		hashes = str.slice(str.indexOf('?') + 1).split('&');
-
-		for(var i = 0; i < hashes.length; i++) {
-			hash = hashes[i].split('=');
-			vars.push(hash[0]);
-			vars[hash[0]] = hash[1];
-		}
 
 
-		return vars;
-	},
-
-	parseYouTubeTime: function(s) {
+	parseYouTubeTime: function(s) { // does not seem to be used
 	    // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
 		if (typeof(s) == 'string') {
 			parts = s.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i);

@@ -12,7 +12,11 @@ import { Text } from "../media/Media"
 
 export class Slide {
 
-	constructor(data, options, title_slide) {
+	constructor(data, options, title_slide, language) {
+		if (language) {
+			this.setLanguage(language)
+		}
+ 		
 		// DOM Elements
 		this._el = {
 			container: {},
@@ -242,10 +246,10 @@ export class Slide {
 			this.data.media.mediatype = lookupMediaType(this.data.media);
 			this.options.media_name 	= this.data.media.mediatype.name;
 			this.options.media_type 	= this.data.media.mediatype.type;
-      this.options.autolink 		= this.data.autolink;
+      		this.options.autolink 		= this.data.autolink;
 
 			// Create a media object using the matched class name
-			this._media = new this.data.media.mediatype.cls(this.data.media, this.options);
+			this._media = new this.data.media.mediatype.cls(this.data.media, this.options, this.getLanguage());
 		}
 
 		// Create Text
@@ -257,6 +261,10 @@ export class Slide {
 
 
 		// Add to DOM
+		// TODO remove this
+		if (this.has.media && (typeof(this._media.addTo) != 'function')) {
+			debugger
+		}
 		if (!this.has.text && !this.has.headline && this.has.media) {
 			addClass(this._el.container, 'tl-slide-media-only');
 			this._media.addTo(this._el.content);

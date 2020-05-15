@@ -11,8 +11,15 @@
                 }
             }
             ready(function() {
-                window.timeline = new TL.Timeline('foobar','https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml')
-            })
+                // TODO: integrate options
+                // font=Default 
+                // lang=en
+                // initial_zoom=2
+                // height=100%
+                window.timeline = new TL.Timeline('foobar',
+                'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml',
+                {language: 'es'}
+            )})
         </script>
     </head>
     <body>

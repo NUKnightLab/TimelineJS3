@@ -4,6 +4,10 @@
 import { trace } from "../core/Util"
 import { fallback } from "../language/Language"
 class I18NMixins {
+    setLanguage(language) {
+        this.language = language;
+    }
+
     getLanguage() {
         if (this.language) {
             if (typeof this.language == 'object') {
@@ -15,7 +19,8 @@ class I18NMixins {
                 );
             }
         }
-        trace("I18NMixins.getLanguage: Expected a language option");
+
+        // trace("I18NMixins.getLanguage: Expected a language option");
         return fallback;
     }
 

@@ -1,21 +1,21 @@
-/*  TL.Media.Map
-================================================== */
+import { Media } from "../Media";
+import { ratio, getParamString} from "../../core/Util"
 
-TL.Media.GoogleMap = TL.Media.extend({
-	includes: [TL.Events],
+
+export default class GoogleMap extends Media {
 
 	/*  Load the media
 	================================================== */
-	_loadMedia: function() {
+	_loadMedia() {
 
 		// Create Dom element
-		this._el.content_item   = TL.Dom.create("div", "tl-media-item tl-media-map tl-media-shadow", this._el.content);
+		this._el.content_item = this.domCreate("div", "tl-media-item tl-media-map tl-media-shadow", this._el.content);
 
 		// Get Media ID
 		this.media_id = this.data.url;
 
 		// API Call
-		this.mapframe = TL.Dom.create("iframe", "", this._el.content_item);
+		this.mapframe = this.domCreate("iframe", "", this._el.content_item);
 		window.stash = this;
 		this.mapframe.width       = "100%";
 		this.mapframe.height      = "100%";
@@ -25,16 +25,16 @@ TL.Media.GoogleMap = TL.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
-	},
+	}
 
-	_updateMediaDisplay: function() {
+	_updateMediaDisplay() {
 		if (this._state.loaded) {
-			var dimensions = TL.Util.ratio.square({w:this._el.content_item.offsetWidth});
+			var dimensions = ratio.square({w:this._el.content_item.offsetWidth});
 			this._el.content_item.style.height = dimensions.h + "px";
 		}
-	},
+	}
 	
-	makeGoogleMapsEmbedURL: function(url,api_key) {
+	makeGoogleMapsEmbedURL(url,api_key) {
 		// Test with https://docs.google.com/spreadsheets/d/1zCpvtRdftlR5fBPppmy_-SkGIo7RMwoPUiGFZDAXbTc/edit
 		var Streetview = false;
 
@@ -64,7 +64,7 @@ TL.Media.GoogleMap = TL.Media.extend({
 					param_string = {};
 					param_string["location"] = center;
 					streetview_params = display_mode.split(",");
-					for (param in param_defs["streetview"]) {
+					for (let param in param_defs["streetview"]) {
 						var i = parseInt(param) + 1;
 						if (param_defs["streetview"][param] == "pitch" && streetview_params[i] == "90t"){
 							// Although 90deg is the horizontal default in the URL, 0 is horizontal default for embed URL. WHY??
@@ -81,7 +81,7 @@ TL.Media.GoogleMap = TL.Media.extend({
 			function determineMapModeURL(mapmode, match) {
 				var param_string = {};
 				var url_root = match[1], display_mode = match[match.length - 1];
-				for (param in param_defs[mapmode]) {
+				for (let param in param_defs[mapmode]) {
 					// skip first 2 matches, because they reflect the URL and not params
 					var i = parseInt(param)+2;
 					if (param_defs[mapmode][param] == "center") {
@@ -97,11 +97,11 @@ TL.Media.GoogleMap = TL.Media.extend({
 					mapmode = "streetview";
 				} else {
 				}
-				return (url_root + "/embed/v1/" + mapmode + TL.Util.getParamString(param_string));
+				return (url_root + "/embed/v1/" + mapmode + getParamString(param_string));
 			}
 
 
-			mapmode = "view";
+			let mapmode = "view";
 			if (url.match(regexes["place"])) {
 				mapmode = "place";
 			} else if (url.match(regexes["directions"])) {
@@ -147,4 +147,4 @@ TL.Media.GoogleMap = TL.Media.extend({
 		return determineMapMode(url);
 	}
    
-});
+}

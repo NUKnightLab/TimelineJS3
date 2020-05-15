@@ -382,4 +382,17 @@ class Loader {
   }
 }
 
-export { Loader }
+function loadJS(urls, callback, obj, context) {
+  loader.js(urls, callback, obj, context)
+}
+
+function loadCSS(urls, callback, obj, context) {
+  loader.css(urls, callback, obj, context)
+}
+
+
+// this seems fragile but not sure how else to inject the document
+// besides 
+let loader = new Loader(document)
+
+export { loadJS, loadCSS }

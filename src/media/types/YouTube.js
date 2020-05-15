@@ -1,26 +1,20 @@
-import { trace } from "../../core/Util"
+import { trace, unique_ID, getUrlVars, ratio } from "../../core/Util"
+import { loadJS } from "../../core/Load"
+import { Media } from "../Media";
 
-/*	TL.Media.YouTube
-================================================== */
-
-TL.Media.YouTube = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
+export default class YouTube extends Media {
+	_loadMedia() {
 		var self = this,
 			url_vars;
 
 		this.youtube_loaded = false;
 
 		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-youtube tl-media-shadow", this._el.content);
-		this._el.content_item.id = TL.Util.unique_ID(7)
+		this._el.content_item = this.domCreate("div", "tl-media-item tl-media-youtube tl-media-shadow", this._el.content);
+		this._el.content_item.id = unique_ID(7)
 
 		// URL Vars
-		url_vars = TL.Util.getUrlVars(this.data.url);
+		url_vars = getUrlVars(this.data.url);
 
 		// Get Media ID
 		this.media_id = {};
@@ -52,20 +46,20 @@ TL.Media.YouTube = TL.Media.extend({
 
 
 		// API Call
-		TL.Load.js('https://www.youtube.com/iframe_api', function() {
+		loadJS('https://www.youtube.com/iframe_api', function() {
 			self.createMedia();
 		});
 
-	},
+	}
 
 	// Update Media Display
-	_updateMediaDisplay: function() {
+	_updateMediaDisplay() {
 		//this.el.content_item = document.getElementById(this._el.content_item.id);
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this.options.width}) + "px";
+		this._el.content_item.style.height = ratio.r16_9({w:this.options.width}) + "px";
 		this._el.content_item.style.width = this.options.width + "px";
-	},
+	}
 
-	_stopMedia: function() {
+	_stopMedia() {
 		if (this.youtube_loaded) {
 			try {
 			    if(this.player.getPlayerState() == YT.PlayerState.PLAYING) {
@@ -77,8 +71,8 @@ TL.Media.YouTube = TL.Media.extend({
 			}
 
 		}
-	},
-	createMedia: function() {
+	}
+	createMedia() {
 		var self = this;
 
 		clearTimeout(this.timer);
@@ -109,18 +103,18 @@ TL.Media.YouTube = TL.Media.extend({
 				self.createMedia();
 			}, 1000);
 		}
-	},
+	}
 
 	/*	Events
 	================================================== */
-	onPlayerReady: function(e) {
+	onPlayerReady(e) {
 		this.youtube_loaded = true;
 		this._el.content_item = document.getElementById(this._el.content_item.id);
 		this.onMediaLoaded();
 
-	},
+	}
 
-	onStateChange: function(e) {
+	onStateChange(e) {
         if(e.data == YT.PlayerState.ENDED) {
             e.target.seekTo(0);
             e.target.pauseVideo();
@@ -128,4 +122,4 @@ TL.Media.YouTube = TL.Media.extend({
 	}
 
 
-});
+}

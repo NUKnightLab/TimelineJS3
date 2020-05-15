@@ -15,12 +15,16 @@ import { I18NMixins } from "../language/I18NMixins"
 export default class Message{
 
     /**
-     * Initialized a Message object with the container where it appears and, 
+     * Initialize a Message object with the container where it appears and, 
      *     optionally, a JS object of options.
      * @param {HTMLElement} container 
      * @param {object} [options] 
      */
-    constructor(container, options) {
+    constructor(container, options, language) {
+
+        if (language) {
+            this.setLanguage(language)
+        }
         // DOM ELEMENTS
         this._el = {
             parent: {},
@@ -57,10 +61,6 @@ export default class Message{
 
         this._initLayout();
         this._initEvents();
-    }
-
-    setLanguage(language) {
-        this.language = language;
     }
 
     updateMessage(t) {

@@ -6,7 +6,11 @@ import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
 
 export class TimeAxis{
-	constructor(elem, options) {
+	constructor(elem, options, language) {
+
+		if (language) {
+			this.setLanguage(language)
+		}
 		// DOM Elements
 		this._el = {
 			container: {},

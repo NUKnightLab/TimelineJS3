@@ -1,15 +1,9 @@
-/*	TL.Media.Blockquote
-================================================== */
+import { Media } from "../Media";
 
-TL.Media.Blockquote = TL.Media.extend({
-	
-	includes: [TL.Events],
-	
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {		
+export default class Blockquote extends Media {
+	_loadMedia() {		
 		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-blockquote", this._el.content);
+		this._el.content_item = this.domCreate("div", "tl-media-item tl-media-blockquote", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
 		
 		// Get Media ID
@@ -20,15 +14,10 @@ TL.Media.Blockquote = TL.Media.extend({
 		
 		// After Loaded
 		this.onLoaded();
-	},
-	
-	updateMediaDisplay: function() {
-		
-	},
-	
-	_updateMediaDisplay: function() {
-		
 	}
 
+	updateMediaDisplay() {
+		// override DOM-oriented updates that don't apply to blockquotes	
+	}
 	
-});
+}

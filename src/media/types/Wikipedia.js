@@ -1,19 +1,16 @@
-/*	TL.Media.Wikipedia
-================================================== */
+import { Media } from "../Media";
+import { ajax } from "../../net/Net"
+import { getObjectAttributeByIndex } from "../../core/Util"
 
-TL.Media.Wikipedia = TL.Media.extend({
+export default class Wikipedia extends Media{
 
-	includes: [TL.Events],
-
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
+	_loadMedia() {
 		var api_url,
 			api_language,
 			self = this;
 
 		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-wikipedia", this._el.content);
+		this._el.content_item = this.domCreate("div", "tl-media-item tl-media-wikipedia", this._el.content);
 		this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
 
 		// Get Media ID
@@ -25,7 +22,7 @@ TL.Media.Wikipedia = TL.Media.extend({
 		api_url = "https://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts|pageimages&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
 
 		// API Call
-		TL.ajax({
+		ajax({
 			type: 'GET',
 			url: api_url,
 			dataType: 'json', //json data type
@@ -40,9 +37,9 @@ TL.Media.Wikipedia = TL.Media.extend({
 			}
 		});
 
-	},
+	}
 
-	createMedia: function(d) {
+	createMedia(d) {
 		var wiki = "";
 
 		if (d.query) {
@@ -57,7 +54,7 @@ TL.Media.Wikipedia = TL.Media.extend({
 					text_array: []
 				};
 
-			wiki.entry		 = TL.Util.getObjectAttributeByIndex(d.query.pages, 0);
+			wiki.entry		 = getObjectAttributeByIndex(d.query.pages, 0);
 			wiki.extract	 = wiki.entry.extract;
 			wiki.title		 = wiki.entry.title;
 			wiki.page_image	 = wiki.entry.thumbnail;
@@ -97,14 +94,10 @@ TL.Media.Wikipedia = TL.Media.extend({
 
 		}
 
-	},
+	}
 
-	updateMediaDisplay: function() {
-
-	},
-
-	_updateMediaDisplay: function() {
+	updateMediaDisplay() {
 
 	}
 
-});
+}

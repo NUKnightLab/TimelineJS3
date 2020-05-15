@@ -1,9 +1,8 @@
 import { Media } from "../Media"
-import * as DOM from "../../dom/DOM"
 import { unhtmlify, transformImageURL } from "../../core/Util"
 import * as Browser from "../../core/Browser"
 
-export class Image extends Media{
+export default class Image extends Media{
 
 	_loadMedia() {
 		// Loading Message
@@ -28,12 +27,12 @@ export class Image extends Media{
 
  		// Link
 		if (this.data.link) {
-			this._el.content_link 				= DOM.create("a", "", this._el.content);
+			this._el.content_link 				= this.domCreate("a", "", this._el.content);
 			this._el.content_link.href 			= this.data.link;
 			this._el.content_link.target 		= "_blank";
-			this._el.content_item = DOM.create("img", image_class, this._el.content_link);
+			this._el.content_item = this.domCreate("img", image_class, this._el.content_link);
 		} else {
-			this._el.content_item = DOM.create("img", image_class, this._el.content);
+			this._el.content_item = this.domCreate("img", image_class, this._el.content);
 		}
 
 		if (this.data.alt) {

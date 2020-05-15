@@ -1,20 +1,14 @@
-import { trace } from "../../core/Util"
+import { trace, ratio } from "../../core/Util"
+import { Media } from "../Media";
 
-/*	TL.Media.Vimeo
-================================================== */
+export default class Vimeo extends Media {
 
-TL.Media.Vimeo = TL.Media.extend({
-
-	includes: [TL.Events],
-
-	/*	Load the media
-	================================================== */
-	_loadMedia: function() {
+	_loadMedia() {
 		var api_url,
 			self = this;
 
 		// Create Dom element
-		this._el.content_item	= TL.Dom.create("div", "tl-media-item tl-media-iframe tl-media-vimeo tl-media-shadow", this._el.content);
+		this._el.content_item	= this.domCreate("div", "tl-media-item tl-media-iframe tl-media-vimeo tl-media-shadow", this._el.content);
 
 		// Get Media ID
 		this.media_id = this.data.url.split(/video\/|\/\/vimeo\.com\//)[1].split(/[?&]/)[0];
@@ -31,7 +25,7 @@ TL.Media.Vimeo = TL.Media.extend({
 			api_url = api_url += '&amp;#t=' + start_time;
 		}
 
-		this.player = TL.Dom.create("iframe", "", this._el.content_item);
+		this.player = this.domCreate("iframe", "", this._el.content_item);
 
 		// Media Loaded Event
 		this.player.addEventListener('load', function(e) {
@@ -49,14 +43,14 @@ TL.Media.Vimeo = TL.Media.extend({
 
 		// After Loaded
 		this.onLoaded();
-	},
+	}
 
 	// Update Media Display
-	_updateMediaDisplay: function() {
-		this._el.content_item.style.height = TL.Util.ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
-	},
+	_updateMediaDisplay() {
+		this._el.content_item.style.height = ratio.r16_9({w:this._el.content_item.offsetWidth}) + "px";
+	}
 
-	_stopMedia: function() {
+	_stopMedia() {
 
 		try {
 			this.player.contentWindow.postMessage(JSON.stringify({method: "pause"}), "https://player.vimeo.com");
@@ -65,4 +59,4 @@ TL.Media.Vimeo = TL.Media.extend({
 			trace(err);
 		}
 	}
-});
+}

@@ -128,7 +128,6 @@ function extractGoogleEntryData_V3(item) {
         if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
             var label = d.text.headline ||
                 trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
-            trace(item);
         }
     }
 
@@ -238,7 +237,7 @@ function extractGoogleEntryData_V4(column, item) {
             return s.replace(/[\s,]+/g, ''); // doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
         }
     }
-    // console.log(item);
+
     var item_data = {};
     for (var i = 1; i < item.length; i++) {
         if (column.length >= i) {
@@ -293,7 +292,6 @@ function extractGoogleEntryData_V4(column, item) {
         if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
             var label = event.text.headline ||
                 trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
-            trace(item);
         }
     }
 

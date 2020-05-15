@@ -8,7 +8,12 @@ import Message from "../ui/Message"
 
 
 class Media {
-	constructor(data, options, add_to_container) {
+	constructor(data, options, language) {//add_to_container) {
+		if (language) {
+			this.setLanguage(language)
+		// } else {
+		// 	console.log("no language for this Media", this)
+		}
 		// DOM ELEMENTS
 		this._el = {
 			container: {},
@@ -80,10 +85,6 @@ class Media {
 
 			this._initLayout();
 
-			if (add_to_container) {
-				add_to_container.appendChild(this._el.container);
-				this._el.parent = add_to_container;
-			}
 		}
 	}
 
@@ -306,7 +307,7 @@ class Media {
 	_initLayout() {
 
 		// Message
-		this.message = new Message(this._el.container, this.options);
+		this.message = new Message(this._el.container, this.options, this.getLanguage());
 		// this.message.addTo(this._el.container);
 
 		// Create Layout
@@ -356,6 +357,10 @@ class Media {
 
 		this.updateMediaDisplay(this.options.layout);
 
+	}
+
+	domCreate(...params) {
+		return DOM.create(...params)
 	}
 
 	_stopMedia() {

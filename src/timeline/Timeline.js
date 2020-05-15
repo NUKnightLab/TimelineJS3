@@ -122,6 +122,9 @@ class Timeline {
     this.animator_storyslider = null;
     this.animator_menubar = null;
 
+    // Ideally we'd set the language here, but we're bootstrapping and may hit problems
+    // before we're able to load it. if it weren't a remote resource, we could probably 
+    // do it.
     this.message = new Message(this._el.container, { message_class: "tl-message-full" });
 
     // Merge Options
@@ -168,6 +171,7 @@ class Timeline {
       var script_path = this.options.script_path
       this.language = new Language(lang, script_path)
       this.message.setLanguage(this.language)
+      this.options.language = this.language // easiest way to make language available to I18NMixins
       console.log('_loadLanguage')
       console.log(this.language)
       this.showMessage(this._('loading_timeline'))
@@ -306,7 +310,7 @@ class Timeline {
     this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
 
     // Create TimeNav
-    this._timenav = new TimeNav(this._el.timenav, this.config, this.options);
+    this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
     this._timenav.on('loaded', this._onTimeNavLoaded, this);
     this._timenav.options.height = this.options.timenav_height;
     this._timenav.init();
@@ -318,7 +322,7 @@ class Timeline {
     }
 
     // Create StorySlider
-    this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options);
+    this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
     this._storyslider.on('loaded', this._onStorySliderLoaded, this);
     this._storyslider.init();
 

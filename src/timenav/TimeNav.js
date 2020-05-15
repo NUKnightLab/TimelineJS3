@@ -16,7 +16,8 @@ import { Animate } from "../animation/Animate"
 
 export class TimeNav{
 
-	constructor(elem, timeline_config, options, init) {
+	constructor(elem, timeline_config, options, language) {
+		this.language = language // just passing through for TimeAxis. Is this a bad code smell?
 		// DOM ELEMENTS
 		this._el = {
 			parent: {},
@@ -98,9 +99,6 @@ export class TimeNav{
 		// Merge Data and Options
 		mergeData(this.options, options);
 
-		if (init) {
-			this.init();
-		}
 	}
 
 	init() {
@@ -676,7 +674,7 @@ export class TimeNav{
 		this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='tl-knightlab-logo'></span>Timeline JS</a>"
 
 		// Time Axis
-		this.timeaxis = new TimeAxis(this._el.timeaxis, this.options);
+		this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);
 
 		// Swipable
 		this._swipable = new Swipable(this._el.slider_background, this._el.slider, {

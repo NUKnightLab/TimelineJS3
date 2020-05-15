@@ -10,23 +10,29 @@
     that can be resolved to an image URL.
 ================================================== */
 
-import { Image } from "./types/Image"
+import Image from "./types/Image"
+import YouTube from "./types/YouTube"
+import GoogleMap from "./types/GoogleMap"
+import Blockquote from "./types/Blockquote"
+import Wikipedia from "./types/Wikipedia"
+import SoundCloud from "./types/SoundCloud"
+import Vimeo from "./types/Vimeo"
 
 export function lookupMediaType(m, image_only) {
     var media = {},
         media_types = [
-            //     {
-            //         type:         "youtube",
-            //         name:         "YouTube",
-            //         match_str:     "^(https?:)?\/*(www.)?youtube|youtu\.be",
-            //         cls:         TL.Media.YouTube
-            //     },
-            //     {
-            //         type:         "vimeo",
-            //         name:         "Vimeo",
-            //         match_str:     "^(https?:)?\/*(player.)?vimeo\.com",
-            //         cls:         TL.Media.Vimeo
-            //     },
+            {
+                type:         "youtube",
+                name:         "YouTube",
+                match_str:     "^(https?:)?\/*(www.)?youtube|youtu\.be",
+                cls:         YouTube
+            },
+            {
+                type:         "vimeo",
+                name:         "Vimeo",
+                match_str:     "^(https?:)?\/*(player.)?vimeo\.com",
+                cls:         Vimeo
+            },
             //     {
             //         type:         "dailymotion",
             //         name:         "DailyMotion",
@@ -39,12 +45,12 @@ export function lookupMediaType(m, image_only) {
             //         match_str:     "^(https?:)?\/*(www.)?vine\.co",
             //         cls:         TL.Media.Vine
             //     },
-            //     {
-            //         type:         "soundcloud",
-            //         name:         "SoundCloud",
-            //         match_str:     "^(https?:)?\/*(player.)?soundcloud\.com",
-            //         cls:         TL.Media.SoundCloud
-            //     },
+                {
+                    type:         "soundcloud",
+                    name:         "SoundCloud",
+                    match_str:     "^(https?:)?\/*(player.)?soundcloud\.com",
+                    cls:         SoundCloud
+                },
             //     {
             //         type:         "twitter",
             //         name:         "Twitter",
@@ -57,12 +63,12 @@ export function lookupMediaType(m, image_only) {
             //         match_str:     "<blockquote class=['\"]twitter-tweet['\"]",
             //         cls:         TL.Media.Twitter
             //     },
-            //     {
-            //         type:         "googlemaps",
-            //         name:         "Google Map",
-            //         match_str:     /google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
-            //         cls:         TL.Media.GoogleMap
-            //     },
+                {
+                    type:         "googlemaps",
+                    name:         "Google Map",
+                    match_str:     /google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
+                    cls:         GoogleMap
+                },
             //     {
             //         type:         "googleplus",
             //         name:         "Google+",
@@ -123,12 +129,12 @@ export function lookupMediaType(m, image_only) {
             //     match_str:     /^.*\.pdf(\?.*)?(\#.*)?/,
             //     cls:         TL.Media.PDF
             // },
-            // {
-            //     type:         "wikipedia",
-            //     name:         "Wikipedia",
-            //     match_str:     "^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
-            //     cls:         TL.Media.Wikipedia
-            // },
+            {
+                type:         "wikipedia",
+                name:         "Wikipedia",
+                match_str:     "^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
+                cls:         Wikipedia
+            },
             // {
             //     type:         "spotify",
             //     name:         "spotify",
@@ -147,12 +153,12 @@ export function lookupMediaType(m, image_only) {
             //     match_str:     "storify",
             //     cls:         TL.Media.Storify
             // },
-            // {
-            //     type:         "blockquote",
-            //     name:         "Quote",
-            //     match_str:     "blockquote",
-            //     cls:         TL.Media.Blockquote
-            // },
+            {
+                type:         "blockquote",
+                name:         "Quote",
+                match_str:     "blockquote",
+                cls:         Blockquote
+            },
             // {
             //     type:         "video",
             //     name:         "Video",

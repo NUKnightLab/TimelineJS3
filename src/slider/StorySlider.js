@@ -13,7 +13,11 @@ import { Slide } from "./Slide"
 import { SlideNav } from "./SlideNav"
 
 export class StorySlider {
-	constructor(elem, data, options, init) {
+	constructor(elem, data, options, language) {
+
+		if (language) {
+			this.setLanguage(language)
+		}
 
 		// DOM ELEMENTS
 		this._el = {
@@ -86,9 +90,6 @@ export class StorySlider {
 		mergeData(this.options, options);
 		mergeData(this.data, data);
 
-		if (init) {
-			this.init();
-		}
 	}
 
 	init() {
@@ -112,7 +113,7 @@ export class StorySlider {
 	}
 
 	_createSlide(d, title_slide, n) {
-		var slide = new Slide(d, this.options, title_slide);
+		var slide = new Slide(d, this.options, title_slide, this.getLanguage());
 		this._addSlide(slide);
 		if(n < 0) {
 		    this._slides.push(slide);
@@ -434,7 +435,8 @@ export class StorySlider {
 			this._message = new Message({}, {
 				message_class: 		"tl-message-full",
 				message_icon_class: "tl-icon-swipe-left"
-			});
+			},
+			this.getLanguage());
 			this._message.updateMessage(this._("swipe_to_navigate"));
 			this._message.addTo(this._el.container);
 		}
