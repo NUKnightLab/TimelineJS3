@@ -274,12 +274,12 @@ class Timeline {
     this.fire("dataloaded");
     this._initLayout();
     this._initEvents();
-    // this._initAnalytics();
-    // if (this.message) {
-    //   this.message.hide();
-    // }
+    this._initAnalytics();
+    if (this.message) {
+      this.message.hide();
+    }
 
-    // this.ready = true;
+    this.ready = true;
 
   }
 
@@ -726,6 +726,26 @@ class Timeline {
   updateDisplay() {
     if (this.ready) {
       this._updateDisplay();
+    }
+  }
+
+  _initGoogleAnalytics() {
+    (function (i, s, o, g, r, a, m) { i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o), m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m) })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', this.options.ga_property_id, 'auto');
+    ga('set', 'anonymizeIp', true);
+  }
+
+  _initAnalytics() {
+    if (this.options.ga_property_id === null) { return; }
+    this._initGoogleAnalytics();
+    ga('send', 'pageview');
+    var events = this.options.track_events;
+    for (i = 0; i < events.length; i++) {
+      var event_ = events[i];
+      this.addEventListener(event_, function (e) {
+        ga('send', 'event', e.type, 'clicked');
+      });
     }
   }
 

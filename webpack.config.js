@@ -3,10 +3,10 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const output_path = path.resolve(__dirname, "dist");
+const output_path = path.resolve(__dirname, "dist/js");
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: "./src/js/index.js",
     mode: "development",
     optimization: {
         usedExports: true
@@ -21,10 +21,10 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'src/template/index.html'
         }),
         new CopyPlugin([{ 
-            from: "./src/language/locale/*.json",
+            from: "./src/js/language/locale/*.json",
             to: path.resolve(output_path, "locale"),
             flatten: true
         }]),
