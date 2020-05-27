@@ -27,6 +27,7 @@ import Profile from "./types/Profile"
 import GoogleDoc from "./types/GoogleDoc"
 import Spotify from "./types/Spotify"
 import IFrame from "./types/IFrame"
+import Imgur from "./types/Imgur"
 
 export function lookupMediaType(m, image_only) {
     var media = {},
@@ -66,12 +67,12 @@ export function lookupMediaType(m, image_only) {
                 match_str: "^(https?:)?\/*(www.)?twitter\.com",
                 cls: Twitter
             },
-            //     {
-            //         type:         "twitterembed",
-            //         name:         "TwitterEmbed",
-            //         match_str:     "<blockquote class=['\"]twitter-tweet['\"]",
-            //         cls:         Twitter
-            //     },
+            {
+                type: "twitterembed",
+                name: "TwitterEmbed",
+                match_str: "<blockquote class=['\"]twitter-tweet['\"]",
+                cls: Twitter
+            },
             {
                 type: "googlemaps",
                 name: "Google Map",
@@ -114,12 +115,12 @@ export function lookupMediaType(m, image_only) {
                 match_str: /(jpg|jpeg|png|gif|svg)(\?.*)?$/i,
                 cls: Image
             },
-            // {
-            //     type:         "imgur",
-            //     name:         "Imgur",
-            //     match_str:     /^.*imgur.com\/.+$|<blockquote class=['\"]imgur-embed-pub['\"]/i,
-            //     cls:         Imgur
-            // },
+            {
+                type: "imgur",
+                name: "Imgur",
+                match_str: /^.*imgur.com\/.+$|<blockquote class=['\"]imgur-embed-pub['\"]/i,
+                cls: Imgur
+            },
             {
                 type: "googledocs",
                 name: "Google Doc",

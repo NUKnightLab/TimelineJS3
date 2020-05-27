@@ -81,7 +81,7 @@
         },
         {
             "media": {
-                "url": "https://twitter.com/NASASpaceflight/status/562327074384654336",
+                "url": "https://twitter.com/yayitsrob/status/1265638281783447552",
                 "caption": "State of NASA Address",
                 "credit": "NASASpaceFlight"
             },
@@ -92,6 +92,22 @@
                 "headline": "Twitter",
                 "text": "To display a Tweet, just copy the URL in the embed code."
             }
+        },
+        {
+            "media": {
+                "url": "<blockquote class=\"twitter-tweet\"><p lang=\"en\" dir=\"ltr\">2018 will be the year of the dog. And that&#39;s how I know it will be better than the dumpster fires of 2016 and 2017. Because they&#39;re good dogs, brant. They&#39;re always good dogs. <a href=\"https://twitter.com/hashtag/YearoftheDog?src=hash&amp;ref_src=twsrc%5Etfw\">#YearoftheDog</a> <a href=\"https://twitter.com/hashtag/HappyNewYear?src=hash&amp;ref_src=twsrc%5Etfw\">#HappyNewYear</a> <a href=\"https://twitter.com/hashtag/NYE2018?src=hash&amp;ref_src=twsrc%5Etfw\">#NYE2018</a> 🐶🐕🐩🥂🍾🎉 <a href=\"https://t.co/32tEtCbWDk\">pic.twitter.com/32tEtCbWDk</a></p>&mdash; Kit Berry (@ItsMeKitB) <a href=\"https://twitter.com/ItsMeKitB/status/947659340864876544?ref_src=twsrc%5Etfw\">January 1, 2018</a></blockquote> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>",
+                "caption": "Pizza Dog",
+                "credit": "ItsMeKitB"
+            },
+            "start_date": {
+                "year": "1906",
+                "month": "6"
+            },
+            "text": {
+                "headline": "Twitter Embed",
+                "text": "Or you can copy the embed code if you want."
+            }
+
         },
         {
             "media": {
@@ -375,46 +391,32 @@
         },
         {
             "media": {
-                "url": "<iframe src=\"http://www.theonion.com/articles/measles-epidemic-2015-a-timeline-of-the-outbreak,37870/\"></iframe>",
-                "caption": "Measles Epidemic 2015: A Timeline of the Outbreak",
-                "credit": "The Onion"
-            },
-            "start_date": {
-                "year": "1925"
-            },
-            "text": {
-                "headline": "Website, in iFrame",
-                "text": "To embed a website, just copy the URL."
-            }
-        },
-        {
-            "media": {
-                "url": "http://www.theonion.com/articles/measles-epidemic-2015-a-timeline-of-the-outbreak,37870/",
-                "caption": "Measles Epidemic 2015: A Timeline of the Outbreak",
-                "credit": "The Onion"
-            },
-            "start_date": {
-                "year": "1925"
-            },
-            "text": {
-                "headline": "Website, no iFrame",
-                "text": "To embed a website, just copy the URL."
-            }
-        },
-        {
-            "media": {
                 "url": "<blockquote>This is a block quote.</blockquote>",
                 "caption": "That is a block quote.",
                 "credit": "Galactic"
             },
             "start_date": {
-                "year": "1926"
+                "year": "1924"
             },
             "text": {
                 "headline": "Blockquote",
                 "text": "To display a block quote, input text in HTML blockquote tags."
             }
+        },
+        {
+            "media": {
+                "url": "https://imgur.com/gallery/NRpFrrk",
+                "credit": "AggressivelyMeows"
+            },
+            "start_date": {
+                "year": "1925"
+            },
+            "text": {
+                "headline": "Imgur",
+                "text": "Just include the URL of an image or gallery page"
+            }
         }
+
 
     ]
 }

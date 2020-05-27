@@ -40,16 +40,16 @@ module.exports = {
         }),
     ],
     module: {
-        rules: [{
-            test: path.resolve(__dirname, 'src/less/TL.Timeline.less'), // /\.less$/,
-            // include: [
-            //     path.resolve(__dirname, 'src/less')
-            // ],
-            loader: 'less-loader',
-            options: {
-                sourceMap: true
-            }
+        // rules: [{
+        //     test: path.resolve(__dirname, 'src/less/TL.Timeline.less'), // /\.less$/,
+        //     // include: [
+        //     //     path.resolve(__dirname, 'src/less')
+        //     // ],
+        //     loader: 'less-loader',
+        //     options: {
+        //         sourceMap: true
+        //     }
 
-        }]
+        // }]
     }
 };
