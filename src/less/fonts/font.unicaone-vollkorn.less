@@ -1,0 +1,43 @@
+/*	Font Unica One & Vollkorn
+
+https://www.google.com/fonts/specimen/Vollkorn
+https://www.google.com/fonts/specimen/Unica+One
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(//fonts.googleapis.com/css?family=Vollkorn:400italic,400);
+@import url(//fonts.googleapis.com/css?family=Unica+One);
+
+// Font Variables
+@font-main:						'Vollkorn', Georgia, serif;
+@font-secondary:				'Unica One', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-navigation:				@font-secondary;
+@font-marker: 					@font-secondary;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				17px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-secondary;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	uppercase;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	uppercase;
+ 
+@import "font.base.less";

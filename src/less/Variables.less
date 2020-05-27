@@ -1,0 +1,103 @@
+/*	VARIABLES
+----------------------------------------------------- */
+
+/* ICON PATH
+================================================== */
+@icon-path: 					"icons/";
+
+/* TYPEFACE
+================================================== */
+@font-serif: 					"Georgia", Times New Roman, Times, serif;
+@font-sanserif:					"Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@font-main:						@font-sanserif;
+@font-secondary:				@font-serif;
+
+@base-font-size: 				15px;
+@base-font-size-small: 			11px;
+@base-font-size-large: 			24px;
+@base-font-size-xlarge: 		28px;
+
+@base-line-height:				1.428571429;
+@base-line-height-computed:     floor(@base-font-size * @base-line-height);
+
+/* COLOR SCHEME
+================================================== */
+@color-background: 				#FFF;
+@color-foreground: 				#333;
+@color-dark: 					#000;
+
+@color-theme:					#c34528; //#DA0000;
+
+@color-theme-dark:				darken(@color-theme, 15);
+
+@color-theme-complement:		spin(@color-theme, 180);
+
+@color-theme-triad1:			spin(@color-theme, -135);
+@color-theme-triad2:			spin(@color-theme, 135);
+
+@color-theme-split1:			spin(@color-theme, -158);
+@color-theme-split2:			spin(@color-theme, 158);
+
+@color-text: 					lighten(@color-foreground,25);
+@color-header-text: 			@color-dark;
+
+@color-text-inverted:			darken(@color-background,5);
+@color-header-text-inverted:	@color-background;
+
+
+/* UI COLOR
+================================================== */
+@ui-background-color:			darken(@color-background, 5);
+@ui-background-color-darker:	darken(@color-background, 10);
+@marker-color: 					darken(@ui-background-color,5);
+@marker-outline-color: 			darken(@ui-background-color,10);
+@marker-selected-text-color: 	@color-background;
+@marker-text-color: 			darken(@marker-color,15);
+@marker-dot-color: 				darken(@marker-color, 33);
+@marker-dot-hover-color: 		darken(@marker-dot-color, 33);
+
+@minor-ticks-color:				darken(@ui-background-color,20);
+@major-ticks-color:				darken(@minor-ticks-color,30);
+
+@minor-ticks-line-color: 		@minor-ticks-color;
+@major-ticks-line-color: 		darken(@minor-ticks-line-color,10);
+
+@brand-color: 					darken(@ui-background-color,15);
+
+@era-color-1: 					@color-theme-complement;
+@era-color-2: 					@color-theme-triad1;
+@era-color-3: 					@color-theme-triad2;
+@era-color-4: 					@color-theme-split1;
+@era-color-5: 					@color-theme-split2;
+@era-color-0: 					@color-theme;
+
+/* UI
+================================================== */
+@base-spacing: 					15px;
+@arrow-size: 					20px;
+
+// Marker
+@time-marker-border-radius: 	4px;
+@marker-icon-size: 				24px;
+@marker-dot-offset: 			7px;
+
+// Time Axis
+@minor-ticks-width: 			50px;
+@major-ticks-width: 			100px;
+@minor-ticks-font-size: 		11px;
+@major-ticks-font-size: 		12px;
+@tick-padding: 					2px;
+@axis-height:					@minor-ticks-font-size + (@major-ticks-font-size*2) + (@tick-padding*2);
+
+/* Animation
+================================================== */
+@animation-ease: 				cubic-bezier(0.770, 0.000, 0.175, 1.000);
+@animation-duration: 			1000ms;
+@animation-duration-fast: 		500ms;
+
+/* GFX
+================================================== */
+.base-sprite() {
+	background-image: url(storymap.png?v1.0);
+}

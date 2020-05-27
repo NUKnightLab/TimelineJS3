@@ -1,0 +1,40 @@
+/*	Font Old Standard
+https://www.google.com/fonts/specimen/Old+Standard+TT
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(//fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic);
+
+// Font Variables
+@font-main:						'Old Standard TT', serif;
+@font-secondary:				@font-main;
+@font-navigation:				@font-main;
+@font-marker: 					@font-main;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				16px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	uppercase;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		52px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	uppercase;
+ 
+@import "font.base.less";

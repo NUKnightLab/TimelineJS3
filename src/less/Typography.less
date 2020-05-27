@@ -1,0 +1,307 @@
+.tl-timeline {
+	font-family: @font-main;
+	
+	h1, h2, h3, h4, h5, h6 {
+		color:@color-header-text;
+	}
+	
+	h1, h2, h3 {
+		font-size: @base-font-size-xlarge;
+		line-height:@base-font-size-xlarge;
+		small {
+			font-size: 		@base-font-size-large;
+			line-height:	@base-font-size-large;
+		}
+	}
+	h4, h5, h6 {
+		font-size: @base-font-size-large;
+		line-height:@base-font-size-large;
+		margin-bottom:0px;
+		small {
+			font-size: @base-font-size;
+			line-height:@base-font-size;
+		}
+	}
+	h2.tl-headline-title {
+		font-size: @base-font-size-xlarge + 10;
+		line-height: @base-font-size-xlarge + 10;
+		small {
+			display:block;
+			margin-top:5px;
+			font-size: @base-font-size-large;
+			line-height:@base-font-size-large;
+		}
+	}
+	
+	h2 {
+		margin-top:20px;
+		margin-bottom:5px;
+	}
+	
+	p {
+		margin-top:5px;
+		margin-bottom:10px;
+		font-size: @base-font-size;
+		line-height:@base-line-height;
+		//font-family: @font-secondary;
+		color: lighten(@color-dark, 40%);
+		&.lead {
+			font-size: @base-font-size-large;
+		}
+		a {
+			/*
+			color: lighten(@color-dark, 40%);
+			text-decoration: none;
+			background-image: -moz-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: -webkit-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: -o-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: linear-gradient(to bottom, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-repeat: repeat-x;
+			background-size: 2px 2px;
+			background-position: 0 @base-font-size+2;
+			text-shadow: -2px -1px 0 white, 2px -1px 0 white, -2px 1px 0 white, 2px 1px 0 white;
+			&:hover,
+			&:focus {
+				color:@color-theme;
+				text-decoration: none;
+			}
+			*/
+			color: lighten(@color-dark, 40%);
+			text-decoration: underline;
+			&:hover,
+			&:focus {
+				color:@color-theme;
+				//text-decoration: none;
+			}
+		}
+		
+		
+		@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+			a {
+				text-decoration: underline;
+				background-image:none;
+				text-shadow: none;
+				&:hover,
+				&:focus {
+					color:@color-theme;
+					text-decoration: underline;
+				}
+			}
+		}
+
+		
+		
+	}
+	b, strong {
+		font-weight: bold;
+		//color: @color-dark;
+	}
+	i, em {
+		font-style: italic;
+	}
+	a {
+		text-decoration:none;
+		color:@color-theme;
+	}
+	a:hover {
+		text-decoration:underline;
+		color: darken(@color-theme, 20%);
+	}
+	.tl-caption, .tl-credit, .tl-slidenav-next, .tl-slidenav-previous {
+		//font-family: @font-sanserif;
+		font-size:@base-font-size-small;
+		line-height:@base-font-size-small;
+		a {
+			color: @color-dark;
+		}
+	}
+	.tl-makelink {
+
+		word-break: break-all;
+		word-break: break-word;
+		-webkit-hyphens: auto;
+		   -moz-hyphens: auto;
+		        hyphens: auto;
+	}
+	blockquote, blockquote p {
+		font-family: @font-serif;
+		color: lighten(@color-dark, 60%);
+		font-size: @base-font-size-large;
+		line-height:@base-font-size-large;
+		text-align:left;
+		background:transparent;
+		border:0px;
+		padding:0px;
+		cite {
+			font-family: @font-sanserif;
+			font-size: @base-font-size-small;
+			color: lighten(@color-dark, 40%);
+			display:block;
+			text-align:right;
+			font-style: normal;
+			
+		}
+		cite:before {
+			content: "\2014";
+		}
+	}
+	blockquote p:before {
+		content: open-quote;
+		display:inline-block;
+		font-size: @base-font-size-xlarge;
+		position: relative;  
+		top: 8px;
+		margin-right:5px;
+		
+	}
+	blockquote p:after {
+		content: close-quote;
+		display:inline-block;
+		font-size: @base-font-size-xlarge;
+		position: relative;  
+		top: 8px;
+		margin-left:3px;
+		
+	}
+	blockquote {
+		margin:10px;
+		p {
+			margin:0;
+		}
+		//margin-left:18px;
+	}
+	
+
+	/* VCard
+	================================================== */
+	.vcard {
+		font-family: @font-main;
+		font-size: @base-font-size;
+		line-height:@base-font-size;
+
+		.clearfix();
+		margin-bottom:@base-spacing;
+		margin-top:10px;
+		.twitter-date {
+			text-align:left;
+			font-size:@base-font-size-small;
+		}
+		.author {
+			float:right;
+			//text-align:right;
+		}
+		a {
+			color: lighten(@color-dark, 20%);
+			text-decoration:none;
+		}
+		a:hover {
+			text-decoration: none;
+			.fn, .nickname {
+				color:@color-theme;
+				//text-decoration: underline;
+			}
+		}
+		.fn, .nickname {
+				
+			padding-left: 42px;
+		}
+		.fn {
+			display:block;
+			font-weight: bold;
+
+		}
+		.nickname {
+			margin-top:1px;
+			display:block;
+			color: lighten(@color-dark, 40%);
+		}
+			
+		.avatar {
+			float:left;
+			display: block;
+			width: 32px;
+			height: 32px;
+			img {
+				-moz-border-radius: 5px;
+				-webkit-border-radius: 5px;
+				border-radius: 5px;
+			}
+		}
+	}
+	.tl-text {
+		ul {
+			padding:0px;
+			padding-left:30px;
+			margin:0;
+			li {
+				margin-bottom:5px;
+			}
+		}
+		
+	}
+
+	.tl-button-calltoaction {
+		cursor: pointer;
+		font-weight: bold;
+		padding-top: 10px;
+		margin-bottom: 10px;
+		padding-bottom: 10px;
+
+		.tl-button-calltoaction-text {
+			display: inline-block;
+			background-color: #c34528;
+			color: #fff;
+			padding: 10px 15px 10px 15px;
+			border-radius: 7px;
+		}
+	}
+
+	.tl-note {
+		display:block;
+		font-family: @font-main;
+		font-style: italic;
+		background-color:lighten(@color-dark, 90%);
+		font-size:@base-font-size;
+		line-height:@base-font-size+2;
+		padding:10px;
+		.border-radius(7px); 
+		color: #8a6d3b;
+		background-color: #fcf8e3;
+		border: 1px solid #faebcc;
+		text-shadow: none;
+	}
+
+
+}
+
+
+// Skinnier
+@media only screen and (max-width: 800px), only screen and (max-device-width: 800px) {
+	.tl-timeline {
+		h1, h2, h3 {
+			font-size: @base-font-size-xlarge;
+			line-height: @base-font-size-xlarge;
+		}
+		h2.tl-headline-title {
+		}
+	}
+	
+}
+// Mobile, iPhone and skinny
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	.tl-timeline {
+		h1, h2, h3 {
+			font-size: @base-font-size-xlarge - 4;
+			line-height: @base-font-size-xlarge - 4;
+		}
+		h2.tl-headline-title {
+
+		}
+	}
+}
+.tl-skinny {
+	h2 {
+		margin-top:0px;
+		//padding-top:20px;
+	}
+}

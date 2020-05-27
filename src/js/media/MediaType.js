@@ -17,94 +17,97 @@ import Blockquote from "./types/Blockquote"
 import Wikipedia from "./types/Wikipedia"
 import SoundCloud from "./types/SoundCloud"
 import Vimeo from "./types/Vimeo"
+import DailyMotion from "./types/DailyMotion"
+import Vine from "./types/Vine"
+import Twitter from "./types/Twitter"
+import Flickr from "./types/Flickr"
+import DocumentCloud from "./types/DocumentCloud"
+import Instagram from "./types/Instagram"
+import Profile from "./types/Profile"
+import GoogleDoc from "./types/GoogleDoc"
+import Spotify from "./types/Spotify"
+import IFrame from "./types/IFrame"
 
 export function lookupMediaType(m, image_only) {
     var media = {},
-        media_types = [
-            {
-                type:         "youtube",
-                name:         "YouTube",
-                match_str:     "^(https?:)?\/*(www.)?youtube|youtu\.be",
-                cls:         YouTube
+        media_types = [{
+                type: "youtube",
+                name: "YouTube",
+                match_str: "^(https?:)?\/*(www.)?youtube|youtu\.be",
+                cls: YouTube
             },
             {
-                type:         "vimeo",
-                name:         "Vimeo",
-                match_str:     "^(https?:)?\/*(player.)?vimeo\.com",
-                cls:         Vimeo
+                type: "vimeo",
+                name: "Vimeo",
+                match_str: "^(https?:)?\/*(player.)?vimeo\.com",
+                cls: Vimeo
             },
-            //     {
-            //         type:         "dailymotion",
-            //         name:         "DailyMotion",
-            //         match_str:     "^(https?:)?\/*(www.)?dailymotion\.com",
-            //         cls:         TL.Media.DailyMotion
-            //     },
-            //     {
-            //         type:         "vine",
-            //         name:         "Vine",
-            //         match_str:     "^(https?:)?\/*(www.)?vine\.co",
-            //         cls:         TL.Media.Vine
-            //     },
-                {
-                    type:         "soundcloud",
-                    name:         "SoundCloud",
-                    match_str:     "^(https?:)?\/*(player.)?soundcloud\.com",
-                    cls:         SoundCloud
-                },
-            //     {
-            //         type:         "twitter",
-            //         name:         "Twitter",
-            //         match_str:     "^(https?:)?\/*(www.)?twitter\.com",
-            //         cls:         TL.Media.Twitter
-            //     },
+            {
+                type: "dailymotion",
+                name: "DailyMotion",
+                match_str: "^(https?:)?\/*(www.)?dailymotion\.com",
+                cls: DailyMotion
+            },
+            {
+                type: "vine",
+                name: "Vine",
+                match_str: "^(https?:)?\/*(www.)?vine\.co",
+                cls: Vine
+            },
+            {
+                type: "soundcloud",
+                name: "SoundCloud",
+                match_str: "^(https?:)?\/*(player.)?soundcloud\.com",
+                cls: SoundCloud
+            },
+            {
+                type: "twitter",
+                name: "Twitter",
+                match_str: "^(https?:)?\/*(www.)?twitter\.com",
+                cls: Twitter
+            },
             //     {
             //         type:         "twitterembed",
             //         name:         "TwitterEmbed",
             //         match_str:     "<blockquote class=['\"]twitter-tweet['\"]",
-            //         cls:         TL.Media.Twitter
+            //         cls:         Twitter
             //     },
-                {
-                    type:         "googlemaps",
-                    name:         "Google Map",
-                    match_str:     /google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
-                    cls:         GoogleMap
-                },
-            //     {
-            //         type:         "googleplus",
-            //         name:         "Google+",
-            //         match_str:     "^(https?:)?\/*plus.google",
-            //         cls:         TL.Media.GooglePlus
-            //     },
-            //     {
-            //         type:         "flickr",
-            //         name:         "Flickr",
-            //         match_str:     "^(https?:)?\/*(www.)?flickr.com\/photos",
-            //         cls:         TL.Media.Flickr
-            //     },
-            //     {
-            //         type:         "flickr",
-            //         name:         "Flickr",
-            //         match_str:     "^(https?:\/\/)?flic.kr\/.*",
-            //         cls:         TL.Media.Flickr
-            //     },
-            //     {
-            //         type:         "instagram",
-            //         name:         "Instagram",
-            //         match_str:     /^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
-            //         cls:         TL.Media.Instagram
-            //     },
-            //     {
-            //         type:         "profile",
-            //         name:         "Profile",
-            //         match_str:     /^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
-            //         cls:         TL.Media.Profile
-            //     },
-            //     {
-            //         type:       "documentcloud",
-            //         name:       "Document Cloud",
-            //         match_str:  /documentcloud.org\//,
-            //         cls:        TL.Media.DocumentCloud
-            //     },
+            {
+                type: "googlemaps",
+                name: "Google Map",
+                match_str: /google.+?\/maps\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/search\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/place\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)|google.+?\/maps\/dir\/([\w\W]+)\/([\w\W]+)\/@([-\d.]+),([-\d.]+),((?:[-\d.]+[zmayht],?)*)/,
+                cls: GoogleMap
+            },
+            {
+                type: "flickr",
+                name: "Flickr",
+                match_str: "^(https?:)?\/*(www.)?flickr.com\/photos",
+                cls: Flickr
+            },
+            {
+                type: "flickr",
+                name: "Flickr",
+                match_str: "^(https?:\/\/)?flic.kr\/.*",
+                cls: Flickr
+            },
+            {
+                type: "instagram",
+                name: "Instagram",
+                match_str: /^(https?:)?\/*(www.)?(instagr.am|^(https?:)?\/*(www.)?instagram.com)\/p\//,
+                cls: Instagram
+            },
+            {
+                type: "profile",
+                name: "Profile",
+                match_str: /^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
+                cls: Profile
+            },
+            {
+                type: "documentcloud",
+                name: "Document Cloud",
+                match_str: /documentcloud.org\//,
+                cls: DocumentCloud
+            },
             {
                 type: "image",
                 name: "Image",
@@ -115,67 +118,61 @@ export function lookupMediaType(m, image_only) {
             //     type:         "imgur",
             //     name:         "Imgur",
             //     match_str:     /^.*imgur.com\/.+$|<blockquote class=['\"]imgur-embed-pub['\"]/i,
-            //     cls:         TL.Media.Imgur
+            //     cls:         Imgur
             // },
-            // {
-            //     type:         "googledocs",
-            //     name:         "Google Doc",
-            //     match_str:     "^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
-            //     cls:         TL.Media.GoogleDoc
-            // },
+            {
+                type: "googledocs",
+                name: "Google Doc",
+                match_str: "^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
+                cls: GoogleDoc
+            },
             // {
             //     type:         "pdf",
             //     name:         "PDF",
             //     match_str:     /^.*\.pdf(\?.*)?(\#.*)?/,
-            //     cls:         TL.Media.PDF
+            //     cls:         PDF
             // },
             {
-                type:         "wikipedia",
-                name:         "Wikipedia",
-                match_str:     "^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
-                cls:         Wikipedia
+                type: "wikipedia",
+                name: "Wikipedia",
+                match_str: "^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
+                cls: Wikipedia
             },
-            // {
-            //     type:         "spotify",
-            //     name:         "spotify",
-            //     match_str:     "spotify",
-            //     cls:         TL.Media.Spotify
-            // },
-            // {
-            //     type:         "iframe",
-            //     name:         "iFrame",
-            //     match_str:     "iframe",
-            //     cls:         TL.Media.IFrame
-            // },
-            // {
-            //     type:         "storify",
-            //     name:         "Storify",
-            //     match_str:     "storify",
-            //     cls:         TL.Media.Storify
-            // },
             {
-                type:         "blockquote",
-                name:         "Quote",
-                match_str:     "blockquote",
-                cls:         Blockquote
+                type: "spotify",
+                name: "spotify",
+                match_str: "spotify",
+                cls: Spotify
+            },
+            {
+                type: "iframe",
+                name: "iFrame",
+                match_str: "iframe",
+                cls: IFrame
+            },
+            {
+                type: "blockquote",
+                name: "Quote",
+                match_str: "blockquote",
+                cls: Blockquote
             },
             // {
             //     type:         "video",
             //     name:         "Video",
             //     match_str:     /(mp4)(\?.*)?$/i,
-            //     cls:         TL.Media.Video
+            //     cls:         Video
             // },
             // {
             //   type:         "wistia",
             //   name:         "Wistia",
             //   match_str:     /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/i,
-            //   cls:         TL.Media.Wistia
+            //   cls:         Wistia
             // },
             // {
             //     type:         "audio",
             //     name:         "Audio",
             //     match_str:     /(mp3|wav|m4a)(\?.*)?$/i,
-            //     cls:         TL.Media.Audio
+            //     cls:         Audio
             // },
             {
                 type: "imageblank",

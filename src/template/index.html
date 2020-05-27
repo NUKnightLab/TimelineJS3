@@ -1,29 +1,37 @@
 <html>
-    <head>
-        <title>Bundled TimelineJS test page</title>
-        <link rel="stylesheet" href="http://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
-        <script>
-            function ready(fn) {
-                if (document.readyState != 'loading'){
-                    fn();
-                } else {
-                    document.addEventListener('DOMContentLoaded', fn);
-                }
+
+<head>
+    <title>Bundled TimelineJS test page</title>
+    <link rel="stylesheet" href="http://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <link rel="stylesheet" href="/css/fonts/font.default.css">
+    <!-- this is normally done by embed page -->
+    <script>
+        function ready(fn) {
+            if (document.readyState != 'loading') {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
             }
-            ready(function() {
-                // TODO: integrate options
-                // font=Default 
-                // lang=en
-                // initial_zoom=2
-                // height=100%
-                window.timeline = new TL.Timeline('foobar',
-                'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml',
-                {language: 'es'}
-            )})
-        </script>
-    </head>
-    <body>
-        <h1>Timeline Ho</h1>
-        <div id='foobar'></div>
-    </body>
+        }
+        ready(function() {
+            // TODO: integrate options
+            // font=Default -- not typically a JS option but handled in the embed page...
+            // lang=en
+            // initial_zoom=2
+            // height=100%
+            // var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
+            var dataUrl = './all-media-types.json'
+            var options = {
+                language: 'es'
+            }
+            window.timeline = new TL.Timeline('foobar', dataUrl, options)
+        })
+    </script>
+</head>
+
+<body>
+    <h1>Timeline Ho</h1>
+    <div id='foobar'></div>
+</body>
+
 </html>

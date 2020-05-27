@@ -1,0 +1,171 @@
+/* TL.TimeMarker
+================================================== */
+
+.tl-timeera {
+	height:100%;
+	height:40px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	pointer-events: none;
+	z-index:3;
+	/* Animate Left Width and Top
+	================================================== */
+	.property-animation(left, @animation-duration, @animation-ease);
+	.property-animation(top, @animation-duration-fast, @animation-ease);
+	.property-animation(height, @animation-duration-fast, @animation-ease);
+	.property-animation(width, @animation-duration, @animation-ease);
+	.animation-timing-cubic-bezier();
+	
+
+	&.tl-timeera-fast {
+		.property-animation(top, @animation-duration-fast, @animation-ease);
+		.property-animation(height, @animation-duration-fast, @animation-ease);
+		.property-animation(width, @animation-duration-fast, @animation-ease);
+		.animation-timing-cubic-bezier();
+	}
+	/* Timespan
+	================================================== */
+
+	.tl-timeera-background {
+		position:absolute;
+		background-color: @era-color-1;
+		width:100%;
+		height:100%;
+		opacity:1;
+	}
+
+	&.tl-timeera-color0 {
+		.tl-timeera-background {
+			background-color: @era-color-0;
+		}
+	}
+	&.tl-timeera-color1 {
+		.tl-timeera-background {
+			background-color: @era-color-1;
+		}
+	}
+	&.tl-timeera-color2 {
+		.tl-timeera-background {
+			background-color: @era-color-2;
+		}
+	}
+	&.tl-timeera-color3 {
+		.tl-timeera-background {
+			background-color: @era-color-3;
+		}
+	}
+	&.tl-timeera-color4 {
+		.tl-timeera-background {
+			background-color: @era-color-4;
+		}
+	}
+	&.tl-timeera-color5 {
+		.tl-timeera-background {
+			background-color: @era-color-5;
+		}
+	}
+	/* Content
+	================================================== */
+	.tl-timeera-content-container {
+		position:absolute;
+		// background-color: @era-color-1;
+		border:0;
+		border-top-left-radius:@time-marker-border-radius;
+		border-top-right-radius:@time-marker-border-radius;
+		border-bottom-right-radius:@time-marker-border-radius;
+		height:100%;
+		width:100px;
+		overflow:hidden;
+		// z-index:6;
+
+		.property-animation(height, @animation-duration-fast, @animation-ease);
+		.property-animation(width, @animation-duration, @animation-ease);
+		.animation-timing-cubic-bezier();
+		box-sizing: border-box;
+		border: 1px solid @marker-outline-color;
+		// box-shadow: 1px 1px 1px @color-background;
+				
+		.tl-timeera-content {
+			position:relative;
+			overflow:hidden;
+			height:100%;
+			// z-index:8;
+			padding:5px;
+			.border-box();
+			
+			.tl-timeera-text {
+				overflow:hidden;
+				position: relative;
+				
+				height:100%;
+				
+				h2.tl-headline {
+					bottom:0px;
+					position: absolute;
+					display: -webkit-box;
+					
+					line-clamp: 4;
+					-webkit-line-clamp: 4;
+					box-orient: vertical;
+					-webkit-box-orient: vertical;
+					text-overflow: ellipsis;
+					
+					font-size:10px;
+					line-height:10px;
+					// height:100%;
+					overflow:hidden;
+					font-weight:normal;
+					margin:0;
+					color:@color-background;
+					margin-left:10px;
+					
+					&.tl-headline-fadeout {
+						&:after {
+							content: "";
+							text-align: right;
+							position: absolute;
+							bottom: 0;
+							right: 0;
+							width: 100%;
+							height: 50%;
+							.marker-text-fade(@marker-color,50%);
+						}
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+
+		
+	}
+	
+
+}
+
+/* Skinny
+================================================== */
+.tl-skinny {
+	.tl-timeera {
+
+	}
+}
+
+/* Mobile, iPhone
+================================================== */
+.tl-mobile {
+	.tl-timeera {
+
+	}
+}
+
+/* Mobile, iPhone and skinny
+================================================== */
+.tl-mobile.tl-skinny {
+	.tl-timeera {
+
+	}
+}

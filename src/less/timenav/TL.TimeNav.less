@@ -1,0 +1,165 @@
+/* TL.TimeNav
+================================================== */
+
+.tl-timenav {
+	//height:200px;
+	width:100%;
+	background-color:@ui-background-color;
+	position:relative;
+	overflow:hidden;
+	//border-top: 2px solid @ui-background-color;
+	border-top: 1px solid darken(@ui-background-color,5);
+	//border-top: 1px solid #e3e3e3;
+	//box-shadow: inset 10px 10px 5px 0px rgba(0,0,0,0.75);
+	//.box-shadow(inset -7px 0px 7px rgba(0,0,0,.30));
+	
+	.tl-attribution {
+		cursor: pointer;
+		z-index:9;
+		position:absolute;
+		bottom:2px;
+		left:0px;
+		font-size:10px;
+		line-height:10px;
+		font-family:@font-sanserif !important;
+		//height:100%;
+		//background-color: @color-background;
+		background-color: fadeout(@color-background, 15%);
+		padding:3px;
+		
+		/*
+		right:-26px;
+		top:30px;
+		transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-webkit-transform: rotate(90deg);
+		background-color: fadeout(@ui-background-color, 15%);
+		*/
+		a {
+			
+			color:@brand-color;
+			//margin-left:10px;
+			&:hover {
+				color:@color-dark;
+				text-decoration: none;
+				.tl-knightlab-logo {
+					background-color: #c34528;
+				}
+			}
+		}
+		.tl-knightlab-logo {
+			display: inline-block;
+			vertical-align: middle;
+			height: 8px;
+			width: 8px;
+			margin-right:3px;
+			background-color: #c34528;
+			background-color:@brand-color;
+			transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			-webkit-transform: rotate(45deg);
+		}
+		
+	}
+	.tl-timenav-line {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 1px;
+		height: 100%;
+		background-color: darken(@ui-background-color, 10);//@color-theme;//darken(@ui-background-color, 10);
+		z-index: 2;
+		display:none;
+		//box-shadow: 1px 1px 7px rgba(0,0,0,0.3);
+		&:before, &:after {
+			font-family: 'tl-icons';
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			line-height: 1;
+			
+			/* Better Font Rendering =========== */
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			
+			color:@color-theme;
+			font-size:32px;
+			line-height:32px;
+			position: absolute;
+			left:-14px;
+		}
+		&:before {
+			//content: "\e647";
+			top: -10px;
+		}
+		&:after {
+			content: "\e648";
+			bottom:24px;
+		}
+	}
+	.tl-timenav-slider {
+		position:absolute;
+		height:100%;
+		width:100%;
+		top:0;
+		
+		&.tl-timenav-slider-animate {
+			
+			.property-animation(all, @animation-duration, @animation-ease);
+			.animation-timing-cubic-bezier();
+		}
+		.tl-timenav-slider-background {
+			position:absolute;
+			height:100%;
+			width:100%;
+			cursor:move;
+			z-index:6;
+		}
+		.tl-timenav-container-mask {
+			position:absolute;
+			height:100%;
+			top:0;
+			.tl-timenav-container {
+				position:absolute;
+				height:100%;
+
+			
+				.tl-timenav-item-container {
+					//margin-top:5px;
+					position:absolute;
+					height:100%;
+				}
+			
+			}
+		
+		}
+	}
+	
+	
+}
+
+/* Skinny
+================================================== */
+.tl-skinny {
+	.tl-timenav {
+
+	}
+}
+
+/* Mobile, iPhone
+================================================== */
+.tl-mobile {
+	.tl-timenav {
+
+	}
+}
+
+/* Mobile, iPhone and skinny
+================================================== */
+.tl-mobile.tl-skinny {
+	.tl-timenav {
+
+	}
+}

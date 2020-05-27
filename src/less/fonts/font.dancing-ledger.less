@@ -1,0 +1,43 @@
+/*	Font Dancing & Ledger
+
+https://www.google.com/fonts/specimen/Dancing+Script
+https://www.google.com/fonts/specimen/Ledger
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(//fonts.googleapis.com/css?family=Dancing+Script:700,400|Ledger);
+
+// Font Variables
+@font-main:						'Ledger', serif;
+@font-secondary:				'Dancing Script', cursive;
+@font-navigation:				@font-main;//'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-marker: 					@font-secondary;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				16px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		normal;
+
+// Headings
+@font-size-headings: 			58px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			700;
+@font-size-headline-title: 		68px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+ 
+@import "font.base.less";
+

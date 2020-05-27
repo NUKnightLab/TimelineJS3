@@ -1,0 +1,43 @@
+/*	Font Roboto Slab & Megrim
+
+https://www.google.com/fonts/specimen/Vollkorn
+https://www.google.com/fonts/specimen/Megrim
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(//fonts.googleapis.com/css?family=Megrim);
+@import url(//fonts.googleapis.com/css?family=Roboto+Slab:400,300);
+
+// Font Variables
+@font-main:						'Roboto Slab', Georgia, serif;
+@font-secondary:				'Megrim', 'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-navigation:				@font-secondary;
+@font-marker: 					@font-secondary;
+@font-headline-date: 			@font-main;
+
+@base-font-size: 				17px;
+@base-font-weight: 				300;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		normal;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	normal;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	normal;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+ 
+@import "font.base.less";

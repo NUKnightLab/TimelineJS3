@@ -1,0 +1,42 @@
+/*	Font Playfair & Playfair SC
+
+https://www.google.com/fonts/specimen/Playfair+Display
+https://www.google.com/fonts/specimen/Playfair+Display+SC
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(//fonts.googleapis.com/css?family=Playfair+Display:400,700|Playfair+Display+SC);
+
+// Font Variables
+@font-main:						'Playfair Display', serif;
+@font-secondary:				'Playfair Display SC', serif;
+@font-navigation:				'Helvetica Neue', Helvetica, Arial, "MS Trebuchet", sans-serif;
+@font-marker: 					@font-secondary;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				17px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+ 
+@import "font.base.less";
