@@ -107,7 +107,6 @@
                 "headline": "Twitter Embed",
                 "text": "Or you can copy the embed code if you want."
             }
-
         },
         {
             "media": {
@@ -415,8 +414,60 @@
                 "headline": "Imgur",
                 "text": "Just include the URL of an image or gallery page"
             }
+        },
+        {
+            "media": {
+                "url": "https://file-examples.com/wp-content/uploads/2017/10/file-sample_150kB.pdf",
+                "credit": "file-examples.com"
+            },
+            "start_date": {
+                "year": "1926"
+            },
+            "text": {
+                "headline": "PDF",
+                "text": "A URL to a PDF will be inlined in an iFrame -- but the remote server must be configured to permit it."
+            }
+        },
+        {
+            "media": {
+                "url": "https://soundcite.knightlab.com/media/bach-cello-suite.mp3",
+                "credit": "Bach"
+            },
+            "start_date": {
+                "year": "1927"
+            },
+            "text": {
+                "headline": "Audio",
+                "text": "A URL to an audio file (mp3|wav|m4a) will be rendered using the browser's native audio player."
+            }
+        },
+        {
+            "media": {
+                "url": "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_480_1_5MG.mp4",
+                "credit": "file-examples.com"
+            },
+            "start_date": {
+                "year": "1927",
+                "month": "6"
+            },
+            "text": {
+                "headline": "Video",
+                "text": "A URL to a video file (mp4) will be rendered using the browser's native video player."
+            }
+        },
+        {
+            "media": {
+                "url": " http://fast.wistia.com/embed/medias/j38ihh83m5",
+                "credit": "Wistia"
+            },
+            "start_date": {
+                "year": "1928"
+            },
+            "text": {
+                "headline": "Wistia",
+                "text": "Wistia is a commercial video hosting service. I don't even remember who requested that TimelineJS support it, and it's hard to find a suitable test URL, but ... "
+            }
         }
-
 
     ]
 }

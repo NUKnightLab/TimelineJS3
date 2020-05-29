@@ -20,6 +20,7 @@ import Vimeo from "./types/Vimeo"
 import DailyMotion from "./types/DailyMotion"
 import Vine from "./types/Vine"
 import Twitter from "./types/Twitter"
+import TwitterEmbed from "./types/TwitterEmbed"
 import Flickr from "./types/Flickr"
 import DocumentCloud from "./types/DocumentCloud"
 import Instagram from "./types/Instagram"
@@ -28,6 +29,10 @@ import GoogleDoc from "./types/GoogleDoc"
 import Spotify from "./types/Spotify"
 import IFrame from "./types/IFrame"
 import Imgur from "./types/Imgur"
+import PDF from "./types/PDF"
+import Audio from "./types/Audio"
+import Video from "./types/Video"
+import Wistia from "./types/Wistia"
 
 export function lookupMediaType(m, image_only) {
     var media = {},
@@ -71,7 +76,7 @@ export function lookupMediaType(m, image_only) {
                 type: "twitterembed",
                 name: "TwitterEmbed",
                 match_str: "<blockquote class=['\"]twitter-tweet['\"]",
-                cls: Twitter
+                cls: TwitterEmbed
             },
             {
                 type: "googlemaps",
@@ -127,12 +132,12 @@ export function lookupMediaType(m, image_only) {
                 match_str: "^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
                 cls: GoogleDoc
             },
-            // {
-            //     type:         "pdf",
-            //     name:         "PDF",
-            //     match_str:     /^.*\.pdf(\?.*)?(\#.*)?/,
-            //     cls:         PDF
-            // },
+            {
+                type: "pdf",
+                name: "PDF",
+                match_str: /^.*\.pdf(\?.*)?(\#.*)?/,
+                cls: PDF
+            },
             {
                 type: "wikipedia",
                 name: "Wikipedia",
@@ -157,24 +162,24 @@ export function lookupMediaType(m, image_only) {
                 match_str: "blockquote",
                 cls: Blockquote
             },
-            // {
-            //     type:         "video",
-            //     name:         "Video",
-            //     match_str:     /(mp4)(\?.*)?$/i,
-            //     cls:         Video
-            // },
-            // {
-            //   type:         "wistia",
-            //   name:         "Wistia",
-            //   match_str:     /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/i,
-            //   cls:         Wistia
-            // },
-            // {
-            //     type:         "audio",
-            //     name:         "Audio",
-            //     match_str:     /(mp3|wav|m4a)(\?.*)?$/i,
-            //     cls:         Audio
-            // },
+            {
+                type: "video",
+                name: "Video",
+                match_str: /(mp4)(\?.*)?$/i,
+                cls: Video
+            },
+            {
+                type: "wistia",
+                name: "Wistia",
+                match_str: /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/i,
+                cls: Wistia
+            },
+            {
+                type: "audio",
+                name: "Audio",
+                match_str: /(mp3|wav|m4a)(\?.*)?$/i,
+                cls: Audio
+            },
             {
                 type: "imageblank",
                 name: "Imageblank",
