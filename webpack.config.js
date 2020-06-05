@@ -40,16 +40,34 @@ module.exports = {
         }),
     ],
     module: {
-        // rules: [{
-        //     test: path.resolve(__dirname, 'src/less/TL.Timeline.less'), // /\.less$/,
-        //     // include: [
-        //     //     path.resolve(__dirname, 'src/less')
-        //     // ],
-        //     loader: 'less-loader',
-        //     options: {
-        //         sourceMap: true
-        //     }
-
-        // }]
+        rules: [{
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                        }
+                    },
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            sourceMap: true,
+                        }
+                    },
+                ],
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'fonts/'
+                    }
+                }]
+            }
+        ]
     }
 };

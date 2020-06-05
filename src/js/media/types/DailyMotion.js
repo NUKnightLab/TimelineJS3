@@ -28,11 +28,15 @@ export default class DailyMotion extends Media {
 
     // Update Media Display
     _updateMediaDisplay() {
-        this._el.content_item.style.height = ratio.r16_9({ w: this._el.content_item.offsetWidth }) + "px";
+        if (this._state.loaded) {
+            this._el.content_item.style.height = ratio.r16_9({ w: this._el.content_item.offsetWidth }) + "px";
+        }
     }
 
     _stopMedia() {
-        this._el.content_item.querySelector("iframe").contentWindow.postMessage('{"command":"pause","parameters":[]}', "*");
+        if (this._state.loaded) {
+            this._el.content_item.querySelector("iframe").contentWindow.postMessage('{"command":"pause","parameters":[]}', "*");
+        }
 
     }
 
