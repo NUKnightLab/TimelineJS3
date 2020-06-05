@@ -1,4 +1,4 @@
-/*    TL.MediaType
+/*
     Determines the type of media the url string is.
     returns an object with .type and .id
     You can add new media types by adding a regex
