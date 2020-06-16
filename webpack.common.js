@@ -6,7 +6,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const output_path = path.resolve(__dirname, "dist/js");
 module.exports = {
     entry: "./src/js/index.js",
-    mode: "development",
     optimization: {
         usedExports: true
     },
@@ -14,9 +13,6 @@ module.exports = {
         filename: "timeline.js",
         path: output_path,
         library: "TL" // https://webpack.js.org/configuration/output/#outputlibrary
-    },
-    devServer: {
-        contentBase: path.resolve(__dirname, './dist'),
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -64,7 +60,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: 'fonts/'
+                        outputPath: '../css/icons'
                     }
                 }]
             }

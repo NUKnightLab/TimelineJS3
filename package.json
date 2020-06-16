@@ -1,43 +1,43 @@
 {
-  "name": "TimelineJS3",
-  "version": "3.6.5",
-  "license": "MPL-2.0",
-  "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
-  "dependencies": {
-    "less": "^2.1.1",
-    "less-plugin-clean-css": "^1.2.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.6",
-    "@babel/preset-env": "^7.8.6",
-    "babel-jest": "^25.1.0",
-    "babel-preset-env": "^1.7.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^5.1.1",
-    "css-loader": "^3.5.3",
-    "file-loader": "^6.0.0",
-    "html-webpack-plugin": "^4.3.0",
-    "jest": "^25.1.0",
-    "less-loader": "^6.1.0",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NUKnightLab/TimelineJS3.git"
-  },
-  "keywords": [],
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/NUKnightLab/TimelineJS3/issues"
-  },
-  "homepage": "https://timeline.knightlab.com",
-  "scripts": {
-    "test": "jest",
-    "build": "webpack",
-    "start": "webpack-dev-server --open"
-  }
+    "name": "TimelineJS3",
+    "version": "3.6.5",
+    "license": "MPL-2.0",
+    "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
+    "dependencies": {
+        "less": "^2.1.1",
+        "less-plugin-clean-css": "^1.2.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.8.6",
+        "@babel/preset-env": "^7.8.6",
+        "babel-jest": "^25.1.0",
+        "babel-preset-env": "^1.7.0",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^5.1.1",
+        "css-loader": "^3.5.3",
+        "file-loader": "^6.0.0",
+        "html-webpack-plugin": "^4.3.0",
+        "jest": "^25.1.0",
+        "less-loader": "^6.1.0",
+        "style-loader": "^1.2.1",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NUKnightLab/TimelineJS3.git"
+    },
+    "keywords": [],
+    "author": "",
+    "bugs": {
+        "url": "https://github.com/NUKnightLab/TimelineJS3/issues"
+    },
+    "homepage": "https://timeline.knightlab.com",
+    "scripts": {
+        "test": "jest",
+        "build": "webpack --config webpack.prod.js",
+        "start": "webpack-dev-server --open --config webpack.dev.js"
+    }
 }
