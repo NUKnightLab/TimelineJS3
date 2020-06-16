@@ -5,6 +5,7 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './src/template',
+        contentBase: ['./src/template', './src/css'],
+        contentBasePublicPath: ['/', '/css']
     },
 })
