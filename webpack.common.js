@@ -3,7 +3,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const output_path = path.resolve(__dirname, "dist/js");
+const output_path = path.resolve(__dirname, "dist");
 module.exports = {
     entry: "./src/js/index.js",
     optimization: {
@@ -11,7 +11,7 @@ module.exports = {
     },
     output: {
         filename: "timeline.js",
-        path: output_path,
+        path: path.join(output_path, 'js'),
         library: "TL" // https://webpack.js.org/configuration/output/#outputlibrary
     },
     plugins: [
@@ -20,17 +20,13 @@ module.exports = {
         }),
         new CopyPlugin([{
             from: "./src/js/language/locale/*.json",
-            to: path.resolve(output_path, "locale"),
+            to: path.join(output_path, "js/locale"),
             flatten: true
         }]),
-        new CopyPlugin([{ // one day it would be great to build the LESS files with Webpack but it's been hard
-            from: path.resolve(__dirname, 'build/css'),
-            to: path.resolve(__dirname, "dist/css")
-        }]),
-        new CopyPlugin([{
-            from: path.resolve(__dirname, 'src/template'),
-            to: path.resolve(__dirname, "dist/")
-        }]),
+        // new CopyPlugin([{ // one day it would be great to build the LESS files with Webpack but it's been hard
+        //     from: path.resolve(__dirname, 'build/css'),
+        //     to: path.resolve(__dirname, "dist/css")
+        // }]),
         new CleanWebpackPlugin({
             cleanStaleWebpackAssets: true
         }),
@@ -38,9 +34,7 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.less$/,
-                use: [
-                    'style-loader',
-                    {
+                use: [{
                         loader: 'css-loader',
                         options: {
                             sourceMap: true,
