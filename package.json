@@ -4,7 +4,6 @@
     "license": "MPL-2.0",
     "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
     "dependencies": {
-        "less": "^2.1.1",
         "less-plugin-clean-css": "^1.2.0"
     },
     "devDependencies": {
@@ -19,6 +18,7 @@
         "file-loader": "^6.0.0",
         "html-webpack-plugin": "^4.3.0",
         "jest": "^25.1.0",
+        "less": "^3.11.1",
         "less-loader": "^6.1.0",
         "mini-css-extract-plugin": "^0.9.0",
         "style-loader": "^1.2.1",
@@ -39,7 +39,7 @@
     "homepage": "https://timeline.knightlab.com",
     "scripts": {
         "test": "jest",
-        "build": "webpack --config webpack.prod.js && webpack --config webpack.fonts.js",
+        "build": "webpack --config webpack.prod.js && node tasks/compile_less.js",
         "start": "webpack-dev-server --open --config webpack.dev.js"
     }
 }
