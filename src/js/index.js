@@ -1,3 +1,3 @@
 require('../less/TL.Timeline.less')
-export { Timeline, debug }
+export { Timeline }
 from "./timeline/Timeline"

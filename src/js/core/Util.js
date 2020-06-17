@@ -5,7 +5,6 @@ isEven, findArrayNumberByUniqueID
 
 ================================================== */
 import TLError from "../core/TLError"
-var TIMELINE_DEBUG = true; // how to adapt this to "global"
 
 const css_named_colors = {
     "aliceblue": "#f0f8ff",
@@ -218,13 +217,38 @@ export function extend( /*Object*/ dest) /*-> Object*/ { // merge src properties
     return dest;
 }
 
+const TRACE_HANDLERS = []
+
+/**
+ * Register a callback to be executed when trace is called in this runtime.
+ * Callbacks will be called with whatever was passed to `trace` which is 
+ * expected to be a string.
+ * @param {callable} cb 
+ */
+export function addTraceHandler(cb) {
+    TRACE_HANDLERS.push(cb)
+}
+
+
+/**
+ * Pass the given `msg` to each registered trace handler.
+ * This is a crude adaptation of the original Timeline trace
+ * function which assumed access to a global `debug` flag.
+ * 
+ * @param {string} msg 
+ */
 export function trace(msg) {
-    if (TIMELINE_DEBUG) {
-        if (window.console) {
-            console.log(msg);
+    TRACE_HANDLERS.forEach((cb) => {
+        try {
+            cb(msg)
+        } catch (e) {
+            if (console && console.log) {
+                console.log("Error handling trace", e)
+            }
         }
-    }
-};
+    })
+}
+
 
 export function pad(val, len) {
     val = String(val);

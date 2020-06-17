@@ -1,7 +1,7 @@
 // simple test environment to make sure some things work
 import * as DOM from "../dom/DOM"
 import { addClass } from "../dom/DOMUtil"
-import { hexToRgb, mergeData, classMixin, isTrue, trace } from "../core/Util";
+import { hexToRgb, mergeData, classMixin, isTrue, trace, addTraceHandler } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import Message from "../ui/Message"
 import { Language, fallback } from "../language/Language"
@@ -147,7 +147,9 @@ class Timeline {
             this.updateDisplay();
         }.bind(this));
 
-        debug = this.options.debug;
+        if (this.options.debug) {
+            addTraceHandler(console.log)
+        }
 
         // Apply base class to container
         addClass(this._el.container, 'tl-timeline');
@@ -250,7 +252,6 @@ class Timeline {
             try {
                 this._onDataLoaded();
             } catch (e) {
-                debugger
                 this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
             }
         } else {
@@ -727,13 +728,16 @@ class Timeline {
     }
 
     _initGoogleAnalytics() {
-        (function(i, s, o, g, r, a, m) { i['GoogleAnalyticsObject'] = r;
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
             i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date();
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
             a = s.createElement(o), m = s.getElementsByTagName(o)[0];
             a.async = 1;
             a.src = g;
-            m.parentNode.insertBefore(a, m) })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
         ga('create', this.options.ga_property_id, 'auto');
         ga('set', 'anonymizeIp', true);
@@ -757,4 +761,4 @@ class Timeline {
 
 classMixin(Timeline, I18NMixins, Events)
 
-export { Timeline, debug }
+export { Timeline }
