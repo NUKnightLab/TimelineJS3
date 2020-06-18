@@ -1,4 +1,3 @@
-// simple test environment to make sure some things work
 import * as DOM from "../dom/DOM"
 import { addClass } from "../dom/DOMUtil"
 import { hexToRgb, mergeData, classMixin, isTrue, trace, addTraceHandler } from "../core/Util";
@@ -14,8 +13,13 @@ import * as Browser from "../core/Browser"
 import { Animate } from "../animation/Animate"
 import { StorySlider } from "../slider/StorySlider"
 import { MenuBar } from "../ui/MenuBar"
+import { loadCSS } from "../core/Load";
 
-let debug = false; // can we fiddle with this and if others do, does that propogate?
+let script_src_url = null;
+if (document) {
+    let script_tags = document.getElementsByTagName('script');
+    script_src_url = script_tags[script_tags.length - 1].src;
+}
 
 function make_keydown_handler(timeline) {
     return function(event) {
@@ -56,6 +60,10 @@ class Timeline {
             timenav: {},
             menubar: {}
         };
+
+        if (options.lang && !options.language) {
+            options.language = options.lang;
+        }
 
         this.language = fallback;
 
@@ -113,7 +121,8 @@ class Timeline {
             zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
             language: "en",
             ga_property_id: null,
-            track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out']
+            track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
+            theme: null
         };
 
         // Animation Objects
@@ -142,6 +151,10 @@ class Timeline {
             this.options.script_path = this.determineScriptPath()
         }
 
+        // load font, theme
+        this._loadStyles()
+
+
         document.addEventListener("keydown", make_keydown_handler(this));
         window.addEventListener("resize", function(e) {
             this.updateDisplay();
@@ -165,6 +178,36 @@ class Timeline {
         this._loadLanguage(data);
 
     }
+
+    _loadStyles() {
+        let font_css_url = null,
+            theme_css_url = null;
+
+        if (this.options.font && this.options.font.indexOf('http') == 0) {
+            font_css_url = this.options.font
+        } else if (this.options.font) {
+            let fragment = '/css/fonts/font.' + this.options.font + '.css'
+            font_css_url = new URL(fragment, this.options.script_path).toString()
+        }
+
+        if (font_css_url) {
+            loadCSS(font_css_url)
+        }
+
+        if (this.options.theme && this.options.theme.indexOf('http') == 0) {
+            theme_css_url = this.options.theme
+        } else if (this.options.theme) {
+            let fragment = '/css/themes/timeline.theme.' + this.options.theme + '.css'
+            theme_css_url = new URL(fragment, this.options.script_path).toString()
+        }
+
+        if (theme_css_url) {
+            loadCSS(theme_css_url)
+        }
+
+
+    }
+
 
     _loadLanguage(data) {
         try {
@@ -224,6 +267,7 @@ class Timeline {
      */
     showMessage(msg) {
             if (this.message) {
+                debugger
                 this.message.updateMessage(msg);
             } else {
                 trace("No message display available.")
@@ -235,8 +279,26 @@ class Timeline {
          * The script path is needed to load other languages
          */
     determineScriptPath() {
-        var script_tags = document.getElementsByTagName('script');
-        var src = script_tags[script_tags.length - 1].src;
+        let src = null;
+        if (script_src_url) { // did we get it when this loaded?
+            src = script_src_url;
+        } else {
+            let script_tag = document.getElementById('timeline-script-tag')
+            if (script_tag) {
+                src = script_tag.src
+            }
+        }
+
+        if (!src) {
+            let script_tags = document.getElementsByTagName('script');
+            for (let index = script_tags.length - 1; index >= 0; index--) {
+                if (script_tags[index].src) {
+                    src = script_tags[index].src
+                    break // if we haven't found anything else, use the latest loaded script
+                }
+            }
+        }
+
         if (src) {
             return src.substr(0, src.lastIndexOf('/'));
         }
@@ -748,7 +810,7 @@ class Timeline {
         this._initGoogleAnalytics();
         ga('send', 'pageview');
         var events = this.options.track_events;
-        for (i = 0; i < events.length; i++) {
+        for (let i = 0; i < events.length; i++) {
             var event_ = events[i];
             this.addEventListener(event_, function(e) {
                 ga('send', 'event', e.type, 'clicked');

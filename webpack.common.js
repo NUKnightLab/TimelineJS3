@@ -23,10 +23,11 @@ module.exports = {
             to: path.join(output_path, "js/locale"),
             flatten: true
         }]),
-        // new CopyPlugin([{ // one day it would be great to build the LESS files with Webpack but it's been hard
-        //     from: path.resolve(__dirname, 'build/css'),
-        //     to: path.resolve(__dirname, "dist/css")
-        // }]),
+        new CopyPlugin([{
+            from: './src/embed/*',
+            to: path.join(output_path, "embed"),
+            flatten: true
+        }]),
         new CleanWebpackPlugin({
             cleanStaleWebpackAssets: true
         }),
