@@ -86,6 +86,15 @@
         }
 
         function createEmbedDiv(containerId, width, height) {
+
+            if (typeof(width) != 'string' && typeof(width) != 'number') {
+                width = '100%'
+            }
+
+            if (typeof(height) != 'string' && typeof(height) != 'number') {
+                height = '100%'
+            }
+
             // default containerId would be 'timeline-embed'
             t = document.createElement('div');
             t.style.position = 'relative';
@@ -142,7 +151,9 @@
             setPageLanguage();
             var embed_path = computeEmbedPath();
             addOembedTag();
+
             var options = optionsFromUrlParams();
+            createEmbedDiv('timeline-embed', options.width, options.height);
             // ga_property_id is not something we let users override
             options.ga_property_id = 'UA-27829802-4';
             if (typeof(options.source) == 'undefined') {
