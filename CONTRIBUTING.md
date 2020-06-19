@@ -1,4 +1,4 @@
-<h1>Contributing to TimelineJS</h1>
+# Contributing to TimelineJS
 
 TimelineJS is open source software. Knight Lab appreciates contributions to the code and to the translations that support publishing timelines in other languages.
 
@@ -8,76 +8,27 @@ Translations, bug fixes and features proposed and endorsed by Knight Lab should 
 
 If you run into challenges trying to set up for contribution, post a [GitHub issue](https://github.com/NUKnightLab/TimelineJS3/issues).
 
-<h2>Working with the Code</h2>
+## What contributions are welcome?
 
-The official way that TimelineJS code is managed uses a python-based system for compiling the javascript and CSS and managing the static site content. We strongly encourage people working on the code to use this system. However, if this is a major burden, it is also possible to use the CodeKit IDE to work on the code.
+In general, it's probably a good idea to start a conversation in [a GitHub issue](https://github.com/NUKnightLab/TimelineJS3/issues) to verify that you're on the right path. This is even more important for new features, but even for bugs, you can avoid wasted effort by checking in with us first.
+
+## Working with the Code
+
+TimelineJS uses `node`/`npm`-based build tools for development and deployment. The previous python-based build system is obsolete and incompatible with the new model.
 
 In order to clone or download the TimelineJS3 envrionment, use the following command:
 
     git clone https://github.com/NUKnightLab/TimelineJS3.git
-    
-You must also check out one more git repository, that our code depends on. Check this out "alongside" your TimelineJS3 directory -- they should both have the same parent folder.
 
-    git clone https://github.com/NUKnightLab/fablib.git
-    
-<h3>The Python Method</h3>
-Our build environment is routinely used with Python 2.7. Other versions of Python may work but have not been tested. Even though we call it the `python method`, there are also dependencies on `node` libraries for preparing the CSS and Javascript files.
+The reference version of `node` used with these tools is `v13.9.0`, although we use `nvm`, and if the version in `.nvmrc` is different than this document, that version takes precedence. (It's unlikely to be an issue since only the dev/build tooling uses `node`.)
 
-Generally, we recommend python projects begin with a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) (aka virtualenv) but this is not strictly required. Whether in a virtualenv or not, you must install a few [libraries](https://github.com/NUKnightLab/TimelineJS3/blob/master/requirements.txt). The best way to do this is with the following command, after you `cd` into the TimelineJS3 folder:
+Once you've cloned the repository, run `npm install`. Assuming there are no errors, you should be able to run `npm start` and, after a few moments, a window should open in your default browser with a timeline.  
 
-    pip install -r requirements.txt
+Timeline uses `webpack` for bundling, and uses the `webpack-dev-server` as part of the `start` script. This means that you should be able to make edits to the source javascript and less files and they will automatically compile, and the browser should reload.
 
-Once the requirements are installed, here are things to know:
+### Testing
 
-* ALWAYS edit code in the [/source/](https://github.com/NUKnightLab/TimelineJS3/tree/master/source) directory. Pull requests which only have changes to code in the `/build/` or `/compiled/` directory are incorrect and will not be accepted.
-* use the `fab build` command to compile your changes for testing.
-* use the `fab serve` command to run a local web server which mimics the official documentation web site and provides a way to load your updated javascript for testing. The URL for your local test environment is http://localhost:5000/ You can use the [make a timeline form](http://localhost:5000/#make) with Google Spreadsheets to see how your changes are working. **Remember:** you must execute `fab build` after you change javascript to see your changes on your local server. It is **not** automatic.
-* You may also want to make sure that the [examples](http://localhost:5000/#examples) still work as expected after you change code.
-* Don't break the unit tests. Consider adding test code for your changes. We're still working out our unit testing methodology, but before you submit pull requests, you should check http://localhost:5000/unit-tests.html and http://localhost:5000/mediatype-tests.html and verify that you haven't broken any of the tests with your changes.
+Timeline has a modest suite of tests implemented using `jest`. You can run them using `npm test`. We'd love to have more tests, but have not yet determined a good way to run unit tests against the visual details of timelines. (Let us know if you have suggestions!)  It's a good idea to occasionally run `npm test` to make sure you haven't messed anything up.
 
-<h4>Setting Up a Virtual Environment</h4>
+There's also a script, `npm run disttest`, which attempts to simulate the environment in which TimelineJS is deployed. When executed, it runs the `dist` script and then opens a web browser on the `embed` HTML page which is used with the builder on timeline.knightlab.com. There are small differences in how files are deployed compared to running the `disttest` so more substantial changes should be deployed to the `dev` path on `cdn.knightlab.com` and tested further there.
 
-To set up a virtual environment, you will first need to install [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/).
-
-To install virtualenv, use the following command:
-
-    pip install virtualenv
-    
-To install virtualenvwrapper, first type the following command:
-
-    pip install virtualenvwrapper
-    
-Then, type this:
-
-    source /usr/local/bin/virtualenvwrapper.sh
-    
-Now, you can create a virtual environment with the following command:
-
-    mkvirtualenv timelinejs3
-    
-To activate the virtual environment, use the following command:
-
-    workon timelinejs3
-
-<h4>node/npm</h4>
-As mentioned above, developers building this code using Python must also install a handful of `node` utilities. Installing `node` and `npm` is left as an exercise for the developer, but once they are installed, make sure you do these commands:
-
-    npm install -g less
-    npm install -g uglify-js
-    npm install -g less-plugin-clean-css
-    
-
-<h4>Check your install</h4>
-Make sure that your virtual environment is active, change into your TimeLineJS3 directory and run these commands:
-
-	fab build
-	fab serve
-
-Then open a browser and visit http://localhost:5000/unit-tests.html . All of the unit tests should run with no errors reported. You may also want to check some of the examples, such as http://localhost:5000/examples/houston/ to make sure that things are basically working. The local webserver should load all of its javascript from your local `/build/` directory, so as you develop code, periodically execute `fab build` and then use the local server to make sure things are going well. (Again, don't forget about the unit tests!)
-
-
-<h3>Working with CodeKit</h3>
-
-TimelineJS's initial development was done with [CodeKit](https://incident57.com/codekit/), so we maintain support for that. 
-
-Basically, just use CodeKit's "add project" feature to add the TimelineJS directory as a project. You shouldn't need to make any other changes. CodeKit is configured to build files automatically to the /compiled/ directory. There are HTML files in that directory designed to use for testing your code changes. The author of this document does not use CodeKit much, so if these instructions need improvement, please file a GitHub issue or give us a pull request.

@@ -267,7 +267,6 @@ class Timeline {
      */
     showMessage(msg) {
             if (this.message) {
-                debugger
                 this.message.updateMessage(msg);
             } else {
                 trace("No message display available.")

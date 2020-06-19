@@ -38,7 +38,7 @@ function stageToCDN(version, latest) {
     // }
 
     // backwards compatibility -- we've offered timeline-min.js
-    // webpack makes something smaller even than that, so just copy
+    // webpack makes something smaller even than that, so just copy.
     // for people who want to debug, there's the sourcemap.
     fse.copySync('dist/js/timeline.js', 'dist/js/timeline-min.js')
 
