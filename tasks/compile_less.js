@@ -1,13 +1,36 @@
-const fs = require('fs')
+const fs = require('fs-extra')
 const less = require('less')
 const path = require('path')
 const glob = require('glob')
 
-/*
- * We let the main Timeline Less file get compiled by webpack
- * since we need it for the dev server, and it works
- * But it was too much trouble to make Webpack do all of these...
- */
+let main_output_dir = path.resolve(__dirname, '../dist/css')
+fs.mkdirSync(main_output_dir, { recursive: true })
+
+// /* 
+//  * Copy support files
+//  */
+// fs.copySync('src/css/icons', path.join(main_output_dir, 'icons'), err => {
+//     console.error(err);
+//     return 1;
+// });
+
+
+// /*
+//  * Compile base CSS 
+//  */
+// let p = path.resolve(__dirname, '../src/less/TL.Timeline.less')
+// let file_content = fs.readFileSync(p, 'utf-8')
+// less.render(file_content, {
+//     filename: p
+// }).then(
+//     (output) => {
+//         var basename = path.basename(p, '.less')
+//         var output_css = path.join(main_output_dir, `timeline.css`)
+//         fs.writeFileSync(path.join(output_css), output.css)
+//         console.log(`FONT CSS compiled ${p}`)
+//     }
+// )
+
 
 /*
  * Compile font files 

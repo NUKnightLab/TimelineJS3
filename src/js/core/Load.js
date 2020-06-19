@@ -43,7 +43,7 @@ class Loader {
         this.doc = document
         this.pending = {}
         this.queue = { css: [], js: [] };
-        this.styleSheets = document.styleSheettts
+        this.styleSheets = document.styleSheets
         this.env = this.getEnv()
         this.head = this.doc.head || this.doc.getElementsByTagName('head')[0];
         this.pollCount = 0
@@ -310,7 +310,7 @@ class Loader {
     @private
     */
     pollWebKit() {
-        var css = pending.css,
+        var css = this.pending.css,
             i;
 
         if (css) {
@@ -328,7 +328,7 @@ class Loader {
 
             if (css) {
                 if (this.pollCount < 200) {
-                    setTimeout(pollWebKit, 50);
+                    setTimeout(this.pollWebKit.bind(this), 50);
                 } else {
                     // We've been polling for 10 seconds and nothing's happened, which may
                     // indicate that the stylesheet has been removed from the document

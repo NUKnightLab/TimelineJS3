@@ -29,13 +29,13 @@ function writeBanner(file, options) {
 function stageToCDN(version, latest) {
     var banner_version = (version == 'dev') ? new Date().toISOString() : version;
 
-    var to_banner = glob.sync('dist/**/*.+(js|css)');
-    for (var i = 0; i < to_banner.length; i++) {
-        writeBanner(to_banner[i], {
-            banner: 'banner.tmpl',
-            version: banner_version,
-        })
-    }
+    // var to_banner = glob.sync('dist/**/*.+(js|css)');
+    // for (var i = 0; i < to_banner.length; i++) {
+    //     writeBanner(to_banner[i], {
+    //         banner: 'banner.tmpl',
+    //         version: banner_version,
+    //     })
+    // }
 
     // backwards compatibility -- we've offered timeline-min.js
     // webpack makes something smaller even than that, so just copy
@@ -102,6 +102,6 @@ if (process.argv[2] == 'dev') {
 }
 
 function onErr(err) {
-    console.log(err);
+    console.error(err);
     return 1;
 }

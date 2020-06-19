@@ -186,7 +186,7 @@ class Timeline {
         if (this.options.font && this.options.font.indexOf('http') == 0) {
             font_css_url = this.options.font
         } else if (this.options.font) {
-            let fragment = '/css/fonts/font.' + this.options.font.toLowerCase() + '.css'
+            let fragment = '../css/fonts/font.' + this.options.font.toLowerCase() + '.css'
             font_css_url = new URL(fragment, this.options.script_path).toString()
         }
 
@@ -197,7 +197,7 @@ class Timeline {
         if (this.options.theme && this.options.theme.indexOf('http') == 0) {
             theme_css_url = this.options.theme
         } else if (this.options.theme) {
-            let fragment = '/css/themes/timeline.theme.' + this.options.theme.toLowerCase() + '.css'
+            let fragment = '../css/themes/timeline.theme.' + this.options.theme.toLowerCase() + '.css'
             theme_css_url = new URL(fragment, this.options.script_path).toString()
         }
 
@@ -300,7 +300,8 @@ class Timeline {
         }
 
         if (src) {
-            return src.substr(0, src.lastIndexOf('/'));
+            // +1 to include the trailing slash or concatting for dynamic CSS load won't work.
+            return src.substr(0, src.lastIndexOf('/') + 1);
         }
         return '';
     }
