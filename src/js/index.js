@@ -1,3 +1,4 @@
 require('../less/TL.Timeline.less')
-export { Timeline }
-from "./timeline/Timeline"
+import { Timeline } from "./timeline/Timeline"
+import { parseGoogleSpreadsheetURL } from "./core/ConfigFactory"
+export { Timeline, parseGoogleSpreadsheetURL }

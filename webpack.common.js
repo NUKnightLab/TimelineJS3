@@ -1,6 +1,5 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const output_path = path.resolve(__dirname, "dist");
@@ -15,9 +14,6 @@ module.exports = {
         library: "TL" // https://webpack.js.org/configuration/output/#outputlibrary
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: 'src/template/index.html'
-        }),
         new CopyPlugin([{
             from: "./src/js/language/locale/*.json",
             to: path.join(output_path, "js/locale"),
