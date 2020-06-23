@@ -1,6 +1,6 @@
 import { TimelineConfig } from "../core/TimelineConfig"
 import { trim, isEmptyObject, mergeData, trace } from "../core/Util";
-import { TLDate } from "../date/TLDate"
+import { parseDate } from "../date/TLDate"
 import TLError from "../core/TLError"
 import { ajax } from "../net/Net"
 import { parseTime } from "../date/DateUtil"
@@ -58,10 +58,10 @@ function extractGoogleEntryData_V1(item) {
         type: item_data.type || ''
     }
     if (item_data.startdate) {
-        d['start_date'] = TLDate.parseDate(item_data.startdate);
+        d['start_date'] = parseDate(item_data.startdate);
     }
     if (item_data.enddate) {
-        d['end_date'] = TLDate.parseDate(item_data.enddate);
+        d['end_date'] = parseDate(item_data.enddate);
     }
 
 

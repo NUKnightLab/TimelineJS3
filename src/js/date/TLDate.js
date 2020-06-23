@@ -83,8 +83,8 @@ export const SCALES = [
     ]
 ]
 
- // Date parts from highest to lowest precision
- const DATE_PARTS = [
+// Date parts from highest to lowest precision
+const DATE_PARTS = [
     "millisecond",
     "second",
     "minute",
@@ -101,10 +101,10 @@ const ISO8601_SHORT_PATTERN = /^([\+-]?\d+?)(-\d{2}?)?(-\d{2}?)?$/;
 const ISO8601_PATTERN = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 
 /* For now, rather than extract parts from regexp, lets trust the browser.
-    * Famous last words...
-    * What about UTC vs local time?
-    * see also http://stackoverflow.com/questions/10005374/ecmascript-5-date-parse-results-for-iso-8601-test-cases
-    */
+ * Famous last words...
+ * What about UTC vs local time?
+ * see also http://stackoverflow.com/questions/10005374/ecmascript-5-date-parse-results-for-iso-8601-test-cases
+ */
 function parseISODate(str) {
     var d = new Date(str); // this is a true JavaScript date, not a TLDate
     if (isNaN(d)) {
@@ -161,194 +161,192 @@ const BEST_DATEFORMATS = {
 };
 
 export const TLDate = TLClass.extend({
-           // @data = ms, JS Date object, or JS dictionary with date properties
-           initialize: function(data, format, format_short) {
-               if (typeof data == "number") {
-                   this.data = {
-                       format: "yyyy mmmm",
-                       date_obj: new Date(data)
-                   };
-               } else if (Date == data.constructor) {
-                   this.data = {
-                       format: "yyyy mmmm",
-                       date_obj: data
-                   };
-               } else {
-                   this.data = JSON.parse(JSON.stringify(data)); // clone don't use by reference.
-                   this._createDateObj();
-               }
+    // @data = ms, JS Date object, or JS dictionary with date properties
+    initialize: function(data, format, format_short) {
+        if (typeof data == "number") {
+            this.data = {
+                format: "yyyy mmmm",
+                date_obj: new Date(data)
+            };
+        } else if (Date == data.constructor) {
+            this.data = {
+                format: "yyyy mmmm",
+                date_obj: data
+            };
+        } else {
+            this.data = JSON.parse(JSON.stringify(data)); // clone don't use by reference.
+            this._createDateObj();
+        }
 
-               this._setFormat(format, format_short);
-           },
+        this._setFormat(format, format_short);
+    },
 
-           setDateFormat: function(format) {
-               this.data.format = format;
-           },
+    setDateFormat: function(format) {
+        this.data.format = format;
+    },
 
-           getDisplayDate: function(language, format) {
-               if (this.data.display_date) {
-                   return this.data.display_date;
-               }
-               if (!language) {
-                   language = Language.fallback;
-               }
-               if (language.constructor != Language) {
-                   trace(
-                       "First argument to getDisplayDate must be type Language"
-                   );
-                   language = Language.fallback;
-               }
+    getDisplayDate: function(language, format) {
+        if (this.data.display_date) {
+            return this.data.display_date;
+        }
+        if (!language) {
+            language = Language.fallback;
+        }
+        if (language.constructor != Language) {
+            trace(
+                "First argument to getDisplayDate must be type Language"
+            );
+            language = Language.fallback;
+        }
 
-               var format_key = format || this.data.format;
-               return language.formatDate(this.data.date_obj, format_key);
-           },
+        var format_key = format || this.data.format;
+        return language.formatDate(this.data.date_obj, format_key);
+    },
 
-           getMillisecond: function() {
-               return this.getTime();
-           },
+    getMillisecond: function() {
+        return this.getTime();
+    },
 
-           getTime: function() {
-               return this.data.date_obj.getTime();
-           },
+    getTime: function() {
+        return this.data.date_obj.getTime();
+    },
 
-           isBefore: function(other_date) {
-               if (
-                   !this.data.date_obj.constructor ==
-                   other_date.data.date_obj.constructor
-               ) {
-                   throw new TLError("date_compare_err"); // but should be able to compare 'cosmological scale' dates once we get to that...
-               }
-               if ("isBefore" in this.data.date_obj) {
-                   return this.data.date_obj["isBefore"](
-                       other_date.data.date_obj
-                   );
-               }
-               return this.data.date_obj < other_date.data.date_obj;
-           },
+    isBefore: function(other_date) {
+        if (!this.data.date_obj.constructor ==
+            other_date.data.date_obj.constructor
+        ) {
+            throw new TLError("date_compare_err"); // but should be able to compare 'cosmological scale' dates once we get to that...
+        }
+        if ("isBefore" in this.data.date_obj) {
+            return this.data.date_obj["isBefore"](
+                other_date.data.date_obj
+            );
+        }
+        return this.data.date_obj < other_date.data.date_obj;
+    },
 
-           isAfter: function(other_date) {
-               if (
-                   !this.data.date_obj.constructor ==
-                   other_date.data.date_obj.constructor
-               ) {
-                   throw new TLError("date_compare_err"); // but should be able to compare 'cosmological scale' dates once we get to that...
-               }
-               if ("isAfter" in this.data.date_obj) {
-                   return this.data.date_obj["isAfter"](
-                       other_date.data.date_obj
-                   );
-               }
-               return this.data.date_obj > other_date.data.date_obj;
-           },
+    isAfter: function(other_date) {
+        if (!this.data.date_obj.constructor ==
+            other_date.data.date_obj.constructor
+        ) {
+            throw new TLError("date_compare_err"); // but should be able to compare 'cosmological scale' dates once we get to that...
+        }
+        if ("isAfter" in this.data.date_obj) {
+            return this.data.date_obj["isAfter"](
+                other_date.data.date_obj
+            );
+        }
+        return this.data.date_obj > other_date.data.date_obj;
+    },
 
-           // Return a new TLDate which has been 'floored' at the given scale.
-           // @scale = string value from SCALES
-           floor: function(scale) {
-               var d = new Date(this.data.date_obj.getTime());
-               for (var i = 0; i < SCALES.length; i++) {
-                   // for JS dates, we iteratively apply flooring functions
-                   SCALES[i][2](d);
-                   if (SCALES[i][0] == scale) return new TLDate(d);
-               }
+    // Return a new TLDate which has been 'floored' at the given scale.
+    // @scale = string value from SCALES
+    floor: function(scale) {
+        var d = new Date(this.data.date_obj.getTime());
+        for (var i = 0; i < SCALES.length; i++) {
+            // for JS dates, we iteratively apply flooring functions
+            SCALES[i][2](d);
+            if (SCALES[i][0] == scale) return new TLDate(d);
+        }
 
-               throw new TLError("invalid_scale_err", scale);
-           },
+        throw new TLError("invalid_scale_err", scale);
+    },
 
-           /*	Private Methods
+    /*	Private Methods
 	================================================== */
 
-           _getDateData: function() {
-               var _date = {
-                   year: 0,
-                   month: 1, // stupid JS dates
-                   day: 1,
-                   hour: 0,
-                   minute: 0,
-                   second: 0,
-                   millisecond: 0
-               };
+    _getDateData: function() {
+        var _date = {
+            year: 0,
+            month: 1, // stupid JS dates
+            day: 1,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            millisecond: 0
+        };
 
-               // Merge data
-               mergeData(_date, this.data);
+        // Merge data
+        mergeData(_date, this.data);
 
-               // Make strings into numbers
-               for (var ix in DATE_PARTS) {
-                   var x = trim(_date[DATE_PARTS[ix]]);
-                   if (!x.match(/^-?\d*$/)) {
-                       throw new TLError(
-                           "invalid_date_err",
-                           DATE_PARTS[ix] + " = '" + _date[DATE_PARTS[ix]] + "'"
-                       );
-                   }
+        // Make strings into numbers
+        for (var ix in DATE_PARTS) {
+            var x = trim(_date[DATE_PARTS[ix]]);
+            if (!x.match(/^-?\d*$/)) {
+                throw new TLError(
+                    "invalid_date_err",
+                    DATE_PARTS[ix] + " = '" + _date[DATE_PARTS[ix]] + "'"
+                );
+            }
 
-                   var parsed = parseInt(_date[DATE_PARTS[ix]]);
-                   if (isNaN(parsed)) {
-                       parsed = ix == 4 || ix == 5 ? 1 : 0; // month and day have diff baselines
-                   }
-                   _date[DATE_PARTS[ix]] = parsed;
-               }
+            var parsed = parseInt(_date[DATE_PARTS[ix]]);
+            if (isNaN(parsed)) {
+                parsed = ix == 4 || ix == 5 ? 1 : 0; // month and day have diff baselines
+            }
+            _date[DATE_PARTS[ix]] = parsed;
+        }
 
-               if (_date.month > 0 && _date.month <= 12) {
-                   // adjust for JS's weirdness
-                   _date.month = _date.month - 1;
-               }
+        if (_date.month > 0 && _date.month <= 12) {
+            // adjust for JS's weirdness
+            _date.month = _date.month - 1;
+        }
 
-               return _date;
-           },
+        return _date;
+    },
 
-           _createDateObj: function() {
-               var _date = this._getDateData();
-               this.data.date_obj = new Date(
-                   _date.year,
-                   _date.month,
-                   _date.day,
-                   _date.hour,
-                   _date.minute,
-                   _date.second,
-                   _date.millisecond
-               );
-               if (this.data.date_obj.getFullYear() != _date.year) {
-                   // Javascript has stupid defaults for two-digit years
-                   this.data.date_obj.setFullYear(_date.year);
-               }
-           },
+    _createDateObj: function() {
+        var _date = this._getDateData();
+        this.data.date_obj = new Date(
+            _date.year,
+            _date.month,
+            _date.day,
+            _date.hour,
+            _date.minute,
+            _date.second,
+            _date.millisecond
+        );
+        if (this.data.date_obj.getFullYear() != _date.year) {
+            // Javascript has stupid defaults for two-digit years
+            this.data.date_obj.setFullYear(_date.year);
+        }
+    },
 
-           /*  Find Best Format
+    /*  Find Best Format
      * this may not work with 'cosmologic' dates, or with TLDate if we
      * support constructing them based on JS Date and time
     ================================================== */
-           findBestFormat: function(variant) {
-               var eval_array = DATE_PARTS,
-                   format = "";
+    findBestFormat: function(variant) {
+        var eval_array = DATE_PARTS,
+            format = "";
 
-               for (var i = 0; i < eval_array.length; i++) {
-                   if (this.data[eval_array[i]]) {
-                       if (variant) {
-                           if (!(variant in BEST_DATEFORMATS)) {
-                               variant = "short"; // legacy
-                           }
-                       } else {
-                           variant = "base";
-                       }
-                       return BEST_DATEFORMATS[variant][eval_array[i]];
-                   }
-               }
-               return "";
-           },
-           _setFormat: function(format, format_short) {
-               if (format) {
-                   this.data.format = format;
-               } else if (!this.data.format) {
-                   this.data.format = this.findBestFormat();
-               }
+        for (var i = 0; i < eval_array.length; i++) {
+            if (this.data[eval_array[i]]) {
+                if (variant) {
+                    if (!(variant in BEST_DATEFORMATS)) {
+                        variant = "short"; // legacy
+                    }
+                } else {
+                    variant = "base";
+                }
+                return BEST_DATEFORMATS[variant][eval_array[i]];
+            }
+        }
+        return "";
+    },
+    _setFormat: function(format, format_short) {
+        if (format) {
+            this.data.format = format;
+        } else if (!this.data.format) {
+            this.data.format = this.findBestFormat();
+        }
 
-               if (format_short) {
-                   this.data.format_short = format_short;
-               } else if (!this.data.format_short) {
-                   this.data.format_short = this.findBestFormat(true);
-               }
-           }
-       });
+        if (format_short) {
+            this.data.format_short = format_short;
+        } else if (!this.data.format_short) {
+            this.data.format_short = this.findBestFormat(true);
+        }
+    }
+});
 
 // offer something that can figure out the right date class to return
 export function makeDate(data) {
@@ -407,7 +405,7 @@ export function parseDate(str) {
         parsed.hour = time_parts[0];
         parsed.minute = time_parts[1];
         if (time_parts[2]) {
-            second_parts = time_parts[2].split(".");
+            let second_parts = time_parts[2].split(".");
             parsed.second = second_parts[0];
             parsed.millisecond = second_parts[1];
         }
@@ -450,20 +448,20 @@ const EON = ERA * 10;
 function Floorer(unit) {
     return function(a_big_year) {
         var year = a_big_year.getTime();
-        return new BigYear(Math.floor(year/unit) * unit);
+        return new BigYear(Math.floor(year / unit) * unit);
     }
 }
 
 // cosmological scales
 export const BIG_DATE_SCALES = [ // ( name, units_per_tick, flooring function )
-    ['year',1, new Floorer(1)],
-    ['decade',10, new Floorer(10)],
-    ['century',100, new Floorer(100)],
-    ['millennium',1000, new Floorer(1000)],
-    ['age',AGE, new Floorer(AGE)],          // 1M years
-    ['epoch',EPOCH, new Floorer(EPOCH)],    // 10M years
-    ['era',ERA, new Floorer(ERA)],          // 100M years
-    ['eon',EON, new Floorer(EON)]           // 1B years
+    ['year', 1, new Floorer(1)],
+    ['decade', 10, new Floorer(10)],
+    ['century', 100, new Floorer(100)],
+    ['millennium', 1000, new Floorer(1000)],
+    ['age', AGE, new Floorer(AGE)], // 1M years
+    ['epoch', EPOCH, new Floorer(EPOCH)], // 10M years
+    ['era', ERA, new Floorer(ERA)], // 100M years
+    ['eon', EON, new Floorer(EON)] // 1B years
 ];
 
 
@@ -501,4 +499,3 @@ export const BigDate = TLDate.extend({
         throw new TLError("invalid_scale_err", scale);
     }
 });
-
