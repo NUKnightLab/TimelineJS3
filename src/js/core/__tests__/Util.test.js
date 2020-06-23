@@ -9,7 +9,8 @@ import {
     findNextLesser,
     ensureUniqueKey,
     linkify,
-    parseYouTubeTime
+    parseYouTubeTime,
+    stripMarkup
 } from "../Util";
 
 test("isEmptyObject", () => {
@@ -261,13 +262,56 @@ test("parseYouTubeTime", () => {
 })
 
 test("linkify", () => {
+    var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
+    var linked = linkify(text);
+    expect(linked)
+    expect(linked.startsWith('This is some text with a URL in it <a')).toBeTruthy();
+    expect(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/)).toBeTruthy();
+    expect(linked.match(/>knightlab.northwestern.edu<\/a>/)).toBeTruthy();
+
+    text = "This is some text with www.google.com in it";
+    var linked = linkify(text);
+    expect(linked.startsWith('This is some text with <a')).toBeTruthy();
+    expect(linked.match(/href=['"]http:\/\/www.google.com['"]/)).toBeTruthy();
+    expect(linked.match(/>www.google.com<\/a>/)).toBeTruthy();
+
+    text = "This is some text with support@knightlab.zendesk.com in it";
+    var linked = linkify(text);
+    expect(linked.startsWith('This is some text with <a')).toBeTruthy();
+    expect(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/)).toBeTruthy();
+    expect(linked.match(/>support@knightlab.zendesk.com<\/a>/)).toBeTruthy();
+
+    text = "This is text which already has <a href='http://google.com'>a link</a> in it."
+    var not_linked = linkify(text);
+    expect(not_linked).toBe(text)
+
+    text = 'This is text which already has <a href="http://google.com">a link</a> in it.'
+    var not_linked = linkify(text);
+    expect(not_linked).toBe(text)
+
+    text = 'This is text which already has <a href=http://google.com>a link</a> in it.'
+    var not_linked = linkify(text);
+    expect(not_linked).toBe(text)
 
 })
 
-/* to port from unit-tests.html
-    Date tests
-    parseDate tests
-    findBestFormat
-    floor
+test("stripMarkup", () => {
+    var input = "<a href='https://knightlab.northwestern.edu'>this is the link text</a>"
+    expect(stripMarkup(input)).toBe('this is the link text')
 
-*/
+    input = "<a href='https://knightlab.northwestern.edu'>this is the link text"
+    expect(stripMarkup(input)).toBe('this is the link text')
+
+    input = "<h1>here's some text</h1>"
+    expect(stripMarkup(input)).toBe('here\'s some text')
+
+    input = "<h1>here's some text</h1"
+    expect(stripMarkup(input)).toBe('here\'s some text')
+
+    input = "here's some text"
+    expect(stripMarkup(input)).toBe('here\'s some text')
+
+    input = "here's an entity &amp; and more text"
+    expect(stripMarkup(input)).toBe('here\'s an entity & and more text')
+
+})

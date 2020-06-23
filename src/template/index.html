@@ -17,14 +17,25 @@
             // lang=en
             // initial_zoom=2
             // height=100%
+            // sanitize test
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Q4-R3mlK7w1liCEl5_SGPaeLpfHDVdMtc83rjSTHBZo/edit#gid=0'
+
+            // Zander Work's exploit
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Jt5Csoku0W73100mnG_byVdvCFLXT8G5gG9lu1yggA0/edit#gid=0'
+
             // women in computing:
-            var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
+            // var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
+
             // some history of shoes:
             // var dataUrl = 'https://docs.google.com/spreadsheets/d/1HJSPzn0vzLl7x2Xlkln8m_PHHi0KS4tgWNkGk6Z5JvU/pubhtml'
+
             // var dataUrl = './all-media-types.json'
+            var dataUrl = './eras.json'
+
             var options = {
                 language: 'es',
-                debug: true
+                debug: true,
+                height: 650
             }
             window.timeline = new TL.Timeline('foobar', dataUrl, options)
         })

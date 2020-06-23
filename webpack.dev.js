@@ -7,7 +7,8 @@ module.exports = merge.smart({
     devtool: 'inline-source-map',
     devServer: {
         contentBase: ['./src/template', './src/css'],
-        contentBasePublicPath: ['/', '/css']
+        contentBasePublicPath: ['/', '/css'],
+        stats: 'verbose'
     },
     module: {
         rules: [{

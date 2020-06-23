@@ -4,9 +4,20 @@ import { DOMMixins } from "../dom/DOMMixins"
 import * as Browser from "../core/Browser"
 import { removeClass } from "../dom/DOMUtil";
 import { easeInSpline } from "../animation/Ease";
+import * as DOM from "../dom/DOM"
+import { head } from "lodash";
 
+/**
+ * A TimeEra represents a span of time marked along the edge of the time 
+ * slider. It must have a 
+ */
 export class TimeEra {
-    constructor(data, options) {
+    constructor(start_date, end_date, headline, options) {
+
+
+        this.start_date = start_date
+        this.end_date = end_date
+        this.headline = headline
 
         // DOM Elements
         this._el = {
@@ -25,34 +36,13 @@ export class TimeEra {
             loaded: false
         };
 
-
-        // Data
-        this.data = {
-            unique_id: "",
-            date: {
-                year: 0,
-                month: 0,
-                day: 0,
-                hour: 0,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-                thumbnail: "",
-                format: ""
-            },
-            text: {
-                headline: "",
-                text: ""
-            }
-        };
-
         // Options
         this.options = {
             duration: 1000,
             ease: easeInSpline,
             width: 600,
             height: 600,
-            marker_width_min: 100 // Minimum Marker Width
+            marker_width_min: 100
         };
 
         // Actively Displaying
@@ -66,7 +56,6 @@ export class TimeEra {
 
         // Merge Data and Options
         mergeData(this.options, options);
-        mergeData(this.data, data);
 
         this._initLayout();
         this._initEvents();
@@ -105,13 +94,13 @@ export class TimeEra {
     }
 
     getTime() {
-        return this.data.start_date.getTime();
+        return this.start_date.getTime();
     }
 
     getEndTime() {
 
-        if (this.data.end_date) {
-            return this.data.end_date.getTime();
+        if (this.end_date) {
+            return this.end_date.getTime();
         } else {
             return false;
         }
@@ -146,7 +135,7 @@ export class TimeEra {
     }
 
     setWidth(w) {
-        if (this.data.end_date) {
+        if (this.end_date) {
             this._el.container.style.width = w + "px";
 
             if (w > this.options.marker_width_min) {
@@ -184,29 +173,26 @@ export class TimeEra {
     ================================================== */
     _initLayout() {
         // Create Layout
-        this._el.container = this.domCreate("div", "tl-timeera");
-        if (this.data.unique_id) {
-            this._el.container.id = this.data.unique_id + "-era";
-        }
+        this._el.container = DOM.create("div", "tl-timeera");
 
-        if (this.data.end_date) {
+        if (this.end_date) {
             this.has_end_date = true;
             this._el.container.className = 'tl-timeera tl-timeera-with-end';
         }
 
-        this._el.content_container = this.domCreate("div", "tl-timeera-content-container", this._el.container);
+        this._el.content_container = DOM.create("div", "tl-timeera-content-container", this._el.container);
 
-        this._el.background = this.domCreate("div", "tl-timeera-background", this._el.content_container);
+        this._el.background = DOM.create("div", "tl-timeera-background", this._el.content_container);
 
-        this._el.content = this.domCreate("div", "tl-timeera-content", this._el.content_container);
+        this._el.content = DOM.create("div", "tl-timeera-content", this._el.content_container);
 
 
 
         // Text
-        this._el.text = this.domCreate("div", "tl-timeera-text", this._el.content);
-        this._text = this.domCreate("h2", "tl-headline", this._el.text);
-        if (this.data.text.headline && this.data.text.headline != "") {
-            this._text.innerHTML = unlinkify(this.data.text.headline);
+        this._el.text = DOM.create("div", "tl-timeera-text", this._el.content);
+        this._text = DOM.create("h2", "tl-headline", this._el.text);
+        if (this.headline && this.headline != "") {
+            this._text.innerHTML = unlinkify(this.headline);
         }
 
 

@@ -7,10 +7,10 @@ import { parseTime } from "../date/DateUtil"
 
 export function parseGoogleSpreadsheetURL(url) {
     let parts = {
-        key: null,
-        worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
-    }
-    // key as url parameter (old-fashioned)
+            key: null,
+            worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
+        }
+        // key as url parameter (old-fashioned)
     var key_pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
     var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d
 
@@ -144,36 +144,23 @@ function extractGoogleEntryData_V3(item) {
 
 
 
-var getGoogleItemExtractor = function (data) {
-    if (typeof data.feed.entry === 'undefined'
-        || data.feed.entry.length == 0) {
+var getGoogleItemExtractor = function(data) {
+    if (typeof data.feed.entry === 'undefined' ||
+        data.feed.entry.length == 0) {
         throw new TLError("empty_feed_err");
     }
     var entry = data.feed.entry[0];
 
     if (typeof entry.gsx$startdate !== 'undefined') {
-        // check headers V1
-        // var headers_V1 = ['startdate', 'enddate', 'headline','text','media','mediacredit','mediacaption','mediathumbnail','media','type','tag'];
-        // for (var i = 0; i < headers_V1.length; i++) {
-        //     if (typeof entry['gsx$' + headers_V1[i]] == 'undefined') {
-        //         throw new TLError("invalid_data_format_err");
-        //     }
-        // }
         return extractGoogleEntryData_V1;
     } else if (typeof entry.gsx$year !== 'undefined') {
-        // check rest of V3 headers
         var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline', 'text', 'media', 'mediacredit', 'mediacaption', 'mediathumbnail', 'type', 'group', 'background'];
-        // for (var i = 0; i < headers_V3.length; i++) {
-        //     if (typeof entry['gsx$' + headers_V3[i]] == 'undefined') {
-        //         throw new TLError("invalid_data_format_err");
-        //     }
-        // }
         return extractGoogleEntryData_V3;
     }
     throw new TLError("invalid_data_format_err");
 }
 
-var buildGoogleFeedURL = function (key, api_version) {
+var buildGoogleFeedURL = function(key, api_version) {
     if (api_version == 'v4') {
         return "https://sheets.googleapis.com/v4/spreadsheets/" + key + "/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg";
     } else {
@@ -181,7 +168,7 @@ var buildGoogleFeedURL = function (key, api_version) {
     }
 }
 
-var jsonFromGoogleURL = function (google_url) {
+var jsonFromGoogleURL = function(google_url) {
     var api_version = 'v3';
     var parts = parseGoogleSpreadsheetURL(google_url);
     if (parts && parts.key) {
@@ -306,7 +293,7 @@ function extractGoogleEntryData_V4(column, item) {
     return event;
 }
 
-var googleFeedJSONtoTimelineJSON = function (data) {
+var googleFeedJSONtoTimelineJSON = function(data) {
     var timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
 
     if (data.values) {
@@ -315,7 +302,7 @@ var googleFeedJSONtoTimelineJSON = function (data) {
             var event = extractGoogleEntryData_V4(data.values[0], data.values[i]);
             if (event) { // blank rows return null
                 var row_type = 'event';
-                if (typeof (event.type) != 'undefined') {
+                if (typeof(event.type) != 'undefined') {
                     row_type = event.type;
                     delete event.type;
                 }
@@ -342,7 +329,7 @@ var googleFeedJSONtoTimelineJSON = function (data) {
                 var event = extract(data.feed.entry[i]);
                 if (event) { // blank rows return null
                     var row_type = 'event';
-                    if (typeof (event.type) != 'undefined') {
+                    if (typeof(event.type) != 'undefined') {
                         row_type = event.type;
                         delete event.type;
                     }
@@ -381,6 +368,10 @@ export function makeConfig(url, callback) {
         try {
             var json = jsonFromGoogleURL(url);
         } catch (e) {
+            // even with an error, we make 
+            // a TimelineConfig because it's 
+            // the most straightforward way to display messages
+            // in the DOM
             tc = new TimelineConfig();
             if (e.name == 'NetworkError') {
                 tc.logError(new TLError("network_err"));
@@ -403,7 +394,7 @@ export function makeConfig(url, callback) {
         ajax({
             url: url,
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 try {
                     tc = new TimelineConfig(data);
                 } catch (e) {
@@ -412,7 +403,7 @@ export function makeConfig(url, callback) {
                 }
                 callback(tc);
             },
-            error: function (xhr, errorType, error) {
+            error: function(xhr, errorType, error) {
                 tc = new TimelineConfig();
                 if (errorType == 'parsererror') {
                     var error = new TLError("invalid_url_err");
@@ -426,6 +417,3 @@ export function makeConfig(url, callback) {
 
     }
 }
-
-// // export for unit testing
-// googleFeedJSONtoTimelineJSON: googleFeedJSONtoTimelineJSON,

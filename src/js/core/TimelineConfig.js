@@ -1,9 +1,47 @@
 import { sortByDate, SCALE_DATE_CLASSES } from "../date/DateUtil"
 import { BigDate } from "../date/TLDate"
-import { trim, ensureUniqueKey, slugify, unique_ID, trace } from "../core/Util"
+import { trim, ensureUniqueKey, slugify, unique_ID, trace, stripMarkup } from "../core/Util"
 import TLError from "../core/TLError"
+import sanitize from 'sanitize-html'
 
-export class TimelineConfig{
+const SANITIZE_FIELDS = {
+    text: ['headline', 'text'],
+    media: ['caption', 'credit', 'url']
+}
+
+const STRIP_MARKUP_FIELDS = {
+    start_date: ['display_date'],
+    end_date: ['display_date'],
+    slide: ['display_date', 'group'],
+    date: ['display_date']
+
+}
+
+function _process_fields(slide, callback, fieldmap) {
+    Object.keys(fieldmap).forEach(k => {
+        var to_sanitize = (k == 'slide') ? slide : slide[k]
+        if (to_sanitize) {
+            fieldmap[k].forEach(i => {
+                if (typeof(to_sanitize[i]) != 'undefined') {
+                    to_sanitize[i] = callback(to_sanitize[i])
+                }
+            })
+        }
+    })
+
+}
+
+/**
+ * Centralize use of HTML sanitizer so that we can enforce common
+ * rules. Maybe we would want to push this to Util and unit test
+ * but ultimately we're trusting the creators of the sanitize-html library
+ * @param {string} txt 
+ */
+function _tl_sanitize(txt) {
+    return sanitize(txt); // start with sanitize-html default settings
+}
+
+export class TimelineConfig {
     constructor(data) {
         this.title = '';
         this.scale = '';
@@ -22,6 +60,7 @@ export class TimelineConfig{
             this._ensureValidScale(data.events);
 
             if (data.title) {
+                // the 'title' is a kind of slide, one without a date
                 var title_id = this._assignID(data.title);
                 this._tidyFields(data.title);
                 this.title = data.title;
@@ -37,13 +76,13 @@ export class TimelineConfig{
             }
 
             if (data.eras) {
-                for (var i = 0; i < data.eras.length; i++) {
+                data.eras.forEach((era_data, indexOf) => {
                     try {
-                        this.addEra(data.eras[i], true);
+                        this.addEra(era_data)
                     } catch (e) {
-                        this.logError("Era " + i + ": " + e);
+                        this.logError("Era " + idx + ": " + e);
                     }
-                }
+                })
             }
 
             sortByDate(this.events);
@@ -51,15 +90,16 @@ export class TimelineConfig{
 
         }
     }
-    
+
     logError(msg) {
         trace(msg);
         this.messages.errors.push(msg);
     }
-	/*
-	 * Return any accumulated error messages. If `sep` is passed, it should be a string which will be used to join all messages, resulting in a string return value. Otherwise,
-	 * errors will be returned as an array.
-	 */
+
+    /*
+     * Return any accumulated error messages. If `sep` is passed, it should be a string which will be used to join all messages, resulting in a string return value. Otherwise,
+     * errors will be returned as an array.
+     */
     getErrors(sep) {
         if (sep) {
             return this.messages.errors.join(sep);
@@ -69,17 +109,17 @@ export class TimelineConfig{
     }
 
     /*
-	 * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
-	 * such that after this is called, one can test `this.isValid()` to see if everything is OK.
-	 */
+     * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
+     * such that after this is called, one can test `this.isValid()` to see if everything is OK.
+     */
     validate() {
-        if (typeof (this.events) == "undefined" || typeof (this.events.length) == "undefined" || this.events.length == 0) {
+        if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
             this.logError("Timeline configuration has no events.")
         }
 
         // make sure all eras have start and end dates
         for (var i = 0; i < this.eras.length; i++) {
-            if (typeof (this.eras[i].start_date) == 'undefined' || typeof (this.eras[i].end_date) == 'undefined') {
+            if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
                 var era_identifier;
                 if (this.eras[i].text && this.eras[i].text.headline) {
                     era_identifier = this.eras[i].text.headline
@@ -92,21 +132,21 @@ export class TimelineConfig{
     }
 
     isValid() {
-        return this.messages.errors.length == 0;
-    }
-	/* Add an event (including cleaning/validation) and return the unique id.
-	* All event data validation should happen in here.
-	* Throws: TLError for any validation problems.
-	*/
+            return this.messages.errors.length == 0;
+        }
+        /* Add an event (including cleaning/validation) and return the unique id.
+         * All event data validation should happen in here.
+         * Throws: TLError for any validation problems.
+         */
     addEvent(data, defer_sort) {
         var event_id = this._assignID(data);
 
-        if (typeof (data.start_date) == 'undefined') {
+        if (typeof(data.start_date) == 'undefined') {
             throw new TLError("missing_start_date_err", event_id);
-        } else {
-            this._processDates(data);
-            this._tidyFields(data);
         }
+
+        this._processDates(data);
+        this._tidyFields(data);
 
         this.events.push(data);
         this.event_dict[event_id] = data;
@@ -117,31 +157,29 @@ export class TimelineConfig{
         return event_id;
     }
 
-    addEra(data, defer_sort) {
+    addEra(data) {
         var event_id = this._assignID(data);
 
-        if (typeof (data.start_date) == 'undefined') {
+        if (typeof(data.start_date) == 'undefined') {
             throw new TLError("missing_start_date_err", event_id);
-        } else {
-            this._processDates(data);
-            this._tidyFields(data);
         }
 
-        this.eras.push(data);
-        this.event_dict[event_id] = data;
+        this._processDates(data);
+        this._tidyFields(data);
 
-        if (!defer_sort) {
-            sortByDate(this.eras);
-        }
-        return event_id;
+        this.eras.push({
+            start_date: data.start_date,
+            end_date: data.end_date,
+            headline: data.text.headline
+        });
     }
 
-	/**
-	 * Given a slide, verify that its ID is unique, or assign it one which is.
-	 * The assignment happens in this function, and the assigned ID is also
-	 * the return value. Not thread-safe, because ids are not reserved
-	 * when assigned here.
-	 */
+    /**
+     * Given a slide, verify that its ID is unique, or assign it one which is.
+     * The assignment happens in this function, and the assigned ID is also
+     * the return value. Not thread-safe, because ids are not reserved
+     * when assigned here.
+     */
     _assignID(slide) {
         var slide_id = slide.unique_id;
         if (!trim(slide_id)) {
@@ -153,11 +191,11 @@ export class TimelineConfig{
         return slide.unique_id
     }
 
-	/**
-	 * Given an array of slide configs (the events), ensure that each one has a distinct unique_id. The id of the title
-	 * is also passed in because in most ways it functions as an event slide, and the event IDs must also all be unique
-	 * from the title ID.
-	 */
+    /**
+     * Given an array of slide configs (the events), ensure that each one has a distinct unique_id. The id of the title
+     * is also passed in because in most ways it functions as an event slide, and the event IDs must also all be unique
+     * from the title ID.
+     */
     _makeUniqueIdentifiers(title_id, array) {
         var used = [title_id];
 
@@ -193,74 +231,74 @@ export class TimelineConfig{
     }
 
     _ensureValidScale(events) {
-        if (!this.scale) {
-            trace("Determining scale dynamically");
-            this.scale = "human"; // default to human unless there's a slide which is explicitly 'cosmological' or one which has a cosmological year
+            if (!this.scale) {
+                trace("Determining scale dynamically");
+                this.scale = "human"; // default to human unless there's a slide which is explicitly 'cosmological' or one which has a cosmological year
 
-            for (var i = 0; i < events.length; i++) {
-                if (events[i].scale == 'cosmological') {
-                    this.scale = 'cosmological';
-                    break;
-                }
-                if (events[i].start_date && typeof (events[i].start_date.year) != "undefined") {
-                    var d = new BigDate(events[i].start_date);
-                    var year = d.data.date_obj.year;
-                    if (year < -271820 || year > 275759) {
-                        this.scale = "cosmological";
+                for (var i = 0; i < events.length; i++) {
+                    if (events[i].scale == 'cosmological') {
+                        this.scale = 'cosmological';
                         break;
+                    }
+                    if (events[i].start_date && typeof(events[i].start_date.year) != "undefined") {
+                        var d = new BigDate(events[i].start_date);
+                        var year = d.data.date_obj.year;
+                        if (year < -271820 || year > 275759) {
+                            this.scale = "cosmological";
+                            break;
+                        }
                     }
                 }
             }
+            var dateCls = SCALE_DATE_CLASSES[this.scale];
+            if (!dateCls) { this.logError("Don't know how to process dates on scale " + this.scale); }
         }
-        var dateCls = SCALE_DATE_CLASSES[this.scale];
-        if (!dateCls) { this.logError("Don't know how to process dates on scale " + this.scale); }
-    }
-	/*
-	   Given a thing which has a start_date and optionally an end_date, make sure that it is an instance
-		 of the correct date class (for human or cosmological scale). For slides, remove redundant end dates
-		 (people frequently configure an end date which is the same as the start date).
-	 */
+        /*
+            Given a thing which has a start_date and optionally an end_date, make sure that it is an instance
+                of the correct date class (for human or cosmological scale). For slides, remove redundant end dates
+                (people frequently configure an end date which is the same as the start date).
+            */
     _processDates(slide_or_era) {
-        var dateCls = SCALE_DATE_CLASSES[this.scale];
-        if (!(slide_or_era.start_date instanceof dateCls)) {
-            var start_date = slide_or_era.start_date;
-            slide_or_era.start_date = new dateCls(start_date);
+            var dateCls = SCALE_DATE_CLASSES[this.scale];
+            if (!(slide_or_era.start_date instanceof dateCls)) {
+                var start_date = slide_or_era.start_date;
+                slide_or_era.start_date = new dateCls(start_date);
 
-            // eliminate redundant end dates.
-            if (typeof (slide_or_era.end_date) != 'undefined' && !(slide_or_era.end_date instanceof dateCls)) {
-                var end_date = slide_or_era.end_date;
-                var equal = true;
-                for (let property in start_date) {
-                    equal = equal && (start_date[property] == end_date[property]);
-                }
-                if (equal) {
-                    trace("End date same as start date is redundant; dropping end date");
-                    delete slide_or_era.end_date;
-                } else {
-                    slide_or_era.end_date = new dateCls(end_date);
-                }
+                // eliminate redundant end dates.
+                if (typeof(slide_or_era.end_date) != 'undefined' && !(slide_or_era.end_date instanceof dateCls)) {
+                    var end_date = slide_or_era.end_date;
+                    var equal = true;
+                    for (let property in start_date) {
+                        equal = equal && (start_date[property] == end_date[property]);
+                    }
+                    if (equal) {
+                        trace("End date same as start date is redundant; dropping end date");
+                        delete slide_or_era.end_date;
+                    } else {
+                        slide_or_era.end_date = new dateCls(end_date);
+                    }
 
+                }
             }
-        }
 
-    }
-	/**
-	 * Return the earliest date that this config knows about, whether it's a slide or an era
-	 */
+        }
+        /**
+         * Return the earliest date that this config knows about, whether it's a slide or an era
+         */
     getEarliestDate() {
-        // counting that dates were sorted in initialization
-        var date = this.events[0].start_date;
-        if (this.eras && this.eras.length > 0) {
-            if (this.eras[0].start_date.isBefore(date)) {
-                return this.eras[0].start_date;
+            // counting that dates were sorted in initialization
+            var date = this.events[0].start_date;
+            if (this.eras && this.eras.length > 0) {
+                if (this.eras[0].start_date.isBefore(date)) {
+                    return this.eras[0].start_date;
+                }
             }
-        }
-        return date;
+            return date;
 
-    }
-	/**
-	 * Return the latest date that this config knows about, whether it's a slide or an era, taking end_dates into account.
-	 */
+        }
+        /**
+         * Return the latest date that this config knows about, whether it's a slide or an era, taking end_dates into account.
+         */
     getLatestDate() {
         var dates = [];
         for (var i = 0; i < this.events.length; i++) {
@@ -280,6 +318,13 @@ export class TimelineConfig{
         sortByDate(dates, 'date');
         return dates.slice(-1)[0].date;
     }
+
+    /**
+     * Do some simple cleanup for all slides and eras, including sanitizing 
+     * HTML input, or stripping markup for fields which are not intended to support
+     * it.
+     * @param { Slide | TimeEra } slide 
+     */
     _tidyFields(slide) {
 
         function fillIn(obj, key, default_value) {
@@ -296,5 +341,9 @@ export class TimelineConfig{
         }
         fillIn(slide.text, 'text');
         fillIn(slide.text, 'headline');
+
+        _process_fields(slide, _tl_sanitize, SANITIZE_FIELDS)
+        _process_fields(slide, stripMarkup, STRIP_MARKUP_FIELDS)
+
     }
 }

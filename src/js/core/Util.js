@@ -662,3 +662,8 @@ export function parseYouTubeTime(s) {
     }
     return 0;
 }
+
+export function stripMarkup(txt) {
+    var doc = new DOMParser().parseFromString(txt, 'text/html');
+    return doc.body.textContent || "";
+}
