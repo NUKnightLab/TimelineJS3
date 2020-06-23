@@ -2,7 +2,7 @@ import { sortByDate, SCALE_DATE_CLASSES } from "../date/DateUtil"
 import { BigDate } from "../date/TLDate"
 import { trim, ensureUniqueKey, slugify, unique_ID, trace, stripMarkup } from "../core/Util"
 import TLError from "../core/TLError"
-import sanitize from 'sanitize-html'
+import DOMPurify from 'dompurify';
 
 const SANITIZE_FIELDS = {
     text: ['headline', 'text'],
@@ -34,11 +34,14 @@ function _process_fields(slide, callback, fieldmap) {
 /**
  * Centralize use of HTML sanitizer so that we can enforce common
  * rules. Maybe we would want to push this to Util and unit test
- * but ultimately we're trusting the creators of the sanitize-html library
+ * but ultimately we're trusting the creators of the library.
  * @param {string} txt 
  */
 function _tl_sanitize(txt) {
-    return sanitize(txt); // start with sanitize-html default settings
+    return DOMPurify.sanitize(txt, {
+        ADD_TAGS: ['iframe'],
+        ADD_ATTR: ['frameborder'],
+    })
 }
 
 export class TimelineConfig {
