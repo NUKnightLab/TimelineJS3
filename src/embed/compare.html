@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <title>
+        Compare Timeline 3.7 to earlier
+    </title>
+    <style>
+        h1 {
+            font-family: sans-serif;
+        }
+        
+        header {
+            border-bottom: 1px dotted #aaa;
+            background-color: #666;
+        }
+        
+        .wrapper {
+            width: 49%;
+            height: 100%;
+            border: 1px dotted #aaa;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .wrapper-new {
+            float: left;
+        }
+        
+        .wrapper-old {
+            float: right;
+        }
+    </style>
+    <script>
+        function show(fragment) {
+            if (fragment.indexOf('/embed/index.html') != 0) {
+                alert(`Invalid URL fragment ${fragment}`)
+                window.frag = fragment;
+                return;
+            }
+            var old = fragment.replace('/embed/index.html', '/embed/old-index.html')
+            console.log(`old is ${old}`)
+            document.getElementById('timeline-old').src = old
+            document.getElementById('timeline-new').src = fragment
+        }
+
+        function pick_one() {
+            let i = Math.floor(Math.random() * popular.length)
+            let d = popular[i]
+            show(d.url)
+            document.getElementById('load-specific').value = d.url
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+                fetch('popular_timelines.json').then((r) => {
+                    r.json().then(j => {
+                        window.popular = j
+                        pick_one()
+                        document.getElementById('load-random').addEventListener('click', pick_one);
+                        document.getElementById('load-specific').addEventListener('keyup', function(e) {
+                            e.preventDefault()
+                            if (e.keyCode === 13) {
+                                show(document.getElementById('load-specific').value)
+                            }
+                        })
+                    })
+                })
+            })
+            // problems to investigate
+            // different capitalization
+            // /embed/index.html?source=13SM0GexbJUaBW0CE4rGgQP-OoxsqpFJLbYLO2kemw7k&font=Georgia-Helvetica&lang=en&initial_zoom=6&height=650
+    </script>
+</head>
+<header>
+    <button id="load-random">load random</button>
+    <input type="text" id="load-specific" size="100">
+</header>
+<section>
+    <div class='wrapper wrapper-new'>
+        <h1>new</h1>
+        <iframe id="timeline-new" src="" frameborder="0"></iframe>
+    </div>
+    <div class='wrapper wrapper-old'>
+        <h1>old</h1>
+        <iframe id="timeline-old" src="" frameborder="0"></iframe>
+    </div>
+</section>
+
+</html>

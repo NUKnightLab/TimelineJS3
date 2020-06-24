@@ -8,7 +8,8 @@ module.exports = merge.smart({
     devServer: {
         contentBase: ['./src/template', './src/css'],
         contentBasePublicPath: ['/', '/css'],
-        stats: 'verbose'
+        stats: 'verbose',
+        openPage: "/index.html"
     },
     module: {
         rules: [{
