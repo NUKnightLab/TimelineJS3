@@ -4,10 +4,10 @@ boto==2.32.1
 cffi==1.11.5
 Click==7.0
 cryptography==2.3.1
-ecdsa==0.13
+ecdsa>=0.13.3
 enum34==1.1.6
 Fabric==1.10.0
-Flask==0.12.3
+flask>=1.0.0
 idna==2.7
 ipaddress==1.0.22
 ipython==2.3.0
@@ -26,4 +26,4 @@ stevedore==1.6.0
 virtualenv==13.1.0
 virtualenv-clone==0.2.6
 virtualenvwrapper==4.6.0
-Werkzeug==0.9.6
+werkzeug>=0.15.3
