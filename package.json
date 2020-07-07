@@ -2,8 +2,10 @@
     "name": "@knightlab/timelinejs",
     "version": "3.7.0",
     "license": "MPL-2.0",
-    "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript.",
-    "dependencies": {},
+    "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript, made by Northwestern University Knight Lab.",
+    "dependencies": {
+        "dompurify": "^2.0.11"
+    },
     "devDependencies": {
         "@babel/cli": "^7.10.1",
         "@babel/core": "^7.10.2",
@@ -13,7 +15,6 @@
         "clean-webpack-plugin": "^3.0.0",
         "copy-webpack-plugin": "^5.1.1",
         "css-loader": "^3.6.0",
-        "dompurify": "^2.0.11",
         "file-loader": "^6.0.0",
         "fs-extra": "^9.0.1",
         "html-webpack-plugin": "^4.3.0",
