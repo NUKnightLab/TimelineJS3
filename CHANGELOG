@@ -1,3 +1,7 @@
+3.7.0 (2020-07-09)
+* Internal rewrite to use modern JavaScript
+* Sanitize HTML inputs
+
 3.6.6 (2020-03-11)
 * Replace Flickr API key
 
