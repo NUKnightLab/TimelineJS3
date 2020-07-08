@@ -4,7 +4,7 @@ const path = require('path')
 const glob = require('glob')
 
 let main_output_dir = path.resolve(__dirname, '../dist/css')
-fs.mkdirSync(main_output_dir, { recursive: true })
+fs.ensureDirSync(main_output_dir, { recursive: true })
 
 // /* 
 //  * Copy support files
@@ -37,7 +37,7 @@ fs.mkdirSync(main_output_dir, { recursive: true })
  */
 const font_src_dir = path.resolve(__dirname, '../src/less/fonts')
 const font_output_dir = path.resolve(__dirname, '../dist/css/fonts')
-fs.mkdirSync(font_output_dir, { recursive: true })
+fs.ensureDirSync(font_output_dir, { recursive: true })
 glob.sync(path.join(font_src_dir, "font.*.less")).forEach((p) => {
     let file_content = fs.readFileSync(p, 'utf-8')
     less.render(file_content, {
@@ -60,7 +60,7 @@ glob.sync(path.join(font_src_dir, "font.*.less")).forEach((p) => {
  */
 const theme_src_dir = path.resolve(__dirname, '../src/less/themes')
 const theme_output_dir = path.resolve(__dirname, '../dist/css/themes')
-fs.mkdirSync(theme_output_dir, { recursive: true })
+fs.ensureDirSync(theme_output_dir, { recursive: true })
 glob.sync(path.join(theme_src_dir, "**/TL.Theme.*.less")).forEach((p) => {
     let file_content = fs.readFileSync(p, 'utf-8')
     less.render(file_content, {
