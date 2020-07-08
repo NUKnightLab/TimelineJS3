@@ -12,19 +12,15 @@
             }
         }
         ready(function() {
-            // TODO: integrate options
-            // font=Default -- not typically a JS option but handled in the embed page...
-            // lang=en
-            // initial_zoom=2
-            // height=100%
+
             // sanitize test
-            var dataUrl = 'https://docs.google.com/spreadsheets/d/1Q4-R3mlK7w1liCEl5_SGPaeLpfHDVdMtc83rjSTHBZo/edit#gid=0'
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Q4-R3mlK7w1liCEl5_SGPaeLpfHDVdMtc83rjSTHBZo/edit#gid=0'
 
             // Zander Work's exploit
             // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Jt5Csoku0W73100mnG_byVdvCFLXT8G5gG9lu1yggA0/edit#gid=0'
 
             // women in computing:
-            // var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
+            var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
 
             // some history of shoes:
             // var dataUrl = 'https://docs.google.com/spreadsheets/d/1HJSPzn0vzLl7x2Xlkln8m_PHHi0KS4tgWNkGk6Z5JvU/pubhtml'
@@ -37,7 +33,8 @@
                 debug: true,
                 height: 650
             }
-            window.timeline = new TL.Timeline('foobar', dataUrl, options)
+            window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+            document.getElementById('timeline-src').value = dataUrl
             document.getElementById('timeline-src').addEventListener('keyup', (e) => {
                 e.preventDefault();
                 if (e.keyCode === 13) {
@@ -50,14 +47,29 @@
             })
         })
     </script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #ddd;
+        }
+        
+        #timeline-embed {
+            margin: 1em 0;
+            height: 650px;
+        }
+        
+        input[type="text"] {
+            font-size: 12pt
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Timeline Ho</h1>
+    <h1>Timeline Development</h1>
     <div>
-        <input type="text" size="120" name="timeline-src" id="timeline-src">
+        <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src">
     </div>
-    <div id='foobar'></div>
+    <div id='timeline-embed'></div>
 </body>
 
 </html>
