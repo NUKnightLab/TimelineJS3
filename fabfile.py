@@ -29,6 +29,16 @@ add_paths(project_path, repos_path)
 #
 from fablib import *
 
+
+@task
+def stage_latest():
+    abort('stage_latest is now an npm command')
+
+@task
+def stage():
+    abort('stage is now an npm command')
+
+
 @task
 def stage_wp():
     """* Use to copy over CSS/JS files to WP Plugin directory"""
@@ -37,12 +47,12 @@ def stage_wp():
     	abort('Cancelling')
 
     # # Copy over CSS files
-    build_css_dir = "build/css"
+    build_css_dir = "dist/css"
     wp_css_dir = "../TimelineJS-Wordpress-Plugin/v3/css"
     distutils.dir_util.copy_tree(build_css_dir, wp_css_dir)
 
     # # Copy over JS files
-    build_js_dir = "build/js"
+    build_js_dir = "dist/js"
     wp_js_dir = "../TimelineJS-Wordpress-Plugin/v3/js"
     distutils.dir_util.copy_tree(build_js_dir, wp_js_dir)
 
@@ -50,7 +60,5 @@ def stage_wp():
 
 @task
 def stage_compiled():
-    """Copy CSS/JS from build to compiled"""
-    # # Copy over CSS files
-    distutils.dir_util.copy_tree("build/css", "compiled/css")
-    distutils.dir_util.copy_tree("build/js", "compiled/js")
+    abort("stage_compiled is obsolete")
+    
