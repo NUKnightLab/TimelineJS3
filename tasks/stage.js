@@ -52,7 +52,7 @@ function stageToCDN(version, latest) {
 
         if (latest) {
             var latest_dir = makeCDNPath('latest');
-            fse.removeSync(latest_dir, onErr);
+            fse.removeSync(latest_dir);
             fse.copySync(dest, latest_dir, onErr);
             console.log('copied version ' + version + ' to latest');
         }
