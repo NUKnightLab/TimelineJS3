@@ -1,45 +1,34 @@
-#Deploying TimelineJS3
+# Deploying TimelineJS3
 
-TimelineJS3 conforms to Knight Lab standard practices for deploying javascript libraries and "static" sites.
+TimelineJS3 has two independent products which can be "deployed". The deployment process requires specific access permissions, so the instructions below are not expected to be meaningful outside of Knight Lab.
 
-As such, to follow these instructions, you must have local copies of the [fablib](https://github.com/NUKnightLab/fablib) and [cdn.knightlab.com](https://github.com/NUKnightLab/cdn.knightlab.com) repositories checked out on your filesystem, "next to" your TimelineJS3 repository (that is, all three repositories should have the same parent directory).  Of course, you must also have authorization to write to the appropriate S3 buckets
+* The JavaScript Library
+* The Website
 
-#Deploying changes to the JavaScript
+To deploy updates to the javascript, you must have a local copy of the [cdn.knightlab.com](https://github.com/NUKnightLab/cdn.knightlab.com) repository checked out on your filesystem, "next to" your TimelineJS3 repository.
 
-To deploy a new version of TimelineJS3, enter the following command:
-```
-  fab stage
-```
-You will be prompted for a version number. Choose a version number which is higher than any previously assigned. Use your discretion or ask advice about whether to increment the minor version or the patch version. (We generally follow [semantic versioning](http://semver.org/) principles.)
+To deploy the website, or updates to the Wordpress plugin, you must have local copies of the [fablib](https://github.com/NUKnightLab/fablib) and, for the plugin, [TimelineJS-Wordpress-Plugin](https://github.com/NUKnightLab/TimelineJS-Wordpress-Plugin) repositories checked out on your filesystem, "next to" your TimelineJS3 repository.
 
-The `fab stage` process will compile the javascript and less files and copy assets to the appropriate directory in the `cdn.knightlab.com` repository.
+"Next to" means that the TimelineJS3 repository and the other repositories should have the same parent directory. Of course, you must also have authorization to write to the appropriate S3 buckets, or, for the Wordpress plugin, to the Wordpress SVN server.
 
-> **Note:** this does *not* deploy the new code. There is one more step--you must switch to the CDN repository, commit the new code, and deploy the repository. See the end of this section for details. 
+## Deploying changes to the JavaScript
 
-If you are ready for your newly deployed version to be automatically available to most TimelineJS3 users, execute:
-```
-  fab stage_latest
-```
-If you do this separately from `fab stage`, you will be asked which previous version should be copied into the `latest` directory in the `cdn` repository. If, as is common, you do them both at once, then fab carries the newly assigned version and doesn't ask. That is, executing `fab stage stage_latest` is a simple and efficient way to "release" a new version of the code and make it available for users who follow the default path for embedding timelines.
+Deploying the JavaScript library uses `npm` scripts defined in `package.json`. To deploy to the Knight Lab CDN, use the following scripts:
 
-If you are working on changes which are still being actively tested, but you wish to deploy them for testing from the development website or otherwise publish them, execute:
-```
-  fab stage_dev
-```
-To put it all in one place, a typical deployment operation would look like this:
-```
-  fab stage stage_latest
-  # (version number prompt and lots of console logging)
-  cd ../cdn.knightlab.com
-  git add app/libs/timelinejs3
-  git commit -m "a coherent commit message"
-  git pull
-  git push
-  fab deploy 
-```
+* npm run stage
+* npm run stage_latest
+* npm run stage_dev
+
+To stage a new release of TimelineJS, use `npm run stage_latest`. This will ask you for a version number (tag), build the code, and copy it to the appropriate versioned subdirectory of the `cdn.knightlab.com` repository, as well as copying it to the `/latest/` directory.  In the rare case when you want to tag a version, but not change `latest`, use `npm run stage` although then copying that to `/latest/` is outside the scope of these tools. 
+
+> **Note:** this does *not* deploy the new code. There is one more step--you must switch to the CDN repository, commit the new code, and deploy the repository.
+
+### Updating the Wordpress plugin
+
+The TimelineJS plugin for Wordpress is distributed with a copy of the TimelineJS code. For now, use `fab stage_wp` to copy the relevant contents of `dist` to the Wordpress plugin. It's up to you to make sure the version in `dist` is what you want to copy. More details on deploying that change are in the plugin repository.
 
 
-#Deploying changes to the website
+## Deploying changes to the website
 
 To deploy changes to the website which explains TimelineJS3 and hosts the "authoring tool," use the command
 ```
