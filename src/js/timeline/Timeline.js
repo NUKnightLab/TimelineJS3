@@ -61,7 +61,7 @@ class Timeline {
             menubar: {}
         };
 
-        if (options.lang && !options.language) {
+        if (options && options.lang && !options.language) {
             options.language = options.lang;
         }
 
