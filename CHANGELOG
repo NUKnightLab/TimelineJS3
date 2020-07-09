@@ -1,3 +1,6 @@
+3.7.1 (unreleased)
+* Protect against undefined/null options in constructor
+
 3.7.0 (2020-07-09)
 * Internal rewrite to use modern JavaScript
 * Sanitize HTML inputs

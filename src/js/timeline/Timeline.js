@@ -53,6 +53,9 @@ function make_keydown_handler(timeline) {
  */
 class Timeline {
     constructor(elem, data, options) {
+        if (!options) {
+            options = {}
+        }
         this.ready = false;
         this._el = {
             container: DOM.get(elem),
@@ -61,7 +64,7 @@ class Timeline {
             menubar: {}
         };
 
-        if (options && options.lang && !options.language) {
+        if (options.lang && !options.language) {
             options.language = options.lang;
         }
 
@@ -136,7 +139,7 @@ class Timeline {
         this.message = new Message(this._el.container, { message_class: "tl-message-full" });
 
         // Merge Options
-        if (options && typeof(options.default_bg_color) == "string") {
+        if (typeof(options.default_bg_color) == "string") {
             var parsed = hexToRgb(options.default_bg_color); // will clear it out if its invalid
             if (parsed) {
                 options.default_bg_color = parsed;
