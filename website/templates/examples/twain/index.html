@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><!--
+<html lang="en">
+<!--
   	 
   	88888888888 d8b                        888 d8b                888888   d8888b  
   	    888     Y8P                        888 Y8P                   88b d88P  Y88b 
@@ -13,65 +14,72 @@
   	                                                              d88P             
   	                                                            888P              
   	 -->
-  <head>
+
+<head>
     <title>Mark Twain</title>
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <!-- Style-->
     <style>
-      html, body {
-      height:100%;
-      padding: 0px;
-      margin: 0px;
-      }
+        html,
+        body {
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
     </style>
-    <!-- HTML5 shim, for IE6-8 support of HTML elements--><!--[if lt IE 9]>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-	<link rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
-	<link rel="stylesheet" href="https://cdn.knightlab.com/libs/blueline/latest/css/blueline.min.css">
-  </head>
-  <body>
-  <!-- Demo -->
-  <section id="demo">
-    <div id="timeline-embed" style="height: 100%;">
-      <div id="timeline"></div>
-    </div>
-  </section>
+    <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
+    <link rel="stylesheet" href="https://cdn.knightlab.com/libs/blueline/latest/css/blueline.min.css">
+</head>
 
-  <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
-  <link title="timeline-styles" rel="stylesheet" href="/build/css/timeline.css">
-  <!-- endbuild -->
-  <!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
-  <script src="/build/js/timeline.js"></script>
-  <!-- endbuild -->
-  <script>
-    $(document).ready(function(){
-      function createNewTimeline(){
-        $("#timeline-embed").empty();
-        $("link[title=timeline-styles]").attr({href: "/build/css/timeline.css"});
-          window.timeline = new TL.Timeline('timeline-embed', '/examples/twain/marktwain.json', {});
+<body>
+    <!-- Demo -->
+    <section id="demo">
+        <div id="timeline-embed" style="height: 100%;">
+            <div id="timeline"></div>
+        </div>
+    </section>
 
-          if ($("#timeline-embed").height() == 0) {
-            setTimeout(function(){
-                console.log("trying again. height: " + $(document).height())
-                $("#timeline-embed").height($(document).height() - $(".nav-tabs").height()- 100);
-                window.timeline.updateDisplay();
-            },500);
-          }
-      }
+    <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
+    <link title="timeline-styles" rel="stylesheet" href="/dist/css/timeline.css">
+    <!-- endbuild -->
+    <!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+    <script src="/dist/js/timeline.js"></script>
+    <!-- endbuild -->
+    <script>
+        $(document).ready(function() {
+            function createNewTimeline() {
+                $("#timeline-embed").empty();
+                $("link[title=timeline-styles]").attr({
+                    href: "/dist/css/timeline.css"
+                });
+                window.timeline = new TL.Timeline('timeline-embed', '/examples/twain/marktwain.json', {});
 
-      $("#timeline-embed").height($(document).height() - $(".nav-tabs").height() - 100);
+                if ($("#timeline-embed").height() == 0) {
+                    setTimeout(function() {
+                        console.log("trying again. height: " + $(document).height())
+                        $("#timeline-embed").height($(document).height() - $(".nav-tabs").height() - 100);
+                        window.timeline.updateDisplay();
+                    }, 500);
+                }
+            }
 
-      /* New timeline styles used when page loads */
-      createNewTimeline();
-    });
-  </script>
+            $("#timeline-embed").height($(document).height() - $(".nav-tabs").height() - 100);
+
+            /* New timeline styles used when page loads */
+            createNewTimeline();
+        });
+    </script>
 
 
 
 
     {% include "_analytics.html" %}
 
-  </body>
+</body>
+
 </html>

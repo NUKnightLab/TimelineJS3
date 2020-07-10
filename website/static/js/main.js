@@ -91,7 +91,7 @@ function getLinkAndIframe() {
     ================================================== */
 
     if ((window.location.host).includes("localhost:") || (window.location.host).includes("0.0.0.0:")) {
-        urlBase = "http://" + window.location.host + "/source/";
+        urlBase = "http://" + window.location.host + "/dist/";
     } else if ((window.location.host).includes("timeline.knilab.com")) {
         urlBase = "https://cdn.knightlab.com/libs/timeline3/dev/";
     } else {
@@ -171,11 +171,6 @@ function updateEmbedCode(element, options) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    if (window.innerWidth <= 700) {
-        var intro = document.getElementById('intro-copy');
-        document.getElementById('intro-copy').parentNode.removeChild(document.getElementById('intro-copy'));
-        document.getElementById('screencast').insertBefore(intro, document.getElementById('screencast').firstChild);
-    }
 
     // More Options
     $("#show-options").click(function(e) {

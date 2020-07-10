@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><!--
+<html lang="en">
+<!--
   	 
   	88888888888 d8b                        888 d8b                888888   d8888b  
   	    888     Y8P                        888 Y8P                   88b d88P  Y88b 
@@ -13,7 +14,8 @@
   	                                                              d88P             
   	                                                            888P              
   	 -->
-  <head>
+
+<head>
     <title>Test all the Media Types</title>
     <meta name="description" content="A demonstration of all available media types for TimelineJS 3">
     <meta charset="utf-8">
@@ -22,34 +24,38 @@
     <meta name="apple-touch-fullscreen" content="yes">
     <!-- Style-->
     <style>
-      html, body {
-      height:100%;
-      padding: 0px;
-      margin: 0px;
-      }
+        html,
+        body {
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
     </style>
-    <!-- HTML5 shim, for IE6-8 support of HTML elements--><!--[if lt IE 9]>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-	<link rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
-  <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
-  <link title="timeline-styles" rel="stylesheet" href="/build/css/timeline.css">
-  <!-- endbuild -->
+    <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/site.css">
+    <!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
+    <link title="timeline-styles" rel="stylesheet" href="/dist/css/timeline.css">
+    <!-- endbuild -->
 
-  <!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
-  <script src="/build/js/timeline.js"></script>
-  <!-- endbuild -->
+    <!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+    <script src="/dist/js/timeline.js"></script>
+    <!-- endbuild -->
 
-  </head>
-  <body>
-  <section id="demo">
-    <div id="timeline-embed" style="height: 100%;">
-      <div id="timeline"></div>
-    </div>
-  </section>
-  <script type="text/javascript">
-      window.timeline = new TL.Timeline('timeline-embed', 'timeline3.json');
-  </script>
+</head>
+
+<body>
+    <section id="demo">
+        <div id="timeline-embed" style="height: 100%;">
+            <div id="timeline"></div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        window.timeline = new TL.Timeline('timeline-embed', 'timeline3.json');
+    </script>
     {% include "_analytics.html" %}
 
-  </body>
+</body>
+
 </html>

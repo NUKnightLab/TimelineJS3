@@ -1,333 +1,333 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <article id="product-body">
-  <section class="section-color container">
-    <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
-    <h2 class="header-story">Using the TimelineJS CSS selectors</h2>
-    <p>If you want to change the way TimelineJS looks, first check out our <a href="/docs/faq.html#styling">style and presentation frequently asked questions</a>. In particular, note that <strong>there is no way to override the CSS using the iframe embed.</strong> You will need to be able to <a href="/docs/instantiate-a-timeline.html">instantiate the Timeline in javascript</a> on your own page. Then, either in <code>style</code> tags in that page, or in an external stylesheet, you can specify CSS rules changing some or all of TimelineJS's default presentation. </p>
-  </section>
-  <section class="section container" id="overriding-styles">
-  <div class="grid">
-    <div class="column-12">
-      <h3>Timeline CSS classes</h3>
-      <p>This table lists the major CSS classes which TimelineJS uses. You may just be able to tweak some of these. However, TimelineJS uses Less for CSS preprocessing, which means that some of the CSS rules are very specific. If just overriding a class doesn't seem to work, read more about <a data-scroll="true" href="#timeline-and-less">Timeline and Less</a> below.</p>
-      <p><strong><em>Slide options</em></strong> affect the media and text areas of slides.</p>
-      <div class="grid">
-        <div class="column-2 column-6-phone">
-          <strong>Class Name</strong>
-        </div>
-        <div class="column-2 column-6-phone">
-          <strong>Element Type?</strong>
-        </div>
-        <div class="column-8">
-          <strong>Notes</strong>
-        </div>
-      </div>
+    <section class="section-color container">
+        <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+        <h2 class="header-story">Using the TimelineJS CSS selectors</h2>
+        <p>If you want to change the way TimelineJS looks, first check out our <a href="/docs/faq.html#styling">style and presentation frequently asked questions</a>. In particular, note that <strong>there is no way to override the CSS using the iframe embed.</strong>            You will need to be able to <a href="/docs/instantiate-a-timeline.html">instantiate the Timeline in javascript</a> on your own page. Then, either in <code>style</code> tags in that page, or in an external stylesheet, you can specify CSS rules
+            changing some or all of TimelineJS's default presentation. </p>
+    </section>
+    <section class="section container" id="overriding-styles">
+        <div class="grid">
+            <div class="column-12">
+                <h3>Timeline CSS classes</h3>
+                <p>This table lists the major CSS classes which TimelineJS uses. You may just be able to tweak some of these. However, TimelineJS uses Less for CSS preprocessing, which means that some of the CSS rules are very specific. If just overriding
+                    a class doesn't seem to work, read more about <a data-scroll="true" href="#timeline-and-less">Timeline and Less</a> below.</p>
+                <p><strong><em>Slide options</em></strong> affect the media and text areas of slides.</p>
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <strong>Class Name</strong>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <strong>Element Type?</strong>
+                    </div>
+                    <div class="column-8">
+                        <strong>Notes</strong>
+                    </div>
+                </div>
 
-      <div class="grid">
-        <div class="column-2 column-6-phone">
-          <code>tl-timeline</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          Added to the initial div containing the timeline. Contains entire element.
-        </div>
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timeline</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        Added to the initial div containing the timeline. Contains entire element.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-slider-container-mask</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          A wrapper around the slides. Background colors or images can be set here.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-slider-container-mask</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        A wrapper around the slides. Background colors or images can be set here.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-slide</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          Each complete set of slide items. May appear in conjunction with <code>.tl-slide-titleslide</code> (for title slides) or <code>.tl-slide-media-only</code> (slides without text).
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-slide</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        Each complete set of slide items. May appear in conjunction with <code>.tl-slide-titleslide</code> (for title slides) or <code>.tl-slide-media-only</code> (slides without text).
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-media-content-container</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          Contains the media, its credit, and its caption.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-media-content-container</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        Contains the media, its credit, and its caption.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-media-content</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          Contains the media item. Use this to add borders, padding and more.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-media-content</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        Contains the media item. Use this to add borders, padding and more.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-credit</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The media item's credit.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-credit</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The media item's credit.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-caption</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The media item's caption.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-caption</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The media item's caption.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-text</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The slide's text plus padding. Add background color to the text portion of the slide here.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-text</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The slide's text plus padding. Add background color to the text portion of the slide here.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-text-content-container</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The slide's text minus padding.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-text-content-container</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The slide's text minus padding.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-headline-date</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>h3</code>
-        </div>
-        <div class="column-8">
-          The date that appears over the slide's headline.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-headline-date</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>h3</code>
+                    </div>
+                    <div class="column-8">
+                        The date that appears over the slide's headline.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-headline</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>h2</code>
-        </div>
-        <div class="column-8">
-          The slide's headline. Title slides have the additional class <code>.tl-headline-title</code>.
-          Note that you will probably need to use the selector <code>h2.tl-headline</code> to change the appearance
-          of the slide titles.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-headline</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>h2</code>
+                    </div>
+                    <div class="column-8">
+                        The slide's headline. Title slides have the additional class <code>.tl-headline-title</code>. Note that you will probably need to use the selector <code>h2.tl-headline</code> to change the appearance of the slide titles.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-text-content</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The text of the slide, in <code>p</code> tags.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-text-content</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The text of the slide, in <code>p</code> tags.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-slidenav-next</code>
-          <br/>or</br>
-          <code>tl-slidenav-previous</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The navigation and text for moving forward and back. Use in conjunction with the following selectors to render the navigation arrows and text.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-slidenav-next</code>
+                        <br/>or</br>
+                        <code>tl-slidenav-previous</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The navigation and text for moving forward and back. Use in conjunction with the following selectors to render the navigation arrows and text.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-slidenav-icon::before</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          Inserts the navigation arrow. Preface with <code>.tl-slidenav-next</code> or <code>.tl-slidenav-previous</code> to specify which arrow to render.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-slidenav-icon::before</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        Inserts the navigation arrow. Preface with <code>.tl-slidenav-next</code> or <code>.tl-slidenav-previous</code> to specify which arrow to render.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-slidenav-title</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The title of the next/previous slide. Preface with <code>.tl-slidenav-next</code> or <code>.tl-slidenav-previous</code> to specify which title to render.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-slidenav-title</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The title of the next/previous slide. Preface with <code>.tl-slidenav-next</code> or <code>.tl-slidenav-previous</code> to specify which title to render.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-slidenav-description</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The description of the next/previous slide. Appears on hover. Preface with <code>.tl-slidenav-next</code> or <code>.tl-slidenav-previous</code> to specify which description to render.
-        </div>
-      </div>
-      <p><strong><em>Timenav options</em></strong> affect the portion of the timeline that renders the time series.</p>
-      <div class="grid">
-        <div class="column-2 column-6-phone">
-          <strong>Class Name</strong>
-        </div>
-        <div class="column-2 column-6-phone">
-          <strong>Element Type?</strong>
-        </div>
-        <div class="column-8">
-          <strong>Notes</strong>
-        </div>
-      </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-slidenav-description</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The description of the next/previous slide. Appears on hover. Preface with <code>.tl-slidenav-next</code> or <code>.tl-slidenav-previous</code> to specify which description to render.
+                    </div>
+                </div>
+                <p><strong><em>Timenav options</em></strong> affect the portion of the timeline that renders the time series.</p>
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <strong>Class Name</strong>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <strong>Element Type?</strong>
+                    </div>
+                    <div class="column-8">
+                        <strong>Notes</strong>
+                    </div>
+                </div>
 
-      <div class="grid">
-        <div class="column-2 column-6-phone">
-          <code>tl-timenav</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The timeline element. Change the background color here.
-        </div>
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timenav</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The timeline element. Change the background color here.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-menubar</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The zoom icons.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-menubar</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The zoom icons.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timemarker</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          All of the elements that make up the markers (flags and lines) on the timenav. The marker of the current slide also has the class <code>.tl-timemarker-active</code>.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timemarker</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        All of the elements that make up the markers (flags and lines) on the timenav. The marker of the current slide also has the class <code>.tl-timemarker-active</code>.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timemarker-content-container</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The flag of the marker. You can set the flag's background color and text color here. When writing styles for this selector, preface this selector with <code>.tl-timemarker</code> (for slides other than the current slide) or <code>.tl-timemarker.tl-timemarker-active</code> (for the current slide).
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timemarker-content-container</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The flag of the marker. You can set the flag's background color and text color here. When writing styles for this selector, preface this selector with <code>.tl-timemarker</code> (for slides other than the current slide) or <code>.tl-timemarker.tl-timemarker-active</code>                        (for the current slide).
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timemarker-timespan</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The width of the marker. This draws the translucent background behind markers if your event has a start and end date. When writing styles for this selector, preface this selector with <code>.tl-timemarker</code> (for slides other than the current slide) or <code>.tl-timemarker.tl-timemarker-active</code> (for the current slide).
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timemarker-timespan</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The width of the marker. This draws the translucent background behind markers if your event has a start and end date. When writing styles for this selector, preface this selector with <code>.tl-timemarker</code> (for slides other
+                        than the current slide) or <code>.tl-timemarker.tl-timemarker-active</code> (for the current slide).
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timemarker-media-container</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The icon or thumbnail representing the media in the timeline flag.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timemarker-media-container</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The icon or thumbnail representing the media in the timeline flag.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-headline</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>h2</code>
-        </div>
-        <div class="column-8">
-          The text of the flag. Set color and font family here. Note that this is the same class used
-          for the headline in the main slide body. If you want to change only the headline in the navigation,
-          use <code>.tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline</code>.
-          (Yes, ideally it wouldn't need to be so specific, but for now, it does.)
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-headline</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>h2</code>
+                    </div>
+                    <div class="column-8">
+                        The text of the flag. Set color and font family here. Note that this is the same class used for the headline in the main slide body. If you want to change only the headline in the navigation, use <code>.tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline</code>.
+                        (Yes, ideally it wouldn't need to be so specific, but for now, it does.)
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timeaxis</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The ticks representing the timescale.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timeaxis</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The ticks representing the timescale.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timeaxis-background</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The appearance of the background for the tick marks.
-        </div>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timeaxis-background</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The appearance of the background for the tick marks.
+                    </div>
 
-        <div class="column-2 column-6-phone">
-          <code>tl-timeaxis-tick:before</code>
-        </div>
-        <div class="column-2 column-6-phone">
-          <code>div</code>
-        </div>
-        <div class="column-8">
-          The line drawing the tick. Set the background color to change the color of the line. Preface with <code>.tl-timeaxis-major</code> to target major ticks or <code>.tl-timeaxis-minor</code> to target minor ticks.
-        </div>
-      </div>
-      <h3 id="timeline-and-less">TimelineJS and Less</h3>
-      <p>TimelineJS uses the <a href="http://lesscss.org/">Less CSS pre-processor</a> to manage the complex number of elements, variables, and conditions needed to make everything look great. One side effect of how we use <code>Less</code> is that various style rules for TimelineJS are often very specific. Since, in CSS, more specific rules take precedence over less specific ones, you may find it easier to edit Timeline's <code>Less</code> files and compile your own stylesheet than to work out the exact selector which controls style rules.
-      </p>
-      <p>A full <code>Less</code> tutorial is outside the scope of this documentation. In the future, we may be able to provide a few more tips about how our <code>Less</code> files are organized, but the main thing you need to know is this: even though there are many <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/">Less files in our Github repository</a>, you only need to compile <code><a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/source/less/TL.Timeline.less">TL.Timeline.less</a></code>, which links to all of the others. And you don't need to set up our full-fledged development environment to compile <code>Less</code>. See the <a href="http://lesscss.org/#using-less">Using Less</a> documentation for more information.
-      </p>
+                    <div class="column-2 column-6-phone">
+                        <code>tl-timeaxis-tick:before</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>div</code>
+                    </div>
+                    <div class="column-8">
+                        The line drawing the tick. Set the background color to change the color of the line. Preface with <code>.tl-timeaxis-major</code> to target major ticks or <code>.tl-timeaxis-minor</code> to target minor ticks.
+                    </div>
+                </div>
+                <h3 id="timeline-and-less">TimelineJS and Less</h3>
+                <p>TimelineJS uses the <a href="http://lesscss.org/">Less CSS pre-processor</a> to manage the complex number of elements, variables, and conditions needed to make everything look great. One side effect of how we use <code>Less</code> is that
+                    various style rules for TimelineJS are often very specific. Since, in CSS, more specific rules take precedence over less specific ones, you may find it easier to edit Timeline's <code>Less</code> files and compile your own stylesheet
+                    than to work out the exact selector which controls style rules.
+                </p>
+                <p>A full <code>Less</code> tutorial is outside the scope of this documentation. In the future, we may be able to provide a few more tips about how our <code>Less</code> files are organized, but the main thing you need to know is this: even
+                    though there are many <a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/src/less">Less files in our Github repository</a>, you only need to compile <code><a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/src/lessTL.Timeline.less">TL.Timeline.less</a></code>,
+                    which links to all of the others. And you don't need to set up our full-fledged development environment to compile <code>Less</code>. See the <a href="http://lesscss.org/#using-less">Using Less</a> documentation for more information.
+                </p>
 
-     </div>
-  </div>
-</section>
+            </div>
+        </div>
+    </section>
 </article>
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script type="text/javascript">
-jQuery(document).ready(function() {
-  // make permalinks function for each question
-  jQuery("p[id]").each(function(){
-    jQuery(this).css('cursor','pointer');
-    jQuery(this).click(function(){
-      window.location.hash = "#" + this.id;
-    })
-  });
-});
+    jQuery(document).ready(function() {
+        // make permalinks function for each question
+        jQuery("p[id]").each(function() {
+            jQuery(this).css('cursor', 'pointer');
+            jQuery(this).click(function() {
+                window.location.hash = "#" + this.id;
+            })
+        });
+    });
 </script>
 {% endblock %}
