@@ -9,7 +9,8 @@ module.exports = merge.smart({
         contentBase: ['./src/template', './src/css'],
         contentBasePublicPath: ['/', '/css'],
         stats: 'verbose',
-        openPage: "/index.html"
+        openPage: "/index.html",
+        disableHostCheck: true
     },
     module: {
         rules: [{
