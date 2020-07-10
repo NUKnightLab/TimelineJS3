@@ -1,5 +1,6 @@
 3.7.1 (2020-07-10)
 * Protect against undefined/null options in constructor
+* Pass a valid message container for 'swipe to navigate' #644
 
 3.7.0 (2020-07-09)
 * Internal rewrite to use modern JavaScript
