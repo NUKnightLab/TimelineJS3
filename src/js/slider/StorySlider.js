@@ -432,7 +432,7 @@ export class StorySlider {
 			this._swipable.enable();
 
 			// Message
-			this._message = new Message({}, {
+			this._message = new Message(this._el.container, {
 				message_class: 		"tl-message-full",
 				message_icon_class: "tl-icon-swipe-left"
 			},
