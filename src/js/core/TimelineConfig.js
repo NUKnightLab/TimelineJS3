@@ -6,7 +6,7 @@ import DOMPurify from 'dompurify';
 
 const SANITIZE_FIELDS = {
     text: ['headline', 'text'],
-    media: ['caption', 'credit', 'url']
+    media: ['caption', 'credit'] // media "URL" must be sanitized in Media classes to avoid messing up URLs
 }
 
 const STRIP_MARKUP_FIELDS = {
@@ -346,6 +346,7 @@ export class TimelineConfig {
         fillIn(slide.text, 'headline');
 
         _process_fields(slide, _tl_sanitize, SANITIZE_FIELDS)
+            // handle media.url separately
         _process_fields(slide, stripMarkup, STRIP_MARKUP_FIELDS)
 
     }
