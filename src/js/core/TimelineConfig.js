@@ -83,7 +83,7 @@ export class TimelineConfig {
                     try {
                         this.addEra(era_data)
                     } catch (e) {
-                        this.logError("Era " + idx + ": " + e);
+                        this.logError("Era " + indexOf + ": " + e);
                     }
                 })
             }
