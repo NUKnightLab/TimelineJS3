@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 export default class Blockquote extends Media {
     constructor(data, options, language) { //add_to_container) {
         super(data, options, language);
-        this.blockquote = DOMPurify.sanitize(txt)
+        this.blockquote = DOMPurify.sanitize(this.data.url)
     }
     _loadMedia() {
         // Create Dom element

@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 export default class IFrame extends Media {
     constructor(data, options, language) { //add_to_container) {
         super(data, options, language);
-        this.iframe = DOMPurify.sanitize(txt, {
+        this.iframe = DOMPurify.sanitize(this.data.url, {
             ADD_TAGS: ['iframe'],
             ADD_ATTR: ['frameborder'],
         })

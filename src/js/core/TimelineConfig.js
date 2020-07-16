@@ -124,8 +124,8 @@ export class TimelineConfig {
         for (var i = 0; i < this.eras.length; i++) {
             if (typeof(this.eras[i].start_date) == 'undefined' || typeof(this.eras[i].end_date) == 'undefined') {
                 var era_identifier;
-                if (this.eras[i].text && this.eras[i].text.headline) {
-                    era_identifier = this.eras[i].text.headline
+                if (this.eras[i].headline) {
+                    era_identifier = this.eras[i].headline
                 } else {
                     era_identifier = "era " + (i + 1);
                 }

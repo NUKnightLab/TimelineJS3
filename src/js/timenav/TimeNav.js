@@ -681,7 +681,7 @@ export class TimeNav {
         // Create Markers and then add them
         this._createMarkers(this.config.events);
 
-        if (this.config.eras) {
+        if (this.config.eras && this.config.eras.length > 0) {
             this.has_eras = true;
             this._createEras(this.config.eras);
         }
