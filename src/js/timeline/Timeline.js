@@ -18,7 +18,9 @@ import { loadCSS } from "../core/Load";
 let script_src_url = null;
 if (document) {
     let script_tags = document.getElementsByTagName('script');
-    script_src_url = script_tags[script_tags.length - 1].src;
+    if (script_tags && script_tags.length > 0) {
+        script_src_url = script_tags[script_tags.length - 1].src;
+    }
 }
 
 function make_keydown_handler(timeline) {
@@ -68,21 +70,22 @@ class Timeline {
             options.language = options.lang;
         }
 
+        /** @type {Language} */
         this.language = fallback;
 
-        // Slider
+        /** @type {StorySlider} */
         this._storyslider = {};
 
-        // TimeNav
+        /** @type {TimeNav} */
         this._timenav = {};
 
-        // Menu Bar
+        /** @type {MenuBar} */
         this._menubar = {};
 
         // Loaded State
         this._loaded = { storyslider: false, timenav: false };
 
-        // Data Object
+        /** @type {TimelineConfig} */
         this.config = null;
 
         this.options = {
@@ -466,20 +469,6 @@ class Timeline {
         this.fire("back_to_start", { unique_id: this.current_id }, this);
     }
 
-    /**
-     * Zoom in and zoom out should be part of the public API.
-     */
-    zoomIn() {
-        this._timenav.zoomIn();
-    }
-    zoomOut() {
-        this._timenav.zoomOut();
-    }
-
-    setZoom(level) {
-        this._timenav.setZoom(level);
-    }
-
     _onZoomIn(e) {
         this._timenav.zoomIn();
         this.fire("zoom_in", { zoom_level: this._timenav.options.scale_factor }, this);
@@ -690,8 +679,13 @@ class Timeline {
         }
     }
 
-    /*  Get index of slide by id
-  ================================================== */
+    /**
+     * Given a slide identifier, return the zero-based positional index of
+     * that slide. If this timeline has a 'title' slide, it is at position 0
+     * and all other slides are numbered after that. If there is no 'title' 
+     * slide, then the first event slide is at position 0.
+     * @param {String} id 
+     */
     _getSlideIndex(id) {
         if (this.config.title && this.config.title.unique_id == id) {
             return 0;
@@ -699,6 +693,24 @@ class Timeline {
         for (var i = 0; i < this.config.events.length; i++) {
             if (id == this.config.events[i].unique_id) {
                 return this.config.title ? i + 1 : i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Given a slide identifier, return the zero-based positional index of that slide.
+     * Does not take the existence of a 'title' slide into account, so if there is a title
+     * slide, this value should be one less than calling `_getSlideIndex` with the same
+     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex` 
+     * should return the same value.
+     * TODO: does it really make sense to have both `_getSlideIndex` and `_getEventIndex`?
+     * @param {String} id 
+     */
+    _getEventIndex(id) {
+        for (var i = 0; i < this.config.events.length; i++) {
+            if (id == this.config.events[i].unique_id) {
+                return i;
             }
         }
         return -1;
@@ -742,6 +754,24 @@ class Timeline {
     }
 
 
+    /*
+        PUBLIC API
+        This has been minimally tested since most people use TimelineJS as an embed.
+        If we hear from people who are trying to use TimelineJS this way, we will do
+        what we can to make sure it works correctly, and will appreciate help!
+    */
+    zoomIn() {
+        this._timenav.zoomIn();
+    }
+
+    zoomOut() {
+        this._timenav.zoomOut();
+    }
+
+    setZoom(level) {
+        this._timenav.setZoom(level);
+    }
+
     // Goto slide with id
     goToId(id) {
         if (this.current_id != id) {
@@ -784,6 +814,91 @@ class Timeline {
     // Goto next slide
     goToNext() {
         this.goTo(this._getSlideIndex(this.current_id) + 1);
+    }
+
+    /* Event manipulation
+    ================================================== */
+
+    // Add an event
+    add(data) {
+        var unique_id = this.config.addEvent(data);
+
+        var n = this._getEventIndex(unique_id);
+        var d = this.config.events[n];
+
+        this._storyslider.createSlide(d, this.config.title ? n + 1 : n);
+        this._storyslider._updateDrawSlides();
+
+        this._timenav.createMarker(d, n);
+        this._timenav._updateDrawTimeline(false);
+
+        this.fire("added", { unique_id: unique_id });
+    }
+
+    // Remove an event
+    remove(n) {
+        if (n >= 0 && n < this.config.events.length) {
+            // If removing the current, nav to new one first
+            if (this.config.events[n].unique_id == this.current_id) {
+                if (n < this.config.events.length - 1) {
+                    this.goTo(n + 1);
+                } else {
+                    this.goTo(n - 1);
+                }
+            }
+
+            var event = this.config.events.splice(n, 1);
+            delete this.config.event_dict[event[0].unique_id];
+            this._storyslider.destroySlide(this.config.title ? n + 1 : n);
+            this._storyslider._updateDrawSlides();
+
+            this._timenav.destroyMarker(n);
+            this._timenav._updateDrawTimeline(false);
+
+            this.fire("removed", { unique_id: event[0].unique_id });
+        }
+    }
+
+    removeId(id) {
+        this.remove(this._getEventIndex(id));
+    }
+
+    /* Get slide data
+    ================================================== */
+
+    getData(n) {
+        if (this.config.title) {
+            if (n == 0) {
+                return this.config.title;
+            } else if (n > 0 && n <= this.config.events.length) {
+                return this.config.events[n - 1];
+            }
+        } else if (n >= 0 && n < this.config.events.length) {
+            return this.config.events[n];
+        }
+        return null;
+    }
+
+    getDataById(id) {
+        return this.getData(this._getSlideIndex(id));
+    }
+
+    /* Get slide object
+    ================================================== */
+
+    getSlide(n) {
+        if (n >= 0 && n < this._storyslider._slides.length) {
+            return this._storyslider._slides[n];
+        }
+        return null;
+    }
+
+    getSlideById(id) {
+        return this.getSlide(this._getSlideIndex(id));
+    }
+
+    getCurrentSlide() {
+        return this.getSlideById(this.current_id);
     }
 
     updateDisplay() {
