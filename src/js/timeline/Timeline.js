@@ -89,7 +89,7 @@ class Timeline {
         this.config = null;
 
         this.options = {
-            script_path: "",
+            script_path: "https://cdn.knightlab.com/libs/timeline3/latest/js/", // as good a default as any
             height: this._el.container.offsetHeight,
             width: this._el.container.offsetWidth,
             debug: false,

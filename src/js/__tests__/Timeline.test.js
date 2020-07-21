@@ -55,7 +55,10 @@ test("Ensure options is optional", () => {
 })
 
 test("test remove", () => {
-    let timeline = new Timeline('timeline-embed', TEST_CONFIG);
+    let timeline = new Timeline('timeline-embed',
+        TEST_CONFIG, { // i don't think this is actually used?
+            script_path: 'http://localhost:1234/'
+        });
     expect(timeline.config.events.length).toBe(2)
     expect(timeline.config.event_dict['vimeo']).toBeTruthy()
     timeline.removeId('vimeo')

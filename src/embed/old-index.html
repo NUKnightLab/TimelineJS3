@@ -45,7 +45,7 @@
         if (trim_point > 0) {
             var embed_path = window.location.href.substring(0, trim_point); // supports https access via https://s3.amazonaws.com/cdn.knightlab.com/libs/timeline/latest/embed/index.html
         } else {
-            var embed_path = "https://cdn.knightlab.com/libs/timeline3/latest/";
+            var embed_path = "https://cdn.knightlab.com/libs/timeline3/3.6.6/";
         }
         var oembed_link = document.createElement('link');
         oembed_link['rel'] = 'alternate';
@@ -53,7 +53,7 @@
         oembed_link['href'] = 'https://oembed.knightlab.com/timeline/?url=' + encodeURIComponent(window.location.href);
         document.head.appendChild(oembed_link);
     </script>
-    <script type="text/javascript" src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline-embed-cdn.js"></script>
+    <script type="text/javascript" src="https://cdn.knightlab.com/libs/timeline3/3.6.6/js/timeline-embed-cdn.js"></script>
     <!-- END Timeline Embed-->
 </body>
 

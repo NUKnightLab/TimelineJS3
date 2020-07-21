@@ -40,8 +40,8 @@ export function parseTime(time_str) {
     if (parts.length > 4) {
         throw new TLError("invalid_separator_error");
     }
-
-    parsed.hour = parseInt(parts[0]);
+    let hour_part = parts[0]
+    parsed.hour = parseInt(hour_part);
 
     if (period && period.toLowerCase()[0] == 'p' && parsed.hour != 12) {
         parsed.hour += 12;
@@ -51,13 +51,14 @@ export function parseTime(time_str) {
 
 
     if (isNaN(parsed.hour) || parsed.hour < 0 || parsed.hour > 23) {
-        throw new TLError("invalid_hour_err", parsed.hour);
+        throw new TLError("invalid_hour_err", hour_part);
     }
 
     if (parts.length > 1) {
-        parsed.minute = parseInt(parts[1]);
+        let minute_part = parts[1]
+        parsed.minute = parseInt(minute_part);
         if (isNaN(parsed.minute)) {
-            throw new TLError("invalid_minute_err", parsed.minute);
+            throw new TLError("invalid_minute_err", minute_part);
         }
     }
 
@@ -69,12 +70,12 @@ export function parseTime(time_str) {
         }
         parsed.second = parseInt(parts[0]);
         if (isNaN(parsed.second)) {
-            throw new TLError("invalid_second_err");
+            throw new TLError("invalid_second_err", parts[0]);
         }
         if (parts.length == 2) {
             var frac_secs = parseInt(parts[1]);
             if (isNaN(frac_secs)) {
-                throw new TLError("invalid_fractional_err");
+                throw new TLError("invalid_fractional_err", parts[1]);
             }
             parsed.millisecond = 100 * frac_secs;
         }

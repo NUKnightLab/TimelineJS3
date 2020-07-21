@@ -347,10 +347,14 @@ var googleFeedJSONtoTimelineJSON = function(data) {
                     }
                 }
             } catch (e) {
-                if (e.message) {
-                    e = e.message;
+                if (e.constructor == TLError) {
+                    timeline_config.errors.push(e);
+                } else {
+                    if (e.message) {
+                        e = e.message;
+                    }
+                    timeline_config.errors.push(e + " [" + i + "]");
                 }
-                timeline_config.errors.push(e + " [" + i + "]");
             }
         };
 
