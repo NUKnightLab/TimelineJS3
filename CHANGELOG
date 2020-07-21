@@ -1,3 +1,8 @@
+3.7.4 (2020-07-21)
+* Fix #645: restore removeId to public API for a Timeline
+* Fix: only load font.default.css when no other font is specified; otherwise
+       cascade rules are inconsistent with old behavior.
+
 3.7.3 (2020-07-16)
 * Fix stupid bugs introduced with incomplete testing.
 

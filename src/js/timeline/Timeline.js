@@ -93,6 +93,7 @@ class Timeline {
             height: this._el.container.offsetHeight,
             width: this._el.container.offsetWidth,
             debug: false,
+            font: 'default',
             is_embed: false,
             is_full_embed: false,
             hash_bookmark: false,
