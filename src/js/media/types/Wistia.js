@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { ratio } from "../../core/Util";
+import { ratio, trace } from "../../core/Util";
 
 export default class Wistia extends Media {
 

@@ -1,3 +1,7 @@
+3.7.5 (2020-07-22)
+* More fixes to handling default font case
+* add missing import for Wistia media type
+
 3.7.4 (2020-07-21)
 * Fix #645: restore removeId to public API for a Timeline
 * Fix: only load font.default.css when no other font is specified; otherwise
