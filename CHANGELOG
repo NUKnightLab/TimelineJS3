@@ -1,3 +1,11 @@
+3.7.3 (2020-07-16)
+* Fix stupid bugs introduced with incomplete testing.
+
+3.7.2 (2020-07-16)
+* Fix variable naming error when handling thrown exceptions in adding eras
+* Fix name of div in developer "embed" template to restore ability to switch data source for dev view
+* don't routinely sanitize media URLs; instead, place that responsibility on Media subclasses for which the 'url' is actually used with markup
+
 3.7.1 (2020-07-10)
 * Protect against undefined/null options in constructor
 * Pass a valid message container for 'swipe to navigate' #644

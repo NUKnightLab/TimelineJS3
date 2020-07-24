@@ -1,21 +1,21 @@
 import { Media } from "../Media";
+import DOMPurify from 'dompurify';
 
 export default class IFrame extends Media {
-    _loadMedia() {
-        var api_url,
-            self = this;
+    constructor(data, options, language) { //add_to_container) {
+        super(data, options, language);
+        this.iframe = DOMPurify.sanitize(this.data.url, {
+            ADD_TAGS: ['iframe'],
+            ADD_ATTR: ['frameborder'],
+        })
+    }
 
+    _loadMedia() {
         // Create Dom element
         this._el.content_item = this.domCreate("div", "tl-media-item tl-media-iframe", this._el.content);
 
-        // Get Media ID
-        this.media_id = this.data.url;
-
-        // API URL
-        api_url = this.media_id;
-
         // API Call
-        this._el.content_item.innerHTML = api_url;
+        this._el.content_item.innerHTML = this.iframe;
 
         // After Loaded
         this.onLoaded();
