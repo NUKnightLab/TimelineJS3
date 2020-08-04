@@ -63,11 +63,10 @@ export default class Imgur extends Media {
             },
             error: function(xhr, errorType, error) {
                 if (errorType == 'parsererror') {
-                    var error = new TLError("invalid_url_err");
+                    self.loadErrorDisplay(self._("imgur_invalidurl_err"));
                 } else {
-                    var error = new TLError("unknown_read_err", errorType);
+                    self.loadErrorDisplay(self._("unknown_read_err", errorType));
                 }
-                self.loadErrorDisplay(self._("imgur_invalidurl_err"));
             }
         });
         this.onLoaded();
