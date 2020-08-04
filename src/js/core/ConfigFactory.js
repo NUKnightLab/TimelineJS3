@@ -4,6 +4,7 @@ import { parseDate } from "../date/TLDate"
 import TLError from "../core/TLError"
 import { ajax } from "../net/Net"
 import { parseTime } from "../date/DateUtil"
+import { fetchCSV } from '../core/CSV';
 
 export function parseGoogleSpreadsheetURL(url) {
     let parts = {
@@ -106,8 +107,11 @@ function extractGoogleEntryData_V3(item) {
         },
         display_date: item_data.displaydate || '',
 
-        type: item_data.type || ''
+        type: item_data.type || '',
+        background: interpretBackground(item_data.background),
+        group: item_data.group || ''
     }
+
 
     if (item_data.time) {
         mergeData(d.start_date, parseTime(item_data.time));
@@ -115,11 +119,6 @@ function extractGoogleEntryData_V3(item) {
 
     if (item_data.endtime) {
         mergeData(d.end_date, parseTime(item_data.endtime));
-    }
-
-
-    if (item_data.group) {
-        d.group = item_data.group;
     }
 
     if (d.end_date.year == '') {
@@ -130,16 +129,57 @@ function extractGoogleEntryData_V3(item) {
                 trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
         }
     }
+    return d;
+}
 
-    if (item_data.background) {
-        if (item_data.background.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
-            d['background'] = { 'url': item_data.background }
-        } else { // for now we'll trust it's a color
-            d['background'] = { 'color': item_data.background }
-        }
+function interpretBackground() {
+    if (typeof(bkgd) != 'string') return ''
+    if (bkgd.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
+        return { 'url': bkgd }
+    } else { // for now we'll trust it's a color
+        return { 'color': bkgd }
     }
 
-    return d;
+}
+
+function extractEventFromCSVObject(row) {
+
+    var d = {
+        media: {
+            caption: row['Media Caption'] || '',
+            credit: row['Media Credit'] || '',
+            url: row['Media'] || '',
+            thumbnail: row['Media Thumbnail'] || ''
+        },
+        text: {
+            headline: row['Headline'] || '',
+            text: row['Text'] || ''
+        },
+        start_date: {
+            year: row['Year'],
+            month: row['Month'] || '',
+            day: row['Day'] || ''
+        },
+        end_date: {
+            year: row['End Year'] || '',
+            month: row['End Month'] || '',
+            day: row['End Day'] || ''
+        },
+        display_date: row['Display Date'] || '',
+        group: row['Group'] || '',
+        background: interpretBackground(row['Background']),
+        type: row['Type'] || ''
+    }
+
+    if (row['Time']) {
+        mergeData(d.start_date, parseTime(row['Time']));
+    }
+
+    if (row['End Time']) {
+        mergeData(d.end_date, parseTime(row['End Time']));
+    }
+
+    return d
 }
 
 
@@ -160,6 +200,67 @@ var getGoogleItemExtractor = function(data) {
     throw new TLError("invalid_data_format_err");
 }
 
+/**
+ * Given a Google Sheets URL (or mere document ID), read the data and return
+ * a Timeline JSON file suitable for instantiating a timeline.
+ * 
+ * @param {string} url 
+ */
+export function readGoogleAsCSV(url) {
+
+    let rows = fetchCSV({
+        url: makeGoogleCSVURL(url),
+    })
+
+    let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
+
+    rows.forEach((row, i) => {
+        try {
+            let event = extractEventFromCSVObject(row)
+            handleRow(event, timeline_config)
+        } catch (e) {
+            if (e.constructor == TLError) {
+                timeline_config.errors.push(e);
+            } else {
+                if (e.message) {
+                    e = e.message;
+                }
+                let label = row['Headline'] || i
+                timeline_config.errors.push(e + `[${label}]`);
+            }
+        }
+    });
+
+}
+/**
+ * Given a Google Sheets URL or a bare spreadsheet key, return a URL expected
+ * to retrieve a CSV file, assuming the Sheets doc has been "published to the web".
+ * No checking for the actual availability is done.
+ * @param {string} url_or_key 
+ */
+export function makeGoogleCSVURL(url_or_key) {
+    url_or_key = url_or_key.trim()
+    if (url_or_key.match(/^[a-zA-Z0-9-_]+$/)) {
+        // key pattern from https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id
+        return `https://docs.google.com/spreadsheets/d/${url_or_key}/pub?output=csv`
+    }
+
+    if (url_or_key.startsWith('https://docs.google.com/spreadsheets/')) {
+        if (url_or_key.match(/\/pub\?output=csv$/)) return url_or_key
+        let parsed = new URL(url_or_key)
+        let params = new URLSearchParams(parsed.search)
+        params.set('output', 'csv')
+        if (params.get('gid')) {
+            params.set('single', 'true')
+        }
+        parsed.search = `?${params.toString()}`
+        let base_path = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/'))
+        parsed.pathname = `${base_path}/pub`
+        return parsed.toString()
+    }
+    throw new TLError('invalid_url_err', url_or_key);
+}
+
 var buildGoogleFeedURL = function(key, api_version) {
     if (api_version == 'v4') {
         return "https://sheets.googleapis.com/v4/spreadsheets/" + key + "/values/A1:R1000?key=AIzaSyCInR0kjJJ2Co6aQAXjLBQ14CEHam3K0xg";
@@ -169,6 +270,13 @@ var buildGoogleFeedURL = function(key, api_version) {
 }
 
 var jsonFromGoogleURL = function(google_url) {
+
+    var timeline_json = readGoogleAsCSV(google_url);
+
+    if (timeline_json) {
+        return timeline_json;
+    }
+
     var api_version = 'v3';
     var parts = parseGoogleSpreadsheetURL(google_url);
     if (parts && parts.key) {
@@ -301,23 +409,7 @@ var googleFeedJSONtoTimelineJSON = function(data) {
         for (var i = 1; i < data.values.length; i++) {
             var event = extractGoogleEntryData_V4(data.values[0], data.values[i]);
             if (event) { // blank rows return null
-                var row_type = 'event';
-                if (typeof(event.type) != 'undefined') {
-                    row_type = event.type;
-                    delete event.type;
-                }
-                if (row_type == 'title') {
-                    if (!timeline_config.title) {
-                        timeline_config.title = event;
-                    } else {
-                        timeline_config.warnings.push("Multiple title slides detected.");
-                        timeline_config.events.push(event);
-                    }
-                } else if (row_type == 'era') {
-                    timeline_config.eras.push(event);
-                } else {
-                    timeline_config.events.push(event);
-                }
+                handleRow(event, timeline_config)
             }
         }
     } else {
@@ -328,23 +420,7 @@ var googleFeedJSONtoTimelineJSON = function(data) {
             try {
                 var event = extract(data.feed.entry[i]);
                 if (event) { // blank rows return null
-                    var row_type = 'event';
-                    if (typeof(event.type) != 'undefined') {
-                        row_type = event.type;
-                        delete event.type;
-                    }
-                    if (row_type == 'title') {
-                        if (!timeline_config.title) {
-                            timeline_config.title = event;
-                        } else {
-                            timeline_config.warnings.push("Multiple title slides detected.");
-                            timeline_config.events.push(event);
-                        }
-                    } else if (row_type == 'era') {
-                        timeline_config.eras.push(event);
-                    } else {
-                        timeline_config.events.push(event);
-                    }
+                    handleRow(event, timeline_config)
                 }
             } catch (e) {
                 if (e.constructor == TLError) {
@@ -419,5 +495,25 @@ export function makeConfig(url, callback) {
             }
         });
 
+    }
+}
+
+function handleRow(event, timeline_config) {
+    var row_type = 'event';
+    if (typeof(event.type) != 'undefined') {
+        row_type = event.type;
+        delete event.type;
+    }
+    if (row_type == 'title') {
+        if (!timeline_config.title) {
+            timeline_config.title = event;
+        } else {
+            timeline_config.warnings.push("Multiple title slides detected.");
+            timeline_config.events.push(event);
+        }
+    } else if (row_type == 'era') {
+        timeline_config.eras.push(event);
+    } else {
+        timeline_config.events.push(event);
     }
 }
