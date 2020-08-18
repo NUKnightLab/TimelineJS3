@@ -8,7 +8,7 @@
 
 /* TYPEFACE
 ================================================== */
-@font-serif: 					"Georgia", Times New Roman, Times, serif;
+@font-serif: 					"Georgia", "Times New Roman", Times, serif;
 @font-sanserif:					"Helvetica Neue", Helvetica, Arial, sans-serif;
 
 @font-main:						@font-sanserif;
@@ -46,6 +46,8 @@
 @color-text-inverted:			darken(@color-dark, 25);
 @color-header-text-inverted:	@color-dark;
 
+@color-text-credit:				#999999;
+
 /* UI COLOR
 ================================================== */
 @ui-background-color:			darken(@color-foreground,50); 
@@ -56,6 +58,8 @@
 @marker-text-color: 			lighten(@marker-color,15);
 @marker-dot-color: 				darken(@ui-background-color, 50);
 @marker-dot-hover-color: 		lighten(@marker-dot-color, 100);
+
+@marker-color-menubar-button:	darken(@marker-color,15);
 
 @minor-ticks-color:				darken(@color-dark,66);
 @major-ticks-color:				lighten(@minor-ticks-color,20);
@@ -89,6 +93,11 @@
 @major-ticks-font-size: 		12px;
 @tick-padding: 					2px;
 @axis-height:					@minor-ticks-font-size + (@major-ticks-font-size*2) + (@tick-padding*2);
+
+// SlideNav
+@opacity-slide-nav-title:		15;
+@opacity-slide-nav-desc:		 0;
+@opacity-slide-nav-desc-hover:  50;
 
 /* Animation
 ================================================== */

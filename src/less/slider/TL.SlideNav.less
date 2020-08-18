@@ -32,7 +32,6 @@
 	       -ms-hyphens: auto;
 	           hyphens: auto;
 		*/
-		.opacity(15);
 		a {
 			
 		}
@@ -42,6 +41,7 @@
 	}
 	.tl-slidenav-title {
 		margin-top:10px;
+		.opacity(@opacity-slide-nav-title);
 		font-size: @base-font-size-small;
 		line-height: @base-font-size-small;
 		//font-weight: bold;
@@ -49,7 +49,7 @@
 	.tl-slidenav-description {
 		font-size: @base-font-size-small;
 		margin-top:5px;
-		.opacity(0);
+		.opacity(@opacity-slide-nav-desc);
 		small {
 			display:none;
 		}
@@ -126,7 +126,7 @@
 		.opacity(100);
 	}
 	.tl-slidenav-description {
-		.opacity(50);
+		.opacity(@opacity-slide-nav-desc-hover);
 	}
 }
 .tl-slidenav-next:hover {
