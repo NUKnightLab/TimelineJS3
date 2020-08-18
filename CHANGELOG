@@ -1,3 +1,8 @@
+3.7.6 (unreleased)
+* Introduce a 'ready' event, which TimelineJS will fire after all other initialization is complete.
+* Support a Timeline option, `soundcite`, which triggers the loading of Knight Lab's SoundciteJS code, enabling the use of SoundCite markup in all HTML-capable Timeline fields.
+* Fix error messages in Imgur media type
+
 3.7.5 (2020-07-22)
 * More fixes to handling default font case
 * add missing import for Wistia media type

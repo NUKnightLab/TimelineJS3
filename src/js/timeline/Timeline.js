@@ -13,7 +13,7 @@ import * as Browser from "../core/Browser"
 import { Animate } from "../animation/Animate"
 import { StorySlider } from "../slider/StorySlider"
 import { MenuBar } from "../ui/MenuBar"
-import { loadCSS } from "../core/Load";
+import { loadCSS, loadJS } from "../core/Load";
 
 let script_src_url = null;
 if (document) {
@@ -129,7 +129,8 @@ class Timeline {
             language: "en",
             ga_property_id: null,
             track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
-            theme: null
+            theme: null,
+            soundcite: false,
         };
 
         // Animation Objects
@@ -156,6 +157,14 @@ class Timeline {
 
         if (!(this.options.script_path)) {
             this.options.script_path = this.determineScriptPath()
+        }
+
+        if (options.soundcite) {
+            this.on('ready', () => {
+                trace("Loading Soundcite resources ")
+                loadCSS('https://cdn.knightlab.com/libs/soundcite/latest/css/player.css')
+                loadJS('https://cdn.knightlab.com/libs/soundcite/latest/js/soundcite.min.js')
+            })
         }
 
         // load font, theme
@@ -347,6 +356,7 @@ class Timeline {
         }
 
         this.ready = true;
+        this.fire("ready")
 
     }
 
