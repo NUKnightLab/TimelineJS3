@@ -58,7 +58,7 @@ export default class Imgur extends Media {
                         }
                     }, 2000);
                 } catch (e) {
-                    console.log("Error processing imgur ajax response", e)
+                    trace("Error processing imgur ajax response", e)
                 }
             },
             error: function(xhr, errorType, error) {

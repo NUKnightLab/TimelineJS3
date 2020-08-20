@@ -56,19 +56,19 @@ var Deferred = function() {
  * Fetch data from a URL and parse the response as a CSV file.
  * To specify the data source, use `dataset.url`. 
  * @param {Object} dataset 
- * @returns {Array} Results are returned as an array of objects, using the 
- * first row as a header row to determine object property names.
+ * @returns {Promise} which invokes resolve with an array of objects of length 
+ * [csv row count - 1], where the 
+ * property names are determined by the first row.
  */
-export function fetchCSV(dataset) {
+export async function fetchCSV(dataset) {
     var dfd = new Deferred();
     if (dataset.data) {
         var out = extractFields(parse(dataset.data, dataset), dataset);
         out.useMemoryStore = true;
         dfd.resolve(out);
     } else if (dataset.url) {
-        window.fetch(dataset.url)
+        window.fetch(dataset.url, { mode: 'cors' })
             .then(function(response) {
-                console.log('fetch response')
                 if (response.text) {
                     return response.text();
                 } else {
@@ -76,13 +76,11 @@ export function fetchCSV(dataset) {
                 }
             })
             .then(function(data) {
-                console.log('now parse it')
                 var out = parseObjects(data, dataset);
                 out.useMemoryStore = true;
                 dfd.resolve(out);
             })
             .catch(function(req, status) {
-                console.log('caught something')
                 dfd.reject({
                     error: {
                         message: "Failed to load file. " +

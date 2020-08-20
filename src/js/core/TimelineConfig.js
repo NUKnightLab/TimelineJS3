@@ -95,7 +95,7 @@ export class TimelineConfig {
     }
 
     logError(msg) {
-        trace(msg);
+        trace(`logError: ${msg}`);
         this.messages.errors.push(msg);
     }
 
@@ -110,6 +110,7 @@ export class TimelineConfig {
             return this.messages.errors;
         }
     }
+
 
     /*
      * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
@@ -134,13 +135,18 @@ export class TimelineConfig {
         };
     }
 
+
+    /**
+     * @returns {boolean} whether or not this config has logged errors.  
+     */
     isValid() {
-            return this.messages.errors.length == 0;
-        }
-        /* Add an event (including cleaning/validation) and return the unique id.
-         * All event data validation should happen in here.
-         * Throws: TLError for any validation problems.
-         */
+        return this.messages.errors.length == 0;
+    }
+
+    /* Add an event (including cleaning/validation) and return the unique id.
+     * All event data validation should happen in here.
+     * Throws: TLError for any validation problems.
+     */
     addEvent(data, defer_sort) {
         var event_id = this._assignID(data);
 

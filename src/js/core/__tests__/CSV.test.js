@@ -1,4 +1,4 @@
-import { parseObjects, fetch } from '../CSV'
+import { parseObjects } from '../CSV'
 import * as fs from 'fs'
 
 test("test the CSV", () => {
@@ -11,7 +11,7 @@ test("test the CSV", () => {
     expect(rows[0]['count']).toBe(5)
     var row0_description = `let's just pile it  all in here,  commas, "quoted strings" and 
 new lines!`
-    debugger
+
     expect(rows[0]['description'].trim()).toBe(row0_description.trim())
     expect(rows[1]['title']).toBe('an ok day')
     expect(rows[1]['count']).toBe(3)
@@ -19,5 +19,18 @@ new lines!`
     expect(rows[2]['title']).toBe('a day, i guess')
     expect(rows[2]['count']).toBe(2)
     expect(rows[2]['description']).toBe('what else could go wrong?')
+
+})
+
+test("test official CSV", () => {
+    let data = fs.readFileSync(`${__dirname}/women_in_computing.csv`, 'utf-8')
+    let rows = parseObjects(data)
+    expect(rows.length).toBe(11)
+    rows.forEach((row, idx) => {
+        expect(Object.keys(row).length).toBe(18)
+    })
+    let title = rows[0]
+    expect(title['Type']).toBe('title')
+    expect(title['Background']).toMatch(/upload.wikimedia.org/)
 
 })
