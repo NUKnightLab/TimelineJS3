@@ -13,7 +13,7 @@ import * as Browser from "../core/Browser"
 import { Animate } from "../animation/Animate"
 import { StorySlider } from "../slider/StorySlider"
 import { MenuBar } from "../ui/MenuBar"
-import { loadCSS } from "../core/Load";
+import { loadCSS, loadJS } from "../core/Load";
 
 let script_src_url = null;
 if (document) {
@@ -135,7 +135,8 @@ class Timeline {
             // sheets_proxy value should be suitable for simply postfixing with the Google Sheets CSV URL
             // as in include trailing slashes, or '?url=' or whatever. No support right now for anything but
             // postfixing
-            sheets_proxy: 'http://localhost:5000/proxy/'
+            sheets_proxy: 'http://localhost:5000/proxy/',
+            soundcite: false,
         };
 
         // Animation Objects
@@ -162,6 +163,14 @@ class Timeline {
 
         if (!(this.options.script_path)) {
             this.options.script_path = this.determineScriptPath()
+        }
+
+        if (options.soundcite) {
+            this.on('ready', () => {
+                trace("Loading Soundcite resources ")
+                loadCSS('https://cdn.knightlab.com/libs/soundcite/latest/css/player.css')
+                loadJS('https://cdn.knightlab.com/libs/soundcite/latest/js/soundcite.min.js')
+            })
         }
 
         // load font, theme
@@ -331,7 +340,11 @@ class Timeline {
         }
         if (this.config.isValid()) {
             try {
-                this._onDataLoaded();
+                if (document.readyState === 'loading') { // Loading hasn't finished yet
+                    document.addEventListener('DOMContentLoaded', this._onDataLoaded);
+                } else {
+                    this._onDataLoaded();
+                }
             } catch (e) {
                 this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
             }
@@ -359,6 +372,7 @@ class Timeline {
         }
 
         this.ready = true;
+        this.fire("ready")
 
     }
 

@@ -7,7 +7,7 @@
         },
         "text": {
             "headline": "TimelineJS Media Types",
-            "text": "<p>TimelineJS supports many media types. This provides a simple way to test them all. This page tests a simple image on a remote server.</p>"
+            "text": "<p>TimelineJS supports many media types. This provides a simple way to test them all. This page tests a simple image on a remote server. Also, if the Timeline was created with the <code>soundcite</code> option set to <code>true</code> then   <span class='soundcite' data-url='https://soundcite.knightlab.com/media/bach-cello-suite.mp3' data-start='0' data-end='164000' data-plays='1'>this should be an active SoundCite player.</span></p>"
         }
     },
     "events": [{
