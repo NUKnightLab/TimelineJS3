@@ -218,24 +218,6 @@ function extractEventFromCSVObject(row) {
     return d
 }
 
-
-
-var getGoogleItemExtractor = function(data) {
-    if (typeof data.feed.entry === 'undefined' ||
-        data.feed.entry.length == 0) {
-        throw new TLError("empty_feed_err");
-    }
-    var entry = data.feed.entry[0];
-
-    if (typeof entry.gsx$startdate !== 'undefined') {
-        return extractGoogleEntryData_V1;
-    } else if (typeof entry.gsx$year !== 'undefined') {
-        var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline', 'text', 'media', 'mediacredit', 'mediacaption', 'mediathumbnail', 'type', 'group', 'background'];
-        return extractGoogleEntryData_V3;
-    }
-    throw new TLError("invalid_data_format_err");
-}
-
 /**
  * Given a Google Sheets URL (or mere document ID), read the data and return
  * a Timeline JSON file suitable for instantiating a timeline.
