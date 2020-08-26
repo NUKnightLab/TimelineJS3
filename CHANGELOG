@@ -1,3 +1,6 @@
+3.7.7 (2020-08-26)
+* #651: rollback document loading check after error reports
+
 3.7.6 (2020-08-25)
 * Add a check of the document's loading status, and defer layout until DOMContentLoaded, in response to reports of timelines where all slide content overlaps.
 * Introduce a 'ready' event, which TimelineJS will fire after all other initialization is complete.

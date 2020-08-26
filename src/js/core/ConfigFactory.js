@@ -235,13 +235,9 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
         url: `${sheets_proxy}${url}`,
     }).then(d => {
         rows = d;
-    }).catch((err) => {
-        error = err.error
+    }).catch(msg => {
+        throw new TLError(msg)
     })
-
-    if (error) {
-        throw new TLError(error.message)
-    }
 
     let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
 

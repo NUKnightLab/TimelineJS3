@@ -22,6 +22,8 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+import TLError from "./TLError";
+
 var rxIsInt = /^\d+$/,
     rxIsFloat = /^\d*\.\d+$|^\d+\.\d*$/;
 
@@ -35,23 +37,6 @@ function chomp(s, lineterminator) {
     }
 }
 
-// we can probably get rid of this and replace it with 
-// promises directly, right?
-var Deferred = function() {
-    var resolve, reject;
-    var promise = new Promise(function(res, rej) {
-        resolve = res;
-        reject = rej;
-    });
-    return {
-        resolve: resolve,
-        reject: reject,
-        promise: function() {
-            return promise;
-        }
-    };
-};
-
 /**
  * Fetch data from a URL and parse the response as a CSV file.
  * To specify the data source, use `dataset.url`. 
@@ -61,38 +46,28 @@ var Deferred = function() {
  * property names are determined by the first row.
  */
 export async function fetchCSV(dataset) {
-    var dfd = new Deferred();
-    if (dataset.data) {
-        var out = extractFields(parse(dataset.data, dataset), dataset);
-        out.useMemoryStore = true;
-        dfd.resolve(out);
-    } else if (dataset.url) {
-        window.fetch(dataset.url, { mode: 'cors' })
-            .then(function(response) {
-                if (response.text) {
-                    return response.text();
-                } else {
-                    return response;
-                }
-            })
-            .then(function(data) {
-                var out = parseObjects(data, dataset);
-                out.useMemoryStore = true;
-                dfd.resolve(out);
-            })
-            .catch(function(req, status) {
-                dfd.reject({
-                    error: {
-                        message: "Failed to load file. " +
-                            req.statusText +
-                            ". Code: " +
-                            req.status,
-                        request: req
+    return new Promise((resolve, reject) => {
+        if (dataset.data) {
+            var out = extractFields(parse(dataset.data, dataset), dataset);
+            out.useMemoryStore = true;
+            resolve(out);
+        } else if (dataset.url) {
+            window.fetch(dataset.url, { mode: 'cors' })
+                .then(function(response) {
+                    if (response.text) {
+                        return response.text();
+                    } else {
+                        return response;
                     }
-                });
-            });
-    }
-    return dfd.promise();
+                })
+                .then(function(data) {
+                    var out = parseObjects(data, dataset);
+                    out.useMemoryStore = true;
+                    resolve(out);
+                })
+                .catch(msg => reject(msg));
+        }
+    })
 };
 
 /**
