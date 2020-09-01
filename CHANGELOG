@@ -1,3 +1,6 @@
+3.7.8 (not yet released)
+* Restore document loading check with proper binding
+
 3.7.7 (2020-08-26)
 * #651: rollback document loading check after error reports
 
