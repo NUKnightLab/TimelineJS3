@@ -340,7 +340,11 @@ class Timeline {
         }
         if (this.config.isValid()) {
             try {
-                this._onDataLoaded();
+                if (document.readyState === 'loading') { // Loading hasn't finished yet
+                    document.addEventListener('DOMContentLoaded', this._onDataLoaded.bind(this));
+                } else {
+                    this._onDataLoaded();
+                }
             } catch (e) {
                 this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
             }
