@@ -653,7 +653,7 @@ export class TimeNav {
 
 
         // Knight Lab Logo
-        this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='tl-knightlab-logo'></span>Timeline JS</a>"
+        this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Time Axis
         this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);
