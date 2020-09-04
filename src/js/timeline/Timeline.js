@@ -134,8 +134,8 @@ class Timeline {
             theme: null,
             // sheets_proxy value should be suitable for simply postfixing with the Google Sheets CSV URL
             // as in include trailing slashes, or '?url=' or whatever. No support right now for anything but
-            // postfixing
-            sheets_proxy: 'http://localhost:5000/proxy/',
+            // postfixing. The default proxy should work in most cases, but only for TimelineJS sheets.
+            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
             soundcite: false,
         };
 
