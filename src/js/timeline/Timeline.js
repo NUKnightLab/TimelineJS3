@@ -358,7 +358,13 @@ class Timeline {
         if (this.message) {
             this.message.hide();
         }
-
+        let callback = (entries, observer) => {
+            if (entries.reduce((accum, curr) => accum || curr.isIntersecting, false)) {
+                this.updateDisplay()
+            }
+        }
+        let observer = new IntersectionObserver(callback.bind(this))
+        observer.observe(this._el.container)
         this.ready = true;
         this.fire("ready")
 
@@ -919,6 +925,8 @@ class Timeline {
     updateDisplay() {
         if (this.ready) {
             this._updateDisplay();
+        } else {
+            trace('updateDisplay called but timeline is not in ready state')
         }
     }
 

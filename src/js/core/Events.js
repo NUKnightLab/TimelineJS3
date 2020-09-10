@@ -2,7 +2,7 @@
 	adds custom events functionality to TL classes
 ================================================== */
 
-import { mergeData } from "../core/Util"
+import { mergeData, trace } from "../core/Util"
 import TLError from "../core/TLError"
 
 export default class Events {
@@ -109,7 +109,7 @@ export default class Events {
                 if (listeners[i].action) {
                     listeners[i].action.call(listeners[i].context || this, event);
                 } else {
-                    console.log('no action defined for listener')
+                    trace('no action defined for listener')
                 }
             }
 

@@ -1,4 +1,4 @@
-import { unhtmlify } from "../../core/Util";
+import { unhtmlify, trace } from "../../core/Util";
 import { getJSON } from "../../net/Net";
 import { Media } from "../Media";
 
@@ -48,7 +48,7 @@ export default class Instagram extends Media {
 
     getImageURL(w, h) {
         let img_url = "https://instagram.com/p/" + this.media_id + "/media/?size=" + this.sizes(w)
-        console.log('insta URL', img_url)
+        trace('insta URL', img_url)
         return img_url;
     }
 

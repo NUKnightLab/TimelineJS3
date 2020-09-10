@@ -235,7 +235,6 @@ export class TimelineConfig {
 
     _ensureValidScale(events) {
             if (!this.scale) {
-                trace("Determining scale dynamically");
                 this.scale = "human"; // default to human unless there's a slide which is explicitly 'cosmological' or one which has a cosmological year
 
                 for (var i = 0; i < events.length; i++) {
@@ -252,6 +251,7 @@ export class TimelineConfig {
                         }
                     }
                 }
+                trace(`Determining scale dynamically: ${this.scale}`);
             }
             var dateCls = SCALE_DATE_CLASSES[this.scale];
             if (!dateCls) { this.logError("Don't know how to process dates on scale " + this.scale); }

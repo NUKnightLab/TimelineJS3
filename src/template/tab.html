@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <title>Jumbled TimelineJS test page</title>
+    <script src="http://localhost:8080/timeline.js"></script>
+    <script>
+        function ready(fn) {
+            if (document.readyState != 'loading') {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+        ready(function() {
+
+            // sanitize test
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Q4-R3mlK7w1liCEl5_SGPaeLpfHDVdMtc83rjSTHBZo/edit#gid=0'
+
+            // Zander Work's exploit
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Jt5Csoku0W73100mnG_byVdvCFLXT8G5gG9lu1yggA0/edit#gid=0'
+
+            // women in computing:
+            var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
+
+            // some history of shoes:
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1HJSPzn0vzLl7x2Xlkln8m_PHHi0KS4tgWNkGk6Z5JvU/pubhtml'
+
+            // var dataUrl = './all-media-types.json'
+
+            // var dataUrl = './eras.json'
+
+            var options = {
+                language: 'es',
+                debug: true,
+                height: 650,
+                soundcite: true,
+            }
+            window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+            document.getElementById('toggle_display').addEventListener('click', function(e) {
+                let embed = document.querySelector('#timeline-embed')
+                let comp_style = window.getComputedStyle(embed)
+                let new_display = 'none'
+                if (comp_style['display'] == 'none' || comp_style['display'] == '') {
+                    new_display = 'block'
+                }
+                embed.style['display'] = new_display;
+
+            })
+
+            window.timeline.on("ready", () => {
+                console.log("Timeline ready event fired")
+            })
+
+            document.getElementById('timeline-src').value = dataUrl
+            document.getElementById('timeline-src').addEventListener('keyup', (e) => {
+                e.preventDefault();
+                if (e.keyCode === 13) {
+                    document.getElementById('timeline-embed').innerHTML = ''
+                    var dataUrl = document.getElementById('timeline-src').value
+                    window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+                } else {
+                    console.log(e.keyCode)
+                }
+            })
+        })
+    </script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #ddd;
+        }
+        
+        #timeline-embed {
+            display: none;
+            margin: 1em 0;
+            height: 650px;
+        }
+        
+        input[type="text"] {
+            font-size: 12pt
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Timeline Development</h1>
+    <div>
+        <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src">
+        <a id="toggle_display">toggle</a>
+    </div>
+    <div id='timeline-embed'></div>
+</body>
+
+</html>

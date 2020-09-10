@@ -187,10 +187,10 @@ var jsonFromGoogleURL = function(google_url) {
     // tricky because errors can be in the response object or in the parsed data...
 
     if (response.status != 200) {
-        console.log("Error fetching data " + api_version + ": " + response.status + " - " + response.statusText);
+        trace("Error fetching data " + api_version + ": " + response.status + " - " + response.statusText);
         api_version = 'v4';
         var url = buildGoogleFeedURL(spreadsheet_key, api_version);
-        console.log("trying v4 - " + google_url);
+        trace("trying v4 - " + google_url);
         var response = ajax({
             url: url,
             async: false
@@ -200,7 +200,7 @@ var jsonFromGoogleURL = function(google_url) {
             throw new TLError('invalid_url_share_required');
         } else if (response.status != 200) {
             var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
-            console.log(msg);
+            trace(msg);
             throw new TLError("google_error", msg);
         }
     }
@@ -210,8 +210,8 @@ var jsonFromGoogleURL = function(google_url) {
 
     if (data.error) {
         var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
-        console.log(msg);
-        console.log(data.error);
+        trace(msg);
+        trace(data.error);
         throw new TLError("google_error", msg);
     }
 
