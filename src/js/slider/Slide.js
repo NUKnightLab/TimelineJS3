@@ -127,8 +127,59 @@ export class Slide {
         container.removeChild(this._el.container);
     }
 
-    updateDisplay(w, h, l) {
-        this._updateDisplay(w, h, l);
+    updateDisplay(width, height, layout) {
+        var content_width,
+            content_padding_left = this.options.slide_padding_lr,
+            content_padding_right = this.options.slide_padding_lr;
+
+        if (width) {
+            this.options.width = width;
+        } else {
+            this.options.width = this._el.container.offsetWidth;
+        }
+
+        content_width = this.options.width - (this.options.slide_padding_lr * 2);
+
+        if (Browser.mobile && (this.options.width <= this.options.skinny_size)) {
+            content_padding_left = 0;
+            content_padding_right = 0;
+            content_width = this.options.width;
+        } else if (layout == "landscape") {
+
+        } else if (this.options.width <= this.options.skinny_size) {
+            content_padding_left = 50;
+            content_padding_right = 50;
+            content_width = this.options.width - content_padding_left - content_padding_right;
+        } else {
+
+        }
+
+        this._el.content.style.paddingLeft = content_padding_left + "px";
+        this._el.content.style.paddingRight = content_padding_right + "px";
+        this._el.content.style.width = content_width + "px";
+
+        if (height) {
+            this.options.height = height;
+            //this._el.scroll_container.style.height		= this.options.height + "px";
+
+        } else {
+            this.options.height = this._el.container.offsetHeight;
+        }
+
+        if (this._media) {
+
+            if (!this.has.text && this.has.headline) {
+                this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
+            } else if (!this.has.text && !this.has.headline) {
+                this._media.updateDisplay(content_width, this.options.height, layout);
+            } else if (this.options.width <= this.options.skinny_size) {
+                this._media.updateDisplay(content_width, this.options.height, layout);
+            } else {
+                this._media.updateDisplay(content_width / 2, this.options.height, layout);
+            }
+        }
+
+        this._updateBackgroundDisplay();
     }
 
     loadMedia() {
@@ -283,62 +334,6 @@ export class Slide {
 
     _initEvents() {
 
-    }
-
-    // Update Display
-    _updateDisplay(width, height, layout) {
-        var content_width,
-            content_padding_left = this.options.slide_padding_lr,
-            content_padding_right = this.options.slide_padding_lr;
-
-        if (width) {
-            this.options.width = width;
-        } else {
-            this.options.width = this._el.container.offsetWidth;
-        }
-
-        content_width = this.options.width - (this.options.slide_padding_lr * 2);
-
-        if (Browser.mobile && (this.options.width <= this.options.skinny_size)) {
-            content_padding_left = 0;
-            content_padding_right = 0;
-            content_width = this.options.width;
-        } else if (layout == "landscape") {
-
-        } else if (this.options.width <= this.options.skinny_size) {
-            content_padding_left = 50;
-            content_padding_right = 50;
-            content_width = this.options.width - content_padding_left - content_padding_right;
-        } else {
-
-        }
-
-        this._el.content.style.paddingLeft = content_padding_left + "px";
-        this._el.content.style.paddingRight = content_padding_right + "px";
-        this._el.content.style.width = content_width + "px";
-
-        if (height) {
-            this.options.height = height;
-            //this._el.scroll_container.style.height		= this.options.height + "px";
-
-        } else {
-            this.options.height = this._el.container.offsetHeight;
-        }
-
-        if (this._media) {
-
-            if (!this.has.text && this.has.headline) {
-                this._media.updateDisplay(content_width, (this.options.height - this._text.headlineHeight()), layout);
-            } else if (!this.has.text && !this.has.headline) {
-                this._media.updateDisplay(content_width, this.options.height, layout);
-            } else if (this.options.width <= this.options.skinny_size) {
-                this._media.updateDisplay(content_width, this.options.height, layout);
-            } else {
-                this._media.updateDisplay(content_width / 2, this.options.height, layout);
-            }
-        }
-
-        this._updateBackgroundDisplay();
     }
 
     _updateBackgroundDisplay() {

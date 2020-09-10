@@ -1,7 +1,7 @@
 import { Media } from "../Media";
 import { loadJS } from "../../core/Load";
 import { ajax } from "../../net/Net";
-import { ratio } from "../../core/Util";
+import { ratio, trace } from "../../core/Util";
 import TLError from "../../core/TLError";
 
 export default class Imgur extends Media {

@@ -1,4 +1,4 @@
-import { unhtmlify } from "../../core/Util";
+import { unhtmlify, trace } from "../../core/Util";
 import { getJSON } from "../../net/Net";
 import { Media } from "../Media";
 
