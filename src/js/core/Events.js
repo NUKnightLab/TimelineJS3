@@ -94,35 +94,26 @@ export default class Events {
      * @returns { Events } this (the instance upon which the method was called)
      */
     fire(type, data) {
-            if (!this.hasEventListeners(type)) {
-                return this;
-            }
-
-            var event = mergeData({
-                type: type,
-                target: this
-            }, data);
-
-            var listeners = this._tl_events[type].slice();
-
-            for (var i = 0, len = listeners.length; i < len; i++) {
-                if (listeners[i].action) {
-                    listeners[i].action.call(listeners[i].context || this, event);
-                } else {
-                    trace('no action defined for listener')
-                }
-            }
-
+        if (!this.hasEventListeners(type)) {
             return this;
         }
-        /**
-         * Synonym for 'fire' but is it necessary? 
-         * @param {string} type 
-         * @param {object} [data] 
-         * @returns { Events } this (the instance upon which the method was called)
-         */
-    fireEvent(type, data) {
-        return this.fire(type, data)
+
+        var event = mergeData({
+            type: type,
+            target: this
+        }, data);
+
+        var listeners = this._tl_events[type].slice();
+
+        for (var i = 0, len = listeners.length; i < len; i++) {
+            if (listeners[i].action) {
+                listeners[i].action.call(listeners[i].context || this, event);
+            } else {
+                trace(`no action defined for ${type} listener`)
+            }
+        }
+
+        return this;
     }
 
 };

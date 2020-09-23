@@ -129,7 +129,6 @@ export class TimeNav {
     /*	Update Display
     ================================================== */
     updateDisplay(width, height, animate) {
-        console.log(`TimeNav.updateDisplay(w: ${width}, h: ${height}, a: ${animate})`)
         let reposition_markers = false;
         if (width) {
             if (this.options.width == 0 && width > 0) {
@@ -581,7 +580,6 @@ export class TimeNav {
     ================================================== */
 
     _drawTimeline(fast) {
-        console.log(`TimeNav._drawTimeline(${fast})`)
         this.timescale = this._getTimeScale();
         this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
         this.positionMarkers(fast);
@@ -596,7 +594,6 @@ export class TimeNav {
     }
 
     _updateDrawTimeline(check_update) {
-        console.log(`TimeNav._updateDrawTimeline(${check_update})`)
         var do_update = false;
 
         // Check to see if redraw is needed

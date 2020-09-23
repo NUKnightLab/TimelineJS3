@@ -4,6 +4,7 @@ import { parseDate } from "../date/TLDate"
 import TLError from "../core/TLError"
 import { ajax } from "../net/Net"
 import { parseTime } from "../date/DateUtil"
+import { fetchCSV } from '../core/CSV';
 
 export function parseGoogleSpreadsheetURL(url) {
     let parts = {
@@ -106,8 +107,11 @@ function extractGoogleEntryData_V3(item) {
         },
         display_date: item_data.displaydate || '',
 
-        type: item_data.type || ''
+        type: item_data.type || '',
+        background: interpretBackground(item_data.background),
+        group: item_data.group || ''
     }
+
 
     if (item_data.time) {
         mergeData(d.start_date, parseTime(item_data.time));
@@ -115,11 +119,6 @@ function extractGoogleEntryData_V3(item) {
 
     if (item_data.endtime) {
         mergeData(d.end_date, parseTime(item_data.endtime));
-    }
-
-
-    if (item_data.group) {
-        d.group = item_data.group;
     }
 
     if (d.end_date.year == '') {
@@ -130,34 +129,166 @@ function extractGoogleEntryData_V3(item) {
                 trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
         }
     }
-
-    if (item_data.background) {
-        if (item_data.background.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
-            d['background'] = { 'url': item_data.background }
-        } else { // for now we'll trust it's a color
-            d['background'] = { 'color': item_data.background }
-        }
-    }
-
     return d;
 }
 
-
-
-var getGoogleItemExtractor = function(data) {
-    if (typeof data.feed.entry === 'undefined' ||
-        data.feed.entry.length == 0) {
-        throw new TLError("empty_feed_err");
+function interpretBackground(bkgd) {
+    if (typeof(bkgd) != 'string') return ''
+    if (bkgd.match(/^(https?:)?\/\/?/)) { // support http, https, protocol relative, site relative
+        return { 'url': bkgd }
+    } else { // for now we'll trust it's a color
+        return { 'color': bkgd }
     }
-    var entry = data.feed.entry[0];
 
-    if (typeof entry.gsx$startdate !== 'undefined') {
-        return extractGoogleEntryData_V1;
-    } else if (typeof entry.gsx$year !== 'undefined') {
-        var headers_V3 = ['month', 'day', 'time', 'endmonth', 'endyear', 'endday', 'endtime', 'displaydate', 'headline', 'text', 'media', 'mediacredit', 'mediacaption', 'mediathumbnail', 'type', 'group', 'background'];
-        return extractGoogleEntryData_V3;
+}
+
+function extractEventFromV1CSVObject(row) {
+    var d = {
+        media: {
+            caption: row[''] || '',
+            credit: item_data.mediacredit || '',
+            url: item_data.media || '',
+            thumbnail: item_data.mediathumbnail || ''
+        },
+        text: {
+            headline: item_data.headline || '',
+            text: item_data.text || ''
+        },
+        group: item_data.tag || '',
+        type: item_data.type || ''
     }
-    throw new TLError("invalid_data_format_err");
+    if (item_data.startdate) {
+        d['start_date'] = parseDate(item_data.startdate);
+    }
+    if (item_data.enddate) {
+        d['end_date'] = parseDate(item_data.enddate);
+    }
+    return d
+}
+
+function extractEventFromCSVObject(row) {
+
+    var d = {
+        media: {
+            caption: row['Media Caption'] || '',
+            credit: row['Media Credit'] || '',
+            url: row['Media'] || '',
+            thumbnail: row['Media Thumbnail'] || ''
+        },
+        text: {
+            headline: row['Headline'] || '',
+            text: row['Text'] || ''
+        },
+        display_date: row['Display Date'] || '', // only in v3 but no problem
+        group: row['Group'] || row['Tag'] || '', // small diff between v1 and v3 sheets
+        background: interpretBackground(row['Background']), // only in v3 but no problem
+        type: row['Type'] || ''
+    }
+
+    if (Object.keys(row).includes('Start Date') || Object.keys(row).includes('End Date')) {
+        // V1 date handling
+        if (row['Start Date']) {
+            d.start_date = parseDate(row['Start Date'])
+        }
+        if (row['End Date']) {
+            d.end_date = parseDate(row['End Date'])
+        }
+    } else {
+        // V3 date handling
+        d.start_date = {
+            year: row['Year'],
+            month: row['Month'] || '',
+            day: row['Day'] || ''
+        }
+        d.end_date = {
+            year: row['End Year'] || '',
+            month: row['End Month'] || '',
+            day: row['End Day'] || ''
+        }
+
+        if (row['Time']) {
+            mergeData(d.start_date, parseTime(row['Time']));
+        }
+
+        if (row['End Time']) {
+            mergeData(d.end_date, parseTime(row['End Time']));
+        }
+    }
+
+    return d
+}
+
+/**
+ * Given a Google Sheets URL (or mere document ID), read the data and return
+ * a Timeline JSON file suitable for instantiating a timeline.
+ * 
+ * @param {string} url 
+ */
+export async function readGoogleAsCSV(url, sheets_proxy) {
+
+    let rows = []
+
+    url = makeGoogleCSVURL(url)
+    let error = null;
+
+    await fetchCSV({
+        url: `${sheets_proxy}${url}`,
+    }).then(d => {
+        rows = d;
+    }).catch(msg => {
+        throw new TLError(msg)
+    })
+
+    let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
+
+    rows.forEach((row, i) => {
+        try {
+            if (!isEmptyObject(row)) {
+                let event = extractEventFromCSVObject(row)
+                handleRow(event, timeline_config)
+            }
+        } catch (e) {
+            if (e.constructor == TLError) {
+                timeline_config.errors.push(e);
+            } else {
+                if (e.message) {
+                    e = e.message;
+                }
+                let label = row['Headline'] || i
+                timeline_config.errors.push(e + `[${label}]`);
+            }
+        }
+    });
+
+    return timeline_config
+}
+/**
+ * Given a Google Sheets URL or a bare spreadsheet key, return a URL expected
+ * to retrieve a CSV file, assuming the Sheets doc has been "published to the web".
+ * No checking for the actual availability is done.
+ * @param {string} url_or_key 
+ */
+export function makeGoogleCSVURL(url_or_key) {
+    url_or_key = url_or_key.trim()
+    if (url_or_key.match(/^[a-zA-Z0-9-_]+$/)) {
+        // key pattern from https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id
+        return `https://docs.google.com/spreadsheets/d/${url_or_key}/pub?output=csv`
+    }
+
+    if (url_or_key.startsWith('https://docs.google.com/spreadsheets/')) {
+        if (url_or_key.match(/\/pub\?output=csv$/)) return url_or_key
+        let parsed = new URL(url_or_key)
+        let params = new URLSearchParams(parsed.search)
+        params.set('output', 'csv')
+        if (params.get('gid')) {
+            params.set('single', 'true')
+        }
+        parsed.search = `?${params.toString()}`
+        let base_path = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/'))
+        parsed.pathname = `${base_path}/pub`
+        return parsed.toString()
+    }
+    throw new TLError('invalid_url_err', url_or_key);
 }
 
 var buildGoogleFeedURL = function(key, api_version) {
@@ -168,43 +299,36 @@ var buildGoogleFeedURL = function(key, api_version) {
     }
 }
 
-var jsonFromGoogleURL = function(google_url) {
-    var api_version = 'v3';
-    var parts = parseGoogleSpreadsheetURL(google_url);
-    if (parts && parts.key) {
-        var spreadsheet_key = parts.key;
-    } else {
-        throw new TLError('invalid_url_err', google_url);
+async function jsonFromGoogleURL(google_url, options) {
+
+    if (!options['sheets_proxy']) {
+        throw new TLError("Proxy option must be set to read data from Google")
     }
 
-    var url = buildGoogleFeedURL(spreadsheet_key, api_version);
+    var timeline_json = await readGoogleAsCSV(google_url, options['sheets_proxy']);
 
+    if (timeline_json) {
+        return timeline_json;
+    }
+
+    return jsonFromGoogleSheetsV4(google_url)
+}
+
+function jsonFromGoogleSheetsV4(google_url) {
+    var url = buildGoogleFeedURL(spreadsheet_key, 'v4');
+    trace("trying v4 - " + google_url);
     var response = ajax({
         url: url,
         async: false
     });
 
-    // tricky because errors can be in the response object or in the parsed data...
-
-    if (response.status != 200) {
-        trace("Error fetching data " + api_version + ": " + response.status + " - " + response.statusText);
-        api_version = 'v4';
-        var url = buildGoogleFeedURL(spreadsheet_key, api_version);
-        trace("trying v4 - " + google_url);
-        var response = ajax({
-            url: url,
-            async: false
-        });
-
-        if (response.status == 403) {
-            throw new TLError('invalid_url_share_required');
-        } else if (response.status != 200) {
-            var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
-            trace(msg);
-            throw new TLError("google_error", msg);
-        }
+    if (response.status == 403) {
+        throw new TLError('invalid_url_share_required');
+    } else if (response.status != 200) {
+        var msg = "Error fetching data " + api_version + ": " + response.status + " - " + response.statusText;
+        trace(msg);
+        throw new TLError("google_error", msg);
     }
-
 
     var data = JSON.parse(response.responseText);
 
@@ -216,6 +340,7 @@ var jsonFromGoogleURL = function(google_url) {
     }
 
     return googleFeedJSONtoTimelineJSON(data);
+
 }
 
 function extractGoogleEntryData_V4(column, item) {
@@ -296,81 +421,52 @@ function extractGoogleEntryData_V4(column, item) {
 var googleFeedJSONtoTimelineJSON = function(data) {
     var timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
 
-    if (data.values) {
-        // Google Sheets API v4
-        for (var i = 1; i < data.values.length; i++) {
-            var event = extractGoogleEntryData_V4(data.values[0], data.values[i]);
-            if (event) { // blank rows return null
-                var row_type = 'event';
-                if (typeof(event.type) != 'undefined') {
-                    row_type = event.type;
-                    delete event.type;
-                }
-                if (row_type == 'title') {
-                    if (!timeline_config.title) {
-                        timeline_config.title = event;
-                    } else {
-                        timeline_config.warnings.push("Multiple title slides detected.");
-                        timeline_config.events.push(event);
-                    }
-                } else if (row_type == 'era') {
-                    timeline_config.eras.push(event);
-                } else {
-                    timeline_config.events.push(event);
-                }
-            }
+    // Google Sheets API v4
+    for (var i = 1; i < data.values.length; i++) {
+        var event = extractGoogleEntryData_V4(data.values[0], data.values[i]);
+        if (event) { // blank rows return null
+            handleRow(event, timeline_config)
         }
-    } else {
-
-        // Google Sheets API v3 
-        var extract = getGoogleItemExtractor(data);
-        for (var i = 0; i < data.feed.entry.length; i++) {
-            try {
-                var event = extract(data.feed.entry[i]);
-                if (event) { // blank rows return null
-                    var row_type = 'event';
-                    if (typeof(event.type) != 'undefined') {
-                        row_type = event.type;
-                        delete event.type;
-                    }
-                    if (row_type == 'title') {
-                        if (!timeline_config.title) {
-                            timeline_config.title = event;
-                        } else {
-                            timeline_config.warnings.push("Multiple title slides detected.");
-                            timeline_config.events.push(event);
-                        }
-                    } else if (row_type == 'era') {
-                        timeline_config.eras.push(event);
-                    } else {
-                        timeline_config.events.push(event);
-                    }
-                }
-            } catch (e) {
-                if (e.constructor == TLError) {
-                    timeline_config.errors.push(e);
-                } else {
-                    if (e.message) {
-                        e = e.message;
-                    }
-                    timeline_config.errors.push(e + " [" + i + "]");
-                }
-            }
-        };
-
     }
 
     return timeline_config;
 
 }
 
-export function makeConfig(url, callback) {
+/**
+ * Using the given URL, fetch or create a JS Object suitable for configuring a timeline. Use 
+ * that to create a TimelineConfig, and invoke the callback with that object as its argument. 
+ * If the second argument is an object instead of a callback function, it must have a 
+ * 'callback' property which will be invoked with the config.
+ * Even in error cases, a minimal TimelineConfig object will be created and passed to the callback
+ * so that error messages can be displayed in the host page.
+ * 
+ * @param {String} url the URL or Google Spreadsheet key which can be used to get configuration information
+ * @param {function|object} callback_or_options either a callback function or an object with a 'callback' property and other configuration properties
+ */
+export async function makeConfig(url, callback_or_options) {
+
+    let callback = null,
+        options = {};
+    if (typeof(callback_or_options) == 'function') {
+        callback = callback_or_options
+    } else if (typeof(callback_or_options) == 'object') {
+        options = callback_or_options
+        callback = callback_or_options['callback']
+        if (typeof(options['callback']) == 'function') callback = options['callback']
+    }
+
+    if (!callback) {
+        throw new TLError("Second argument to makeConfig must be either a function or an object which includes a 'callback' property with a 'function' type value")
+    }
+
     var tc,
+        json,
         key = parseGoogleSpreadsheetURL(url);
 
     if (key) {
         try {
-            var json = jsonFromGoogleURL(url);
+            json = await jsonFromGoogleURL(url, options);
         } catch (e) {
             // even with an error, we make 
             // a TimelineConfig because it's 
@@ -385,8 +481,9 @@ export function makeConfig(url, callback) {
                 tc.logError(new TLError("unknown_read_err", e.name));
             }
             callback(tc);
-            return;
+            return; // don't process further if there were errors
         }
+
         tc = new TimelineConfig(json);
         if (json.errors) {
             for (var i = 0; i < json.errors.length; i++) {
@@ -419,5 +516,25 @@ export function makeConfig(url, callback) {
             }
         });
 
+    }
+}
+
+function handleRow(event, timeline_config) {
+    var row_type = 'event';
+    if (typeof(event.type) != 'undefined') {
+        row_type = event.type;
+        delete event.type;
+    }
+    if (row_type == 'title') {
+        if (!timeline_config.title) {
+            timeline_config.title = event;
+        } else {
+            timeline_config.warnings.push("Multiple title slides detected.");
+            timeline_config.events.push(event);
+        }
+    } else if (row_type == 'era') {
+        timeline_config.eras.push(event);
+    } else {
+        timeline_config.events.push(event);
     }
 }
