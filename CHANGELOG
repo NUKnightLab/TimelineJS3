@@ -1,3 +1,9 @@
+3.8.0 (2020-09-23)
+* Change Timeline's Google Sheets access method in advance of the discontinuation of Google Sheets API v3. See https://knightlab.northwestern.edu/2020/09/16/timelinejs-update-2/index.html for more information. All self-hosted timeline users should update to this version before 2020-09-30.
+
+3.7.9 (2020-09-17)
+* #654: Attempt to avoid 'overlapping' slides. Mixed feedback on if this is a complete solution.
+
 3.7.8 (2020-09-02)
 * #651: Restore document loading check with proper binding
 
