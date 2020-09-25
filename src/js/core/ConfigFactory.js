@@ -36,101 +36,6 @@ export function parseGoogleSpreadsheetURL(url) {
     }
 }
 
-function extractGoogleEntryData_V1(item) {
-    var item_data = {}
-    for (let k in item) {
-        if (k.indexOf('gsx$') == 0) {
-            item_data[k.substr(4)] = item[k].$t;
-        }
-    }
-    if (isEmptyObject(item_data)) return null;
-    var d = {
-        media: {
-            caption: item_data.mediacaption || '',
-            credit: item_data.mediacredit || '',
-            url: item_data.media || '',
-            thumbnail: item_data.mediathumbnail || ''
-        },
-        text: {
-            headline: item_data.headline || '',
-            text: item_data.text || ''
-        },
-        group: item_data.tag || '',
-        type: item_data.type || ''
-    }
-    if (item_data.startdate) {
-        d['start_date'] = parseDate(item_data.startdate);
-    }
-    if (item_data.enddate) {
-        d['end_date'] = parseDate(item_data.enddate);
-    }
-
-
-    return d;
-}
-
-function extractGoogleEntryData_V3(item) {
-
-    function clean_integer(s) {
-        if (s) {
-            return s.replace(/[\s,]+/g, ''); // doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
-        }
-    }
-
-    var item_data = {}
-    for (let k in item) {
-        if (k.indexOf('gsx$') == 0) {
-            item_data[k.substr(4)] = trim(item[k].$t);
-        }
-    }
-    if (isEmptyObject(item_data)) return null;
-    var d = {
-        media: {
-            caption: item_data.mediacaption || '',
-            credit: item_data.mediacredit || '',
-            url: item_data.media || '',
-            thumbnail: item_data.mediathumbnail || ''
-        },
-        text: {
-            headline: item_data.headline || '',
-            text: item_data.text || ''
-        },
-        start_date: {
-            year: clean_integer(item_data.year),
-            month: clean_integer(item_data.month) || '',
-            day: clean_integer(item_data.day) || ''
-        },
-        end_date: {
-            year: clean_integer(item_data.endyear) || '',
-            month: clean_integer(item_data.endmonth) || '',
-            day: clean_integer(item_data.endday) || ''
-        },
-        display_date: item_data.displaydate || '',
-
-        type: item_data.type || '',
-        background: interpretBackground(item_data.background),
-        group: item_data.group || ''
-    }
-
-
-    if (item_data.time) {
-        mergeData(d.start_date, parseTime(item_data.time));
-    }
-
-    if (item_data.endtime) {
-        mergeData(d.end_date, parseTime(item_data.endtime));
-    }
-
-    if (d.end_date.year == '') {
-        var bad_date = d.end_date;
-        delete d.end_date;
-        if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
-            var label = d.text.headline ||
-                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
-        }
-    }
-    return d;
-}
 
 function interpretBackground(bkgd) {
     if (typeof(bkgd) != 'string') return ''
@@ -140,30 +45,6 @@ function interpretBackground(bkgd) {
         return { 'color': bkgd }
     }
 
-}
-
-function extractEventFromV1CSVObject(row) {
-    var d = {
-        media: {
-            caption: row[''] || '',
-            credit: item_data.mediacredit || '',
-            url: item_data.media || '',
-            thumbnail: item_data.mediathumbnail || ''
-        },
-        text: {
-            headline: item_data.headline || '',
-            text: item_data.text || ''
-        },
-        group: item_data.tag || '',
-        type: item_data.type || ''
-    }
-    if (item_data.startdate) {
-        d['start_date'] = parseDate(item_data.startdate);
-    }
-    if (item_data.enddate) {
-        d['end_date'] = parseDate(item_data.enddate);
-    }
-    return d
 }
 
 function extractEventFromCSVObject(row) {
@@ -195,15 +76,20 @@ function extractEventFromCSVObject(row) {
         }
     } else {
         // V3 date handling
-        d.start_date = {
-            year: row['Year'],
-            month: row['Month'] || '',
-            day: row['Day'] || ''
+        // every date must have at least a year to be valid.
+        if (row['Year']) {
+            d.start_date = {
+                year: row['Year'],
+                month: row['Month'] || '',
+                day: row['Day'] || ''
+            }
         }
-        d.end_date = {
-            year: row['End Year'] || '',
-            month: row['End Month'] || '',
-            day: row['End Day'] || ''
+        if (row['End Year']) {
+            d.end_date = {
+                year: row['End Year'] || '',
+                month: row['End Month'] || '',
+                day: row['End Day'] || ''
+            }
         }
 
         if (row['Time']) {

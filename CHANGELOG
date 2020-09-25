@@ -1,3 +1,6 @@
+3.8.2 (2020-09-25)
+* Fix a bug in ConfigFactor date processing which was adding unintended "January 1, 0" end dates.
+
 3.8.1 (2020-09-23)
 * Change Timeline's Google Sheets access method in advance of the discontinuation of Google Sheets API v3. See https://knightlab.northwestern.edu/2020/09/16/timelinejs-update-2/index.html for more information. All self-hosted timeline users should update to this version before 2020-09-30.
 
