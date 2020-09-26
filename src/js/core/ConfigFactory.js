@@ -1,5 +1,5 @@
 import { TimelineConfig } from "../core/TimelineConfig"
-import { trim, isEmptyObject, mergeData, trace } from "../core/Util";
+import { isEmptyObject, mergeData, trace } from "../core/Util";
 import { parseDate } from "../date/TLDate"
 import TLError from "../core/TLError"
 import { ajax } from "../net/Net"

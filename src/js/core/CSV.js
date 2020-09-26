@@ -150,11 +150,12 @@ export function parse(s, dialect) {
             }
 
             // Convert unquoted numbers to their appropriate types
-            if (rxIsInt.test(field)) {
-                field = parseInt(field, 10);
-            } else if (rxIsFloat.test(field)) {
-                field = parseFloat(field, 10);
-            }
+            // but Timeline never expects real numbers, so we'll leave that out here.
+            // if (rxIsInt.test(field)) {
+            //     field = parseInt(field, 10);
+            // } else if (rxIsFloat.test(field)) {
+            //     field = parseFloat(field, 10);
+            // }
         }
         return field;
     };
