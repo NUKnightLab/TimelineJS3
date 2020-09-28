@@ -22,12 +22,9 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import TLError from "./TLError";
-
-var rxIsInt = /^\d+$/,
-    rxIsFloat = /^\d*\.\d+$|^\d+\.\d*$/;
-
 function chomp(s, lineterminator) {
+    lineterminator = lineterminator || '\n'
+
     if (s.charAt(s.length - lineterminator.length) !== lineterminator) {
         // Does not end with \n, just return string
         return s;
@@ -83,7 +80,7 @@ export function extractFields(rows, noFields) {
     noFields = noFields || {}
     if (noFields.noHeaderRow !== true && rows.length > 0) {
         return {
-            fields: rows[0],
+            fields: rows[0].map(chomp),
             records: rows.slice(1)
         };
     } else {
