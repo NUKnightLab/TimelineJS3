@@ -1,5 +1,5 @@
 import { TimelineConfig } from "../core/TimelineConfig"
-import { isEmptyObject, mergeData, trace } from "../core/Util";
+import { trim, isEmptyObject, mergeData, trace } from "../core/Util";
 import { parseDate } from "../date/TLDate"
 import TLError from "../core/TLError"
 import { ajax } from "../net/Net"
@@ -47,7 +47,11 @@ function interpretBackground(bkgd) {
 
 }
 
-function extractEventFromCSVObject(row) {
+function extractEventFromCSVObject(orig_row) {
+    let row = {}
+    Object.keys(orig_row).forEach(k => {
+        row[k] = trim(orig_row[k])
+    })
 
     var d = {
         media: {

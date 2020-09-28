@@ -1,3 +1,6 @@
+3.8.4 (not yet released)
+* #655: treat all-whitespace Google Sheets values as blank and don't try to process them
+
 3.8.3 (2020-09-25)
 * Make CSV parser always return strings (fixes bug where V1 Sheets with year-only dates were assumed to be strings)
 * Log instead of throw error when trying to add an event in TimelineConfig that has no start date
