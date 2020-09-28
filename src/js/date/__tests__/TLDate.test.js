@@ -1,5 +1,6 @@
 import { TLDate, BigDate, makeDate, parseDate } from "../TLDate"
 import { Language } from "../../language/Language"
+import { validDateConfig } from "../DateUtil";
 
 function date_dict(d) {
     return {
@@ -209,5 +210,21 @@ test("date formatting", () => {
     expect(d.getDisplayDate(msgs)).toBe("January 1, 2014")
     var d = makeDate({ year: '2014' })
     expect(d.getDisplayDate(msgs)).toBe("2014")
+
+})
+
+test("validDateConfig", () => {
+    let d = { year: '2014', month: '1', day: '1' }
+    expect(validDateConfig(d)).toBeTruthy()
+    d = { year: '2014', month: '', day: '' }
+    expect(validDateConfig(d)).toBeTruthy()
+    d = { year: '2014', month: '1' }
+    expect(validDateConfig(d)).toBeTruthy()
+    d = { year: 'June 2014' }
+    expect(validDateConfig(d)).toBeFalsy()
+
+    d = { year: '2014', month: 'June', day: '' }
+    expect(validDateConfig(d)).toBeFalsy()
+
 
 })

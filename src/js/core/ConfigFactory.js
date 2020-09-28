@@ -3,8 +3,14 @@ import { trim, isEmptyObject, mergeData, trace } from "../core/Util";
 import { parseDate } from "../date/TLDate"
 import TLError from "../core/TLError"
 import { ajax } from "../net/Net"
-import { parseTime } from "../date/DateUtil"
+import { parseTime, validDateConfig } from "../date/DateUtil"
 import { fetchCSV } from '../core/CSV';
+
+function clean_integer(s) {
+    if (s) {
+        return s.replace(/[\s,]+/g, ''); // doesn't handle '.' as comma separator, but how to distinguish that from decimal separator?
+    }
+}
 
 export function parseGoogleSpreadsheetURL(url) {
     let parts = {
@@ -48,9 +54,10 @@ function interpretBackground(bkgd) {
 }
 
 function extractEventFromCSVObject(orig_row) {
+
     let row = {}
     Object.keys(orig_row).forEach(k => {
-        row[k] = trim(orig_row[k])
+        row[k] = trim(orig_row[k]) // get rid of white-space and reduce all-blank cells to empty strings
     })
 
     var d = {
@@ -83,16 +90,16 @@ function extractEventFromCSVObject(orig_row) {
         // every date must have at least a year to be valid.
         if (row['Year']) {
             d.start_date = {
-                year: row['Year'],
-                month: row['Month'] || '',
-                day: row['Day'] || ''
+                year: clean_integer(row['Year']),
+                month: clean_integer(row['Month']) || '',
+                day: clean_integer(row['Day']) || ''
             }
         }
         if (row['End Year']) {
             d.end_date = {
-                year: row['End Year'] || '',
-                month: row['End Month'] || '',
-                day: row['End Day'] || ''
+                year: clean_integer(row['End Year']) || '',
+                month: clean_integer(row['End Month']) || '',
+                day: clean_integer(row['End Day']) || ''
             }
         }
 
@@ -103,6 +110,16 @@ function extractEventFromCSVObject(orig_row) {
         if (row['End Time']) {
             mergeData(d.end_date, parseTime(row['End Time']));
         }
+
+        if (d.start_date && !validDateConfig(d.start_date)) {
+            throw new TLError("invalid_date_err")
+        }
+
+        if (d.end_date && !validDateConfig(d.end_date)) {
+            throw new TLError("invalid_date_err")
+        }
+
+
     }
 
     return d
@@ -292,8 +309,7 @@ function extractGoogleEntryData_V4(column, item) {
         var bad_date = event.end_date;
         delete event.end_date;
         if (bad_date.month != '' || bad_date.day != '' || bad_date.time != '') {
-            var label = event.text.headline ||
-                trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
+            trace("Invalid end date for spreadsheet row. Must have a year if any other date fields are specified.");
         }
     }
 
