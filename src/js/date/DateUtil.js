@@ -91,8 +91,10 @@ export function validDateConfig(d) {
     try {
         Object.keys(d).forEach(k => {
             let v = d[k]
-            if (v.match) {
-                if (!v.match(VALID_INTEGER_PATTERN)) throw `invalid value ${v} for ${k}`
+            if (v && v.match) {
+                if (!v.match(VALID_INTEGER_PATTERN)) {
+                    throw `invalid value ${v} for ${k}`
+                }
             }
         })
         return true;
