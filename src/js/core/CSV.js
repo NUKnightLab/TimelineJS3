@@ -23,6 +23,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 function chomp(s, lineterminator) {
+
+    if (s == null) return ''
+
     lineterminator = lineterminator || '\n'
 
     if (s.charAt(s.length - lineterminator.length) !== lineterminator) {

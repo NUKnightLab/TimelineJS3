@@ -1,3 +1,6 @@
+3.8.6 (2020-09-29)
+* #659: Prevent blank column headers from derailing Timeline load
+
 3.8.5 (2020-09-28)
 * check for null when validating date inputs from CSV
 
