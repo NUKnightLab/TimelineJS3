@@ -104,11 +104,19 @@ function extractEventFromCSVObject(orig_row) {
         }
 
         if (row['Time']) {
-            mergeData(d.start_date, parseTime(row['Time']));
+            if (d.start_date) {
+                mergeData(d.start_date, parseTime(row['Time']));
+            } else {
+                throw new TLError("invalid_start_time_without_date")
+            }
         }
 
         if (row['End Time']) {
-            mergeData(d.end_date, parseTime(row['End Time']));
+            if (d.end_date) {
+                mergeData(d.end_date, parseTime(row['End Time']));
+            } else {
+                throw new TLError("invalid_end_time_without_date")
+            }
         }
 
         if (d.start_date && !validDateConfig(d.start_date)) {

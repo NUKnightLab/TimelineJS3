@@ -24,12 +24,13 @@ class Language {
                 } else {
                     var fragment = "/locale/" + code + ".json";
                     var script_path = script_path;
-                    if (/\/$/.test(script_path)) { fragment = fragment.substr(1)}
+                    if (/\/$/.test(script_path)) { fragment = fragment.substr(1) }
                     var url = script_path + fragment;
                 }
                 var self = this;
                 var xhr = ajax({
-                    url: url, async: false
+                    url: url,
+                    async: false
                 });
                 if (xhr.status == 200) {
                     LANGUAGES[code] = JSON.parse(xhr.responseText);
@@ -37,7 +38,7 @@ class Language {
                     throw "Could not load language [" + code + "]: " + xhr.statusText;
                 }
             }
-            mergeData(this,LANGUAGES[code]);
+            mergeData(this, LANGUAGES[code]);
         }
     }
 
@@ -48,7 +49,7 @@ class Language {
     mergeData(lang_json) {
         for (k in LANGUAGES.en) {
             if (lang_json[k]) {
-                if (typeof (this[k]) == 'object') {
+                if (typeof(this[k]) == 'object') {
                     mergeData(lang_json[k], this[k]);
                 } else {
                     this[k] = lang_json[k]; // strings, mostly
@@ -106,7 +107,7 @@ class Language {
         // ultimately we probably want this to work with TLDate instead of (in addition to?) JS Date
         // utc, timezone and timezoneClip are carry over from Steven Levithan implementation. We probably aren't going to use them.
         var self = this;
-        var formatPeriod = function (fmt, value) {
+        var formatPeriod = function(fmt, value) {
             var formats = self.period_labels[fmt];
             if (formats) {
                 var fmt = (value < 12) ? formats[0] : formats[1];
@@ -170,7 +171,7 @@ class Language {
                 S: ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
             };
 
-        var formatted = mask.replace(Language.DATE_FORMAT_TOKENS, function ($0) {
+        var formatted = mask.replace(Language.DATE_FORMAT_TOKENS, function($0) {
             return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
         });
 
@@ -196,14 +197,14 @@ class Language {
 
 }
 
- function formatNumber(val,mask) {
+function formatNumber(val, mask) {
     if (mask.match(/%(\.(\d+))?f/)) {
         var match = mask.match(/%(\.(\d+))?f/);
         var token = match[0];
         if (match[2]) {
             val = val.toFixed(match[2]);
         }
-        return mask.replace(token,val);
+        return mask.replace(token, val);
     }
     // use mask as literal display value.
     return mask;
@@ -240,32 +241,25 @@ var LANGUAGES = {
             loading_content: "Loading Content",
             expand_timeline: "Expand Timeline",
             loading_timeline: "Loading Timeline... ",
-            swipe_to_navigate:
-                "Swipe to Navigate<br><span class='tl-button'>OK</span>",
-            unknown_read_err:
-                "An unexpected error occurred trying to read your spreadsheet data",
-            invalid_url_err:
-                "Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",
-            invalid_url_share_required:
-                "Because of unexpected changes to Google's data access API, the creator of this timeline must enable 'anyone with the url can read' access for this spreadsheet. See timeline.knightlab.com for more information.",
-            network_err:
-                "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
+            swipe_to_navigate: "Swipe to Navigate<br><span class='tl-button'>OK</span>",
+            unknown_read_err: "An unexpected error occurred trying to read your spreadsheet data",
+            invalid_url_err: "Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",
+            invalid_url_share_required: "Because of unexpected changes to Google's data access API, the creator of this timeline must enable 'anyone with the url can read' access for this spreadsheet. See timeline.knightlab.com for more information.",
+            network_err: "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
             empty_feed_err: "No data entries found",
             missing_start_date_err: "Missing start_date",
             invalid_data_format_err: "Header row has been modified.",
-            date_compare_err:
-                "Can't compare timeline date objects on different scales",
+            invalid_start_time_without_date: "Invalid configuration: time cannot be used without date.",
+            invalid_end_time_without_date: "Invalid configuration: end time cannot be used without end date.",
+            date_compare_err: "Can't compare timeline date objects on different scales",
             invalid_scale_err: "Invalid scale",
-            invalid_date_err:
-                "Invalid date: month, day and year must be numbers.",
-            invalid_separator_error:
-                "Invalid time: misuse of : or . as separator.",
+            invalid_date_err: "Invalid date: month, day and year must be numbers.",
+            invalid_separator_error: "Invalid time: misuse of : or . as separator.",
             invalid_hour_err: "Invalid time (hour)",
             invalid_minute_err: "Invalid time (minute)",
             invalid_second_err: "Invalid time (second)",
             invalid_fractional_err: "Invalid time (fractional seconds)",
-            invalid_second_fractional_err:
-                "Invalid time (seconds and fractional seconds)",
+            invalid_second_fractional_err: "Invalid time (seconds and fractional seconds)",
             invalid_year_err: "Invalid year",
             flickr_notfound_err: "Photo not found or private",
             flickr_invalidurl_err: "Invalid Flickr URL",
@@ -278,13 +272,10 @@ var LANGUAGES = {
             spotify_invalid_url: "Invalid Spotify URL",
             template_value_err: "No value provided for variable",
             invalid_rgb_err: "Invalid RGB argument",
-            time_scale_scale_err:
-                "Don't know how to get date from time for scale",
-            axis_helper_no_options_err:
-                "Axis helper must be configured with options",
+            time_scale_scale_err: "Don't know how to get date from time for scale",
+            axis_helper_no_options_err: "Axis helper must be configured with options",
             axis_helper_scale_err: "No AxisHelper available for scale",
-            invalid_integer_option:
-                "Invalid option value—must be a whole number."
+            invalid_integer_option: "Invalid option value—must be a whole number."
         },
         date: {
             month: [
@@ -363,8 +354,7 @@ var LANGUAGES = {
             time_short: "h:MM:ss TT",
             time_no_seconds_short: "h:MM TT",
             time_no_minutes_short: "h TT",
-            time_no_seconds_small_date:
-                "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
+            time_no_seconds_small_date: "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
             time_milliseconds: "l",
             full_long: "mmm d',' yyyy 'at' h:MM TT",
             full_long_small_date: "h:MM TT' <small>mmm d',' yyyy'</small>'"
