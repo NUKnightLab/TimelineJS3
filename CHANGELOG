@@ -1,5 +1,6 @@
 3.8.7 (not yet released)
 * clearer error messaging if time is used without date
+* strip all whitespace from both ends of header cells
 
 3.8.6 (2020-09-29)
 * #659: Prevent blank column headers from derailing Timeline load

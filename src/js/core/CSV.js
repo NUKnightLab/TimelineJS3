@@ -83,7 +83,7 @@ export function extractFields(rows, noFields) {
     noFields = noFields || {}
     if (noFields.noHeaderRow !== true && rows.length > 0) {
         return {
-            fields: rows[0].map(chomp),
+            fields: rows[0].map(x => x.trim()),
             records: rows.slice(1)
         };
     } else {
