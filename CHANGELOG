@@ -1,6 +1,7 @@
-3.8.7 (not yet released)
+3.8.7 (2020-10-20)
 * clearer error messaging if time is used without date
 * strip all whitespace from both ends of header cells
+* expose TL.lookupMediaType as a publicly accessible function (formerly TL.MediaType before 3.7.0)
 
 3.8.6 (2020-09-29)
 * #659: Prevent blank column headers from derailing Timeline load

@@ -34,7 +34,20 @@ import Audio from "./types/Audio"
 import Video from "./types/Video"
 import Wistia from "./types/Wistia"
 
-export function lookupMediaType(m, image_only) {
+/**
+ * Given a URL, or a limited set of non-URL strings, return the class which can
+ * handle creating and showing an embed in the "media" section of a Timeline slide.
+ * Used to assess the event.media.url attribute value for Timeline events (or, 
+ * more commonly, the value of the "Media" column of the Google Sheets configuration.)
+ * 
+ * When the `image_only` argument is true, the input `url_or_text` will only be 
+ * tested against patterns which are known to return images suitable for use as
+ * thumbnails and backgrounds. 
+ * 
+ * @param {String} url_or_text 
+ * @param {Boolean} image_only 
+ */
+export function lookupMediaType(url_or_text, image_only) {
     var media = {},
         media_types = [{
                 type: "youtube",
@@ -189,7 +202,7 @@ export function lookupMediaType(m, image_only) {
         ]
 
     if (image_only) {
-        if (m instanceof Array) {
+        if (url_or_text instanceof Array) {
             return false;
         }
         for (var i = 0; i < media_types.length; i++) {
@@ -197,7 +210,7 @@ export function lookupMediaType(m, image_only) {
                 case "flickr":
                 case "image":
                 case "instagram":
-                    if (m.url.match(media_types[i].match_str)) {
+                    if (url_or_text.url.match(media_types[i].match_str)) {
                         media = media_types[i];
                         return media;
                     }
@@ -209,7 +222,7 @@ export function lookupMediaType(m, image_only) {
 
     } else {
         for (var i = 0; i < media_types.length; i++) {
-            if (m.url.match(media_types[i].match_str)) {
+            if (url_or_text.url.match(media_types[i].match_str)) {
                 return media_types[i];
             }
         }
