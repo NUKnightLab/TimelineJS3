@@ -35,19 +35,24 @@ import Video from "./types/Video"
 import Wistia from "./types/Wistia"
 
 /**
- * Given a URL, or a limited set of non-URL strings, return the class which can
- * handle creating and showing an embed in the "media" section of a Timeline slide.
- * Used to assess the event.media.url attribute value for Timeline events (or, 
- * more commonly, the value of the "Media" column of the Google Sheets configuration.)
- * 
- * When the `image_only` argument is true, the input `url_or_text` will only be 
+ * Given a JavaScript Object for an event from a TimelineConfig,
+ * determine the appropriate subclass of Media which can handle creating and showing an 
+ * embed in the "media" section of that event's slide.
+ *
+ * When the `image_only` argument is true, the input `url_or_text` will only be
  * tested against patterns which are known to return images suitable for use as
- * thumbnails and backgrounds. 
+ * thumbnails and backgrounds.
+ *
+ * @param {Object} m
+ * @param {Boolean} image_only
  * 
- * @param {String} url_or_text 
- * @param {Boolean} image_only 
+ * @returns {Object} a JS object which represents the match, including a `type`, `name`, 
+ *                   `match_str`, and `cls`. These are all string values, except `cls`, which
+ *                   is a JavaScript class which can be used to instantiate a media embed
+ *                   or thumbnail.
  */
-export function lookupMediaType(url_or_text, image_only) {
+
+export function lookupMediaType(m, image_only) {
     var media = {},
         media_types = [{
                 type: "youtube",
@@ -202,7 +207,7 @@ export function lookupMediaType(url_or_text, image_only) {
         ]
 
     if (image_only) {
-        if (url_or_text instanceof Array) {
+        if (m instanceof Array) {
             return false;
         }
         for (var i = 0; i < media_types.length; i++) {
@@ -210,7 +215,7 @@ export function lookupMediaType(url_or_text, image_only) {
                 case "flickr":
                 case "image":
                 case "instagram":
-                    if (url_or_text.url.match(media_types[i].match_str)) {
+                    if (m.url.match(media_types[i].match_str)) {
                         media = media_types[i];
                         return media;
                     }
@@ -222,7 +227,7 @@ export function lookupMediaType(url_or_text, image_only) {
 
     } else {
         for (var i = 0; i < media_types.length; i++) {
-            if (url_or_text.url.match(media_types[i].match_str)) {
+            if (m.url.match(media_types[i].match_str)) {
                 return media_types[i];
             }
         }

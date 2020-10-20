@@ -1,4 +1,7 @@
-3.8.7 (2020-10-20)
+3.8.8 (2020-10-20)
+* fix error in TL.lookupMediaType  
+
+3.8.7 (2020-10-20) INVALID RELEASE DO NOT USE
 * clearer error messaging if time is used without date
 * strip all whitespace from both ends of header cells
 * expose TL.lookupMediaType as a publicly accessible function (formerly TL.MediaType before 3.7.0)
