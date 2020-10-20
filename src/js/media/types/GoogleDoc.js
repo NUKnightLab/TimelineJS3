@@ -12,11 +12,9 @@ export default class GoogleDoc extends Media {
         this._el.content_item = this.domCreate("div", "tl-media-item tl-media-iframe", this._el.content);
 
         // Get Media ID
-        if (this.data.url.match("open\?id\=")) {
-            this.media_id = this.data.url.split("open\?id\=")[1];
-            if (this.data.url.match("\&authuser\=0")) {
-                url = this.media_id.match("\&authuser\=0")[0];
-            };
+        if (this.data.url.match(/open\?id=([^&]+)/)) {
+            var doc_id = this.data.url.match(/open\?id=([^&]+)/)[1];
+            url = 'https://drive.google.com/file/d/' + doc_id + '/preview'
         } else if (this.data.url.match(/file\/d\/([^/]*)\/?/)) {
             var doc_id = this.data.url.match(/file\/d\/([^/]*)\/?/)[1];
             url = 'https://drive.google.com/file/d/' + doc_id + '/preview'
