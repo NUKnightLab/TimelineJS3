@@ -1,5 +1,6 @@
 3.8.9 (not yet released)
 * Fix pattern matching and URL parsing for using Google Drive documents.
+* Adjust rules for loading font to support relative/fragment URLs for `font` config option
 
 3.8.8 (2020-10-20)
 * fix error in TL.lookupMediaType  

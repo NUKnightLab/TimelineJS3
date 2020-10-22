@@ -205,7 +205,9 @@ class Timeline {
         let font_css_url = null,
             theme_css_url = null;
 
-        if (this.options.font && this.options.font.indexOf('http') == 0) {
+        if (this.options.font && (
+                this.options.font.indexOf('http') == 0 ||
+                this.options.font.match(/^[^A-Za-z]/))) {
             font_css_url = this.options.font
         } else if (this.options.font) {
             let fragment = '../css/fonts/font.' + this.options.font.toLowerCase() + '.css'
