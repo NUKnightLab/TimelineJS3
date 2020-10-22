@@ -21,33 +21,36 @@
                     </ol>
                     Sometimes you'll add more things:
                     <ul>
-                        <li>a <code>link</code> tag for <a href="#custom-fonts">custom fonts.</a></li>
+                        <li>configuration for <a href="#custom-fonts">custom fonts.</a></li>
                         <li>a <code>link</code> tag to override some of TimelineJS's CSS.</li>
                         <li>Javascript code to read configuration data from a Google Spreadsheet.</li>
                     </ul>
                 </p>
 
                 <pre class="prettyprint lang-html">
-      &lt;!-- 1 --&gt;
-      &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
 
-      &lt;!-- 2 --&gt;
-      &lt;script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
+        &lt;!-- 1 --&gt;
+        &lt;link title="timeline-styles" rel="stylesheet" 
+              href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
 
-      &lt;div id='timeline-embed' style="width: 100%; height: 600px"&gt;&lt;/div&gt;
+        &lt;!-- 2 --&gt;
+        &lt;script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
 
-      &lt;!-- 3 --&gt;
-      &lt;script type="text/javascript"&gt;
-        // The TL.Timeline constructor takes at least two arguments:
-        // the id of the Timeline container (no '#'), and
-        // the URL to your JSON data file or Google spreadsheet.
-        // the id must refer to an element "above" this code,
-        // and the element must have CSS styling to give it width and height
-        // optionally, a third argument with configuration options can be passed.
-        // See below for more about options.
-        timeline = new TL.Timeline('timeline-embed',
-          'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
-      &lt;/script&gt;</pre>
+        &lt;div id='timeline-embed' style="width: 100%; height: 600px"&gt;&lt;/div&gt;
+
+        &lt;!-- 3 --&gt;
+        &lt;script type="text/javascript"&gt;
+            // The TL.Timeline constructor takes at least two arguments:
+            // the id of the Timeline container (no '#'), and
+            // the URL to your JSON data file or Google spreadsheet.
+            // the id must refer to an element "above" this code,
+            // and the element must have CSS styling to give it width and height
+            // optionally, a third argument with configuration options can be passed.
+            // See below for more about options.
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
+        &lt;/script&gt;
+    </pre>
 
             </div>
             <div class="column-12">
@@ -59,14 +62,15 @@
                 <p>
                     Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.
                     <pre class="prettyprint lang-html">
-        &lt;!-- 3 --&gt;
+
         &lt;script type="text/javascript"&gt;
-          var timeline_json = make_the_json(); // replace make_the_json() with the JSON object you created
-          // two arguments: the id of the Timeline container (no '#')
-          // and the JSON object or an instance of TL.TimelineConfig created from
-          // a suitable JSON object
-          window.timeline = new TL.Timeline('timeline-embed', timeline_json);
-        &lt;/script&gt;</pre>
+            // make_the_json() is some javascript function you've written
+            // which creates the appropriate JSON configuration
+            var timeline_json = make_the_json(); 
+            window.timeline = new TL.Timeline('timeline-embed', timeline_json);
+        &lt;/script&gt;
+
+</pre>
 
                 </p>
             </div>
@@ -74,7 +78,8 @@
                 <h3 id="options">Configuring TimelineJS options</h3>
                 <p><code>TL.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
                 <pre class="prettyprint lang-html">
-          &lt;script type="text/javascript"&gt;
+
+        &lt;script type="text/javascript"&gt;
             var additionalOptions = {
               start_at_end: true,
               default_bg_color: {r:0, g:0, b:0},
@@ -84,48 +89,85 @@
             timeline = new TL.Timeline('timeline-embed',
             'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
             additionalOptions);
-          &lt;/script&gt;
+        &lt;/script&gt;
         </pre>
 
             </div>
             <div class="column-12">
                 <h3 id="custom-fonts">Using custom fonts</h3>
-                <p>Timeline offers several pre-selected font sets. When you use our simple tool, the fonts get included for you, but if you're using the methods on this page, you'll have to load them yourself.</p>
+                <p>Timeline offers several pre-selected font sets. When you use our simple tool, the fonts get included for you, but if you're using the methods on this page, and if you want to use anything but the default, you must use the <code>font</code>                    configuration option.</p>
                 <p>
-                    To include them, use markup like this, a variation on step 1 above.
-                    <pre class="prettyprint lang-html">
-      &lt;!-- 1 --&gt;
-      &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
-      &lt;link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css"&gt;</pre>
-                </p>
-                <p>
-                    Of course, you'll change <code>font.abril-droidsans.css</code> according to which fonts you choose. Here are all the values which you might use there:
+                    In the simplest case, you would choose from one of the font sets provided with TimelineJS. You can see what they look like in the "Optional settings" section of <a href="/#make-step-3">step three of the timeline authoring tool</a>.
+                    It should be straightforward to compare the options shown there with these names to select the correct value.
                     <ul>
-                        <li>font.abril-droidsans.css</li>
-                        <li>font.amatic-andika.css</li>
-                        <li>font.bevan-pontanosans.css</li>
-                        <li>font.bitter-raleway.css</li>
-                        <li>font.clicker-garamond.css</li>
-                        <li>font.dancing-ledger.css</li>
-                        <li>font.default.css</li>
-                        <li>font.fjalla-average.css</li>
-                        <li>font.georgia-helvetica.css</li>
-                        <li>font.knightlab.css</li>
-                        <li>font.lustria-lato.css</li>
-                        <li>font.medula-lato.css</li>
-                        <li>font.oldstandard.css</li>
-                        <li>font.opensans-gentiumbook.css</li>
-                        <li>font.playfair-faunaone.css</li>
-                        <li>font.playfair.css</li>
-                        <li>font.pt.css</li>
-                        <li>font.roboto-megrim.css</li>
-                        <li>font.rufina-sintony.css</li>
-                        <li>font.ubuntu.css</li>
-                        <li>font.unicaone-vollkorn.css</li>
+                        <li>abril-droidsans</li>
+                        <li>amatic-andika</li>
+                        <li>bevan-pontanosans</li>
+                        <li>bitter-raleway</li>
+                        <li>clicker-garamond</li>
+                        <li>dancing-ledger</li>
+                        <li>default</li>
+                        <li>fjalla-average</li>
+                        <li>georgia-helvetica</li>
+                        <li>lustria-lato</li>
+                        <li>medula-lato</li>
+                        <li>oldstandard</li>
+                        <li>opensans-gentiumbook</li>
+                        <li>playfair-faunaone</li>
+                        <li>playfair</li>
+                        <li>pt</li>
+                        <li>roboto-megrim</li>
+                        <li>rufina-sintony</li>
+                        <li>ubuntu</li>
+                        <li>unicaone-vollkorn</li>
                     </ul>
                 </p>
+                <p>Instead of one of the above values, you can create your own CSS file. You can <a href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN.
+                    You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a> If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/src/less">our LESS files on GitHub</a>.</p>
+                <p>
+                    If you do this, you can either load it using a <code>&lt;link rel="stylesheet"...&gt;</code> or you can provide the URL to your CSS file as the value of the <code>font</code> configuration option. If you load your CSS with a <code>link</code>                    tag, you must set the <code>font</code> configuration option value to <code>null</code> so that TimelineJS knows that it should not load the default font set.
+                </p>
+                <p>
+                    If you choose to specify the URL to your CSS as the value of the <code>font</code> option, you may use either a fully-qualified URL or a relative URL. However, if you use a relative URL, it must begin with <code>/</code> or <code>./</code>                    or <code>../</code>. If the value for the <code>font</code> option begins with any letter, TimelineJS will try to load it as if it were one of our font sets, whether or not the value is in the list above.
+                </p>
+                <p>
+                    Here are examples of how you might configure the font option.
+                    <pre class="prettyprint lang-html">
 
-                <p>You can <a href="https://cdn.knightlab.com/libs/timeline3/latest/css/fonts/font.abril-droidsans.css">download a model copy</a> of a typical font CSS file from our CDN. You may want to put it through a <a href="http://www.cleancss.com/css-beautify/">CSS formatter before you start to edit it.</a>                    If you are familiar with <a href="http://lesscss.org/">LESS</a>, you may prefer to work from <a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/src/less">our LESS files on GitHub</a>.</p>
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                font: 'opensans-gentiumbook'
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+
+        &lt;!-- or, if you have created your own CSS file... --&gt;
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                font: '/css/my-custom-timeline-fonts.css'
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+
+        &lt;!-- another way, if you have created your own CSS file... --&gt;
+        &lt;link rel="stylesheet" href="/css/my-custom-timeline-fonts.css"&gt;
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                font: null
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+    </pre>
+                </p>
             </div>
 
             <div class="column-12">
@@ -134,7 +176,35 @@
                 <p>Unpack the ZIP and include it on your web server, and load the JS (either <code>timeline.js</code> or <code>timeline.min.js</code>) and CSS (<code>timeline.css</code>) files from it instead of from `cdn.knightlab.com`. If you are using
                     the default fonts and English language, you only need those two files.</p>
                 <p>However, if you plan to use other languages and font sets, putting the entire contents of the ZIP on your server is necessary to fully support all of Timeline’s features.</p>
+                <p>
+                    If you include the TimelineJS javascript code in another file, using a bundler, "accelerator," or the like, you must help TimelineJS know where it can find font and language files. By default, the code assumes that they are served from a predictable location
+                    relative to the source. To do this, set the <code>script_path</code> option to a URL representing the directory where the core TimelineJS javascript files are stored. This should be a URL to which 'locale/es.json'
+                    could be added to load the Spanish (<code>es</code>) language translation files. Similarly, it should a URL which can be combined with a relative path such as <code>../css/fonts/font.default.css</code> could be added to locate the
+                    default font styles.
+                </p>
+                <p>
+                    If you do not set the <code>script_path</code> option, TimelineJS will basically work, but it will not be able to load translations and it won't be able to load the default font file, leaving it to inherit whatever CSS styles are already
+                    in place on the page.
+                </p>
 
+                <p>
+                    Here is an example:
+                    <pre class="prettyprint lang-html">
+                        
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                script_path: '/timeline/js',
+                language: 'es',
+                font: 'amatic-andika'
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+                    </pre>
+                </p>
+                <p>As this example shows, it's fine to use a "relative" URL path for the <code>script_path</code> value if that works better for you.</p>
             </div>
 
         </div>
