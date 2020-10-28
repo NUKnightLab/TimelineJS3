@@ -207,7 +207,7 @@ class Timeline {
 
         if (this.options.font && (
                 this.options.font.indexOf('http') == 0 ||
-                this.options.font.match(/^[^A-Za-z]/))) {
+                this.options.font.match(/\.css$/))) {
             font_css_url = this.options.font
         } else if (this.options.font) {
             let fragment = '../css/fonts/font.' + this.options.font.toLowerCase() + '.css'
@@ -218,7 +218,9 @@ class Timeline {
             loadCSS(font_css_url)
         }
 
-        if (this.options.theme && this.options.theme.indexOf('http') == 0) {
+        if (this.options.theme && (
+                this.options.theme.indexOf('http') == 0 ||
+                this.options.theme.match(/\.css$/))) {
             theme_css_url = this.options.theme
         } else if (this.options.theme) {
             let fragment = '../css/themes/timeline.theme.' + this.options.theme.toLowerCase() + '.css'

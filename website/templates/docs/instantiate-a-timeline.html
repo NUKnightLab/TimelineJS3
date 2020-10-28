@@ -128,7 +128,8 @@
                     If you do this, you can either load it using a <code>&lt;link rel="stylesheet"...&gt;</code> or you can provide the URL to your CSS file as the value of the <code>font</code> configuration option. If you load your CSS with a <code>link</code>                    tag, you must set the <code>font</code> configuration option value to <code>null</code> so that TimelineJS knows that it should not load the default font set.
                 </p>
                 <p>
-                    If you choose to specify the URL to your CSS as the value of the <code>font</code> option, you may use either a fully-qualified URL or a relative URL. However, if you use a relative URL, it must begin with <code>/</code> or <code>./</code>                    or <code>../</code>. If the value for the <code>font</code> option begins with any letter, TimelineJS will try to load it as if it were one of our font sets, whether or not the value is in the list above.
+                    If you choose to specify the URL to your CSS as the value of the <code>font</code> option, you may use either a fully-qualified URL or a relative URL. However, if you use a relative URL, it must end with <code>.css</code>. If the value
+                    for the <code>font</code> doesn't follow those rules, TimelineJS will try to load it as if it were one of our font sets, whether or not the value is in the list above.
                 </p>
                 <p>
                     Here are examples of how you might configure the font option.
