@@ -1434,6 +1434,41 @@ window.$ === undefined && (window.$ = Zepto)
     return $.ajax(options)
   }
 
+    /**
+     * Add a promisified option to better handle cases where we need the data 
+     * synchronously.
+     * @param {String} url 
+     */
+    $.fetchJSON = function (url) {
+        var request = new XMLHttpRequest();
+        return new Promise(function (resolve, reject) {
+            // Setup our listener to process compeleted requests
+            request.onreadystatechange = function () {
+
+                // Only run if the request is complete
+                if (request.readyState !== 4) return;
+
+                // Process the response
+                if (request.status >= 200 && request.status < 300) {
+                    var json = JSON.parse(request.responseText)
+                    resolve(json);
+                } else {
+                    reject({
+                        status: request.status,
+                        statusText: request.statusText
+                    });
+                }
+            };
+
+            // Setup our HTTP request
+            request.open('GET', url, true);
+
+            // Send the request
+            request.send();
+        })
+    }
+
+
   $.fn.load = function(url, data, success){
     if (!this.length) return this
     var self = this, parts = url.split(/\s/), selector,
@@ -1549,7 +1584,7 @@ window.$ === undefined && (window.$ = Zepto)
 
 export const getJSON = Zepto.getJSON;
 export const ajax = Zepto.ajax;
-
+export const fetchJSON = Zepto.fetchJSON;
 
 //     Based on https://github.com/madrobby/zepto/blob/5585fe00f1828711c04208372265a5d71e3238d1/src/ajax.js
 //     Zepto.js

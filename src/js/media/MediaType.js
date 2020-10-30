@@ -41,7 +41,8 @@ import Wistia from "./types/Wistia"
  *
  * When the `image_only` argument is true, the input `url_or_text` will only be
  * tested against patterns which are known to return images suitable for use as
- * thumbnails and backgrounds.
+ * thumbnails and backgrounds. Media classes returned when image_only is true should 
+ * implement the getImageURL() function
  *
  * @param {Object} m
  * @param {Boolean} image_only

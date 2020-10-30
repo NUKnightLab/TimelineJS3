@@ -1,8 +1,16 @@
 import { unhtmlify, trace } from "../../core/Util";
-import { getJSON } from "../../net/Net";
+import { getJSON, fetchJSON } from "../../net/Net";
 import { Media } from "../Media";
 
+const CLIENT_TOKEN = '830b21071290df4f81a35c56abbea096'
+const FB_APP_ID = '704270473831239'
+const ACCESS_TOKEN = `${FB_APP_ID}|${CLIENT_TOKEN}`
+const API_URL_ROOT = `https://graph.facebook.com/v8.0/instagram_oembed?access_token=${ACCESS_TOKEN}&fields=html,thumbnail_url,author_name&url=`
+
 export default class Instagram extends Media {
+
+
+
     _loadMedia() {
         // Get Media ID
         this.media_id = this.data.url.split("\/p\/")[1].split("/")[0];
@@ -11,60 +19,69 @@ export default class Instagram extends Media {
             this.createMedia();
         }
 
-        // After Loaded
-        this.onLoaded();
     }
 
     createMedia() {
+        this.oembed_response = null;
         var self = this;
 
-        // Link
-        this._el.content_link = this.domCreate("a", "", this._el.content);
-        this._el.content_link.href = this.data.url;
-        this._el.content_link.target = "_blank";
+        getJSON(`${API_URL_ROOT}${this.data.url}`, (resp) => {
 
-        // Photo
-        this._el.content_item = this.domCreate("img", "tl-media-item tl-media-image tl-media-instagram tl-media-shadow", this._el.content_link);
+            self.oembed_response = resp;
 
-        if (this.data.alt) {
-            this._el.content_item.alt = this.data.alt;
-        } else if (this.data.caption) {
-            this._el.content_item.alt = unhtmlify(this.data.caption);
-        }
+            // Link
+            self._el.content_link = self.domCreate("a", "", self._el.content);
+            self._el.content_link.href = self.data.url;
+            self._el.content_link.target = "_blank";
 
-        if (this.data.title) {
-            this._el.content_item.title = this.data.title;
-        } else if (this.data.caption) {
-            this._el.content_item.title = unhtmlify(this.data.caption);
-        }
+            // Photo
+            self._el.content_item = self.domCreate("img", "tl-media-item tl-media-image tl-media-instagram tl-media-shadow", self._el.content_link);
 
-        // Media Loaded Event
-        this._el.content_item.addEventListener('load', function(e) {
-            self.onMediaLoaded();
-        });
+            if (self.data.alt) {
+                self._el.content_item.alt = self.data.alt;
+            } else if (self.data.caption) {
+                self._el.content_item.alt = unhtmlify(self.data.caption);
+            }
 
-        this._el.content_item.src = this.getImageURL(this._el.content.offsetWidth);
+            if (self.data.title) {
+                self._el.content_item.title = self.data.title;
+            } else if (self.data.caption) {
+                self._el.content_item.title = unhtmlify(self.data.caption);
+            }
+
+            // Media Loaded Event
+            self._el.content_item.addEventListener('load', function(e) {
+                self.onMediaLoaded();
+            });
+
+            self._el.content_item.src = resp.thumbnail_url
+
+            // After Loaded
+            this.onLoaded();
+
+        })
+
     }
 
-    getImageURL(w, h) {
-        let img_url = "https://instagram.com/p/" + this.media_id + "/media/?size=" + this.sizes(w)
-        trace('insta URL', img_url)
-        return img_url;
+    getImageURL() {
+        if (this.oembed_response && this.oembed_response.thumbnail_url) {
+            return this.oembed_response.thumbnail_url
+        }
+
+        fetchJSON(`${API_URL_ROOT}${this.data.url}`).then(json => {
+            return json.thumbnail_url
+        }).catch(err => {
+            trace(`Instagram getImageURL Error: ${err.status} ${err.statusText}`)
+        })
     }
 
     _getMeta() {
-        var self = this,
-            api_url;
-
-        // API URL
-        api_url = "https://api.instagram.com/oembed?url=https://instagr.am/p/" + this.media_id + "&callback=?";
-
-        // API Call
-        getJSON(api_url, function(d) {
-            self.data.credit_alternate = "<a href='" + d.author_url + "' target='_blank'>" + d.author_name + "</a>";
-            self.data.caption_alternate = d.title;
-            self.updateMeta();
-        });
+        if (this.oembed_response && this.oembed_response.author_name) {
+            this.data.credit_alternate = `Instagram: <a href="https://instagram.com/${this.oembed_response.author_name}" target="_blank">@${this.oembed_response.author_name}</a>`
+        }
+        // nothing in our data helps us provide an alternative caption...
+        // this.data.caption_alternate = d.title;
+        this.updateMeta();
     }
 
     sizes(s) {
