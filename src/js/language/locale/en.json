@@ -92,7 +92,8 @@
         "time_scale_scale_err": "Don't know how to get date from time for scale",
         "axis_helper_no_options_err": "Axis helper must be configured with options",
         "axis_helper_scale_err": "No AxisHelper available for scale",
-        "invalid_integer_option": 				"Invalid option value—must be a whole number."
+        "invalid_integer_option": "Invalid option value—must be a whole number.",
+        "instagram_bad_request": "Invalid or private Instagram URL"
     },
     "dateformats": {
         "full_long": "mmm d',' yyyy 'at' h:MM TT",
@@ -116,7 +117,7 @@
             "suffix": "BCE"
         }
     },
-    "period_labels": {  // use of t/tt/T/TT is a legacy of original Timeline date format
+    "period_labels": { // use of t/tt/T/TT is a legacy of original Timeline date format
         "t": ["a", "p"],
         "tt": ["am", "pm"],
         "T": ["A", "P"],

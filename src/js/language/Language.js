@@ -275,7 +275,8 @@ var LANGUAGES = {
             time_scale_scale_err: "Don't know how to get date from time for scale",
             axis_helper_no_options_err: "Axis helper must be configured with options",
             axis_helper_scale_err: "No AxisHelper available for scale",
-            invalid_integer_option: "Invalid option value—must be a whole number."
+            invalid_integer_option: "Invalid option value—must be a whole number.",
+            instagram_bad_request: "Invalid or private Instagram URL"
         },
         date: {
             month: [
