@@ -1,3 +1,6 @@
+3.8.10 (2020-11-03)
+* Change Instagram handling to catch up to their API changes. (#664)
+
 3.8.9 (2020-10-23)
 * Fix pattern matching and URL parsing for using Google Drive documents.
 * Adjust rules for loading font to support relative/fragment URLs for `font` config option
