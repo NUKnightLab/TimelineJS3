@@ -21,7 +21,7 @@
     {
         "slug": "can-i-change-things-using-css",
         "question": "There aren't enough options. I want more control over the [font size/color/etc]. Can I change things using CSS?",
-        "answer": "Because there are so many details to the styling, this is not exactly simple, but, if you have some technical capacity, you can override TimelineJS's <abbr title='Cascading Style Sheets'>CSS</abbr> rules and have complete control over the look of the timeline. For details, see <a href='/docs/overriding-styles.html'>Using the TimelineJS CSS selectors</a>."
+        "answer": "Because there are so many details to the styling, this is not exactly simple, but, if you have some technical capacity, you can override TimelineJS's <abbr title='Cascading Style Sheets'>CSS</abbr> rules and have complete control over the look of the timeline. For details, see <a href='/docs/overriding-styles.html'>Overriding Timeline's Styles</a>."
     },
     {
         "slug": "how-can-i-categorize-or-group-my-events",
