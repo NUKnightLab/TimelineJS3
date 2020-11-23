@@ -54,6 +54,19 @@ export async function fetchCSV(dataset) {
         } else if (dataset.url) {
             window.fetch(dataset.url, { mode: 'cors' })
                 .then(function(response) {
+                    if (response.status != 200) {
+                        if (response.headers.get('content-type') == "application/json") {
+                            response.text().then(text => {
+                                reject(JSON.parse(text))
+                            })
+                        } else {
+                            reject({
+                                status_code: response.status,
+                                message: `Error fetching CSV: [${response.status} ${response.statusText}]`
+                            })
+                        }
+                        return;
+                    }
                     if (response.text) {
                         return response.text();
                     } else {
@@ -61,11 +74,19 @@ export async function fetchCSV(dataset) {
                     }
                 })
                 .then(function(data) {
-                    var out = parseObjects(data, dataset);
-                    out.useMemoryStore = true;
-                    resolve(out);
+                    if (data) {
+                        var out = parseObjects(data, dataset);
+                        out.useMemoryStore = true;
+                        resolve(out);
+                    }
                 })
-                .catch(msg => reject(msg));
+                .catch(msg => {
+                    reject({
+                        status_code: 500,
+                        message: `Error fetching CSV: ${msg}`
+                    })
+                    return;
+                });
         }
     })
 };

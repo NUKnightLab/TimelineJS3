@@ -150,8 +150,11 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
         url: `${sheets_proxy}${url}`,
     }).then(d => {
         rows = d;
-    }).catch(msg => {
-        throw new TLError(msg)
+    }).catch(error_json => {
+        if (error_json.proxy_err_code == 'response_not_csv') {
+            throw new TLError('Timeline could not read the data for your timeline. Make sure you have published AND shared your timeline. See timeline.knightlab.com for more information.')
+        }
+        throw new TLError(error_json.message)
     })
 
     let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
