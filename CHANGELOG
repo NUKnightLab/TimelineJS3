@@ -1,3 +1,6 @@
+3.8.11 (2020-11-23)
+* Improve error messaging re issues retrieving configuration data from Google.
+
 3.8.10 (2020-11-03)
 * Change Instagram handling to catch up to their API changes. (#664)
 
