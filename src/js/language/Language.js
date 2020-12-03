@@ -1,5 +1,5 @@
 import { mergeData, pad, trace } from "../core/Util"
-import { ajax } from "../net/Net"
+import { fetchJSON } from "../net/Net"
 import { BigYear } from "../date/TLDate"
 
 /**
@@ -28,17 +28,13 @@ class Language {
                     var url = script_path + fragment;
                 }
                 var self = this;
-                var xhr = ajax({
-                    url: url,
-                    async: false
-                });
-                if (xhr.status == 200) {
-                    LANGUAGES[code] = JSON.parse(xhr.responseText);
-                } else {
-                    throw "Could not load language [" + code + "]: " + xhr.statusText;
-                }
+                fetchJSON(url).then((json) => {
+                    LANGUAGES[code] = json
+                    mergeData(this, LANGUAGES[code]);
+                }).catch(resp => {
+                    console.log(`Error loading language [${url}] ${resp.statusText} [${resp.status}]`)
+                })
             }
-            mergeData(this, LANGUAGES[code]);
         }
     }
 
