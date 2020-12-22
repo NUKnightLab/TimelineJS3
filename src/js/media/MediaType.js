@@ -136,7 +136,7 @@ export function lookupMediaType(m, image_only) {
             {
                 type: "image",
                 name: "Image",
-                match_str: /(jpg|jpeg|png|gif|svg)(\?.*)?$/i,
+                match_str: /(jpg|jpeg|png|gif|svg|webp)(\?.*)?$/i,
                 cls: Image
             },
             {
