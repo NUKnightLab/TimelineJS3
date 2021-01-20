@@ -19,6 +19,7 @@ function successHandler(resp) {
     this._el.content_link = this.domCreate("a", "", this._el.content);
     this._el.content_link.href = this.data.url;
     this._el.content_link.target = "_blank";
+    this._el.content_link.setAttribute('rel', 'noopener');
 
     // Photo
     this._el.content_item = this.domCreate("img", "tl-media-item tl-media-image tl-media-instagram tl-media-shadow", this._el.content_link);

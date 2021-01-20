@@ -17,6 +17,29 @@ const STRIP_MARKUP_FIELDS = {
 
 }
 
+/**
+ * After sanitizing, make sure all <a> tags with 'href' attributes that 
+ * don't have a target attribute are set to open in a new ('_blank') 
+ * window. Also make sure that all <a> tags which are set to open in a '_blank'
+ * window set `rel="noopener"`
+ */
+DOMPurify.addHook('afterSanitizeAttributes', function(node) {
+
+    if (node.nodeName == 'A' && 'href' in node) {
+        if (!('target' in node.attributes)) {
+            node.setAttribute('target', '_blank');
+        }
+        let rel = node.attributes['rel']
+        if (!rel) {
+            node.setAttribute('rel', 'noopener');
+        } else {
+            if (rel.value.indexOf('noopener') == -1) {
+                node.setAttribute('rel', `noopener ${rel.value}`)
+            }
+        }
+    }
+});
+
 function _process_fields(slide, callback, fieldmap) {
     Object.keys(fieldmap).forEach(k => {
         var to_sanitize = (k == 'slide') ? slide : slide[k]
@@ -40,7 +63,7 @@ function _process_fields(slide, callback, fieldmap) {
 function _tl_sanitize(txt) {
     return DOMPurify.sanitize(txt, {
         ADD_TAGS: ['iframe'],
-        ADD_ATTR: ['frameborder'],
+        ADD_ATTR: ['frameborder', 'target'],
     })
 }
 

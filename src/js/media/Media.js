@@ -322,6 +322,10 @@ class Media {
                 this._el.link.target = "_blank";
             }
 
+            if (this._el.link.target == '_blank') {
+                this._el.link.setAttribute('rel', 'noopener');
+            }
+
             this._el.content = DOM.create("div", "tl-media-content", this._el.link);
 
         } else {

@@ -56,6 +56,7 @@ export default class Flickr extends Media {
         this._el.content_link = this.domCreate("a", "", this._el.content);
         this._el.content_link.href = this.data.url;
         this._el.content_link.target = "_blank";
+        this._el.content_link.setAttribute('rel', 'noopener');
 
         // Photo
         this._el.content_item = this.domCreate("img", "tl-media-item tl-media-image tl-media-flickr tl-media-shadow", this._el.content_link);
@@ -103,7 +104,7 @@ export default class Flickr extends Media {
 
         // API Call
         getJSON(api_url, function(d) {
-            self.data.credit_alternate = "<a href='" + self.data.url + "' target='_blank'>" + d.photo.owner.realname + "</a>";
+            self.data.credit_alternate = "<a href='" + self.data.url + "' target='_blank' rel='noopener'>" + d.photo.owner.realname + "</a>";
             self.data.caption_alternate = d.photo.title._content + " " + d.photo.description._content;
             self.updateMeta();
         });

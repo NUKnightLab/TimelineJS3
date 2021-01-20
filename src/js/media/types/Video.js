@@ -24,6 +24,7 @@ export default class Video extends Media {
             this._el.content_link = this.domCreate("a", "", this._el.content);
             this._el.content_link.href = this.data.link;
             this._el.content_link.target = "_blank";
+            this._el.content_link.setAttribute('rel', 'noopener')
             this._el.content_item = this.domCreate("video", video_class, this._el.content_link);
         } else {
             this._el.content_item = this.domCreate("video", video_class, this._el.content);
