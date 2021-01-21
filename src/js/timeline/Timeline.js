@@ -25,19 +25,21 @@ if (document) {
 
 function make_keydown_handler(timeline) {
     return function(event) {
-        var keyName = event.key;
-        var currentSlide = timeline._getSlideIndex(self.current_id);
-        var _n = timeline.config.events.length - 1;
-        var lastSlide = timeline.config.title ? _n + 1 : _n;
-        var firstSlide = 0;
+        if (timeline.config) {
+            var keyName = event.key;
+            var currentSlide = timeline._getSlideIndex(self.current_id);
+            var _n = timeline.config.events.length - 1;
+            var lastSlide = timeline.config.title ? _n + 1 : _n;
+            var firstSlide = 0;
 
-        if (keyName == 'ArrowLeft') {
-            if (currentSlide != firstSlide) {
-                timeline.goToPrev();
-            }
-        } else if (keyName == 'ArrowRight') {
-            if (currentSlide != lastSlide) {
-                timeline.goToNext();
+            if (keyName == 'ArrowLeft') {
+                if (currentSlide != firstSlide) {
+                    timeline.goToPrev();
+                }
+            } else if (keyName == 'ArrowRight') {
+                if (currentSlide != lastSlide) {
+                    timeline.goToNext();
+                }
             }
         }
     }
@@ -130,6 +132,10 @@ class Timeline {
             ga_property_id: null,
             track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
             theme: null,
+            // sheets_proxy value should be suitable for simply postfixing with the Google Sheets CSV URL
+            // as in include trailing slashes, or '?url=' or whatever. No support right now for anything but
+            // postfixing. The default proxy should work in most cases, but only for TimelineJS sheets.
+            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
             soundcite: false,
         };
 
@@ -199,7 +205,9 @@ class Timeline {
         let font_css_url = null,
             theme_css_url = null;
 
-        if (this.options.font && this.options.font.indexOf('http') == 0) {
+        if (this.options.font && (
+                this.options.font.indexOf('http') == 0 ||
+                this.options.font.match(/\.css$/))) {
             font_css_url = this.options.font
         } else if (this.options.font) {
             let fragment = '../css/fonts/font.' + this.options.font.toLowerCase() + '.css'
@@ -210,7 +218,9 @@ class Timeline {
             loadCSS(font_css_url)
         }
 
-        if (this.options.theme && this.options.theme.indexOf('http') == 0) {
+        if (this.options.theme && (
+                this.options.theme.indexOf('http') == 0 ||
+                this.options.theme.match(/\.css$/))) {
             theme_css_url = this.options.theme
         } else if (this.options.theme) {
             let fragment = '../css/themes/timeline.theme.' + this.options.theme.toLowerCase() + '.css'
@@ -247,9 +257,12 @@ class Timeline {
      */
     _initData(data) {
         if (typeof data == 'string') {
-            makeConfig(data, function(config) {
-                this.setConfig(config);
-            }.bind(this));
+            makeConfig(data, {
+                callback: function(config) {
+                    this.setConfig(config);
+                }.bind(this),
+                sheets_proxy: this.options.sheets_proxy
+            });
         } else if (TimelineConfig == data.constructor) {
             this.setConfig(data);
         } else {
@@ -324,11 +337,18 @@ class Timeline {
 
     setConfig(config) {
         this.config = config;
-        this.config.validate();
-        this._validateOptions();
+        if (this.config.isValid()) {
+            // don't validate if it's already problematic to avoid clutter
+            this.config.validate();
+            this._validateOptions();
+        }
         if (this.config.isValid()) {
             try {
-                this._onDataLoaded();
+                if (document.readyState === 'loading') { // Loading hasn't finished yet
+                    document.addEventListener('DOMContentLoaded', this._onDataLoaded.bind(this));
+                } else {
+                    this._onDataLoaded();
+                }
             } catch (e) {
                 this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
             }
@@ -354,7 +374,13 @@ class Timeline {
         if (this.message) {
             this.message.hide();
         }
-
+        let callback = (entries, observer) => {
+            if (entries.reduce((accum, curr) => accum || curr.isIntersecting, false)) {
+                this.updateDisplay()
+            }
+        }
+        let observer = new IntersectionObserver(callback.bind(this))
+        observer.observe(this._el.container)
         this.ready = true;
         this.fire("ready")
 
@@ -698,12 +724,14 @@ class Timeline {
      * @param {String} id 
      */
     _getSlideIndex(id) {
-        if (this.config.title && this.config.title.unique_id == id) {
-            return 0;
-        }
-        for (var i = 0; i < this.config.events.length; i++) {
-            if (id == this.config.events[i].unique_id) {
-                return this.config.title ? i + 1 : i;
+        if (this.config) {
+            if (this.config.title && this.config.title.unique_id == id) {
+                return 0;
+            }
+            for (var i = 0; i < this.config.events.length; i++) {
+                if (id == this.config.events[i].unique_id) {
+                    return this.config.title ? i + 1 : i;
+                }
             }
         }
         return -1;
@@ -915,6 +943,8 @@ class Timeline {
     updateDisplay() {
         if (this.ready) {
             this._updateDisplay();
+        } else {
+            trace('updateDisplay called but timeline is not in ready state')
         }
     }
 

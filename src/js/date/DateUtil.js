@@ -84,6 +84,26 @@ export function parseTime(time_str) {
     return parsed;
 }
 
+const VALID_INTEGER_PATTERN = new RegExp('(^-?\\d+$|^$)')
+
+export function validDateConfig(d) {
+
+    try {
+        Object.keys(d).forEach(k => {
+            let v = d[k]
+            if (v && v.match) {
+                if (!v.match(VALID_INTEGER_PATTERN)) {
+                    throw `invalid value ${v} for ${k}`
+                }
+            }
+        })
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+
 export const SCALE_DATE_CLASSES = {
     human: TLDate,
     cosmological: BigDate

@@ -1,7 +1,7 @@
 import { Media } from "../Media";
 import { loadJS } from "../../core/Load";
 import { ajax } from "../../net/Net";
-import { ratio } from "../../core/Util";
+import { ratio, trace } from "../../core/Util";
 import TLError from "../../core/TLError";
 
 export default class Imgur extends Media {
@@ -58,7 +58,7 @@ export default class Imgur extends Media {
                         }
                     }, 2000);
                 } catch (e) {
-                    console.log("Error processing imgur ajax response", e)
+                    trace("Error processing imgur ajax response", e)
                 }
             },
             error: function(xhr, errorType, error) {

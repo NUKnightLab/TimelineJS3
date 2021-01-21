@@ -1,4 +1,61 @@
-3.7.6 (unreleased)
+3.8.12 (not yet released)
+* #363,670: remove synchronous XMLHttpRequests
+* #672: support Spotify podcasts
+* #649: better handling of a/href tags to open in new windows, or to follow specified target values
+
+3.8.11 (2020-11-23)
+* Improve error messaging re issues retrieving configuration data from Google.
+
+3.8.10 (2020-11-03)
+* Change Instagram handling to catch up to their API changes. (#664)
+
+3.8.9 (2020-10-23)
+* Fix pattern matching and URL parsing for using Google Drive documents.
+* Adjust rules for loading font to support relative/fragment URLs for `font` config option
+
+3.8.8 (2020-10-20)
+* fix error in TL.lookupMediaType  
+
+3.8.7 (2020-10-20) INVALID RELEASE DO NOT USE
+* clearer error messaging if time is used without date
+* strip all whitespace from both ends of header cells
+* expose TL.lookupMediaType as a publicly accessible function (formerly TL.MediaType before 3.7.0)
+
+3.8.6 (2020-09-29)
+* #659: Prevent blank column headers from derailing Timeline load
+
+3.8.5 (2020-09-28)
+* check for null when validating date inputs from CSV
+
+3.8.4 (2020-09-28)
+* #655: treat all-whitespace Google Sheets values as blank and don't try to process them
+* #656: chomp excess whitespace around header values/object keys.
+* #658: clean integer values for dates -- strip whitespace and comma
+
+3.8.3 (2020-09-25)
+* Make CSV parser always return strings (fixes bug where V1 Sheets with year-only dates were assumed to be strings)
+* Log instead of throw error when trying to add an event in TimelineConfig that has no start date
+
+3.8.2 (2020-09-25)
+* Fix a bug in ConfigFactory date processing which was adding unintended "January 1, 0" end dates.
+
+3.8.1 (2020-09-23)
+* Change Timeline's Google Sheets access method in advance of the discontinuation of Google Sheets API v3. See https://knightlab.northwestern.edu/2020/09/16/timelinejs-update-2/index.html for more information. All self-hosted timeline users should update to this version before 2020-09-30.
+
+3.8.0 (2020-09-23)
+* Discarded release: failed to merge key changes into master branch.
+
+3.7.9 (2020-09-17)
+* #654: Attempt to avoid 'overlapping' slides. Mixed feedback on if this is a complete solution.
+
+3.7.8 (2020-09-02)
+* #651: Restore document loading check with proper binding
+
+3.7.7 (2020-08-26)
+* #651: rollback document loading check after error reports
+
+3.7.6 (2020-08-25)
+* Add a check of the document's loading status, and defer layout until DOMContentLoaded, in response to reports of timelines where all slide content overlaps.
 * Introduce a 'ready' event, which TimelineJS will fire after all other initialization is complete.
 * Support a Timeline option, `soundcite`, which triggers the loading of Knight Lab's SoundciteJS code, enabling the use of SoundCite markup in all HTML-capable Timeline fields.
 * Fix error messages in Imgur media type

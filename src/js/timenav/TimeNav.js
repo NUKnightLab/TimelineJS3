@@ -105,21 +105,58 @@ export class TimeNav {
         this._initLayout();
         this._initEvents();
         this._initData();
-        this._updateDisplay();
+        this.updateDisplay();
 
         this._onLoaded();
     }
 
     /*	Public
     ================================================== */
-    positionMarkers() {
-        this._positionMarkers();
+    positionMarkers(fast) {
+        // POSITION X
+        for (var i = 0; i < this._markers.length; i++) {
+            var pos = this.timescale.getPositionInfo(i);
+            if (fast) {
+                this._markers[i].setClass("tl-timemarker tl-timemarker-fast");
+            } else {
+                this._markers[i].setClass("tl-timemarker");
+            }
+            this._markers[i].setPosition({ left: pos.start });
+            this._markers[i].setWidth(pos.width);
+        };
     }
 
     /*	Update Display
     ================================================== */
-    updateDisplay(w, h, a, l) {
-        this._updateDisplay(w, h, a, l);
+    updateDisplay(width, height, animate) {
+        let reposition_markers = false;
+        if (width) {
+            if (this.options.width == 0 && width > 0) {
+                reposition_markers = true;
+            }
+            this.options.width = width;
+        }
+        if (height && height != this.options.height) {
+            this.options.height = height;
+            this.timescale = this._getTimeScale();
+        }
+
+        // Size Markers
+        this._assignRowsToMarkers();
+
+        // Size swipable area
+        this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
+        this._el.slider_background.style.left = -(this.options.width / 2) + "px";
+        this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
+
+        // Update Swipable constraint
+        this._swipable.updateConstraint({ top: false, bottom: false, left: (this.options.width / 2), right: -(this.timescale.getPixelWidth() - (this.options.width / 2)) });
+
+        if (reposition_markers) {
+            this._drawTimeline()
+        }
+        // Go to the current slide
+        this.goToId(this.current_id, true);
     }
 
 
@@ -277,21 +314,6 @@ export class TimeNav {
     _destroyMarker(n) {
         this._removeMarker(this._markers[n]);
         this._markers.splice(n, 1);
-    }
-
-    _positionMarkers(fast) {
-        // POSITION X
-        for (var i = 0; i < this._markers.length; i++) {
-            var pos = this.timescale.getPositionInfo(i);
-            if (fast) {
-                this._markers[i].setClass("tl-timemarker tl-timemarker-fast");
-            } else {
-                this._markers[i].setClass("tl-timemarker");
-            }
-            this._markers[i].setPosition({ left: pos.start });
-            this._markers[i].setWidth(pos.width);
-        };
-
     }
 
     _calculateMarkerHeight(h) {
@@ -556,36 +578,11 @@ export class TimeNav {
 
     /*	Private Methods
     ================================================== */
-    // Update Display
-    _updateDisplay(width, height, animate) {
-
-        if (width) {
-            this.options.width = width;
-        }
-        if (height && height != this.options.height) {
-            this.options.height = height;
-            this.timescale = this._getTimeScale();
-        }
-
-        // Size Markers
-        this._assignRowsToMarkers();
-
-        // Size swipable area
-        this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
-        this._el.slider_background.style.left = -(this.options.width / 2) + "px";
-        this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
-
-        // Update Swipable constraint
-        this._swipable.updateConstraint({ top: false, bottom: false, left: (this.options.width / 2), right: -(this.timescale.getPixelWidth() - (this.options.width / 2)) });
-
-        // Go to the current slide
-        this.goToId(this.current_id, true);
-    }
 
     _drawTimeline(fast) {
         this.timescale = this._getTimeScale();
         this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
-        this._positionMarkers(fast);
+        this.positionMarkers(fast);
         this._assignRowsToMarkers();
         this._createGroups();
         this._positionGroups();
@@ -621,13 +618,13 @@ export class TimeNav {
         if (do_update) {
             this.timescale = this._getTimeScale();
             this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
-            this._positionMarkers();
+            this.positionMarkers();
             this._assignRowsToMarkers();
             this._positionGroups();
             if (this.has_eras) {
                 this._positionEras();
             }
-            this._updateDisplay();
+            this.updateDisplay();
         } else {
             this._drawTimeline(true);
         }
@@ -653,7 +650,7 @@ export class TimeNav {
 
 
         // Knight Lab Logo
-        this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank'><span class='tl-knightlab-logo'></span>Timeline JS</a>"
+        this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Time Axis
         this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);

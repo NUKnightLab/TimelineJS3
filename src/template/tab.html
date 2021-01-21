@@ -1,8 +1,8 @@
 <html>
 
 <head>
-    <title>Bundled TimelineJS test page</title>
-    <!-- this is normally done by embed page -->
+    <title>Jumbled TimelineJS test page</title>
+    <script src="http://localhost:8080/timeline.js"></script>
     <script>
         function ready(fn) {
             if (document.readyState != 'loading') {
@@ -34,14 +34,22 @@
                 debug: true,
                 height: 650,
                 soundcite: true,
-                sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/'
             }
             window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+            document.getElementById('toggle_display').addEventListener('click', function(e) {
+                let embed = document.querySelector('#timeline-embed')
+                let comp_style = window.getComputedStyle(embed)
+                let new_display = 'none'
+                if (comp_style['display'] == 'none' || comp_style['display'] == '') {
+                    new_display = 'block'
+                }
+                embed.style['display'] = new_display;
+
+            })
 
             window.timeline.on("ready", () => {
                 console.log("Timeline ready event fired")
             })
-
 
             document.getElementById('timeline-src').value = dataUrl
             document.getElementById('timeline-src').addEventListener('keyup', (e) => {
@@ -63,6 +71,7 @@
         }
         
         #timeline-embed {
+            display: none;
             margin: 1em 0;
             height: 650px;
         }
@@ -77,6 +86,7 @@
     <h1>Timeline Development</h1>
     <div>
         <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src">
+        <a id="toggle_display">toggle</a>
     </div>
     <div id='timeline-embed'></div>
 </body>

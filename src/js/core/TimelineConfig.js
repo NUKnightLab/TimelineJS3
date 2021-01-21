@@ -17,6 +17,29 @@ const STRIP_MARKUP_FIELDS = {
 
 }
 
+/**
+ * After sanitizing, make sure all <a> tags with 'href' attributes that 
+ * don't have a target attribute are set to open in a new ('_blank') 
+ * window. Also make sure that all <a> tags which are set to open in a '_blank'
+ * window set `rel="noopener"`
+ */
+DOMPurify.addHook('afterSanitizeAttributes', function(node) {
+
+    if (node.nodeName == 'A' && 'href' in node) {
+        if (!('target' in node.attributes)) {
+            node.setAttribute('target', '_blank');
+        }
+        let rel = node.attributes['rel']
+        if (!rel) {
+            node.setAttribute('rel', 'noopener');
+        } else {
+            if (rel.value.indexOf('noopener') == -1) {
+                node.setAttribute('rel', `noopener ${rel.value}`)
+            }
+        }
+    }
+});
+
 function _process_fields(slide, callback, fieldmap) {
     Object.keys(fieldmap).forEach(k => {
         var to_sanitize = (k == 'slide') ? slide : slide[k]
@@ -40,7 +63,7 @@ function _process_fields(slide, callback, fieldmap) {
 function _tl_sanitize(txt) {
     return DOMPurify.sanitize(txt, {
         ADD_TAGS: ['iframe'],
-        ADD_ATTR: ['frameborder'],
+        ADD_ATTR: ['frameborder', 'target'],
     })
 }
 
@@ -95,7 +118,7 @@ export class TimelineConfig {
     }
 
     logError(msg) {
-        trace(msg);
+        trace(`logError: ${msg}`);
         this.messages.errors.push(msg);
     }
 
@@ -110,6 +133,7 @@ export class TimelineConfig {
             return this.messages.errors;
         }
     }
+
 
     /*
      * Perform any sanity checks we can before trying to use this to make a timeline. Returns nothing, but errors will be logged
@@ -134,18 +158,26 @@ export class TimelineConfig {
         };
     }
 
+
+    /**
+     * @returns {boolean} whether or not this config has logged errors.  
+     */
     isValid() {
-            return this.messages.errors.length == 0;
-        }
-        /* Add an event (including cleaning/validation) and return the unique id.
-         * All event data validation should happen in here.
-         * Throws: TLError for any validation problems.
-         */
+        return this.messages.errors.length == 0;
+    }
+
+    /* Add an event (including cleaning/validation) and return the unique id.
+     * All event data validation should happen in here.
+     * Throws: TLError for any validation problems.
+     */
     addEvent(data, defer_sort) {
         var event_id = this._assignID(data);
 
         if (typeof(data.start_date) == 'undefined') {
-            throw new TLError("missing_start_date_err", event_id);
+            trace("Missing start date, skipping event")
+            console.log(data)
+            return null
+                // throw new TLError("missing_start_date_err", event_id);
         }
 
         this._processDates(data);
@@ -235,7 +267,6 @@ export class TimelineConfig {
 
     _ensureValidScale(events) {
             if (!this.scale) {
-                trace("Determining scale dynamically");
                 this.scale = "human"; // default to human unless there's a slide which is explicitly 'cosmological' or one which has a cosmological year
 
                 for (var i = 0; i < events.length; i++) {
@@ -252,6 +283,7 @@ export class TimelineConfig {
                         }
                     }
                 }
+                trace(`Determining scale dynamically: ${this.scale}`);
             }
             var dateCls = SCALE_DATE_CLASSES[this.scale];
             if (!dateCls) { this.logError("Don't know how to process dates on scale " + this.scale); }

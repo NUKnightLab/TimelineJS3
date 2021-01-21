@@ -89,7 +89,7 @@ if (process.argv[2] == 'dev') {
             var package_json = require('../package.json');
             if (package_json.version != result.version) {
                 package_json.version = result.version;
-                fse.writeJsonSync('package.json', package_json, { spaces: 2 });
+                fse.writeJsonSync('package.json', package_json, { spaces: 4 });
                 simpleGit().commit(`Update to ${result.version}`, ['package.json'])
             }
             simpleGit().addTag(result.version)

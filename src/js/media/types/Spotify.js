@@ -2,32 +2,29 @@ import { trace } from "../../core/Util"
 import { Media } from "../Media";
 import * as Browser from "../../core/Browser"
 
+export function computeMediaId(url) {
+
+    var media_id = null;
+
+    if (url.match(/^spotify:/)) return url; // trust all Spotify URIs will be embeddable
+
+    url = new URL(url)
+
+    // again, we're kind of trusting here, but especially that the embed service will reject wrong cases.
+    let path = url.pathname.replace(/\/$/, '') // strip trailing slash if there is one
+    return `spotify${path.replace(/\//g,':')}`
+}
+
 export default class Spotify extends Media {
     _loadMedia() {
-        var api_url,
-            self = this;
+
+        var api_url;
 
         // Create Dom element
         this._el.content_item = this.domCreate("div", "tl-media-item tl-media-iframe tl-media-spotify", this._el.content);
 
-        // Get Media ID
-        if (this.data.url.match(/^spotify:track/) || this.data.url.match(/^spotify:album/) || this.data.url.match(/^spotify:user:.+:playlist:/)) {
-            this.media_id = this.data.url;
-        }
 
-        if (this.data.url.match(/spotify\.com\/track\/(.+)/)) {
-            this.media_id = "spotify:track:" + this.data.url.match(/spotify\.com\/track\/(.+)/)[1];
-        } else if (this.data.url.match(/spotify\.com\/album\/(.+)/)) {
-            this.media_id = "spotify:album:" + this.data.url.match(/spotify\.com\/album\/(.+)/)[1];
-        } else if (this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)) {
-            var user = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[1];
-            var playlist = this.data.url.match(/spotify\.com\/user\/(.+?)\/playlist\/(.+)/)[2];
-            this.media_id = "spotify:user:" + user + ":playlist:" + playlist;
-        } else if (this.data.url.match(/spotify\.com\/artist\/(.+)/)) {
-            var artist = this.data.url.match(/spotify\.com\/artist\/(.+)/)[1];
-            this.media_id = "spotify:artist:" + artist;
-        }
-
+        this.media_id = computeMediaId(this.data.url)
 
         if (this.media_id) {
             // API URL

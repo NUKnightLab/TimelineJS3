@@ -72,7 +72,7 @@ export default class TwitterEmbed extends Media {
         tweet_status_date = tweet_status_temp.split("\"\>")[1].split("<\/a>")[0];
 
         // Open links in new window
-        tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" href');
+        tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" rel="noopener" href');
         let mediaID = this.media_id; // make visible in callback.
         if (tweet_text.includes("pic.twitter.com")) {
             twttr.ready(
@@ -97,9 +97,9 @@ export default class TwitterEmbed extends Media {
 
             //	TWEET AUTHOR
             tweet += "<div class='vcard'>";
-            tweet += "<a href='" + tweet_status_url + "' class='twitter-date' target='_blank'>" + tweet_status_date + "</a>";
+            tweet += "<a href='" + tweet_status_url + "' class='twitter-date' rel='noopener' target='_blank'>" + tweet_status_date + "</a>";
             tweet += "<div class='author'>";
-            tweet += "<a class='screen-name url' href='" + d.author_url + "' target='_blank'>";
+            tweet += "<a class='screen-name url' href='" + d.author_url + "' rel='noopener' target='_blank'>";
             tweet += "<span class='avatar'></span>";
             tweet += "<span class='fn'>" + d.author_name + " <span class='tl-icon-twitter'></span></span>";
             tweet += "<span class='nickname'>@" + tweetuser + "<span class='thumbnail-inline'></span></span>";
