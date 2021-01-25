@@ -1,4 +1,4 @@
-3.8.12 (not yet released)
+3.8.12 (2021-01-25)
 * #363,670: remove synchronous XMLHttpRequests
 * #672: support Spotify podcasts
 * #649: better handling of a/href tags to open in new windows, or to follow specified target values
