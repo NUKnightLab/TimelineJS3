@@ -3,7 +3,7 @@ import { addClass } from "../dom/DOMUtil"
 import { hexToRgb, mergeData, classMixin, isTrue, trace, addTraceHandler } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import Message from "../ui/Message"
-import { Language, fallback } from "../language/Language"
+import { Language, fallback, loadLanguage } from "../language/Language"
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events";
 import { makeConfig } from "../core/ConfigFactory"
@@ -239,11 +239,17 @@ class Timeline {
         try {
             var lang = this.options.language
             var script_path = this.options.script_path
-            this.language = new Language(lang, script_path)
-            this.message.setLanguage(this.language)
-            this.options.language = this.language // easiest way to make language available to I18NMixins
-            this.showMessage(this._('loading_timeline'))
-            this._initData(data)
+            loadLanguage(lang, script_path).then((language) => {
+                if (language) {
+                    this.language = language
+                    this.message.setLanguage(this.language)
+                    this.options.language = this.language // easiest way to make language available to I18NMixins
+                    this.showMessage(this._('loading_timeline'))
+                } else {
+                    this.showMessage(`Error loading ${lang}`) // but we will carry on using the fallback
+                }
+                this._initData(data)
+            })
         } catch (e) {
             this.showMessage(this._translateError(e))
         }

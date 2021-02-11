@@ -4,6 +4,11 @@ import { BigYear } from "../date/TLDate"
 
 /**
  * Instantiate a Language object to manage I18N. 
+ * WARNING: In general, this should not be called directly, because it doesn't block while
+ * the language file is loaded, which can lead to race conditions in some cases. In most
+ * cases, language objects other than the fallback should be gotten by calling the 
+ * async function loadLanguage defined elsewhere in this file.
+ * 
  * @param {String} [language=en] - a language code or a URL to a 
  *     translation file
  * @param {string} [script_path] - if `language` is not a URL, this is used
@@ -19,22 +24,15 @@ class Language {
         if (language && typeof(language) == 'string' && language != 'en') {
             var code = language;
             if (!(code in LANGUAGES)) {
-                if (/\.json$/.test(code)) {
-                    var url = code;
-                } else {
-                    var fragment = "/locale/" + code + ".json";
-                    var script_path = script_path;
-                    if (/\/$/.test(script_path)) { fragment = fragment.substr(1) }
-                    var url = script_path + fragment;
-                }
-                var self = this;
+                console.log(`Expected language ${code} to be cached. Did you call the constructor directly?`)
+                var url = buildLanguageURL(code, script_path);
                 fetchJSON(url).then((json) => {
                     LANGUAGES[code] = json
-                    mergeData(this, LANGUAGES[code]);
                 }).catch(resp => {
                     console.log(`Error loading language [${url}] ${resp.statusText} [${resp.status}]`)
                 })
             }
+            mergeData(this, LANGUAGES[code]);
         }
     }
 
@@ -191,6 +189,41 @@ class Language {
     }
 
 
+}
+
+/**
+ * Provide an async factory method for loading languages that clarifies the need to wait 
+ * for the language data to be loaded, so that other code doesn't press ahead before the language
+ * is available. 
+ * 
+ * 
+ * @param {String} language_code - a language code or a fully-qualified URL to a language JSON file
+ * @param {String} script_path - a URL prefix which can be used to construct a fully-qualified URL to a language file using `language_code`
+ * 
+ * @returns {Language} - an instance of Language, or null if there's an error loading the translation file
+ */
+async function loadLanguage(language_code, script_path) {
+    var url = buildLanguageURL(language_code, script_path);
+    try {
+        let json = await fetchJSON(url)
+        LANGUAGES[language_code] = json
+        return new Language(language_code, script_path)
+    } catch (e) {
+        console.log(`Error loading language [${url}] ${e}`)
+        return null;
+    }
+
+}
+
+function buildLanguageURL(code, script_path) {
+    if (/\.json$/.test(code)) {
+        var url = code;
+    } else {
+        var fragment = "/locale/" + code + ".json";
+        if (/\/$/.test(script_path)) { fragment = fragment.substr(1); }
+        var url = script_path + fragment;
+    }
+    return url;
 }
 
 function formatNumber(val, mask) {
@@ -382,4 +415,4 @@ var LANGUAGES = {
 
 let fallback = new Language();
 Language.fallback = fallback;
-export { Language, fallback }
+export { Language, fallback, loadLanguage }
