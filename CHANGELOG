@@ -1,3 +1,6 @@
+3.8.13 (2021-02-12)
+* #682: adjust language loading to make sure its done before drawing timeline.
+
 3.8.12 (2021-01-25)
 * #363,670: remove synchronous XMLHttpRequests
 * #672: support Spotify podcasts
