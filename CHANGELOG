@@ -1,3 +1,6 @@
+3.8.15 (not-yet-released)
+* Fix straggling JSON syntax error in en.json example file.
+
 3.8.14 (2021-02-14)
 * Make en.json proper JSON (remove comments) now that new codepath is causing it to be DOMContentLoaded
 * Add better error handling to Net.js just in case.

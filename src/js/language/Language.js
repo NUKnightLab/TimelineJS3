@@ -209,7 +209,7 @@ async function loadLanguage(language_code, script_path) {
         LANGUAGES[language_code] = json
         return new Language(language_code, script_path)
     } catch (e) {
-        console.log(`Error loading language [${url}] ${e}`)
+        console.log(`Error loading language [${url}] ${e.statusText}`)
         return null;
     }
 
