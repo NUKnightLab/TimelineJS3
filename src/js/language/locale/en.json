@@ -50,7 +50,7 @@
         ]
     },
     "api": {
-        "wikipedia": "en" // the two letter code at the beginning of the Wikipedia subdomain for this language
+        "wikipedia": "en"
     },
     "messages": {
         "loading": "Loading",
@@ -107,17 +107,17 @@
         "year": "yyyy",
         "full_long_small_date": "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
     },
-    "era_labels": { // specify prefix or suffix to apply to formatted date. Blanks mean no change.
+    "era_labels": {
         "positive_year": {
             "prefix": "",
             "suffix": ""
         },
-        "negative_year": { // if either of these is specified, the year will be converted to positive before they are applied
+        "negative_year": {
             "prefix": "",
             "suffix": "BCE"
         }
     },
-    "period_labels": { // use of t/tt/T/TT is a legacy of original Timeline date format
+    "period_labels": {
         "t": ["a", "p"],
         "tt": ["am", "pm"],
         "T": ["A", "P"],
