@@ -1,73 +1,28 @@
 {
-    "name": "English",
+    "name": "English (built-in)",
     "lang": "en",
-    "date": {
-        "month_abbr": [
-            "Jan.",
-            "Feb.",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "Aug.",
-            "Sept.",
-            "Oct.",
-            "Nov.",
-            "Dec."
-        ],
-        "day_abbr": [
-            "Sun.",
-            "Mon.",
-            "Tues.",
-            "Wed.",
-            "Thurs.",
-            "Fri.",
-            "Sat."
-        ],
-        "day": [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ],
-        "month": [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        ]
-    },
     "api": {
         "wikipedia": "en"
     },
     "messages": {
         "loading": "Loading",
+        "wikipedia": "From Wikipedia, the free encyclopedia",
         "error": "Error",
         "contract_timeline": "Contract Timeline",
         "return_to_title": "Return to Title",
-        "wikipedia": "From Wikipedia, the free encyclopedia",
         "loading_content": "Loading Content",
         "expand_timeline": "Expand Timeline",
         "loading_timeline": "Loading Timeline... ",
         "swipe_to_navigate": "Swipe to Navigate<br><span class='tl-button'>OK</span>",
         "unknown_read_err": "An unexpected error occurred trying to read your spreadsheet data",
         "invalid_url_err": "Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",
+        "invalid_url_share_required": "Because of unexpected changes to Google's data access API, the creator of this timeline must enable 'anyone with the url can read' access for this spreadsheet. See timeline.knightlab.com for more information.",
         "network_err": "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
         "empty_feed_err": "No data entries found",
         "missing_start_date_err": "Missing start_date",
         "invalid_data_format_err": "Header row has been modified.",
+        "invalid_start_time_without_date": "Invalid configuration: time cannot be used without date.",
+        "invalid_end_time_without_date": "Invalid configuration: end time cannot be used without end date.",
         "date_compare_err": "Can't compare timeline date objects on different scales",
         "invalid_scale_err": "Invalid scale",
         "invalid_date_err": "Invalid date: month, day and year must be numbers.",
@@ -95,17 +50,53 @@
         "invalid_integer_option": "Invalid option value—must be a whole number.",
         "instagram_bad_request": "Invalid or private Instagram URL"
     },
-    "dateformats": {
-        "full_long": "mmm d',' yyyy 'at' h:MM TT",
-        "full_short": "mmm d",
-        "full": "mmmm d',' yyyy",
-        "month_short": "mmm",
-        "time_no_seconds_small_date": "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
-        "month": "mmmm yyyy",
-        "time_no_seconds_short": "h:MM TT",
-        "time_short": "h:MM:ss TT",
-        "year": "yyyy",
-        "full_long_small_date": "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+    "date": {
+        "month": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ],
+        "month_abbr": [
+            "Jan.",
+            "Feb.",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "Aug.",
+            "Sept.",
+            "Oct.",
+            "Nov.",
+            "Dec."
+        ],
+        "day": [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ],
+        "day_abbr": [
+            "Sun.",
+            "Mon.",
+            "Tues.",
+            "Wed.",
+            "Thurs.",
+            "Fri.",
+            "Sat."
+        ]
     },
     "era_labels": {
         "positive_year": {
@@ -122,5 +113,40 @@
         "tt": ["am", "pm"],
         "T": ["A", "P"],
         "TT": ["AM", "PM"]
+    },
+    "dateformats": {
+        "year": "yyyy",
+        "month_short": "mmm",
+        "month": "mmmm yyyy",
+        "full_short": "mmm d",
+        "full": "mmmm d',' yyyy",
+        "time": "h:MM:ss TT' <small>'mmmm d',' yyyy'</small>'",
+        "time_short": "h:MM:ss TT",
+        "time_no_seconds_short": "h:MM TT",
+        "time_no_minutes_short": "h TT",
+        "time_no_seconds_small_date": "h:MM TT' <small>'mmmm d',' yyyy'</small>'",
+        "time_milliseconds": "l",
+        "full_long": "mmm d',' yyyy 'at' h:MM TT",
+        "full_long_small_date": "h:MM TT' <small>mmm d',' yyyy'</small>'"
+    },
+    "bigdateformats": {
+        "fallback": [
+            [1000000000, "%.2f billion years ago"],
+            [1000000, "%.1f million years ago"],
+            [1000, "%.1f thousand years ago"],
+            [1, "%f years ago"]
+        ],
+        "compact": [
+            [1000000000, "%.2f bya"],
+            [1000000, "%.1f mya"],
+            [1000, "%.1f kya"],
+            [1, "%f years ago"]
+        ],
+        "verbose": [
+            [1000000000, "%.2f billion years ago"],
+            [1000000, "%.1f million years ago"],
+            [1000, "%.1f thousand years ago"],
+            [1, "%f years ago"]
+        ]
     }
 }

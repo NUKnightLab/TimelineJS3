@@ -205,8 +205,10 @@ class Language {
 async function loadLanguage(language_code, script_path) {
     var url = buildLanguageURL(language_code, script_path);
     try {
-        let json = await fetchJSON(url)
-        LANGUAGES[language_code] = json
+        if (!LANGUAGES[language_code]) {
+            let json = await fetchJSON(url)
+            LANGUAGES[language_code] = json
+        }
         return new Language(language_code, script_path)
     } catch (e) {
         console.log(`Error loading language [${url}] ${e.statusText}`)
@@ -256,7 +258,7 @@ var LANGUAGES = {
     which we'd rather not have to get "re-translated" if we use them.
 */
     en: {
-        name: "English",
+        name: "English (built-in)",
         lang: "en",
         api: {
             wikipedia: "en" // the two letter code at the beginning of the Wikipedia subdomain for this language

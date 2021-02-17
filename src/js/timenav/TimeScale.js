@@ -4,6 +4,25 @@ import TLError from "../core/TLError"
 import { TLDate, BigDate, BigYear, SCALES } from "../date/TLDate"
 import { getBestHelper } from "./AxisHelper"
 
+// Date Format Lookup, map TLDate.SCALES names to...
+const AXIS_TICK_DATEFORMAT_LOOKUP = {
+    millisecond: 'time_milliseconds', // ...Language.<code>.dateformats
+    second: 'time_short',
+    minute: 'time_no_seconds_short',
+    hour: 'time_no_minutes_short',
+    day: 'full_short',
+    month: 'month_short',
+    year: 'year',
+    decade: 'year',
+    century: 'year',
+    millennium: 'year',
+    age: 'compact', // ...Language.<code>.bigdateformats
+    epoch: 'compact',
+    era: 'compact',
+    eon: 'compact',
+    eon2: 'compact'
+}
+
 export class TimeScale {
 
     constructor(timeline_config, options) {
@@ -31,13 +50,13 @@ export class TimeScale {
         if (this._span_in_millis <= 0) {
             this._span_in_millis = this._computeDefaultSpan(timeline_config);
         }
-        this._average = (this._span_in_millis)/slides.length;
+        this._average = (this._span_in_millis) / slides.length;
 
         this._pixels_per_milli = this.getPixelWidth() / this._span_in_millis;
 
         this._axis_helper = getBestHelper(this);
 
-        this._scaled_padding = (1/this.getPixelsPerTick()) * (this._display_width/2)
+        this._scaled_padding = (1 / this.getPixelsPerTick()) * (this._display_width / 2)
         this._computePositionInfo(slides, options.max_rows);
     }
 
@@ -54,8 +73,8 @@ export class TimeScale {
             for (var i = SCALES.length - 1; i >= 0; i--) {
                 if (formats.hasOwnProperty(SCALES[i][0])) {
                     var scale = SCALES[SCALES.length - 1]; // default
-                    if (SCALES[i+1]) {
-                        scale = SCALES[i+1]; // one larger than the largest in our data
+                    if (SCALES[i + 1]) {
+                        scale = SCALES[i + 1]; // one larger than the largest in our data
                     }
                     return scale[1]
                 }
@@ -65,11 +84,12 @@ export class TimeScale {
 
         return 200000; // what is the right handling for cosmo dates?
     }
-    getGroupLabels() { /*
-        return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
-            * label (the string as specified in one or more 'group' properties of events in the configuration)
-            * rows (the number of rows occupied by events associated with the label. )
-        */
+    getGroupLabels() {
+        /*
+               return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
+                   * label (the string as specified in one or more 'group' properties of events in the configuration)
+                   * rows (the number of rows occupied by events associated with the label. )
+               */
         return (this._group_labels || []);
     }
 
@@ -90,7 +110,7 @@ export class TimeScale {
         // however, we're moving to make the arg to this whatever value
         // comes from TLDate.getTime() which could be made smart about that --
         // so it may just be about the naming.
-        return ( time_in_millis - this._earliest ) * this._pixels_per_milli
+        return (time_in_millis - this._earliest) * this._pixels_per_milli
     }
 
     getPositionInfo(idx) {
@@ -104,13 +124,14 @@ export class TimeScale {
     getTicks() {
         return {
             major: this._axis_helper.getMajorTicks(this),
-            minor: this._axis_helper.getMinorTicks(this) }
+            minor: this._axis_helper.getMinorTicks(this)
+        }
     }
 
     getDateFromTime(t) {
-        if(this._scale == 'human') {
+        if (this._scale == 'human') {
             return new TLDate(t);
-        } else if(this._scale == 'cosmological') {
+        } else if (this._scale == 'cosmological') {
             return new BigDate(new BigYear(t));
         }
         throw new TLError("time_scale_scale_err", this._scale);
@@ -128,8 +149,8 @@ export class TimeScale {
         var groups = [];
         var empty_group = false;
         for (var i = 0; i < slides.length; i++) {
-            if(slides[i].group) {
-                if(groups.indexOf(slides[i].group) < 0) {
+            if (slides[i].group) {
+                if (groups.indexOf(slides[i].group) < 0) {
                     groups.push(slides[i].group);
                 } else {
                     empty_group = true;
@@ -162,7 +183,7 @@ export class TimeScale {
 
             for (var j = 0; j < lasts_in_row.length; j++) {
                 overlaps.push(lasts_in_row[j].end - pos_info.start);
-                if(overlaps[j] <= 0) {
+                if (overlaps[j] <= 0) {
                     pos_info.row = j;
                     lasts_in_row[j] = pos_info;
                     break;
@@ -193,7 +214,7 @@ export class TimeScale {
             }
         }
 
-        return {n_rows: lasts_in_row.length, n_overlaps: n_overlaps};
+        return { n_rows: lasts_in_row.length, n_overlaps: n_overlaps };
     }
 
     /*  Compute marker positions.  If using groups, this._number_of_rows
@@ -228,8 +249,8 @@ export class TimeScale {
                 pos_info.end = pos_info.start + default_marker_width;
             }
 
-            if(slides[i].group) {
-                if(groups.indexOf(slides[i].group) < 0) {
+            if (slides[i].group) {
+                if (groups.indexOf(slides[i].group) < 0) {
                     groups.push(slides[i].group);
                 }
             } else {
@@ -237,36 +258,36 @@ export class TimeScale {
             }
         }
 
-        if(!(groups.length)) {
+        if (!(groups.length)) {
             var result = this._computeRowInfo(this._positions, max_rows);
             this._number_of_rows = result.n_rows;
         } else {
-            if(empty_group) {
+            if (empty_group) {
                 groups.push("");
             }
 
             // Init group info
             var group_info = [];
 
-            for(var i = 0; i < groups.length; i++) {
+            for (var i = 0; i < groups.length; i++) {
                 group_info[i] = {
                     label: groups[i],
                     idx: i,
                     positions: [],
-                    n_rows: 1,      // default
+                    n_rows: 1, // default
                     n_overlaps: 0
                 };
             }
 
-            for(var i = 0; i < this._positions.length; i++) {
+            for (var i = 0; i < this._positions.length; i++) {
                 var pos_info = this._positions[i];
 
                 pos_info.group = groups.indexOf(slides[i].group || "");
                 pos_info.row = 0;
 
                 var gi = group_info[pos_info.group];
-                for(var j = gi.positions.length - 1; j >= 0; j--) {
-                    if(gi.positions[j].end > pos_info.start) {
+                for (var j = gi.positions.length - 1; j >= 0; j--) {
+                    if (gi.positions[j].end > pos_info.start) {
                         gi.n_overlaps++;
                     }
                 }
@@ -276,39 +297,39 @@ export class TimeScale {
 
             var n_rows = groups.length; // start with 1 row per group
 
-            while(true) {
+            while (true) {
                 // Count free rows available
                 var rows_left = Math.max(0, max_rows - n_rows);
-                if(!rows_left) {
-                    break;  // no free rows, nothing to do
+                if (!rows_left) {
+                    break; // no free rows, nothing to do
                 }
 
                 // Sort by # overlaps, idx
-               group_info.sort(function(a, b) {
-                    if(a.n_overlaps > b.n_overlaps) {
+                group_info.sort(function(a, b) {
+                    if (a.n_overlaps > b.n_overlaps) {
                         return -1;
-                    } else if(a.n_overlaps < b.n_overlaps) {
+                    } else if (a.n_overlaps < b.n_overlaps) {
                         return 1;
                     }
                     return a.idx - b.idx;
                 });
-                if(!group_info[0].n_overlaps) {
+                if (!group_info[0].n_overlaps) {
                     break; // no overlaps, nothing to do
                 }
 
                 // Distribute free rows among groups with overlaps
                 var n_rows = 0;
-                for(var i = 0; i < group_info.length; i++) {
+                for (var i = 0; i < group_info.length; i++) {
                     var gi = group_info[i];
 
-                    if(gi.n_overlaps && rows_left) {
-                        var res = this._computeRowInfo(gi.positions,  gi.n_rows + 1);
-                        gi.n_rows = res.n_rows;     // update group info
+                    if (gi.n_overlaps && rows_left) {
+                        var res = this._computeRowInfo(gi.positions, gi.n_rows + 1);
+                        gi.n_rows = res.n_rows; // update group info
                         gi.n_overlaps = res.n_overlaps;
-                        rows_left--;                // update rows left
+                        rows_left--; // update rows left
                     }
 
-                    n_rows += gi.n_rows;            // update rows used
+                    n_rows += gi.n_rows; // update rows used
                 }
             }
 
@@ -318,15 +339,15 @@ export class TimeScale {
             // Set group labels; offset row positions
             this._group_labels = [];
 
-            group_info.sort(function(a, b) {return a.idx - b.idx; });
+            group_info.sort(function(a, b) { return a.idx - b.idx; });
 
-            for(var i = 0, row_offset = 0; i < group_info.length; i++) {
+            for (var i = 0, row_offset = 0; i < group_info.length; i++) {
                 this._group_labels.push({
                     label: group_info[i].label,
                     rows: group_info[i].n_rows
                 });
 
-                for(var j = 0; j < group_info[i].positions.length; j++) {
+                for (var j = 0; j < group_info[i].positions.length; j++) {
                     var pos_info = group_info[i].positions[j];
                     pos_info.row += row_offset;
                 }
@@ -334,6 +355,23 @@ export class TimeScale {
                 row_offset += group_info[i].n_rows;
             }
         }
+
+    }
+
+
+
+
+    /**
+     * To handle formatting cosmological ticks correctly, let the TimeScale (which knows)
+     * give us the format for tick labels on the time axis.
+     * @param {String} name - the "level" of dates in the axis
+     */
+    getAxisTickDateFormat(name) {
+        if (this._scale == 'cosmological') {
+            return 'compact' // is this heavy-handed? cosmologic
+        }
+
+        return AXIS_TICK_DATEFORMAT_LOOKUP[name]
 
     }
 }

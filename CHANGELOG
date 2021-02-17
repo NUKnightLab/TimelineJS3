@@ -1,5 +1,6 @@
-3.8.15 (not-yet-released)
+3.8.15 (2021-02-17)
 * Fix straggling JSON syntax error in en.json example file.
+* Fix bug introduced with cosmological date formatting to do with inconsistencies between Language.js and en.json
 
 3.8.14 (2021-02-14)
 * Make en.json proper JSON (remove comments) now that new codepath is causing it to be DOMContentLoaded
