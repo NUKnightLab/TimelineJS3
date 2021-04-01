@@ -775,16 +775,23 @@ class Timeline {
         if (this._loaded.storyslider && this._loaded.timenav) {
             this.fire("loaded", this.config);
             // Go to proper slide
-            if (this.options.hash_bookmark && window.location.hash != "") {
-                this.goToId(window.location.hash.replace("#event-", ""));
+            if (this.options.hash_bookmark) {
+                if (window.location.hash != "") {
+                    this.goToId(window.location.hash.replace("#event-", ""));
+                } else {
+                    this._updateHashBookmark(this.current_id);
+                }
+                let the_timeline = this;
+                window.addEventListener('hashchange', function() {
+                    if (window.location.hash.indexOf('#event-') == 0) {
+                        the_timeline.goToId(window.location.hash.replace("#event-", ""));
+                    }
+                }, false);
             } else {
                 if (isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length) {
                     this.goToEnd();
                 } else {
                     this.goTo(this.options.start_at_slide);
-                }
-                if (this.options.hash_bookmark) {
-                    this._updateHashBookmark(this.current_id);
                 }
             }
 
@@ -793,9 +800,11 @@ class Timeline {
 
     // Update hashbookmark in the url bar
     _updateHashBookmark(id) {
-        var hash = "#" + "event-" + id.toString();
-        window.history.replaceState(null, "Browsing TimelineJS", hash);
-        this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
+        if (id) { // TODO: validate the id...
+            var hash = "#" + "event-" + id.toString();
+            window.history.replaceState(null, "Browsing TimelineJS", hash);
+            this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
+        }
     }
 
 
@@ -820,6 +829,7 @@ class Timeline {
     // Goto slide with id
     goToId(id) {
         if (this.current_id != id) {
+
             this.current_id = id;
             this._timenav.goToId(this.current_id);
             this._storyslider.goToId(this.current_id, false, true);

@@ -1,3 +1,6 @@
+3.8.16 (not yet released)
+* Add hash change listener so that timelines with `hash_bookmark` option respond to hash changes after loading. (#692)
+
 3.8.15 (2021-02-17)
 * Fix straggling JSON syntax error in en.json example file.
 * Fix bug introduced with cosmological date formatting to do with inconsistencies between Language.js and en.json

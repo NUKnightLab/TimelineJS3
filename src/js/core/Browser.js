@@ -31,9 +31,9 @@ export const edge = ua.indexOf("edge/") !== -1;
 export const ie3d = (doc) ? ie && 'transition' in doc.style : false
 export const webkit3d = (window) ? ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23 : false
 export const gecko3d = (doc) ? 'MozPerspective' in doc.style : false
-export const opera3d = (doc) ? 'OTransition' in doc.style: false
+export const opera3d = (doc) ? 'OTransition' in doc.style : false
 
-export const any3d = window && !window.L_DISABLE_3D && 
+export const any3d = window && !window.L_DISABLE_3D &&
     (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs
 
 export const mobileWebkit = mobile && webkit
@@ -43,26 +43,26 @@ export const mobileOpera = mobile && window.opera
 export let retina = (window) ? 'devicePixelRatio' in window && window.devicePixelRatio > 1 : false
 
 if (!retina && window && 'matchMedia' in window) {
-    var matches = window.matchMedia('(min-resolution:144dpi)');
-    retina = matches && matches.matches;
+    let media_matches = window.matchMedia('(min-resolution:144dpi)');
+    retina = media_matches && media_matches.matches;
 }
 
 export const touch = window &&
-                        !window.L_NO_TOUCH && 
-                        !phantomjs && 
-                        (pointer || 'ontouchstart' in window || (window.DocumentTouch && document instanceof window.DocumentTouch))
+    !window.L_NO_TOUCH &&
+    !phantomjs &&
+    (pointer || 'ontouchstart' in window || (window.DocumentTouch && document instanceof window.DocumentTouch))
 
 
 export function orientation() {
-	var w = window.innerWidth,
-		h = window.innerHeight,
-		_orientation = "portrait";
+    var w = window.innerWidth,
+        h = window.innerHeight,
+        _orientation = "portrait";
 
-	if (w > h) {
-		_orientation = "landscape";
-	}
-	if (Math.abs(window.orientation) == 90) {
-		//_orientation = "landscape";
-	}
-	return _orientation;
+    if (w > h) {
+        _orientation = "landscape";
+    }
+    if (Math.abs(window.orientation) == 90) {
+        //_orientation = "landscape";
+    }
+    return _orientation;
 }
