@@ -13,6 +13,8 @@ To deploy the website, or updates to the Wordpress plugin, you must have local c
 
 ## Deploying changes to the JavaScript
 
+Before beginning to deploy, make sure all changes are thoroughly tested. Update CHANGELOG to track changes and establish the release date for the version. Update package.json to the new version number.
+
 Deploying the JavaScript library uses `npm` scripts defined in `package.json`. To deploy to the Knight Lab CDN, use the following scripts:
 
 * npm run stage
@@ -20,6 +22,8 @@ Deploying the JavaScript library uses `npm` scripts defined in `package.json`. T
 * npm run stage_dev
 
 To stage a new release of TimelineJS, use `npm run stage_latest`. This will ask you for a version number (tag), build the code, and copy it to the appropriate versioned subdirectory of the `cdn.knightlab.com` repository, as well as copying it to the `/latest/` directory.  In the rare case when you want to tag a version, but not change `latest`, use `npm run stage` although then copying that to `/latest/` is outside the scope of these tools. 
+
+When a new version is deployed to the CDN, it should also be published to the npmjs repository. Do this by running `npm publish`.
 
 > **Note:** this does *not* deploy the new code. There is one more step--you must switch to the CDN repository, commit the new code, and deploy the repository.
 

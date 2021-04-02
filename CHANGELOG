@@ -1,4 +1,4 @@
-3.8.16 (not yet released)
+3.8.16 (2021-04-02)
 * Add hash change listener so that timelines with `hash_bookmark` option respond to hash changes after loading. (#692)
 
 3.8.15 (2021-02-17)
