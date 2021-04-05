@@ -50,8 +50,13 @@ function make_keydown_handler(timeline) {
  * @constructor
  * @param {HTMLElement|string} elem - the HTML element, or its ID, to which 
  *     the Timeline should be bound
- * @param {object} - a JavaScript object conforming to the TimelineJS 
- *     configuration format
+ * @param {object|String} - a JavaScript object conforming to the TimelineJS
+ *     configuration format, or a String which is the URL for a Google Sheets document
+ *     or JSON configuration file which Timeline will retrieve and parse into a JavaScript object.
+ *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a 
+ *     JSON string from a URL string. If you have a JSON String literal, parse it using
+ *     `JSON.parse` before passing it to the constructor.
+ *
  * @param {object} [options] - a JavaScript object specifying 
  *     presentation options
  */
