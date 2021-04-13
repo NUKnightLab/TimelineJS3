@@ -451,8 +451,22 @@
                 "month": "6"
             },
             "text": {
-                "headline": "Video",
+                "headline": "Video (mp4)",
                 "text": "A URL to a video file (mp4) will be rendered using the browser's native video player."
+            }
+        },
+        {
+            "media": {
+                "url": "https://file-examples-com.github.io/uploads/2020/03/file_example_WEBM_480_900KB.webm",
+                "credit": "file-examples.com"
+            },
+            "start_date": {
+                "year": "1927",
+                "month": "8"
+            },
+            "text": {
+                "headline": "Video (webm)",
+                "text": "The Video media type also supports webm files."
             }
         },
         {

@@ -1,5 +1,6 @@
 import { Media } from "../Media";
 import * as Browser from "../../core/Browser"
+import { trace } from "../../core/Util";
 
 export default class Audio extends Media {
     _loadMedia() {
@@ -41,6 +42,7 @@ export default class Audio extends Media {
         this._el.source_item.src = this.data.url;
         this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
         this._el.content_item.innerHTML += "Your browser doesn't support HTML5 audio with " + this._el.source_item.type;
+        this.player_element = this._el.content_item
     }
 
     _updateMediaDisplay(layout) {
@@ -48,6 +50,13 @@ export default class Audio extends Media {
             this._el.content_item.style.width = "auto";
         }
     }
+
+    _stopMedia() {
+        if (this.player_element) {
+            this.player_element.pause()
+        }
+    }
+
 
     _getType(url, reg) {
         var ext = url.match(reg);

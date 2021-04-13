@@ -41,11 +41,19 @@ export default class Video extends Media {
         this._el.source_item.src = this.data.url;
         this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
         this._el.content_item.innerHTML += "Your browser doesn't support HTML5 video with " + this._el.source_item.type;
+        this.player_element = this._el.content_item
+
     }
 
     _updateMediaDisplay(layout) {
         if (Browser.firefox) {
             this._el.content_item.style.width = "auto";
+        }
+    }
+
+    _stopMedia() {
+        if (this.player_element) {
+            this.player_element.pause()
         }
     }
 
@@ -55,6 +63,9 @@ export default class Video extends Media {
         switch (ext[1]) {
             case "mp4":
                 type += "mp4";
+                break;
+            case "webm":
+                type += "webm";
                 break;
             default:
                 type = "video";

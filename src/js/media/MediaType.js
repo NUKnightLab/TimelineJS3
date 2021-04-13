@@ -184,7 +184,7 @@ export function lookupMediaType(m, image_only) {
             {
                 type: "video",
                 name: "Video",
-                match_str: /(mp4)(\?.*)?$/i,
+                match_str: /(mp4|webm)(\?.*)?$/i,
                 cls: Video
             },
             {
