@@ -1,3 +1,8 @@
+3.8.17 (not yet released)
+* #696 - implement pause on audio/video media types
+* Add support for direct webm video URLs
+* Update several npm dependencies
+
 3.8.16 (2021-04-02)
 * Add hash change listener so that timelines with `hash_bookmark` option respond to hash changes after loading. (#692)
 
