@@ -13,7 +13,10 @@ Are you trying to contribute to or develop TimelineJS3? [Here's where you should
 ## Getting Started
 
 The [official documentation for embedding a Timeline in your page instead of using an embed](https://timeline.knightlab.com/docs/instantiate-a-timeline.html) is now maintained on the main TimelineJS website.
-
+You can integrate Timelines in the following systems by dedicated extensions:
+* [Wordpress](https://wordpress.org/plugins/knight-lab-timelinejs/)
+* [MediaWiki](https://www.mediawiki.org/wiki/Extension:Modern_Timeline)
+* [Drupal](https://www.drupal.org/docs/8/modules/views-timelinejs)
 
 ## Options
 
