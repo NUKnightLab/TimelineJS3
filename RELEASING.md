@@ -29,4 +29,4 @@ The Wordpress plugin bundles the TimelineJS code, so when a new version of the l
 
 
 
-Note that releases of the JavaScript library are independent from updates to `timeline.knightlab.com`, which is deployed 
+Note that releases of the JavaScript library are independent from updates to `timeline.knightlab.com`, which is deployed using `fab deploy:prd` in the python environment. 
