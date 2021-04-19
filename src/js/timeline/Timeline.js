@@ -766,16 +766,6 @@ class Timeline {
         return -1;
     }
 
-    _onTimeNavLoaded() {
-        this._loaded.timenav = true;
-        this._onLoaded();
-    }
-
-    _onStorySliderLoaded() {
-        this._loaded.storyslider = true;
-        this._onLoaded();
-    }
-
     _onLoaded() {
         if (this._loaded.storyslider && this._loaded.timenav) {
             this.fire("loaded", this.config);

@@ -1,3 +1,7 @@
+3.8.18 (not yet released)
+* #699 - remove duplicate definition of _onStorySliderLoaded in Timeline.js
+* #700 - remove duplicate definition of _onTimeNavLoaded in Timeline.js
+
 3.8.17 (2021-04-19)
 * #696 - implement pause on audio/video media types
 * Add support for direct webm video URLs
