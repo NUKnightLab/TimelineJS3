@@ -1,4 +1,4 @@
-3.8.17 (not yet released)
+3.8.17 (2021-04-19)
 * #696 - implement pause on audio/video media types
 * Add support for direct webm video URLs
 * Update several npm dependencies
