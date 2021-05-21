@@ -770,6 +770,11 @@ class Timeline {
         if (this._loaded.storyslider && this._loaded.timenav) {
             this.fire("loaded", this.config);
             // Go to proper slide
+            if (isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length) {
+                this.goToEnd();
+            } else {
+                this.goTo(this.options.start_at_slide);
+            }
             if (this.options.hash_bookmark) {
                 if (window.location.hash != "") {
                     this.goToId(window.location.hash.replace("#event-", ""));
@@ -782,12 +787,6 @@ class Timeline {
                         the_timeline.goToId(window.location.hash.replace("#event-", ""));
                     }
                 }, false);
-            } else {
-                if (isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length) {
-                    this.goToEnd();
-                } else {
-                    this.goTo(this.options.start_at_slide);
-                }
             }
 
         }
