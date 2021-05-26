@@ -6,8 +6,8 @@ The primary action for "releasing" TimelineJS is pushing a new version to `cdn.k
 1. Update `package.json` to have the correct version.
 1. Update `CHANGELOG` to indicate the release date. Hopefully you've been incrementally updating the file with relevant changes so that this is just editing the version "header"
 1. Push all changes to GitHub
-1. Execute `npm publish` (permissions required)
 1. Execute `npm run stage_latest`, which creates both a versioned edition of the library and a copy of it in the `/latest/` directory of the CDN repository.
+1. Execute `npm publish` (permissions required)
 1. Change directories to the local copy of the `cdn.knightlab.com` repository, to which files were copied by the previous step
 1. `git add app/libs/timeline3` to add the new version and updated `latest` to Git
 1. Commit those changes with a message like "TimelineJS 3.x.x"
