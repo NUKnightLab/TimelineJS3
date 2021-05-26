@@ -36,7 +36,7 @@ For users who instantiate a timeline in a page (as opposed to using the iframe e
 
 To use in a project that uses ES6 modules and webpack, import the `Timeline` class and the CSS as follows
 
-```
+```js
 import { Timeline } from '@knight-lab/timelinejs';
 import '@knight-lab/timelinejs/dist/css/timeline.css';
 ```
