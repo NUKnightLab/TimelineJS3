@@ -579,7 +579,7 @@ class Timeline {
         if (Browser.mobile) {
             display_class += " tl-mobile";
             // Set TimeNav Height
-            this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, this.options.timenav_mobile_height_percentage);
+            this.options.timenav_height = this._calculateTimeNavHeight(null, this.options.timenav_mobile_height_percentage);
         } else {
             // Set TimeNav Height
             this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
