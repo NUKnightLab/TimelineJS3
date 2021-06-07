@@ -1,6 +1,7 @@
 3.8.18 (not yet released)
 * #699 - remove duplicate definition of _onStorySliderLoaded in Timeline.js
 * #700 - remove duplicate definition of _onTimeNavLoaded in Timeline.js
+* #705 - Export Timeline class and include generated CSS in npm package
 
 3.8.17 (2021-04-19)
 * #696 - implement pause on audio/video media types
