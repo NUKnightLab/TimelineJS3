@@ -1,4 +1,4 @@
-3.8.18 (not yet released)
+3.8.18 (2021-06-08)
 * #699 - remove duplicate definition of _onStorySliderLoaded in Timeline.js
 * #700 - remove duplicate definition of _onTimeNavLoaded in Timeline.js
 * #705 - Export Timeline class and include generated CSS in npm package
