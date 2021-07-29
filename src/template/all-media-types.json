@@ -21,7 +21,8 @@
             "text": {
                 "headline": "YouTube Videos",
                 "text": "<p>if Timeline finds a URL that starts with 'youtube.com' or 'youtu.be', it will try to use it to embed a YouTube video. The <em>protocol</em> part of the URL (e.g. <em>https://</em>) is technically optional.</p><p>You can start at a specific point in the video using the <code>t=#m#s</code> parameter: see <a href='http://youtubetime.com/'>http://youtubetime.com/</a></p>"
-            }
+            },
+            "group": "Video"
         },
         {
             "media": {
@@ -35,7 +36,8 @@
             "text": {
                 "headline": "Vimeo",
                 "text": "To embed a Vimeo video, just copy the URL of the Vimeo.com page which shows the video."
-            }
+            },
+            "group": "Video"
         },
         {
             "media": {
@@ -49,7 +51,8 @@
             "text": {
                 "headline": "DailyMotion",
                 "text": "To embed a DailyMotion video, just copy the URL of the page which shows the video."
-            }
+            },
+            "group": "Video"
         },
         {
             "media": {
@@ -63,7 +66,8 @@
             "text": {
                 "headline": "Vine",
                 "text": "To embed a Vine, just copy the URL of the page which shows the vine."
-            }
+            },
+            "group": "Video"
         },
         {
             "media": {
@@ -77,7 +81,8 @@
             "text": {
                 "headline": "SoundCloud",
                 "text": "To embed a SoundCloud clip, just copy the URL of the clip's page."
-            }
+            },
+            "group": "Audio"
         },
         {
             "media": {
@@ -106,7 +111,8 @@
             "text": {
                 "headline": "Twitter Embed",
                 "text": "Or you can copy the embed code if you want."
-            }
+            },
+            "group": "HTML"
         },
         {
             "media": {
@@ -190,7 +196,8 @@
             "text": {
                 "headline": "Instagram",
                 "text": "To embed an Instagram, just copy the URL of the photo's page."
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -218,7 +225,8 @@
             "text": {
                 "headline": "Flickr",
                 "text": "To embed a Flickr photo, just copy the URL in the browser bar."
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -232,7 +240,8 @@
             "text": {
                 "headline": "Flickr (alt)",
                 "text": "You can also use the embed code URL (with flic.kr)."
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -259,8 +268,9 @@
             },
             "text": {
                 "headline": "Image, JPG",
-                "text": "To embed a JPG, just copy the URL endig in '.jpg'."
-            }
+                "text": "To embed a JPG, just copy the URL ending in '.jpg'."
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -274,7 +284,8 @@
             "text": {
                 "headline": "Image, GIF",
                 "text": "To embed a GIF, just copy the URL endig in '.gif'."
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -288,7 +299,8 @@
             "text": {
                 "headline": "Image, PNG",
                 "text": "To embed a PNG, just copy the URL endig in '.png'."
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -302,7 +314,8 @@
             "text": {
                 "headline": "Image, JPEG",
                 "text": "To embed a JPEG, just copy the URL endig in '.jpeg'."
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -344,7 +357,8 @@
             "text": {
                 "headline": "Spotify, Artist",
                 "text": "To embed an artist on Spotify, just copy the 'Spotify URL'."
-            }
+            },
+            "group": "Audio"
         },
         {
             "media": {
@@ -358,7 +372,8 @@
             "text": {
                 "headline": "Spotify, Playlist",
                 "text": "To embed a Spotify playlist, just copy the 'Spotify URL'."
-            }
+            },
+            "group": "Audio"
         },
         {
             "media": {
@@ -372,7 +387,8 @@
             "text": {
                 "headline": "Spotify, Track",
                 "text": "To embed a Spotify track, just copy the 'Spotify URL'."
-            }
+            },
+            "group": "Audio"
         },
         {
             "media": {
@@ -386,7 +402,8 @@
             "text": {
                 "headline": "iFrame",
                 "text": "To embed an iFrame, just copy the iFrame code."
-            }
+            },
+            "group": "HTML"
         },
         {
             "media": {
@@ -400,7 +417,8 @@
             "text": {
                 "headline": "Blockquote",
                 "text": "To display a block quote, input text in HTML blockquote tags."
-            }
+            },
+            "group": "HTML"
         },
         {
             "media": {
@@ -413,7 +431,8 @@
             "text": {
                 "headline": "Imgur",
                 "text": "Just include the URL of an image or gallery page"
-            }
+            },
+            "group": "Image"
         },
         {
             "media": {
@@ -439,7 +458,8 @@
             "text": {
                 "headline": "Audio",
                 "text": "A URL to an audio file (mp3|wav|m4a) will be rendered using the browser's native audio player."
-            }
+            },
+            "group": "Audio"
         },
         {
             "media": {
@@ -453,7 +473,8 @@
             "text": {
                 "headline": "Video (mp4)",
                 "text": "A URL to a video file (mp4) will be rendered using the browser's native video player."
-            }
+            },
+            "group": "Video"
         },
         {
             "media": {
@@ -467,7 +488,8 @@
             "text": {
                 "headline": "Video (webm)",
                 "text": "The Video media type also supports webm files."
-            }
+            },
+            "group": "Video"
         },
         {
             "media": {
@@ -480,7 +502,8 @@
             "text": {
                 "headline": "Wistia",
                 "text": "Wistia is a commercial video hosting service. I don't even remember who requested that TimelineJS support it, and it's hard to find a suitable test URL, but ... "
-            }
+            },
+            "group": "Video"
         }
 
     ]
