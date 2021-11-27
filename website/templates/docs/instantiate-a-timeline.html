@@ -174,7 +174,7 @@
                     If you include the TimelineJS javascript code in another file, using a bundler, "accelerator," or the like, you must help TimelineJS know where it can find font and language files. By default, the code assumes that they are served from a predictable location
                     relative to the source. To do this, set the <code>script_path</code> option to a URL representing the directory where the core TimelineJS javascript files are stored. This should be a URL to which 'locale/es.json'
                     could be added to load the Spanish (<code>es</code>) language translation files. Similarly, it should a URL which can be combined with a relative path such as <code>../css/fonts/font.default.css</code> could be added to locate the
-                    default font styles.
+                    default font styles.  The URL must end with a trailing slash.
                 </p>
                 <p>
                     If you do not set the <code>script_path</code> option, TimelineJS will basically work, but it will not be able to load translations and it won't be able to load the default font file, leaving it to inherit whatever CSS styles are already
@@ -187,7 +187,7 @@
                         
         &lt;script type="text/javascript"&gt;
             var additionalOptions = {
-                script_path: '/timeline/js',
+                script_path: '/timeline/js/',
                 language: 'es',
                 font: 'amatic-andika'
             }
