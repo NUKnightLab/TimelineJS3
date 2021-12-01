@@ -20,7 +20,7 @@
       </pre>
                 </p>
 
-                <p>If you use our <a href="/index.html#make">authoring tool</a>, you can pass most of these as URL parameters. Add <code>&amp;option_name=<em>value</em></code> for each. To demonstrate using the same options as above: <code>https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Default&lang=en&initial_zoom=3&height=650&hash_bookmark=false</code></p>
+                <p>If you use our <a href="/index.html#make">authoring tool</a>, you can pass most of these as URL parameters. Add <code>&amp;option_name=<em>value</em></code> for each. To demonstrate using the same options as above: <code>https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=3&amp;height=650&amp;hash_bookmark=false</code></p>
                 <div class="grid">
                     <div class="column-2 column-6-phone">
                         <strong>Name</strong>
@@ -485,7 +485,20 @@
                         Can be used to help Timeline load related resources such as CSS themes and language files. Rarely needs to be set, except if you are bundling the TimelineJS javascript code with other javascript, so that the script it load from isn't in the same "relative" location to your local copy of those resources. 
                     </div>
                 </div>
-    </section>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>soundcite</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        <p>If this option is set to <code>true</code>, then TimelineJS will load the code necessary to support clips created using Knight Lab's <a href="https://soundcite.knightlab.com">SoundciteJS</a>. This eliminates the need to add the embed code shown in step 3 of the Soundcite authoring tool. Simply copy the per-clip markup from step 2 into the "text" field for any TimelineJS event.</p>
+                        <p>Note that while the default value for this option is <code>false</code>, for timelines hosted on Knight Lab's systems, the value is set to true for ease of use. </p>
+                    </div>
+                </div>
+            </section>
 </article>
 {% endblock %} {% block scripts %}
 <script type="text/javascript">
