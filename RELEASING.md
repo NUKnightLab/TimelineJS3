@@ -1,8 +1,8 @@
-# Steps to cut a new release of the TimelineJS JavaScript lbirary
+# Steps to cut a new release of the TimelineJS JavaScript library
 
 The primary action for "releasing" TimelineJS is pushing a new version to `cdn.knightlab.com` but as of mid-2020, we also publish new versions to the `npmjs` package registry.
 
-1. Before cutting a release, test thoroughly. Is this an opportunity to add new unit tests? Develop functional testing? If nothing else, `npm run compare` provides a way to see how some historical timelines would function with the new code.
+1. Before cutting a release, test thoroughly. Is this an opportunity to add new unit tests? Develop functional testing? If nothing else, `npm run compare` provides a way to see how some historical timelines would function with the new code. (Note that because of Google Sheets API changes, compare now compares back to the oldest release in the 3.8.x series instead of the pre-webpack version)
 1. Update `package.json` to have the correct version.
 1. Update `CHANGELOG` to indicate the release date. Hopefully you've been incrementally updating the file with relevant changes so that this is just editing the version "header"
 1. Push all changes to GitHub
