@@ -1,4 +1,4 @@
-require('../less/TL.Timeline.less')
+import "../less/TL.Timeline.less"
 export { Timeline }
 from "./timeline/Timeline"
 export { parseGoogleSpreadsheetURL }
