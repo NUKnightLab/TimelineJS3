@@ -1,11 +1,11 @@
 import { Media } from "../Media";
-import { transformImageURL } from "../../core/Util";
+import { transformMediaURL } from "../../core/Util";
 import * as Browser from "../../core/Browser"
 
 export default class PDF extends Media {
 
     _loadMedia() {
-        var url = transformImageURL(this.data.url),
+        var url = transformMediaURL(this.data.url),
             self = this;
 
         // Create Dom element

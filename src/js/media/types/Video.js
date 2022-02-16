@@ -1,6 +1,6 @@
 import { Media } from "../Media";
 import * as Browser from "../../core/Browser"
-import { transformImageURL } from "../../core/Util";
+import { transformMediaURL } from "../../core/Util";
 
 export default class Video extends Media {
     _loadMedia() {
@@ -18,7 +18,7 @@ export default class Video extends Media {
 
     createMedia() {
         //Transform URL for Dropbox
-        var url = transformImageURL(this.data.url),
+        var url = transformMediaURL(this.data.url),
             self = this;
 
         var self = this,

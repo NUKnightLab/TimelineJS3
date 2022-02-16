@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { transformImageURL } from "../../core/Util";
+import { transformMediaURL } from "../../core/Util";
 import * as Browser from "../../core/Browser"
 import { trace } from "../../core/Util";
 
@@ -20,7 +20,7 @@ export default class Audio extends Media {
 
     createMedia() {
         //Transform URL for Dropbox
-        var url = transformImageURL(this.data.url),
+        var url = transformMediaURL(this.data.url),
             self = this; 
 
         var self = this,

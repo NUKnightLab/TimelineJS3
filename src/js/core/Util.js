@@ -521,7 +521,7 @@ export function linkify(text, targets, is_touch) {
  * as a direct image link. Some services have predictable transformations we can use rather than explain to people
  * this subtlety.
  */
-export function transformImageURL(url) {
+export function transformMediaURL(url) {
     return url.replace(/(.*)www.dropbox.com\/(.*)/, '$1dl.dropboxusercontent.com/$2')
 }
 

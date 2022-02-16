@@ -1,5 +1,5 @@
 import { Media } from "../Media"
-import { unhtmlify, transformImageURL } from "../../core/Util"
+import { unhtmlify, transformMediaURL } from "../../core/Util"
 import * as Browser from "../../core/Browser"
 
 export default class Image extends Media {
@@ -57,7 +57,7 @@ export default class Image extends Media {
     }
 
     getImageURL(w, h) {
-        return transformImageURL(this.data.url);
+        return transformMediaURL(this.data.url);
     }
 
     _updateMediaDisplay(layout) {
