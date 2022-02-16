@@ -49,16 +49,31 @@ beforeEach(() => {
     document.body.innerHTML =
         '<div id="timeline-embed"></div>';
 })
-test("Ensure options is optional", () => {
-    let timeline = new Timeline('timeline-embed', TEST_CONFIG);
-    // it would have errored
+
+// these tests fail because the timeline config instantiation is async, and the test
+// proceeds before it's ready. I still haven't figured out how to make Jest wait
+// until it's actually ready, or maybe there's a different problem?
+test("Ensure options is optional", async() => {
+    let timeline = await new Promise((resolve) => {
+        let tl = new Timeline('timeline-embed', TEST_CONFIG)
+        debugger
+        tl.on('ready', () => resolve(tl))
+    });
+    // these tests will fail until we figure out how to deal with
+    // the fact that the config creation/setting is async
+    // tried some things waiting for 
+    expect(timeline.config).toBeDefined()
 })
 
+// these tests fail because the timeline config instantiation is async, and the test
+// proceeds before it's ready. I still haven't figured out how to make Jest wait
+// until it's actually ready, or maybe there's a different problem?
 test("test remove", () => {
     let timeline = new Timeline('timeline-embed',
         TEST_CONFIG, { // i don't think this is actually used?
             script_path: 'http://localhost:1234/'
         });
+    expect(timeline.config).toBeDefined()
     expect(timeline.config.events.length).toBe(2)
     expect(timeline.config.event_dict['vimeo']).toBeTruthy()
     timeline.removeId('vimeo')
