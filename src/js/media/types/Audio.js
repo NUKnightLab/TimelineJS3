@@ -5,7 +5,6 @@ import { trace } from "../../core/Util";
 
 export default class Audio extends Media {
     _loadMedia() {
-    
         // Loading Message
         this.loadingMessage();
 
@@ -21,7 +20,7 @@ export default class Audio extends Media {
     createMedia() {
         //Transform URL for Dropbox
         var url = transformMediaURL(this.data.url),
-            self = this; 
+            self = this;
 
         var self = this,
             audio_class = "tl-media-item tl-media-audio tl-media-shadow";
