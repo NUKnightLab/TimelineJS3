@@ -1,9 +1,11 @@
 import { Media } from "../Media";
+import { transformImageURL } from "../../core/Util";
 import * as Browser from "../../core/Browser"
 import { trace } from "../../core/Util";
 
 export default class Audio extends Media {
     _loadMedia() {
+    
         // Loading Message
         this.loadingMessage();
 
@@ -17,6 +19,10 @@ export default class Audio extends Media {
     }
 
     createMedia() {
+        //Transform URL for Dropbox
+        var url = transformImageURL(this.data.url),
+            self = this; 
+
         var self = this,
             audio_class = "tl-media-item tl-media-audio tl-media-shadow";
 
@@ -39,7 +45,7 @@ export default class Audio extends Media {
             self.onMediaLoaded();
         });
 
-        this._el.source_item.src = this.data.url;
+        this._el.source_item.src = url;
         this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
         this._el.content_item.innerHTML += "Your browser doesn't support HTML5 audio with " + this._el.source_item.type;
         this.player_element = this._el.content_item

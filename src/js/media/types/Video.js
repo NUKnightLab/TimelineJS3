@@ -1,5 +1,6 @@
 import { Media } from "../Media";
 import * as Browser from "../../core/Browser"
+import { transformImageURL } from "../../core/Util";
 
 export default class Video extends Media {
     _loadMedia() {
@@ -16,6 +17,10 @@ export default class Video extends Media {
     }
 
     createMedia() {
+        //Transform URL for Dropbox
+        var url = transformImageURL(this.data.url),
+            self = this;
+
         var self = this,
             video_class = "tl-media-item tl-media-video tl-media-shadow";
 
@@ -38,7 +43,7 @@ export default class Video extends Media {
             self.onMediaLoaded();
         });
 
-        this._el.source_item.src = this.data.url;
+        this._el.source_item.src = url;
         this._el.source_item.type = this._getType(this.data.url, this.data.mediatype.match_str);
         this._el.content_item.innerHTML += "Your browser doesn't support HTML5 video with " + this._el.source_item.type;
         this.player_element = this._el.content_item
