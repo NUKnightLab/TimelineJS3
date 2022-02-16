@@ -1,3 +1,7 @@
+3.8.20 (2022-02-16)
+------------------
+* #719 - Support Dropbox URL rewriting for audio and video as well as images. Thanks @Simonkcaon !
+
 3.8.19 (2022-01-07)
 ------------------
 * #724 - Alternate syntax for compatibility with Vite, probably other tooling.
