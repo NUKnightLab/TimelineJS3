@@ -17,8 +17,8 @@
         ], 
         "day_abbr": [
             "Søn.", 
-            "Man.", 
-            "Tir.", 
+            "Mån.", 
+            "Tys.", 
             "Ons.", 
             "Tor.", 
             "Fre.", 
@@ -26,7 +26,7 @@
         ], 
         "day": [
             "Søndag", 
-            "Mandag", 
+            "Måndag", 
             "Tysdag", 
             "Onsdag", 
             "Torsdag", 
