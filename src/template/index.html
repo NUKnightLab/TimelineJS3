@@ -9,6 +9,8 @@
             debug: true,
             height: 650,
             soundcite: true,
+            hash_bookmark: true,
+            start_at_end: true,
             sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/'
         }
 
@@ -55,6 +57,7 @@
 
             document.querySelectorAll('nav a').forEach(el => {
                 el.addEventListener('click', e => {
+                    window.location.hash = ''
                     e.preventDefault()
                     let url = e.target.attributes['href'].value
                     document.getElementById('timeline-src').value = url
@@ -91,7 +94,7 @@
 <body>
     <h1>Timeline Development</h1>
     <div>
-        <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src">
+        <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src" />
     </div>
     <nav>
         <a href='https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml'>Women in Computing</a>

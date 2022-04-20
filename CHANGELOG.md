@@ -1,3 +1,7 @@
+3.8.21 (not yet released)
+------------------
+* #704 honor "start_at_end" option when also using "hash_bookmark" option
+
 3.8.20 (2022-02-16)
 ------------------
 * #719 - Support Dropbox URL rewriting for audio and video as well as images. Thanks @Simonkcaon !
