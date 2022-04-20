@@ -5,7 +5,6 @@ import * as Browser from "../core/Browser"
 import { removeClass } from "../dom/DOMUtil";
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
-import { head } from "lodash";
 
 /**
  * A TimeEra represents a span of time marked along the edge of the time 
