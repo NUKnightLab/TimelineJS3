@@ -3,7 +3,9 @@
         "media": {
             "url": "http://www.germuska.com/salzburg-album/full/2QVB_022.jpg",
             "caption": "The secret passage at Schloss Leopoldskron, Salzburg, Austria",
-            "credit": "Joe Germuska"
+            "credit": "Joe Germuska",
+            "link": "https://www.schloss-leopoldskron.com/en/",
+            "link_target": "non_blank_link_target"
         },
         "text": {
             "headline": "TimelineJS Media Types",
@@ -261,7 +263,9 @@
             "media": {
                 "url": "http://www.kidzone.ws/images-changed/sharks/head.jpg",
                 "caption": "Sharks!",
-                "credit": "Kid Zone"
+                "credit": "Kid Zone",
+                "link": "https://www.kidzone.ws/",
+                "link_target": "non_blank_link_target"
             },
             "start_date": {
                 "year": "1915"
@@ -276,7 +280,8 @@
             "media": {
                 "url": "https://media.giphy.com/media/nEZkc87t9u68U/source.gif",
                 "caption": "Groundhog Day clip",
-                "credit": "USA Today"
+                "credit": "USA Today",
+                "link": "https://www.imdb.com/title/tt0107048/"
             },
             "start_date": {
                 "year": "1916"
@@ -291,7 +296,8 @@
             "media": {
                 "url": "https://pngimg.com/uploads/banana/banana_PNG851.png",
                 "caption": "A Banana",
-                "credit": "pngimg.com"
+                "credit": "pngimg.com",
+                "link": "https://en.wikipedia.org/wiki/Banana"
             },
             "start_date": {
                 "year": "1917"
