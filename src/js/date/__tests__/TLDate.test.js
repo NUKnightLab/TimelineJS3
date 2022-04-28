@@ -41,7 +41,7 @@ test("before and after", () => {
 
 test("small dates are human so time is UNIX Epoch based", () => {
     var smalldate = makeDate({ year: 2015 });
-    expect(smalldate.getTime()).toBe(1420092000000)
+    expect(smalldate.getTime()).toBe(1420070400000)
 })
 
 test("big dates are cosmological", () => {
@@ -192,7 +192,7 @@ test("test TLDate.floor", () => {
 
     var early_ce = makeDate(-59149708181438); // 8/14/95 (95 not 1995)
     var floored = early_ce.floor('decade');
-    expect(floored.getTime()).toBe(-59326970964000) // 'Early floored dates should not go into the 20th Century')
+    expect(floored.getTime()).toBe(-59326992000000) // 'Early floored dates should not go into the 20th Century')
 
     var age_scale = makeDate({ year: 1500000 });
     expect(() => {
