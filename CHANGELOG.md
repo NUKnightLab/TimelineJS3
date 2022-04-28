@@ -1,6 +1,7 @@
 3.8.21 (not yet released)
 ------------------
 * #704 honor "start_at_end" option when also using "hash_bookmark" option
+* #730 Improved Norwegian translations for both bøkmal and nynorsk.
 
 3.8.20 (2022-02-16)
 ------------------
