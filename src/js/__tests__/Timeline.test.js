@@ -50,14 +50,18 @@ beforeEach(() => {
         '<div id="timeline-embed"></div>';
 })
 
-// these tests fail because the timeline config instantiation is async, and the test
-// proceeds before it's ready. I still haven't figured out how to make Jest wait
-// until it's actually ready, or maybe there's a different problem?
+// Full timeline configuration is asynchronous, so these tests need
+// to be deferred until the timeline is in a "ready" state.
+// However, binding the promise resolution to timeline "on ready"
+// results in test failures because of timeout, even when passing
+// a longer timeout as the third argument to test (up to 10000ms tried)
+// however, when they fire on dataloaded, they pass. This doesn't 
+// seem satisfying, but better than ignoring failed test results
+// since passing is still passing.
 test("Ensure options is optional", async() => {
     let timeline = await new Promise((resolve) => {
         let tl = new Timeline('timeline-embed', TEST_CONFIG)
-        debugger
-        tl.on('ready', () => resolve(tl))
+        tl.on('dataloaded', () => resolve(tl))
     });
     // these tests will fail until we figure out how to deal with
     // the fact that the config creation/setting is async
@@ -65,14 +69,15 @@ test("Ensure options is optional", async() => {
     expect(timeline.config).toBeDefined()
 })
 
-// these tests fail because the timeline config instantiation is async, and the test
-// proceeds before it's ready. I still haven't figured out how to make Jest wait
-// until it's actually ready, or maybe there's a different problem?
-test("test remove", () => {
-    let timeline = new Timeline('timeline-embed',
-        TEST_CONFIG, { // i don't think this is actually used?
-            script_path: 'http://localhost:1234/'
-        });
+test("test remove", async() => {
+    let timeline = await new Promise((resolve) => {
+        let tl = new Timeline('timeline-embed',
+            TEST_CONFIG, { // i don't think this is actually used?
+                script_path: 'http://localhost:1234/'
+            });
+        tl.on('dataloaded', () => resolve(tl))
+    })
+
     expect(timeline.config).toBeDefined()
     expect(timeline.config.events.length).toBe(2)
     expect(timeline.config.event_dict['vimeo']).toBeTruthy()
