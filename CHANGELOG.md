@@ -2,7 +2,7 @@
 ------------------
 * #704 honor "start_at_end" option when also using "hash_bookmark" option
 * #730 Improved Norwegian translations for both bøkmal and nynorsk.
-
+* #710 Improve tests by setting timezone (and adjusting the async handling in `Timeline.test.js`)
 3.8.20 (2022-02-16)
 ------------------
 * #719 - Support Dropbox URL rewriting for audio and video as well as images. Thanks @Simonkcaon !
