@@ -25,16 +25,7 @@ export default class Audio extends Media {
         var self = this,
             audio_class = "tl-media-item tl-media-audio tl-media-shadow";
 
-        // Link
-        if (this.data.link) {
-            this._el.content_link = this.domCreate("a", "", this._el.content);
-            this._el.content_link.href = this.data.link;
-            this._el.content_link.target = "_blank";
-            this._el.content_link.setAttribute('rel', 'noopener');
-            this._el.content_item = this.domCreate("audio", audio_class, this._el.content_link);
-        } else {
-            this._el.content_item = this.domCreate("audio", audio_class, this._el.content);
-        }
+        this._el.content_item = this.domCreate("audio", audio_class, this._el.content);
 
         this._el.content_item.controls = true;
         this._el.source_item = this.domCreate("source", "", this._el.content_item);

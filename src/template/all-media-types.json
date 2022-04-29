@@ -259,9 +259,11 @@
         },
         {
             "media": {
-                "url": "http://www.kidzone.ws/images-changed/sharks/head.jpg",
-                "caption": "Sharks!",
-                "credit": "Kid Zone"
+                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Moraine_Lake_17092005.jpg/960px-Moraine_Lake_17092005.jpg",
+                "caption": "Valley of the Ten Peaks and Moraine Lake, Banff National Park, Canada.",
+                "credit": "Wikipedia Commons",
+                "link": "https://en.wikipedia.org/wiki/Rocky_Mountains#/media/File:Moraine_Lake_17092005.jpg",
+                "link_target": "images"
             },
             "start_date": {
                 "year": "1915"
@@ -274,16 +276,18 @@
         },
         {
             "media": {
-                "url": "https://media.giphy.com/media/nEZkc87t9u68U/source.gif",
+                "url": "https://media.giphy.com/media/Bzxeif0cR11ny/giphy.gif",
                 "caption": "Groundhog Day clip",
-                "credit": "USA Today"
+                "credit": "USA Today",
+                "link": "https://giphy.com/gifs/bored-bill-murray-groundhog-day-Bzxeif0cR11ny",
+                "link_target": "images"
             },
             "start_date": {
                 "year": "1916"
             },
             "text": {
                 "headline": "Image, GIF",
-                "text": "To embed a GIF, just copy the URL endig in '.gif'."
+                "text": "To embed a GIF, just copy the URL ending in '.gif'."
             },
             "group": "Image"
         },
@@ -304,9 +308,11 @@
         },
         {
             "media": {
-                "url": "http://upload.wikimedia.org/wikipedia/commons/c/c2/Rocky_Mountains.jpeg",
-                "caption": "Rocky Mountains",
-                "credit": "Wikipedia Commons"
+                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Moraine_Lake_17092005.jpg/960px-Moraine_Lake_17092005.jpg",
+                "caption": "Valley of the Ten Peaks and Moraine Lake, Banff National Park, Canada.",
+                "credit": "Wikipedia Commons",
+                "link": "https://en.wikipedia.org/wiki/Rocky_Mountains#/media/File:Moraine_Lake_17092005.jpg",
+                "link_target": "images"
             },
             "start_date": {
                 "year": "1918"
@@ -334,8 +340,9 @@
         {
             "media": {
                 "url": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles",
-                "caption": "1997 Inrternational Tennis Championships - Doubles",
-                "credit": "Wikipedia"
+                "caption": "1997 International Tennis Championships - Doubles",
+                "credit": "Wikipedia",
+                "link": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles"
             },
             "start_date": {
                 "year": "1920"
@@ -436,7 +443,7 @@
         },
         {
             "media": {
-                "url": "https://file-examples.com/wp-content/uploads/2017/10/file-sample_150kB.pdf",
+                "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
                 "credit": "file-examples.com"
             },
             "start_date": {
@@ -463,7 +470,7 @@
         },
         {
             "media": {
-                "url": "https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4",
+                "url": "https://file-examples.com/storage/fef12739526267ac9a2b543/2017/04/file_example_MP4_480_1_5MG.mp4",
                 "credit": "file-examples.com"
             },
             "start_date": {
@@ -478,7 +485,7 @@
         },
         {
             "media": {
-                "url": "https://file-examples-com.github.io/uploads/2020/03/file_example_WEBM_480_900KB.webm",
+                "url": "https://file-examples.com/storage/fef12739526267ac9a2b543/2020/03/file_example_WEBM_480_900KB.webm",
                 "credit": "file-examples.com"
             },
             "start_date": {
