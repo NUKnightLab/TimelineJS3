@@ -56,7 +56,8 @@ export class TimeNav {
             timenav_height_min: 150, // Minimum timenav height
             marker_height_min: 30, // Minimum Marker Height
             marker_width_min: 100, // Minimum Marker Width
-            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+            filtered_event_types: [""]
         };
 
         // Animation
@@ -235,6 +236,8 @@ export class TimeNav {
         this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
     }
 
+
+
     /*	Groups
     ================================================== */
     _createGroups() {
@@ -291,6 +294,10 @@ export class TimeNav {
     }
 
     _createMarker(data, n) {
+        if (!filtered_types.contains(data.event_types)) {
+            return
+        }
+
         var marker = new TimeMarker(data, this.options);
         this._addMarker(marker);
         if (n < 0) {
@@ -421,6 +428,10 @@ export class TimeNav {
             this._eras[i].setColor(era_color);
         };
 
+    }
+
+    _updateEventTypeFilter(t) {
+        
     }
 
     /*	Public

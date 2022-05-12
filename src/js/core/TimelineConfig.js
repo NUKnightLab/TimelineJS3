@@ -179,6 +179,11 @@ export class TimelineConfig {
             return null
                 // throw new TLError("missing_start_date_err", event_id);
         }
+        if (typeof(data.event_type == 'undefined')) {
+            trace("Missing event_type, skipping event")
+            console.log(data)
+            return null;
+        }
 
         this._processDates(data);
         this._tidyFields(data);
@@ -281,6 +286,9 @@ export class TimelineConfig {
                             this.scale = "cosmological";
                             break;
                         }
+                    }else if (events[i].event_type && typeof(events[i].event_type != "undefined")) {
+                        print("Invalid event_type.") // EmmetDebug
+                        break;
                     }
                 }
                 trace(`Determining scale dynamically: ${this.scale}`);

@@ -74,7 +74,8 @@ function extractEventFromCSVObject(orig_row) {
         display_date: row['Display Date'] || '', // only in v3 but no problem
         group: row['Group'] || row['Tag'] || '', // small diff between v1 and v3 sheets
         background: interpretBackground(row['Background']), // only in v3 but no problem
-        type: row['Type'] || ''
+        type: row['Type'] || '',
+        event_types: row['Event Type'] || 3
     }
 
     if (Object.keys(row).includes('Start Date') || Object.keys(row).includes('End Date')) {
@@ -126,6 +127,7 @@ function extractEventFromCSVObject(orig_row) {
         if (d.end_date && !validDateConfig(d.end_date)) {
             throw new TLError("invalid_date_err")
         }
+
 
 
     }
@@ -331,7 +333,10 @@ function handleRow(event, timeline_config) {
         }
     } else if (row_type == 'era') {
         timeline_config.eras.push(event);
-    } else {
+    } else if (event_types == '') {
+        timeline_config.events.push(event);
+    }
+    else {
         timeline_config.events.push(event);
     }
 }
