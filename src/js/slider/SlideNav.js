@@ -103,7 +103,7 @@ export class SlideNav {
 		this._el.description.innerHTML = date
 
         // Content Container
-        this._el.content_container.ariaLabel = `${title}, ${date}`;
+        this._el.content_container.ariaLabel = `${this.options.direction}, ${title}, ${date}`;
 	}
 
 	_initLayout () {
