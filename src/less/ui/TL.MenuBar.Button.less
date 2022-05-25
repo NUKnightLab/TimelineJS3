@@ -3,6 +3,7 @@
 
 .tl-menubar-button {
 	//border-left: 1px solid darken(@color-background,10);
+    border:none;
 	font-size: 18px;
 	line-height:18px;
 	//padding: 6px 12px 6px 12px;
@@ -15,13 +16,13 @@
 	//color:@color-text;
 	color:@marker-color-menubar-button;
 	[class^="tl-icon-"], [class*=" tl-icon-"] {
-		
+
 	}
-	
+
 	&.tl-menubar-button-inactive {
 		opacity:0.33;
 	}
-	&:hover {
+	&:hover, &:focus-visible {
 		background:@color-foreground;
 		color:@color-background;
 		&.tl-menubar-button-inactive {
