@@ -95,10 +95,15 @@ export class SlideNav {
 		this.data = mergeData(this.data, d);
 
 		// Title
-		this._el.title.innerHTML = unlinkify(this.data.title);
+        const title = unlinkify(this.data.title);
+		this._el.title.innerHTML = title
 
 		// Date
-		this._el.description.innerHTML	= unlinkify(this.data.date);
+        const date = unlinkify(this.data.date);
+		this._el.description.innerHTML = date
+
+        // Content Container
+        this._el.content_container.ariaLabel = `${title}, ${date}`;
 	}
 
 	_initLayout () {
