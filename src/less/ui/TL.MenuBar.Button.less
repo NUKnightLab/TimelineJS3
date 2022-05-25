@@ -19,13 +19,14 @@
 
 	}
 
-	&[disabled] {
+	&:disabled {
 		opacity:0.33;
+        cursor:default;
 	}
 	&:hover, &:focus-visible {
 		background:@color-foreground;
 		color:@color-background;
-		&[disabled] {
+		&:disabled {
 			color:darken(@marker-color,15);
 			background-color:fadeout(@ui-background-color, 10%);
 		}
