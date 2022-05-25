@@ -19,13 +19,13 @@
 
 	}
 
-	&.tl-menubar-button-inactive {
+	&[disabled] {
 		opacity:0.33;
 	}
 	&:hover, &:focus-visible {
 		background:@color-foreground;
 		color:@color-background;
-		&.tl-menubar-button-inactive {
+		&[disabled] {
 			color:darken(@marker-color,15);
 			background-color:fadeout(@ui-background-color, 10%);
 		}
