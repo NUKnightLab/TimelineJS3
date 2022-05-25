@@ -1,3 +1,5 @@
+import "wicg-inert";
+
 import { addClass } from "../dom/DOMUtil"
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events";
@@ -113,8 +115,10 @@ export class Slide {
                 this.fire("background_change", this.has.background);
             }
             this.loadMedia();
+            this._setInteractive(true)
         } else {
             this.stopMedia();
+            this._setInteractive(false)
         }
     }
 
@@ -342,5 +346,12 @@ export class Slide {
         }
     }
 
+    _setInteractive(is_interactive) {
+        if (is_interactive) {
+            this._el.container.removeAttribute('inert');
+        } else {
+            this._el.container.setAttribute('inert', false);
+        }
+    }
 }
 classMixin(Slide, I18NMixins, Events, DOMMixins)
