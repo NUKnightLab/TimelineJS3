@@ -67,19 +67,19 @@ export class MenuBar {
 	}
 
 	toogleZoomIn(show) {
-		if (show) {
-      removeClass(this._el.button_zoomin,'tl-menubar-button-inactive');
-		} else {
-      addClass(this._el.button_zoomin,'tl-menubar-button-inactive');
-		}
+        if (show) {
+            this._el.button_zoomin.removeAttribute('disabled');
+        } else {
+            this._el.button_zoomin.setAttribute('disabled', true);
+        }
 	}
 
 	toogleZoomOut(show) {
-		if (show) {
-      removeClass(this._el.button_zoomout,'tl-menubar-button-inactive');
-		} else {
-      addClass(this._el.button_zoomout,'tl-menubar-button-inactive');
-		}
+        if (show) {
+            this._el.button_zoomout.removeAttribute('disabled');
+        } else {
+            this._el.button_zoomout.setAttribute('disabled', true);
+        }
 	}
 
 	setSticky(y) {
