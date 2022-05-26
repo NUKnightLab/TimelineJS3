@@ -10,7 +10,7 @@ module.exports = merge.smart({
         open: true,
         allowedHosts: 'all',
         devMiddleware: {
-            stats: 'verbose'
+            stats: 'normal'
         },
         static: [{
                 directory: path.join(__dirname, "src/template"),

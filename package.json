@@ -18,17 +18,17 @@
         "file-loader": "^6.0.0",
         "fs-extra": "^9.0.1",
         "html-webpack-plugin": "^4.3.0",
-        "http-server": "^0.12.3",
-        "jest": "^25.5.4",
+        "http-server": "^14.1.0",
+        "jest": "^28.1.0",
         "less": "^3.11.3",
         "less-loader": "^6.1.1",
         "lodash": "^4.17.21",
         "mini-css-extract-plugin": "^0.9.0",
         "npm-run-all": "^4.1.5",
         "prompt": "^1.0.0",
-        "simple-git": "^2.7.2",
+        "simple-git": "^3.7.1",
         "style-loader": "^1.2.1",
-        "trash-cli": "^3.0.0",
+        "trash-cli": "^5.0.0",
         "webpack": "^4.46.0",
         "webpack-cli": "^4.9.2",
         "webpack-dev-server": "^4.9.0",
@@ -56,8 +56,7 @@
         "stage_latest": "npm run dist && node tasks/stage.js latest",
         "stage_dev": "npm run dist && node tasks/stage.js dev"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Zach Wise",
             "email": "wise@northwestern.edu",
             "url": "https://github.com/zachwise"
