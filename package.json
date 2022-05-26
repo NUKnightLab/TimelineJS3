@@ -13,7 +13,7 @@
         "adm-zip": "^0.4.14",
         "babel-jest": "^25.5.1",
         "clean-webpack-plugin": "^3.0.0",
-        "copy-webpack-plugin": "^5.1.1",
+        "copy-webpack-plugin": "^6.4.0",
         "css-loader": "^3.6.0",
         "file-loader": "^6.0.0",
         "fs-extra": "^9.0.1",
@@ -51,7 +51,7 @@
         "compare": "npm run dist && http-server dist -o '/embed/compare.html'",
         "clean": "trash dist",
         "build": "webpack --config webpack.prod.js && node tasks/compile_less.js",
-        "start": "webpack-dev-server --open --config webpack.dev.js",
+        "start": "npx webpack serve --open --config webpack.dev.js",
         "stage": "npm run dist && node tasks/stage.js",
         "stage_latest": "npm run dist && node tasks/stage.js latest",
         "stage_dev": "npm run dist && node tasks/stage.js dev"
