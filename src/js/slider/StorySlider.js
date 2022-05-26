@@ -396,6 +396,10 @@ export class StorySlider {
 
         addClass(this._el.container, 'tl-storyslider');
 
+        // Create Navigation
+        this._nav.previous = new SlideNav({ title: "Previous", description: "description" }, { direction: "previous" }, this._el.container);
+        this._nav.next = new SlideNav({ title: "Next", description: "description" }, { direction: "next" }, this._el.container);
+
         // Create Layout
         this._el.slider_container_mask = DOM.create('div', 'tl-slider-container-mask', this._el.container);
         this._el.background = DOM.create('div', 'tl-slider-background tl-animate', this._el.container);
@@ -406,16 +410,6 @@ export class StorySlider {
         // Update Size
         this.options.width = this._el.container.offsetWidth;
         this.options.height = this._el.container.offsetHeight;
-
-        // Create Navigation
-        this._nav.previous = new SlideNav({ title: "Previous", description: "description" }, { direction: "previous" });
-        this._nav.next = new SlideNav({ title: "Next", description: "description" }, { direction: "next" });
-
-        // add the navigation to the dom
-        this._nav.next.addTo(this._el.container);
-        this._nav.previous.addTo(this._el.container);
-
-
 
         this._el.slider_container.style.left = "0px";
 
