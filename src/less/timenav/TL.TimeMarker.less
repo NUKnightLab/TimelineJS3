@@ -7,7 +7,7 @@
 	top:0;
 	left:0;
 	cursor:pointer;
-	
+
 	/* Animate Left Width and Top
 	================================================== */
 	.property-animation(left, @animation-duration, @animation-ease);
@@ -15,7 +15,7 @@
 	.property-animation(height, @animation-duration-fast, @animation-ease);
 	.property-animation(width, @animation-duration, @animation-ease);
 	.animation-timing-cubic-bezier();
-	
+
 
 	&.tl-timemarker-fast {
 		.property-animation(top, @animation-duration-fast, @animation-ease);
@@ -44,7 +44,7 @@
 		background-color: fadeout(@marker-color, 85%);
 		border-top-right-radius:@time-marker-border-radius;
 		border-top-left-radius:@time-marker-border-radius;
-		
+
 		.property-animation(height, @animation-duration-fast, @animation-ease);
 		.property-animation(width, @animation-duration, @animation-ease);
 		.animation-timing-cubic-bezier();
@@ -59,36 +59,36 @@
 			border-top-right-radius:@time-marker-border-radius;
 			height:100px;
 			box-sizing: border-box;
-			
-			
+
+
 		}
-		
+
 	}
-	
+
 	/* Lines
 	================================================== */
 	.tl-timemarker-line-right {
 		display:none;
 		right:0px;
-		
+
 	}
-	
+
 	.tl-timemarker-line-left {
 		width:1px;
 		left:0px;
 	}
-	
+
 	.tl-timemarker-line-left, .tl-timemarker-line-right {
 		margin-top:@marker-dot-offset;
 		//margin-bottom:@time-marker-border-radius;
-		//margin-top:10px; 
+		//margin-top:10px;
 		//overflow:hidden;
 		//border-top-right-radius:@time-marker-border-radius;
 		//border-top-left-radius:@time-marker-border-radius;
 		//margin-top:10%;
 		.border-box();
 		border-left: 1px solid @marker-outline-color;
-		
+
 		z-index:5;
 		//.border-top-radius(10px);
 		content:" ";
@@ -96,11 +96,11 @@
 		//bottom:0;
 		height:100%;
 		.disable-selection();
-		
+
 		box-shadow: 1px 1px 1px @color-background;
-		
+
 		&:after {
-			
+
 			display:block;
 			content:" ";
 			position:absolute;
@@ -113,7 +113,7 @@
 			.border-radius(50%);
 		}
 	}
-	
+
 	/* Content
 	================================================== */
 	.tl-timemarker-content-container {
@@ -136,7 +136,7 @@
 		box-sizing: border-box;
 		border: 1px solid @marker-outline-color;
 		box-shadow: 1px 1px 1px @color-background;
-				
+
 		.tl-timemarker-content {
 			position:relative;
 			overflow:hidden;
@@ -144,20 +144,20 @@
 			z-index:8;
 			padding:5px;
 			.border-box();
-			
+
 			.tl-timemarker-text {
 				overflow:hidden;
 				position: relative;
-				
+
 				h2.tl-headline, h2.tl-headline p {
 					display: -webkit-box;
-					
+
 					line-clamp: 2;
 					-webkit-line-clamp: 2;
 					box-orient: vertical;
 					-webkit-box-orient: vertical;
 					text-overflow: ellipsis;
-					
+
 					font-size:12px;
 					line-height:12px;
 					height:100%;
@@ -178,11 +178,11 @@
 							.marker-text-fade(@marker-color,50%);
 						}
 					}
-					
+
 				}
-				
+
 			}
-			
+
 			.tl-timemarker-media-container {
 				float:left;
 				max-width:@marker-icon-size;
@@ -191,31 +191,31 @@
 				margin-right:5px;
 				height:100%;
 				.border-box();
-				
+
 				.tl-timemarker-media {
 					max-width:@marker-icon-size;
 					max-height:100%;
 					opacity:0.25;
 				}
-				
+
 				[class^="tl-icon-"], [class*=" tl-icon-"] {
 					display:block;
 					font-size:@marker-icon-size;
 					color:@marker-text-color;
 					margin-top:0px;
 				}
-				
+
 				.tl-icon-wikipedia {
 					font-size:16px;
 				}
-				
+
 			}
-			
+
 			&.tl-timemarker-content-small {
 				.tl-timemarker-text {
 					h2.tl-headline {
 						display:block;
-						white-space:nowrap; 
+						white-space:nowrap;
 						text-overflow: ellipsis;
 					}
 				}
@@ -224,39 +224,39 @@
 						font-size:@marker-icon-size/2;
 					}
 				}
-				
-			}
-			
-		}
-		
 
-		
+			}
+
+		}
+
+
+
 	}
-	
+
 	/* Hover State
 	================================================== */
 	&:hover {
-		
+
 		.tl-timemarker-timespan {
 			background-color: fadeout(@marker-text-color, 85%);
-			
+
 			.tl-timemarker-timespan-content {
 				background-color: @marker-text-color;
 			}
-			
+
 			.tl-timemarker-line-left, .tl-timemarker-line-right {
 				border-color: darken(@marker-color,25);
 				&:after {
 					background-color:@marker-dot-hover-color;
 				}
 			}
-			
 
-			
+
+
 		}
-		
+
 		.tl-timemarker-content-container {
-			background-color: darken(@marker-color,15);
+			background-color: darken(@marker-color,45);
 			border-color: darken(@marker-color,25);
 			.property-animation(height, @animation-duration-fast/2, @animation-ease);
 			.property-animation(width, @animation-duration-fast/2, @animation-ease);
@@ -270,26 +270,26 @@
 							//line-clamp:3 !important;
 							//-webkit-line-clamp:3 !important;
 							//white-space: normal !important;
-							
+
 						}
 					}
 				}
 			}
-			
+
 			.tl-timemarker-content {
-				
+
 				.tl-timemarker-text {
 					h2.tl-headline {
 						color:@marker-selected-text-color;
 						&.tl-headline-fadeout {
 							&:after {
-								.marker-text-fade(darken(@marker-color,15),80%);
+								.marker-text-fade(darken(@marker-color,45),80%);
 							}
 						}
-						
+
 					}
 				}
-				
+
 				.tl-timemarker-media-container {
 					.tl-timemarker-media {
 						opacity:1;
@@ -300,9 +300,9 @@
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/* Hover Active State
 	================================================== */
 	&:hover {
@@ -317,7 +317,7 @@
 									.marker-text-fade(@color-background,80%);
 								}
 							}
-							
+
 						}
 					}
 				}
@@ -325,7 +325,7 @@
 			.tl-timemarker-line-left, .tl-timemarker-line-right {
 				//border-color:@color-theme;
 				border-color:@color-dark;
-			
+
 				&:after {
 					//z-index:6;
 					//background-color:@color-theme;
@@ -334,11 +334,11 @@
 			}
 		}
 	}
-	
+
 	/* Active Markers
 	================================================== */
 	&.tl-timemarker-active {
-		
+
 		.tl-timemarker-timespan {
 			//background-color: fadeout(@color-theme, 85%);
 			//background-color: fadeout(@color-foreground, 85%);
@@ -349,7 +349,7 @@
 				background-color: @color-foreground;
 			}
 		}
-		
+
 		.tl-timemarker-line-left, .tl-timemarker-line-right {
 			//border-color:@color-theme;
 			//border-color:@color-foreground;
@@ -358,12 +358,12 @@
 			z-index:8;
 			box-shadow: 0px 1px 3px fadeout(@marker-dot-color, 50%);
 			&:after {
-				
+
 				//background-color:@color-theme;
 				background-color:@color-foreground;
 			}
 		}
-		
+
 		.tl-timemarker-content-container {
 			//background-color:@color-theme;
 			background-color:@color-background;
@@ -372,24 +372,24 @@
 			z-index:9;
 			//border: none;
 			border-color:fadeout(@color-foreground, 50%);
-			
+
 			//box-shadow:none;
 			box-shadow: 1px 1px 3px fadeout(@marker-dot-color, 50%);
 			.tl-timemarker-content {
 				.tl-timemarker-text {
 					h2.tl-headline {
 						//color:@marker-selected-text-color;
-						color:@color-foreground; 
+						color:@color-foreground;
 						&.tl-headline-fadeout {
 							&:after {
 								//.marker-text-fade(@color-theme,80%);
 								.marker-text-fade(@color-background,80%);
 							}
 						}
-						
+
 					}
 				}
-				
+
 				.tl-timemarker-media-container {
 					.tl-timemarker-media {
 						opacity:1;
@@ -402,23 +402,23 @@
 			}
 		}
 	}
-	
+
 	/* Markers with End Dates
 	================================================== */
 	&.tl-timemarker-with-end {
-		
+
 		.tl-timemarker-timespan {
 			.tl-timemarker-timespan-content {
 				display:block;
 			}
-			
+
 			.tl-timemarker-line-left, .tl-timemarker-line-right {
 				z-index:5;
 				&:after {
-					
+
 				}
 			}
-			
+
 			&:after {
 				display:block;
 				content:" ";
@@ -431,36 +431,36 @@
 				z-index:6;
 				.border-radius(7px);
 			}
-			
+
 		}
-		
+
 		.tl-timemarker-content-container {
-			
+
 			&.tl-timemarker-content-container-long {
 				box-shadow: none;
 			}
 			.tl-timemarker-content {
-				
+
 			}
 		}
-		
+
 		.tl-timemarker-line-right {
 			display:block;
 		}
 		.tl-timemarker-line-left {
 			box-shadow: none;
 		}
-		
+
 		.tl-timemarker-line-left, .tl-timemarker-line-right {
-			
+
 		}
 	}
-	
+
 	/* Markers with End Dates and Hover
 	================================================== */
 	&.tl-timemarker-with-end {
 		&:hover {
-			
+
 			.tl-timemarker-timespan {
 				&:after {
 					background-color: fadeout(darken(@ui-background-color,100),75%);
@@ -468,13 +468,13 @@
 			}
 			.tl-timemarker-line-left, .tl-timemarker-line-right {
 				&:after {
-					
+
 				}
 			}
-			
+
 		}
 	}
-	
+
 	/* Markers with End Dates and Active
 	================================================== */
 	&.tl-timemarker-with-end {
@@ -485,7 +485,7 @@
 					background-color: fadeout(@color-foreground,50%);
 				}
 			}
-			
+
 			.tl-timemarker-line-left, .tl-timemarker-line-right {
 				border-width: 1px;
 				&:after {
@@ -498,7 +498,7 @@
 			}
 		}
 	}
-	
+
 	/* Markers with End Dates and Active and Hover
 	================================================== */
 	&.tl-timemarker-with-end {
@@ -510,7 +510,7 @@
 						background-color: fadeout(@color-foreground,50%);
 					}
 				}
-			
+
 			}
 		}
 	}
