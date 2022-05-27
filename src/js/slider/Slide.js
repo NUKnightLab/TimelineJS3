@@ -279,7 +279,11 @@ export class Slide {
             if (this.data.background.text_background) {
                 this._el.container.className += ' tl-text-background';
             }
-
+            if (this.data.background.alt) {
+                // .role = 'img' doesn't work
+                this._el.background.setAttribute('role', 'img');
+                this._el.background.ariaLabel = this.data.background.alt;
+            }
         }
 
 
