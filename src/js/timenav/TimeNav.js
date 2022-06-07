@@ -633,21 +633,23 @@ export class TimeNav {
         DOMEvent.stopPropagation(e);
 
         switch (e.key) {
+            case "PageUp":
             case "ArrowUp":
             case "ArrowRight": {
                 this.focusNext();
                 break;
             }
+            case "PageDown":
             case "ArrowDown":
             case "ArrowLeft": {
                 this.focusPrevious();
                 break;
             }
-            case "PageUp":{
+            case "Home":{
                 this.focusOn(0);
                 break;
             }
-            case "PageDown":{
+            case "End":{
                 this.focusOn(this._markers.length - 1);
                 break;
             }
