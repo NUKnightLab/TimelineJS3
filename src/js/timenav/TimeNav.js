@@ -643,6 +643,14 @@ export class TimeNav {
                 this.focusPrevious();
                 break;
             }
+            case "PageUp":{
+                this.focusOn(0);
+                break;
+            }
+            case "PageDown":{
+                this.focusOn(this._markers.length - 1);
+                break;
+            }
         }
     }
 
