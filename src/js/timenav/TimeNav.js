@@ -81,6 +81,9 @@ export class TimeNav {
         // Current Marker
         this.current_id = "";
 
+        // Current Focused Marker
+        this.current_focused_id = "";
+
         // TimeScale
         this.timescale = {};
 
@@ -463,14 +466,46 @@ export class TimeNav {
         this.animateMovement(_n, fast, css_animation, _duration, _ease);
 
         if (n >= 0 && n < this._markers.length) {
-            this.current_id = this._markers[n].data.unique_id;
+            this.current_id = this.current_focused_id = this._markers[n].data.unique_id;
         } else {
-            this.current_id = '';
+            this.current_id = this.current_focused_id = '';
         }
     }
 
     goToId(id, fast, css_animation) {
         this.goTo(this._findMarkerIndex(id), fast, css_animation);
+    }
+
+
+    focusOn(n, fast, css_animation) {
+        var _ease = this.options.ease,
+            _duration = this.options.duration,
+            _n = (n < 0) ? 0 : n;
+
+        this.animateMovement(_n, fast, css_animation, _duration, _ease);
+
+        if (n >= 0 && n < this._markers.length) {
+            this._markers[n].setFocus();
+            this.current_focused_id = this._markers[n].data.unique_id;
+        }
+    }
+
+    focusNext() {
+        var n = this._findMarkerIndex(this.current_focused_id);
+        if ((n + 1) < (this._markers.length)) {
+            this.focusOn(n + 1);
+        } else {
+            this.focusOn(n);
+        }
+    }
+
+    focusPrevious() {
+        var n = this._findMarkerIndex(this.current_focused_id);
+        if (n - 1 >= 0) {
+            this.focusOn(n - 1);
+        } else {
+            this.focusOn(n);
+        }
     }
 
     animateMovement(n, fast, css_animation, duration, ease) {
