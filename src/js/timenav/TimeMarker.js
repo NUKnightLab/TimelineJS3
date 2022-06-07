@@ -226,6 +226,10 @@ export class TimeMarker {
 		this.fire("markerclick", { unique_id: this.data.unique_id });
 	}
 
+    _onMarkerBlur(e) {
+		this.fire("markerblur", { unique_id: this.data.unique_id });
+	}
+
 	/*	Private Methods
 	================================================== */
 	_initLayout() {
@@ -292,6 +296,7 @@ export class TimeMarker {
 
 	_initEvents() {
 		DOMEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
+		DOMEvent.addListener(this._el.container, 'blur', this._onMarkerBlur, this);
 	}
 
 	// Update Display
