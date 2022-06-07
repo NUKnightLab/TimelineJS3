@@ -287,7 +287,7 @@ export class TimeMarker {
 			this._text.innerHTML = unlinkify(this.data.media.caption);
 		}
 
-
+        this._el.container.ariaLabel = this._text.innerHTML;
 
 		// Fire event that the slide is loaded
 		this.onLoaded();
