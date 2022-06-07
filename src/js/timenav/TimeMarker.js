@@ -227,6 +227,8 @@ export class TimeMarker {
 	_initLayout() {
 		// Create Layout
 		this._el.container = DOM.create("div", "tl-timemarker");
+        this._el.container.tabIndex = -1;
+
 		if (this.data.unique_id) {
 			this._el.container.id = this.data.unique_id + "-marker";
 		}
