@@ -748,7 +748,8 @@ export class TimeNav {
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
         DOMEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
 
-        this._el.container.tabIndex = 0;
+        this._el.container.setAttribute('role', 'application');
+        this._el.container.setAttribute('tabindex', '0');
         DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
     }
 
