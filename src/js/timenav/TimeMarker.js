@@ -28,6 +28,7 @@ export class TimeMarker {
 
 		// Components
 		this._text = {};
+		this.plaintext = '';
 
 		// State
 		this._state = {
@@ -290,19 +291,20 @@ export class TimeMarker {
 
 
 		// Text
-		this._el.text = DOM.create("div", "tl-timemarker-text", this._el.content);
-		this._text = DOM.create("h2", "tl-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML = unlinkify(this.data.text.headline);
+			this.plaintext = unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML = unlinkify(this.data.text.text);
+            this.plaintext = unlinkify(this.data.text.text);
 		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML = unlinkify(this.data.media.caption);
+            this.plaintext = unlinkify(this.data.media.caption);
 		}
 
-        this._el.container.ariaLabel = this._text.innerHTML;
+        this._el.text = DOM.create("div", "tl-timemarker-text", this._el.content);
+        this._text = DOM.create("h2", "tl-headline", this._el.text);
+        this._text.innerHTML = this.plaintext;
+        this._el.container.ariaLabel = this.plaintext
 
-		// Fire event that the slide is loaded
+        // Fire event that the slide is loaded
 		this.onLoaded();
 
 	}
