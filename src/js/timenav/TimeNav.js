@@ -476,6 +476,8 @@ export class TimeNav {
         } else {
             this.current_id = this.current_focused_id = '';
         }
+
+        this._setLabelWithCurrentMarker();
     }
 
     goToId(id, fast, css_animation) {
@@ -713,6 +715,14 @@ export class TimeNav {
 
     }
 
+    _setLabelWithCurrentMarker() {
+        const currentMarker = this._markers[this._findMarkerIndex(this.current_focused_id)];
+        const currentMarkerText = currentMarker && currentMarker.plaintext
+            ? `, ${currentMarker.plaintext}, shown`
+            : '';
+        this._el.container.setAttribute('aria-label', `Timeline navigation ${currentMarkerText}`);
+    }
+
 
     /*	Init
     ================================================== */
@@ -738,6 +748,15 @@ export class TimeNav {
         });
         this._swipable.enable();
 
+
+        this._el.container.setAttribute('role', 'application');
+        this._el.container.setAttribute('tabindex', '0');
+        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-description',
+            'Use arrow keys to navigate between markers,' +
+            'use the "Home" button to go to the first marker, ' +
+            'use "End" button to go to the last marker'
+        );
     }
 
     _initEvents() {
@@ -747,14 +766,6 @@ export class TimeNav {
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
         DOMEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
-
-        this._el.container.setAttribute('role', 'application');
-        this._el.container.setAttribute('tabindex', '0');
-        this._el.container.setAttribute('aria-label', 'Timeline navigation');
-        this._el.container.setAttribute('aria-description',
-            'Use arrows keys to navigate between markers on the timeline.' +
-            'Or use the "Home" button to go to the first marker and the "End" button to go to the last marker'
-        );
         DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
     }
 
