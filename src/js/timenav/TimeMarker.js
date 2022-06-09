@@ -109,7 +109,7 @@ export class TimeMarker {
 			this._el.container.className = 'tl-timemarker';
 		}
 
-        this._el.container.ariaLabel = this._text.innerHTML;
+        this._el.container.ariaLabel = this.plaintext;
         if (this.active) {
             this._el.container.ariaLabel += ', shown';
         } else {
