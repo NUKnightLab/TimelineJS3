@@ -107,6 +107,13 @@ export class TimeMarker {
 		} else {
 			this._el.container.className = 'tl-timemarker';
 		}
+
+        this._el.container.ariaLabel = this._text.innerHTML;
+        if (this.active) {
+            this._el.container.ariaLabel += ', shown';
+        } else {
+            this._el.container.ariaLabel += ', press space to show';
+        }
 	}
 
 	setFocus(options = { preventScroll: true }) {
