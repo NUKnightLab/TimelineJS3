@@ -750,6 +750,11 @@ export class TimeNav {
 
         this._el.container.setAttribute('role', 'application');
         this._el.container.setAttribute('tabindex', '0');
+        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-description',
+            'Use arrows keys to navigate between markers on the timeline.' +
+            'Or use Home button to go to the first marker and End button to go to the last marker'
+        );
         DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
     }
 
