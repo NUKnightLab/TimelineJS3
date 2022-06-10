@@ -717,8 +717,8 @@ export class TimeNav {
 
     _setLabelWithCurrentMarker() {
         const currentMarker = this._markers[this._findMarkerIndex(this.current_focused_id)];
-        const currentMarkerText = currentMarker && currentMarker.plaintext
-            ? `, ${currentMarker.plaintext}, shown`
+        const currentMarkerText = currentMarker && currentMarker.ariaLabel
+            ? `, ${currentMarker.ariaLabel}, shown`
             : '';
         this._el.container.setAttribute('aria-label', `Timeline navigation ${currentMarkerText}`);
     }
