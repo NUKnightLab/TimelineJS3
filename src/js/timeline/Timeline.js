@@ -518,8 +518,6 @@ class Timeline {
         this._menubar.changeVisibleTicks(e.visible_ticks);
     }
 
-
-
     _onChange(e) {
         this.fire("change", { unique_id: this.current_id }, this);
         if (this.options.hash_bookmark && this.current_id) {
