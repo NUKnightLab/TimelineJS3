@@ -236,6 +236,15 @@ export class TimeNav {
         this.options.scale_factor = factor;
         //this._updateDrawTimeline(true);
         this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
+
+        /**
+         * The timeout is required to wait till the end of the animation
+         * and repositioning of the ticks on the screen
+         */
+        setTimeout(() => {
+            const visible_ticks = this.timeaxis.getVisibleTicks();
+            this.fire("visible_ticks_change", { visible_ticks });
+        }, this.options.duration)
     }
 
     /*	Groups
