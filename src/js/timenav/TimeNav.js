@@ -498,8 +498,6 @@ export class TimeNav {
             this._markers[n].setFocus();
             this.current_focused_id = this._markers[n].data.unique_id;
             this._markers[n].on('markerblur', this._onMarkerBlur, this);
-
-            this._dispatchVisibleTicksChange();
         }
     }
 
@@ -649,10 +647,6 @@ export class TimeNav {
         }
     }
 
-    _onDragEnd(e) {
-        this._dispatchVisibleTicksChange();
-    }
-
     _onKeydown(e) {
         DOMEvent.stopPropagation(e);
 
@@ -784,7 +778,6 @@ export class TimeNav {
     _initEvents() {
         // Drag Events
         this._swipable.on('dragmove', this._onDragMove, this);
-        this._swipable.on('dragend', this._onDragEnd, this);
 
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
