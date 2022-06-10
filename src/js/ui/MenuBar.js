@@ -141,25 +141,9 @@ export class MenuBar {
 		this.fire("zoom_in", e);
 	}
 
-    _onButtonZoomInFocus(e) {
-        this._el.button_zoomin_description.setAttribute('aria-live', 'polite');
-	}
-
-    _onButtonZoomInBlur(e) {
-        this._el.button_zoomin_description.removeAttribute('aria-live');
-	}
-
-	_onButtonZoomOut(e) {
+	_onButtonZoomOutClick(e) {
 		this.fire("zoom_out", e);
 	}
-
-    _onButtonZoomOutFocus(e) {
-        this._el.button_zoomout_description.setAttribute('aria-live', 'polite');
-    }
-
-    _onButtonZoomOutBlur(e) {
-        this._el.button_zoomout_description.removeAttribute('aria-live');
-    }
 
 	_onButtonBackToStart(e) {
 		this.fire("back_to_start", e);
@@ -200,14 +184,8 @@ export class MenuBar {
 
 	_initEvents () {
 		DOMEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-
 		DOMEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomInClick, this);
-		DOMEvent.addListener(this._el.button_zoomin, 'focus', this._onButtonZoomInFocus, this);
-		DOMEvent.addListener(this._el.button_zoomin, 'blur', this._onButtonZoomInBlur, this);
-
-		DOMEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
-        DOMEvent.addListener(this._el.button_zoomout, 'focus', this._onButtonZoomOutFocus, this);
-        DOMEvent.addListener(this._el.button_zoomout, 'blur', this._onButtonZoomOutBlur, this);
+		DOMEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOutClick, this);
 	}
 
 	// Update Display
