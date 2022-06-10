@@ -239,10 +239,10 @@ export class TimeMarker {
         var date_text = "";
 
         if (this.data.end_date) {
-            date_text = " &mdash; " + this.data.end_date.getDisplayDate(this.getLanguage());
+            date_text = " to " + this.data.end_date.getDisplayDate(this.getLanguage());
         }
         if (this.data.start_date) {
-            date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+            date_text = (date_text ? "from " : "") + this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
         }
         return date_text;
     }
