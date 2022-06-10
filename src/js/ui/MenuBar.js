@@ -15,7 +15,9 @@ export class MenuBar {
 			container: {},
 			button_backtostart: {},
 			button_zoomin: {},
+			button_zoomin_description: {},
 			button_zoomout: {},
+			button_zoomout_description: {},
 			arrow: {},
 			line: {},
 			coverbar: {},
@@ -130,18 +132,34 @@ export class MenuBar {
 
     getFormattedDate() {
         const { start, end } = this.data.visible_ticks_dates;
-        return start && end ? `, than ${start} to ${end}` : "";
+        return start && end ? `than ${start} to ${end}` : "";
     }
 
 	/*	Events
 	================================================== */
-	_onButtonZoomIn(e) {
+	_onButtonZoomInClick(e) {
 		this.fire("zoom_in", e);
+	}
+
+    _onButtonZoomInFocus(e) {
+        this._el.button_zoomin_description.setAttribute('aria-live', 'polite');
+	}
+
+    _onButtonZoomInBlur(e) {
+        this._el.button_zoomin_description.removeAttribute('aria-live');
 	}
 
 	_onButtonZoomOut(e) {
 		this.fire("zoom_out", e);
 	}
+
+    _onButtonZoomOutFocus(e) {
+        this._el.button_zoomout_description.setAttribute('aria-live', 'polite');
+    }
+
+    _onButtonZoomOutBlur(e) {
+        this._el.button_zoomout_description.removeAttribute('aria-live');
+    }
 
 	_onButtonBackToStart(e) {
 		this.fire("back_to_start", e);
@@ -154,7 +172,14 @@ export class MenuBar {
 
 		// Create Layout
 		this._el.button_zoomin = DOM.create('button', 'tl-menubar-button', this._el.container);
-		this._el.button_zoomout = DOM.create('button', 'tl-menubar-button', this._el.container);
+        this._el.button_zoomout = DOM.create('button', 'tl-menubar-button', this._el.container);
+
+        this._el.button_zoomin_description = DOM.create('span', 'visually-hidden', this._el.container);
+        this._el.button_zoomin_description.id = 'zoomin-description';
+
+        this._el.button_zoomout_description = DOM.create('span', 'visually-hidden', this._el.container);
+        this._el.button_zoomout_description.id = 'zoomout-description';
+
 		this._el.button_backtostart = DOM.create('button', 'tl-menubar-button', this._el.container);
 
 		if (Browser.mobile) {
@@ -165,14 +190,24 @@ export class MenuBar {
 		this._el.button_backtostart.ariaLabel = "Back to timeline intro";
 
 		this._el.button_zoomin.innerHTML = "<span class='tl-icon-zoom-in'></span>";
+        this._el.button_zoomin.setAttribute('aria-label', 'Zoom in');
+        this._el.button_zoomin.setAttribute('aria-describedby', 'zoomin-description');
+
 		this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
-        this._updateZoomAriaLabels();
+        this._el.button_zoomout.setAttribute('aria-label', 'Zoom out');
+        this._el.button_zoomout.setAttribute('aria-describedby', 'zoomout-description');
 	}
 
 	_initEvents () {
 		DOMEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		DOMEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomIn, this);
+
+		DOMEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomInClick, this);
+		DOMEvent.addListener(this._el.button_zoomin, 'focus', this._onButtonZoomInFocus, this);
+		DOMEvent.addListener(this._el.button_zoomin, 'blur', this._onButtonZoomInBlur, this);
+
 		DOMEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
+        DOMEvent.addListener(this._el.button_zoomin, 'focus', this._onButtonZoomOutFocus, this);
+        DOMEvent.addListener(this._el.button_zoomin, 'blur', this._onButtonZoomOutBlur, this);
 	}
 
 	// Update Display
@@ -188,14 +223,15 @@ export class MenuBar {
 
     // Update Display
 	_updateZoomAriaLabels() {
-        this._el.button_zoomin.ariaLabel = 'Zoom in';
-        this._el.button_zoomout.ariaLabel = 'Zoom out';
-
         const date = this.getFormattedDate();
-        if (date) {
-            this._el.button_zoomin.ariaLabel += `to show less ${date}`;
-            this._el.button_zoomout.ariaLabel += `to show more ${date}`;
+        if (!date) {
+            this._el.button_zoomin_description.innerText = '';
+            this._el.button_zoomout_description.innerText = '';
+            return;
         }
+
+        this._el.button_zoomin_description.innerText = `Show less ${date}`;
+        this._el.button_zoomout_description.innerText = `Show more ${date}`;
 	}
 
 }
