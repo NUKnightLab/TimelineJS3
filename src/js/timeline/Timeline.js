@@ -470,6 +470,7 @@ class Timeline {
         // TimeNav Events
         this._timenav.on('change', this._onTimeNavChange, this);
         this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+        this._timenav.on('visible_ticks_change', this._onVisibleTicksChange, this);
 
         // StorySlider Events
         this._storyslider.on('change', this._onSlideChange, this);
@@ -513,7 +514,9 @@ class Timeline {
 
     }
 
-
+    _onVisibleTicksChange(e) {
+        this._menubar.changeVisibleTicks(e.visible_ticks);
+    }
 
     _onChange(e) {
         this.fire("change", { unique_id: this.current_id }, this);

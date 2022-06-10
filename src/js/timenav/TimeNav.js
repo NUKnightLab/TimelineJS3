@@ -478,6 +478,7 @@ export class TimeNav {
         }
 
         this._setLabelWithCurrentMarker();
+        this._dispatchVisibleTicksChange();
     }
 
     goToId(id, fast, css_animation) {
@@ -541,6 +542,21 @@ export class TimeNav {
                 });
             }
         }
+    }
+
+    _dispatchVisibleTicksChange() {
+        /**
+         * The timeout is required to wait till the end of the animation
+         * and repositioning of the ticks on the screen
+         */
+        if(this.ticks_change_timeout) {
+            clearTimeout(this.ticks_change_timeout);
+            this.ticks_change_timeout = null;
+        }
+        this.ticks_change_timeout = setTimeout(() => {
+            const visible_ticks = this.timeaxis.getVisibleTicks();
+            this.fire("visible_ticks_change", { visible_ticks });
+        }, this.options.duration);
     }
 
     /*	Events
