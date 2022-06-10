@@ -15,9 +15,7 @@ export class MenuBar {
 			container: {},
 			button_backtostart: {},
 			button_zoomin: {},
-			button_zoomin_description: {},
 			button_zoomout: {},
-			button_zoomout_description: {},
 			arrow: {},
 			line: {},
 			coverbar: {},
@@ -157,13 +155,6 @@ export class MenuBar {
 		// Create Layout
 		this._el.button_zoomin = DOM.create('button', 'tl-menubar-button', this._el.container);
         this._el.button_zoomout = DOM.create('button', 'tl-menubar-button', this._el.container);
-
-        this._el.button_zoomin_description = DOM.create('span', 'visually-hidden', this._el.container);
-        this._el.button_zoomin_description.id = 'zoomin-description';
-
-        this._el.button_zoomout_description = DOM.create('span', 'visually-hidden', this._el.container);
-        this._el.button_zoomout_description.id = 'zoomout-description';
-
 		this._el.button_backtostart = DOM.create('button', 'tl-menubar-button', this._el.container);
 
 		if (Browser.mobile) {
@@ -175,11 +166,11 @@ export class MenuBar {
 
 		this._el.button_zoomin.innerHTML = "<span class='tl-icon-zoom-in'></span>";
         this._el.button_zoomin.setAttribute('aria-label', 'Zoom in');
-        this._el.button_zoomin.setAttribute('aria-describedby', 'zoomin-description');
+        // this._el.button_zoomin.setAttribute('aria-describedby', 'zoomin-description');
 
 		this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
         this._el.button_zoomout.setAttribute('aria-label', 'Zoom out');
-        this._el.button_zoomout.setAttribute('aria-describedby', 'zoomout-description');
+        // this._el.button_zoomout.setAttribute('aria-describedby', 'zoomout-description');
 	}
 
 	_initEvents () {
@@ -203,13 +194,13 @@ export class MenuBar {
 	_updateZoomAriaLabels() {
         const date = this.getFormattedDate();
         if (!date) {
-            this._el.button_zoomin_description.innerText = '';
-            this._el.button_zoomout_description.innerText = '';
+            this._el.button_zoomin.setAttribute('aria-description', '');
+            this._el.button_zoomout.setAttribute('aria-description', '');
             return;
         }
 
-        this._el.button_zoomin_description.innerText = `Show less ${date}`;
-        this._el.button_zoomout_description.innerText = `Show more ${date}`;
+        this._el.button_zoomin.setAttribute('aria-description', `Show less ${date}`);
+        this._el.button_zoomout.setAttribute('aria-description', `Show more ${date}`);
 	}
 
 }
