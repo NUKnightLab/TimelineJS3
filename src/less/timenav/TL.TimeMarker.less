@@ -235,7 +235,7 @@
 
 	/* Hover State
 	================================================== */
-	&:hover {
+	&:hover, &:focus {
 
 		.tl-timemarker-timespan {
 			background-color: fadeout(@marker-text-color, 85%);
@@ -303,8 +303,12 @@
 
 	}
 
-	/* Hover Active State
-	================================================== */
+    &:focus-visible {
+        outline: none;
+    }
+
+    /* Hover Active State
+    ================================================== */
 	&:hover {
 		&.tl-timemarker-active {
 			.tl-timemarker-content-container {

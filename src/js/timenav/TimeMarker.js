@@ -28,6 +28,7 @@ export class TimeMarker {
 
 		// Components
 		this._text = {};
+		this.plaintext = '';
 
 		// State
 		this._state = {
@@ -107,6 +108,17 @@ export class TimeMarker {
 		} else {
 			this._el.container.className = 'tl-timemarker';
 		}
+
+        this._el.container.ariaLabel = this.plaintext;
+        if (this.active) {
+            this._el.container.ariaLabel += ', shown';
+        } else {
+            this._el.container.ariaLabel += ', press space to show';
+        }
+	}
+
+	setFocus(options = { preventScroll: true }) {
+        this._el.container.focus(options);
 	}
 
 	addTo(container) {
@@ -222,11 +234,23 @@ export class TimeMarker {
 		this.fire("markerclick", { unique_id: this.data.unique_id });
 	}
 
+    _onMarkerKeydown(e) {
+        if (/Space|Enter/.test(e.code)) {
+            this.fire("markerclick", { unique_id: this.data.unique_id });
+        }
+	}
+
+    _onMarkerBlur(e) {
+		this.fire("markerblur", { unique_id: this.data.unique_id });
+	}
+
 	/*	Private Methods
 	================================================== */
 	_initLayout() {
 		// Create Layout
 		this._el.container = DOM.create("div", "tl-timemarker");
+        this._el.container.tabIndex = -1;
+
 		if (this.data.unique_id) {
 			this._el.container.id = this.data.unique_id + "-marker";
 		}
@@ -267,25 +291,28 @@ export class TimeMarker {
 
 
 		// Text
-		this._el.text = DOM.create("div", "tl-timemarker-text", this._el.content);
-		this._text = DOM.create("h2", "tl-headline", this._el.text);
 		if (this.data.text.headline && this.data.text.headline != "") {
-			this._text.innerHTML = unlinkify(this.data.text.headline);
+			this.plaintext = unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
-			this._text.innerHTML = unlinkify(this.data.text.text);
+            this.plaintext = unlinkify(this.data.text.text);
 		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
-			this._text.innerHTML = unlinkify(this.data.media.caption);
+            this.plaintext = unlinkify(this.data.media.caption);
 		}
 
+        this._el.text = DOM.create("div", "tl-timemarker-text", this._el.content);
+        this._text = DOM.create("h2", "tl-headline", this._el.text);
+        this._text.innerHTML = this.plaintext;
+        this._el.container.ariaLabel = this.plaintext
 
-
-		// Fire event that the slide is loaded
+        // Fire event that the slide is loaded
 		this.onLoaded();
 
 	}
 
 	_initEvents() {
 		DOMEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
+		DOMEvent.addListener(this._el.container, 'keydown', this._onMarkerKeydown, this);
+		DOMEvent.addListener(this._el.container, 'blur', this._onMarkerBlur, this);
 	}
 
 	// Update Display
