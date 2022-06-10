@@ -194,6 +194,8 @@ class Timeline {
         // Apply base class to container
         addClass(this._el.container, 'tl-timeline');
         this._el.container.tabIndex = 0;
+        this._el.container.setAttribute('role', 'region');
+        this._el.container.ariaLabel = 'Timeline';
 
         if (this.options.is_embed) {
             addClass(this._el.container, 'tl-timeline-embed');
@@ -429,6 +431,8 @@ class Timeline {
 
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
+        this._el.timenav.setAttribute('role', 'group');
+        this._el.timenav.ariaLabel = 'Timeline navigation';
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
@@ -441,6 +445,8 @@ class Timeline {
 
         // Create StorySlider
         this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
+        this._el.storyslider.setAttribute('role', 'group');
+        this._el.storyslider.ariaLabel = 'Timeline content';
         this._storyslider.on('loaded', this._onStorySliderLoaded, this);
         this._storyslider.init();
 
