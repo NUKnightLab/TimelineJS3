@@ -237,14 +237,7 @@ export class TimeNav {
         //this._updateDrawTimeline(true);
         this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
 
-        /**
-         * The timeout is required to wait till the end of the animation
-         * and repositioning of the ticks on the screen
-         */
-        setTimeout(() => {
-            const visible_ticks = this.timeaxis.getVisibleTicks();
-            this.fire("visible_ticks_change", { visible_ticks });
-        }, this.options.duration)
+        this._dispatchVisibleTicksChange()
     }
 
     /*	Groups
@@ -552,6 +545,17 @@ export class TimeNav {
         }
     }
 
+    _dispatchVisibleTicksChange() {
+        /**
+         * The timeout is required to wait till the end of the animation
+         * and repositioning of the ticks on the screen
+         */
+        setTimeout(() => {
+            const visible_ticks = this.timeaxis.getVisibleTicks();
+            this.fire("visible_ticks_change", { visible_ticks });
+        }, this.options.duration);
+    }
+
     /*	Events
     ================================================== */
     _onLoaded() {
@@ -638,6 +642,10 @@ export class TimeNav {
             this._el.slider.className = "tl-timenav-slider";
             this.animate_css = false;
         }
+    }
+
+    _onDragEnd(e) {
+        this._dispatchVisibleTicksChange();
     }
 
     _onKeydown(e) {
@@ -771,6 +779,7 @@ export class TimeNav {
     _initEvents() {
         // Drag Events
         this._swipable.on('dragmove', this._onDragMove, this);
+        this._swipable.on('dragend', this._onDragEnd, this);
 
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
