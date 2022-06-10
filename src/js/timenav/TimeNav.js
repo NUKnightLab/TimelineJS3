@@ -480,6 +480,7 @@ export class TimeNav {
         }
 
         this._setLabelWithCurrentMarker();
+        this._dispatchVisibleTicksChange();
     }
 
     goToId(id, fast, css_animation) {
@@ -499,6 +500,8 @@ export class TimeNav {
             this._markers[n].setFocus();
             this.current_focused_id = this._markers[n].data.unique_id;
             this._markers[n].on('markerblur', this._onMarkerBlur, this);
+
+            this._dispatchVisibleTicksChange();
         }
     }
 
