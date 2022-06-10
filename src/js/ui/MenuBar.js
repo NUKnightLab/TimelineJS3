@@ -5,6 +5,7 @@ import { DOMMixins } from "../dom/DOMMixins"
 import { easeInOutQuint } from "../animation/Ease"
 import { classMixin, mergeData } from "../core/Util";
 import { DOMEvent } from "../dom/DOMEvent"
+import { I18NMixins } from "../language/I18NMixins";
 
 export class MenuBar {
 	constructor(elem, parent_elem, options) {
@@ -98,9 +99,9 @@ export class MenuBar {
         this.data.visible_ticks_dates = {
             start: firstYear,
             end: lastYear
-        }
+        };
 
-        console.log(this.data.visible_ticks_dates);
+        this._updateZoomAriaLabels();
 	}
 
     _getTickYear(tick) {
@@ -127,6 +128,10 @@ export class MenuBar {
 		this._updateDisplay(w, h, a, l);
 	}
 
+    getFormattedDate() {
+        const { start, end } = this.data.visible_ticks_dates;
+        return start && end ? `, than ${start} to ${end}` : "";
+    }
 
 	/*	Events
 	================================================== */
@@ -157,13 +162,11 @@ export class MenuBar {
 		}
 
 		this._el.button_backtostart.innerHTML = "<span class='tl-icon-goback'></span>";
-		this._el.button_backtostart.ariaLabel = "Back to start";
+		this._el.button_backtostart.ariaLabel = "Back to timeline intro";
 
 		this._el.button_zoomin.innerHTML = "<span class='tl-icon-zoom-in'></span>";
-        this._el.button_zoomin.ariaLabel = "Zoom in";
-
 		this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
-        this._el.button_zoomout.ariaLabel = "Zoom out";
+        this._updateZoomAriaLabels();
 	}
 
 	_initEvents () {
@@ -183,6 +186,18 @@ export class MenuBar {
 		}
 	}
 
+    // Update Display
+	_updateZoomAriaLabels() {
+        this._el.button_zoomin.ariaLabel = 'Zoom in';
+        this._el.button_zoomout.ariaLabel = 'Zoom out';
+
+        const date = this.getFormattedDate();
+        if (date) {
+            this._el.button_zoomin.ariaLabel += `to show less ${date}`;
+            this._el.button_zoomout.ariaLabel += `to show more ${date}`;
+        }
+	}
+
 }
 
-classMixin(MenuBar, DOMMixins, Events)
+classMixin(MenuBar, I18NMixins, DOMMixins, Events)
