@@ -1,4 +1,4 @@
-import { classMixin, mergeData, unlinkify } from "../core/Util"
+import { classMixin, mergeData, trim, unlinkify } from "../core/Util";
 import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
@@ -9,6 +9,7 @@ import { webkit as BROWSER_WEBKIT } from "../core/Browser";
 import { easeInSpline } from "../animation/Ease";
 
 import { lookupMediaType } from "../media/MediaType"
+import { I18NMixins } from "../language/I18NMixins";
 
 export class TimeMarker {
 	constructor(data, options) {
@@ -28,13 +29,11 @@ export class TimeMarker {
 
 		// Components
 		this._text = {};
-		this.plaintext = '';
 
 		// State
 		this._state = {
 			loaded: false
 		};
-
 
 		// Data
 		this.data = {
@@ -76,6 +75,9 @@ export class TimeMarker {
 		// End date
 		this.has_end_date = false;
 
+        // Alternative text
+        this.ariaLabel = '';
+
 		// Merge Data and Options
 		mergeData(this.options, options);
 		mergeData(this.data, data);
@@ -109,7 +111,7 @@ export class TimeMarker {
 			this._el.container.className = 'tl-timemarker';
 		}
 
-        this._el.container.ariaLabel = this.plaintext;
+        this._el.container.ariaLabel = this.ariaLabel;
         if (this.active) {
             this._el.container.ariaLabel += ', shown';
         } else {
@@ -228,6 +230,23 @@ export class TimeMarker {
 		this._el.timespan.style.height = remainder + "px";
 	}
 
+
+    getFormattedDate() {
+
+        if (trim(this.data.display_date).length > 0) {
+            return this.data.display_date;
+        }
+        var date_text = "";
+
+        if (this.data.end_date) {
+            date_text = " to " + this.data.end_date.getDisplayDate(this.getLanguage());
+        }
+        if (this.data.start_date) {
+            date_text = (date_text ? "from " : "") + this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+        }
+        return date_text;
+    }
+
 	/*	Events
 	================================================== */
 	_onMarkerClick(e) {
@@ -289,24 +308,22 @@ export class TimeMarker {
 
 		}
 
-
 		// Text
-		if (this.data.text.headline && this.data.text.headline != "") {
-			this.plaintext = unlinkify(this.data.text.headline);
-		} else if (this.data.text.text && this.data.text.text != "") {
-            this.plaintext = unlinkify(this.data.text.text);
-		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
-            this.plaintext = unlinkify(this.data.media.caption);
-		}
-
         this._el.text = DOM.create("div", "tl-timemarker-text", this._el.content);
         this._text = DOM.create("h2", "tl-headline", this._el.text);
-        this._text.innerHTML = this.plaintext;
-        this._el.container.ariaLabel = this.plaintext
+		if (this.data.text.headline && this.data.text.headline != "") {
+            this._text.innerHTML = unlinkify(this.data.text.headline);
+		} else if (this.data.text.text && this.data.text.text != "") {
+            this._text.innerHTML = unlinkify(this.data.text.text);
+		} else if (this.data.media && this.data.media.caption && this.data.media.caption != "") {
+            this._text.innerHTML = unlinkify(this.data.media.caption);
+		}
+
+        const date = this.getFormattedDate();
+        this.ariaLabel = `${this._text.innerHTML}, ${date}`;
 
         // Fire event that the slide is loaded
 		this.onLoaded();
-
 	}
 
 	_initEvents() {
@@ -331,4 +348,4 @@ export class TimeMarker {
 }
 
 
-classMixin(TimeMarker, Events, DOMMixins)
+classMixin(TimeMarker, I18NMixins, Events, DOMMixins)
