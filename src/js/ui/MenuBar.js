@@ -206,8 +206,8 @@ export class MenuBar {
 		DOMEvent.addListener(this._el.button_zoomin, 'blur', this._onButtonZoomInBlur, this);
 
 		DOMEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
-        DOMEvent.addListener(this._el.button_zoomin, 'focus', this._onButtonZoomOutFocus, this);
-        DOMEvent.addListener(this._el.button_zoomin, 'blur', this._onButtonZoomOutBlur, this);
+        DOMEvent.addListener(this._el.button_zoomout, 'focus', this._onButtonZoomOutFocus, this);
+        DOMEvent.addListener(this._el.button_zoomout, 'blur', this._onButtonZoomOutBlur, this);
 	}
 
 	// Update Display
