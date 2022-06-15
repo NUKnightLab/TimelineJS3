@@ -256,7 +256,7 @@
 		}
 		
 		.tl-timemarker-content-container {
-			background-color: darken(@marker-color,15);
+            background-color: darken(@marker-color,45);
 			border-color: darken(@marker-color,25);
 			.property-animation(height, @animation-duration-fast/2, @animation-ease);
 			.property-animation(width, @animation-duration-fast/2, @animation-ease);
@@ -283,7 +283,7 @@
 						color:@marker-selected-text-color;
 						&.tl-headline-fadeout {
 							&:after {
-								.marker-text-fade(darken(@marker-color,15),80%);
+                                .marker-text-fade(darken(@marker-color,45),80%);
 							}
 						}
 						
