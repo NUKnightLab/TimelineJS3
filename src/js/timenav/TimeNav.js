@@ -81,6 +81,9 @@ export class TimeNav {
         // Current Marker
         this.current_id = "";
 
+        // Current Focused Marker
+        this.current_focused_id = "";
+
         // TimeScale
         this.timescale = {};
 
@@ -368,6 +371,12 @@ export class TimeNav {
         };
     }
 
+    _resetMarkersBlurListeners() {
+        for (var i = 0; i < this._markers.length; i++) {
+            this._markers[i].off('markerblur', this._onMarkerBlur, this);
+        }
+    }
+
     _findMarkerIndex(n) {
         var _n = -1;
         if (typeof n == 'string' || n instanceof String) {
@@ -459,6 +468,58 @@ export class TimeNav {
         if (n >= 0 && n < this._markers.length) {
             this._markers[n].setActive(true);
         }
+
+        this.animateMovement(_n, fast, css_animation, _duration, _ease);
+
+        if (n >= 0 && n < this._markers.length) {
+            this.current_id = this.current_focused_id = this._markers[n].data.unique_id;
+        } else {
+            this.current_id = this.current_focused_id = '';
+        }
+
+        this._setLabelWithCurrentMarker();
+        this._dispatchVisibleTicksChange();
+    }
+
+    goToId(id, fast, css_animation) {
+        this.goTo(this._findMarkerIndex(id), fast, css_animation);
+    }
+
+
+    focusOn(n, fast, css_animation) {
+        var _ease = this.options.ease,
+            _duration = this.options.duration,
+            _n = (n < 0) ? 0 : n;
+
+        this.animateMovement(_n, fast, css_animation, _duration, _ease);
+
+        this._resetMarkersBlurListeners();
+        if (n >= 0 && n < this._markers.length) {
+            this._markers[n].setFocus();
+            this.current_focused_id = this._markers[n].data.unique_id;
+            this._markers[n].on('markerblur', this._onMarkerBlur, this);
+        }
+    }
+
+    focusNext() {
+        var n = this._findMarkerIndex(this.current_focused_id);
+        if ((n + 1) < (this._markers.length)) {
+            this.focusOn(n + 1);
+        } else {
+            this.focusOn(n);
+        }
+    }
+
+    focusPrevious() {
+        var n = this._findMarkerIndex(this.current_focused_id);
+        if (n - 1 >= 0) {
+            this.focusOn(n - 1);
+        } else {
+            this.focusOn(n);
+        }
+    }
+
+    animateMovement(n, fast, css_animation, duration, ease) {
         // Stop animation
         if (this.animator) {
             this.animator.stop();
@@ -466,31 +527,36 @@ export class TimeNav {
 
         if (fast) {
             this._el.slider.className = "tl-timenav-slider";
-            this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width / 2) + "px";
+            this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width / 2) + "px";
         } else {
             if (css_animation) {
                 this._el.slider.className = "tl-timenav-slider tl-timenav-slider-animate";
                 this.animate_css = true;
-                this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width / 2) + "px";
+                this._el.slider.style.left = -this._markers[n].getLeft() + (this.options.width / 2) + "px";
             } else {
                 this._el.slider.className = "tl-timenav-slider";
                 this.animator = Animate(this._el.slider, {
-                    left: -this._markers[_n].getLeft() + (this.options.width / 2) + "px",
-                    duration: _duration,
-                    easing: _ease
+                    left: -this._markers[n].getLeft() + (this.options.width / 2) + "px",
+                    duration: duration,
+                    easing: ease
                 });
             }
         }
-
-        if (n >= 0 && n < this._markers.length) {
-            this.current_id = this._markers[n].data.unique_id;
-        } else {
-            this.current_id = '';
-        }
     }
 
-    goToId(id, fast, css_animation) {
-        this.goTo(this._findMarkerIndex(id), fast, css_animation);
+    _dispatchVisibleTicksChange() {
+        /**
+         * The timeout is required to wait till the end of the animation
+         * and repositioning of the ticks on the screen
+         */
+        if(this.ticks_change_timeout) {
+            clearTimeout(this.ticks_change_timeout);
+            this.ticks_change_timeout = null;
+        }
+        this.ticks_change_timeout = setTimeout(() => {
+            const visible_ticks = this.timeaxis.getVisibleTicks();
+            this.fire("visible_ticks_change", { visible_ticks });
+        }, this.options.duration);
     }
 
     /*	Events
@@ -516,6 +582,12 @@ export class TimeNav {
         // Go to the clicked marker
         this.goToId(e.unique_id);
         this.fire("change", { unique_id: e.unique_id });
+    }
+
+    _onMarkerBlur(e) {
+        // Reset the focused marked to the active marker after it lost the focus
+        if (this.current_focused_id === this.current_id) return;
+        this.focusOn(this._findMarkerIndex(this.current_id));
     }
 
     _onMouseScroll(e) {
@@ -573,7 +645,33 @@ export class TimeNav {
             this._el.slider.className = "tl-timenav-slider";
             this.animate_css = false;
         }
+    }
 
+    _onKeydown(e) {
+        DOMEvent.stopPropagation(e);
+
+        switch (e.key) {
+            case "PageUp":
+            case "ArrowUp":
+            case "ArrowRight": {
+                this.focusNext();
+                break;
+            }
+            case "PageDown":
+            case "ArrowDown":
+            case "ArrowLeft": {
+                this.focusPrevious();
+                break;
+            }
+            case "Home":{
+                this.focusOn(0);
+                break;
+            }
+            case "End":{
+                this.focusOn(this._markers.length - 1);
+                break;
+            }
+        }
     }
 
     /*	Private Methods
@@ -633,12 +731,19 @@ export class TimeNav {
 
     }
 
+    _setLabelWithCurrentMarker() {
+        const currentMarker = this._markers[this._findMarkerIndex(this.current_focused_id)];
+        const currentMarkerText = currentMarker && currentMarker.ariaLabel
+            ? `, ${currentMarker.ariaLabel}, shown`
+            : '';
+        this._el.container.setAttribute('aria-label', `Timeline navigation ${currentMarkerText}`);
+    }
+
 
     /*	Init
     ================================================== */
     _initLayout() {
         // Create Layout
-        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
         this._el.line = DOM.create('div', 'tl-timenav-line', this._el.container);
         this._el.slider = DOM.create('div', 'tl-timenav-slider', this._el.container);
         this._el.slider_background = DOM.create('div', 'tl-timenav-slider-background', this._el.slider);
@@ -647,10 +752,6 @@ export class TimeNav {
         this._el.marker_item_container = DOM.create('div', 'tl-timenav-item-container', this._el.marker_container);
         this._el.timeaxis = DOM.create('div', 'tl-timeaxis', this._el.slider);
         this._el.timeaxis_background = DOM.create('div', 'tl-timeaxis-background', this._el.container);
-
-
-        // Knight Lab Logo
-        this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Time Axis
         this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);
@@ -663,6 +764,15 @@ export class TimeNav {
         });
         this._swipable.enable();
 
+
+        this._el.container.setAttribute('role', 'application');
+        this._el.container.setAttribute('tabindex', '0');
+        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-description',
+            'Use arrow keys to navigate between markers,' +
+            'use the "Home" button to go to the first marker, ' +
+            'use "End" button to go to the last marker'
+        );
     }
 
     _initEvents() {
@@ -672,6 +782,7 @@ export class TimeNav {
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
         DOMEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
+        DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
     }
 
     _initData() {

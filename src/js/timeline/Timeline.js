@@ -48,16 +48,16 @@ function make_keydown_handler(timeline) {
 /**
  * Primary entry point for using TimelineJS.
  * @constructor
- * @param {HTMLElement|string} elem - the HTML element, or its ID, to which 
+ * @param {HTMLElement|string} elem - the HTML element, or its ID, to which
  *     the Timeline should be bound
  * @param {object|String} - a JavaScript object conforming to the TimelineJS
  *     configuration format, or a String which is the URL for a Google Sheets document
  *     or JSON configuration file which Timeline will retrieve and parse into a JavaScript object.
- *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a 
+ *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a
  *     JSON string from a URL string. If you have a JSON String literal, parse it using
  *     `JSON.parse` before passing it to the constructor.
  *
- * @param {object} [options] - a JavaScript object specifying 
+ * @param {object} [options] - a JavaScript object specifying
  *     presentation options
  */
 class Timeline {
@@ -150,7 +150,7 @@ class Timeline {
         this.animator_menubar = null;
 
         // Ideally we'd set the language here, but we're bootstrapping and may hit problems
-        // before we're able to load it. if it weren't a remote resource, we could probably 
+        // before we're able to load it. if it weren't a remote resource, we could probably
         // do it.
         this.message = new Message(this._el.container, { message_class: "tl-message-full" });
 
@@ -193,6 +193,9 @@ class Timeline {
 
         // Apply base class to container
         addClass(this._el.container, 'tl-timeline');
+        this._el.container.tabIndex = 0;
+        this._el.container.setAttribute('role', 'region');
+        this._el.container.ariaLabel = 'Timeline';
 
         if (this.options.is_embed) {
             addClass(this._el.container, 'tl-timeline-embed');
@@ -262,7 +265,7 @@ class Timeline {
 
     /**
      * Initialize the data for this timeline. If data is a URL, pass it to ConfigFactory
-     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise, 
+     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise,
      * assume it's a JSON object in the right format, and wrap it in a new TimelineConfig.
      * @param {string|TimelineConfig|object} data
      */
@@ -283,10 +286,10 @@ class Timeline {
 
     /**
      * Given an input, if it is a Timeline Error object, look up the
-     * appropriate error in the current language and return it, optionally 
+     * appropriate error in the current language and return it, optionally
      * with detail that also comes in the object. Alternatively, pass back
      * the input, which is expected to be a string ready to display.
-     * @param {Error|string} e - an Error object which can be localized, 
+     * @param {Error|string} e - an Error object which can be localized,
      *     or a string message
      */
     _translateError(e) {
@@ -303,7 +306,7 @@ class Timeline {
 
     /**
      * Display a message in the Timeline window.
-     * @param {string} msg 
+     * @param {string} msg
      */
     showMessage(msg) {
             if (this.message) {
@@ -406,14 +409,17 @@ class Timeline {
         // Create Layout
         if (this.options.timenav_position == "top") {
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
         } else {
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
         }
 
-        this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
-
+        // Knight Lab Logo
+        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
+        this._el.attribution.innerHTML = "<a href='https://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Initial Default Layout
         this.options.width = this._el.container.offsetWidth;
@@ -425,6 +431,8 @@ class Timeline {
 
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
+        this._el.timenav.setAttribute('role', 'group');
+        this._el.timenav.ariaLabel = 'Timeline navigation';
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
@@ -437,6 +445,8 @@ class Timeline {
 
         // Create StorySlider
         this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
+        this._el.storyslider.setAttribute('role', 'group');
+        this._el.storyslider.ariaLabel = 'Timeline content';
         this._storyslider.on('loaded', this._onStorySliderLoaded, this);
         this._storyslider.init();
 
@@ -460,6 +470,7 @@ class Timeline {
         // TimeNav Events
         this._timenav.on('change', this._onTimeNavChange, this);
         this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+        this._timenav.on('visible_ticks_change', this._onVisibleTicksChange, this);
 
         // StorySlider Events
         this._storyslider.on('change', this._onSlideChange, this);
@@ -503,7 +514,9 @@ class Timeline {
 
     }
 
-
+    _onVisibleTicksChange(e) {
+        this._menubar.changeVisibleTicks(e.visible_ticks);
+    }
 
     _onChange(e) {
         this.fire("change", { unique_id: this.current_id }, this);
@@ -661,16 +674,16 @@ class Timeline {
     }
 
     /**
-     * Compute the height of the navigation section of the Timeline, taking 
-     *     into account the possibility of an explicit height or height 
-     *     percentage, but also honoring the `timenav_height_min` option 
-     *     value. If `timenav_height` is specified it takes precedence over 
-     *     `timenav_height_percentage` but in either case, if the resultant 
-     *     pixel height is less than `options.timenav_height_min` then the 
-     *     value of `options.timenav_height_min` will be returned. (A minor 
-     *     adjustment is made to the returned value to account for marker 
+     * Compute the height of the navigation section of the Timeline, taking
+     *     into account the possibility of an explicit height or height
+     *     percentage, but also honoring the `timenav_height_min` option
+     *     value. If `timenav_height` is specified it takes precedence over
+     *     `timenav_height_percentage` but in either case, if the resultant
+     *     pixel height is less than `options.timenav_height_min` then the
+     *     value of `options.timenav_height_min` will be returned. (A minor
+     *     adjustment is made to the returned value to account for marker
      *     padding.)
-     * 
+     *
      * @param {number} [timenav_height] - an integer value for the desired height in pixels
      * @param {number} [timenav_height_percentage] - an integer between 1 and 100
      */
@@ -730,9 +743,9 @@ class Timeline {
     /**
      * Given a slide identifier, return the zero-based positional index of
      * that slide. If this timeline has a 'title' slide, it is at position 0
-     * and all other slides are numbered after that. If there is no 'title' 
+     * and all other slides are numbered after that. If there is no 'title'
      * slide, then the first event slide is at position 0.
-     * @param {String} id 
+     * @param {String} id
      */
     _getSlideIndex(id) {
         if (this.config) {
@@ -752,10 +765,10 @@ class Timeline {
      * Given a slide identifier, return the zero-based positional index of that slide.
      * Does not take the existence of a 'title' slide into account, so if there is a title
      * slide, this value should be one less than calling `_getSlideIndex` with the same
-     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex` 
+     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex`
      * should return the same value.
      * TODO: does it really make sense to have both `_getSlideIndex` and `_getEventIndex`?
-     * @param {String} id 
+     * @param {String} id
      */
     _getEventIndex(id) {
         for (var i = 0; i < this.config.events.length; i++) {
@@ -858,11 +871,13 @@ class Timeline {
     // Goto previous slide
     goToPrev() {
         this.goTo(this._getSlideIndex(this.current_id) - 1);
+        this.focusContainer();
     }
 
     // Goto next slide
     goToNext() {
         this.goTo(this._getSlideIndex(this.current_id) + 1);
+        this.focusContainer();
     }
 
     /* Event manipulation
@@ -956,6 +971,10 @@ class Timeline {
         } else {
             trace('updateDisplay called but timeline is not in ready state')
         }
+    }
+
+    focusContainer() {
+        this._el.container.focus();
     }
 
     _initGoogleAnalytics() {

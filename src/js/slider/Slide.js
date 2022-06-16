@@ -1,3 +1,5 @@
+import "wicg-inert";
+
 import { addClass } from "../dom/DOMUtil"
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events";
@@ -113,8 +115,10 @@ export class Slide {
                 this.fire("background_change", this.has.background);
             }
             this.loadMedia();
+            this._setInteractive(true)
         } else {
             this.stopMedia();
+            this._setInteractive(false)
         }
     }
 
@@ -263,6 +267,11 @@ export class Slide {
                     this.has.background.color_value = "#000";
                     this._el.background.style.display = "block";
                 }
+                if (this.data.background.alt) {
+                    // .role = 'img' doesn't work
+                    this._el.background.setAttribute('role', 'img');
+                    this._el.background.ariaLabel = this.data.background.alt;
+                }
             }
             if (this.data.background.color) {
                 this.has.background.color = true;
@@ -275,7 +284,6 @@ export class Slide {
             if (this.data.background.text_background) {
                 this._el.container.className += ' tl-text-background';
             }
-
         }
 
 
@@ -342,5 +350,12 @@ export class Slide {
         }
     }
 
+    _setInteractive(is_interactive) {
+        if (is_interactive) {
+            this._el.container.removeAttribute('inert');
+        } else {
+            this._el.container.setAttribute('inert', true);
+        }
+    }
 }
 classMixin(Slide, I18NMixins, Events, DOMMixins)
