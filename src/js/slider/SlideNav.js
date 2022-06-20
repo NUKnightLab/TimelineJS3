@@ -93,12 +93,17 @@ export class SlideNav {
 	_update(d) {
 		// update data
 		this.data = mergeData(this.data, d);
-		
-		// Title
-		this._el.title.innerHTML = unlinkify(this.data.title);
-		
-		// Date
-		this._el.description.innerHTML	= unlinkify(this.data.date);
+
+        // Title
+        const title = unlinkify(this.data.title);
+        this._el.title.innerHTML = title;
+
+        // Date
+        const date = unlinkify(this.data.date);
+        this._el.description.innerHTML = date;
+
+        // Alternative text
+        this._el.container.setAttribute('aria-label', `${this.options.direction}, ${title}, ${date}`)
 	}
 	
 	_initLayout () {
