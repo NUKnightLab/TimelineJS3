@@ -25,16 +25,7 @@ export default class Image extends Media {
             image_class = "tl-media-item tl-media-image"
         }
 
-        // Link
-        if (this.data.link) {
-            this._el.content_link = this.domCreate("a", "", this._el.content);
-            this._el.content_link.href = this.data.link;
-            this._el.content_link.target = "_blank";
-            this._el.content_link.setAttribute('rel', 'noopener');
-            this._el.content_item = this.domCreate("img", image_class, this._el.content_link);
-        } else {
-            this._el.content_item = this.domCreate("img", image_class, this._el.content);
-        }
+        this._el.content_item = this.domCreate("img", image_class, this._el.content);
 
         if (this.data.alt) {
             this._el.content_item.alt = this.data.alt;
