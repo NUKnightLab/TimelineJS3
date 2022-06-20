@@ -39,7 +39,7 @@ export class SlideNav {
 		mergeData(this.data, data);
 		
 		
-		this._el.container = DOM.create("div", "tl-slidenav-" + this.options.direction);
+		this._el.container = DOM.create("button", "tl-slidenav-" + this.options.direction);
 		
 		if (Browser.mobile) {
 			this._el.container.setAttribute("ontouchstart"," ");
