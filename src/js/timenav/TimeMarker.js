@@ -1,4 +1,4 @@
-import { classMixin, mergeData, unlinkify } from "../core/Util"
+import { classMixin, mergeData, trim, unlinkify } from "../core/Util"
 import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
@@ -9,6 +9,7 @@ import { webkit as BROWSER_WEBKIT } from "../core/Browser";
 import { easeInSpline } from "../animation/Ease";
 
 import { lookupMediaType } from "../media/MediaType"
+import { I18NMixins } from "../language/I18NMixins";
 
 export class TimeMarker {
 	constructor(data, options) {
@@ -230,6 +231,21 @@ export class TimeMarker {
 		this._el.timespan.style.height = remainder + "px";
 	}
 
+    getFormattedDate() {
+        if (trim(this.data.display_date).length > 0) {
+            return this.data.display_date;
+        }
+
+        let date_text = "";
+        if (this.data.end_date) {
+            date_text = " to " + this.data.end_date.getDisplayDate(this.getLanguage());
+        }
+        if (this.data.start_date) {
+            date_text = (date_text ? "from " : "") + this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+        }
+        return date_text;
+    }
+
 	/*	Events
 	================================================== */
 	_onMarkerClick(e) {
@@ -303,7 +319,8 @@ export class TimeMarker {
 			this._text.innerHTML = unlinkify(this.data.media.caption);
 		}
 
-        this.ariaLabel = this._text.innerHTML;
+        const date = this.getFormattedDate();
+        this.ariaLabel = `${this._text.innerHTML}, ${date}`;
 
 		// Fire event that the slide is loaded
 		this.onLoaded();
@@ -332,4 +349,4 @@ export class TimeMarker {
 }
 
 
-classMixin(TimeMarker, Events, DOMMixins)
+classMixin(TimeMarker, I18NMixins, Events, DOMMixins)
