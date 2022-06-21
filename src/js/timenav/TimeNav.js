@@ -365,7 +365,7 @@ export class TimeNav {
     _resetMarkersActive() {
         for (var i = 0; i < this._markers.length; i++) {
             this._markers[i].setActive(false);
-        };
+        }
     }
 
     _findMarkerIndex(n) {
@@ -459,28 +459,8 @@ export class TimeNav {
         if (n >= 0 && n < this._markers.length) {
             this._markers[n].setActive(true);
         }
-        // Stop animation
-        if (this.animator) {
-            this.animator.stop();
-        }
 
-        if (fast) {
-            this._el.slider.className = "tl-timenav-slider";
-            this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width / 2) + "px";
-        } else {
-            if (css_animation) {
-                this._el.slider.className = "tl-timenav-slider tl-timenav-slider-animate";
-                this.animate_css = true;
-                this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width / 2) + "px";
-            } else {
-                this._el.slider.className = "tl-timenav-slider";
-                this.animator = Animate(this._el.slider, {
-                    left: -this._markers[_n].getLeft() + (this.options.width / 2) + "px",
-                    duration: _duration,
-                    easing: _ease
-                });
-            }
-        }
+        this.animateMovement(_n, fast, css_animation, _duration, _ease);
 
         if (n >= 0 && n < this._markers.length) {
             this.current_id = this._markers[n].data.unique_id;
@@ -491,6 +471,35 @@ export class TimeNav {
 
     goToId(id, fast, css_animation) {
         this.goTo(this._findMarkerIndex(id), fast, css_animation);
+    }
+
+
+    animateMovement(n, fast, css_animation, duration, ease) {
+        // Stop animation
+        if (this.animator) {
+            this.animator.stop();
+        }
+
+        if (fast) {
+            this._el.slider.className = "tl-timenav-slider";
+            this._el.slider.style.left = -this._markers[n].getLeft() +
+                (this.options.width / 2) + "px";
+        } else {
+            if (css_animation) {
+                this._el.slider.className = "tl-timenav-slider tl-timenav-slider-animate";
+                this.animate_css = true;
+                this._el.slider.style.left = -this._markers[n].getLeft() +
+                    (this.options.width / 2) + "px";
+            } else {
+                this._el.slider.className = "tl-timenav-slider";
+                this.animator = Animate(this._el.slider, {
+                    left: -this._markers[n].getLeft() +
+                        (this.options.width / 2) + "px",
+                    duration: duration,
+                    easing: ease
+                });
+            }
+        }
     }
 
     /*	Events
