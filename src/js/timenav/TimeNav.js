@@ -483,6 +483,8 @@ export class TimeNav {
         } else {
             this.current_id = this.current_focused_id = '';
         }
+
+        this._setLabelWithCurrentMarker();
     }
 
     goToId(id, fast, css_animation) {
@@ -721,6 +723,13 @@ export class TimeNav {
 
     }
 
+    _setLabelWithCurrentMarker() {
+        const currentMarker = this._markers[this._findMarkerIndex(this.current_focused_id)];
+        const currentMarkerText = currentMarker && currentMarker.ariaLabel
+            ? `, ${currentMarker.ariaLabel}, shown`
+            : '';
+        this._el.container.setAttribute('aria-label', `Timeline navigation ${currentMarkerText}`);
+    }
 
     /*	Init
     ================================================== */
