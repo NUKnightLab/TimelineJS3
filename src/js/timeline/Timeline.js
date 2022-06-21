@@ -415,6 +415,10 @@ class Timeline {
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
         }
 
+        // Knight Lab Logo
+        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
+        this._el.attribution.innerHTML = "<a href='https://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
+
         // Initial Default Layout
         this.options.width = this._el.container.offsetWidth;
         this.options.height = this._el.container.offsetHeight;

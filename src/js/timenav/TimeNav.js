@@ -29,8 +29,7 @@ export class TimeNav {
             marker_container: {},
             marker_item_container: {},
             timeaxis: {},
-            timeaxis_background: {},
-            attribution: {}
+            timeaxis_background: {}
         };
 
         this.collapsed = false;
@@ -638,7 +637,6 @@ export class TimeNav {
     ================================================== */
     _initLayout() {
         // Create Layout
-        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
         this._el.line = DOM.create('div', 'tl-timenav-line', this._el.container);
         this._el.slider = DOM.create('div', 'tl-timenav-slider', this._el.container);
         this._el.slider_background = DOM.create('div', 'tl-timenav-slider-background', this._el.slider);
@@ -647,10 +645,6 @@ export class TimeNav {
         this._el.marker_item_container = DOM.create('div', 'tl-timenav-item-container', this._el.marker_container);
         this._el.timeaxis = DOM.create('div', 'tl-timeaxis', this._el.slider);
         this._el.timeaxis_background = DOM.create('div', 'tl-timeaxis-background', this._el.container);
-
-
-        // Knight Lab Logo
-        this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Time Axis
         this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);

@@ -80,6 +80,44 @@
 		border: 1px solid darken(@ui-background-color-darker, 10);
 		border-radius: 8px;
 	}
+
+    .tl-attribution {
+        cursor: pointer;
+        z-index:9;
+        position:absolute;
+        bottom:2px;
+        left:0px;
+        font-size:10px;
+        line-height:10px;
+        font-family:@font-sanserif !important;
+        background-color: fadeout(@color-background, 15%);
+        padding:3px;
+
+        a {
+            color:@brand-color;
+            &:hover, &:focus-visible {
+                color:@color-dark;
+                text-decoration: none;
+                .tl-knightlab-logo {
+                    background-color: #c34528;
+                }
+            }
+        }
+
+        .tl-knightlab-logo {
+            display: inline-block;
+            vertical-align: middle;
+            height: 8px;
+            width: 8px;
+            margin-right:3px;
+            background-color:#c34528;
+            background-color:@brand-color;
+            transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+        }
+
+    }
 }
 
 /* Portrait
