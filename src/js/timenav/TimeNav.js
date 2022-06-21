@@ -576,6 +576,31 @@ export class TimeNav {
 
     }
 
+    _onKeydown(e) {
+        DOMEvent.stopPropagation(e);
+
+        switch (e.key) {
+            case "ArrowUp":
+            case "ArrowRight": {
+                console.log('Next item');
+                break;
+            }
+            case "ArrowDown":
+            case "ArrowLeft": {
+                console.log("Prev item");
+                break;
+            }
+            case "Home":{
+                console.log('First item');
+                break;
+            }
+            case "End":{
+                console.log('Last item');
+                break;
+            }
+        }
+    }
+
     /*	Private Methods
     ================================================== */
 
@@ -667,6 +692,7 @@ export class TimeNav {
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
         DOMEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
+        DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
     }
 
     _initData() {
