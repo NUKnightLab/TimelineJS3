@@ -109,6 +109,10 @@ export class TimeMarker {
 		}
 	}
 
+    setFocus(options = { preventScroll: true }) {
+        this._el.container.focus(options);
+    }
+
 	addTo(container) {
 		container.appendChild(this._el.container);
 	}
