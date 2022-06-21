@@ -41,6 +41,13 @@ export class TimeNav {
         }
         this._el.container.setAttribute('tabindex', '0');
 
+        // Prevents the unwanted keyboard handling by the screen readers
+        this._el.container.setAttribute('role', 'application');
+        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-description',
+            'Navigate between markers with arrow keys. Press "Home" for the first and "End" for the last markers'
+        );
+
         this.config = timeline_config;
 
         //Options
