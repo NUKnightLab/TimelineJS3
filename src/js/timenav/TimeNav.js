@@ -39,6 +39,7 @@ export class TimeNav {
         } else {
             this._el.container = DOM.get(elem);
         }
+        this._el.container.setAttribute('tabindex', '0');
 
         this.config = timeline_config;
 
