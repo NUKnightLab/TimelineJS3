@@ -371,6 +371,12 @@ export class TimeNav {
         }
     }
 
+    _resetMarkersBlurListeners() {
+        for (var i = 0; i < this._markers.length; i++) {
+            this._markers[i].off('markerblur', this._onMarkerBlur, this);
+        }
+    }
+
     _findMarkerIndex(n) {
         var _n = -1;
         if (typeof n == 'string' || n instanceof String) {
@@ -483,9 +489,11 @@ export class TimeNav {
 
         this.animateMovement(_n, fast, css_animation, _duration, _ease);
 
+        this._resetMarkersBlurListeners();
         if (n >= 0 && n < this._markers.length) {
             this._markers[n].setFocus();
             this.current_focused_id = this._markers[n].data.unique_id;
+            this._markers[n].on('markerblur', this._onMarkerBlur, this);
         }
     }
 
@@ -558,6 +566,12 @@ export class TimeNav {
         // Go to the clicked marker
         this.goToId(e.unique_id);
         this.fire("change", { unique_id: e.unique_id });
+    }
+
+    _onMarkerBlur(e) {
+        // Reset the focused marked to the active marker after it lost the focus
+        if (this.current_focused_id === this.current_id) return;
+        this.focusOn(this._findMarkerIndex(this.current_id));
     }
 
     _onMouseScroll(e) {
