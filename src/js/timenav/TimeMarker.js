@@ -75,6 +75,9 @@ export class TimeMarker {
 		// End date
 		this.has_end_date = false;
 
+        // Alternative text
+        this.ariaLabel = '';
+
 		// Merge Data and Options
 		mergeData(this.options, options);
 		mergeData(this.data, data);
@@ -107,6 +110,13 @@ export class TimeMarker {
 		} else {
 			this._el.container.className = 'tl-timemarker';
 		}
+
+        this._el.container.ariaLabel = this.ariaLabel;
+        if (this.active) {
+            this._el.container.ariaLabel += ', shown';
+        } else {
+            this._el.container.ariaLabel += ', press space to show';
+        }
 	}
 
     setFocus(options = { preventScroll: true }) {
@@ -293,7 +303,7 @@ export class TimeMarker {
 			this._text.innerHTML = unlinkify(this.data.media.caption);
 		}
 
-
+        this.ariaLabel = this._text.innerHTML;
 
 		// Fire event that the slide is loaded
 		this.onLoaded();
