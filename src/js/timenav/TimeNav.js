@@ -41,7 +41,7 @@ export class TimeNav {
         }
         this._el.container.setAttribute('tabindex', '0');
 
-        // Prevents the unwanted keyboard handling by the screen readers
+        // Prevents inconsistent default keyboard handling by the screen readers
         this._el.container.setAttribute('role', 'application');
         this._el.container.setAttribute('aria-label', 'Timeline navigation');
         this._el.container.setAttribute('aria-description',
