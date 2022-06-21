@@ -624,20 +624,20 @@ export class TimeNav {
         switch (e.key) {
             case "ArrowUp":
             case "ArrowRight": {
-                console.log('Next item');
+                this.focusNext();
                 break;
             }
             case "ArrowDown":
             case "ArrowLeft": {
-                console.log("Prev item");
+                this.focusPrevious();
                 break;
             }
             case "Home":{
-                console.log('First item');
+                this.focusOn(0);
                 break;
             }
             case "End":{
-                console.log('Last item');
+                this.focusOn(this._markers.length - 1);
                 break;
             }
         }
