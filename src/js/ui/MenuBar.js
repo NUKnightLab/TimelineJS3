@@ -131,11 +131,14 @@ export class MenuBar {
 			this._el.container.setAttribute("ontouchstart"," ");
 		}
 
-		this._el.button_backtostart.innerHTML		= "<span class='tl-icon-goback'></span>";
-		this._el.button_zoomin.innerHTML			= "<span class='tl-icon-zoom-in'></span>";
-		this._el.button_zoomout.innerHTML			= "<span class='tl-icon-zoom-out'></span>";
+		this._el.button_backtostart.innerHTML = "<span class='tl-icon-goback'></span>";
+        this._el.button_backtostart.setAttribute('aria-label', 'Back to start');
 
+		this._el.button_zoomin.innerHTML = "<span class='tl-icon-zoom-in'></span>";
+        this._el.button_zoomin.setAttribute('aria-label', 'Zoom in');
 
+		this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
+        this._el.button_zoomout.setAttribute('aria-label', 'Zoom out');
 	}
 
 	_initEvents () {
