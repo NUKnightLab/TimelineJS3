@@ -99,6 +99,8 @@ export class MenuBar {
             start: firstYear,
             end: lastYear
         };
+
+        this._updateZoomAriaLabels()
     }
 
     _getTickYear(tick) {
@@ -125,6 +127,10 @@ export class MenuBar {
 		this._updateDisplay(w, h, a, l);
 	}
 
+    getFormattedTimespan() {
+        const { start, end } = this.data.visible_ticks_dates;
+        return start && end ? `than ${start} to ${end}` : "";
+    }
 
 	/*	Events
 	================================================== */
@@ -181,6 +187,18 @@ export class MenuBar {
 		}
 	}
 
+    // Update Display
+    _updateZoomAriaLabels() {
+        const timespan = this.getFormattedTimespan();
+        if (!timespan) {
+            this._el.button_zoomin.setAttribute('aria-description', '');
+            this._el.button_zoomout.setAttribute('aria-description', '');
+            return;
+        }
+
+        this._el.button_zoomin.setAttribute('aria-description', `Show less ${timespan}`);
+        this._el.button_zoomout.setAttribute('aria-description', `Show more ${timespan}`);
+    }
 }
 
 classMixin(MenuBar, DOMMixins, Events)
