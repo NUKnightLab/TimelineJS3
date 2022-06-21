@@ -4,7 +4,6 @@ import Events from "../core/Events";
 import { DOMMixins } from "../dom/DOMMixins"
 import { easeInOutQuint } from "../animation/Ease"
 import { classMixin, mergeData } from "../core/Util"
-import { addClass, removeClass } from "../dom/DOMUtil"
 import { DOMEvent } from "../dom/DOMEvent"
 
 export class MenuBar {
@@ -33,6 +32,11 @@ export class MenuBar {
 		if (parent_elem) {
 			this._el.parent = parent_elem;
 		}
+
+        // Data
+        this.data = {
+            visible_ticks_dates: {}
+        }
 
 		//Options
 		this.options = {
@@ -81,6 +85,25 @@ export class MenuBar {
             this._el.button_zoomout.setAttribute('disabled', true);
         }
 	}
+
+    changeVisibleTicks(visible_ticks) {
+        const minor_ticks = visible_ticks.minor;
+
+        const firstTick = minor_ticks[0];
+        const firstYear = this._getTickYear(firstTick);
+
+        const lastTick = minor_ticks[minor_ticks.length - 1];
+        const lastYear = this._getTickYear(lastTick);
+
+        this.data.visible_ticks_dates = {
+            start: firstYear,
+            end: lastYear
+        };
+    }
+
+    _getTickYear(tick) {
+        return tick.date.data.date_obj.getFullYear();
+    }
 
 	setSticky(y) {
 		this.options.menubar_default_y = y;
