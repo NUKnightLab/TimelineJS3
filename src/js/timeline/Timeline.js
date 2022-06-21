@@ -193,6 +193,7 @@ class Timeline {
 
         // Apply base class to container
         addClass(this._el.container, 'tl-timeline');
+        this._el.container.setAttribute('tabindex', '0');
 
         if (this.options.is_embed) {
             addClass(this._el.container, 'tl-timeline-embed');
