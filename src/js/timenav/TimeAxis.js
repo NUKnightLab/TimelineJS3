@@ -1,6 +1,7 @@
 import { classMixin, mergeData } from "../core/Util"
 import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
+import { isInViewport } from "../dom/DOMUtil"
 import { I18NMixins } from "../language/I18NMixins"
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
@@ -216,8 +217,19 @@ export class TimeAxis {
                     tick.tick.className = "tl-timeaxis-tick";
                 }
 
-            };
+            }
         }
+    }
+
+    getVisibleTicks() {
+        return {
+            major: this._getVisibleTickArray(this.major_ticks),
+            minor: this._getVisibleTickArray(this.minor_ticks)
+        }
+    }
+
+    _getVisibleTickArray(tick_array) {
+        return tick_array.filter(({ tick }) => isInViewport(tick))
     }
 
     /*	Events
