@@ -42,7 +42,8 @@
 		.tl-slide-content {
 			//width:100%;
 			display:table;
-			vertical-align:middle;
+            vertical-align:middle;
+			direction:rtl; // Text content needs to be read before the media
 			padding-left:100px;
 			padding-right:100px;
 			position:relative;
@@ -247,10 +248,8 @@
 			position:static;
 			height:auto;
 			height:100%;
-			//vertical-align:baseline;
 			display: -webkit-flex; /* Safari */
 			display: flex;
-			//flex-direction:column-reverse;
 			align-items: center;
 			-webkit-align-items: center; /* Safari 7.0+ */
 			.tl-slide-content {
@@ -258,8 +257,8 @@
 
     			display: -webkit-flex; /* Safari */
 				display: flex;
-				flex-direction:column-reverse;
-				-webkit-flex-direction:column-reverse; /* Safari */
+				flex-direction:column;
+				-webkit-flex-direction:column; /* Safari */
 				position:static;
 				height:auto;
 				padding-left:50px;
