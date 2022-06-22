@@ -238,8 +238,8 @@
 	&:hover {
 		
 		.tl-timemarker-timespan {
-			background-color: fadeout(@marker-text-color, 85%);
-			
+			background-color: fadeout(@marker-text-color, 75%);
+
 			.tl-timemarker-timespan-content {
 				background-color: @marker-text-color;
 			}
@@ -256,7 +256,7 @@
 		}
 		
 		.tl-timemarker-content-container {
-			background-color: darken(@marker-color,15);
+            background-color: darken(@marker-color,45);
 			border-color: darken(@marker-color,25);
 			.property-animation(height, @animation-duration-fast/2, @animation-ease);
 			.property-animation(width, @animation-duration-fast/2, @animation-ease);
@@ -283,7 +283,7 @@
 						color:@marker-selected-text-color;
 						&.tl-headline-fadeout {
 							&:after {
-								.marker-text-fade(darken(@marker-color,15),80%);
+                                .marker-text-fade(darken(@marker-color,45),80%);
 							}
 						}
 						
@@ -463,7 +463,7 @@
 			
 			.tl-timemarker-timespan {
 				&:after {
-					background-color: fadeout(darken(@ui-background-color,100),75%);
+					background-color: fadeout(darken(@ui-background-color,100),65%);
 				}
 			}
 			.tl-timemarker-line-left, .tl-timemarker-line-right {
