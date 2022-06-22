@@ -8,9 +8,17 @@
 	top: 45%;
 	z-index:10;
 	cursor:pointer;
-	
-	.tl-slidenav-content-container {
-		height:200px;
+    padding: 0;
+    outline-offset:5px;
+    background-color: transparent;
+    border: none;
+    text-align: inherit;
+    text-transform: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
+    .tl-slidenav-content-container {
 		width:100px;
 		position:absolute;
 	}
@@ -121,23 +129,29 @@
 
 /* NAVIGATION HOVER
 ================================================== */
-.tl-slidenav-previous:hover, .tl-slidenav-next:hover {
-	.tl-slidenav-title {
-		.opacity(100);
-	}
-	.tl-slidenav-description {
-		.opacity(@opacity-slide-nav-desc-hover);
-	}
+.tl-slidenav-previous, .tl-slidenav-next {
+    &:hover, &:focus-visible {
+        .tl-slidenav-title {
+            .opacity(100);
+        }
+        .tl-slidenav-description {
+            .opacity(@opacity-slide-nav-desc-hover);
+        }
+    }
 }
-.tl-slidenav-next:hover {
-	.tl-slidenav-icon {
-        margin-left: 100 - 20px;
-	}
+.tl-slidenav-next {
+    &:hover, &:focus-visible {
+        .tl-slidenav-icon {
+            margin-left: 100 - 20px;
+        }
+    }
 }
-.tl-slidenav-previous:hover {
-	.tl-slidenav-icon {
-		margin-left: -4px;
-	}
+.tl-slidenav-previous {
+    &:hover, &:focus-visible {
+        .tl-slidenav-icon {
+            margin-left: -4px;
+        }
+    }
 }
 
 // Mobile, iPhone and skinny
@@ -165,17 +179,21 @@
 			.opacity(33);
 		}
 	}
-	.tl-slidenav-next:hover {
-		.tl-slidenav-icon {
-	       margin-left:32 - 20px;
-		   .opacity(100);
-		}
+	.tl-slidenav-next {
+        &:hover, &:focus-visible {
+            .tl-slidenav-icon {
+                margin-left:32 - 20px;
+                .opacity(100);
+            }
+        }
 	}
-	.tl-slidenav-previous:hover {
-		.tl-slidenav-icon {
-			margin-left: -4px;
-			.opacity(100);
-		}
+	.tl-slidenav-previous {
+        &:hover, &:focus-visible {
+            .tl-slidenav-icon {
+                margin-left: -4px;
+                .opacity(100);
+            }
+        }
 	}
 	
 }
@@ -184,6 +202,7 @@
 
 .tl-layout-landscape.tl-mobile {
 	.tl-slidenav-next:hover {
+
 		right: 70px;
 		.tl-slidenav-icon {
 	       margin-left:32 - 24px;
