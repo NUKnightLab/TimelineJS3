@@ -1,7 +1,7 @@
 import { classMixin, mergeData } from "../core/Util"
 import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
-import { isInViewport } from "../dom/DOMUtil"
+import { isInHorizontalViewport } from "../dom/DOMUtil"
 import { I18NMixins } from "../language/I18NMixins"
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
@@ -229,7 +229,7 @@ export class TimeAxis {
     }
 
     _getVisibleTickArray(tick_array) {
-        return tick_array.filter(({ tick }) => isInViewport(tick))
+        return tick_array.filter(({ tick }) => isInHorizontalViewport(tick))
     }
 
     /*	Events
