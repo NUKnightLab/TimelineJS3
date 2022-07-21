@@ -88,6 +88,10 @@ export class MenuBar {
 
     changeVisibleTicks(visible_ticks) {
         const minor_ticks = visible_ticks.minor;
+        if (!minor_ticks.length) {
+            this.data.visible_ticks_dates = {};
+            return;
+        }
 
         const firstTick = minor_ticks[0];
         const firstYear = this._getTickYear(firstTick);
