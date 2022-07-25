@@ -848,18 +848,25 @@ class Timeline {
 
     // Goto slide n
     goTo(n) {
-        if (n < 0 || n >= this.config.events.length) {
+        if (n < 0) {
             return;
         }
 
-        if (this.config.title) {
-            if (n === 0) {
-                this.goToId(this.config.title.unique_id);
+        try {
+            if (this.config.title) {
+                if (n === 0) {
+                    this.goToId(this.config.title.unique_id);
+                } else {
+                    this.goToId(this.config.events[n - 1].unique_id);
+                }
             } else {
-                this.goToId(this.config.events[n - 1].unique_id);
+                this.goToId(this.config.events[n].unique_id);
             }
-        } else {
-            this.goToId(this.config.events[n].unique_id);
+        } catch {
+            // because n is interpreted differently depending on 
+            // whether there's a title slide, easier to use catch
+            // to handle navigating beyond end instead of test before
+            return
         }
     }
 
