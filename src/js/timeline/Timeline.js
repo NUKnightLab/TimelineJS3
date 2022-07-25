@@ -408,13 +408,13 @@ class Timeline {
 
         // Create Layout
         if (this.options.timenav_position == "top") {
-            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
         } else {
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
-            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
         }
 
         // Knight Lab Logo

@@ -109,6 +109,10 @@ export class TimeMarker {
 		}
 	}
 
+    setFocus(options = { preventScroll: true }) {
+        this._el.container.focus(options);
+    }
+
 	addTo(container) {
 		container.appendChild(this._el.container);
 	}
@@ -222,11 +226,23 @@ export class TimeMarker {
 		this.fire("markerclick", { unique_id: this.data.unique_id });
 	}
 
+    _onMarkerKeydown(e) {
+        if (/Space|Enter/.test(e.code)) {
+            this.fire("markerclick", { unique_id: this.data.unique_id });
+        }
+    }
+
+    _onMarkerBlur(e) {
+        this.fire("markerblur", { unique_id: this.data.unique_id });
+    }
+
 	/*	Private Methods
 	================================================== */
 	_initLayout() {
 		// Create Layout
 		this._el.container = DOM.create("div", "tl-timemarker");
+        this._el.container.setAttribute('tabindex', '-1');
+
 		if (this.data.unique_id) {
 			this._el.container.id = this.data.unique_id + "-marker";
 		}
@@ -286,6 +302,8 @@ export class TimeMarker {
 
 	_initEvents() {
 		DOMEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
+        DOMEvent.addListener(this._el.container, 'keydown', this._onMarkerKeydown, this);
+        DOMEvent.addListener(this._el.container, 'blur', this._onMarkerBlur, this);
 	}
 
 	// Update Display

@@ -39,6 +39,14 @@ export class TimeNav {
         } else {
             this._el.container = DOM.get(elem);
         }
+        this._el.container.setAttribute('tabindex', '0');
+
+        // Prevents inconsistent default keyboard handling by the screen readers
+        this._el.container.setAttribute('role', 'application');
+        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-description',
+            'Navigate between markers with arrow keys. Press "Home" for the first and "End" for the last markers'
+        );
 
         this.config = timeline_config;
 
@@ -79,6 +87,9 @@ export class TimeNav {
 
         // Current Marker
         this.current_id = "";
+
+        // Current Focused Marker
+        this.current_focused_id = "";
 
         // TimeScale
         this.timescale = {};
@@ -364,7 +375,13 @@ export class TimeNav {
     _resetMarkersActive() {
         for (var i = 0; i < this._markers.length; i++) {
             this._markers[i].setActive(false);
-        };
+        }
+    }
+
+    _resetMarkersBlurListeners() {
+        for (var i = 0; i < this._markers.length; i++) {
+            this._markers[i].off('markerblur', this._onMarkerBlur, this);
+        }
     }
 
     _findMarkerIndex(n) {
@@ -458,6 +475,54 @@ export class TimeNav {
         if (n >= 0 && n < this._markers.length) {
             this._markers[n].setActive(true);
         }
+
+        this.animateMovement(_n, fast, css_animation, _duration, _ease);
+
+        if (n >= 0 && n < this._markers.length) {
+            this.current_id = this.current_focused_id = this._markers[n].data.unique_id;
+        } else {
+            this.current_id = this.current_focused_id = '';
+        }
+    }
+
+    goToId(id, fast, css_animation) {
+        this.goTo(this._findMarkerIndex(id), fast, css_animation);
+    }
+
+    focusOn(n, fast, css_animation) {
+        const _ease = this.options.ease,
+            _duration = this.options.duration,
+            _n = (n < 0) ? 0 : n;
+
+        this.animateMovement(_n, fast, css_animation, _duration, _ease);
+
+        this._resetMarkersBlurListeners();
+        if (n >= 0 && n < this._markers.length) {
+            this._markers[n].setFocus();
+            this.current_focused_id = this._markers[n].data.unique_id;
+            this._markers[n].on('markerblur', this._onMarkerBlur, this);
+        }
+    }
+
+    focusNext() {
+        const n = this._findMarkerIndex(this.current_focused_id);
+        if ((n + 1) < this._markers.length) {
+            this.focusOn(n + 1);
+        } else {
+            this.focusOn(n);
+        }
+    }
+
+    focusPrevious() {
+        const n = this._findMarkerIndex(this.current_focused_id);
+        if (n - 1 >= 0) {
+            this.focusOn(n - 1);
+        } else {
+            this.focusOn(n);
+        }
+    }
+
+    animateMovement(n, fast, css_animation, duration, ease) {
         // Stop animation
         if (this.animator) {
             this.animator.stop();
@@ -465,31 +530,24 @@ export class TimeNav {
 
         if (fast) {
             this._el.slider.className = "tl-timenav-slider";
-            this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width / 2) + "px";
+            this._el.slider.style.left = -this._markers[n].getLeft() +
+                (this.options.width / 2) + "px";
         } else {
             if (css_animation) {
                 this._el.slider.className = "tl-timenav-slider tl-timenav-slider-animate";
                 this.animate_css = true;
-                this._el.slider.style.left = -this._markers[_n].getLeft() + (this.options.width / 2) + "px";
+                this._el.slider.style.left = -this._markers[n].getLeft() +
+                    (this.options.width / 2) + "px";
             } else {
                 this._el.slider.className = "tl-timenav-slider";
                 this.animator = Animate(this._el.slider, {
-                    left: -this._markers[_n].getLeft() + (this.options.width / 2) + "px",
-                    duration: _duration,
-                    easing: _ease
+                    left: -this._markers[n].getLeft() +
+                        (this.options.width / 2) + "px",
+                    duration: duration,
+                    easing: ease
                 });
             }
         }
-
-        if (n >= 0 && n < this._markers.length) {
-            this.current_id = this._markers[n].data.unique_id;
-        } else {
-            this.current_id = '';
-        }
-    }
-
-    goToId(id, fast, css_animation) {
-        this.goTo(this._findMarkerIndex(id), fast, css_animation);
     }
 
     /*	Events
@@ -515,6 +573,12 @@ export class TimeNav {
         // Go to the clicked marker
         this.goToId(e.unique_id);
         this.fire("change", { unique_id: e.unique_id });
+    }
+
+    _onMarkerBlur(e) {
+        // Reset the focused marked to the active marker after it lost the focus
+        if (this.current_focused_id === this.current_id) return;
+        this.focusOn(this._findMarkerIndex(this.current_id));
     }
 
     _onMouseScroll(e) {
@@ -573,6 +637,31 @@ export class TimeNav {
             this.animate_css = false;
         }
 
+    }
+
+    _onKeydown(e) {
+        DOMEvent.stopPropagation(e);
+
+        switch (e.key) {
+            case "ArrowUp":
+            case "ArrowRight": {
+                this.focusNext();
+                break;
+            }
+            case "ArrowDown":
+            case "ArrowLeft": {
+                this.focusPrevious();
+                break;
+            }
+            case "Home":{
+                this.focusOn(0);
+                break;
+            }
+            case "End":{
+                this.focusOn(this._markers.length - 1);
+                break;
+            }
+        }
     }
 
     /*	Private Methods
@@ -666,6 +755,7 @@ export class TimeNav {
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
         DOMEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
+        DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
     }
 
     _initData() {
