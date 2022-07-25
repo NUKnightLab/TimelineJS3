@@ -8,6 +8,9 @@
     * #756 Focus on parent on slide change for better tab navigation
     * #758 Render menu bar (zoom and back-to-start) as button tags for better accessibility
     * #760 Introduce ARIA regions to Timeline
+    * #764 Improved tabbing order of the Timeline component
+    * #766 Improved keyboard navigation of Timeline navigation element
+    * #768 Accessibility improvements for TimeMarkers
     
 
 

@@ -483,6 +483,8 @@ export class TimeNav {
         } else {
             this.current_id = this.current_focused_id = '';
         }
+
+        this._setLabelWithCurrentMarker();
     }
 
     goToId(id, fast, css_animation) {
@@ -644,23 +646,27 @@ export class TimeNav {
 
         switch (e.key) {
             case "ArrowUp":
-            case "ArrowRight": {
-                this.focusNext();
-                break;
-            }
+            case "ArrowRight":
+                {
+                    this.focusNext();
+                    break;
+                }
             case "ArrowDown":
-            case "ArrowLeft": {
-                this.focusPrevious();
-                break;
-            }
-            case "Home":{
-                this.focusOn(0);
-                break;
-            }
-            case "End":{
-                this.focusOn(this._markers.length - 1);
-                break;
-            }
+            case "ArrowLeft":
+                {
+                    this.focusPrevious();
+                    break;
+                }
+            case "Home":
+                {
+                    this.focusOn(0);
+                    break;
+                }
+            case "End":
+                {
+                    this.focusOn(this._markers.length - 1);
+                    break;
+                }
         }
     }
 
@@ -721,6 +727,13 @@ export class TimeNav {
 
     }
 
+    _setLabelWithCurrentMarker() {
+        const currentMarker = this._markers[this._findMarkerIndex(this.current_focused_id)];
+        const currentMarkerText = currentMarker && currentMarker.ariaLabel ?
+            `, ${currentMarker.ariaLabel}, shown` :
+            '';
+        this._el.container.setAttribute('aria-label', `Timeline navigation ${currentMarkerText}`);
+    }
 
     /*	Init
     ================================================== */
