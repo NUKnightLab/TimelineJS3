@@ -11,6 +11,7 @@
     * #764 Improved tabbing order of the Timeline component
     * #766 Improved keyboard navigation of Timeline navigation element
     * #768 Accessibility improvements for TimeMarkers
+    * #770 Add state-based aria labels to zoom in/out to explain their effects
     
 
 

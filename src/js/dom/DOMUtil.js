@@ -23,3 +23,11 @@ export function removeClass(el, name) {
 		return w;
 	}).replace(/^\s+/, '');
 }
+
+export function isInHorizontalViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.left >= 0 &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
