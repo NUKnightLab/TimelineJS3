@@ -1,3 +1,16 @@
+3.8.22 (Not yet released)
+-------------------------
+* A bounty of accessibility improvements contributed by @OleksandrDanylchenko:
+    * #744 Contrast improvements
+    * #747 Reading order improvements for better screen reader experience
+    * #749 Render left/right arrows as button tags for better accessibility
+    * #750 Prevent focus on non-visible but tabbable elements
+    * #756 Focus on parent on slide change for better tab navigation
+    * #758 Render menu bar (zoom and back-to-start) as button tags for better accessibility
+    * #760 Introduce ARIA regions to Timeline
+    
+
+
 3.8.21 (2022-04-29)
 ------------------
 * #704 honor "start_at_end" option when also using "hash_bookmark" option

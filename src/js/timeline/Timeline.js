@@ -195,7 +195,7 @@ class Timeline {
         addClass(this._el.container, 'tl-timeline');
         this._el.container.setAttribute('tabindex', '0');
         this._el.container.setAttribute('role', 'region');
-        this._el.container.setAttribute('aria-role', 'Timeline');
+        this._el.container.setAttribute('aria-label', 'Timeline');
 
         if (this.options.is_embed) {
             addClass(this._el.container, 'tl-timeline-embed');
@@ -429,7 +429,7 @@ class Timeline {
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
         this._el.timenav.setAttribute('role', 'group');
-        this._el.timenav.setAttribute('aria-role', 'Timeline navigation');
+        this._el.timenav.setAttribute('aria-label', 'Timeline navigation');
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
