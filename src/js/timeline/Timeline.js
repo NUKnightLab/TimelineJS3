@@ -848,8 +848,12 @@ class Timeline {
 
     // Goto slide n
     goTo(n) {
+        if (n < 0 || n >= this.config.events.length) {
+            return;
+        }
+
         if (this.config.title) {
-            if (n == 0) {
+            if (n === 0) {
                 this.goToId(this.config.title.unique_id);
             } else {
                 this.goToId(this.config.events[n - 1].unique_id);
