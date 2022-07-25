@@ -40,41 +40,36 @@
 
 		z-index:3;
 		.tl-slide-content {
-			//width:100%;
-			display:table;
-            vertical-align:middle;
-			direction:rtl; // Text content needs to be read before the media
+            display:grid;
+            align-items:center;
+            grid-template-columns:repeat(2, 1fr);
+            grid-template-areas:"media text";
 			padding-left:100px;
 			padding-right:100px;
 			position:relative;
 			max-width:100%;
 			user-select: text;
 			.tl-media {
-				//display:table-cell;
-				//vertical-align:middle;
+                grid-area: media;
 				position:relative;
 				width:100%;
 				min-width:50%;
-				//height:100%;
 				float: left;
 				margin-top:auto;
 				margin-bottom:auto;
-				//margin-right:auto;
 				img, embed, object, video, iframe {
-					//width:100%;
+
 				}
 			}
 			.tl-text {
-				width:50%;
-				max-width:50%;
+                box-sizing: border-box; // Prevents rendering over the sideways arrow button
+				width:100%;
+				max-width:100%;
 				min-width:120px;
-				//height:100%;
-				//overflow-y:auto;
 				padding: 0 20px 0 20px;
 				display:table-cell;
 				vertical-align:middle;
 				text-align: left;
-				//float:left;
 			}
 		}
 	}
