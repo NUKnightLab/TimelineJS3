@@ -408,15 +408,18 @@ class Timeline {
 
         // Create Layout
         if (this.options.timenav_position == "top") {
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
         } else {
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
         }
 
-        this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
-
+        // Knight Lab Logo
+        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
+        this._el.attribution.innerHTML = "<a href='https://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Initial Default Layout
         this.options.width = this._el.container.offsetWidth;
