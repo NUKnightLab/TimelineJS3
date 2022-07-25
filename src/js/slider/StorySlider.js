@@ -326,7 +326,7 @@ export class StorySlider {
     showNav(nav_obj, show) {
 
         if (this.options.width <= 500 && Browser.mobile) {
-
+            nav_obj.hide();
         } else {
             if (show) {
                 nav_obj.show();

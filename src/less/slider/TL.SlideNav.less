@@ -201,34 +201,42 @@
 
 
 .tl-layout-landscape.tl-mobile {
-	.tl-slidenav-next:hover {
+    .tl-slidenav-next {
+        &:hover {
+            /**
+            * On mobile the hover state stays on the button after the click
+            * Show the default margin as before the click
+            */
+            .tl-slidenav-icon {
+                margin-left: 100 - 24px;
+                .opacity(100);
+            }
+        }
 
-		right: 70px;
-		.tl-slidenav-icon {
-	       margin-left:32 - 24px;
-		   .opacity(100);
-		}
-	}
-	.tl-slidenav-next:active {
-		.tl-slidenav-icon {
-			margin-left: 0px;
-		   .opacity(100);
-		}
-	}
-	.tl-slidenav-previous:hover {
-		.tl-slidenav-icon {
-			//margin-left: 0px;
-			margin-left: 100 - 20px;
-			.opacity(100);
-		}
-	}
-	.tl-slidenav-previous:active {
-		.tl-slidenav-icon {
-		   .opacity(100);
-		   margin-left: -4px;
-		}
-	}
+        &:active {
+            .tl-slidenav-icon {
+                margin-left: 100 - 20px;
+            }
+        }
+    }
+    .tl-slidenav-previous {
+        &:hover {
+            /**
+            * On mobile the hover state stays on the button after the click
+            * Show the default margin as before the click
+            */
+            .tl-slidenav-icon {
+                margin-left: 0px;
+                .opacity(100);
+            }
+        }
 
+        &:active {
+            .tl-slidenav-icon {
+                margin-left: -4px;
+            }
+        }
+    }
 }
 
 .tl-layout-portrait.tl-mobile {
