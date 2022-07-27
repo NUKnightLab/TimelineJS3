@@ -313,7 +313,7 @@ export class Slide {
 
         // Create Text
         if (this.has.text || this.has.headline) {
-            this._text = new Text(this.data.text, { title: this.has.title, language: this.options.language, autolink: this.data.autolink });
+            this._text = new Text(this.data.text, { title: this.has.title, language: this.getLanguage(), autolink: this.data.autolink });
             this._text.addDateText(this.getFormattedDate());
         }
 

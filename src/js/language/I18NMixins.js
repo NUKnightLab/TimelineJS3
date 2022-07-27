@@ -1,5 +1,5 @@
 /*  I18NMixins
-    assumes that its class has an options object with a Language instance    
+    assumes that its class has an attribute `language` with a Language instance    
 ================================================== */
 import { trace } from "../core/Util"
 import { fallback } from "../language/Language"

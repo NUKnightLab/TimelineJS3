@@ -307,7 +307,10 @@ var LANGUAGES = {
             axis_helper_no_options_err: "Axis helper must be configured with options",
             axis_helper_scale_err: "No AxisHelper available for scale",
             invalid_integer_option: "Invalid option value—must be a whole number.",
-            instagram_bad_request: "Invalid or private Instagram URL"
+            instagram_bad_request: "Invalid or private Instagram URL",
+            aria_label_timeline: "Timeline",
+            aria_label_timeline_navigation: "Timeline navigation",
+            aria_label_timeline_content: "Timeline content"
         },
         date: {
             month: [

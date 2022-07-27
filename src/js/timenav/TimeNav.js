@@ -11,13 +11,14 @@ import { TimeAxis } from "./TimeAxis"
 import { TimeMarker } from "./TimeMarker"
 import Swipable from "../ui/Swipable"
 import { Animate } from "../animation/Animate"
+import { I18NMixins } from "../language/I18NMixins"
 
 
 
 export class TimeNav {
 
     constructor(elem, timeline_config, options, language) {
-        this.language = language // just passing through for TimeAxis. Is this a bad code smell?
+        this.language = language
             // DOM ELEMENTS
         this._el = {
             parent: {},
@@ -812,4 +813,4 @@ export class TimeNav {
     }
 }
 
-classMixin(TimeNav, Events, DOMMixins)
+classMixin(TimeNav, Events, DOMMixins, I18NMixins)
