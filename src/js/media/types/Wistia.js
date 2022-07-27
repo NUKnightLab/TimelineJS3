@@ -12,8 +12,8 @@ export default class Wistia extends Media {
 
         // Get Media ID
         this.media_id = this.data.url.split(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/medias\/(.*)/)[3];
-        trace(`Wistia: media_id: ${this.media_id}`)
-            // API URL
+
+        // API URL
         api_url = "https://fast.wistia.com/embed/iframe/" + this.media_id + "?version=v1&controlsVisibleOnLoad=true&playerColor=aae3d8";
 
         this.player = this.domCreate("iframe", "", this._el.content_item);

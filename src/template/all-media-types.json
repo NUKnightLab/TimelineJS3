@@ -96,7 +96,8 @@
             "text": {
                 "headline": "Twitter",
                 "text": "To display a Tweet, just copy the URL in the embed code."
-            }
+            },
+            "group": "Social"
         },
         {
             "media": {
@@ -444,7 +445,7 @@
         {
             "media": {
                 "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                "credit": "file-examples.com"
+                "credit": "w3.org"
             },
             "start_date": {
                 "year": "1926"
@@ -470,8 +471,8 @@
         },
         {
             "media": {
-                "url": "https://file-examples.com/storage/fef12739526267ac9a2b543/2017/04/file_example_MP4_480_1_5MG.mp4",
-                "credit": "file-examples.com"
+                "url": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4",
+                "credit": "test-videos.co.uk"
             },
             "start_date": {
                 "year": "1927",
@@ -485,8 +486,9 @@
         },
         {
             "media": {
-                "url": "https://file-examples.com/storage/fef12739526267ac9a2b543/2020/03/file_example_WEBM_480_900KB.webm",
-                "credit": "file-examples.com"
+                "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Mandelbrotzoom_20191023.webm",
+                "caption": "A video illustrating the depth of the Mandelbrot set, <a href='https://commons.wikimedia.org/wiki/File:Mandelbrotzoom_20191023.webm'>from Wikimedia Commons</a>.",
+                "credit": "<a href='https://commons.wikimedia.org/wiki/User:PantheraLeo1359531'>PantheraLeo1359531</a>"
             },
             "start_date": {
                 "year": "1927",
@@ -511,7 +513,22 @@
                 "text": "Wistia is a commercial video hosting service. I don't even remember who requested that TimelineJS support it, and it's hard to find a suitable test URL, but ... "
             },
             "group": "Video"
+        },
+        {
+            "media": {
+                "url": "https://www.tiktok.com/@6figga_dilla/video/7105763249877978411?is_copy_url=1&is_from_webapp=v1&lang=en",
+                "credit": "<a href='https://www.tiktok.com/@6figga_dilla'>@6figga_dilla</a>"
+            },
+            "start_date": {
+                "year": "1929"
+            },
+            "text": {
+                "headline": "TikTok",
+                "text": "Just use the URL to the TikTok video page."
+            },
+            "group": "Social"
         }
+
 
     ]
 }
