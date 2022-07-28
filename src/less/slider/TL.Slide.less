@@ -39,39 +39,38 @@
 		height:100%;
 
 		z-index:3;
-		.tl-slide-content {
-            display:grid;
-            align-items:center;
-            grid-template-columns:repeat(2, 1fr);
-            grid-template-areas:"media text";
-			padding-left:100px;
-			padding-right:100px;
-			position:relative;
-			max-width:100%;
-			user-select: text;
-			.tl-media {
-                grid-area: media;
-				position:relative;
-				width:100%;
-				min-width:50%;
-				float: left;
-				margin-top:auto;
-				margin-bottom:auto;
-				img, embed, object, video, iframe {
+        .tl-slide-content {
+            display:table;
+            vertical-align:middle;
+            direction:rtl; // Text content needs to be read before the media
+            padding-left:100px;
+            padding-right:100px;
+            position:relative;
+            max-width:100%;
+            user-select: text;
+            .tl-media {
+                direction:ltr;
+                position:relative;
+                width:100%;
+                min-width:50%;
+                float: left;
+                margin-top:auto;
+                margin-bottom:auto;
+                img, embed, object, video, iframe {
 
-				}
-			}
-			.tl-text {
-                box-sizing: border-box; // Prevents rendering over the sideways arrow button
-				width:100%;
-				max-width:100%;
-				min-width:120px;
-				padding: 0 20px 0 20px;
-				display:table-cell;
-				vertical-align:middle;
-				text-align: left;
-			}
-		}
+                }
+            }
+            .tl-text {
+                direction:ltr;
+                width:50%;
+                max-width:50%;
+                min-width:120px;
+                padding: 0 20px 0 20px;
+                display:table-cell;
+                vertical-align:middle;
+                text-align: left;
+            }
+        }
 	}
 
 	&.tl-slide-titleslide {
@@ -241,7 +240,6 @@
 		.tl-slide-content-container {
 			display:block;
 			position:static;
-			height:auto;
 			height:100%;
 			display: -webkit-flex; /* Safari */
 			display: flex;
@@ -259,7 +257,6 @@
 				padding-left:50px;
 				padding-right:50px;
 				.tl-media {
-					position:static;
 					width:100%;
 					height:auto;
 					float: none;
