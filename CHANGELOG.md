@@ -1,5 +1,6 @@
 3.8.22 (Not yet released)
 -------------------------
+* #782 Support TikTok embeds
 * A bounty of accessibility improvements contributed by @OleksandrDanylchenko:
     * #744 Contrast improvements
     * #747 Reading order improvements for better screen reader experience
