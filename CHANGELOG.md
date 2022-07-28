@@ -12,6 +12,7 @@
     * #766 Improved keyboard navigation of Timeline navigation element
     * #768 Accessibility improvements for TimeMarkers
     * #770 Add state-based aria labels to zoom in/out to explain their effects
+    * #783 rendering fix for media-only slides
     
 
 
