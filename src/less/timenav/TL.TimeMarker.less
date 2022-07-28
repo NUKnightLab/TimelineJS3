@@ -232,10 +232,10 @@
 
 		
 	}
-	
-	/* Hover State
+
+	/* Hover | Focus State
 	================================================== */
-	&:hover {
+	&:hover, &:focus {
 		
 		.tl-timemarker-timespan {
 			background-color: fadeout(@marker-text-color, 75%);
@@ -303,9 +303,9 @@
 		
 	}
 	
-	/* Hover Active State
+	/* Hover | Focus Active State
 	================================================== */
-	&:hover {
+	&:hover, &:focus {
 		&.tl-timemarker-active {
 			.tl-timemarker-content-container {
 				.tl-timemarker-content {
@@ -334,6 +334,12 @@
 			}
 		}
 	}
+
+    /* Focus-visible State
+    ================================================== */
+    &:focus-visible {
+        outline: none;
+    }
 	
 	/* Active Markers
 	================================================== */

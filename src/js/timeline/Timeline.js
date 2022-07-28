@@ -193,6 +193,9 @@ class Timeline {
 
         // Apply base class to container
         addClass(this._el.container, 'tl-timeline');
+        this._el.container.setAttribute('tabindex', '0');
+        this._el.container.setAttribute('role', 'region');
+        this._el.container.setAttribute('aria-label', 'Timeline');
 
         if (this.options.is_embed) {
             addClass(this._el.container, 'tl-timeline-embed');
@@ -406,14 +409,17 @@ class Timeline {
         // Create Layout
         if (this.options.timenav_position == "top") {
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
         } else {
             this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
             this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
         }
 
-        this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
-
+        // Knight Lab Logo
+        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
+        this._el.attribution.innerHTML = "<a href='https://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
         // Initial Default Layout
         this.options.width = this._el.container.offsetWidth;
@@ -425,6 +431,8 @@ class Timeline {
 
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
+        this._el.timenav.setAttribute('role', 'group');
+        this._el.timenav.setAttribute('aria-label', 'Timeline navigation');
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
@@ -437,6 +445,8 @@ class Timeline {
 
         // Create StorySlider
         this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
+        this._el.storyslider.setAttribute('role', 'group');
+        this._el.storyslider.setAttribute('aria-label', 'Timeline content');
         this._storyslider.on('loaded', this._onStorySliderLoaded, this);
         this._storyslider.init();
 
@@ -460,6 +470,7 @@ class Timeline {
         // TimeNav Events
         this._timenav.on('change', this._onTimeNavChange, this);
         this._timenav.on('zoomtoggle', this._onZoomToggle, this);
+        this._timenav.on('visible_ticks_change', this._onVisibleTicksChange, this);
 
         // StorySlider Events
         this._storyslider.on('change', this._onSlideChange, this);
@@ -510,6 +521,10 @@ class Timeline {
         if (this.options.hash_bookmark && this.current_id) {
             this._updateHashBookmark(this.current_id);
         }
+    }
+
+    _onVisibleTicksChange(e) {
+        this._menubar.changeVisibleTicks(e.visible_ticks);
     }
 
     _onBackToStart(e) {
@@ -833,14 +848,25 @@ class Timeline {
 
     // Goto slide n
     goTo(n) {
-        if (this.config.title) {
-            if (n == 0) {
-                this.goToId(this.config.title.unique_id);
+        if (n < 0) {
+            return;
+        }
+
+        try {
+            if (this.config.title) {
+                if (n === 0) {
+                    this.goToId(this.config.title.unique_id);
+                } else {
+                    this.goToId(this.config.events[n - 1].unique_id);
+                }
             } else {
-                this.goToId(this.config.events[n - 1].unique_id);
+                this.goToId(this.config.events[n].unique_id);
             }
-        } else {
-            this.goToId(this.config.events[n].unique_id);
+        } catch {
+            // because n is interpreted differently depending on 
+            // whether there's a title slide, easier to use catch
+            // to handle navigating beyond end instead of test before
+            return
         }
     }
 
@@ -858,11 +884,13 @@ class Timeline {
     // Goto previous slide
     goToPrev() {
         this.goTo(this._getSlideIndex(this.current_id) - 1);
+        this.focusContainer();
     }
 
     // Goto next slide
     goToNext() {
         this.goTo(this._getSlideIndex(this.current_id) + 1);
+        this.focusContainer();
     }
 
     /* Event manipulation
@@ -956,6 +984,10 @@ class Timeline {
         } else {
             trace('updateDisplay called but timeline is not in ready state')
         }
+    }
+
+    focusContainer() {
+        this._el.container.focus();
     }
 
     _initGoogleAnalytics() {
