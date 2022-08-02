@@ -406,6 +406,8 @@ export class StorySlider {
         this._el.slider_container = DOM.create('div', 'tl-slider-container tlanimate', this._el.slider_container_mask);
         this._el.slider_item_container = DOM.create('div', 'tl-slider-item-container', this._el.slider_container);
 
+        // Add aria-live polite to slide_container
+        this._el.slider_container.setAttribute('aria-live', 'polite');
 
         // Update Size
         this.options.width = this._el.container.offsetWidth;
