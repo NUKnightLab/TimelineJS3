@@ -55,7 +55,8 @@
         "start": "npx webpack serve --open --config webpack.dev.js",
         "stage": "npm run dist && node tasks/stage.js",
         "stage_latest": "npm run dist && node tasks/stage.js latest",
-        "stage_dev": "npm run dist && node tasks/stage.js dev"
+        "stage_dev": "npm run dist && node tasks/stage.js dev",
+        "prepublishOnly": "npm run dist"
     },
     "contributors": [
         {
