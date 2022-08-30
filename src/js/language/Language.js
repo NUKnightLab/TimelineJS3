@@ -1,19 +1,21 @@
 import { mergeData, pad, trace } from "../core/Util"
 import { fetchJSON } from "../net/Net"
 import { BigYear } from "../date/TLDate"
+import TLError from "../core/TLError";
 
-/**
- * Instantiate a Language object to manage I18N. 
- * WARNING: In general, this should not be called directly, because it doesn't block while
- * the language file is loaded, which can lead to race conditions in some cases. In most
- * cases, language objects other than the fallback should be gotten by calling the 
- * async function loadLanguage defined elsewhere in this file.
- * 
- * @param {String} [language=en] - a language code or a URL to a 
- *     translation file
- * @param {string} [script_path] - if `language` is not a URL, this is used
- *     to construct a fully-qualified URL to load a translation file.
- */
+const MESSAGE_VARIABLE_PATTERN = new RegExp(/\$\{(.+?)\}/g)
+    /**
+     * Instantiate a Language object to manage I18N. 
+     * WARNING: In general, this should not be called directly, because it doesn't block while
+     * the language file is loaded, which can lead to race conditions in some cases. In most
+     * cases, language objects other than the fallback should be gotten by calling the 
+     * async function loadLanguage defined elsewhere in this file.
+     * 
+     * @param {String} [language=en] - a language code or a URL to a 
+     *     translation file
+     * @param {string} [script_path] - if `language` is not a URL, this is used
+     *     to construct a fully-qualified URL to load a translation file.
+     */
 class Language {
     constructor(language, script_path) {
         // borrowed from http://stackoverflow.com/a/14446414/102476
@@ -73,8 +75,16 @@ class Language {
         }
     }
 
-    _(k) {
-        return this.messages[k] || Language.fallback.messages[k] || k;
+    _(k, context) {
+        let msg = this.messages[k] || Language.fallback.messages[k] || k;
+        if (msg.match(MESSAGE_VARIABLE_PATTERN)) {
+            if (!context) throw new TLError("template_message_without_context")
+            for (let match of msg.matchAll(MESSAGE_VARIABLE_PATTERN)) {
+                if (!(match[1] in context)) throw new TLError("template_message_without_context")
+                msg = msg.replace(match[0], context[match[1]])
+            }
+        }
+        return msg
     }
 
     formatDate(date, format_name) {
@@ -308,9 +318,16 @@ var LANGUAGES = {
             axis_helper_scale_err: "No AxisHelper available for scale",
             invalid_integer_option: "Invalid option value—must be a whole number.",
             instagram_bad_request: "Invalid or private Instagram URL",
+            template_message_without_context: "Required variables not provided for template translation message",
             aria_label_timeline: "Timeline",
             aria_label_timeline_navigation: "Timeline navigation",
-            aria_label_timeline_content: "Timeline content"
+            aria_label_timeline_content: "Timeline content",
+            // The following message keys are pseudo-template literal. 
+            // Do not surround with backticks (`) since evaluation is deferred 
+            // (and backticks wouldn't be allowed in JSON localization files)
+            // for each, document typical values for variable components
+            aria_label_zoomin: "Show less than ${start} to ${end}", // 'start' and 'end' should be numeric years 
+            aria_label_zoomout: "Show more than ${start} to ${end}" // 'start' and 'end' should be numeric years 
         },
         date: {
             month: [

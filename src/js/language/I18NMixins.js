@@ -24,8 +24,8 @@ class I18NMixins {
         return fallback;
     }
 
-    _(msg) {
-        return this.getLanguage()._(msg);
+    _(msg, context) {
+        return this.getLanguage()._(msg, context);
     }
 }
 

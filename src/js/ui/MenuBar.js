@@ -133,11 +133,6 @@ export class MenuBar {
         this._updateDisplay(w, h, a, l);
     }
 
-    getFormattedTimespan() {
-        const { start, end } = this.data.visible_ticks_dates;
-        return start && end ? `than ${start} to ${end}` : "";
-    }
-
     /*	Events
     ================================================== */
     _onButtonZoomIn(e) {
@@ -197,15 +192,17 @@ export class MenuBar {
 
     // Update Display
     _updateZoomAriaLabels() {
-        const timespan = this.getFormattedTimespan();
-        if (!timespan) {
+        if (Object.keys(this.data.visible_ticks_dates).length == 0) {
             this._el.button_zoomin.setAttribute('aria-description', '');
             this._el.button_zoomout.setAttribute('aria-description', '');
-            return;
+        } else {
+            this._el.button_zoomin.setAttribute('aria-description',
+                this._("aria_label_zoomin",
+                    this.data.visible_ticks_dates));
+            this._el.button_zoomout.setAttribute('aria-description',
+                this._("aria_label_zoomout",
+                    this.data.visible_ticks_dates));
         }
-        // TODO: I18N for these Aria labels
-        this._el.button_zoomin.setAttribute('aria-description', `Show less ${timespan}`);
-        this._el.button_zoomout.setAttribute('aria-description', `Show more ${timespan}`);
     }
 }
 

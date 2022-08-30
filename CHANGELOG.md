@@ -1,18 +1,6 @@
 3.8.22 (Not yet released)
 -------------------------
-* A bounty of accessibility improvements contributed by @OleksandrDanylchenko:
-    * #744 Contrast improvements
-    * #747 Reading order improvements for better screen reader experience
-    * #749 Render left/right arrows as button tags for better accessibility
-    * #750 Prevent focus on non-visible but tabbable elements
-    * #756 Focus on parent on slide change for better tab navigation
-    * #758 Render menu bar (zoom and back-to-start) as button tags for better accessibility
-    * #760 Introduce ARIA regions to Timeline
-    * #764 Improved tabbing order of the Timeline component
-    * #766 Improved keyboard navigation of Timeline navigation element
-    * #768 Accessibility improvements for TimeMarkers
-    * #770 Add state-based aria labels to zoom in/out to explain their effects
-    * #783 rendering fix for media-only slides
+* A bounty of accessibility improvements contributed by @OleksandrDanylchenko: #744, #747, #749, #750,  #756, #758, #760, #764, #766, #768, #770, #783, #786, #787 and one from @madhaze #789
     
 
 
