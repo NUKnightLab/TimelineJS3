@@ -64,9 +64,7 @@
         "swipe_to_navigate": "Swipe<br><span class='tl-button'>OK</span>",
         "unknown_read_err": "ایک غیر متوقع خرابی سپریڈ شیٹ ڈیٹا پڑھنے سے روک رہی ہے",
         "network_err": "آپ کی گوگل سپریڈ شیٹ پڑھنے سے قاصر ہے.  یقینی بنائیں کے سپریڈ شیٹ ویب پر شائع ہے.",
-        "empty_feed_err": "کوئی ڈیٹا نہیں ملا",
         "missing_start_date_err": "شروع کرنے کی تاریخ نہیں ملی",
-        "invalid_data_format_err": "ہیڈر  تبدیل کر دیا گیا ہے.",
         "date_compare_err": "مختلف پیمانے کی timeline date objects کا موازنہ نہیں ممکن",
         "invalid_scale_err": "گیر درست پیمانے",
         "invalid_date_err": "گیر درست تاریخ: ماہ ، دن اور سال کا نمبر میں هونا ضروری ہے",
@@ -80,17 +78,14 @@
         "flickr_notfound_err": "تصویر نہیں ملی یا تصویر گیرعوامی ہے",
         "flickr_invalidurl_err": "گیردرست Flickr URL",
         "imgur_invalidurl_err": "گیردرست Imgur URL",
-        "twitter_invalidurl_err": "گیردرست Twitter URL",
         "twitter_load_err": "Tweet لود نا ھوسکی",
         "twitterembed_invalidurl_err": "گیردرست Twitter Embed url",
         "wikipedia_load_err": "Wikipedia entry لود نا ھوسکی",
-        "youtube_invalidurl_err": "گیردرست YouTube URL",
-        "template_value_err": "Variable کی تعداد فراہم نہیں",
         "invalid_rgb_err": "گیردرست RGB argument",
         "time_scale_scale_err": "Don't know how to get date from time for scale",
         "axis_helper_no_options_err": "Axis helper must be configured with options",
         "axis_helper_scale_err": "پیمانے  کے لئے Axis Helper موجود نہیں",
-        "invalid_integer_option": 				"Invalid option value—must be a whole number."
+        "invalid_integer_option": "Invalid option value—must be a whole number."
     },
     "dateformats": {
         "full_long": "mmm d',' yyyy 'at' hh:MM TT",

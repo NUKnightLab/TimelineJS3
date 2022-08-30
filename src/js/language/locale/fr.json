@@ -64,9 +64,7 @@
         "unknown_read_err": "Une erreur indéterminée est survenue lors de l'accès aux données de votre feuille de calcul.",
         "invalid_url_err": "Impossible d'accéder aux données de la Timeline. Assurez-vous que votre url est celle d'un Google Spreadsheet ou d'un fichier Timeline json.",
         "network_err": "Impossible d'accéder à Google Spreadsheet. Assurez-vous que votre Google Spreadsheet est bien publié pour le web.",
-        "empty_feed_err": "Aucune donnée trouvée",
         "missing_start_date_err": "Date de début manquante",
-        "invalid_data_format_err": "Erreur : La ligne d'entête a été modifiée.",
         "date_compare_err": "Impossible de comparer les Timeline date objects à différentes échelles",
         "invalid_scale_err": "Echelle invalide",
         "invalid_date_err": "Date invalide : les jours, mois et années doivent être des nombres.",
@@ -79,13 +77,10 @@
         "flickr_notfound_err": "Photo non trouvée ou privée",
         "flickr_invalidurl_err": "URL Flickr invalide",
         "imgur_invalidurl_err": "URL Imgur invalide",
-        "twitter_invalidurl_err": "URL Twitter invalide",
         "twitter_load_err": "Impossible de charger le tweet",
         "twitterembed_invalidurl_err": "URL d'embed Twitter invalide",
         "wikipedia_load_err": "Impossible de charger les données de Wikipedia",
-        "youtube_invalidurl_err": "URL YouTube invalide",
         "spotify_invalid_url": "URL Spotify invalide",
-        "template_value_err": "Aucune donnée pour cette variable",
         "invalid_rgb_err": "Argument RGB invalide"
     },
     "dateformats": {
