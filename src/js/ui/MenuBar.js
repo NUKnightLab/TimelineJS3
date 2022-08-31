@@ -148,7 +148,6 @@ export class MenuBar {
 	}
 
     _onButtonForwardToEnd(e) {
-        console.log(e);
 		this.fire("forward_to_end", e);
 	}
 
