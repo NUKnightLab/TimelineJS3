@@ -481,6 +481,7 @@ class Timeline {
         // Menubar Events
         this._menubar.on('zoom_in', this._onZoomIn, this);
         this._menubar.on('zoom_out', this._onZoomOut, this);
+        this._menubar.on('forward_to_end', this._onForwardToEnd, this);
         this._menubar.on('back_to_start', this._onBackToStart, this);
 
     }
@@ -527,8 +528,13 @@ class Timeline {
         this._menubar.changeVisibleTicks(e.visible_ticks);
     }
 
+    _onForwardToEnd(e) {
+        this.goToEnd();
+        this.fire("forward_to_end", { unique_id: this.current_id }, this);
+    }
+
     _onBackToStart(e) {
-        this._storyslider.goTo(0);
+        this.goToStart();
         this.fire("back_to_start", { unique_id: this.current_id }, this);
     }
 
