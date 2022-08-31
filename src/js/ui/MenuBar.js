@@ -171,6 +171,7 @@ export class MenuBar {
 			this._el.container.setAttribute("ontouchstart"," ");
 		}
 
+        // TODO Add the forward icon
 		this._el.button_forwardtoend.innerHTML = "<span class='tl-icon-goforward'></span>";
         this._el.button_forwardtoend.setAttribute('aria-label', 'Forward to end');
 
