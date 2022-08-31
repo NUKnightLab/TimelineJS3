@@ -53,11 +53,9 @@
     },
     "messages": {
         "loading": "Caricamento",
-        "contract_timeline": "Contrai la Timeline",
         "return_to_title": "Ritorna all'inizio",
         "wikipedia": "Wikipedia, L’enciclopedia libera",
         "loading_content": "Caricamento contenuti",
-        "expand_timeline": "Espandi la Timeline",
         "loading_timeline": "Caricamento Timeline... ",
         "swipe_to_navigate": "Scorri per Navigare<br><span class='tl-button'>OK</span>"
     },
@@ -72,21 +70,21 @@
         "time_short": "HH:MM:ss",
         "year": "yyyy",
         "full_long_small_date": "HH:MM'<br/><small>'dddd',' d mmm yyyy'</small>'"
-      },
-      "era_labels": {
-          "positive_year": {
-              "prefix": "",
-              "suffix": ""
-          },
-          "negative_year": {
-              "prefix": "",
-              "suffix": "a.C."
-          }
-      },
-      "period_labels": {
-          "t": ["a", "p"],
-          "tt": ["am", "pm"],
-          "T": ["A", "P"],
-          "TT": ["AM", "PM"]
-      }
+    },
+    "era_labels": {
+        "positive_year": {
+            "prefix": "",
+            "suffix": ""
+        },
+        "negative_year": {
+            "prefix": "",
+            "suffix": "a.C."
+        }
+    },
+    "period_labels": {
+        "t": ["a", "p"],
+        "tt": ["am", "pm"],
+        "T": ["A", "P"],
+        "TT": ["AM", "PM"]
+    }
 }

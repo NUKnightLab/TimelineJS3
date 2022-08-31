@@ -54,11 +54,9 @@
     "messages": {
         "loading": "กำลังโหลด",
         "error": "เกิดความผิดพลาด",
-        "contract_timeline": "ลดขนาด ไทม์ไลน์",
         "return_to_title": "กลับไปยังหัวข้อ",
         "wikipedia": "จาก วิกิพีเดีย, สารานุกรมเสรี",
         "loading_content": "กำลังโหลด เนื้อหา",
-        "expand_timeline": "ขยายขนาด ไทม์ไลน์",
         "loading_timeline": "กำลังโหลด ไทม์ไลน์...",
         "swipe_to_navigate": "ลากเพื่อเลื่อนไทม์ไลน์<br><span class='tl-button'>ตกลง</span>",
         "unknown_read_err": "เกิดข้อผิดพลาดจากการพยายามอ่านข้อมูลในสเปรดชีตของคุณ",

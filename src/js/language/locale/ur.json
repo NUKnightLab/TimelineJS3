@@ -55,11 +55,9 @@
     "messages": {
         "loading": "لوڈ ہو رہا ہے",
         "error": "غلطی",
-        "contract_timeline": "معاہدہ ٹائم لائن",
         "return_to_title": "موضوع پر واپس",
         "wikipedia": "From Wikipedia, the free encyclopedia",
         "loading_content": "لوڈنگ مواد",
-        "expand_timeline": "ٹائم لائن کو بڑھانے ک",
         "loading_timeline": "لوڈنگ ٹائم لائن ... ",
         "swipe_to_navigate": "Swipe<br><span class='tl-button'>OK</span>",
         "unknown_read_err": "ایک غیر متوقع خرابی سپریڈ شیٹ ڈیٹا پڑھنے سے روک رہی ہے",

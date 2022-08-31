@@ -53,11 +53,9 @@
     },
     "messages": {
         "loading": "Chargement",
-        "contract_timeline": "Réduire la frise",
         "return_to_title": "Retour à la page d'accueil",
         "wikipedia": "Extrait de Wikipedia, l'encyclopédie libre",
         "loading_content": "Chargement",
-        "expand_timeline": "Elargir la frise",
         "loading_timeline": "Chargement de la frise en cours... ",
         "error": "Erreur",
         "swipe_to_navigate": "Faites glisser pour naviguer<br><span class='tl-button'>OK</span>",

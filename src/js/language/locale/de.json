@@ -53,12 +53,10 @@
     },
     "messages": {
         "loading": "Loading",
-        "contract_timeline": "Chronologie verkleinern",
         "return_to_title": "Zurück zum Anfang",
         "wikipedia": "Wikipedia, Die freie Enzyklopädie",
         "loading_content": "Loading",
         "swipe_to_navigate": "Streichen um zu navigieren<br><span class='tl-button'>OK</span>",
-        "expand_timeline": "Chronologie vergrößern", 
         "loading_timeline": "Chronologie wird geladen..."
     },
     "dateformats": {

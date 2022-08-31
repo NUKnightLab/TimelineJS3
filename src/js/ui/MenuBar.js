@@ -165,12 +165,10 @@ export class MenuBar {
         this._el.button_backtostart.setAttribute('aria-label', this._('return_to_title'));
 
         this._el.button_zoomin.innerHTML = "<span class='tl-icon-zoom-in'></span>";
-        //TODO Consider whether to use existing message keys expand_timeline/contract_timeline
-        this._el.button_zoomin.setAttribute('aria-label', 'Zoom in');
+        this._el.button_zoomin.setAttribute('aria-label', this._('zoom_in'));
 
         this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
-        //TODO Consider whether to use existing message keys expand_timeline/contract_timeline
-        this._el.button_zoomout.setAttribute('aria-label', 'Zoom out');
+        this._el.button_zoomout.setAttribute('aria-label', this._('zoom_out'));
     }
 
     _initEvents() {
