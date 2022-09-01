@@ -44,7 +44,7 @@ export class TimeNav {
 
         // Prevents inconsistent default keyboard handling by the screen readers
         this._el.container.setAttribute('role', 'application');
-        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-label', this._('aria_label_timeline_navigation'));
         this._el.container.setAttribute('aria-description',
             'Navigate between markers with arrow keys. Press "Home" for the first and "End" for the last markers'
         );

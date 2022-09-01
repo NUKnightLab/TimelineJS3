@@ -429,8 +429,6 @@ class Timeline {
 
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
-        this._el.timenav.setAttribute('role', 'group');
-        this._el.timenav.setAttribute('aria-label', this._('aria_label_timeline_navigation'));
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
