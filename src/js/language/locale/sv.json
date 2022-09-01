@@ -53,11 +53,9 @@
     },
     "messages": {
         "loading": "Laddar",
-        "contract_timeline": "Förminska tidslinje",
         "return_to_title": "Tillbaka till start",
         "wikipedia": "Från Wikipedia, den fria encyklopedin",
         "loading_content": "Laddar innehåll",
-        "expand_timeline": "Förstora tidslinje",
         "loading_timeline": "Laddar tidslinje... "
     },
     "dateformats": {
@@ -72,15 +70,15 @@
         "year": "yyyy",
         "full_long_small_date": "H:MM'<br/><small>d mmm',' yyyy'</small>'"
     },
-  "era_labels": {
-      "positive_year": {
-          "prefix": "",
-          "suffix": ""
-      },
-      "negative_year": {
-          "prefix": "",
-          "suffix": "f.Kr."
-      }
-  }
+    "era_labels": {
+        "positive_year": {
+            "prefix": "",
+            "suffix": ""
+        },
+        "negative_year": {
+            "prefix": "",
+            "suffix": "f.Kr."
+        }
+    }
 
 }

@@ -53,11 +53,9 @@
     },
     "messages": {
         "loading": "加载中",
-        "contract_timeline": "缩短时间",
         "return_to_title": "回到开头",
         "wikipedia": "来自维基百科，自由的百科全书",
         "loading_content": "正在加载内容",
-        "expand_timeline": "伸展时间",
         "loading_timeline": "加载时间线... ",
         "swipe_to_navigate": "左右拨来浏览<br><span class='tl-button'>OK</span>"
     },

@@ -1,19 +1,21 @@
 import { mergeData, pad, trace } from "../core/Util"
 import { fetchJSON } from "../net/Net"
 import { BigYear } from "../date/TLDate"
+import TLError from "../core/TLError";
 
-/**
- * Instantiate a Language object to manage I18N. 
- * WARNING: In general, this should not be called directly, because it doesn't block while
- * the language file is loaded, which can lead to race conditions in some cases. In most
- * cases, language objects other than the fallback should be gotten by calling the 
- * async function loadLanguage defined elsewhere in this file.
- * 
- * @param {String} [language=en] - a language code or a URL to a 
- *     translation file
- * @param {string} [script_path] - if `language` is not a URL, this is used
- *     to construct a fully-qualified URL to load a translation file.
- */
+const MESSAGE_VARIABLE_PATTERN = new RegExp(/\$\{(.+?)\}/g)
+    /**
+     * Instantiate a Language object to manage I18N. 
+     * WARNING: In general, this should not be called directly, because it doesn't block while
+     * the language file is loaded, which can lead to race conditions in some cases. In most
+     * cases, language objects other than the fallback should be gotten by calling the 
+     * async function loadLanguage defined elsewhere in this file.
+     * 
+     * @param {String} [language=en] - a language code or a URL to a 
+     *     translation file
+     * @param {string} [script_path] - if `language` is not a URL, this is used
+     *     to construct a fully-qualified URL to load a translation file.
+     */
 class Language {
     constructor(language, script_path) {
         // borrowed from http://stackoverflow.com/a/14446414/102476
@@ -73,8 +75,28 @@ class Language {
         }
     }
 
-    _(k) {
-        return this.messages[k] || Language.fallback.messages[k] || k;
+    /**
+     * Look up a localized version of a standard message. While using `_` for the
+     * method name is not exactly idiomatic javascript, it was inspired by Python's
+     * {@link https://docs.python.org/3/library/gettext.html|gettext} module, with
+     * the intention of reducing clutter in places where, in a non-I18N'd app, you'd 
+     * simply have a quoted string.
+     * 
+     * @param {string} k - a message key 
+     * @param {Object} [context] - a dictionary with string keys appropriate to message `k` 
+     *      and string values which will be interpolated into the message.
+     * @returns {string} - a localized string appropriate to the message key
+     */
+    _(k, context) {
+        let msg = this.messages[k] || Language.fallback.messages[k] || k;
+        if (msg.match(MESSAGE_VARIABLE_PATTERN)) {
+            if (!context) throw new TLError("template_message_without_context")
+            for (let match of msg.matchAll(MESSAGE_VARIABLE_PATTERN)) {
+                if (!(match[1] in context)) throw new TLError("template_message_without_context")
+                msg = msg.replace(match[0], context[match[1]])
+            }
+        }
+        return msg
     }
 
     formatDate(date, format_name) {
@@ -267,19 +289,16 @@ var LANGUAGES = {
             loading: "Loading",
             wikipedia: "From Wikipedia, the free encyclopedia",
             error: "Error",
-            contract_timeline: "Contract Timeline",
             return_to_title: "Return to Title",
             loading_content: "Loading Content",
-            expand_timeline: "Expand Timeline",
             loading_timeline: "Loading Timeline... ",
             swipe_to_navigate: "Swipe to Navigate<br><span class='tl-button'>OK</span>",
+            zoom_in: "Zoom in",
+            zoom_out: "Zoom out",
             unknown_read_err: "An unexpected error occurred trying to read your spreadsheet data",
             invalid_url_err: "Unable to read Timeline data. Make sure your URL is for a Google Spreadsheet or a Timeline JSON file.",
-            invalid_url_share_required: "Because of unexpected changes to Google's data access API, the creator of this timeline must enable 'anyone with the url can read' access for this spreadsheet. See timeline.knightlab.com for more information.",
             network_err: "Unable to read your Google Spreadsheet. Make sure you have published it to the web.",
-            empty_feed_err: "No data entries found",
             missing_start_date_err: "Missing start_date",
-            invalid_data_format_err: "Header row has been modified.",
             invalid_start_time_without_date: "Invalid configuration: time cannot be used without date.",
             invalid_end_time_without_date: "Invalid configuration: end time cannot be used without end date.",
             date_compare_err: "Can't compare timeline date objects on different scales",
@@ -295,19 +314,26 @@ var LANGUAGES = {
             flickr_notfound_err: "Photo not found or private",
             flickr_invalidurl_err: "Invalid Flickr URL",
             imgur_invalidurl_err: "Invalid Imgur URL",
-            twitter_invalidurl_err: "Invalid Twitter URL",
             twitter_load_err: "Unable to load Tweet",
             twitterembed_invalidurl_err: "Invalid Twitter Embed url",
             wikipedia_load_err: "Unable to load Wikipedia entry",
-            youtube_invalidurl_err: "Invalid YouTube URL",
             spotify_invalid_url: "Invalid Spotify URL",
-            template_value_err: "No value provided for variable",
             invalid_rgb_err: "Invalid RGB argument",
             time_scale_scale_err: "Don't know how to get date from time for scale",
             axis_helper_no_options_err: "Axis helper must be configured with options",
             axis_helper_scale_err: "No AxisHelper available for scale",
             invalid_integer_option: "Invalid option value—must be a whole number.",
-            instagram_bad_request: "Invalid or private Instagram URL"
+            instagram_bad_request: "Invalid or private Instagram URL",
+            template_message_without_context: "Required variables not provided for template translation message",
+            aria_label_timeline: "Timeline",
+            aria_label_timeline_navigation: "Timeline navigation",
+            aria_label_timeline_content: "Timeline content",
+            // The following message keys are pseudo-template literal. 
+            // Do not surround with backticks (`) since evaluation is deferred 
+            // (and backticks wouldn't be allowed in JSON localization files)
+            // for each, document typical values for variable components
+            aria_label_zoomin: "Show less than ${start} to ${end}", // 'start' and 'end' should be numeric years 
+            aria_label_zoomout: "Show more than ${start} to ${end}" // 'start' and 'end' should be numeric years 
         },
         date: {
             month: [

@@ -1,5 +1,5 @@
 /*  I18NMixins
-    assumes that its class has an options object with a Language instance    
+    assumes that its class has an attribute `language` with a Language instance    
 ================================================== */
 import { trace } from "../core/Util"
 import { fallback } from "../language/Language"
@@ -24,8 +24,18 @@ class I18NMixins {
         return fallback;
     }
 
-    _(msg) {
-        return this.getLanguage()._(msg);
+    /**
+     * Look up a localized version of a standard message using the Language instance
+     * that was previously set with {@link setLanguage}.
+     * 
+     * @see {@link Language#_}
+     * @param {string} msg - a message key 
+     * @param {Object} [context] - a dictionary with string keys appropriate to message `k` 
+     *      and string values which will be interpolated into the message.
+     * @returns {string} - a localized string appropriate to the message key
+     */
+    _(msg, context) {
+        return this.getLanguage()._(msg, context);
     }
 }
 

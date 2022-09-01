@@ -11,13 +11,14 @@ import { TimeAxis } from "./TimeAxis"
 import { TimeMarker } from "./TimeMarker"
 import Swipable from "../ui/Swipable"
 import { Animate } from "../animation/Animate"
+import { I18NMixins } from "../language/I18NMixins"
 
 
 
 export class TimeNav {
 
     constructor(elem, timeline_config, options, language) {
-        this.language = language // just passing through for TimeAxis. Is this a bad code smell?
+        this.language = language
             // DOM ELEMENTS
         this._el = {
             parent: {},
@@ -41,9 +42,9 @@ export class TimeNav {
         }
         this._el.container.setAttribute('tabindex', '0');
 
-        // Prevents inconsistent default keyboard handling by the screen readers
+        // 'application' role supports predictable control of keyboard input in a complex component
         this._el.container.setAttribute('role', 'application');
-        this._el.container.setAttribute('aria-label', 'Timeline navigation');
+        this._el.container.setAttribute('aria-label', this._('aria_label_timeline_navigation'));
         this._el.container.setAttribute('aria-description',
             'Navigate between markers with arrow keys. Press "Home" for the first and "End" for the last markers'
         );
@@ -812,4 +813,4 @@ export class TimeNav {
     }
 }
 
-classMixin(TimeNav, Events, DOMMixins)
+classMixin(TimeNav, Events, DOMMixins, I18NMixins)

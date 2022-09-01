@@ -177,7 +177,6 @@ export class TimelineConfig {
             trace("Missing start date, skipping event")
             console.log(data)
             return null
-                // throw new TLError("missing_start_date_err", event_id);
         }
 
         this._processDates(data);

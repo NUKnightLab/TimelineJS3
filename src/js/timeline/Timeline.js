@@ -195,7 +195,7 @@ class Timeline {
         addClass(this._el.container, 'tl-timeline');
         this._el.container.setAttribute('tabindex', '0');
         this._el.container.setAttribute('role', 'region');
-        this._el.container.setAttribute('aria-label', 'Timeline');
+        this._el.container.setAttribute('aria-label', this._('aria_label_timeline'));
 
         if (this.options.is_embed) {
             addClass(this._el.container, 'tl-timeline-embed');
@@ -251,7 +251,6 @@ class Timeline {
                 if (language) {
                     this.language = language
                     this.message.setLanguage(this.language)
-                    this.options.language = this.language // easiest way to make language available to I18NMixins
                     this.showMessage(this._('loading_timeline'))
                 } else {
                     this.showMessage(`Error loading ${lang}`) // but we will carry on using the fallback
@@ -401,7 +400,6 @@ class Timeline {
     }
 
     _initLayout() {
-        var self = this;
 
         this.message.removeFrom(this._el.container);
         this._el.container.innerHTML = "";
@@ -431,8 +429,6 @@ class Timeline {
 
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
-        this._el.timenav.setAttribute('role', 'group');
-        this._el.timenav.setAttribute('aria-label', 'Timeline navigation');
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
@@ -446,12 +442,12 @@ class Timeline {
         // Create StorySlider
         this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
         this._el.storyslider.setAttribute('role', 'group');
-        this._el.storyslider.setAttribute('aria-label', 'Timeline content');
+        this._el.storyslider.setAttribute('aria-label', this._('aria_label_timeline_content'));
         this._storyslider.on('loaded', this._onStorySliderLoaded, this);
         this._storyslider.init();
 
         // Create Menu Bar
-        this._menubar = new MenuBar(this._el.menubar, this._el.container, this.options);
+        this._menubar = new MenuBar(this._el.menubar, this._el.container, this.options, this.getLanguage());
 
         // LAYOUT
         if (this.options.layout == "portrait") {
@@ -671,7 +667,7 @@ class Timeline {
         this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
         this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
 
-        if (this.options.language.direction == 'rtl') {
+        if (this.language.direction == 'rtl') {
             display_class += ' tl-rtl';
         }
 
