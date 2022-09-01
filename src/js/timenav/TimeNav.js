@@ -42,7 +42,7 @@ export class TimeNav {
         }
         this._el.container.setAttribute('tabindex', '0');
 
-        // Prevents inconsistent default keyboard handling by the screen readers
+        // 'application' role supports predictable control of keyboard input in a complex component
         this._el.container.setAttribute('role', 'application');
         this._el.container.setAttribute('aria-label', this._('aria_label_timeline_navigation'));
         this._el.container.setAttribute('aria-description',
