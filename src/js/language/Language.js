@@ -75,6 +75,18 @@ class Language {
         }
     }
 
+    /**
+     * Look up a localized version of a standard message. While using `_` for the
+     * method name is not exactly idiomatic javascript, it was inspired by Python's
+     * {@link https://docs.python.org/3/library/gettext.html|gettext} module, with
+     * the intention of reducing clutter in places where, in a non-I18N'd app, you'd 
+     * simply have a quoted string.
+     * 
+     * @param {string} k - a message key 
+     * @param {Object} [context] - a dictionary with string keys appropriate to message `k` 
+     *      and string values which will be interpolated into the message.
+     * @returns {string} - a localized string appropriate to the message key
+     */
     _(k, context) {
         let msg = this.messages[k] || Language.fallback.messages[k] || k;
         if (msg.match(MESSAGE_VARIABLE_PATTERN)) {
