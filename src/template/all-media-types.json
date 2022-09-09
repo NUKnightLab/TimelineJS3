@@ -302,7 +302,7 @@
             },
             "text": {
                 "headline": "Image, PNG",
-                "text": "To embed a PNG, just copy the URL endig in '.png'."
+                "text": "To embed a PNG, just copy the URL ending in '.png'."
             },
             "group": "Image"
         },
@@ -319,7 +319,7 @@
             },
             "text": {
                 "headline": "Image, JPEG",
-                "text": "To embed a JPEG, just copy the URL endig in '.jpeg'."
+                "text": "To embed a JPEG, just copy the URL ending in '.jpeg'."
             },
             "group": "Image"
         },
@@ -337,6 +337,38 @@
                 "text": "To embed a Google Doc, just copy the Shareable link."
             }
         },
+        {
+            "media": {
+                "url": "https://drive.google.com/file/d/10YmjqDEEThebdRQ1Ws2J5PRpDXbFDjTL/view?usp=sharing",
+                "caption": "Knight Lab Logo",
+                "credit": "Zach Wise"
+            },
+            "start_date": {
+                "year": "1919",
+                "month": "6"
+            },
+            "text": {
+                "headline": "PNG image on Google Drive",
+                "text": "To embed an image from Google Drive, just copy the Shareable link. Note that images embedded this way will appear within a Google Drive 'viewer', and so will look quite different from normally embedded images."
+            }
+        },
+        {
+            "media": {
+                "url": "https://drive.google.com/uc?id=10YmjqDEEThebdRQ1Ws2J5PRpDXbFDjTL",
+                "caption": "Knight Lab Logo",
+                "credit": "Zach Wise"
+            },
+            "start_date": {
+                "year": "1919",
+                "month": "7"
+            },
+            "text": {
+                "headline": "PNG image on Google Drive",
+                "text": "This hack may make a Google Drive image work more like an image"
+            }
+        },
+
+
         {
             "media": {
                 "url": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles",
