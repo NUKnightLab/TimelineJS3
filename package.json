@@ -49,7 +49,7 @@
     "scripts": {
         "test": "jest",
         "dist": "run-s clean build",
-        "disttest": "npm run dist && http-server dist -o '/embed/index.html?debug=true&language=es'",
+        "disttest": "npm run dist && http-server dist -o '/embed/index.html?debug=true&language=es&script_path='",
         "compare": "npm run dist && http-server dist -o '/embed/compare.html'",
         "clean": "trash dist",
         "build": "webpack --config webpack.prod.js && node tasks/compile_less.js",
@@ -59,8 +59,7 @@
         "stage_dev": "npm run dist && node tasks/stage.js dev",
         "prepublishOnly": "npm run dist"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Zach Wise",
             "email": "wise@northwestern.edu",
             "url": "https://github.com/zachwise"
