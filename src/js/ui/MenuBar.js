@@ -14,14 +14,14 @@ export class MenuBar {
             parent: {},
             container: {},
             button_forwardtoend: {},
-			button_backtostart: {},
-			button_zoomin: {},
-			button_zoomout: {},
-			arrow: {},
-			line: {},
-			coverbar: {},
-			grip: {}
-		};
+            button_backtostart: {},
+            button_zoomin: {},
+            button_zoomout: {},
+            arrow: {},
+            line: {},
+            coverbar: {},
+            grip: {}
+        };
 
         this.collapsed = false;
 
@@ -145,12 +145,12 @@ export class MenuBar {
     }
 
     _onButtonForwardToEnd(e) {
-		this.fire("forward_to_end", e);
-	}
+        this.fire("forward_to_end", e);
+    }
 
-	_onButtonBackToStart(e) {
-		this.fire("back_to_start", e);
-	}
+    _onButtonBackToStart(e) {
+        this.fire("back_to_start", e);
+    }
 
 
     /*	Private Methods
@@ -161,18 +161,17 @@ export class MenuBar {
         this._el.button_zoomin = DOM.create('button', 'tl-menubar-button', this._el.container);
         this._el.button_zoomout = DOM.create('button', 'tl-menubar-button', this._el.container);
         this._el.button_forwardtoend = DOM.create('button', 'tl-menubar-button', this._el.container);
-		this._el.button_backtostart = DOM.create('button', 'tl-menubar-button', this._el.container);
+        this._el.button_backtostart = DOM.create('button', 'tl-menubar-button', this._el.container);
 
         if (Browser.mobile) {
             this._el.container.setAttribute("ontouchstart", " ");
         }
 
-        // TODO Add the forward icon
-		this._el.button_forwardtoend.innerHTML = "<span class='tl-icon-goforward'></span>";
-        this._el.button_forwardtoend.setAttribute('aria-label', 'Forward to end');
-
-		this._el.button_backtostart.innerHTML = "<span class='tl-icon-goback'></span>";
+        this._el.button_backtostart.innerHTML = "<span class='tl-icon-goback'></span>";
         this._el.button_backtostart.setAttribute('aria-label', this._('return_to_title'));
+
+        this._el.button_forwardtoend.innerHTML = "<span class='tl-icon-goend'></span>";
+        this._el.button_forwardtoend.setAttribute('aria-label', this._('go_to_end'));
 
         this._el.button_zoomin.innerHTML = "<span class='tl-icon-zoom-in'></span>";
         this._el.button_zoomin.setAttribute('aria-label', this._('zoom_in'));
@@ -183,10 +182,10 @@ export class MenuBar {
 
     _initEvents() {
         DOMEvent.addListener(this._el.button_forwardtoend, 'click', this._onButtonForwardToEnd, this);
-		DOMEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
-		DOMEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomIn, this);
-		DOMEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
-	}
+        DOMEvent.addListener(this._el.button_backtostart, 'click', this._onButtonBackToStart, this);
+        DOMEvent.addListener(this._el.button_zoomin, 'click', this._onButtonZoomIn, this);
+        DOMEvent.addListener(this._el.button_zoomout, 'click', this._onButtonZoomOut, this);
+    }
 
     // Update Display
     _updateDisplay(width, height, animate) {

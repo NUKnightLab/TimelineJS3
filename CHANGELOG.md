@@ -1,8 +1,8 @@
 3.8.22 (Not yet released)
 -------------------------
 * A bounty of accessibility improvements contributed by @OleksandrDanylchenko: #744, #747, #749, #750,  #756, #758, #760, #764, #766, #768, #770, #783, #786, #787 and one from @madhaze #789
+* #792 adds a "go to end" button to the menu bar.
 * #794 fixes a CSS problem with background colors and the dark theme, and #795 makes the background of .tl-note a LESS variable so that in dark mode it can be a nicer color.
-    
 
 
 3.8.21 (2022-04-29)

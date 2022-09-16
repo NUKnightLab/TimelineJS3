@@ -9,6 +9,7 @@
         "wikipedia": "From Wikipedia, the free encyclopedia",
         "error": "Error",
         "return_to_title": "Return to Title",
+        "go_to_end": "Go to the last slide",
         "loading_content": "Loading Content",
         "loading_timeline": "Loading Timeline... ",
         "swipe_to_navigate": "Swipe to Navigate<br><span class='tl-button'>OK</span>",
