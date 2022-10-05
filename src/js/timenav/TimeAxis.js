@@ -1,10 +1,17 @@
 import { classMixin, mergeData } from "../core/Util"
 import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
-import { isInHorizontalViewport } from "../dom/DOMUtil"
 import { I18NMixins } from "../language/I18NMixins"
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
+
+function isInHorizontalViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.left >= 0 &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
 
 export class TimeAxis {
     constructor(elem, options, language) {
