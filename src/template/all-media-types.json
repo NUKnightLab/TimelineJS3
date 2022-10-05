@@ -8,6 +8,9 @@
         "text": {
             "headline": "TimelineJS Media Types",
             "text": "<p>TimelineJS supports many media types. This provides a simple way to test them all. This page tests a simple image on a remote server. Also, if the Timeline was created with the <code>soundcite</code> option set to <code>true</code> then   <span class='soundcite' data-url='https://soundcite.knightlab.com/media/bach-cello-suite.mp3' data-start='0' data-end='164000' data-plays='1'>this should be an active SoundCite player.</span></p>"
+        },
+        "background": {
+            "color": "papayawhip"
         }
     },
     "events": [{
@@ -21,6 +24,9 @@
             "text": {
                 "headline": "YouTube Videos",
                 "text": "<p>if Timeline finds a URL that starts with 'youtube.com' or 'youtu.be', it will try to use it to embed a YouTube video. The <em>protocol</em> part of the URL (e.g. <em>https://</em>) is technically optional.</p><p>You can start at a specific point in the video using the <code>t=#m#s</code> parameter: see <a href='http://youtubetime.com/'>http://youtubetime.com/</a></p>"
+            },
+            "background": {
+                "color": "#F45B69"
             },
             "group": "Video"
         },
@@ -37,6 +43,9 @@
                 "headline": "Vimeo",
                 "text": "To embed a Vimeo video, just copy the URL of the Vimeo.com page which shows the video."
             },
+            "background": {
+                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Morsk%C3%A9_oko_%28v_m%C3%A1ji%29_004.jpg/1280px-Morsk%C3%A9_oko_%28v_m%C3%A1ji%29_004.jpg"
+            },
             "group": "Video"
         },
         {
@@ -51,6 +60,9 @@
             "text": {
                 "headline": "DailyMotion",
                 "text": "To embed a DailyMotion video, just copy the URL of the page which shows the video."
+            },
+            "background": {
+                "color": "#8B94A3"
             },
             "group": "Video"
         },
@@ -67,6 +79,9 @@
                 "headline": "Vine",
                 "text": "To embed a Vine, just copy the URL of the page which shows the vine."
             },
+            "background": {
+                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Crescent_Moon_-_Valencia%2C_CA_%2850727236562%29.jpg/1280px-Crescent_Moon_-_Valencia%2C_CA_%2850727236562%29.jpg"
+            },
             "group": "Video"
         },
         {
@@ -81,6 +96,9 @@
             "text": {
                 "headline": "SoundCloud",
                 "text": "To embed a SoundCloud clip, just copy the URL of the clip's page."
+            },
+            "background": {
+                "color": "#9567E0"
             },
             "group": "Audio"
         },
