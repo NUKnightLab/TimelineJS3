@@ -70,7 +70,7 @@ export function lookupMediaType(m, image_only) {
             {
                 type: "dailymotion",
                 name: "DailyMotion",
-                match_str: "^(https?:)?\/*(www.)?dailymotion\.com",
+                match_str: "^(https?:)?\/*(www.)?(dailymotion\.com|dai.ly)",
                 cls: DailyMotion
             },
             {

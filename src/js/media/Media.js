@@ -1,4 +1,4 @@
-import { classMixin, mergeData, linkify, } from "../core/Util"
+import { classMixin, mergeData, linkify, trace, } from "../core/Util"
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events"
 import * as DOM from "../dom/DOM"
@@ -209,7 +209,11 @@ class Media {
     }
 
     stopMedia() {
-        this._stopMedia();
+        try {
+            this._stopMedia();
+        } catch (e) {
+            trace(`stopMedia() exception: ${e}`)
+        }
     }
 
     loadErrorDisplay(message) {
