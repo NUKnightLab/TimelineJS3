@@ -88,12 +88,16 @@ function extractEventFromCSVObject(orig_row) {
         ZoomOnClick: row['ZoomOnClick'] || '',
     }
     if(d.parentOf != ''){
-        //if contain ,
-        d.parentOf = d.parentOf.split(',')
+        var parents = d.parentOf.split(/[,;]/);
+        d.parentOf = parents;
+
         
     }
     if(d.childOf != ''){
-        d.childOf = d.childOf.split(',');
+        var children = d.childOf.split(/[,;]/);
+        d.childOf = children;
+        
+
 
     }
 

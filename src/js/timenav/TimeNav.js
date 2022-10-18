@@ -652,7 +652,7 @@ export class TimeNav {
 
             for (var i = 0; i < parents.length; i++) {
                 let index = this._markers.findIndex(x => x.data.id == parents[i]);
-                if(index != -1){
+                if(index == -1){
                     //skip loop
                     continue;
                 }
