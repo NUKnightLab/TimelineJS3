@@ -637,19 +637,36 @@ export class TimeNav {
         this.fire("dateRemoved", this.config);
     }
 
-    _onMarkerClick(e) {
-
-        if(e.parent){
-        var index = this._markers.findIndex(x => x.data.id == e.parent);
-        let childs = this._markers[index].data.parentOf;
-        if (childs.length > 0) {
-            childs.map((child) => {
-                //clear space
-                var str = child.replace(/\s/g, '');
-                $('.' + str).addClass('highlighted');
-            })
+    _removeBlankSpace(data) {
+        let parents = [];
+        for (var i = 0; i < data.length; i++) {
+            let parent = data[i].replace(/\s/g, '');
+            parents.push(parent);
         }
+        return parents;
     }
+
+    _onMarkerClick(e) {
+        if (e.parent) {
+            let parents = this._removeBlankSpace(e.parent);
+
+            for (var i = 0; i < parents.length; i++) {
+                let index = this._markers.findIndex(x => x.data.id == parents[i]);
+                if(index != -1){
+                    //skip loop
+                    continue;
+                }
+                    
+                let childs = this._markers[index].data.parentOf;
+                if (childs.length > 0) {
+                    childs.map((child) => {
+                        //clear space
+                        var str = child.replace(/\s/g, '');
+                        $('.' + str).addClass('highlighted');
+                    })
+                }
+            }
+        }
         this.goToId(e.unique_id);
         this.fire("change", { unique_id: e.unique_id });
 

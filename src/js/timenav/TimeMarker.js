@@ -249,6 +249,7 @@ export class TimeMarker {
 	/*	Events
 	================================================== */
 	_onMarkerClick(e) {
+		console.log(this)
 		$(".tl-timemarker-content-container").removeClass('highlighted');
 		$(this._el.content_container).addClass('highlighted');
 		this.fire("markerclick", { unique_id: this.data.unique_id, zoomLevel: this.data.ZoomOnClick ,parent: this.data.childOf });
