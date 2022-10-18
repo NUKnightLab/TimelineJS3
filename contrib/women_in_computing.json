@@ -1,0 +1,222 @@
+{
+    "events": [{
+            "media": {
+                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Ada_Lovelace_portrait.jpg/713px-Ada_Lovelace_portrait.jpg",
+                "credit": "Wikimedia Commons",
+                "caption": "<a href=\"https://en.wikipedia.org/wiki/Ada_Lovelace#/media/File:Ada_Lovelace_portrait.jpg\" title=\"\">Portrait by Alfred Edward Chalon</a>",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1815",
+                "month": "12",
+                "day": "10"
+            },
+            "end_date": {
+                "year": "1852",
+                "month": "11",
+                "day": "27"
+            },
+            "text": {
+                "headline": "Ada Lovelace",
+                "text": "<p>Women have been programming since before it was a thing. Take <a href=\"https://en.wikipedia.org/wiki/Ada_Lovelace\">Ada Lovelace</a>: Daughter of Lord Byron, she's often credited as the first computer programmer. Her work on <a href=\"https://en.wikipedia.org/wiki/Analytical_Engine\">Charles Babbage's Analytical Engine</a> contains notes of the first machine-implemented algorithm.</p><span class=\"tl-note\">This slide demonstrates a simple \"image\" media type.</span>"
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "<blockquote>There is no demand for women engineers, as such, as there are for women doctors; but there's always a demand for anyone who can do a good piece of work. <cite>Edith Clarke, first female professor of electrical engineering in the United States</cite></blockquote>",
+                "credit": "",
+                "caption": "",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1948",
+                "month": "3",
+                "day": "14"
+            },
+            "text": {
+                "headline": "Edith Clarke: Bucking the Trend",
+                "text": ""
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://www.youtube.com/watch?v=aPweFhhXFvY",
+                "credit": "<a href=\"https://www.youtube.com/channel/UCHDr4RtxwA1KqKGwxgdK4Vg\">Computer History Museum</a>",
+                "caption": "Jean Bartik talks about the ENIAC women",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1943",
+                "month": "7",
+                "day": ""
+            },
+            "end_date": {
+                "year": "1946",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "...And the women who made it work",
+                "text": "<p>The ENIAC programmers included a number of women: Jean Bartik, Marlyn Wescoff Meltzer, Ruth Lichterman Teitelbaum, Kay McNulty Mauchly Antonelli, Frances Spence, and Frances Elizabeth \"Betty\" Holberton. Despite their groundbreaking work, the Army never released the names of the women who worked on the ENIAC, and they were largely forgotten until Kathy Kleiman discovered their story in 1985.</p> <span class=\"tl-note\">You can add a YouTube URL like this video on the ENIAC Women.\n.</span>"
+            },
+            "group": "",
+            "background": {
+                "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/ARL_ENIAC_02.png"
+            }
+        },
+        {
+            "media": {
+                "url": "https://www.google.com/maps/place/University+of+Pennsylvania/@39.9522188,-75.1932137,17z/data=!3m1!4b1!4m2!3m1!1s0x89c6c65a7f3bccc1:0x9eaa6a2b2d6fe94",
+                "credit": "",
+                "caption": "",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1943",
+                "month": "6",
+                "day": "5"
+            },
+            "text": {
+                "headline": "The First Computer",
+                "text": "Code named \"Project PX\" and funded by the United States Army, the first general-purpose computer was the Electronic Numerical Integrator And Computer (ENIAC). It was developed at the University of Pennsylvania's Moore School of Electrical Engineering. \n<p><span class=\"tl-note\">Timeline can easily embed Google Maps</span>"
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://en.wikipedia.org/wiki/Reduction_(recursion_theory)",
+                "credit": "Wikipedia",
+                "caption": "",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1951",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "R\u00f3zsa P\u00e9ter writes recursion",
+                "text": "<p>Hungarian-born R\u00f3zsa P\u00e9ter studied number theory and poetry before becoming interested in the idea that would become recursion theory. She published her paper \"Recursive Functions\" in 1951, but it wasn't until the mid-50's that she began to apply her work to the realm of computers. </p><span class=\"tl-note\">This excerpt is embedded from Wikipedia. Just include the URL to the Wikipedia article.</span>"
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://soundcloud.com/obamawhitehouse/grace-hopper-as-told-by-u-s",
+                "credit": "The White House",
+                "caption": "US Chief Technology Officer Megan Smith talks about Grace Hopper.",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1952",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "Grace Hopper invents the compiler",
+                "text": "<p>In her career with the Navy, Rear Admiral Grace Hopper worked on the first commercial computer (UNIVAC) and laid the groundwork for the programming language COBOL. But her most notable invention was the compiler, which can transform a source language into binary code. (In other words, it can translate the code you and I write into 0s and 1s.) She developed it in 1952, but she said \"Nobody would touch it. They told me computers could only do arithmetic.\"</p><span class=\"tl-note\">Embed sound clips from Soundcloud.</span>"
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://vimeo.com/304869290",
+                "credit": "National Archives (posted by Ira Gallen)",
+                "caption": "Project Mercury training footage",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1956",
+                "month": "",
+                "day": ""
+            },
+            "end_date": {
+                "year": "1962",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "Contributions to space exploration",
+                "text": "One of the first African-American women to earn a Ph.D in mathematics, Evelyn Boyd Granville focused on aeronautics and space during her career. In 1956, she worked with NASA and IBM on Project Mercury, the first manned space flight. She worked with NASA again a few years later on the Apollo Project.<span class=\"tl-note\">Videos from Vimeo are also easy to embed.</span>"
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://www.women.cs.cmu.edu/ada/Resources/Women/pictures/mary_keller.png",
+                "credit": "The Ada Project",
+                "caption": "",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1958",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "The First PhD in Computer Science",
+                "text": "One of the first women (if not the first woman) to earn a Ph.D in computer science, Sister Mary Kenneth Keller also contributed to the development of the BASIC language during her time at Dartmouth College. She then founded the computer science department at Clarke College and directed it for the next 20 years."
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://www.youtube.com/watch?v=4-DyVzj-f3c",
+                "credit": "BCS Karen Sparck Jones Lecture",
+                "caption": "\"How to enjoy a career in computing: the power of networks,\" Professor Dame Wendy Hall",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1972",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "Karen Sp\u00e4rck Jones makes search possible",
+                "text": "A professor at Cambridge Computer Laboratory, Sp\u00e4rck Jones was interested in natural language processing and information retrieval. In 1972, she introduced the concept of inverse document frequency, which most search engines still rely on."
+            },
+            "group": ""
+        },
+        {
+            "media": {
+                "url": "https://www.youtube.com/watch?v=I7FYG-XVgk4",
+                "credit": "Imagining the Internet",
+                "caption": "Radia Perlman's acceptance speech at being inducted into the Internet Hall of Fame.",
+                "thumbnail": ""
+            },
+            "start_date": {
+                "year": "1985",
+                "month": "",
+                "day": ""
+            },
+            "text": {
+                "headline": "\"The Mother of the Internet\"",
+                "text": "Often called \"the Mother of the Internet,\" Radia Perlman's work on spanning tree protocol enabled the development of modern networking. She holds more than 100 patents, which is what mothers do best."
+            },
+            "group": ""
+        }
+    ],
+    "title": {
+        "media": {
+            "url": "",
+            "credit": "",
+            "caption": "",
+            "thumbnail": ""
+        },
+        "start_date": {
+            "year": "",
+            "month": "",
+            "day": ""
+        },
+        "text": {
+            "headline": "Women in Computing",
+            "text": "<p class=\"lead\">In this sample timeline, we'll walk you through what TimelineJS can do by looking at some of the more important contributions women have made to computer science.</p>"
+        },
+        "group": "",
+        "background": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/17/World%27s_First_Computer%2C_the_Electronic_Numerical_Integrator_and_Calculator_%28ENIAC%29.gif"
+        }
+    }
+}

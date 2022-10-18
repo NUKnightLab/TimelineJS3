@@ -1,0 +1,15 @@
+*.pyc
+*.py
+requirements.txt
+
+node_modules/
+website
+contrib
+# Other
+.DS_Store
+codekit-config.json
+
+build/website
+build
+*.log
+.vscode

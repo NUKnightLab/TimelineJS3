@@ -1,0 +1,57 @@
+{% extends "base.html" %}{% block content %}
+<article>
+    <section class="section-color container">
+        <header>
+            <h2 class="header-story">Using TimelineJS</h2>
+            <p>TimelineJS is an open-source tool that enables anyone to build visually rich, interactive timelines. Beginners can <a href="/docs/using-spreadsheets.html">create a timeline using nothing more than a Google spreadsheet</a>. Experts can use
+                their JSON skills to <a href="json-format.html">create custom installations</a> while keeping TimelineJS's core functionality.</p>
+        </header>
+    </section>
+    <section class="product-page container section-color">
+        <div class="grid">
+            <div class="column-6">
+                <h2>Learn more</h2>
+                <p>Get up and running in minutes. Learn how to: </p>
+                <ul>
+                    <li><a href="using-spreadsheets.html">Use our spreadsheet template</a></li>
+                    <li><a href="../index.html#make">Publish a timeline</a></li>
+                </ul>
+
+                <h2>Getting stuck?</h2>
+                <ul>
+                    <li><a href="faq.html">Frequently Asked Questions (and Answers!)</a></li>
+                </ul>
+                <h2>Technical documentation</h2>
+                <p>Go further with Timeline:</p>
+                <ul>
+                    <li><a href="media-types.html">Supported Media Types</a></li>
+                    <li><a href="json-format.html">JSON data format reference</a></li>
+                    <li><a href="overriding-styles.html">Overriding Timeline's Styles</a></li>
+                    <li><a href="options.html">Timeline Configuration Options</a></li>
+                    <li><a href="instantiate-a-timeline.html">Using TimelineJS in Javascript</a></li>
+                </ul>
+            </div>
+            <div class="column-6" id="tips-and-tricks">
+                <h4>Tips &amp; tricks</h4>
+                <ol>
+                    <li>Keep it short. We recommend not having more than 20 slides for a reader to click through.</li>
+                    <li>Pick stories that have a strong chronological narrative. It does not work well for stories that need to jump around in the timeline.</li>
+                    <li>Write each event as a part of a larger narrative.</li>
+                    <li>Include events that build up to major occurrences — not just the major events.</li>
+                </ol>
+            </div>
+            <div class="column-6">
+                <h4>Need help?</h4>
+                <p>First, please be sure to look at our list of <a href="faq.html">frequently asked questions</a>.</p>
+                <p>If you don't find an answer there, we offer tech support <a href="mailto:support@knightlab.zendesk.com">via email</a> or <a href="https://knightlab.zendesk.com/anonymous_requests/new">a web form.</a> We try to be prompt, but please understand
+                    that we do not have a dedicated tech support staff.</p>
+            </div>
+            <div class="column-6">
+                <h4> Find a bug?</h4>
+                If you are confident you have found a bug, please report it as <a href="https://github.com/NUKnightLab/TimelineJS3/issues">a GitHub issue</a>. Be sure to include detailed instructions on how to reproduce the bug. If you're not sure, please
+                start with the tech support system.</p>
+            </div>
+        </div>
+    </section>
+</article>
+{% endblock %}

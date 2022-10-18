@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %} {% include "_head.html" %} {% endblock head %}
+</head>
+
+<body>
+
+    <nav id="navbar-product-top" class="navbar navbar-dark">
+        <ul>
+            <li class="logo">
+                <a href="http://knightlab.com">
+                    <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/knightlab-dark.png">
+                </a>
+            </li>
+        </ul>
+        <ul class="nav-right column-hide-phone">
+            <li><a class="button-active button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/projects/">Projects</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://studio.knightlab.com">Class</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://devicelab.knightlab.com">Device Lab</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/posts/">Posts</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://openlab.knightlab.com">Community</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/about/">About</a></li>
+        </ul>
+    </nav>
+
+    {% block content %} {% endblock content %} {% block footer %} {% include "_footer.html" %} {% endblock footer %} {% block scripts %}
+    <!-- build:js https://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+    <script src="/dist/js/timeline.js"></script>
+    <!-- endbuild -->
+    <script src="/static/js/main.js"></script>
+    <script src="https://cdn.knightlab.com/libs/orangeline/latest/js/main.js"></script>
+    {% endblock scripts %}
+</body>
+
+</html>

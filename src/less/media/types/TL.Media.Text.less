@@ -1,0 +1,124 @@
+/* Requires Variables.less
+================================================== */
+
+.tl-text {
+	width:50%;
+	max-width:50%;
+	min-width:120px;
+	padding: 0 20px 0 20px;
+	display:table-cell;
+	vertical-align:middle;
+	text-align: left;
+	//float:left;
+	text-shadow: none;
+	color:@color-text;
+	p {
+		color:@color-text;
+	}
+	.tl-text-content-container {
+		.tl-text-content{
+
+		}
+        .tl-text-headline-container {
+            display: flex;
+            flex-direction:column-reverse;
+            -webkit-flex-direction:column-reverse; /* Safari */
+        }
+	}
+	h2.tl-headline-title, h2.tl-headline {
+		margin-top:0;
+	}
+	.tl-headline-date, h3.tl-headline-date {
+		font-family:@font-main;
+		font-size:@base-font-size;
+		line-height: @base-font-size;
+		font-weight: normal;
+		margin:0 0 3px 0;
+		color: lighten(@color-text,25);
+		small {
+			font-size:@base-font-size;
+			line-height: @base-font-size;
+			font-weight: normal;
+			color: lighten(@color-text,25);
+		}
+	}
+	.tl-text-date {
+		display:inline-block;
+		font-family:@font-main;
+		font-weight:normal;
+		margin-top:10px;
+		font-size:12px;
+		color: lighten(@color-text,25);
+		&:after {
+			//margin-left:3px;
+			//color:#999;
+			//font-weight:normal;
+		}
+	}
+
+}
+
+// When the background is an image
+.tl-full-image-background, .tl-full-color-background {
+	.tl-text, .tl-text p {
+		color: @color-text-inverted !important;
+		text-shadow: 1px 1px 2px #000;
+		.tl-headline-date, h3.tl-headline-date {
+			color: @color-text-inverted !important;
+			small {
+				color: @color-text-inverted !important;
+			}
+		}
+		a:hover {
+			text-decoration: underline;
+			color: @color-theme;
+		}
+	}
+}
+
+
+/* Skinny
+================================================== */
+.tl-skinny {
+	.tl-text {
+		width:100%;
+		max-width:100%;
+		min-width:auto;
+		float:none;
+		margin-top:20px;
+		.tl-text-content-container {
+			.tl-text-content{
+
+			}
+		}
+		h2.tl-headline-title, h2.tl-headline {
+			//word-break: break-all;
+			font-size:32px;
+			line-height:36px;
+		}
+	}
+}
+
+/* Medium
+================================================== */
+.tl-medium {
+	.tl-text {
+		h2.tl-headline-title, h2.tl-headline {
+			//word-break: break-all;
+			font-size:32px;
+			line-height:36px;
+		}
+	}
+}
+
+/* Mobile, iPhone
+================================================== */
+.tl-mobile {
+
+}
+
+/* Mobile, iPhone and skinny
+================================================== */
+.tl-mobile.tl-skinny {
+
+}

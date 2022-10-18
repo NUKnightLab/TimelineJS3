@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article>
+  <section class="section-color container">
+    <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+    <h2 class="header-story" id="media-types">Media Types</h2>
+    <p>
+      People have always loved how easy TimelineJS makes it to add rich media to the slides that tell your story. The new version of Timeline continues the tradition and adds a few new media types.
+    </p>
+  </section>
+  <section class="section-color container">
+    <div class="grid">
+      <div class="column-12">
+        <dl>
+          <dt id="media-type-image">Image</dt>
+          <dd>If your URL ends in <code>jpg</code>, <code>gif</code>, <code>png</code> or <code>jpeg</code>, it will be used as the source for an image tag. It should also work if there is a <a href="https://en.wikipedia.org/wiki/Query_string">query string</a> after the extension, perhaps specifying dynamic width and height values.
+          </dd>
+
+          <dt id="media-type-video-streaming">Online Videos</dt>
+          <dd>Use the URL for the page of the video for <a href="http://vimeo.com">Vimeo</a>, <a href="http://DailyMotion.com">DailyMotion</a>, <a href="http://Vine.co">Vine</a>, and <a href="http://youtube.com/">YouTube</a>. Timeline honors <a href="http://youtubetime.com/">Youtube start-at time parameters</a>.</dd>
+
+          <dt id="media-type-video-file">Video Files</dt>
+          <dd>Use a link to a video file on the internet. Timeline currently supports <code>.mp4</code> files.</dd>
+
+          <dt id="media-type-audio-file">Audio Files</dt>
+          <dd>Use a link to a video file on the internet. Timeline currently supports <code>.mp3</code>, <code>.m4a</code>, and <code>.wav</code> files.</dd>
+
+          <dt id="media-type-soundcloud">SoundCloud</dt>
+          <dd>Use the URL for the <a href="http://soundcloud.com">SoundCloud</a> clip page.</dd>
+
+          <dt id="media-type-spotify">Spotify</dt>
+          <dd>Supports use of tracks, albums, and user playlists. Use the URL obtained from clicking on "Copy Spotify URL."</dd>
+
+          <dt id="media-type-twitter">Twitter</dt>
+          <dd>Use the URL of the tweet's page. We no longer recommend using the Twitter embed code, especially if you include more than one tweet in your timeline.</dd>
+
+          <dt id="media-type-google-maps">Google Maps</dt>
+          <dd>Use the URL for the <a href="http://google.com/maps">Google Maps</a> page (unless you are using Streetview, which currently requires the embed URL found in the "Share" section). Coordinates, search results, place marks and directions are all honored by Timeline. TimelineJS supports roadmap, hybrid, satellite and terrain Google Maps, as well as directions, places, and Streetview maps.</dd>
+
+          <dt id='media-type-instagram'>Instagram</dt>
+          <dd>Use the URL for the <a href="http://www.instagram.com">Instagram</a> photo's page.</dd>
+
+          <dt id='media-type-flickr'>Flickr</dt>
+          <dd>Use the URL for the <a href="http://www.flickr.com">Flickr</a> photo's page. The shortened link  provided in the share menu  (e.g. <code>https://flic.kr/p/sv3VN6</code>) will also work.</dd>
+
+          <dt id='media-type-imgur'>Imgur</dt>
+          <dd>Use the URL for the <a href="http://imgur.com">Imgur</a> photo's page. These URLs often (but not always)
+            include the string <code>/gallery/</code>. You should not use a "direct" Imgur URL (typically including 
+            <code>i.imgur.com</code> and ending in an extension like <code>.jpg</code> or <code>.gif</code>). This 
+            is considered "hotlinking" and is specifically against Imgur's terms of service. That kind of Imgur 
+            URL may appear to work for a short period, but will not work for long.
+          </dd>
+
+          <dt id="media-type-document-cloud">DocumentCloud</dt>
+          <dd>Use the URL of the <a href="http://www.documentcloud.org">Document Cloud</a> document's page.</dd>
+
+          <!-- <dt id="media-type-">Google Doc</dt>
+          <dd>Use the shareable URL provided for your <a href="http://www.google.com/docs/">Google Doc</a>.</dd>
+
+          Not sure exactly how to link to Google docs...
+
+          -->
+
+          <dt id="media-type-wikipedia">Wikipedia</dt>
+          <dd>Use the URL of the <a href="https://en.wikipedia.org/">Wikipedia</a> article's page.</dd>
+
+          <dt id="media-type-iframe">iframe</dt>
+          <dd>Instead of a URL, you can use <code>&lt;iframe&gt;</code> markup. This is a good general workaround to embedding media types that TimelineJS doesn't handle directly.</dd>
+
+          <dt id="media-type-blockquote">Blockquote</dt>
+          <dd>Instead of a URL, you can use <code>&lt;blockquote&gt;</code> tags around whatever text you want to quote.</dd>
+
+          <dt id="media-type-wistia">Wistia</dt>
+          <dd>Use the URL of the <a href="https://wistia.com">Wistia</a> video. You can find this in either the "Social Sharing" or "Embed Code" tab of your video.</dd>
+
+        </dl>
+      </div>
+    </div>
+</section>
+</article>
+{% endblock %}

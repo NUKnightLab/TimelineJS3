@@ -1,0 +1,207 @@
+{% extends "base.html" %} {% block content %}
+
+<article id="product-body">
+    <section class="section-color container" id="overriding-styles">
+        <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+        <h2 class="header-story" id="add-javascript">Integrate Timeline using Javascript</h2>
+        <p>
+            Most of our users are happy to use the markup created in our <a href="/index.html#make">simple authoring tool</a> to publish their timeline. However, if you want to substantially customize the visual presentation of your timeline, or integrate
+            it with other parts of your page, you will need to understand some more technical details.
+        </p>
+    </section>
+    <section class="section-color container">
+        <div class="grid">
+            <div class="column-12">
+                <p>
+                    There are three key things you need to include on your page to embed a timeline:
+                    <ol>
+                        <li>A <code>link</code> tag loading the Timeline CSS.</li>
+                        <li>A <code>script</code> tag loading the Timeline javascript.</li>
+                        <li>A second <code>script</code> tag which creates a Timeline.</li>
+                    </ol>
+                    Sometimes you'll add more things:
+                    <ul>
+                        <li>configuration for <a href="#custom-fonts">custom fonts.</a></li>
+                        <li>a <code>link</code> tag to override some of TimelineJS's CSS.</li>
+                        <li>Javascript code to read configuration data from a Google Spreadsheet.</li>
+                    </ul>
+                </p>
+
+                <pre class="prettyprint lang-html">
+
+        &lt;!-- 1 --&gt;
+        &lt;link title="timeline-styles" rel="stylesheet" 
+              href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css"&gt;
+
+        &lt;!-- 2 --&gt;
+        &lt;script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt;/script&gt;
+
+        &lt;div id='timeline-embed' style="width: 100%; height: 600px"&gt;&lt;/div&gt;
+
+        &lt;!-- 3 --&gt;
+        &lt;script type="text/javascript"&gt;
+            // The TL.Timeline constructor takes at least two arguments:
+            // the id of the Timeline container (no '#'), and
+            // the URL to your JSON data file or Google spreadsheet.
+            // the id must refer to an element "above" this code,
+            // and the element must have CSS styling to give it width and height
+            // optionally, a third argument with configuration options can be passed.
+            // See below for more about options.
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
+        &lt;/script&gt;
+    </pre>
+
+            </div>
+            <div class="column-12">
+                <h3 id="in-page-json">Creating your own JSON</h3>
+                <p>
+                    If you are retrieving JSON from a URL, you can simply use that URL as the second argument, just as if you are loading data from a Google spreadsheet. If instead you have something in your page which will put the data together, you can also pass a JSON
+                    object as the second argument.
+                </p>
+                <p>
+                    Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.
+                    <pre class="prettyprint lang-html">
+
+        &lt;script type="text/javascript"&gt;
+            // make_the_json() is some javascript function you've written
+            // which creates the appropriate JSON configuration
+            var timeline_json = make_the_json(); 
+            window.timeline = new TL.Timeline('timeline-embed', timeline_json);
+        &lt;/script&gt;
+
+</pre>
+
+                </p>
+            </div>
+            <div class="column-12">
+                <h3 id="options">Configuring TimelineJS options</h3>
+                <p><code>TL.Timeline</code> offers an optional third parameter which you may use to pass in additional TimelineJS options. See our <a href="options.html">list of available options</a> and configure like the example below.</p>
+                <pre class="prettyprint lang-html">
+
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+              start_at_end: true,
+              default_bg_color: {r:0, g:0, b:0},
+              timenav_height: 250
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+        </pre>
+
+            </div>
+            <div class="column-12">
+                <h3 id="custom-fonts">Using custom fonts</h3>
+                <p>Timeline offers several pre-selected font sets. When you use our simple tool, the fonts get included for you, but if you're using the methods on this page, and if you want to use anything but the default, you must use the <code>font</code>                    configuration option.</p>
+                <p>
+                    In the simplest case, you would choose from one of the font sets provided with TimelineJS. You can see what they look like in the "Optional settings" section of <a href="/#make-step-3">step three of the timeline authoring tool</a>.
+                    It should be straightforward to compare the options shown there with these names to select the correct value.
+                    <ul>
+                        <li>abril-droidsans</li>
+                        <li>amatic-andika</li>
+                        <li>bevan-pontanosans</li>
+                        <li>bitter-raleway</li>
+                        <li>clicker-garamond</li>
+                        <li>dancing-ledger</li>
+                        <li>default</li>
+                        <li>fjalla-average</li>
+                        <li>georgia-helvetica</li>
+                        <li>lustria-lato</li>
+                        <li>medula-lato</li>
+                        <li>oldstandard</li>
+                        <li>opensans-gentiumbook</li>
+                        <li>playfair-faunaone</li>
+                        <li>playfair</li>
+                        <li>pt</li>
+                        <li>roboto-megrim</li>
+                        <li>rufina-sintony</li>
+                        <li>ubuntu</li>
+                        <li>unicaone-vollkorn</li>
+                    </ul>
+                </p>
+                <p>Instead of one of the above values, you can create your own CSS file. For more details about that, see the <a href="overriding-styles.html#typography">Typography section</a> of the "Overriding Timeline's Styles" documentation
+                </p>
+                <p>
+                    Here are examples of how you might configure the font option.
+                    <pre class="prettyprint lang-html">
+
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                font: 'opensans-gentiumbook'
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+
+        &lt;!-- or, if you have created your own CSS file... --&gt;
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                font: '/css/my-custom-timeline-fonts.css'
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+
+        &lt;!-- another way, if you have created your own CSS file... --&gt;
+        &lt;link rel="stylesheet" href="/css/my-custom-timeline-fonts.css"&gt;
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                font: null
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+    </pre>
+                </p>
+            </div>
+
+            <div class="column-12">
+                <h3 id="local_files">Loading Files Locally</h3>
+                <p>If you choose not to load TimelineJS's JavaScript and CSS files from our CDN, you can also load the files locally. To do this, download our ZIP file <a href="https://cdn.knightlab.com/libs/timeline3/latest/timeline3.zip">here</a>.</p>
+                <p>Unpack the ZIP and include it on your web server, and load the JS (either <code>timeline.js</code> or <code>timeline.min.js</code>) and CSS (<code>timeline.css</code>) files from it instead of from `cdn.knightlab.com`. If you are using
+                    the default fonts and English language, you only need those two files.</p>
+                <p>However, if you plan to use other languages and font sets, putting the entire contents of the ZIP on your server is necessary to fully support all of Timeline’s features.</p>
+                <p>
+                    If you include the TimelineJS javascript code in another file, using a bundler, "accelerator," or the like, you must help TimelineJS know where it can find font and language files. By default, the code assumes that they are served from a predictable location
+                    relative to the source. To do this, set the <code>script_path</code> option to a URL representing the directory where the core TimelineJS javascript files are stored. This should be a URL to which 'locale/es.json'
+                    could be added to load the Spanish (<code>es</code>) language translation files. Similarly, it should a URL which can be combined with a relative path such as <code>../css/fonts/font.default.css</code> could be added to locate the
+                    default font styles.  The URL must end with a trailing slash.
+                </p>
+                <p>
+                    If you do not set the <code>script_path</code> option, TimelineJS will basically work, but it will not be able to load translations and it won't be able to load the default font file, leaving it to inherit whatever CSS styles are already
+                    in place on the page.
+                </p>
+
+                <p>
+                    Here is an example:
+                    <pre class="prettyprint lang-html">
+                        
+        &lt;script type="text/javascript"&gt;
+            var additionalOptions = {
+                script_path: '/timeline/js/',
+                language: 'es',
+                font: 'amatic-andika'
+            }
+
+            timeline = new TL.Timeline('timeline-embed',
+            'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+            additionalOptions);
+        &lt;/script&gt;
+                    </pre>
+                </p>
+                <p>As this example shows, it's fine to use a "relative" URL path for the <code>script_path</code> value if that works better for you.</p>
+            </div>
+
+        </div>
+    </section>
+</article>
+{% endblock %}

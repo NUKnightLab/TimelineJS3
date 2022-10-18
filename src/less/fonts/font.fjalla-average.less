@@ -1,0 +1,48 @@
+/*	Font Fjalla & Average
+
+https://www.google.com/fonts/specimen/Fjalla+One
+https://www.google.com/fonts/specimen/Average+Sans
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(https://fonts.googleapis.com/css?family=Average+Sans|Fjalla+One);
+
+// Font Variables
+@font-main:						'Average Sans', sans-serif;
+@font-secondary:				'Fjalla One', sans-serif;
+@font-navigation:				@font-main;
+@font-marker: 					@font-navigation;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				17px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		normal;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		1.1em;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			400;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+ 
+@import "_font.base.less";
+
+.tl-timeline {
+	.tl-headline-date, h3.tl-headline-date {
+		margin-bottom:10px !important;
+	}
+}

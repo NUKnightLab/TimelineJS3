@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <title>Bundled TimelineJS test page</title>
+    <!-- this is normally done by embed page -->
+    <script>
+        var options = {
+            language: 'fr',
+            debug: true,
+            height: 650,
+            soundcite: true,
+            hash_bookmark: true,
+            start_at_end: false,
+            autolink: false,
+            start_at_slide:11,
+            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
+            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89,144, 233,377,610]
+        }
+
+
+        function ready(fn) {
+            if (document.readyState != 'loading') {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+
+        function timelineFromInput() {
+            document.getElementById('timeline-embed').innerHTML = ''
+            var dataUrl = document.getElementById('timeline-src').value
+            window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+        }
+
+        ready(function() {
+
+            // sanitize test
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Q4-R3mlK7w1liCEl5_SGPaeLpfHDVdMtc83rjSTHBZo/edit#gid=0'
+
+            // Zander Work's exploit
+            // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Jt5Csoku0W73100mnG_byVdvCFLXT8G5gG9lu1yggA0/edit#gid=0'
+
+            // women in computing:
+            // Women in computing https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml
+            var dataUrl = "https://docs.google.com/spreadsheets/d/1JapQkE0LPfL-Mgep8GWJfo5A5LEH0hO4/edit#gid=528733894"
+            window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+
+            window.timeline.on("ready", () => {
+                console.log("Timeline ready event fired")
+            })
+
+
+        })
+    </script>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+       
+    </style>
+</head>
+
+<body>
+
+    <div id='timeline-embed'></div>
+    </body>
+
+</html>

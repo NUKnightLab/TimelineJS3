@@ -1,0 +1,106 @@
+{% extends "base.html" %} {% block content %}
+<article>
+    <section class="section-color container">
+        <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+        <header>
+            <h2 class="header-story">Making a timeline from a Google Spreadsheet</h2>
+            <p>
+                You can create a simple timeline in a few short minutes using our <a href="https://drive.google.com/previewtemplate?id=1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ&mode=public">Google spreadsheet template</a>, and this quick guide explaining
+                the basic process. <a href="json-format.html">Experts can use their JSON</a> skills to create custom installations, while keeping TimelineJS3's core look and functionality.
+            </p>
+            <p>
+                For an example of a completed spreadsheet, see <a href="https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml" target="_blank">the spreadsheet</a> which powers the example on our <a href="/index.html">home page</a>.
+            </p>
+        </header>
+    </section>
+    <section class="product-page container">
+        <div>
+            <h3 id="dates">Working with dates</h3>
+            <p id="start_date">
+                The first four spreadsheet columns (<strong>A-D</strong>) are the date of your timeline entry. You can just enter the year, or you can get down to details such as month, day and even time of an event. You <em>must</em> enter at least the
+                year, except for a 'title' slide. (To enter BCE dates, use a negative year, such as <em>-500</em>)
+            </p>
+            <p id="end_date">
+                You have the option to add end dates (columns <strong>E-H</strong>). Again, you can just enter the year, or you can get as detailed as you like. End dates will cause TimelineJS to display spans of time (a.k.a. eras) in the bottom portion
+                of the timeline. If your event doesn't have an "end date", leave these blank&mdash;you don't need to repeat the start date.
+            </p>
+            <p id="display_date">
+                If you need more flexibility about how dates are shown in a slide, you can use column <strong>I</strong> to specify a "display date," which will override any decisions TimelineJS makes about how to show the date. This can be helpful if
+                the actual date is not known, but you still need to specify some date using one or more of the previous (A-H) columns so that TimelineJS knows how to display it relative to other events. If you use this column, the display date is used
+                on the slide where it is specified, and on labels for the "next" and "previous" buttons which lead to that slide.
+            </p>
+            <h3 id="text-content">Adding text content</h3>
+            <p id="slide_text">
+                Columns <strong>J</strong> and <strong>K</strong> of the spreadsheet contain the headline and the body text that will be displayed on each slide of your timeline. You can use simple HTML in these fields to style your text or to link to
+                other pages on the web. Some HTML may be stripped out or changed as a security precaution.
+            </p>
+            <p>Neither "headline" nor "text" are strictly required, but we recommend including at least a headline, as this is also used in the timeline navigation tool to label the markers.</p>
+            <h3 id="media">Adding media (optional)</h3>
+            <p>
+                TimelineJS can pull in media from a variety of sources and has built-in support for Twitter, Instagram, Flickr, Google Maps, DropBox, DocumentCloud, Wikipedia, SoundCloud, Storify, iframes, major video sites (YouTube, Vimeo, etc.) and more.
+                <a href="media-types.html">Read more about the media types TimelineJS works with.</a>
+            </p>
+            <p>
+                You have the option to add media to your slides in columns <strong>L-O</strong>. Under the <strong>Media</strong> column (<strong>L</strong>) enter the link (URL) to the media you wish to display. TimelineJS supports multiple <a href="media-types.html">media types</a>.
+                In the next column (<strong>M</strong>), you can credit the media's original source, and in column <strong>N</strong> you can include a short caption. As with the text and headline, you may use basic HTML for formatting and linking in
+                the credit and caption (<strong>M</strong> and <strong>N</strong>) columns.
+            </p>
+            <p id="media_markup">
+                If TimelineJS doesn't support the media type you want on your slide, you can often make do by entering <code>&lt;iframe&gt;</code> markup in the <strong>Media</strong> column (<strong>L</strong>) instead of a URL. You can also enter <code>&lt;blockquote&gt;</code>                markup in column L.
+            </p>
+            <p id="thumbnail">
+                Markers for slides that contain media show a small icon representing the type of media used. If you'd like, you can show a thumbnail of the media there, instead. Simply add the URL of the image you'd like to use to column <strong>O</strong>.
+            </p>
+            <p id="slide_background">
+                If you like, you can set the background of the slide to a specific color or an image. To do this, enter a <a href="https://www.w3schools.com/cssref/css_colors.asp">CSS hex color</a> value, <a href="http://www.w3schools.com/cssref/css_colors.asp">CSS named color</a>,
+                or the URL to an image in the <strong>Background</strong> column (<strong>R</strong>).
+            </p>
+            <h3 id="title_slides">Titles and Eras</h3>
+            <p>
+                The <strong>Type</strong> column (<strong>P</strong>) can be used to activate a few more specialized features in Timeline. In most cases, you'll leave it blank. Many support questions we get relate to people accidentally filling in the
+                "type" column when they don't intend to use it.
+            </p>
+            <p>
+                If you use the word <code>title</code> in this column, then Timeline will use the row as a "title slide," which is shown before all others, and which does not require a date. Title slides do not appear in the markers in the navigation
+                component of the Timeline. You should only have one row with "title" in the Type column.
+            </p>
+            <p>
+                If you use the word <code>era</code> in this column, then Timeline will use the row to label a span of time in the "axis" area of the timeline navigation component. Eras should have start and end dates (at least the year for each) and
+                a headline. No other cells are relevant to rows with type 'era'.</p>
+            <p>Each era gets a distinct color, which is not currently configurable. At this time, overlapping eras are not well-supported, but we are investigating design strategies for that use case.
+            </p>
+            <h3 id="organizing_slides">Organizing slides</h3>
+            <p>
+                TimelineJS automatically orders slides according to their start date, and always puts the title slide first, no matter how the rows in your spreadsheet are ordered. If you need to have two slides with exactly the same start date, then the row which appears
+                first in the spreadsheet will be shown first in the timeline.
+            </p>
+            <p id="groups">
+                Using the <strong>Group</strong> column (<strong>Q</strong>), you can organize your slides by groups (formerly known as "tags"). You can put any values you want in the Group column. Events with the same group will be put in the same row
+                or adjacent rows, and TimelineJS will use the text from the Group column as a label at the left edge of the row(s) containing those events. The group text will also be displayed on each slide. If you like, you can have a mix of slides
+                in groups and slides with a blank value in the Group column. Creators cannot control the order in which groups are shown in the navigation area: they are listed based on the chronological order in which they are used, except that if there
+                are slides with no group, those are at the bottom after the other groups.
+            </p>
+        </div>
+    </section>
+    <section class="section-color section-color-complement">
+        <div class="container">
+            <h3 id="publishing">Publishing your Timeline</h3>
+            <p>Now that you have your spreadsheet set up, publish it to the web as explained in <a href="/#make-step-2">step 2 of "Make a Timeline"</a>, and follow the rest of the instructions on that page.</p>
+
+        </div>
+    </section>
+</article>
+
+{% endblock %} {% block scripts %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        // make permalinks function for each question
+        jQuery("p[id],h3[id]").each(function() {
+            jQuery(this).css('cursor', 'pointer');
+            jQuery(this).click(function() {
+                window.location.hash = "#" + this.id;
+            })
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+    <section class="section container" id="help">
+    <div class="grid">
+        <div class="column-8">
+            <h2>Help</h2>
+            <p>
+                Need help? First, please be sure to look at our list of <a href="#faq">frequently asked questions</a> below. If you're brand new to Timeline JS, you may also want to watch our <a href="https://vimeo.com/143407878" target="_blank">introductory video</a>.
+            </p>
+            <p>
+                If you don't find an answer there, try our <a href="https://knightlab.zendesk.com/forums/22551396-TimelineJS">support forums</a> or use our <a href="https://knightlab.zendesk.com/anonymous_requests/new">tech support web form.</a> <strong>Please be clear</strong> with your question, <strong>include a link to your spreadsheet</strong>, and if appropriate, a link to a page which shows the issue with which you need help. <strong>We can only answer support questions in English.</strong> We try to be prompt, but please understand that we do not have a dedicated tech support staff.
+            </p>
+            <p class="note">
+                <strong>Find a bug?</strong> If you are confident you have found a bug, please report it as <a href="https://github.com/NUKnightLab/TimelineJS3/issues">a GitHub issue</a>. Be sure to include detailed instructions on how to reproduce the bug. If you're not sure, please start with <a href="https://knightlab.zendesk.com/hc/en-us/requests/new">the tech support system</a>.
+            </p>
+        </div>
+        <div class="column-4">
+            <h3>Technical documentation</h3>
+            <p>Go further with Timeline:</p>
+            <ul>
+                    <li><a href="/docs/using-spreadsheets.html">Use our spreadsheet template</a></li>
+                    <li><a href="/docs/media-types.html">Supported Media Types</a></li>
+                    <li><a href="/docs/json-format.html">JSON data format reference</a></li>
+                    <li><a href="/docs/overriding-styles.html">Using the TimelineJS CSS selectors</a></li>
+                    <li><a href="/docs/options.html">Timeline Configuration Options</a></li>
+                    <li><a href="/docs/instantiate-a-timeline.html">Using TimelineJS in Javascript</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="grid" id="faq">
+        {# TODO: extract faq.html content into faq.json #}
+        <div class="grid-item">
+            <h3>Frequently asked questions</h3>
+            <ul class="accordion">
+            {% for faq in faqs %}
+            {#
+                Add/edit faqs in the faqs.json file.
+                Depends upon inject_index_data in app.py for these to be available to render.
+            #}
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="{{ faq.slug }}">{{ faq.question }}</h3>
+                    <div class="accordion-content">
+                        {{ faq.answer|safe }}
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    </section>

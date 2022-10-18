@@ -1,0 +1,27 @@
+<!-- Demo -->
+<div id="timeline-embed">
+    <div id="timeline"></div>
+</div>
+<!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
+<link rel="stylesheet" href="/dist/css/fonts/font.knightlab.css">
+<!-- endbuild -->
+<!-- build:css //cdn.knightlab.com/libs/timeline3/%(cdn)s/css/timeline.css -->
+<link title="timeline-styles" rel="stylesheet" href="/dist/css/timeline.css">
+<!-- endbuild -->
+<!-- build:js //cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+<script src="/dist/js/timeline.js"></script>
+<!-- endbuild -->
+<script>
+    $(document).ready(function() {
+        var embed = document.getElementById('timeline-embed');
+        embed.style.height = getComputedStyle(document.body).height;
+        window.timeline = new TL.Timeline('timeline-embed', 'timeline3.json', {
+            hash_bookmark: false
+        });
+        window.addEventListener('resize', function() {
+            var embed = document.getElementById('timeline-embed');
+            embed.style.height = getComputedStyle(document.body).height;
+            timeline.updateDisplay();
+        })
+    });
+</script>

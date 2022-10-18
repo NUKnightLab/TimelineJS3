@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<title>TimelineJS: API Test</title>
+<meta charset="utf-8">
+<meta name="description" content="TimelineJS Embed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<!-- CSS-->
+<link rel="stylesheet" href="build/css/timeline.css?v1">
+<!--FONT-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bevan%7CPontano+Sans&amp;amp;subset=latin,latin">
+<!-- Style-->
+<style>
+html, body {
+    height:100%;
+    width:100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+#timeline_wrapper {
+    position: absolute;
+    top: 210px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#panel {
+    background: #ededed;
+    height: 156px;
+    padding: 6px 4px;
+    border-top: 1px solid black;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#panel button {
+    width: 100px;
+}
+#panel label {
+    margin-right: 4px;
+}
+
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--if lt IE 9
+    script(src='https://html5shim.googlecode.com/svn/trunk/html5.js')
+
+    -->
+  </head>
+  <body>
+    <div id="timeline_wrapper">
+        <div id="timeline"></div>
+    </div>
+    <div id="panel">
+        <div style="display: inline-block;">
+            <div style="display: inline-block;width: 240px;text-align: left;">
+                <button id="goToStart">goToStart</button>
+                <button id="goToPrev">goToPrev</button>
+                <br>
+                <button id="goToNext">goToNext</button>
+                <button id="goToEnd">goToEnd</button>
+            </div>
+            <div style="display: inline-block;text-align: left;">
+                <input id="slide_index" type="number" min="0" placeholder="slide index" style="width: 194px;" />
+                <button id="goTo">goTo</button>
+                <button id="getData">getData</button>
+                <button id="getSlide">getSlide</button>
+                <button id="removeSlide">removeSlide</button>
+                <br>
+
+                <select id="slide_id"></select>
+                <button id="goToId">goToId</button>
+                <button id="getDataId">getDataId</button>
+                <button id="getSlideId">getSlideId</button>
+                <button id="removeSlideId">removeSlideId</button>
+            </div>
+
+            <br>
+            <br>
+
+            <div style="display: inline-block;width: 480px;text-align: left;">
+                <label style="display: inline-block;width: 70px;">start date</label>
+                    <input id="start_date_y" placeholder="year" style="width: 100px;">
+                    <input id="start_date_m" placeholder="mon" style="width: 24px;">
+                    <input id="start_date_d" placeholder="day" style="width: 24px;">
+                    <input id="start_date_ft" placeholder="format" style="width: 100px;">
+                    <input id="start_date_dt" placeholder="display text" style="width: 100px;">
+                <br>
+                <label style="display: inline-block;width: 70px;">end date</label>
+                    <input id="end_date_y" placeholder="year" style="width: 100px;">
+                    <input id="end_date_m" placeholder="mon" style="width: 24px;">
+                    <input id="end_date_d" placeholder="day" style="width: 24px;">
+                    <input id="end_date_ft" placeholder="format" style="width: 100px;">
+                    <input id="end_date_dt" placeholder="display text" style="width: 100px;">
+            </div>
+            <div style="display: inline-block;">
+                <label style="display: inline-block;width: 70px;">headline</label>
+                <input type="text" id="headline" style="width: 200px;">
+                <br>
+                <label style="display: inline-block;width: 70px;">text</label>
+                <input type="text" id="text"  style="width: 200px;">
+            </div>
+            <br>
+            <div style="display: inline-block;">
+                <button id="add">add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript-->
+    <script src="build/js/timeline.js"></script>
+    <script>
+
+    $('#add').click(function(event) {
+        var d = {
+            "start_date": {
+                "year":         $('#start_date_y').val().trim() || "",
+                "month":        $('#start_date_m').val().trim() || "",
+                "day":          $('#start_date_d').val().trim() || "",
+                "hour": "", "minute": "", "second": "", "millisecond": "",
+                "format":       $('#start_date_ft').val().trim() || "",
+                "display_text": $('#start_date_dt').val().trim() || ""
+            },
+            "end_date": {
+                "year":         $('#end_date_y').val().trim() || "",
+                "month":        $('#end_date_m').val().trim() || "",
+                "day":          $('#end_date_d').val().trim() || "",
+                "hour": "", "minute": "", "second": "", "millisecond": "",
+                "format":       $('#end_date_ft').val().trim() || "",
+                "display_text": $('#end_date_dt').val().trim() || ""
+            },
+            "media": {
+                "caption": "", "credit": "", "url": ""
+            },
+            "text": {
+                "headline":     $('#headline').val().trim() || "",
+                "text":         $('#text').val().trim() || ""
+            },
+            "unique_id":         ""
+        };
+
+        timeline.add(d);
+    });
+
+    $('#goToStart').click(function(event) {
+        timeline.goToStart();
+    });
+    $('#goToPrev').click(function(event) {
+        timeline.goToPrev();
+    });
+    $('#goToNext').click(function(event) {
+        timeline.goToNext();
+    });
+    $('#goToEnd').click(function(event) {
+        timeline.goToEnd();
+    });
+
+    //
+    // by index
+    //
+    $('#goTo').click(function(event) {
+         timeline.goTo(parseInt($('#slide_index').val()));
+    });
+    $('#getData').click(function(event) {
+        console.log(timeline.getData(parseInt($('#slide_index').val())));
+    });
+    $('#getSlide').click(function(event) {
+        console.log(timeline.getSlide(parseInt($('#slide_index').val())));
+    });
+    $('#removeSlide').click(function(event) {
+        timeline.remove(parseInt($('#slide_index').val()));
+    });
+
+    //
+    // by id
+    //
+    $('#goToId').click(function(event) {
+         timeline.goToId($('#slide_id').val());
+    });
+    $('#getDataId').click(function(event) {
+        console.log(timeline.getDataId($('#slide_id').val()));
+    });
+    $('#getSlideId').click(function(event) {
+        console.log(timeline.getSlideId($('#slide_id').val()));
+    });
+    $('#removeSlideId').click(function(event) {
+        timeline.removeId($('#slide_id').val());
+    });
+
+    // List of events to look for
+    var event_list = [
+        // 'added', special handling
+        'back_to_start',
+        'change',
+        'color_change',
+        'dataloaded',
+        'hash_updated',
+        // 'loaded', special handling
+        // 'removed',  special handling
+        'zoom_in',
+        'zoom_out'
+    ];
+
+    // Log event details
+    function log_event(data) {
+        var s = 'EVENT='+data.type;
+        for(var key in data) {
+            if(key != 'target' && key != 'type') {
+                s += ', '+key+'='+data[key];
+            }
+        }
+        console.log(s);
+    }
+
+    // Build slide_id menu
+    function init_slide_menu(data) {
+        console.log('EVENT='+data.type, data);
+        
+        var events = timeline.config.events;
+        var html = '';
+        for(var i = 0, id; i < events.length; i++) {
+            id = events[i].unique_id;
+            html += '<option value="'+id+'">'+id+'</option>';
+        }
+
+        $('#slide_id').html(html);
+    }
+
+    var timeline = new TL.Timeline('timeline', 'compiled/examples/marktwain_test.json', {});
+
+    // Set event handlers
+    timeline.on('loaded', init_slide_menu);
+    timeline.on('added', init_slide_menu);
+    timeline.on('removed', init_slide_menu);
+
+    for(var i = 0; i < event_list.length; i++) {
+        timeline.on(event_list[i], log_event);
+    }
+
+    window.onresize = function(event) {
+        timeline.updateDisplay();
+    }
+    </script>
+  </body>
+</html>

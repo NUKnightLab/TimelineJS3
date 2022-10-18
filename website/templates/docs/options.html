@@ -1,0 +1,523 @@
+{% extends "base.html" %} {% block content %}
+<article id="product-body">
+    <section class="section-color container">
+        <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+        <h2 class="product-header" id="options">TimelineJS options</h2>
+    </section>
+    <section class="section-color container">
+        <div class="grid">
+            <div class="column-12">
+                <p>When you create a timeline manually by calling <code>TL.Timeline</code>, you may pass in an optional third parameter which contains a variety of presentation options. This third parameter should be a Javascript object with keys matching
+                    the value in the <code>Name</code> column and corresponding values appropriate to the specific key. For example:
+                    <pre class="prettyprint lang-javascript">
+  var options = {
+    hash_bookmark: false,
+    initial_zoom: 5
+  }
+  var timeline = new TL.Timeline('timeline-embed',
+                                 'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml',
+                                 options);
+      </pre>
+                </p>
+
+                <p>If you use our <a href="/index.html#make">authoring tool</a>, you can pass most of these as URL parameters. Add <code>&amp;option_name=<em>value</em></code> for each. To demonstrate using the same options as above: <code>https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=3&amp;height=650&amp;hash_bookmark=false</code></p>
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <strong>Default value</strong>
+                    </div>
+                    <div class="column-8">
+                        <strong>Notes</strong>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>font</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>default</code>
+                    </div>
+                    <div class="column-8">
+                        <p>May be one of a list of Timeline's "built-in" font sets, or a full or relative URL (ending in .css) which points to a CSS file in the same format as the built-ins. (See the <a href="https://timeline.knightlab.com/docs/overriding-styles.html#typography">typography section of "Overriding Timeline's Styles"</a>)</p>
+                        <p>The valid values for the built-in fonts are:
+                            <ul>
+                                <li><code>abril-droidsans</code></li>
+                                <li><code>amatic-andika</code></li>
+                                <li><code>bevan-pontanosans</code></li>
+                                <li><code>bitter-raleway</code></li>
+                                <li><code>clicker-garamond</code></li>
+                                <li><code>dancing-ledger</code></li>
+                                <li><code>default</code></li>
+                                <li><code>fjalla-average</code></li>
+                                <li><code>georgia-helvetica</code></li>
+                                <li><code>lustria-lato</code></li>
+                                <li><code>medula-lato</code></li>
+                                <li><code>oldstandard</code></li>
+                                <li><code>opensans-gentiumbook</code></li>
+                                <li><code>playfair-faunaone</code></li>
+                                <li><code>playfair</code></li>
+                                <li><code>pt</code></li>
+                                <li><code>roboto-megrim</code></li>
+                                <li><code>rufina-sintony</code></li>
+                                <li><code>ubuntu</code></li>
+                                <li><code>unicaone-vollkorn</code></li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>debug</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        If <code>true</code>, copious console logging will be enabled.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>height</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>this._el.container.offsetHeight</code>
+                    </div>
+                    <div class="column-8">
+                        The height of the timeline.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>width</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>this._el.container.offsetWidth</code>
+                    </div>
+                    <div class="column-8">
+                        The width of the timeline.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>is_embed</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        If <code>true</code>, the class <code>tl-timeline-embed</code> is added to the outer Timeline container. Typically only used to support Timeline iframe embeds.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>hash_bookmark</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        If set to <code>true</code>, TimelineJS will update the browser URL each time a slide advances, so that people can link directly to specific slides.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>default_bg_color</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>white</code>
+                    </div>
+                    <div class="column-8">
+                        RGB values to use for slide backgrounds. Specify as hex code, CSS named color, or a Javascript object with <code>r</code>, <code>g</code>, and <code>b</code> properties from 0-255.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>scale_factor</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        2
+                    </div>
+                    <div class="column-8">
+                        How many screen widths wide the timeline should be at first presentation.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>initial_zoom</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                    </div>
+                    <div class="column-8">
+                        The position in the <code>zoom_sequence</code> series used to scale the Timeline when it is first created. Takes precedence over <code>scale_factor</code>.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>zoom_sequence</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+                    </div>
+                    <div class="column-8">
+                        Array of values for TimeNav zoom levels. Each value is a <code>scale_factor</code>, which means that at any given level, the full timeline would require that many screens to display all events.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>timenav_position</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        "bottom"
+                    </div>
+                    <div class="column-8">
+                        Display the timeline nav on the <code>top</code> or <code>bottom</code>.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>optimal_tick_width</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        100
+                    </div>
+                    <div class="column-8">
+                        Optimal distance (in pixels) between ticks on axis.
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>base_class</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        "tl-timeline"
+                    </div>
+                    <div class="column-8">
+                        Removing the tl-timeline base class will disable all default stylesheets.
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>timenav_height</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        150
+                    </div>
+                    <div class="column-8">
+                        The height in pixels of the timeline nav. Takes precedence over <code>timenav_height_percentage</code>.
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>timenav_height_percentage</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        25
+                    </div>
+                    <div class="column-8">
+                        Specify the timeline nav height as a percentage of the screen instead of in pixels.
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>timenav_mobile_height_percentage</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        40
+                    </div>
+                    <div class="column-8">
+                        Specify the timeline nav height as a percentage of a mobile device screen.
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>timenav_height_min</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        150
+                    </div>
+                    <div class="column-8">
+                        The minimum timeline nav height (in pixels).
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>marker_height_min</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        30
+                    </div>
+                    <div class="column-8">
+                        The minimum marker height (in pixels).
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>marker_width_min</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        100
+                    </div>
+                    <div class="column-8">
+                        The minimum marker witdh (in pixels).
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>marker_padding</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        5
+                    </div>
+                    <div class="column-8">
+                        Top and bottom padding (in pixels) for markers.
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>start_at_slide</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        0
+                    </div>
+                    <div class="column-8">
+                        The first slide to display when the timeline is loaded.
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>start_at_end</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        If true, loads timeline on last slide.
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>menubar_height</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        0
+                    </div>
+                    <div class="column-8">
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>use_bc</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        Use declared suffix on dates earlier than 0.
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>duration</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        1000
+                    </div>
+                    <div class="column-8">
+                        Animation duration (in milliseconds).
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>ease</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>TL.Ease.easeInOutQuint</code>
+                    </div>
+                    <div class="column-8">
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>dragging</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>true</code>
+                    </div>
+                    <div class="column-8">
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>trackResize</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>true</code>
+                    </div>
+                    <div class="column-8">
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>slide_padding_lr</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        100
+                    </div>
+                    <div class="column-8">
+                        Padding (in pixels) on the left and right of each slide.
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>slide_default_fade</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        "0%"
+                    </div>
+                    <div class="column-8">
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>language</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        "en"
+                    </div>
+                    <div class="column-8">
+                        <p>Value should be a language code for a translation set included with TimelineJS. See
+                            <a href="https://github.com/NUKnightLab/TimelineJS3/tree/master/src/js/language/locale">the
+                            Github repository</a> for the set of supported language codes&mdash;to use these, specify the filename without the <code>.json</code> extension.</p>
+                        <p>
+                            Alternatively, you can create your own translation file, for other languages or simply to override the default messages. To do this, specify a URL to a file based on <code><a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/src/js/language/locale/en.json">en.json</a></code>.
+                            Your URL must end in <code>.json</code>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>ga_property_id</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        null
+                    </div>
+                    <div class="column-8">
+                        Google Analytics ID.
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
+                        <code>track_events</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out']
+                    </div>
+                    <div class="column-8">
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>script_path</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        ""
+                    </div>
+                    <div class="column-8">
+                        Can be used to help Timeline load related resources such as CSS themes and language files. Rarely needs to be set, except if you are bundling the TimelineJS javascript code with other javascript, so that the script it load from isn't in the same "relative" location to your local copy of those resources. 
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="column-2 column-6-phone">
+                        <code>soundcite</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        <code>false</code>
+                    </div>
+                    <div class="column-8">
+                        <p>If this option is set to <code>true</code>, then TimelineJS will load the code necessary to support clips created using Knight Lab's <a href="https://soundcite.knightlab.com">SoundciteJS</a>. This eliminates the need to add the embed code shown in step 3 of the Soundcite authoring tool. Simply copy the per-clip markup from step 2 into the "text" field for any TimelineJS event.</p>
+                        <p>Note that while the default value for this option is <code>false</code>, for timelines hosted on Knight Lab's systems, the value is set to true for ease of use. </p>
+                    </div>
+                </div>
+            </section>
+</article>
+{% endblock %} {% block scripts %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        // make permalinks function for each question
+        jQuery("tr[id]").each(function() {});
+
+        // set up the top level links to major sections
+        jQuery('tr td:first-of-type > code').each(function() {
+            var hash = jQuery(this).text();
+            var tr = this.parentElement.parentElement;
+            tr.id = hash;
+            jQuery(tr).css('cursor', 'pointer');
+            jQuery(tr).click(function() {
+                window.location.hash = "#" + this.id;
+            })
+        })
+
+    })
+</script>
+
+{% endblock %}

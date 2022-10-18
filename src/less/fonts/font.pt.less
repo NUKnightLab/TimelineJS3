@@ -1,0 +1,52 @@
+/*	Font PT Sans & PT Serif & PT Sans Narrow
+
+http://www.google.com/webfonts/specimen/PT+Sans+Narrow
+http://www.google.com/webfonts/specimen/PT+Sans
+http://www.google.com/webfonts/specimen/PT+Serif
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(https://fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow:700|PT+Serif:400,400italic);
+
+// Font Variables
+@font-main:						'PT Serif', serif;
+@font-secondary:				'PT Sans Narrow', sans-serif;
+@font-navigation:				@font-secondary;
+@font-marker: 					'PT Sans', sans-serif;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				16px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			46px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	uppercase;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			700;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	none;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+
+@import "_font.base.less";
+
+.tl-timeline {
+	.tl-timenav-slider {
+		.tl-timeaxis {
+			
+			font-weight:normal;
+		}
+	}
+}

@@ -1,0 +1,48 @@
+/*	Font Open Sans & Gentium Book Basic
+
+http://www.google.com/webfonts/specimen/Open+Sans
+http://www.google.com/webfonts/specimen/Gentium+Book+Basic
+----------------------------------------------------- */
+
+// Main Variables 
+@import "../Variables.less"; 
+
+// Font Import
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:800,400|Gentium+Book+Basic:400,400italic);
+
+// Font Variables
+@font-main:						'Gentium Book Basic', serif;
+@font-secondary:				'Open Sans', sans-serif;
+@font-navigation:				@font-secondary;
+@font-marker: 					@font-secondary;
+@font-headline-date: 			@font-navigation;
+
+@base-font-size: 				17px;
+@base-font-weight: 				400;
+
+// Blockquote
+@font-blockquote: 				@font-main;
+@font-blockquote-weight: 		400;
+@font-blockquote-style: 		italic;
+
+// Headings
+@font-size-headings: 			40px;
+@font-headings-lineheight: 		@font-size-headings;
+@font-headings-text-transform: 	none;
+@font-size-headings-small: 		24px;
+@font-headings-weight: 			800;
+@font-size-headline-title: 		58px;
+
+// Marker
+@font-marker-text-transform: 	@font-headings-text-transform;
+
+// Navigation
+@font-navigation-text-transform: 	none;
+ 
+@import "_font.base.less";
+
+.tl-timeline {
+	.tl-headline-date, h3.tl-headline-date {
+		margin-bottom:5px !important;
+	}
+}

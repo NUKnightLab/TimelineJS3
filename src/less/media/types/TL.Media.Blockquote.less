@@ -1,0 +1,88 @@
+.tl-media {
+	.tl-media-blockquote {
+		text-align:left;
+		clear:both;
+		
+		blockquote {
+			margin:0;
+			margin-right: 	@base-spacing;
+			text-align: 	left;
+			font-size: 		@base-font-size-xlarge;
+			line-height: 	floor(@base-font-size-xlarge * 1.1);
+			color:			@color-foreground;
+			p {
+				font-size: 		@base-font-size-xlarge;
+				line-height: 	floor(@base-font-size-xlarge * 1.1);
+				color:			@color-foreground;
+				&:before, &:after {
+					display:inline-block;
+					font-size: 		floor(@base-font-size-xlarge * 1.3);
+					//line-height: 	floor(@base-font-size-xlarge * 1.1);
+					//color:			lighten(@color-foreground,50);
+					//width:@base-font-size-xlarge;
+					//height:@base-font-size-xlarge;
+				}
+				&:before {
+					content: open-quote;
+					margin-right:5px;
+				}
+				&:after {
+					content: close-quote;
+					margin-left:3px;
+				} 
+			}
+			cite {
+				font-size: 		@base-font-size;
+				line-height:	floor(@base-font-size * @base-line-height);
+				//color:			@color-foreground;
+				color: 			lighten(@color-foreground, 40%);
+				text-align: 	right;
+				margin-top: 	@base-spacing;
+			}
+
+		}
+
+
+	}
+
+}
+.tl-slide-media-only {
+	.tl-media {
+		.tl-media-blockquote {
+			border-right: 0;
+			width:80%;
+			margin-left:auto;
+			margin-right:auto;
+		}
+	}
+}
+// Skinnier
+@media only screen and (max-width: 800px), only screen and (max-device-width: 800px) {
+	.tl-media {
+		.tl-media-blockquote {
+			
+			blockquote {
+				p {
+					font-size: 		@base-font-size-large;
+					line-height:	floor(@base-font-size-large * 1.1);
+				}
+			}
+		}
+
+	}
+}
+// Mobile, iPhone and skinny
+@media only screen and (max-width: 500px), only screen and (max-device-width: 500px) {
+	.tl-media {
+		.tl-media-blockquote {
+			
+			blockquote {
+				p {
+					font-size: 		@base-font-size;
+					line-height:	floor(@base-font-size * @base-line-height);
+				}
+			}
+		}
+
+	}
+}

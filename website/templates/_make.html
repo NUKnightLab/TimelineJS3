@@ -1,0 +1,292 @@
+<section class="section-color section-color-complement" id="make">
+    <div class="container">
+        <h2>Make a Timeline</h2>
+        <p>
+            TimelineJS works on any site or blog. Make your own in four easy steps. <br> <em>Having trouble? Watch our <a href="https://vimeo.com/143407878">video</a>, or see the <a href="#help">help section below</a>.</em>
+        </p>
+        <ol class="instructional-steps">
+            <li class="step grid">
+                <div class="step-number column-2">
+                    <h6>Create your spreadsheet</h6>
+                </div>
+                <div class="step-details column-10">
+                    <p>Build a new Google Spreadsheet using our template. You'll need to copy the template to your own Google Drive account by clicking the "Make a Copy" button.</p>
+                    <p>Drop dates, text and links to media into the appropriate columns. For more about working with our template, see <a href="/docs/using-spreadsheets.html">Making a timeline from a Google Spreadsheet</a></p>
+                    <a class="button button-complement" href="https://docs.google.com/spreadsheets/d/1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ/copy" target="_blank">Get the Spreadsheet Template &nbsp;<span class="icon-new-tab"></span></a>
+                    <p class="note">Don't change the column headers, don't remove any columns, and don't leave any blank rows in your spreadsheet.</p>
+                </div>
+            </li>
+            <li class="step grid" id="make-step-2">
+                <div class="step-number column-2">
+                    <h6>Publish to the web</h6>
+                </div>
+                <div class="step-details column-10">
+                    <div class="grid">
+                        <div class="grid-item">
+                            <p>
+                                <img class="img-shadow make-step-2" src="static/img/make/publish_to_web_small.png" alt="Screenshot of Google Sheets showing location of 'Publish to web' menu option" /> Under the <em>File</em> menu, Share submenu, select “Publish to the Web.” </p>
+                            <p class="note">
+                                <strong>Don't set your Timeline Google Sheet to "anyone with the link can edit."</strong> It isn't necessary, and could lead to someone changing your timeline without your consent.
+                            </p>
+
+
+                            <p style="clear: both;">
+                                <img class="img-shadow make-step-2" src="static/img/make/publish_to_web_button_small.png" alt="Screenshot of Google Sheets 'Publish to the Web' dialog window" /> In the next window, click the green "Publish" button. When asked,
+                                "Are you sure…?" click OK. <em>Ignore the URL that appears in the center of the window.</em> Just close the window using the <em>X</em> in the top right corner.
+
+                            </p>
+                            <p style="clear: both;">
+                                <img class="img-shadow" src="static/img/make/publish_to_web_browser_url.png" /> After you close the window, copy the URL in your browser's address bar. You'll use this in the next step.
+                            </p>
+                            <p class="note">If you get an error message referencing an "Invalid Google URL," please review the above instructions. You must use the Google Sheets URL from your browser's address bar, not the one from the "publish to the web" popup.</p>
+                        </div>
+                    </div>
+            </li>
+
+            <li class="step grid" id="make-step-3">
+                <div class="step-number column-2">
+                    <h6>Generate your timeline</h6>
+                </div>
+                <div class="step-details column-10">
+                    <p>Copy/paste spreadsheet URL into the box below to generate your timeline. (Make sure you've published the spreadsheet.)</p>
+                    <form>
+
+                        <div class="grid grid-left ">
+                            <div class="input-group-label column-12">
+                                <label class="input-group-addon" for="inlinelabel">Google Spreadsheet URL</label>
+                                <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI" name="inlinelabel">
+                                <p id="embed-source-url-message" class="note note-alert note-error"></p>
+                            </div>
+                            <div class="input-group-label column-3">
+                                <label class="input-group-addon" for="inlinelabel">Width</label>
+                                <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
+                            </div>
+                            <div class="input-group-label column-3">
+                                <label class="input-group-addon" for="inlinelabel">Height</label>
+                                <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="panel">
+                        <form>
+                            <fieldset>
+                                <h5 style="margin-top:0;">Optional settings
+                                    <a id="show-options">(show)<span class="caret"></span></a>
+                                    <a id="hide-options">(hide)<span class="caret"></span></a>
+                                </h5>
+                                <p class="small"><em>Set language, fonts, starting slide and more.</em></p>
+                                <div class="more-options">
+                                    <div class="grid">
+                                        <!-- Language-->
+                                        <div class="grid-item">
+                                            <h6>Language</h6>
+                                            <select id="embed-language">
+                                                        <option value="en" data-lang="English">English</option>
+                                                        <option value="en-24hr" data-lang="English (24-hour time)">English (24-hour time)</option>
+                                                        <option value="ar" data-lang="Arabic">العربية</option>
+                                                        <option value="af" data-lang="Afrikaans">Afrikaans</option>
+                                                        <option value="id" data-lang="Indonesian">Bahasa Indonesia</option>
+                                                        <option value="ms" data-lang="Malay">Bahasa Melayu</option>
+                                                        <option value="be" data-lang="Belarusian">Беларуская мова</option>
+                                                        <option value="bg" data-lang="Bulgarian">български език</option>
+                                                        <option value="ca" data-lang="Catalan">Català</option>
+                                                        <option value="cz" data-lang="Czech">Čeština</option>
+                                                        <option value="da" data-lang="Danish">Dansk</option>
+                                                        <option value="hi" data-lang="Hindi">हिन्दी</option>
+                                                        <option value="de" data-lang="German">Deutsch</option>
+                                                        <option value="et" data-lang="Estonian">Eesti keel</option>
+                                                        <option value="el" data-lang="Greek">ελληνικά</option>
+                                                        <option value="es" data-lang="Spanish">Español</option>
+                                                        <option value="eo" data-lang="Esperanto">Esperanto</option>
+                                                        <option value="eu" data-lang="Basque">Euskara</option>
+                                                        <option value="fo" data-lang="Faroese">Føroyskt</option>
+                                                        <option value="fr" data-lang="French">Français</option>
+                                                        <option value="fy" data-lang="Frisian">Frysk</option>
+                                                        <option value="ga" data-lang="Irish">Gaeilge</option>
+                                                        <option value="gl" data-lang="Galician">Galego</option>
+                                                        <option value="ko" data-lang="Korean">한국어</option>
+                                                        <option value="hr" data-lang="Croatian">Hrvatski</option>
+                                                        <option value="hy" data-lang="Armenian">Հայերէն</option>
+                                                        <option value="is" data-lang="Icelandic">Íslenska</option>
+                                                        <option value="it" data-lang="Italian">Italiano</option>
+                                                        <option value="he" data-lang="Hebrew">עברית</option>
+                                                        <option value="ka" data-lang="Georgian">ქართული</option>
+                                                        <option value="lv" data-lang="Latvian">Latviešu valoda</option>
+                                                        <option value="lb" data-lang="Luxembourgish">Lëtzebuergesch</option>
+                                                        <option value="lt" data-lang="Lithuanian">Lietuvių kalba</option>
+                                                        <option value="ro" data-lang="Romanian">Limba română</option>
+                                                        <option value="hu" data-lang="Hungarian">Magyar</option>
+                                                        <option value="my" data-lang="Myanmar"> မြန်မာ</option>
+                                                        <option value="nl" data-lang="Dutch">Nederlands</option>
+                                                        <option value="ne" data-lang="Nepali">नेपाली</option>
+                                                        <option value="ja" data-lang="Japanese">日本語</option>
+                                                        <option value="nb" data-lang="Norwegian - Bokmal">Norsk (bokmål)</option>
+                                                        <option value="nn" data-lang="Norwegian - Nynorsk">Norsk (nynorsk)</option>
+                                                        <option value="th" data-lang="Thai">ภาษาไทย</option>
+                                                        <option value="pl" data-lang="Polish">Polski</option>
+                                                        <option value="pt" data-lang="Portuguese">Português</option>
+                                                        <option value="pt-br" data-lang="Portuguese - Brazilian">Português (Brasil)</option>
+                                                        <option value="rm" data-lang="Romansh">Rumantsch</option>
+                                                        <option value="ru" data-lang="Russian">Русский язык</option>
+                                                        <option value="si" data-lang="Sinhalese">සිංහල</option>
+                                                        <option value="sl" data-lang="Slovenian">Slovenščina</option>
+                                                        <option value="sk" data-lang="Slovak">Slovenčina</option>
+                                                        <option value="sr" data-lang="Serbian - Latin">Srpski</option>
+                                                        <option value="sr-cy" data-lang="Serbian - Cyrillic">српски</option>
+                                                        <option value="fi" data-lang="Finnish">Suomi</option>
+                                                        <option value="sv" data-lang="Swedish">Svenska</option>
+                                                        <option value="zh-tw" data-lang="Taiwanese">Taiwanese</option>
+                                                        <option value="tl" data-lang="Tagalog">Tagalog</option>
+                                                        <option value="ta" data-lang="Tamil">தமிழ்</option>
+                                                        <option value="te" data-lang="Telugu">తెలుగు</option>
+                                                        <option value="tr" data-lang="Turkish">Türkçe</option>
+                                                        <option value="uk" data-lang="Ukrainian">Українська</option>
+                                                        <option value="ur" data-lang="Urdu">اُردُو</option>
+                                                        <option value="vi" data-lang="Vietnamese">Tiếng Việt</option>
+                                                        <option value="fa" data-lang="Farsi">فارسی</option>
+                                                        <option value="zh-cn" data-lang="Chinese">中文</option>
+                                                    </select>
+                                        </div>
+
+                                        <!-- Fonts-->
+                                        <div class="grid-item" style="position: relative">
+                                            <h6>Fonts</h6>
+                                            <div id="embed-font-dropdown">
+                                                <p style="padding-top:4px;"><img id="font-pair-preview" src="static/img/make/default.png"></p>
+                                                <ul id="embed-font">
+                                                    <li data-value="Default" id="embed-font-active" style="padding-top: 1rem"><img src="static/img/make/default.png" alt="PT Narrow and PT Serif"></li>
+                                                    <li data-value="Abril-DroidSans"><img src="static/img/make/abril-droidsans.png" alt="Abril and Droid Sans"></li>
+                                                    <li data-value="Amatic-Andika" checked=""><img src="static/img/make/amatic-andika.png" alt="Amatic and Andika"></li>
+                                                    <li data-value="Bevan-PontanoSans"><img src="static/img/make/bevan-pontanosans.png" alt="Bevan and Pontano Sans"></li>
+                                                    <li data-value="Bitter-Raleway"><img src="static/img/make/bitter-raleway.png" alt="Bitter and Raleway"></li>
+                                                    <li data-value="Clicker-Garamond"><img src="static/img/make/clicker-garamond.png" alt="Clicker and Garamond"></li>
+                                                    <li data-value="Dancing-Ledger"><img src="static/img/make/dancing-ledger.png" alt="Dancing and Ledger"></li>
+                                                    <li data-value="Fjalla-Average"><img src="static/img/make/fjalla-average.png" alt="Fjalla and Average"></li>
+                                                    <li data-value="Georgia-Helvetica"><img src="static/img/make/georgia-helvetica.png" alt="Georgia and Helvetica"></li>
+                                                    <li data-value="Lustria-Lato"><img src="static/img/make/lustria-lato.png" alt="Lustria and Lato"></li>
+                                                    <li data-value="Medula-Lato"><img src="static/img/make/medula-lato.png" alt="Medula One and Lato"></li>
+                                                    <li data-value="OldStandard"><img src="static/img/make/oldstandard.png" alt="Old Standard"></li>
+                                                    <li data-value="OpenSans-GentiumBook"><img src="static/img/make/opensans-gentiumbook.png" alt="Open Sans and Gentium Book"></li>
+                                                    <li data-value="Playfair-FaunaOne"><img src="static/img/make/playfair-faunaone.png" alt="Playfair and Fauna One"></li>
+                                                    <li data-value="Playfair"><img src="static/img/make/playfair.png" alt="Playfair SC and Playfair"></li>
+                                                    <li data-value="PT"><img src="static/img/make/pt.png" alt="PT Sans, PT Sans Narrow, and PT Serif"></li>
+                                                    <li data-value="Roboto-Megrim"><img src="static/img/make/roboto-megrim.png" alt="Roboto and Megrim"></li>
+                                                    <li data-value="Rufina-Sintony"><img src="static/img/make/rufina-sintony.png" alt="Rufina and Sintony"></li>
+                                                    <li data-value="UnicaOne-Vollkorn"><img src="static/img/make/unicaone-vollkorn.png" alt="Unica One and Vollkorn"></li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                        <div class="grid-item">
+                                            <h6>Map Type</h6>
+                                            <div id="embed-maptype">
+                                                <p class="small">Currently all Google's base maps are supported. When creating a Google map, style it the way you would like it to appear, and then paste the resulting link into your Google Spreadsheet.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-size-3 grid-left">
+                                        <div class="grid-item">
+                                            <h6>Default start slide</h6>
+                                            <div class="input-group-label">
+                                                <label class="input-group-addon" for="inlinelabel">Slide</label>
+                                                <input type="text" value="0" placeholder="0" id="embed-startatslide" class="input-mini">
+                                            </div>
+                                            <p class="small"><em>You can tell TimelineJS to start at a specific slide number.</em></p>
+                                        </div>
+                                        <div class="grid-item">
+                                            <h6>Initial zoom level</h6>
+                                            <div class="input-group-label">
+                                                <label class="input-group-addon" for="inlinelabel">Zoom Level</label>
+                                                <input type="text" value="2" placeholder="2" id="embed-initialzoom" class="input-mini">
+                                            </div>
+                                            <p class="small"><em>The zoom level at which the timeline portion of TimelineJS will display on load. Specify a value from 0-10 (default is 2). Smaller numbers show a greater span of time.</em></p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="grid grid-no-gutters">
+                                        <div class="column-12">
+                                            <h6>Misc</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-size-3 grid-left">
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                        <input id="embed-startatend" type="checkbox" value="option1">Start at the end <br/><small style="display:block;margin-left:1.4rem;"><em>Begins the timeline on the last slide.</em></small>
+                                                    </label>
+                                        </div>
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                        <input id="embed-timenavtop" type="checkbox" value="option1">Show nav on top
+                                                        <br/><small style="display:block;margin-left:1.4rem;"><em>Switches the vertical order of the timeline navigation and the media.</em></small>
+                                                    </label>
+                                        </div>
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                        <input id="embed-debug" type="checkbox" value="option1">Debug
+                                                        <br/><small style="display:block;margin-left:1.4rem;"><em>In debug mode, the JavaScript console will display logging messages.</em></small>
+                                                    </label>
+                                        </div>
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                         <input id="embed-hash-bookmark" type="checkbox" value="option1">Use hash bookmarks
+                                                        <br/><small style="display:block;margin-left:1.4rem;"><em>Assigns a hash bookmark to each slide's URL, allowing deep linking to slides. (For directly linked Timelines only -- does not work for iframe embeds)</em></small>
+                                                    </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step grid">
+                <div class="step-number column-2">
+                    <h6>Share your timeline</h6>
+                </div>
+                <div class="step-details column-10">
+                    <h6>Share Link</h6>
+                    <p class="small">Use this to link directly to your timeline. </p>
+                    <p class="small"><em>If you're embedding on Medium.com or other oembed-aware services, just paste this link on a line by itself where you want your timeline to appear.</em></p>
+
+                    <!-- <ul class="list--social">
+                                <li>
+                                    <a class="link--no-style" href="#" ><span class="icon-twitter text-color-complement"></span></a>
+                                </li>
+                                <li>
+                                    <a class="link--no-style" href="#"><span class="icon-facebook text-color-complement"></span></a>
+                                </li>
+                            </ul> -->
+                    <form>
+                        <textarea id="sharable-url" rows="3" type="text" "readonly" name="textplaceholder" value="" style="height:4rem;">
+https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=100%
+                                </textarea>
+                    </form>
+                    <h6>Embed</h6>
+                    <p class="small">Copy this embed code and paste it on your site where you want your timeline to appear (just like a YouTube video). </p>
+                    <form>
+                        <textarea id="embed_code" rows="3" readonly="readonly" type="text" name="textplaceholder" value="" style="height:5rem;">
+&lt;iframe src=&quot;https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=100%&quot; width=&quot;100%&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+                                </textarea>
+                    </form>
+                    <a class="button button-complement" href="#preview-embed" id="iframe-preview-button">Preview</a>&nbsp;
+                    <a class="button button-light" href="#" id="preview-embed-link" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
+                </div>
+            </li>
+        </ol>
+        </div>
+        <div id="preview-embed">
+            <div class="container">
+                <h3>Preview Embed</h3>
+            </div>
+            <section id="demo" class="container-fluid">
+                <div id="preview-embed-iframe" class="product-demo">
+                    <iframe src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=650" width="100%" height="650" frameborder="0"></iframe>
+                </div>
+            </section>
+        </div>
+</section>
