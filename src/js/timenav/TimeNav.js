@@ -646,9 +646,7 @@ export class TimeNav {
             childs.map((child) => {
                 //clear space
                 var str = child.replace(/\s/g, '');
-                console.log(str)
                 $('.' + str).addClass('highlighted');
-                console.log($('.' + str));
             })
         }
     }

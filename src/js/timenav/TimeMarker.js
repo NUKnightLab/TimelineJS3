@@ -159,7 +159,7 @@ export class TimeMarker {
 	}
 
 	getEndTime() {
-
+		
 		if (this.data.end_date) {
 			return this.data.end_date.getTime();
 		} else {
@@ -212,10 +212,10 @@ export class TimeMarker {
 			this._el.container.style.width = w + "px";
 			if (w > this.options.marker_width_min) {
 				this._el.content_container.style.width = w + "px";
-				this._el.content_container.className = "tl-timemarker-content-container tl-timemarker-content-container-long";
+				this._el.content_container.className = `tl-timemarker-content-container tl-timemarker-content-container-long ${this.data.id}`;
 			} else {
 				this._el.content_container.style.width = this.options.marker_width_min + "px";
-				this._el.content_container.className = "tl-timemarker-content-container";
+				this._el.content_container.className = `tl-timemarker-content-container ${this.data.id}`;
 			}
 		}
 
@@ -286,6 +286,8 @@ export class TimeMarker {
 		let isHidden = this.data.GroupOrder ? 'hidden' : '';
 		let hasChild = this.data.childOf.includes('') ? '' : 'has-child';
 		let hasParent = this.data.parentOf.includes('') ? '' : 'has-parent';
+		let idMarker = this.data.id;
+		idMarker = idMarker.replace(/\s/g, '');
 
 		this._el.container = DOM.create("div", `tl-timemarker ${isHidden}`);
 		this._el.container.setAttribute('tabindex', '-1');
@@ -303,7 +305,7 @@ export class TimeMarker {
 
 		if (this.data.end_date) {
 			this.has_end_date = true;
-			this._el.container.className = 'tl-timemarker tl-timemarker-with-end';
+			this._el.container.className = `tl-timemarker tl-timemarker-with-end`;
 		}
 
 		this._el.timespan = DOM.create("div", `tl-timemarker-timespan ${isHidden}`, this._el.container);
@@ -311,8 +313,8 @@ export class TimeMarker {
 
 
 		//Add id to marker
-		this._el.content_container = DOM.create("div", `tl-timemarker-content-container ${hasChild} ${hasParent} ${isHidden} ${this.data.id} `, this._el.container);
 
+		this._el.content_container = DOM.create("div", `tl-timemarker-content-container ${idMarker} ${hasChild} ${hasParent} ${isHidden} `, this._el.container);
 
 		// Handle color
 		this.data.markerColor != "" ? this._el.content_container.style.backgroundColor = this.data.markerColor : "";
@@ -363,10 +365,7 @@ export class TimeMarker {
 
 		this.onLoaded();
 
-
-
 	}
-
 
 	_initEvents() {
 		DOMEvent.addListener(this._el.container, 'click', this._onMarkerClick, this);
@@ -390,13 +389,12 @@ export class TimeMarker {
 	// Handle Hierarchy of highlight
 	_setHighlight(data) {
 		//Handle parent
+		var test =[]
 		for (var i = 0; i < data.length; i++) {
 			//remove space
 			var str = data[i].replace(/\s/g, '');
-			$("." + str).map(function () {
-				$(this).addClass('highlighted');
-
-			})
+			test.push(str)
+			$("." + str).addClass("highlighted");
 		}
 
 
