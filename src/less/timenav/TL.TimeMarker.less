@@ -568,6 +568,7 @@
 
 .tl-tooltip{
 	position: absolute;
+	text-align: center;
 	background-color: @color-tooltip-background;
 	border-bottom-right-radius: 25px;
 	border-top-right-radius: 25px;
@@ -576,14 +577,15 @@
 	right: 0;
 	z-index: 101 !important;
 	color: white;
-	width: 110px;
+	width: fit-content;
 	padding: 1px;
-	padding-left: 2px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
 	font-family: "arial";
 	font-size: 13px;
 
 }
-
 .tl-tooltip-hidden{
 	display: none !important;
 }

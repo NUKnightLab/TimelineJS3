@@ -292,12 +292,7 @@ export class TimeMarker {
 		this._el.container = DOM.create("div", `tl-timemarker ${isHidden}`);
 		this._el.container.setAttribute('tabindex', '-1');
 
-		if (this.data.typeOfLink != "") {
-
-			this._el.tooltip = DOM.create("div", `tl-tooltip-hidden tooltip-${this.data.id}`, this._el.container);
-			this._el.tooltip.innerHTML = this.data.typeOfLink;
-		}
-
+		
 
 		if (this.data.unique_id) {
 			this._el.container.id = this.data.unique_id + "-marker";
@@ -310,6 +305,11 @@ export class TimeMarker {
 
 		this._el.timespan = DOM.create("div", `tl-timemarker-timespan ${isHidden}`, this._el.container);
 		this._el.timespan_content = DOM.create("div", `tl-timemarker-timespan-content ${isHidden} `, this._el.timespan);
+		if (this.data.typeOfLink != "") {
+
+			this._el.tooltip = DOM.create("div", `tl-tooltip-hidden tooltip-${this.data.id}`, this._el.timespan);
+			this._el.tooltip.innerHTML = this.data.typeOfLink;
+		}
 
 
 		//Add id to marker
