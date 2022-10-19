@@ -409,10 +409,10 @@ export class TimeMarker {
 			$("." + str).mouseenter(function () {
 				$(".tooltip-" + str).removeClass('tl-tooltip-hidden').addClass('tl-tooltip');
 			})
-			$("." + str).mouseout(function () {
+			$("." + str).mouseleave(function () {
 				setTimeout(function () {
 					$(".tooltip-" + str).removeClass('tl-tooltip').addClass('tl-tooltip-hidden');
-				}, 1500);
+				}, 1000);
 			}
 			)
 		});
