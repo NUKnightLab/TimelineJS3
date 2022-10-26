@@ -2,12 +2,15 @@
 <article id="product-body">
     <section class="section-color container">
         <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
-        <h2 class="header-story">Overriding Timeline's Styles</h2>
+        <h2 class="header-story">Changing the Appearance of your Timeline</h2>
         <p>
             For more technically capable creators, you can override or extend TimelineJS's <abbr title="Cascading Style Sheets">CSS</abbr> to have more control over how your timeline looks. To do this, you must be able to create CSS files and host them
             at a URL where TimelineJS can find them.
         </p>
         <h3 id="typography">Fonts and Typography</h3>
+        <p>
+            For simple typographic styling, such as bold or italic text, you can use basic HTML tags in the <code>headline</code>, <code>text</code>, <code>media credit</code>, and <code>media caption</code> fields. You can also use tags which support the <code>style</code> attribute, such as <code>&lt;p&gt;</code>, <code>&lt;span&gt;</code>, and <code>&lt;div&gt;</code>. More complete documentation of HTML usage is beyond the scope of this document, but the web is full of tutorials. (Note that in limited cases, TimelineJS may strip some HTML markup that could be a potential security problem.)
+        </p>
         <p>
             The easiest way to change the fonts TimelineJS uses is to select from one of the list in the "Optional settings" section of step 3 of the Timeline authoring tool. However, if none of those font combinations work for you, you can create your own.
         </p>
