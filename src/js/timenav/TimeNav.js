@@ -80,7 +80,9 @@ export class TimeNav {
         this._eras = [];
         this.has_eras = false;
 
-        // Groups Array
+        /**
+         * @type TimeGroup
+         */
         this._groups = [];
 
         // Row Height

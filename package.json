@@ -1,6 +1,6 @@
 {
     "name": "@knight-lab/timelinejs",
-    "version": "3.8.21",
+    "version": "3.9.0",
     "license": "MPL-2.0",
     "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript, made by Northwestern University Knight Lab.",
     "dependencies": {
