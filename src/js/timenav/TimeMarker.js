@@ -92,7 +92,6 @@ export class TimeMarker {
 	/*	Adding, Hiding, Showing etc
 	================================================== */
 	show() {
-
 	}
 
 	hide() {
@@ -159,7 +158,6 @@ export class TimeMarker {
 	}
 
 	getEndTime() {
-
 		if (this.data.end_date) {
 			return this.data.end_date.getTime();
 		} else {
@@ -210,13 +208,12 @@ export class TimeMarker {
 	setWidth(w) {
 		if (this.data.end_date) {
 			this._el.container.style.width = w + "px";
-
 			if (w > this.options.marker_width_min) {
 				this._el.content_container.style.width = w + "px";
-				this._el.content_container.className = "tl-timemarker-content-container tl-timemarker-content-container-long";
+				this._el.content_container.className = `tl-timemarker-content-container tl-timemarker-content-container-long ${this.data.id}`;
 			} else {
 				this._el.content_container.style.width = this.options.marker_width_min + "px";
-				this._el.content_container.className = "tl-timemarker-content-container";
+				this._el.content_container.className = `tl-timemarker-content-container ${this.data.id}`;
 			}
 		}
 
@@ -231,43 +228,69 @@ export class TimeMarker {
 		this._el.timespan.style.height = remainder + "px";
 	}
 
-    getFormattedDate() {
-        if (trim(this.data.display_date).length > 0) {
-            return this.data.display_date;
-        }
+	getFormattedDate() {
+		if (trim(this.data.display_date).length > 0) {
+			return this.data.display_date;
+		}
 
-        let date_text = "";
-        if (this.data.end_date) {
-            date_text = " to " + this.data.end_date.getDisplayDate(this.getLanguage());
-        }
-        if (this.data.start_date) {
-            date_text = (date_text ? "from " : "") + this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
-        }
-        return date_text;
-    }
+
+		let date_text = "";
+		if (this.data.end_date) {
+			date_text = " to " + this.data.end_date.getDisplayDate(this.getLanguage());
+		}
+		if (this.data.start_date) {
+			date_text = (date_text ? "from " : "") + this.data.start_date.getDisplayDate(this.getLanguage()) + date_text;
+		}
+		return date_text;
+	}
 
 	/*	Events
 	================================================== */
 	_onMarkerClick(e) {
-		this.fire("markerclick", { unique_id: this.data.unique_id });
+		$(".tl-timemarker-content-container").removeClass('highlighted');
+		$(this._el.content_container).addClass('highlighted');
+		this.fire("markerclick", { unique_id: this.data.unique_id, zoomLevel: this.data.ZoomOnClick ,parent: this.data.childOf });
+		
+		this._setHighlight(this.data.parentOf);
+		this._setHighlight(this.data.childOf);
+		this._initiateTooltip(this.data.parentOf);
+		this._initiateTooltip(this.data.childOf);
+		
+		//Change opacity if marker has childs or parents
+		if (!this.data.parentOf.includes('') || !this.data.childOf.includes('')) {
+			$(".tl-timemarker-content-container").not('.highlighted').not('.tl-timemarker-active').css('opacity', 0.1);
+		}
 	}
 
-    _onMarkerKeydown(e) {
-        if (/Space|Enter/.test(e.code)) {
-            this.fire("markerclick", { unique_id: this.data.unique_id });
-        }
-    }
+	_onMarkerKeydown(e) {
+		if (/Space|Enter/.test(e.code)) {
+			this.fire("markerclick", { unique_id: this.data.unique_id });
+		}
+	}
 
-    _onMarkerBlur(e) {
-        this.fire("markerblur", { unique_id: this.data.unique_id });
-    }
+	_onMarkerBlur(e) {
+		this.fire("markerblur", { unique_id: this.data.unique_id });
+		$(".tl-timemarker-content-container").css('opacity', 1);
+		$(".tl-timemarker-content-container").removeClass('highlighted');
+		this._deinitiateTooltip(this.data.parentOf);
+		this._deinitiateTooltip(this.data.childOf);
+	}
 
 	/*	Private Methods
 	================================================== */
 	_initLayout() {
+
 		// Create Layout
-		this._el.container = DOM.create("div", "tl-timemarker");
-        this._el.container.setAttribute('tabindex', '-1');
+		let isHidden = this.data.GroupOrder ? 'hidden' : '';
+		let hasChild = this.data.childOf.includes('') ? '' : 'has-child';
+		let hasParent = this.data.parentOf.includes('') ? '' : 'has-parent';
+		let idMarker = this.data.id;
+		idMarker = idMarker.replace(/\s/g, '');
+
+		this._el.container = DOM.create("div", `tl-timemarker ${isHidden}`);
+		this._el.container.setAttribute('tabindex', '-1');
+
+		
 
 		if (this.data.unique_id) {
 			this._el.container.id = this.data.unique_id + "-marker";
@@ -275,12 +298,24 @@ export class TimeMarker {
 
 		if (this.data.end_date) {
 			this.has_end_date = true;
-			this._el.container.className = 'tl-timemarker tl-timemarker-with-end';
+			this._el.container.className = `tl-timemarker tl-timemarker-with-end`;
 		}
 
-		this._el.timespan = DOM.create("div", "tl-timemarker-timespan", this._el.container);
-		this._el.timespan_content = DOM.create("div", "tl-timemarker-timespan-content", this._el.timespan);
-		this._el.content_container = DOM.create("div", "tl-timemarker-content-container", this._el.container);
+		this._el.timespan = DOM.create("div", `tl-timemarker-timespan ${isHidden}`, this._el.container);
+		this._el.timespan_content = DOM.create("div", `tl-timemarker-timespan-content ${isHidden} `, this._el.timespan);
+		if (this.data.typeOfLink != "") {
+
+			this._el.tooltip = DOM.create("div", `tl-tooltip-hidden tooltip-${this.data.id}`, this._el.timespan);
+			this._el.tooltip.innerHTML = this.data.typeOfLink;
+		}
+
+
+		//Add id to marker
+
+		this._el.content_container = DOM.create("div", `tl-timemarker-content-container ${idMarker} ${hasChild} ${hasParent} ${isHidden} `, this._el.container);
+
+		// Handle color
+		this.data.markerColor != "" ? this._el.content_container.style.backgroundColor = this.data.markerColor : "";
 
 		this._el.content = DOM.create("div", "tl-timemarker-content", this._el.content_container);
 
@@ -304,13 +339,14 @@ export class TimeMarker {
 				var media_type = lookupMediaType(this.data.media).type;
 				this._el.media = DOM.create("span", "tl-icon-" + media_type, this._el.media_container);
 			}
-
 		}
-
 
 		// Text
 		this._el.text = DOM.create("div", "tl-timemarker-text", this._el.content);
 		this._text = DOM.create("h2", "tl-headline", this._el.text);
+
+		this.data.markerColor ? this._text.style.color = 'white' : this._text.style.color = 'grey';
+
 		if (this.data.text.headline && this.data.text.headline != "") {
 			this._text.innerHTML = unlinkify(this.data.text.headline);
 		} else if (this.data.text.text && this.data.text.text != "") {
@@ -346,7 +382,57 @@ export class TimeMarker {
 
 	}
 
+	// Handle Hierarchy of highlight
+	_setHighlight(data) {
+		//Handle parent
+		var test =[]
+		for (var i = 0; i < data.length; i++) {
+			//remove space
+			var str = data[i].replace(/\s/g, '');
+			test.push(str)
+			$("." + str).addClass("highlighted");
+		}
+
+
+	}
+	_initiateTooltip(data) {
+		if (!Array.isArray(data)) {
+			return;
+		}
+
+		data.forEach(element => {
+			var str = element.replace(/\s/g, '');
+			$("." + str).mouseenter(function () {
+				$(".tooltip-" + str).removeClass('tl-tooltip-hidden').addClass('tl-tooltip');
+			})
+			$("." + str).mouseleave(function () {
+				setTimeout(function () {
+					$(".tooltip-" + str).removeClass('tl-tooltip').addClass('tl-tooltip-hidden');
+				}, 1000);
+			}
+			)
+		});
+
+	}
+
+	_deinitiateTooltip(data) {
+		if (!Array.isArray(data)) {
+			return;
+		}
+
+		data.forEach(element => {
+			data.forEach(element => {
+				var str = element.replace(/\s/g, '');
+				$("." + str).unbind('mouseenter');
+			})
+		});
+	}
+
+
 }
+
+
+
 
 
 classMixin(TimeMarker, I18NMixins, Events, DOMMixins)

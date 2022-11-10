@@ -129,6 +129,7 @@
 		z-index:6;
 		&:hover {
 			z-index: 9;
+			opacity: 1 !important;
 		}
 		.property-animation(height, @animation-duration-fast, @animation-ease);
 		.property-animation(width, @animation-duration, @animation-ease);
@@ -164,7 +165,7 @@
 					overflow:hidden;
 					font-weight:normal;
 					margin:0;
-					color:@marker-text-color;
+					color: #eae8e8c1 ;
 					position: relative;
 					&.tl-headline-fadeout {
 						&:after {
@@ -372,7 +373,7 @@
 		
 		.tl-timemarker-content-container {
 			//background-color:@color-theme;
-			background-color:@color-background;
+			background-color: #E8B755 !important;
 			//color:@color-background;
 			color:@color-foreground;
 			z-index:9;
@@ -544,4 +545,48 @@
 	.tl-timemarker {
 
 	}
+}
+
+//Custom
+
+.highlighted {
+	box-shadow: 0 0 15px #999 !important;
+	border: 1px solid black !important;
+	background-color: grey !important;
+	z-index: 10 !important;
+}
+.highlighted:hover{
+	z-index: 51 !important;
+}
+.hidden{
+	display: none !important;
+}
+
+.has-parent{
+	outline: #2f9d9d solid 3px !important;
+}
+
+.tl-tooltip{
+	position: absolute;
+	text-align: center;
+	z-index: 101 !important;
+	border-bottom-right-radius: 25px;
+	border-top-right-radius: 25px;
+	border: black 1px solid;
+	margin-right: 10px;
+	right: 0;
+	color: white;
+	width: max-content;
+	padding: 1px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color:@color-main;
+	
+	font-family: "arial";
+	font-size: 13px;
+
+}
+
+.tl-tooltip-hidden{
+	display: none !important;
 }

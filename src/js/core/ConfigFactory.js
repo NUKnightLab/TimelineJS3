@@ -59,7 +59,6 @@ function extractEventFromCSVObject(orig_row) {
     Object.keys(orig_row).forEach(k => {
         row[k] = trim(orig_row[k]) // get rid of white-space and reduce all-blank cells to empty strings
     })
-
     var d = {
         media: {
             caption: row['Media Caption'] || '',
@@ -74,8 +73,32 @@ function extractEventFromCSVObject(orig_row) {
         display_date: row['Display Date'] || '', // only in v3 but no problem
         group: row['Group'] || row['Tag'] || '', // small diff between v1 and v3 sheets
         background: interpretBackground(row['Background']), // only in v3 but no problem
-        type: row['Type'] || ''
+
+        id: row['n°ID'] || '',
+        type: row['Type'] || '',
+        categories: row['Categorie'] || '',
+        markerColor: row['MarkerColor'] || '',
+        GroupOrder: row['GroupOrder'] || '',
+        GroupColor: row['GroupColor'] || '',
+        parentOf: row['parentOf'] || '',
+        childOf: row['childOf'] || '',
+        typeOfLink: row['TypeOfLink'] || '',
+        ZoomOnClick: row['ZoomOnClick'] || '',
     }
+    if(d.parentOf != ''){
+        var parents = d.parentOf.split(/[,;]/);
+        d.parentOf = parents;
+
+        
+    }
+    if(d.childOf != ''){
+        var children = d.childOf.split(/[,;]/);
+        d.childOf = children;
+        
+
+
+    }
+
 
     if (Object.keys(row).includes('Start Date') || Object.keys(row).includes('End Date')) {
         // V1 date handling
@@ -147,7 +170,7 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
     let error = null;
 
     await fetchCSV({
-        url: `${sheets_proxy}${url}`,
+        url: `${url}`,
     }).then(d => {
         rows = d;
     }).catch(error_json => {

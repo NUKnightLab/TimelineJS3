@@ -14,35 +14,35 @@ import { mergeData, trim, trace } from "../core/Util"
 
 export const SCALES = [
     // ( name, units_per_tick, flooring function )
-    ["millisecond", 1, function(d) {}],
-    [
-        "second",
-        1000,
-        function(d) {
-            d.setMilliseconds(0);
-        }
-    ],
-    [
-        "minute",
-        1000 * 60,
-        function(d) {
-            d.setSeconds(0);
-        }
-    ],
-    [
-        "hour",
-        1000 * 60 * 60,
-        function(d) {
-            d.setMinutes(0);
-        }
-    ],
-    [
-        "day",
-        1000 * 60 * 60 * 24,
-        function(d) {
-            d.setHours(0);
-        }
-    ],
+    // ["millisecond", 1, function(d) {}],
+    // [
+    //     "second",
+    //     1000,
+    //     function(d) {
+    //         d.setMilliseconds(0);
+    //     }
+    // ],
+    // [
+    //     "minute",
+    //     1000 * 60,
+    //     function(d) {
+    //         d.setSeconds(0);
+    //     }
+    // ],
+    // [
+    //     "hour",
+    //     1000 * 60 * 60,
+    //     function(d) {
+    //         d.setMinutes(0);
+    //     }
+    // ],
+    // [
+    //     "day",
+    //     1000 * 60 * 60 * 24,
+    //     function(d) {
+    //         d.setHours(0);
+    //     }
+    // ],
     [
         "month",
         1000 * 60 * 60 * 24 * 30,

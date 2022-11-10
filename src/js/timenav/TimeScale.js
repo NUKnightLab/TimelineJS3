@@ -41,6 +41,9 @@ export class TimeScale {
         this._pixel_width = this._screen_multiplier * this._display_width;
 
         this._group_labels = undefined;
+        this._group_colors = undefined;
+        this._group_orders = undefined;
+
         this._positions = [];
         this._pixels_per_milli = 0;
 
@@ -84,14 +87,24 @@ export class TimeScale {
 
         return 200000; // what is the right handling for cosmo dates?
     }
+
+    getGroupOrder(){
+        return this._group_orders;
+    }
+    getGroupColor() {
+        return this._row_colors;
+    }
+
     getGroupLabels() {
         /*
                return an array of objects, one per group, in the order (top to bottom) that the groups are expected to appear. Each object will have two properties:
                    * label (the string as specified in one or more 'group' properties of events in the configuration)
                    * rows (the number of rows occupied by events associated with the label. )
                */
+
         return (this._group_labels || []);
     }
+   
 
     getScale() {
         return this._scale;
@@ -227,9 +240,12 @@ export class TimeScale {
         default_marker_width = default_marker_width || 100;
 
         var groups = [];
+        var colors = [];
+        var group_orders = [];
         var empty_group = false;
 
         // Set start/end/width; enumerate groups
+        
         for (var i = 0; i < slides.length; i++) {
             var pos_info = {
                 start: this.getPosition(slides[i].start_date.getTime())
@@ -251,7 +267,13 @@ export class TimeScale {
 
             if (slides[i].group) {
                 if (groups.indexOf(slides[i].group) < 0) {
+                    var colorLigne = slides[i].GroupColor;
+                    var group_order = slides[i].GroupOrder;
+                    colors.push(colorLigne);
+                    group_orders.push(group_order);
                     groups.push(slides[i].group);
+
+                
                 }
             } else {
                 empty_group = true;
@@ -268,10 +290,12 @@ export class TimeScale {
 
             // Init group info
             var group_info = [];
-
+            
             for (var i = 0; i < groups.length; i++) {
                 group_info[i] = {
                     label: groups[i],
+                    color: colors[i],
+                    order: group_orders[i],
                     idx: i,
                     positions: [],
                     n_rows: 1, // default
@@ -338,13 +362,14 @@ export class TimeScale {
 
             // Set group labels; offset row positions
             this._group_labels = [];
-
+            
             group_info.sort(function(a, b) { return a.idx - b.idx; });
-
             for (var i = 0, row_offset = 0; i < group_info.length; i++) {
                 this._group_labels.push({
                     label: group_info[i].label,
-                    rows: group_info[i].n_rows
+                    rows: group_info[i].n_rows,
+                    color: group_info[i].color,
+                    group_order: group_info[i].order
                 });
 
                 for (var j = 0; j < group_info[i].positions.length; j++) {

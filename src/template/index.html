@@ -2,18 +2,19 @@
 
 <head>
     <title>Bundled TimelineJS test page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <!-- this is normally done by embed page -->
     <script>
         var options = {
-            language: 'es',
+            language: 'fr',
             debug: true,
             height: 650,
             soundcite: true,
             hash_bookmark: true,
             start_at_end: false,
             autolink: false,
-            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/'
+            start_at_slide:11,
+            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
+            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89,144, 233,377,610]
         }
 
 
@@ -40,8 +41,7 @@
             // var dataUrl = 'https://docs.google.com/spreadsheets/d/1Jt5Csoku0W73100mnG_byVdvCFLXT8G5gG9lu1yggA0/edit#gid=0'
 
             // women in computing:
-            var dataUrl = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml';
-
+            var dataUrl = "https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml"
             window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
 
             window.timeline.on("ready", () => {
@@ -49,61 +49,20 @@
             })
 
 
-            document.getElementById('timeline-src').value = dataUrl
-            document.getElementById('timeline-src').addEventListener('keyup', (e) => {
-                e.preventDefault();
-                if (e.keyCode === 13) {
-                    timelineFromInput()
-                }
-            })
-
-            document.querySelectorAll('nav a').forEach(el => {
-                el.addEventListener('click', e => {
-                    window.location.hash = ''
-                    e.preventDefault()
-                    let url = e.target.attributes['href'].value
-                    document.getElementById('timeline-src').value = url
-                    timelineFromInput()
-                })
-            })
         })
     </script>
     <style>
-        body {
-            font-family: sans-serif;
-            background-color: #ddd;
+        body{
+            margin: 0;
+            padding: 0;
         }
-        
-        #timeline-embed {
-            margin: 1em 0;
-            height: 650px;
-        }
-        
-        input[type="text"] {
-            font-size: 12pt
-        }
-        
-        nav {
-            margin: 10px 0;
-        }
-        
-        nav a {
-            margin: 5px;
-        }
+       
     </style>
 </head>
 
 <body>
-    <h1>Timeline Development</h1>
-    <div>
-        <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src" />
-    </div>
-    <nav>
-        <a href='https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml'>Women in Computing</a>
-        <a href="all-media-types.json">All Media Types</a>
-        <a href="eras.json">Eras</a>
-    </nav>
+
     <div id='timeline-embed'></div>
-</body>
+    </body>
 
 </html>

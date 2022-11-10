@@ -6,7 +6,7 @@
 	position:absolute;
 	bottom:0;
 	left:0;
-	background-color:@color-background;
+	background-color: @color-main;
 	border-top: 1px solid darken(@ui-background-color,5);
 	z-index:2;
 }
@@ -73,9 +73,10 @@
 			z-index:1;
 			background-color:@color-background;
 			.tl-timeaxis-tick {
-				font-size:@major-ticks-font-size;
+				font-size:15px;
 				line-height:@major-ticks-font-size + @tick-padding;
-				color:@major-ticks-color;
+				font-family: 'PT Sans Narrow', sans-serif;
+				color:white;
 				width:@major-ticks-width;
 				margin-left:-(@major-ticks-width/2);
 
@@ -99,11 +100,11 @@
 			.tl-timeaxis-tick {
 				font-size:@minor-ticks-font-size;
 				line-height:@minor-ticks-font-size + @tick-padding;
-				color:@minor-ticks-color;
+				color:white;
 				width:@minor-ticks-width;
 				margin-left:-(@minor-ticks-width/2);
 				.tl-timeaxis-tick-text {
-					opacity:0;
+					opacity:100;
 					white-space: normal;
 					padding-left:2px;
 					padding-right:2px;
