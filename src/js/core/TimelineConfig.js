@@ -175,7 +175,6 @@ export class TimelineConfig {
 
         if (typeof(data.start_date) == 'undefined') {
             trace("Missing start date, skipping event")
-            console.log(data)
             return null
         }
 
