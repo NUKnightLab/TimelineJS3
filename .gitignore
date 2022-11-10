@@ -18,4 +18,3 @@ build
 *.log
 dist
 .vscode
-.gitlab-ci.yml
