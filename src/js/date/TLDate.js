@@ -356,6 +356,14 @@ export const TLDate = TLClass.extend({
         } else if (!this.data.format_short) {
             this.data.format_short = this.findBestFormat(true);
         }
+    },
+    /**
+     * Get the year-only representation of this date. Ticks need this to layout
+     * the time axis, and this needs to work isomorphically for TLDate and BigDate 
+     * @returns {Number}
+     */
+    getFullYear: function() {
+        return this.data.date_obj.getFullYear()
     }
 });
 
@@ -512,5 +520,13 @@ export const BigDate = TLDate.extend({
         }
 
         throw new TLError("invalid_scale_err", scale);
+    },
+    /**
+     * Get the year-only representation of this date. Ticks need this to layout
+     * the time axis, and this needs to work isomorphically for TLDate and BigDate 
+     * @returns {Number}
+     */
+    getFullYear: function() {
+        return this.data.date_obj.getTime()
     }
 });

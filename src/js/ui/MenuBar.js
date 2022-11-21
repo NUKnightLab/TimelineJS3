@@ -97,10 +97,10 @@ export class MenuBar {
         }
 
         const firstTick = minor_ticks[0];
-        const firstYear = this._getTickYear(firstTick);
+        const firstYear = firstTick.date.getFullYear();
 
         const lastTick = minor_ticks[minor_ticks.length - 1];
-        const lastYear = this._getTickYear(lastTick);
+        const lastYear = lastTick.date.getFullYear();
 
         this.data.visible_ticks_dates = {
             start: firstYear,
@@ -108,10 +108,6 @@ export class MenuBar {
         };
 
         this._updateZoomAriaLabels()
-    }
-
-    _getTickYear(tick) {
-        return tick.date.data.date_obj.getFullYear();
     }
 
     setSticky(y) {
