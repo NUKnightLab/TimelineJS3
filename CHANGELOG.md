@@ -1,3 +1,9 @@
+3.9.1 (2022-11-29)
+-------------------------
+* Adapted to a change in Google Drive sharing links which caused TimelineJS to no longer select the correct media type.
+* Fix rare date formatting issues
+* #803 support m.youtube.com URLs same as other YouTube URLs
+
 3.9.0 (2022-10-07)
 -------------------------
 * A bounty of accessibility improvements contributed by @OleksandrDanylchenko: #744, #747, #749, #750,  #756, #758, #760, #764, #766, #768, #770, #783, #786, #787 and one from @madhaze #789
