@@ -178,13 +178,24 @@ export const TLDate = TLClass.extend({
             this._createDateObj();
         }
 
+        if (data.format && !format) {
+            format = data.format
+        }
         this._setFormat(format, format_short);
     },
 
     setDateFormat: function(format) {
         this.data.format = format;
     },
-
+    /**
+     * Return a string representation of this date. If this date has been created with a `display_date` property,
+     * that value is always returned, regardless of arguments to the method invocation. Otherwise,
+     * the given `Language` is asked to create a string representation based on this Date's data, passing through the provided
+     * `format` String, or, if that is undefined, this date's default format string.
+     * @param {Language} language
+     * @param {String} format
+     * @returns {String} formattedDate
+     */
     getDisplayDate: function(language, format) {
         if (this.data.display_date) {
             return this.data.display_date;
@@ -345,6 +356,14 @@ export const TLDate = TLClass.extend({
         } else if (!this.data.format_short) {
             this.data.format_short = this.findBestFormat(true);
         }
+    },
+    /**
+     * Get the year-only representation of this date. Ticks need this to layout
+     * the time axis, and this needs to work isomorphically for TLDate and BigDate 
+     * @returns {Number}
+     */
+    getFullYear: function() {
+        return this.data.date_obj.getFullYear()
     }
 });
 
@@ -477,6 +496,10 @@ export const BigDate = TLDate.extend({
             this._createDateObj();
         }
 
+        if (data.format && !format) {
+            format = data.format
+        }
+
         this._setFormat(format, format_short);
     },
 
@@ -497,5 +520,13 @@ export const BigDate = TLDate.extend({
         }
 
         throw new TLError("invalid_scale_err", scale);
+    },
+    /**
+     * Get the year-only representation of this date. Ticks need this to layout
+     * the time axis, and this needs to work isomorphically for TLDate and BigDate 
+     * @returns {Number}
+     */
+    getFullYear: function() {
+        return this.data.date_obj.getTime()
     }
 });

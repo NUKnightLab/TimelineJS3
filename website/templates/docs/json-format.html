@@ -326,8 +326,19 @@
         No
       </div>
       <div class="column-8">
-        A string for presenting the date. Useful if Timeline's date formatting doesn't fit your needs.
+        A string for presenting the date. This value will be presented exactly as specified, overriding TimelineJS's default date formatting. Note that the <code>year</code> property, at a minimum, must still be provided so that TimelineJS can properly position the event on the actual timeline.
       </div>
+
+      <div class="column-2 column-6-phone">
+        <code>format</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A formatting string which will be used to render the date parts, if you wish to override TimelineJS's default formatting. Note that in general you can achieve the same with <code>display_date</code> (above), without needing to master the complexity of the date format strings.
+      </div>
+
     </div>
 
     <p id="json-text" class="jump"><strong><em>Text objects</em></strong> are JSON objects with the following properties. For each slide, text objects are optional.</p>

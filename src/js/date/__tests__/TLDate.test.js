@@ -55,6 +55,16 @@ test("display_text overrides other formatting", () => {
 
 })
 
+test("date constructor format overrides other formatting", () => {
+    var cdate = new TLDate({ year: 2014, month: 12 }, 'yyyy')
+    expect(cdate.getDisplayDate()).toBe('2014')
+})
+
+test("format in constructor data param overrides other formatting", () => {
+    var cdate = new TLDate({ year: 2014, month: 12, format: 'yyyy' })
+    expect(cdate.getDisplayDate()).toBe('2014')
+})
+
 test("handle years in the first century CE correctly", () => {
     var date = makeDate({ year: 75 });
     expect(date.getDisplayDate()).toBe("75")

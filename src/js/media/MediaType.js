@@ -58,7 +58,7 @@ export function lookupMediaType(m, image_only) {
         media_types = [{
                 type: "youtube",
                 name: "YouTube",
-                match_str: "^(https?:)?\/*(www.)?youtube|youtu\.be",
+                match_str: "^(https?:)?\/*(www.|m.)?youtube|youtu\.be",
                 cls: YouTube
             },
             {
@@ -148,7 +148,7 @@ export function lookupMediaType(m, image_only) {
             {
                 type: "googledocs",
                 name: "Google Doc",
-                match_str: "^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=sharing|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/\/*drive.google.com\/open\\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
+                match_str: "^(https?:)?\/*[^.]*.google.com\/[^\/]*\/d\/[^\/]*\/[^\/]*\?usp=shar.*|^(https?:)?\/*drive.google.com\/open\?id=[^\&]*\&authuser=0|^(https?:)?\/\/*drive.google.com\/open\\?id=[^\&]*|^(https?:)?\/*[^.]*.googledrive.com\/host\/[^\/]*\/",
                 cls: GoogleDoc
             },
             {
