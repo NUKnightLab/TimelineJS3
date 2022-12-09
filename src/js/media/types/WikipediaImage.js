@@ -33,6 +33,9 @@ export function processImageInfoAPIJSON(j) {
         response['page_id'] = page_ids[0]
         let data = j.query.pages[response['page_id']]
         response['url'] = data.imageinfo[0].thumburl
+        if (data.entityterms && data.entityterms.label) {
+            response['label'] = data.entityterms.label[0]
+        }
     }
     return response
 }
@@ -42,20 +45,24 @@ export default class WikipediaImage extends Media {
     _loadMedia() {
         var api_url,
             image_width = this.options.width || 1000,
+            language_code = this.getLanguage().lang.toLowerCase(),
             self = this;
+
         try {
             // Get Media ID
             this.establishMediaID();
 
             // API URL
-            api_url = `https://commons.wikimedia.org/w/api.php?action=query&titles=${this.media_id}&prop=imageinfo&iiprop=url&&iiurlwidth=${image_width}&format=json&origin=*`
-
-            // API Call
+            api_url = `https://commons.wikimedia.org/w/api.php?action=query&titles=${this.media_id}&prop=imageinfo|entityterms&iiprop=url&&iiurlwidth=${image_width}&format=json&origin=*&wbetlanguage=${language_code}`
+                // API Call
             getJSON(api_url, function(d) {
                 let response = processImageInfoAPIJSON(d)
                 if (response.url) {
                     self.base_image_url = response.url
                     self.page_id = response.page_id
+                    if (!(self.data.alt) && response.label) {
+                        self.data.alt = response.label
+                    }
 
                     if (!self.options.background) {
                         self.createMedia();
