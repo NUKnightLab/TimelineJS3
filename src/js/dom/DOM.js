@@ -19,6 +19,12 @@ function create(tagName, className, container) {
 	return el;
 }
 
+function createButton(className, container) {
+	var el = create('button', className, container);
+	el.type = 'button';
+	return el;
+}
+
 function createText(content, container) {
 	var el = document.createTextNode(content);
 	if (container) {
@@ -78,4 +84,4 @@ let TRANSFORM = testProp(['transformProperty', 'WebkitTransform', 'OTransform', 
 let TRANSLATE_OPEN = 'translate' + (Browser.webkit3d ? '3d(' : '(')
 let TRANSLATE_CLOSE = Browser.webkit3d ? ',0)' : ')'
 
-export { get, create, getPosition }
+export { get, create, createButton, getPosition }
