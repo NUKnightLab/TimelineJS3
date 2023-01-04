@@ -1477,7 +1477,7 @@ window.$ === undefined && (window.$ = Zepto)
 
     /**
      * Add a promisified option to better handle cases where we need the data 
-     * synchronously.
+     * asynchronously.
      * @param {String} url 
      */
     $.fetchJSON = function(url) {

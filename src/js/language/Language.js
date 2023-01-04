@@ -318,6 +318,7 @@ var LANGUAGES = {
             twitter_load_err: "Unable to load Tweet",
             twitterembed_invalidurl_err: "Invalid Twitter Embed url",
             wikipedia_load_err: "Unable to load Wikipedia entry",
+            wikipedia_image_load_err: "Unable to load Wikipedia image data",
             spotify_invalid_url: "Invalid Spotify URL",
             invalid_rgb_err: "Invalid RGB argument",
             time_scale_scale_err: "Don't know how to get date from time for scale",

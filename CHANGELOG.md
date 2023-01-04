@@ -1,3 +1,7 @@
+3.9.2 (Not yet released)
+-------------------------
+* #796 support Wikipedia image page URLs
+
 3.9.1 (2022-11-29)
 -------------------------
 * Adapted to a change in Google Drive sharing links which caused TimelineJS to no longer select the correct media type.

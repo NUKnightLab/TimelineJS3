@@ -15,6 +15,7 @@ import YouTube from "./types/YouTube"
 import GoogleMap from "./types/GoogleMap"
 import Blockquote from "./types/Blockquote"
 import Wikipedia from "./types/Wikipedia"
+import WikipediaImage from "./types/WikipediaImage"
 import SoundCloud from "./types/SoundCloud"
 import Vimeo from "./types/Vimeo"
 import DailyMotion from "./types/DailyMotion"
@@ -134,6 +135,24 @@ export function lookupMediaType(m, image_only) {
                 cls: DocumentCloud
             },
             {
+                type: "wikipedia-image",
+                name: "WikipediaImage",
+                match_str: "^https:\/\/.+\.wiki[mp]edia\.org.+#/media/.+\.(jpg|jpeg|png|gif|svg|webp)",
+                cls: WikipediaImage
+            },
+            {
+                type: "wikipedia-image",
+                name: "WikipediaImage",
+                match_str: "^https:\/\/commons.wikimedia.org/wiki/File:.+\.(jpg|jpeg|png|gif|svg|webp)",
+                cls: WikipediaImage
+            },
+            {
+                type: "wikipedia",
+                name: "Wikipedia",
+                match_str: "^(https?:)?\/.+.wikipedia\.org",
+                cls: Wikipedia
+            },
+            {
                 type: "image",
                 name: "Image",
                 match_str: /(jpg|jpeg|png|gif|svg|webp)(\?.*)?$/i,
@@ -156,12 +175,6 @@ export function lookupMediaType(m, image_only) {
                 name: "PDF",
                 match_str: /^.*\.pdf(\?.*)?(\#.*)?/,
                 cls: PDF
-            },
-            {
-                type: "wikipedia",
-                name: "Wikipedia",
-                match_str: "^(https?:)?\/*(www.)?wikipedia\.org|^(https?:)?\/*([a-z][a-z].)?wikipedia\.org",
-                cls: Wikipedia
             },
             {
                 type: "spotify",

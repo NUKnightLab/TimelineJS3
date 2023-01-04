@@ -386,7 +386,6 @@
             }
         },
 
-
         {
             "media": {
                 "url": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles",
@@ -561,7 +560,34 @@
                 "text": "Wistia is a commercial video hosting service. I don't even remember who requested that TimelineJS support it, and it's hard to find a suitable test URL, but ... "
             },
             "group": "Video"
+        },
+        {
+            "media": {
+                "url": "https://de.wikipedia.org/wiki/Beryllium#/media/Datei:Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg",
+                "credit": "Wikipedia"
+            },
+            "start_date": {
+                "year": "1929"
+            },
+            "text": {
+                "headline": "Wikimedia Images",
+                "text": "Given a link to a wikipedia page about an image, extract best the Wikimedia image URL and use it for the media."
+            },
+            "group": "Image"
+        },
+        {
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg",
+                "credit": "Wikipedia"
+            },
+            "start_date": {
+                "year": "1930"
+            },
+            "text": {
+                "headline": "Wikimedia Commons Image links",
+                "text": "Given a link to a wikipedia page about an image, extract best the Wikimedia image URL and use it for the media."
+            },
+            "group": "Image"
         }
-
     ]
 }
