@@ -154,10 +154,10 @@ export class MenuBar {
     _initLayout() {
 
         // Create Layout
-        this._el.button_zoomin = DOM.create('button', 'tl-menubar-button', this._el.container);
-        this._el.button_zoomout = DOM.create('button', 'tl-menubar-button', this._el.container);
-        this._el.button_forwardtoend = DOM.create('button', 'tl-menubar-button', this._el.container);
-        this._el.button_backtostart = DOM.create('button', 'tl-menubar-button', this._el.container);
+        this._el.button_zoomin = DOM.createButton('tl-menubar-button', this._el.container);
+        this._el.button_zoomout = DOM.createButton('tl-menubar-button', this._el.container);
+        this._el.button_forwardtoend = DOM.createButton('tl-menubar-button', this._el.container);
+        this._el.button_backtostart = DOM.createButton('tl-menubar-button', this._el.container);
 
         if (Browser.mobile) {
             this._el.container.setAttribute("ontouchstart", " ");
