@@ -4,6 +4,12 @@
 	Why are they in DOMUtil and not DOM? 
 ================================================== */
 
+//Run this command - git clone https://github.com/NUKnightLab/TimelineJS3.git
+//Run this command - npm install
+//Run this command - npm start
+//Run this command to simulate website and look at your chnages - npm run disttest
+//npm test will test, do every once in while to check that havent messed anything up
+
 function hasClass(el, name) {
     return (el.className.length > 0) &&
         new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
