@@ -10,10 +10,17 @@
 //Run this command to simulate website and look at your chnages - npm run disttest
 //npm test will test, do every once in while to check that havent messed anything up
 
+//el.classList.contains(name)
+//To check if an element contains a class
+
+
 function hasClass(el, name) {
     return (el.className.length > 0) &&
         new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
 }
+
+//el.classList.add(name)
+//go through where addClass is called and replace with line above
 
 export function addClass(el, name) {
     if (!hasClass(el, name)) {
@@ -21,6 +28,7 @@ export function addClass(el, name) {
     }
 }
 
+//el.classList.remove(name)
 export function removeClass(el, name) {
     el.className = el.className.replace(/(\S+)\s*/g, function(w, match) {
         if (match === name) {
