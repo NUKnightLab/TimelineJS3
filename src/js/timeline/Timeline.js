@@ -192,17 +192,17 @@ class Timeline {
         }
 
         // Apply base class to container
-        addClass(this._el.container, 'tl-timeline');
+        this._el.classList.add('tl-timeline');
         this._el.container.setAttribute('tabindex', '0');
         this._el.container.setAttribute('role', 'region');
         this._el.container.setAttribute('aria-label', this._('aria_label_timeline'));
 
         if (this.options.is_embed) {
-            addClass(this._el.container, 'tl-timeline-embed');
+            _el.classList.add('tl-timeline-embed');
         }
 
         if (this.options.is_full_embed) {
-            addClass(this._el.container, 'tl-timeline-full-embed');
+            _el.classList.add('tl-timeline-full-embed');
         }
 
         this._loadLanguage(data);

@@ -393,8 +393,7 @@ export class StorySlider {
     /*	Init
     ================================================== */
     _initLayout() {
-
-        addClass(this._el.container, 'tl-storyslider');
+        _el.classList.add('tl-storyslider');
 
         // Create Navigation
         this._nav.previous = new SlideNav({ title: "Previous", description: "description" }, { direction: "previous" }, this._el.container);
