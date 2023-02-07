@@ -32,7 +32,6 @@ class AxisHelper {
     }
 
     _getTicks(timescale, option) {
-
         var factor_scale = timescale._scaled_padding * option.factor;
         var first_tick_time = timescale._earliest - factor_scale;
         var last_tick_time = timescale._latest + factor_scale;

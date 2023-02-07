@@ -14,7 +14,6 @@ import { Animate } from "../animation/Animate"
 import { I18NMixins } from "../language/I18NMixins"
 
 
-
 export class TimeNav {
 
     constructor(elem, timeline_config, options, language) {
@@ -219,7 +218,11 @@ export class TimeNav {
 
     setZoom(level) {
         var zoom_factor = this.options.zoom_sequence[level];
-        if (typeof(zoom_factor) == 'number') {
+
+        if (typeof (zoom_factor) == 'number') {
+            if (this.options.scale_factor != zoom_factor) {
+                this._zoomAnim(zoom_factor);
+            }
             this.setZoomFactor(zoom_factor);
         } else {
             console.warn("Invalid zoom level. Please use an index number between 0 and " + (this.options.zoom_sequence.length - 1));
@@ -243,9 +246,30 @@ export class TimeNav {
             console.warn("Zoom factor must be greater than zero. Using 0.1");
             factor = 0.1;
         }
+
+
         this.options.scale_factor = factor;
         //this._updateDrawTimeline(true);
+
         this.goToId(this.current_id, !this._updateDrawTimeline(true), true);
+    }
+
+    _zoomAnim(factor) {
+        var loader_background = document.createElement("div");
+        var loader = document.createElement("div");
+        var loader_text = document.createElement("h1");
+        loader_background.className = "loader_background";
+        loader.className = "loader";
+        loader_text.className = "loader_text";
+        loader_text.innerHTML = `Zooming...  ${factor}%`;
+        loader_text.appendChild(loader);
+        loader_background.appendChild(loader_text);
+        document.body.appendChild(loader_background);
+
+        //remove after 1 second
+        setTimeout(function () {
+            document.body.removeChild(loader_background);
+        }, 1000);
     }
 
     /*	Groups
@@ -254,13 +278,26 @@ export class TimeNav {
         this._groups = [];
         var group_labels = this.timescale.getGroupLabels();
 
+        var group_ordered = this._reorderGroup(group_labels);
         if (group_labels) {
             this.options.has_groups = true;
-            for (var i = 0; i < group_labels.length; i++) {
-                this._createGroup(group_labels[i]);
+            for (var i = 0; i < group_ordered.length; i++) {
+                this._createGroup(group_ordered[i]);
             }
         }
 
+    }
+
+    _reorderGroup(groups) {
+        var group_ordered = [];
+        //sort groups by group_order and set the null on to last
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            if (group.group_order) {
+                group_ordered[group.group_order - 1] = group;
+            }
+        }
+        return group_ordered;
     }
 
     _createGroup(group_label) {
@@ -279,7 +316,6 @@ export class TimeNav {
             var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
                 group_height = Math.floor((available_height / this.timescale.getNumberOfRows()) - this.options.marker_padding),
                 group_labels = this.timescale.getGroupLabels();
-
             for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
                 var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
                 var group_hide = false;
@@ -301,8 +337,8 @@ export class TimeNav {
         marker.addTo(this._el.marker_item_container);
         marker.on('markerclick', this._onMarkerClick, this);
         marker.on('added', this._onMarkerAdded, this);
-    }
 
+    }
     _createMarker(data, n) {
         var marker = new TimeMarker(data, this.options);
         this._addMarker(marker);
@@ -601,10 +637,43 @@ export class TimeNav {
         this.fire("dateRemoved", this.config);
     }
 
+    _removeBlankSpace(data) {
+        let parents = [];
+        for (var i = 0; i < data.length; i++) {
+            let parent = data[i].replace(/\s/g, '');
+            parents.push(parent);
+        }
+        return parents;
+    }
+
     _onMarkerClick(e) {
-        // Go to the clicked marker
+        if (e.parent) {
+            let parents = this._removeBlankSpace(e.parent);
+
+            for (var i = 0; i < parents.length; i++) {
+                let index = this._markers.findIndex(x => x.data.id == parents[i]);
+                if(index == -1){
+                    //skip loop
+                    continue;
+                }
+                    
+                let childs = this._markers[index].data.parentOf;
+                if (childs.length > 0) {
+                    childs.map((child) => {
+                        //clear space
+                        var str = child.replace(/\s/g, '');
+                        $('.' + str).addClass('highlighted');
+                    })
+                }
+            }
+        }
         this.goToId(e.unique_id);
         this.fire("change", { unique_id: e.unique_id });
+
+        if (e.zoomLevel != "") {
+            this.setZoom(e.zoomLevel);
+        }
+
     }
 
     _onMarkerBlur(e) {

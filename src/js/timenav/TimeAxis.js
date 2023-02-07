@@ -140,7 +140,6 @@ export class TimeAxis {
     _createTickElements(ts_ticks, tick_element, dateformat, ticks_to_skip) {
         tick_element.innerHTML = "";
         var skip_times = {};
-
         var yearZero = new Date(-1, 13, -30);
         skip_times[yearZero.getTime()] = true;
 
@@ -206,7 +205,9 @@ export class TimeAxis {
 
                 // Poition Ticks
                 tick.tick.style.left = timescale.getPosition(tick.date.getMillisecond()) + "px";
-                tick.tick_text.innerHTML = tick.display_date;
+                if (tick.tick_text.innerHTML != tick.display_date){
+                    tick.tick_text.innerHTML = tick.display_date;
+                }
 
                 // Handle density of ticks
                 if (fraction_of_array > 1) {

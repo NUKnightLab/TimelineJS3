@@ -23,7 +23,8 @@ export class TimeGroup {
 		// Data
 		this.data = {
 			label: "",
-			rows: 1
+			rows: 1,
+			color: ""
 		};
 		
 		
@@ -38,6 +39,8 @@ export class TimeGroup {
 		
 		this._initLayout();
 		this._initEvents();
+
+		this._el.container.style.backgroundColor = this.data.color;
 	}
 	
 	/*	Public
@@ -83,8 +86,14 @@ export class TimeGroup {
 	_initLayout () {
 		
 		// Create Layout
-		this._el.message = DOM.create("div", "tl-timegroup-message", this._el.container);
+		this._el.message = DOM.create("div", "tl-timegroup-message ", this._el.container);
+		
+		//set background color and hover
+		this._el.message.style.backgroundColor = this.data.color;
+		this._el.message.style.filter = "brightness(98%)";
+		this._el.message.style.padding = "2px 2px 3px 2";
 		this._el.message.innerHTML = this.data.label;
+		
 		
 		
 	}

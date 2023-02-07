@@ -1,0 +1,7 @@
+deploy_staging:
+    only:
+        - staging
+    script:
+        - yarn
+        - yarn run build
+        - rsync -a --del ./dist/* /app/timeline
