@@ -181,7 +181,7 @@ export class TimeMarker {
 		}
 
 		if (h <= 56) {
-			addClass(this._el.content_container, "tl-timemarker-content-container-small");
+			this._el.content_container.classList.add("tl-timemarker-content-container-small");
 		} else {
 			this._el.content_container.classList.remove("tl-timemarker-content-container-small");
 		}
