@@ -393,7 +393,7 @@ export class StorySlider {
     /*	Init
     ================================================== */
     _initLayout() {
-        
+
         this._el.container.classList.add('tl-storyslider');
 
         // Create Navigation
