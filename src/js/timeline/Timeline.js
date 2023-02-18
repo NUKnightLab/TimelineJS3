@@ -191,18 +191,19 @@ class Timeline {
             addTraceHandler(console.log)
         }
 
-        // Apply base class to container
-        this._el.classList.add('tl-timeline');
+        //Apply base class to container
+        //addClass(this._el.container, 'tl-timeline');
+        this._el.container.classList.add('tl-timeline');
         this._el.container.setAttribute('tabindex', '0');
         this._el.container.setAttribute('role', 'region');
         this._el.container.setAttribute('aria-label', this._('aria_label_timeline'));
 
         if (this.options.is_embed) {
-            _el.classList.add('tl-timeline-embed');
+            this._el.container.classList.add('tl-timeline-embed');
         }
 
         if (this.options.is_full_embed) {
-            _el.classList.add('tl-timeline-full-embed');
+            this._el.container.classList.add('tl-timeline-full-embed');
         }
 
         this._loadLanguage(data);

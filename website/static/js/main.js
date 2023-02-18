@@ -203,11 +203,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Device preview
     $('#device-preview-mode span').on("click", function() {
         $("#preview-embed-iframe").removeClass();
-        //$("#preview-embed-iframe").addClass($(this).data("size"));
-        $("#preview-embed-iframe").classList.add($(this).data("size"));
+        $("#preview-embed-iframe").addClass($(this).data("size"));
         $(this).siblings().removeClass("active");
-        //$(this).addClass("active");
-        $(this).classList.add("active");
+        $(this).addClass("active");
     });
 
     // Embed Generator
