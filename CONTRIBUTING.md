@@ -26,6 +26,11 @@ Once you've cloned the repository, run `npm install`. Assuming there are no erro
 
 Timeline uses `webpack` for bundling, and uses the `webpack-dev-server` as part of the `start` script. This means that you should be able to make edits to the source javascript and less files and they will automatically compile, and the browser should reload.
 
+### Building
+
+In order to "compile" TimelineJS for use in other contexts, after following the instructions above, run the command `npm run dist`. This will populate a directory, `dist/` in the rool of your checked-out repository, with the javascript and CSS necessary to self-host TimelineJS.
+
+
 ### Testing
 
 Timeline has a modest suite of tests implemented using `jest`. You can run them using `npm test`. We'd love to have more tests, but have not yet determined a good way to run unit tests against the visual details of timelines. (Let us know if you have suggestions!)  It's a good idea to occasionally run `npm test` to make sure you haven't messed anything up.

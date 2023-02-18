@@ -183,7 +183,7 @@ export class TimeMarker {
 		if (h <= 56) {
 			this._el.content_container.classList.add("tl-timemarker-content-container-small");
 		} else {
-			removeClass(this._el.content_container, "tl-timemarker-content-container-small");
+			this._el.content_container.classList.remove("tl-timemarker-content-container-small");
 		}
 
 		// Handle number of lines visible vertically

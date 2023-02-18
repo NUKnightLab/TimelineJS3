@@ -156,7 +156,7 @@ export class TimeEra {
         this.setPosition({ top: n });
 
         if (remainder < 56) {
-            removeClass(this._el.content_container, "tl-timeera-content-container-small");
+            this._el.content_container.remove("tl-timeera-content-container-small");
         }
     }
 

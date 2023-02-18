@@ -1,6 +1,6 @@
 {
     "name": "@knight-lab/timelinejs",
-    "version": "3.9.1",
+    "version": "3.9.2",
     "license": "MPL-2.0",
     "description": "TimelineJS v3: A Storytelling Timeline built in JavaScript, made by Northwestern University Knight Lab.",
     "dependencies": {
@@ -59,7 +59,8 @@
         "stage_dev": "npm run dist && node tasks/stage.js dev",
         "prepublishOnly": "npm run dist"
     },
-    "contributors": [{
+    "contributors": [
+        {
             "name": "Zach Wise",
             "email": "wise@northwestern.edu",
             "url": "https://github.com/zachwise"
