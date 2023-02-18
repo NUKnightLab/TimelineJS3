@@ -741,7 +741,7 @@ var Zepto = (function() {
                     names = funcArg(this, name, idx, className(this))
                 names.split(/\s+/g).forEach(function(klass) {
                     (when === undefined ? !$this.hasClass(klass) : when) ?
-                    $this.addClass(klass): $this.removeClass(klass)
+                    $this.addClass(klass): $this.classList.remove(klass)
                 })
             })
         },
