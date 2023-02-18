@@ -191,7 +191,7 @@ class Timeline {
             addTraceHandler(console.log)
         }
 
-        // Apply base class to container
+        //  Apply base class to container
         addClass(this._el.container, 'tl-timeline');
         this._el.container.setAttribute('tabindex', '0');
         this._el.container.setAttribute('role', 'region');
