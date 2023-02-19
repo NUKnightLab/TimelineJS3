@@ -2,8 +2,7 @@
 	Inspired by Leaflet
 	DomUtil contains various utility functions for working with DOM
 	Why are they in DOMUtil and not DOM? 
-================================================== */
-//Testing   
+================================================== */  
 
 function hasClass(el, name) {
     return (el.className.length > 0) &&

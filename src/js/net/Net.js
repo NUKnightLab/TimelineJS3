@@ -740,7 +740,7 @@ var Zepto = (function() {
                 var $this = $(this),
                     names = funcArg(this, name, idx, className(this))
                 names.split(/\s+/g).forEach(function(klass) {
-                    (when === undefined ? !$this.classList.contains(klass) : when) ? 
+                    (when === undefined ? !$this.classList.contains(klass) : when) ?
                     $this.addClass(klass): $this.removeClass(klass)
                 })
             })
