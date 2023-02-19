@@ -1,4 +1,4 @@
-3.9.2 (not yet released)
+3.9.2 (2023-02-07)
 -------------------------
 * #796 support Wikipedia image page URLs
 * #808 Add support for en-GB locale (UK-style date formatting, eg 2 Dec 2022)
