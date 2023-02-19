@@ -65,6 +65,14 @@
           <dt id="media-type-wikipedia">Wikipedia</dt>
           <dd>Use the URL of the <a href="https://en.wikipedia.org/">Wikipedia</a> article's page.</dd>
 
+          <dt id="media-type-wikipedia-image">Wikipedia Images</dt>
+          <dd>Timeline can handle images from Wikipedia in two ways.
+          <ol>
+            <li>Use the URL for a media preview, which is typically what you see when you click on an image. These URLs will look something like this: <code>https://en.wikipedia.org/wiki/Beryllium#/media/Datei:Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg</code> (specifically, look for the <code>#/media/</code> part to make sure you have the right URL).</li>
+            <li>Use the URL for a Wikimedia Commons page. These URLs will look something like this: <code>https://commons.wikimedia.org/wiki/File:David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg</code>. (specifically, they will be on the <code>commons.wikimedia.org</code> server).</li>
+          </ol>
+          </dd>
+
           <dt id="media-type-iframe">iframe</dt>
           <dd>Instead of a URL, you can use <code>&lt;iframe&gt;</code> markup. This is a good general workaround to embedding media types that TimelineJS doesn't handle directly.</dd>
 

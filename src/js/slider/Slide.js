@@ -321,17 +321,17 @@ export class Slide {
 
         // Add to DOM
         if (!this.has.text && !this.has.headline && this.has.media) {
-            addClass(this._el.container, 'tl-slide-media-only');
+            this._el.container.classList.add('tl-slide-media-only');
             this._media.addTo(this._el.content);
         } else if (this.has.headline && this.has.media && !this.has.text) {
-            addClass(this._el.container, 'tl-slide-media-only');
+            this._el.container.classList.add('tl-slide-media-only');
             this._text.addTo(this._el.content);
             this._media.addTo(this._el.content);
         } else if (this.has.text && this.has.media) {
             this._text.addTo(this._el.content);
             this._media.addTo(this._el.content);
         } else if (this.has.text || this.has.headline) {
-            addClass(this._el.container, 'tl-slide-text-only');
+            this._el.container.classList.add('tl-slide-text-only');
             this._text.addTo(this._el.content);
         }
 
