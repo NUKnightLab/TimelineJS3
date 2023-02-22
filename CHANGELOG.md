@@ -1,3 +1,7 @@
+3.9.3 (not yet released)
+-------------------------
+* #812 don't throw an error when attempting to report an error fetching config data
+
 3.9.2 (2023-02-07)
 -------------------------
 * #796 support Wikipedia image page URLs

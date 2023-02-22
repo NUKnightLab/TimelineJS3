@@ -154,7 +154,13 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
         if (error_json.proxy_err_code == 'response_not_csv') {
             throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
         }
-        throw new TLError(error_json.message)
+        let msg = "undefined error"
+        if (Array.isArray(error_json.message)) {
+            msg = error_json.message.join('<br>')
+        } else {
+            msg = String(error_json.message)
+        }
+        throw new TLError(msg)
     })
 
     let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
