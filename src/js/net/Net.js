@@ -719,7 +719,7 @@ var Zepto = (function() {
                 var cls = className(this),
                     newName = funcArg(this, name, idx, cls)
                 newName.split(/\s+/g).forEach(function(klass) {
-                    if (!$(this).hasClass(klass)) classList.push(klass)
+                    if (!$(this).classList.contains(klass)) classList.push(klass)
                 }, this)
                 classList.length && className(this, cls + (cls ? " " : "") + classList.join(" "))
             })
