@@ -3,7 +3,6 @@ import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
 
-import { addClass, removeClass } from "../dom/DOMUtil"
 import * as DOM from "../dom/DOM"
 import { webkit as BROWSER_WEBKIT } from "../core/Browser";
 import { easeInSpline } from "../animation/Ease";

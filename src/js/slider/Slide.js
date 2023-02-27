@@ -1,6 +1,5 @@
 import "wicg-inert";
 
-import { addClass } from "../dom/DOMUtil"
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events";
 import { DOMMixins } from "../dom/DOMMixins";

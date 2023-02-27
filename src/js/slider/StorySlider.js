@@ -6,7 +6,6 @@ import { Animate } from "../animation/Animate"
 import * as DOM from "../dom/DOM"
 import { DOMEvent } from "../dom/DOMEvent"
 import * as Browser from "../core/Browser"
-import { addClass } from "../dom/DOMUtil"
 import Swipable from "../ui/Swipable";
 import Message from "../ui/Message"
 import { Slide } from "./Slide"

@@ -1,5 +1,4 @@
 import * as DOM from "../dom/DOM"
-import { addClass } from "../dom/DOMUtil"
 import { hexToRgb, mergeData, classMixin, isTrue, trace, addTraceHandler } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import Message from "../ui/Message"

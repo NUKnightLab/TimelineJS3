@@ -2,7 +2,6 @@ import { classMixin, unlinkify, mergeData } from "../core/Util"
 import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import * as Browser from "../core/Browser"
-import { removeClass } from "../dom/DOMUtil";
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
 
