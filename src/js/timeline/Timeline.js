@@ -432,7 +432,7 @@ class Timeline {
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
 
-        // intial_zoom cannot be applied before the timenav has been created
+        // initial_zoom cannot be applied before the timenav has been created
         if (this.options.initial_zoom) {
             // at this point, this.options refers to the merged set of options
             this.setZoom(this.options.initial_zoom);
