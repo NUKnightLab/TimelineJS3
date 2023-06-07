@@ -83,7 +83,7 @@ export namespace Props {
     /**
      * Optional URL to use as the href for wrapping the media with an `<a>` tag.
      */
-    link?: URL
+    link?: string
     /**
      * Optional target to be associated with `link` if used.
      */
@@ -430,3 +430,11 @@ export namespace Props {
     soundcite?: boolean
   }
 }
+
+export type Data = Props.Data
+export type Options = Props.Options
+export type Text = Props.Text
+export type Media = Props.Media
+export type Era = Props.Era
+export type Slide = Props.Slide
+export type Date = Props.Date
