@@ -426,6 +426,9 @@ class Timeline {
         // Set TimeNav Height
         this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
 
+        // Sanitize zoom sequence
+        this.options.zoom_sequence = this._sanitizeZoomSequence(this.options.zoom_sequence);
+
         // Create TimeNav
         this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
         this._timenav.on('loaded', this._onTimeNavLoaded, this);
@@ -722,6 +725,51 @@ class Timeline {
         height = height - (this.options.marker_padding * 2);
 
         return height;
+    }
+
+    /**
+     * Sanitize value of zoom sequence.
+     *     Should be an array with numeric values or respective string or
+     *     undefined if not set by author
+     * @param {number[]|string} [zoomSequence] - Values intended as possible zoom levels
+     * @returns {number[]} Sanitized array of possible zoom levels.
+     */
+    _sanitizeZoomSequence(zoomSequence) {
+        // Ensure string contains proper number array representation
+        if (typeof zoomSequence === 'string') {
+            // Forgive spaces in URL fragment
+            zoomSequence = decodeURI(zoomSequence).replace(/\s/g, '');
+
+            const validRegExp = /^\[([0-9]*[.])?[0-9]+(,([0-9]*[.])?[0-9]+)*\]$/;
+            if (!validRegExp.test(zoomSequence)) {
+                return Timeline.DEFAULT_ZOOM_SEQUENCE; // Not valid string representation of array with numbers
+            }
+
+            zoomSequence = zoomSequence
+                .substring(1, zoomSequence.length - 1)
+                .split(',');
+        }
+
+        if (!Array.isArray(zoomSequence)) {
+            return Timeline.DEFAULT_ZOOM_SEQUENCE; // Nothing that we can work with
+        }
+
+        // Remove invalid values and sort in ascending order
+        zoomSequence = zoomSequence.reduce((valid, value) => {
+            const numberValue = Number.parseFloat(value);
+            if (
+                Number.isNaN(numberValue) ||
+                numberValue < 0 || // Zoom factor must be greater than zero
+                valid.includes(numberValue) // Duplicate
+            ) {
+                return valid;
+            }
+
+            return [...valid, numberValue];
+        }, []);
+        zoomSequence.sort((a, b) => a - b);
+
+        return zoomSequence;
     }
 
     _validateOptions() {
@@ -1022,6 +1070,9 @@ class Timeline {
 
 
 }
+
+/** @const {number[]} DEFAULT_ZOOM_SEQUENCE Array of Fibonacci numbers for TimeNav zoom levels */
+Timeline.DEFAULT_ZOOM_SEQUENCE = [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89];
 
 classMixin(Timeline, I18NMixins, Events)
 
