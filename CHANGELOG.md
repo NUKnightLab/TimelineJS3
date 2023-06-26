@@ -1,5 +1,6 @@
-3.9.3 (not yet released)
+3.9.3 (2023-06-26)
 -------------------------
+* Update for Google Analytics 4 (GA4)
 * #812 don't throw an error when attempting to report an error fetching config data
 * #799 Deprecate / remove DOMUtil (should be invisible but simplifies code)
 

@@ -452,13 +452,26 @@
                 <div class="grid">
 
                     <div class="column-2 column-6-phone">
+                        <code>ga_measurement_id</code>
+                    </div>
+                    <div class="column-2 column-6-phone">
+                        null
+                    </div>
+                    <div class="column-8">
+                        Google Measurement ID. For self-hosted timelines, if this value is set, then Google Analytics 4 will be initialized and pageviews and other navigation events will be logged to the given measurement ID. For Knight Lab hosted timelines, this cannot be overridden with your analytics ID.
+                    </div>
+                </div>
+
+                <div class="grid">
+
+                    <div class="column-2 column-6-phone">
                         <code>ga_property_id</code>
                     </div>
                     <div class="column-2 column-6-phone">
                         null
                     </div>
                     <div class="column-8">
-                        Google Analytics ID.
+                        Google Analytics ID. This option is deprecated in favor of <code>ga_measurement_id</code> which better matches Google Analytics 4 (GA4) language. For now, if <code>ga_property_id</code> is set and <code>ga_measurement_id</code> is not, then <code>ga_property_id</code> will be used, even though the code is designed for GA4.
                     </div>
                 </div>
 

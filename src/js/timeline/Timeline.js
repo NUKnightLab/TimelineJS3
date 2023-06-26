@@ -133,6 +133,7 @@ class Timeline {
             slide_default_fade: "0%", // landscape fade
             zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
             language: "en",
+            ga_measurement_id: null,
             ga_property_id: null,
             track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
             theme: null,
@@ -991,31 +992,23 @@ class Timeline {
         this._el.container.focus();
     }
 
-    _initGoogleAnalytics() {
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', this.options.ga_property_id, 'auto');
-        ga('set', 'anonymizeIp', true);
+    _initGoogleAnalytics(measurement_id) {
+        loadJS(`https://www.googletagmanager.com/gtag/js?id=${measurement_id}`)
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', measurement_id);
     }
 
     _initAnalytics() {
-        if (this.options.ga_property_id === null) { return; }
-        this._initGoogleAnalytics();
-        ga('send', 'pageview');
+        let measurement_id = this.options.ga_measurement_id || this.options.ga_property_id || null;
+        if (!measurement_id) { return; }
+        this._initGoogleAnalytics(measurement_id);
         var events = this.options.track_events;
         for (let i = 0; i < events.length; i++) {
             var event_ = events[i];
             this.addEventListener(event_, function(e) {
-                ga('send', 'event', e.type, 'clicked');
+                gtag('event', e.type);
             });
         }
     }
