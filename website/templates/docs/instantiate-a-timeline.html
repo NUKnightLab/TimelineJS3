@@ -56,12 +56,12 @@
             <div class="column-12">
                 <h3 id="in-page-json">Creating your own JSON</h3>
                 <p>
-                    If you are retrieving JSON from a URL, you can simply use that URL as the second argument, just as if you are loading data from a Google spreadsheet. If instead you have something in your page which will put the data together, you can also pass a JSON
+                    If you are retrieving JSON from a URL, you can simply<sup>*</sup> use that URL as the second argument, just as if you are loading data from a Google spreadsheet. If instead you have something in your page which will put the data together, you can also pass a JSON
                     object as the second argument.
                 </p>
                 <p>
                     Create the JSON according to <a href="json-format.html">our specifications</a> and then change step 3 to look like this.
-                    <pre class="prettyprint lang-html">
+<pre class="prettyprint lang-html">
 
         &lt;script type="text/javascript"&gt;
             // make_the_json() is some javascript function you've written
@@ -72,6 +72,8 @@
 
 </pre>
 
+                </p>
+                <p class="note"><strong><sup>*</sup>"Simply"</strong> in one case: if you load the JSON file from the same server as the page where you're making the timeline. It's less simple if you try to load the JSON from another server, including the case where you try to use our authoring/embedding tool with JSON on your own server. Without getting into the weeds, this less simple case gets into CORS (cross-origin resource sharing), and for it to work, the server that hosts the JSON file needs to be configured to "share" with servers that have different domain names (the "cross-origin" part). Explaining this fully is beyond the scope of this documentation. Talk to the person who manages the JSON file server about "enabling CORS".
                 </p>
             </div>
             <div class="column-12">
