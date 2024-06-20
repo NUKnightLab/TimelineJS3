@@ -177,10 +177,10 @@ export class MenuBar {
         this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
         this._el.button_zoomout.setAttribute('aria-label', this._('zoom_out'));
 
-        this._el.button_search.innerHTML = "<i class='fas fa-search'></i>";
+        this._el.button_search.innerHTML = "<span class='tl-icon-search'></span>";
         this._el.button_search.setAttribute('aria-label', this._('search'));
 
-        this._el.button_filter.innerHTML = "<i class='fas fa-filter'></i>";
+        this._el.button_filter.innerHTML = "<span class='tl-icon-filter'></span>";
         this._el.button_filter.setAttribute('aria-label', this._('filter'));
     }
 
