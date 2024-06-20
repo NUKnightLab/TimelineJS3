@@ -1,0 +1,149 @@
+/*	Font Medula One & Lato
+
+https://www.google.com/fonts/specimen/Medula+One
+https://www.google.com/fonts/specimen/Lato
+----------------------------------------------------- */
+/*	VARIABLES
+	BASE
+----------------------------------------------------- */
+/* ICON PATH
+================================================== */
+/* TYPEFACE
+================================================== */
+/* COLOR SCHEME
+================================================== */
+/* UI COLOR
+================================================== */
+/* UI
+================================================== */
+/* Animation
+================================================== */
+/* GFX
+================================================== */
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/lato/v24/S6u_w4BMUTPHjxsI9w2_Gwfo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wWw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPHA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Medula One';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/medulaone/v19/YA9Wr0qb5kjJM6l2V0yuoiYgtw.ttf) format('truetype');
+}
+/*	Font Base
+----------------------------------------------------- */
+.tl-timeline {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.3em;
+}
+.tl-timeline h1,
+.tl-timeline h2,
+.tl-timeline h3,
+.tl-timeline h4,
+.tl-timeline h5,
+.tl-timeline h6 {
+  font-family: 'Medula One', cursive;
+  text-transform: none;
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 58px;
+}
+.tl-timeline h2.tl-headline-title {
+  font-size: 72px;
+  line-height: 72px;
+}
+.tl-timeline p {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.3em;
+}
+.tl-timeline ul {
+  font-family: 'Lato', sans-serif;
+}
+.tl-timeline .tl-media .tl-media-wikipedia h4 a,
+.tl-timeline .tl-media h4,
+.tl-timeline .tl-media h4 a {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+}
+.tl-timeline .tl-caption,
+.tl-timeline .tl-credit {
+  font-family: 'Lato', sans-serif;
+}
+.tl-timeline .vcard {
+  font-family: 'Lato', sans-serif !important;
+  font-weight: normal !important;
+}
+.tl-timeline .tl-slidenav-next,
+.tl-timeline .tl-slidenav-previous,
+.tl-timeline .tl-message,
+.tl-timeline .tl-timegroup-message {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: none;
+}
+.tl-timeline .tl-slidenav-next .tl-slidenav-title,
+.tl-timeline .tl-slidenav-previous .tl-slidenav-title,
+.tl-timeline .tl-message .tl-slidenav-title,
+.tl-timeline .tl-timegroup-message .tl-slidenav-title {
+  line-height: 1.3em !important;
+}
+.tl-timeline .tl-headline-date,
+.tl-timeline h3.tl-headline-date {
+  font-family: 'Lato', sans-serif !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+}
+.tl-timeline .tl-headline-date small,
+.tl-timeline h3.tl-headline-date small {
+  font-weight: normal !important;
+}
+.tl-timeline .tl-timenav-slider {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+}
+.tl-timeline .tl-timenav-slider h2.tl-headline {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: none;
+}
+.tl-timeline .tl-timenav-slider .tl-timeaxis {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: none;
+}
+.tl-timeline .tl-menubar {
+  font-family: 'Lato', sans-serif;
+}
+.tl-timeline blockquote,
+.tl-timeline blockquote p {
+  font-family: 'Lato', sans-serif;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.3;
+}
+input[type="text"].editor-headline {
+  font-family: 'Medula One', cursive;
+  text-transform: none;
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 58px;
+}
