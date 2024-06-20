@@ -158,6 +158,7 @@ export class MenuBar {
         this._el.button_zoomin = DOM.createButton('tl-menubar-button', this._el.container);
         this._el.button_zoomout = DOM.createButton('tl-menubar-button', this._el.container);
         this._el.button_search = DOM.createButton('tl-menubar-button', this._el.container);
+        this._el.button_filter = DOM.createButton('tl-menubar-button', this._el.container);
         // this._el.button_forwardtoend = DOM.createButton('tl-menubar-button', this._el.container);
 
         if (Browser.mobile) {
@@ -176,8 +177,11 @@ export class MenuBar {
         this._el.button_zoomout.innerHTML = "<span class='tl-icon-zoom-out'></span>";
         this._el.button_zoomout.setAttribute('aria-label', this._('zoom_out'));
 
-        this._el.button_search.innerHTML = "<span class='tl-icon-zoom-out'></span>";
-        this._el.button_search.setAttribute('aria-label', this._('zoom_out'));
+        this._el.button_search.innerHTML = "<i class='fas fa-search'></i>";
+        this._el.button_search.setAttribute('aria-label', this._('search'));
+
+        this._el.button_filter.innerHTML = "<i class='fas fa-filter'></i>";
+        this._el.button_filter.setAttribute('aria-label', this._('filter'));
     }
 
     _initEvents() {
