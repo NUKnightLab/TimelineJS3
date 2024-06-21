@@ -1,6 +1,6 @@
 /*	Font Default
 ----------------------------------------------------- */
-/*	Font PT Sans & Roboto & PT Sans Narrow
+/*	Font PT Sans & Roboto & Roboto
 
 http://www.google.com/webfonts/specimen/PT+Sans+Narrow
 http://www.google.com/webfonts/specimen/PT+Sans
@@ -23,6 +23,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
 ================================================== */
 /* GFX
 ================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @font-face {
   font-family: 'PT Sans';
   font-style: normal;
@@ -30,7 +31,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
   src: url(https://fonts.gstatic.com/s/ptsans/v17/jizaRExUiTo99u79D0KEwA.ttf) format('truetype');
 }
 @font-face {
-  font-family: 'PT Sans Narrow';
+  font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
   src: url(https://fonts.gstatic.com/s/ptsansnarrow/v18/BngSUXNadjH0qYEzV7ab-oWlsbg95AiFW_g.ttf) format('truetype');
@@ -61,7 +62,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
 .tl-timeline h4,
 .tl-timeline h5,
 .tl-timeline h6 {
-  font-family: 'PT Sans Narrow', sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 46px;
@@ -92,14 +93,14 @@ http://www.google.com/webfonts/specimen/PT+Serif
   font-family: 'Roboto', serif;
 }
 .tl-timeline .vcard {
-  font-family: 'PT Sans Narrow', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-weight: normal !important;
 }
 .tl-timeline .tl-slidenav-next,
 .tl-timeline .tl-slidenav-previous,
 .tl-timeline .tl-message,
 .tl-timeline .tl-timegroup-message {
-  font-family: 'PT Sans Narrow', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -111,7 +112,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
 }
 .tl-timeline .tl-headline-date,
 .tl-timeline h3.tl-headline-date {
-  font-family: 'PT Sans Narrow', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-weight: normal !important;
   text-transform: uppercase !important;
 }
@@ -120,7 +121,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
   font-weight: normal !important;
 }
 .tl-timeline .tl-timenav-slider {
-  font-family: 'PT Sans Narrow', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 700;
 }
 .tl-timeline .tl-timenav-slider h2.tl-headline {
@@ -129,12 +130,12 @@ http://www.google.com/webfonts/specimen/PT+Serif
   text-transform: none;
 }
 .tl-timeline .tl-timenav-slider .tl-timeaxis {
-  font-family: 'PT Sans Narrow', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
 }
 .tl-timeline .tl-menubar {
-  font-family: 'PT Sans Narrow', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 .tl-timeline blockquote,
 .tl-timeline blockquote p {
@@ -144,7 +145,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
   line-height: 1.3;
 }
 input[type="text"].editor-headline {
-  font-family: 'PT Sans Narrow', sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 46px;
