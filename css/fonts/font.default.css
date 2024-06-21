@@ -1,6 +1,6 @@
 /*	Font Default
 ----------------------------------------------------- */
-/*	Font PT Sans & PT Serif & PT Sans Narrow
+/*	Font PT Sans & Roboto & PT Sans Narrow
 
 http://www.google.com/webfonts/specimen/PT+Sans+Narrow
 http://www.google.com/webfonts/specimen/PT+Sans
@@ -36,13 +36,13 @@ http://www.google.com/webfonts/specimen/PT+Serif
   src: url(https://fonts.gstatic.com/s/ptsansnarrow/v18/BngSUXNadjH0qYEzV7ab-oWlsbg95AiFW_g.ttf) format('truetype');
 }
 @font-face {
-  font-family: 'PT Serif';
+  font-family: 'Roboto';
   font-style: italic;
   font-weight: 400;
   src: url(https://fonts.gstatic.com/s/ptserif/v18/EJRTQgYoZZY2vCFuvAFT_r21dw.ttf) format('truetype');
 }
 @font-face {
-  font-family: 'PT Serif';
+  font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
   src: url(https://fonts.gstatic.com/s/ptserif/v18/EJRVQgYoZZY2vCFuvAFWzro.ttf) format('truetype');
@@ -50,7 +50,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
 /*	Font Base
 ----------------------------------------------------- */
 .tl-timeline {
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.3em;
@@ -72,24 +72,24 @@ http://www.google.com/webfonts/specimen/PT+Serif
   line-height: 58px;
 }
 .tl-timeline p {
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
   font-size: 16px;
   line-height: 1.3em;
 }
 .tl-timeline ul {
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
 }
 .tl-timeline .tl-media .tl-media-wikipedia h4 a,
 .tl-timeline .tl-media h4,
 .tl-timeline .tl-media h4 a {
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
   font-weight: 700;
   font-size: 24px;
   line-height: 24px;
 }
 .tl-timeline .tl-caption,
 .tl-timeline .tl-credit {
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
 }
 .tl-timeline .vcard {
   font-family: 'PT Sans Narrow', sans-serif !important;
@@ -138,7 +138,7 @@ http://www.google.com/webfonts/specimen/PT+Serif
 }
 .tl-timeline blockquote,
 .tl-timeline blockquote p {
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
   font-style: italic;
   font-weight: 400;
   line-height: 1.3;
