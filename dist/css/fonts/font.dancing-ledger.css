@@ -1,0 +1,143 @@
+/*	Font Dancing & Ledger
+
+https://www.google.com/fonts/specimen/Dancing+Script
+https://www.google.com/fonts/specimen/Ledger
+----------------------------------------------------- */
+/*	VARIABLES
+	BASE
+----------------------------------------------------- */
+/* ICON PATH
+================================================== */
+/* TYPEFACE
+================================================== */
+/* COLOR SCHEME
+================================================== */
+/* UI COLOR
+================================================== */
+/* UI
+================================================== */
+/* Animation
+================================================== */
+/* GFX
+================================================== */
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup5.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7B1i03Sup5.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Ledger';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/ledger/v16/j8_q6-HK1L3if_sBnMr0.ttf) format('truetype');
+}
+/*	Font Base
+----------------------------------------------------- */
+.tl-timeline {
+  font-family: 'Ledger', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.3em;
+}
+.tl-timeline h1,
+.tl-timeline h2,
+.tl-timeline h3,
+.tl-timeline h4,
+.tl-timeline h5,
+.tl-timeline h6 {
+  font-family: 'Dancing Script', cursive;
+  text-transform: none;
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 58px;
+}
+.tl-timeline h2.tl-headline-title {
+  font-size: 68px;
+  line-height: 68px;
+}
+.tl-timeline p {
+  font-family: 'Ledger', serif;
+  font-size: 16px;
+  line-height: 1.3em;
+}
+.tl-timeline ul {
+  font-family: 'Ledger', serif;
+}
+.tl-timeline .tl-media .tl-media-wikipedia h4 a,
+.tl-timeline .tl-media h4,
+.tl-timeline .tl-media h4 a {
+  font-family: 'Ledger', serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+}
+.tl-timeline .tl-caption,
+.tl-timeline .tl-credit {
+  font-family: 'Ledger', serif;
+}
+.tl-timeline .vcard {
+  font-family: 'Ledger', serif !important;
+  font-weight: normal !important;
+}
+.tl-timeline .tl-slidenav-next,
+.tl-timeline .tl-slidenav-previous,
+.tl-timeline .tl-message,
+.tl-timeline .tl-timegroup-message {
+  font-family: 'Ledger', serif;
+  font-weight: 700;
+  text-transform: none;
+}
+.tl-timeline .tl-slidenav-next .tl-slidenav-title,
+.tl-timeline .tl-slidenav-previous .tl-slidenav-title,
+.tl-timeline .tl-message .tl-slidenav-title,
+.tl-timeline .tl-timegroup-message .tl-slidenav-title {
+  line-height: 1.3em !important;
+}
+.tl-timeline .tl-headline-date,
+.tl-timeline h3.tl-headline-date {
+  font-family: 'Ledger', serif !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+}
+.tl-timeline .tl-headline-date small,
+.tl-timeline h3.tl-headline-date small {
+  font-weight: normal !important;
+}
+.tl-timeline .tl-timenav-slider {
+  font-family: 'Ledger', serif;
+  font-weight: 700;
+}
+.tl-timeline .tl-timenav-slider h2.tl-headline {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  text-transform: none;
+}
+.tl-timeline .tl-timenav-slider .tl-timeaxis {
+  font-family: 'Ledger', serif;
+  font-weight: 700;
+  text-transform: none;
+}
+.tl-timeline .tl-menubar {
+  font-family: 'Ledger', serif;
+}
+.tl-timeline blockquote,
+.tl-timeline blockquote p {
+  font-family: 'Ledger', serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.3;
+}
+input[type="text"].editor-headline {
+  font-family: 'Dancing Script', cursive;
+  text-transform: none;
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 58px;
+}

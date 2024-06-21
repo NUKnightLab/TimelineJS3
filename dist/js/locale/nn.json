@@ -1,0 +1,74 @@
+{
+    "lang": "nn",
+    "date": {
+        "month_abbr": [
+            "Jan.",
+            "Feb.",
+            "Mars",
+            "Apr.",
+            "Mai",
+            "Juni",
+            "Juli",
+            "Aug.",
+            "Sep.",
+            "Okt.",
+            "Nov.",
+            "Des."
+        ],
+        "day_abbr": [
+            "Søn.",
+            "Mån.",
+            "Tys.",
+            "Ons.",
+            "Tor.",
+            "Fre.",
+            "Lau."
+        ],
+        "day": [
+            "Søndag",
+            "Måndag",
+            "Tysdag",
+            "Onsdag",
+            "Torsdag",
+            "Fredag",
+            "Laurdag"
+        ],
+        "month": [
+            "Januar",
+            "Februar",
+            "Mars",
+            "April",
+            "Mai",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"
+        ]
+    },
+    "api": {
+        "wikipedia": "nn"
+    },
+    "messages": {
+        "loading": "Lastar",
+        "return_to_title": "Tilbake til tittel",
+        "wikipedia": "Frå Wikipedia, det frie oppslagsverket",
+        "loading_content": "Lastar innhold",
+        "loading_timeline": "Lastar tidslinje... ",
+        "swipe_to_navigate": "Sveip for å navigere<br><span class='tl-button'>OK</span>"
+    },
+    "dateformats": {
+        "full_long": "dddd',' d. mmm',' yyyy 'kl.' HH:MM",
+        "full_short": "d. mmm",
+        "full": "d. mmmm',' yyyy",
+        "month_short": "mmm",
+        "time_no_seconds_small_date": "HH:MM'<br/><small>'d. mmmm',' yyyy'</small>'",
+        "month": "mmmm yyyy",
+        "time_no_seconds_short": "HH:MM",
+        "time_short": "HH:MM:ss",
+        "year": "yyyy",
+        "full_long_small_date": "HH:MM'<br/><small>'dddd',' d. mmm',' yyyy'</small>'"
+    }
+}

@@ -1,0 +1,155 @@
+/*	Font Open Sans & Gentium Book Basic
+
+http://www.google.com/webfonts/specimen/Open+Sans
+http://www.google.com/webfonts/specimen/Gentium+Book+Basic
+----------------------------------------------------- */
+/*	VARIABLES
+	BASE
+----------------------------------------------------- */
+/* ICON PATH
+================================================== */
+/* TYPEFACE
+================================================== */
+/* COLOR SCHEME
+================================================== */
+/* UI COLOR
+================================================== */
+/* UI
+================================================== */
+/* Animation
+================================================== */
+/* GFX
+================================================== */
+@font-face {
+  font-family: 'Gentium Book Basic';
+  font-style: italic;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/gentiumbookbasic/v17/pe0xMJCbPYBVokB1LHA9bbyaQb8ZGjc4VYF466c.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gentium Book Basic';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/gentiumbookbasic/v17/pe0zMJCbPYBVokB1LHA9bbyaQb8ZGjc4ULF_.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVc.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgshZ1x4gaVc.ttf) format('truetype');
+}
+/*	Font Base
+----------------------------------------------------- */
+.tl-timeline {
+  font-family: 'Gentium Book Basic', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.3em;
+}
+.tl-timeline h1,
+.tl-timeline h2,
+.tl-timeline h3,
+.tl-timeline h4,
+.tl-timeline h5,
+.tl-timeline h6 {
+  font-family: 'Open Sans', sans-serif;
+  text-transform: none;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 40px;
+}
+.tl-timeline h2.tl-headline-title {
+  font-size: 58px;
+  line-height: 58px;
+}
+.tl-timeline p {
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 17px;
+  line-height: 1.3em;
+}
+.tl-timeline ul {
+  font-family: 'Gentium Book Basic', serif;
+}
+.tl-timeline .tl-media .tl-media-wikipedia h4 a,
+.tl-timeline .tl-media h4,
+.tl-timeline .tl-media h4 a {
+  font-family: 'Gentium Book Basic', serif;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 24px;
+}
+.tl-timeline .tl-caption,
+.tl-timeline .tl-credit {
+  font-family: 'Gentium Book Basic', serif;
+}
+.tl-timeline .vcard {
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: normal !important;
+}
+.tl-timeline .tl-slidenav-next,
+.tl-timeline .tl-slidenav-previous,
+.tl-timeline .tl-message,
+.tl-timeline .tl-timegroup-message {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  text-transform: none;
+}
+.tl-timeline .tl-slidenav-next .tl-slidenav-title,
+.tl-timeline .tl-slidenav-previous .tl-slidenav-title,
+.tl-timeline .tl-message .tl-slidenav-title,
+.tl-timeline .tl-timegroup-message .tl-slidenav-title {
+  line-height: 1.3em !important;
+}
+.tl-timeline .tl-headline-date,
+.tl-timeline h3.tl-headline-date {
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+}
+.tl-timeline .tl-headline-date small,
+.tl-timeline h3.tl-headline-date small {
+  font-weight: normal !important;
+}
+.tl-timeline .tl-timenav-slider {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+}
+.tl-timeline .tl-timenav-slider h2.tl-headline {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  text-transform: none;
+}
+.tl-timeline .tl-timenav-slider .tl-timeaxis {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  text-transform: none;
+}
+.tl-timeline .tl-menubar {
+  font-family: 'Open Sans', sans-serif;
+}
+.tl-timeline blockquote,
+.tl-timeline blockquote p {
+  font-family: 'Gentium Book Basic', serif;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.3;
+}
+input[type="text"].editor-headline {
+  font-family: 'Open Sans', sans-serif;
+  text-transform: none;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 40px;
+}
+.tl-timeline .tl-headline-date,
+.tl-timeline h3.tl-headline-date {
+  margin-bottom: 5px !important;
+}
