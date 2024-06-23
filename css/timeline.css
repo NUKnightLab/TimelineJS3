@@ -42,6 +42,224 @@
 /*	Mixins.less
 	Snippets of reusable CSS to develop faster and keep code readable
  * ----------------------------------------------------------------- */
+/*	Reset
+------------------------------------------------------------------------------------------- */
+.tl-storyjs {
+  /*	Reset tags and common classes
+		Display in IE6-9 and FF3
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Prevents modern browsers from displaying 'audio' without controls
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Prevents sub and sup affecting line-height in all browsers
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Img border in a's and image quality
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Forms
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+}
+.tl-storyjs div * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.tl-storyjs h1,
+.tl-storyjs h2,
+.tl-storyjs h3,
+.tl-storyjs h4,
+.tl-storyjs h5,
+.tl-storyjs h6,
+.tl-storyjs p,
+.tl-storyjs blockquote,
+.tl-storyjs pre,
+.tl-storyjs a,
+.tl-storyjs abbr,
+.tl-storyjs acronym,
+.tl-storyjs address,
+.tl-storyjs cite,
+.tl-storyjs code,
+.tl-storyjs del,
+.tl-storyjs dfn,
+.tl-storyjs em,
+.tl-storyjs img,
+.tl-storyjs q,
+.tl-storyjs s,
+.tl-storyjs samp,
+.tl-storyjs small,
+.tl-storyjs strike,
+.tl-storyjs strong,
+.tl-storyjs sub,
+.tl-storyjs sup,
+.tl-storyjs tt,
+.tl-storyjs var,
+.tl-storyjs dd,
+.tl-storyjs dl,
+.tl-storyjs dt,
+.tl-storyjs li,
+.tl-storyjs ol,
+.tl-storyjs ul,
+.tl-storyjs fieldset,
+.tl-storyjs form,
+.tl-storyjs label,
+.tl-storyjs legend,
+.tl-storyjs button,
+.tl-storyjs table,
+.tl-storyjs caption,
+.tl-storyjs tbody,
+.tl-storyjs tfoot,
+.tl-storyjs thead,
+.tl-storyjs tr,
+.tl-storyjs th,
+.tl-storyjs td,
+.tl-storyjs .tl-container,
+.tl-storyjs .content-container,
+.tl-storyjs .media,
+.tl-storyjs .text,
+.tl-storyjs .tl-slider,
+.tl-storyjs .slider,
+.tl-storyjs .date,
+.tl-storyjs .title,
+.tl-storyjs .message,
+.tl-storyjs .map,
+.tl-storyjs .credit,
+.tl-storyjs .caption,
+.tl-storyjs .tl-feedback,
+.tl-storyjs .tl-feature,
+.tl-storyjs .toolbar,
+.tl-storyjs .marker,
+.tl-storyjs .dot,
+.tl-storyjs .line,
+.tl-storyjs .flag,
+.tl-storyjs .time,
+.tl-storyjs .era,
+.tl-storyjs .major,
+.tl-storyjs .minor,
+.tl-storyjs .tl-navigation,
+.tl-storyjs .start,
+.tl-storyjs .active {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 100%;
+  line-height: 1;
+  font-family: inherit;
+  width: auto;
+  float: none;
+}
+.tl-storyjs h1,
+.tl-storyjs h2,
+.tl-storyjs h3,
+.tl-storyjs h4,
+.tl-storyjs h5,
+.tl-storyjs h6 {
+  clear: none;
+}
+.tl-storyjs table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.tl-storyjs ol,
+.tl-storyjs ul {
+  list-style: none;
+}
+.tl-storyjs q:before,
+.tl-storyjs q:after,
+.tl-storyjs blockquote:before,
+.tl-storyjs blockquote:after {
+  content: "";
+}
+.tl-storyjs a:focus {
+  outline: thin dotted;
+}
+.tl-storyjs a:hover,
+.tl-storyjs a:active {
+  outline: 0;
+}
+.tl-storyjs article,
+.tl-storyjs aside,
+.tl-storyjs details,
+.tl-storyjs figcaption,
+.tl-storyjs figure,
+.tl-storyjs footer,
+.tl-storyjs header,
+.tl-storyjs hgroup,
+.tl-storyjs nav,
+.tl-storyjs section {
+  display: block;
+}
+.tl-storyjs audio,
+.tl-storyjs canvas,
+.tl-storyjs video {
+  display: inline-block;
+}
+.tl-storyjs audio:not([controls]) {
+  display: none;
+}
+.tl-storyjs div {
+  max-width: none;
+}
+.tl-storyjs sub,
+.tl-storyjs sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.tl-storyjs sup {
+  top: -0.5em;
+}
+.tl-storyjs sub {
+  bottom: -0.25em;
+}
+.tl-storyjs img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+.tl-storyjs button,
+.tl-storyjs input,
+.tl-storyjs select,
+.tl-storyjs textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+.tl-storyjs button,
+.tl-storyjs input {
+  line-height: normal;
+  *overflow: visible;
+}
+.tl-storyjs button::-moz-focus-inner,
+.tl-storyjs input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.tl-storyjs button,
+.tl-storyjs input[type="button"],
+.tl-storyjs input[type="reset"],
+.tl-storyjs input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+.tl-storyjs input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.tl-storyjs input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.tl-storyjs textarea {
+  overflow: auto;
+  vertical-align: top;
+}
 .tl-timeline {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* VCard
@@ -306,7 +524,7 @@
   display: block;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: italic;
-  background-color: #fcf8e3;
+  background-color: #e6e6e6;
   font-size: 15px;
   line-height: 17px;
   padding: 10px;
@@ -314,6 +532,7 @@
   -moz-border-radius: 7px;
   border-radius: 7px;
   color: #8a6d3b;
+  background-color: #fcf8e3;
   border: 1px solid #faebcc;
   text-shadow: none;
 }
@@ -340,8 +559,8 @@
 ================================================== */
 @font-face {
   font-family: 'tl-icons';
-  src: url(../js/../css/icons/tl-icons.eot);
-  src: url(../js/../css/icons/tl-icons.eot?#iefix) format('embedded-opentype'), url(../js/../css/icons/tl-icons.ttf) format('truetype'), url(../js/../css/icons/tl-icons.woff2) format('woff2'), url(../js/../css/icons/tl-icons.woff) format('woff'), url(../js/../css/icons/tl-icons.svg#tl-icons) format('svg');
+  src: url(../css/icons/tl-icons.eot);
+  src: url(../css/icons/tl-icons.eot?#iefix) format('embedded-opentype'), url(../css/icons/tl-icons.ttf) format('truetype'), url(../css/icons/tl-icons.woff2) format('woff2'), url(../css/icons/tl-icons.woff) format('woff'), url(../css/icons/tl-icons.svg#tl-icons) format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -468,15 +687,6 @@
 }
 .tl-icon-goback:after {
   content: "\e63e";
-}
-.tl-icon-goend:after {
-  content: "\e969";
-}
-.tl-icon-prev2:after {
-  content: "\ea23";
-}
-.tl-icon-next2:after {
-  content: "\ea24";
 }
 .tl-icon-doc-v2:after {
   content: "\e63f";
@@ -631,27 +841,23 @@
 /* MenuBar Button
 ================================================== */
 .tl-menubar-button {
-  border: none;
   font-size: 18px;
   line-height: 18px;
   background-color: rgba(242, 242, 242, 0.9);
   cursor: pointer;
-  padding: 5px 10px 5px 10px;
+  padding: 6px 12px 6px 12px;
   display: inline-block;
   display: block;
   color: #bfbfbf;
 }
-.tl-menubar-button:disabled {
+.tl-menubar-button.tl-menubar-button-inactive {
   opacity: 0.33;
-  cursor: default;
 }
-.tl-menubar-button:hover,
-.tl-menubar-button:focus-visible {
+.tl-menubar-button:hover {
   background: #333;
   color: #FFF;
 }
-.tl-menubar-button:hover:disabled,
-.tl-menubar-button:focus-visible:disabled {
+.tl-menubar-button:hover.tl-menubar-button-inactive {
   color: #bfbfbf;
   background-color: rgba(242, 242, 242, 0.9);
 }
@@ -809,6 +1015,48 @@
   overflow: hidden;
   border-top: 1px solid #e5e5e5;
 }
+.tl-timenav .tl-attribution {
+  cursor: pointer;
+  z-index: 9;
+  position: absolute;
+  bottom: 2px;
+  left: 0px;
+  font-size: 10px;
+  line-height: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 3px;
+  /*
+		right:-26px;
+		top:30px;
+		transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-webkit-transform: rotate(90deg);
+		background-color: fadeout(@ui-background-color, 15%);
+		*/
+}
+.tl-timenav .tl-attribution a {
+  color: #cccccc;
+}
+.tl-timenav .tl-attribution a:hover {
+  color: #000;
+  text-decoration: none;
+}
+.tl-timenav .tl-attribution a:hover .tl-knightlab-logo {
+  background-color: #c34528;
+}
+.tl-timenav .tl-attribution .tl-knightlab-logo {
+  display: inline-block;
+  vertical-align: middle;
+  height: 8px;
+  width: 8px;
+  margin-right: 3px;
+  background-color: #c34528;
+  background-color: #cccccc;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
 .tl-timenav .tl-timenav-line {
   position: absolute;
   top: 0;
@@ -910,12 +1158,10 @@
 	================================================== */
   /* Content
 	================================================== */
-  /* Hover | Focus State
+  /* Hover State
 	================================================== */
-  /* Hover | Focus Active State
+  /* Hover Active State
 	================================================== */
-  /* Focus-visible State
-    ================================================== */
   /* Active Markers
 	================================================== */
   /* Markers with End Dates
@@ -1141,72 +1387,58 @@
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content.tl-timemarker-content-small .tl-timemarker-media-container [class*=" tl-icon-"] {
   font-size: 12px;
 }
-.tl-timemarker:hover .tl-timemarker-timespan,
-.tl-timemarker:focus .tl-timemarker-timespan {
-  background-color: rgba(191, 191, 191, 0.25);
+.tl-timemarker:hover .tl-timemarker-timespan {
+  background-color: rgba(191, 191, 191, 0.15);
 }
-.tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-timespan-content,
-.tl-timemarker:focus .tl-timemarker-timespan .tl-timemarker-timespan-content {
+.tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-timespan-content {
   background-color: #bfbfbf;
 }
 .tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-line-left,
-.tl-timemarker:focus .tl-timemarker-timespan .tl-timemarker-line-left,
-.tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-line-right,
-.tl-timemarker:focus .tl-timemarker-timespan .tl-timemarker-line-right {
+.tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-line-right {
   border-color: #a6a6a6;
 }
 .tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-line-left:after,
-.tl-timemarker:focus .tl-timemarker-timespan .tl-timemarker-line-left:after,
-.tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-line-right:after,
-.tl-timemarker:focus .tl-timemarker-timespan .tl-timemarker-line-right:after {
+.tl-timemarker:hover .tl-timemarker-timespan .tl-timemarker-line-right:after {
   background-color: #3d3d3d;
 }
-.tl-timemarker:hover .tl-timemarker-content-container,
-.tl-timemarker:focus .tl-timemarker-content-container {
-  background-color: #737373;
+.tl-timemarker:hover .tl-timemarker-content-container {
+  background-color: #bfbfbf;
   border-color: #a6a6a6;
   -webkit-transition: height 250ms cubic-bezier(0.77, 0, 0.175, 1), width 250ms cubic-bezier(0.77, 0, 0.175, 1);
   -moz-transition: height 250ms cubic-bezier(0.77, 0, 0.175, 1), width 250ms cubic-bezier(0.77, 0, 0.175, 1);
   -o-transition: height 250ms cubic-bezier(0.77, 0, 0.175, 1), width 250ms cubic-bezier(0.77, 0, 0.175, 1);
   transition: height 250ms cubic-bezier(0.77, 0, 0.175, 1), width 250ms cubic-bezier(0.77, 0, 0.175, 1);
 }
-.tl-timemarker:hover .tl-timemarker-content-container.tl-timemarker-content-container-small,
-.tl-timemarker:focus .tl-timemarker-content-container.tl-timemarker-content-container-small {
+.tl-timemarker:hover .tl-timemarker-content-container.tl-timemarker-content-container-small {
   width: 200px;
 }
-.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline,
-.tl-timemarker:focus .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
+.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
   color: #FFF;
 }
-.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after,
-.tl-timemarker:focus .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after {
-  background: -moz-linear-gradient(top, rgba(115, 115, 115, 0) 0%, #737373 80%);
+.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after {
+  background: -moz-linear-gradient(top, rgba(191, 191, 191, 0) 0%, #bfbfbf 80%);
   /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(115, 115, 115, 0)), color-stop(80%, #737373));
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(191, 191, 191, 0)), color-stop(80%, #bfbfbf));
   /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(115, 115, 115, 0) 0%, #737373 80%);
+  background: -webkit-linear-gradient(top, rgba(191, 191, 191, 0) 0%, #bfbfbf 80%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(115, 115, 115, 0) 0%, #737373 80%);
+  background: -o-linear-gradient(top, rgba(191, 191, 191, 0) 0%, #bfbfbf 80%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, rgba(115, 115, 115, 0) 0%, #737373 80%);
+  background: -ms-linear-gradient(top, rgba(191, 191, 191, 0) 0%, #bfbfbf 80%);
   /* IE10+ */
-  background: linear-gradient(to bottom, rgba(115, 115, 115, 0) 0%, #737373 80%);
+  background: linear-gradient(to bottom, rgba(191, 191, 191, 0) 0%, #bfbfbf 80%);
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@thecolor', endColorstr='@thecolor', GradientType=0);
   /* IE6-9 */
 }
-.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container .tl-timemarker-media,
-.tl-timemarker:focus .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container .tl-timemarker-media {
+.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container .tl-timemarker-media {
   opacity: 1;
 }
 .tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container [class^="tl-icon-"],
-.tl-timemarker:focus .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container [class^="tl-icon-"],
-.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container [class*=" tl-icon-"],
-.tl-timemarker:focus .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container [class*=" tl-icon-"] {
+.tl-timemarker:hover .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-media-container [class*=" tl-icon-"] {
   color: #FFF;
 }
-.tl-timemarker:hover.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after,
-.tl-timemarker:focus.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after {
+.tl-timemarker:hover.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after {
   background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #FFF 80%);
   /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(80%, #FFF));
@@ -1223,19 +1455,12 @@
   /* IE6-9 */
 }
 .tl-timemarker:hover.tl-timemarker-active .tl-timemarker-line-left,
-.tl-timemarker:focus.tl-timemarker-active .tl-timemarker-line-left,
-.tl-timemarker:hover.tl-timemarker-active .tl-timemarker-line-right,
-.tl-timemarker:focus.tl-timemarker-active .tl-timemarker-line-right {
+.tl-timemarker:hover.tl-timemarker-active .tl-timemarker-line-right {
   border-color: #000;
 }
 .tl-timemarker:hover.tl-timemarker-active .tl-timemarker-line-left:after,
-.tl-timemarker:focus.tl-timemarker-active .tl-timemarker-line-left:after,
-.tl-timemarker:hover.tl-timemarker-active .tl-timemarker-line-right:after,
-.tl-timemarker:focus.tl-timemarker-active .tl-timemarker-line-right:after {
+.tl-timemarker:hover.tl-timemarker-active .tl-timemarker-line-right:after {
   background-color: #000;
-}
-.tl-timemarker:focus-visible {
-  outline: none;
 }
 .tl-timemarker.tl-timemarker-active .tl-timemarker-timespan {
   background-color: rgba(255, 255, 255, 0.5);
@@ -1319,7 +1544,7 @@
   box-shadow: none;
 }
 .tl-timemarker.tl-timemarker-with-end:hover .tl-timemarker-timespan:after {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 .tl-timemarker.tl-timemarker-with-end.tl-timemarker-active .tl-timemarker-timespan:after {
   background-color: rgba(51, 51, 51, 0.5);
@@ -1693,8 +1918,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  padding: 0;
-  margin: 0;
+  padding: 0px;
+  margin: 0px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -1734,18 +1959,13 @@
 .tl-slide .tl-slide-content-container .tl-slide-content {
   display: table;
   vertical-align: middle;
-  direction: rtl;
   padding-left: 100px;
   padding-right: 100px;
   position: relative;
   max-width: 100%;
   user-select: text;
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
 }
 .tl-slide .tl-slide-content-container .tl-slide-content .tl-media {
-  direction: ltr;
   position: relative;
   width: 100%;
   min-width: 50%;
@@ -1754,7 +1974,6 @@
   margin-bottom: auto;
 }
 .tl-slide .tl-slide-content-container .tl-slide-content .tl-text {
-  direction: ltr;
   width: 50%;
   max-width: 50%;
   min-width: 120px;
@@ -1926,6 +2145,7 @@
 .tl-skinny .tl-slide .tl-slide-content-container {
   display: block;
   position: static;
+  height: auto;
   height: 100%;
   display: -webkit-flex;
   /* Safari */
@@ -1939,8 +2159,8 @@
   display: -webkit-flex;
   /* Safari */
   display: flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+  flex-direction: column-reverse;
+  -webkit-flex-direction: column-reverse;
   /* Safari */
   position: static;
   height: auto;
@@ -1948,6 +2168,7 @@
   padding-right: 50px;
 }
 .tl-skinny .tl-slide .tl-slide-content-container .tl-slide-content .tl-media {
+  position: static;
   width: 100%;
   height: auto;
   float: none;
@@ -2005,18 +2226,10 @@
   top: 45%;
   z-index: 10;
   cursor: pointer;
-  padding: 0;
-  outline-offset: 5px;
-  background-color: transparent;
-  border: none;
-  text-align: inherit;
-  text-transform: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
 }
 .tl-slidenav-previous .tl-slidenav-content-container,
 .tl-slidenav-next .tl-slidenav-content-container {
+  height: 200px;
   width: 100px;
   position: absolute;
 }
@@ -2129,29 +2342,23 @@
 /* NAVIGATION HOVER
 ================================================== */
 .tl-slidenav-previous:hover .tl-slidenav-title,
-.tl-slidenav-next:hover .tl-slidenav-title,
-.tl-slidenav-previous:focus-visible .tl-slidenav-title,
-.tl-slidenav-next:focus-visible .tl-slidenav-title {
+.tl-slidenav-next:hover .tl-slidenav-title {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
 .tl-slidenav-previous:hover .tl-slidenav-description,
-.tl-slidenav-next:hover .tl-slidenav-description,
-.tl-slidenav-previous:focus-visible .tl-slidenav-description,
-.tl-slidenav-next:focus-visible .tl-slidenav-description {
+.tl-slidenav-next:hover .tl-slidenav-description {
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
   -moz-opacity: 0.5;
   opacity: 0.5;
 }
-.tl-slidenav-next:hover .tl-slidenav-icon,
-.tl-slidenav-next:focus-visible .tl-slidenav-icon {
+.tl-slidenav-next:hover .tl-slidenav-icon {
   margin-left: 80px;
 }
-.tl-slidenav-previous:hover .tl-slidenav-icon,
-.tl-slidenav-previous:focus-visible .tl-slidenav-icon {
+.tl-slidenav-previous:hover .tl-slidenav-icon {
   margin-left: -4px;
 }
 .tl-skinny .tl-slidenav-next {
@@ -2178,16 +2385,14 @@
   -moz-opacity: 0.33;
   opacity: 0.33;
 }
-.tl-skinny .tl-slidenav-next:hover .tl-slidenav-icon,
-.tl-skinny .tl-slidenav-next:focus-visible .tl-slidenav-icon {
+.tl-skinny .tl-slidenav-next:hover .tl-slidenav-icon {
   margin-left: 12px;
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
-.tl-skinny .tl-slidenav-previous:hover .tl-slidenav-icon,
-.tl-skinny .tl-slidenav-previous:focus-visible .tl-slidenav-icon {
+.tl-skinny .tl-slidenav-previous:hover .tl-slidenav-icon {
   margin-left: -4px;
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
@@ -2195,35 +2400,34 @@
   opacity: 1;
 }
 .tl-layout-landscape.tl-mobile .tl-slidenav-next:hover {
-  /**
-            * On mobile the hover state stays on the button after the click
-            * Show the default margin as before the click
-            */
+  right: 70px;
 }
 .tl-layout-landscape.tl-mobile .tl-slidenav-next:hover .tl-slidenav-icon {
-  margin-left: 76px;
+  margin-left: 8px;
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
 .tl-layout-landscape.tl-mobile .tl-slidenav-next:active .tl-slidenav-icon {
-  margin-left: 80px;
-}
-.tl-layout-landscape.tl-mobile .tl-slidenav-previous:hover {
-  /**
-            * On mobile the hover state stays on the button after the click
-            * Show the default margin as before the click
-            */
-}
-.tl-layout-landscape.tl-mobile .tl-slidenav-previous:hover .tl-slidenav-icon {
   margin-left: 0px;
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
+.tl-layout-landscape.tl-mobile .tl-slidenav-previous:hover .tl-slidenav-icon {
+  margin-left: 80px;
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
 .tl-layout-landscape.tl-mobile .tl-slidenav-previous:active .tl-slidenav-icon {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
   margin-left: -4px;
 }
 .tl-layout-portrait.tl-mobile .tl-slidenav-next:hover .tl-slidenav-icon {
@@ -2487,12 +2691,6 @@
 }
 .tl-text p {
   color: #737373;
-}
-.tl-text .tl-text-content-container .tl-text-headline-container {
-  display: flex;
-  flex-direction: column-reverse;
-  -webkit-flex-direction: column-reverse;
-  /* Safari */
 }
 .tl-text h2.tl-headline-title,
 .tl-text h2.tl-headline {
@@ -2887,42 +3085,6 @@
   box-sizing: border-box;
   border: 1px solid #cccccc;
   border-radius: 8px;
-}
-.tl-timeline .tl-attribution {
-  cursor: pointer;
-  z-index: 9;
-  position: absolute;
-  bottom: 2px;
-  left: 0px;
-  font-size: 10px;
-  line-height: 10px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 3px;
-}
-.tl-timeline .tl-attribution a {
-  color: #cccccc;
-}
-.tl-timeline .tl-attribution a:hover,
-.tl-timeline .tl-attribution a:focus-visible {
-  color: #000;
-  text-decoration: none;
-}
-.tl-timeline .tl-attribution a:hover .tl-knightlab-logo,
-.tl-timeline .tl-attribution a:focus-visible .tl-knightlab-logo {
-  background-color: #c34528;
-}
-.tl-timeline .tl-attribution .tl-knightlab-logo {
-  display: inline-block;
-  vertical-align: middle;
-  height: 8px;
-  width: 8px;
-  margin-right: 3px;
-  background-color: #c34528;
-  background-color: #cccccc;
-  transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
 }
 /* Portrait
 ================================================== */
