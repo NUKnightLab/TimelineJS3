@@ -462,6 +462,18 @@ class Timeline {
 
     }
 
+    //Check prefered-reduced-motion - Accessibility to reduce motion if enabled in Operationg System
+    reducedMotionEnabled() {
+        const isReduced = 
+            window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+            window.matchMedia(`(prefers-reduced-motion: reduce)`).matches ===
+                true
+        // Change duration for speed in which slides move
+        if(isReduced){
+            this._updateDisplay(this._timenav.options.height, true, 1);
+        }
+    }
+
     _initEvents() {
         // TimeNav Events
         this._timenav.on('change', this._onTimeNavChange, this);
@@ -555,10 +567,12 @@ class Timeline {
     }
 
     _onStorySliderNext(e) {
+        this.reducedMotionEnabled()
         this.fire("nav_next", e);
     }
 
     _onStorySliderPrevious(e) {
+        this.reducedMotionEnabled()
         this.fire("nav_previous", e);
     }
 
