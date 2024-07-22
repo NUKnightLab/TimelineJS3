@@ -468,9 +468,14 @@ class Timeline {
             window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
             window.matchMedia(`(prefers-reduced-motion: reduce)`).matches ===
                 true
-        // Change duration for speed in which slides move
+        // Change duration for speed in which slides/timenav move
         if(isReduced){
             this._updateDisplay(this._timenav.options.height, true, 1);
+            this._timenav.options.duration = 1
+        }
+        else {
+            // revert time nav option duration back to 1000
+            this._timenav.options.duration = 1000
         }
     }
 
@@ -479,6 +484,7 @@ class Timeline {
         this._timenav.on('change', this._onTimeNavChange, this);
         this._timenav.on('zoomtoggle', this._onZoomToggle, this);
         this._timenav.on('visible_ticks_change', this._onVisibleTicksChange, this);
+        this._timenav.on('visible_ticks_change', this.reducedMotionEnabled, this);
 
         // StorySlider Events
         this._storyslider.on('change', this._onSlideChange, this);
