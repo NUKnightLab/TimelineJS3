@@ -484,7 +484,6 @@ class Timeline {
         this._timenav.on('change', this._onTimeNavChange, this);
         this._timenav.on('zoomtoggle', this._onZoomToggle, this);
         this._timenav.on('visible_ticks_change', this._onVisibleTicksChange, this);
-        this._timenav.on('visible_ticks_change', this.reducedMotionEnabled, this);
 
         // StorySlider Events
         this._storyslider.on('change', this._onSlideChange, this);
@@ -505,6 +504,7 @@ class Timeline {
     }
 
     _onSlideChange(e) {
+        this.reducedMotionEnabled()
         if (this.current_id != e.unique_id) {
             this.current_id = e.unique_id;
             this._timenav.goToId(this.current_id);
@@ -513,6 +513,7 @@ class Timeline {
     }
 
     _onTimeNavChange(e) {
+        this.reducedMotionEnabled()
         if (this.current_id != e.unique_id) {
             this.current_id = e.unique_id;
             this._storyslider.goToId(this.current_id);
