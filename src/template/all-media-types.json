@@ -7,7 +7,7 @@
         },
         "text": {
             "headline": "TimelineJS Media Types",
-            "text": "<p>TimelineJS supports many media types. This provides a simple way to test them all. This page tests a simple image on a remote server. Also, if the Timeline was created with the <code>soundcite</code> option set to <code>true</code> then   <span class='soundcite' data-url='https://soundcite.knightlab.com/media/bach-cello-suite.mp3' data-start='0' data-end='164000' data-plays='1'>this should be an active SoundCite player.</span></p>"
+            "text": "<p>TimelineJS supports many media types. This provides a simple way to test them all. This page tests a simple image on a remote server. Also, if the Timeline was created with the <code>soundcite</code> option set to <code>true</code> then   <span class='soundcite' data-url='https://soundcite.knightlab.com/media/bach-cello-suite.mp3' data-start='0' data-end='164000' data-plays='1'>this should be an active SoundCite player.</span></p><p><a target=\"_self\" href=\"#wikipedia-images\">click to jump to Wikipedia Images</a></p>"
         },
         "background": {
             "color": "papayawhip"
@@ -388,10 +388,10 @@
 
         {
             "media": {
-                "url": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles",
+                "url": "https://fr.wikipedia.org/wiki/Bataille_de_Champigny#/media/Fichier:Champigny,_le_four_%C3%A0_chaux_(d%C3%A9tail).jpg",
                 "caption": "1997 International Tennis Championships - Doubles",
                 "credit": "Wikipedia",
-                "link": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles"
+                "link": "https://fr.wikipedia.org/wiki/Bataille_de_Champigny#/media/Fichier:Champigny,_le_four_%C3%A0_chaux_(d%C3%A9tail).jpg"
             },
             "start_date": {
                 "year": "1920"
@@ -548,6 +548,7 @@
             "group": "Video"
         },
         {
+            "unique_id": "wistia",
             "media": {
                 "url": "https://lakeshore.wistia.com/medias/g2h5ddrucc",
                 "credit": "Wistia"
@@ -562,6 +563,7 @@
             "group": "Video"
         },
         {
+            "unique_id": "wikipedia-images",
             "media": {
                 "url": "https://de.wikipedia.org/wiki/Beryllium#/media/Datei:Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg",
                 "credit": "Wikipedia"
@@ -576,6 +578,7 @@
             "group": "Image"
         },
         {
+            "unique_id": "wikipedia-commons",
             "media": {
                 "url": "https://commons.wikimedia.org/wiki/File:David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg",
                 "credit": "Wikipedia"
