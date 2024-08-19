@@ -462,6 +462,23 @@ class Timeline {
 
     }
 
+    //Check prefered-reduced-motion - Accessibility to reduce motion if enabled in Operationg System
+    reducedMotionEnabled() {
+        const isReduced = 
+            window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+            window.matchMedia(`(prefers-reduced-motion: reduce)`).matches ===
+                true
+        // Change duration for speed in which slides/timenav move
+        if(isReduced){
+            this._updateDisplay(this._timenav.options.height, true, 1);
+            this._timenav.options.duration = 1
+        }
+        else {
+            // revert time nav option duration back to 1000
+            this._timenav.options.duration = 1000
+        }
+    }
+
     _initEvents() {
         // TimeNav Events
         this._timenav.on('change', this._onTimeNavChange, this);
@@ -487,6 +504,7 @@ class Timeline {
     }
 
     _onSlideChange(e) {
+        this.reducedMotionEnabled()
         if (this.current_id != e.unique_id) {
             this.current_id = e.unique_id;
             this._timenav.goToId(this.current_id);
@@ -495,6 +513,7 @@ class Timeline {
     }
 
     _onTimeNavChange(e) {
+        this.reducedMotionEnabled()
         if (this.current_id != e.unique_id) {
             this.current_id = e.unique_id;
             this._storyslider.goToId(this.current_id);
@@ -555,10 +574,12 @@ class Timeline {
     }
 
     _onStorySliderNext(e) {
+        this.reducedMotionEnabled()
         this.fire("nav_next", e);
     }
 
     _onStorySliderPrevious(e) {
+        this.reducedMotionEnabled()
         this.fire("nav_previous", e);
     }
 
