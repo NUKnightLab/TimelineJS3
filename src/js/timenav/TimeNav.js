@@ -9,7 +9,7 @@ import { TimeGroup } from "./TimeGroup"
 import { TimeEra } from "./TimeEra"
 import { TimeAxis } from "./TimeAxis"
 import { TimeMarker } from "./TimeMarker"
-import Swipable from "../ui/Swipable"
+import Swipeable from "../ui/Swipeable"
 import { Animate } from "../animation/Animate"
 import { I18NMixins } from "../language/I18NMixins"
 
@@ -107,7 +107,7 @@ export class TimeNav {
         this.animate_css = false;
 
         // Swipe Object
-        this._swipable;
+        this._swipeable;
 
         // Merge Data and Options
         mergeData(this.options, options);
@@ -157,13 +157,13 @@ export class TimeNav {
         // Size Markers
         this._assignRowsToMarkers();
 
-        // Size swipable area
+        // Size swipeable area
         this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
         this._el.slider_background.style.left = -(this.options.width / 2) + "px";
         this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
 
-        // Update Swipable constraint
-        this._swipable.updateConstraint({ top: false, bottom: false, left: (this.options.width / 2), right: -(this.timescale.getPixelWidth() - (this.options.width / 2)) });
+        // Update Swipeable constraint
+        this._swipeable.updateConstraint({ top: false, bottom: false, left: (this.options.width / 2), right: -(this.timescale.getPixelWidth() - (this.options.width / 2)) });
 
         if (reposition_markers) {
             this._drawTimeline()
@@ -781,19 +781,19 @@ export class TimeNav {
         // Time Axis
         this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);
 
-        // Swipable
-        this._swipable = new Swipable(this._el.slider_background, this._el.slider, {
+        // Swipeable
+        this._swipeable = new Swipeable(this._el.slider_background, this._el.slider, {
             enable: { x: true, y: false },
             constraint: { top: false, bottom: false, left: (this.options.width / 2), right: false },
             snap: false
         });
-        this._swipable.enable();
+        this._swipeable.enable();
 
     }
 
     _initEvents() {
         // Drag Events
-        this._swipable.on('dragmove', this._onDragMove, this);
+        this._swipeable.on('dragmove', this._onDragMove, this);
 
         // Scroll Events
         DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
