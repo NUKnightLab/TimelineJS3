@@ -54,8 +54,11 @@
     "messages": {
         "loading": "Chargement",
         "return_to_title": "Retour à la page d'accueil",
+        "go_to_end": "Aller à la dernière diapositive",
         "wikipedia": "Extrait de Wikipedia, l'encyclopédie libre",
         "loading_content": "Chargement",
+        "zoom_in": "Zoomer",
+        "zoom_out": "Dézoomer",
         "loading_timeline": "Chargement de la frise en cours... ",
         "error": "Erreur",
         "swipe_to_navigate": "Faites glisser pour naviguer<br><span class='tl-button'>OK</span>",
