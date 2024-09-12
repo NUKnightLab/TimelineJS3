@@ -353,7 +353,7 @@ export class Slide {
         if (is_interactive) {
             this._el.container.removeAttribute('inert');
         } else {
-            this._el.container.setAttribute('inert', 'inert');
+            this._el.container.setAttribute('inert', '');
         }
     }
 }
