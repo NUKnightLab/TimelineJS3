@@ -223,7 +223,7 @@ var buildGoogleFeedURL = function(key, api_version) {
     }
 }
 
-async function jsonFromGoogleURL(google_url, options) {
+export async function jsonFromGoogleURL(google_url, options) {
 
     if (!options['sheets_proxy']) {
         throw new TLError("Proxy option must be set to read data from Google")

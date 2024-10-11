@@ -5,7 +5,7 @@ import Message from "../ui/Message"
 import { Language, fallback, loadLanguage } from "../language/Language"
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events";
-import { makeConfig } from "../core/ConfigFactory"
+import { makeConfig, jsonFromGoogleURL } from "../core/ConfigFactory"
 import { TimelineConfig } from "../core/TimelineConfig"
 import { TimeNav } from "../timenav/TimeNav"
 import * as Browser from "../core/Browser"
@@ -1018,4 +1018,14 @@ class Timeline {
 
 classMixin(Timeline, I18NMixins, Events)
 
-export { Timeline }
+async function exportJSON(url, proxy_url) {
+
+    if (!proxy_url) {
+        proxy_url = 'https://sheets-proxy.knightlab.com/proxy/'
+    }
+
+    let json = await jsonFromGoogleURL(url, {sheets_proxy: proxy_url})
+    return json
+}
+
+export { Timeline, exportJSON }
