@@ -65,7 +65,8 @@ function extractEventFromCSVObject(orig_row) {
             caption: row['Media Caption'] || '',
             credit: row['Media Credit'] || '',
             url: row['Media'] || '',
-            thumbnail: row['Media Thumbnail'] || ''
+            thumbnail: row['Media Thumbnail'] || '',
+            alt: row['Alt Text'] || ''
         },
         text: {
             headline: row['Headline'] || '',

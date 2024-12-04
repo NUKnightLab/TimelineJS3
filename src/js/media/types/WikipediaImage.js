@@ -44,7 +44,7 @@ export default class WikipediaImage extends Media {
 
     _loadMedia() {
         var api_url,
-            image_width = this.options.width || 1000,
+            image_width = Math.round(this.options.width) || 1000, // value to WP API must be int
             language_code = this.getLanguage().lang.toLowerCase(),
             self = this;
 
@@ -140,8 +140,9 @@ export default class WikipediaImage extends Media {
 
     _getImageURL(w, h) {
         if (w && this.base_image_url) {
-            let match = this.base_image_url.match(/(\/\d+px-)/)
+            let match = this.base_image_url.match(/(\/[\d\.]+px-)/)
             if (match) {
+                w = Math.round(w) // WP image URLS 404 if floats are used so round it.
                 return this.base_image_url.replace(match[1], `/${w}px-`) // Wikipedia will autoscale the image for us
             }
         }

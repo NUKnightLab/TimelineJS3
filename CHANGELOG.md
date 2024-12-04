@@ -1,3 +1,8 @@
+3.9.4 (2024-12-04)
+-------------------------
+* Fix bug in WikipediaImage when float width parameters are sent to WP APIs
+* Add support for 'Alt Text' column in Google Sheets configuration.
+
 3.9.3 (2023-06-26)
 -------------------------
 * Update for Google Analytics 4 (GA4)
