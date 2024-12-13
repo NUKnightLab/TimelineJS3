@@ -12,7 +12,7 @@ export default class Twitter extends Media {
         this._el.content_container.className = "tl-media-content-container tl-media-content-container-text";
 
         // Get Media ID
-        if (this.data.url.match("^(https?:)?\/*(www.)?twitter\.com")) {
+        if (this.data.url.match("^(https?:)?\/*(www.)?(twitter|x)\.com")) {
             if (this.data.url.match("status\/")) {
                 this.media_id = this.data.url.split("status\/")[1];
             } else if (this.data.url.match("statuses\/")) {
@@ -70,8 +70,8 @@ export default class Twitter extends Media {
         // Open links in new window
         tweet_text = tweet_text.replace(/<a href/ig, '<a target="_blank" rel="noopener" href');
 
-        if (tweet_text.includes("pic.twitter.com")) {
-
+        if (tweet_text.includes("pic.twitter.com") || tweet_text.includes("pic.x.com")) {
+            // platform.x.com gets redirected to platform.twitter.com as of 2024-12-13
             loadJS('https://platform.twitter.com/widgets.js', function() {
                 twttr.widgets.createTweet(self.media_id, self._el.content_item, {
                     conversation: 'none', // or all

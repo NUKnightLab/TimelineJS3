@@ -89,7 +89,7 @@ export function lookupMediaType(m, image_only) {
             {
                 type: "twitter",
                 name: "Twitter",
-                match_str: "^(https?:)?\/*(www.)?twitter\.com",
+                match_str: "^(https?:)?\/*(www.)?(twitter|x)\.com",
                 cls: Twitter
             },
             {

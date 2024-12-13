@@ -1,3 +1,7 @@
+3.9.5 (2024-12-13)
+-------------------------
+* Recognize x.com in URL to trigger tweet embeds
+
 3.9.4 (2024-12-04)
 -------------------------
 * Fix bug in WikipediaImage when float width parameters are sent to WP APIs
