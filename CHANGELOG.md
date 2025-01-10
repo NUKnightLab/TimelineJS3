@@ -1,3 +1,8 @@
+3.9.6 (2025-01-10)
+-------------------------
+* Change initial computation of component heights to address axis labels overflowing 
+
+
 3.9.5 (2024-12-13)
 -------------------------
 * Recognize x.com in URL to trigger tweet embeds

@@ -458,7 +458,9 @@ class Timeline {
 
 
         // Update Display
-        this._updateDisplay(this._timenav.options.height, true, 2000);
+        // don't pass the height, since it gets computed 
+        // and passing it leads to accidental duplicate adjustments
+        this._updateDisplay() // this._timenav.options.height, true, 2000);
 
     }
 
@@ -695,7 +697,9 @@ class Timeline {
 
         var height = 0;
 
-        if (timenav_height) {
+        if (false) { 
+            // was if (timenav_height) but that led to repetitive application
+            // of the padding adjustment at the en
             height = timenav_height;
         } else {
             if (this.options.timenav_height_percentage || timenav_height_percentage) {
