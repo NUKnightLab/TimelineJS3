@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline</title>
+<meta name="keywords" content="">
+<meta name="description" content="Timeline JS is a free, easy-to-use tool for telling stories in a timeline format.">
+<link rel="stylesheet" href="https://cloud.typenetwork.com/projects/5433/fontface.css" />
+<link rel="stylesheet" href="https://cdn.knightlab.com/libs/orangeline/latest/css/orangeline.min.css" />
+<link rel="stylesheet" href="/static/css/site.css" />
+
+<!-- favicons -->
+<link rel="apple-touch-icon" sizes="180x180" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/manifest.json">
+<link rel="mask-icon" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<!-- /favicons -->
+
+<!-- Open Graph -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Timeline JS" />
+<meta property="og:description" content="Easy-to-make, beautiful timelines." />
+<meta property="og:image" content="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-timeline.png" />
+<meta property="og:url" content="https://timeline.knightlab.com/" />
+<meta property="og:site_name" content="Timeline JS" />
+<!-- /Open Graph -->
+
+<!-- Twitter Card -->
+<meta name="twitter:title" content="Timeline JS">
+<meta name="twitter:description" content="Easy-to-make, beautiful timelines.">
+<meta name="twitter:image" content="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-timeline.png">
+<meta name="twitter:site" content="@knightlab">
+<meta name="twitter:creator" content="@TimelineJS">
+<!-- /Twitter Card -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<link rel="stylesheet" href="/static/css/desert.css" /> 
+</head>
+
+<body>
+
+    <nav id="navbar-product-top" class="navbar navbar-dark">
+        <ul>
+            <li class="logo">
+                <a href="http://knightlab.com">
+                    <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/knightlab-dark.png">
+                </a>
+            </li>
+        </ul>
+        <ul class="nav-right column-hide-phone">
+            <li><a class="button-active button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/projects/">Projects</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://studio.knightlab.com">Class</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://devicelab.knightlab.com">Device Lab</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/posts/">Posts</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://openlab.knightlab.com">Community</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/about/">About</a></li>
+        </ul>
+    </nav>
+
+    
+<article>
+  <section class="section-color container">
+    <p class="breadcrumb"><a href="index.html">&#12298; Back to main documentation page</a></p>
+    <header>
+      <h2 class="header-story">TimelineJS JSON data format</h2>
+      <p>
+        Every timeline needs data about the events it is to show. Most people are happy to just <a href="using-spreadsheets.html">use a Google spreadsheet</a> to configure their Timeline, but if you want to write
+        code to dynamically create or update your timeline, you'll need to understand how to format the data.
+      </p>
+    </header>
+  </section>
+  <section class="section-color container" id="json-format-documentation">
+  <div class="grid">
+    <div class="column-12">
+      <p>
+        If you just want to dive in, you can probably copy from one of our examples (like the one about <a href="https://github.com/NUKnightLab/TimelineJS3/blob/master/website/templates/examples/houston/timeline3.json">Whitney Houston</a>). Otherwise, complete documentation is below.
+      </p>
+      <p>
+        After you have worked out how to create JSON data for a Timeline, you'll also need to <a href="instantiate-a-timeline.html">put it on the page.</a>
+      </p>
+    <p>
+      The TimelineJS JSON format consists of a single JSON object with the following properties:
+      <div class="grid">
+        <div class="column-2 column-6-phone">
+          <strong>Name</strong>
+        </div>
+        <div class="column-2 column-6-phone">
+          <strong>Required?</strong>
+        </div>
+        <div class="column-8">
+          <strong>Notes</strong>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="column-2 column-6-phone">
+          <code>events</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          Yes
+        </div>
+        <div class="column-8">
+          A JSON list of "slide" objects (<a href="#json-slide" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>title</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A "slide" object (<a href="#json-slide" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>eras</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A JSON list of "era" objects (<a href="#json-era" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>scale</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          Either <code>human</code> or <code>cosmological</code>. If no scale is specified, the default is <code>human</code>. The <code>cosmological</code> scale is required to handle dates in the very distant past or future. (Before Tuesday, April 20th, 271,821 BCE after Saturday, September 13 275,760 CE) For the <code>cosmological</code> scale, only the year is considered, but it's OK to have a <code>cosmological</code> timeline with years between 271,821 BCE and 275,760 CE.
+        </div>
+      </div>
+    </p>
+    <p id="json-slide" class="jump">
+      <strong><em>Slide objects</em></strong> are JSON objects with the following properties:
+      <div class="grid">
+        <div class="column-2 column-6-phone">
+          <strong>Name</strong>
+        </div>
+        <div class="column-2 column-6-phone">
+          <strong>Required?</strong>
+        </div>
+        <div class="column-8">
+          <strong>Notes</strong>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="column-2 column-6-phone">
+          <code>start_date</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          Yes, except for <code>title</code> slides
+        </div>
+        <div class="column-8">
+          A "date" object (<a href="#json-date" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>end_date</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A "date" object (<a href="#json-date" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>text</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No, but recommended
+        </div>
+        <div class="column-8">
+          A "text" object (<a href="#json-text" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>media</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A "media" object (<a href="#json-media" data-scroll="true">see below</a>)
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>group</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          Any text. If present, Timeline will organize events with the same value for <code>group</code> to be in the same row or adjacent rows, separate from events in other groups. The common value for the group will be shown as a label at the left edge of the navigation.
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>display_date</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A string which will be used when Timeline displays the date for this. If used, override's display_date values set on the start or end date for this event, which is useful if you want to control how the two dates relate to each other.
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>background</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A Javascript object. The object can have these properties:
+          <br/><code>url</code>: the fully-qualified URL pointing to an image which will be used as the background
+          <br/><code>alt</code>: alternative text that describes the image provided by the <code>url</code> property
+          <br/><code>color</code>: a CSS color, in hexadecimal (e.g. <code>#0f9bd1</code>) or a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_keywords">CSS color keyword</a>.
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>autolink</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A boolean value (<code>true</code> or <code>false</code>). Defaults to <code>true</code>, which means that Timeline will scan text fields and automatically add
+            <code>&lt;a&gt;</code> tags so that links and email addresses are "clickable." If set to false, you may still manually apply the tags in the appropriate fields when
+            you want links. Autolinking applies to the <code>text</code> field in
+            a <code><a href="#json-text" data-scroll="true">text</a></code> object and the <code>caption</code> and <code>credit</code> fields in
+            a <code><a href="#json-media" data-scroll="true">media</a></code> object.
+        </div>
+
+        <div class="column-2 column-6-phone">
+          <code>unique_id</code>
+        </div>
+        <div class="column-2 column-6-phone">
+          No
+        </div>
+        <div class="column-8">
+          A string value which is unique among all slides in your timeline. If not specified, TimelineJS will construct an ID based on the headline, but if you later edit your headline, the ID will change. Unique IDs are used when the <code><a href="/docs/options.html#hash_bookmark">hash_bookmark</a></code> option is used, and can also be used with the <code>timeline.goToId()</code> method to programmatically move the timeline to a specific slide.
+        </div>
+      </div>
+
+      <p id="json-era" class="jump">
+        <strong><em>Era objects</em></strong> are JSON objects which are used to label a span of time on the timeline navigation component. In structure, they are essentially
+        very restricted "slide" objects.
+        <div class="grid">
+          <div class="column-2 column-6-phone">
+            <strong>Name</strong>
+          </div>
+          <div class="column-2 column-6-phone">
+            <strong>Required?</strong>
+          </div>
+          <div class="column-8">
+            <strong>Notes</strong>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="column-2 column-6-phone">
+            <code>start_date</code>
+          </div>
+          <div class="column-2 column-6-phone">
+            Yes
+          </div>
+          <div class="column-8">
+            A "date" object (<a href="#json-date" data-scroll="true">see below</a>)
+          </div>
+
+          <div class="column-2 column-6-phone">
+            <code>end_date</code>
+          </div>
+          <div class="column-2 column-6-phone">
+            Yes
+          </div>
+          <div class="column-8">
+            A "date" object (<a href="#json-date" data-scroll="true">see below</a>)
+          </div>
+
+          <div class="column-2 column-6-phone">
+            <code>text</code>
+          </div>
+          <div class="column-2 column-6-phone">
+            No, but recommended
+          </div>
+          <div class="column-8">
+            A "text" object (<a href="#json-text" data-scroll="true">see below</a>)
+          </div>
+        </div>
+
+    <p id="json-date" class="jump"><strong><em>Date objects</em></strong> are JSON objects with the following properties:</p>
+    <div class="grid">
+      <div class="column-2 column-6-phone">
+        <strong>Name</strong>
+      </div>
+      <div class="column-2 column-6-phone">
+        <strong>Required?</strong>
+      </div>
+      <div class="column-8">
+        <strong>Notes</strong>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="column-2 column-6-phone">
+        <code>year</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        Yes
+      </div>
+      <div class="column-8">
+        A number. Don't use commas. BCE years should be negative numbers. Don't use the letters "BC", "BCE" or any others.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>month</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A number from 1-12 (Javascript experts don't outsmart yourselves: Timeline corrects for Javascript's strange use of "0" for "January", etc.)
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>day</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A number
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>hour</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A number from 0-23
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>minute</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A number from 0-59
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>second</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A number from 0-59
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>millisecond</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A number
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>display_date</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A string for presenting the date. This value will be presented exactly as specified, overriding TimelineJS's default date formatting. Note that the <code>year</code> property, at a minimum, must still be provided so that TimelineJS can properly position the event on the actual timeline.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>format</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A formatting string which will be used to render the date parts, if you wish to override TimelineJS's default formatting. Note that in general you can achieve the same with <code>display_date</code> (above), without needing to master the complexity of the date format strings.
+      </div>
+
+    </div>
+
+    <p id="json-text" class="jump"><strong><em>Text objects</em></strong> are JSON objects with the following properties. For each slide, text objects are optional.</p>
+    <div class="grid">
+      <div class="column-2 column-6-phone">
+        <strong>Name</strong>
+      </div>
+      <div class="column-2 column-6-phone">
+        <strong>Required?</strong>
+      </div>
+      <div class="column-8">
+        <strong>Notes</strong>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="column-2 column-6-phone">
+        <code>headline</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        Any text. HTML markup is OK. Blank is also OK.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>text</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        Any text. HTML markup is OK. Blank is OK. Not used for <a href="#json-era" data-scroll="true">era</a> objects.
+      </div>
+    </div>
+    <p id="json-media" class="jump"><strong><em>Media objects</em></strong> are JSON objects with the following properties. For each slide, media objects are optional.</p>
+    <div class="grid">
+      <div class="column-2 column-6-phone">
+        <strong>Name</strong>
+      </div>
+      <div class="column-2 column-6-phone">
+        <strong>Required?</strong>
+      </div>
+      <div class="column-8">
+        <strong>Notes</strong>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="column-2 column-6-phone">
+        <code>url</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        Yes
+      </div>
+      <div class="column-8">
+        In most cases, a URL (see <a href="media-types.html">media type documentation</a> for complete details).
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>caption</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        Any text. HTML markup is OK.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>credit</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        Any text. HTML markup is OK.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>thumbnail</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A URL for an image to use in the timenav marker for this event. If omitted, Timeline will use an icon based on the type of media. Not relevant for  <code>title</code> slides, because they do not have a marker.
+      </div>
+      
+      <div class="column-2 column-6-phone">
+        <code>alt</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        An alt tag for your image. If none is provided, the caption, if any, will be used.
+      </div>
+      
+      <div class="column-2 column-6-phone">
+        <code>title</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        A title for your image. If none is provided, the caption, if any, will be used.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>link</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        Optional URL to use as the href for wrapping the media with an &lt;a&gt; tag.
+      </div>
+
+      <div class="column-2 column-6-phone">
+        <code>link_target</code>
+      </div>
+      <div class="column-2 column-6-phone">
+        No
+      </div>
+      <div class="column-8">
+        Optional target to be associated with <em>link</em> if used.
+      </div>
+
+    </div>
+  </div>
+</section>
+</article>
+  <footer class="footer-knightlab--dark">
+    <div class="container">
+        <div class='grid grid-center'>
+            <div class='column-2 column-4-phone column-4-tablet'>
+                <a href="http://knightlab.northwestern.edu" target="_blank">
+                    <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/logo-knightlab-stacked-dark-small.png" style="margin-left:auto;">
+                </a>
+                <ul class="list--social text-align-center">
+                    <li><a class="link--no-style" href="http://www.twitter.com/knightlab" target="_blank" title="Knight Lab on Twitter"><span class="icon-twitter"></span></a></li>
+                    <li><a class="link--no-style" href="https://www.facebook.com/knightlab" target="_blank" title="Knight Lab on Facebook"><span class="icon-facebook"></span></a></li>
+                    <li><a class="link--no-style" href="https://github.com/NUKnightLab/" target="_blank" title="Knight Lab on GitHub"><span class="icon-github"></span></a></li>
+                </ul>
+            </div>
+            <div class='column-4 column-5-tablet column-6-phone footer-description'>
+                <p>
+                    The <a title="Northwestern University" href="http://www.northwestern.edu/" target="_blank">Northwestern University</a> Knight Lab is a team of technologists and journalists working at advancing news media innovation through exploration and experimentation.
+                </p>
+                <div class="grid-size-2 grid-size-2-phone">
+                    <div class="grid-item">
+                        <a title="Medill School of Journalism, Media, Integrated Marketing Communications" href="http://www.medill.northwestern.edu/" target="_blank">
+                            <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/logo-medill-dark.png" alt="Medill School of Journalism, Media, Integrated Marketing Communications website">
+                        </a>
+                    </div>
+                    <div class="grid-item">
+                        <a title="McCormick School of Engineering" href="http://www.mccormick.northwestern.edu/" target="_blank">
+                            <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/logo-mccormick-dark.png"  alt="McCormick School of Engineering website">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-center">
+            <div class="grid-item">
+            <address itemscope="" itemtype="http://data-vocabulary.org/Organization">
+                <span style="display:none;" itemprop="name" title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name">Knight Lab</span>
+                <span itemprop="tel" class="tel">(847) 467-4971</span>
+                <span itemprop="address" itemscope="" itemtype="http://data-vocabulary.org/Address" class="address">
+                    <span itemprop="street-address" class="street-address">1845 Sheridan Road</span>
+                    <span class="room-num">Fisk #109 &amp; #111</span>
+                    <div class="address-group">
+                        <span itemprop="locality">Evanston,</span> <span itemprop="region">IL</span> <span itemprop="postal-code">60208 </span>
+                        <span style="display:none;" itemprop="geo" itemscope="" itemtype="http://www.data-vocabulary.org/Geo/" class="geo">
+                            Latitude: <span itemprop="latitude">42.056893</span><br>Longitude:
+                            <span itemprop="longitude">-87.676735</span>
+                        </span>
+                        <a style="display:none;" href="http://knightlab.northwestern.edu" itemprop="url" class="url">Northwesten University Knight Lab | Advancing media innovation through exploration and experimentation.</a>
+                    </div>
+                </span>
+            </address>
+            <span class="copyright">© Copyright <script type="text/javascript"> document.write(new Date().getFullYear());</script> Northwestern University</span>
+            </div>
+        </div>
+    </div>
+</footer>
+  
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  // make permalinks function for each question
+  jQuery("p[id]").each(function(){
+    jQuery(this).css('cursor','pointer');
+    jQuery(this).click(function(){
+      window.location.hash = "#" + this.id;
+    })
+  });
+});
+</script>
+
+</body>
+
+</html>
