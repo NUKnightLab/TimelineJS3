@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Unit Tests</title>
+
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css" />
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/g/underscorejs@1.6.0"></script>
+    <script type="text/javascript" src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+
+    <!-- build:js https://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+    <script src="/dist/js/timeline.js"></script>
+    <!-- endbuild -->
+
+
+    <script type="text/javascript">
+        function date_dict(d) {
+            return {
+                'milliseconds': d.data.date_obj.getMilliseconds(),
+                'seconds': d.data.date_obj.getSeconds(),
+                'minutes': d.data.date_obj.getMinutes(),
+                'hours': d.data.date_obj.getHours(),
+                'day': d.data.date_obj.getDate(),
+                'month': d.data.date_obj.getMonth(), // 0-11 remember
+                'year': d.data.date_obj.getYear()
+            }
+        }
+
+        function date_parts_match(a, b, parts) {
+            a = date_dict(a);
+            b = date_dict(b);
+            for (var i = 0; i < parts.length; i++) {
+                if (a[parts[i]] != b[parts[i]]) return false;
+            };
+            return true;
+        }
+
+        QUnit.module("TL.Util tests", {});
+        QUnit.test("TL.Util", function(assert) {
+            var test = [
+                [0, 1],
+                [2, 3],
+                [5, 7]
+            ];
+            assert.equal(TL.Util.maxDepth(test), 1, "Max depth 1.")
+
+            var test = [
+                [0, 5],
+                [2, 8],
+                [9, 10]
+            ];
+            assert.equal(TL.Util.maxDepth(test), 2, "Max depth 2.")
+
+            var test = [
+                [0, 3],
+                [5, 8],
+                [9, 10]
+            ];
+            assert.equal(TL.Util.maxDepth(test), 1, "Max depth 1.")
+
+            var test = [
+                [0, 3],
+                [2, 8],
+                [4, 9],
+                [15, 20]
+            ];
+            assert.equal(TL.Util.maxDepth(test), 2, "Max depth 2.")
+
+            var test = [
+                [0, 5],
+                [2, 8],
+                [4, 9],
+                [15, 20]
+            ];
+            assert.equal(TL.Util.maxDepth(test), 3, "Max depth 3.")
+
+            var test = [
+                [0, 5],
+                [2, 8],
+                [10, 25],
+                [15, 20],
+                [18, 27],
+                [24, 28],
+
+            ];
+            assert.equal(TL.Util.maxDepth(test), 3, "Max depth 3.")
+
+            assert.equal(TL.Util.trim(null), '', "null gets zero length string");
+            assert.equal(TL.Util.trim(' bob '), 'bob');
+            assert.equal(TL.Util.trim('bob '), 'bob');
+            assert.equal(TL.Util.trim('bob'), 'bob');
+            assert.ok(TL.Util.trim('bob'), "trimming a non-empty string returns a true value")
+            assert.ok(!(TL.Util.trim('')), "trimming an empty string returns a false value")
+        });
+
+        QUnit.test("TL.Util color tools", function(assert) {
+            assert.ok(TL.Util.rgbToHex({
+                r: 255,
+                g: 255,
+                b: 255
+            }).match(/^#ffffff$/i), "RGB white is Hex white");
+            assert.ok(TL.Util.rgbToHex('rgb(218,112,214)').match(/^#DA70D6$/i), "colors convert correctly from rgb string");
+            var rgb = TL.Util.hexToRgb('#DA70D6');
+            assert.equal(rgb.r, 218, "test hexToRgb red")
+            assert.equal(rgb.g, 112, "test hexToRgb green")
+            assert.equal(rgb.b, 214, "test hexToRgb blue")
+            throws(function(assert) {
+                TL.Util.rgbToHex("malformed string")
+            }, "make sure bad values throw exceptions 1");
+            throws(function(assert) {
+                TL.Util.rgbToHex("rgb(218,112)")
+            }, "make sure bad values throw exceptions 2");
+            throws(function(assert) {
+                TL.Util.rgbToHex({
+                    r: 255,
+                    g: 255,
+                    c: 255
+                })
+            }, "make sure bad values throw exceptions 3");
+            var zero_test = TL.Util.rgbToHex({
+                r: 0,
+                g: 255,
+                b: 255
+            })
+            assert.ok(zero_test.match(/^#00FFFF$/i), "make sure a zero value doesn't throw an exception")
+            var from_name = TL.Util.hexToRgb('bisque');
+            var from_hex = TL.Util.hexToRgb('#ffe4c4');
+            assert.equal(from_name.r, from_hex.r, "named colors should work too... red")
+            assert.equal(from_name.g, from_hex.g, "named colors should work too... green")
+            assert.equal(from_name.b, from_hex.b, "named colors should work too... blue")
+            assert.equal(TL.Util.colorObjToHex(from_name), TL.Util.colorObjToHex(from_hex), "objects to hexes");
+            assert.ok(TL.Util.colorObjToHex(from_name).match(/^#ffe4c4$/i), "objects to hexes")
+            assert.ok(TL.Util.colorObjToHex(from_hex).match(/^#ffe4c4$/i), "objects to hexes")
+        });
+
+        QUnit.test("TL.Util.linkify", function(assert) {
+            var text = "This is some text with a URL in it http://knightlab.northwestern.edu and then some more text";
+            var linked = TL.Util.linkify(text);
+            assert.ok(linked.startsWith('This is some text with a URL in it <a'), "should start the same and then have a link -> " + linked);
+            assert.ok(linked.match(/href=['"]http:\/\/knightlab.northwestern.edu['"]/), "should have an href -> " + linked);
+            assert.ok(linked.match(/>knightlab.northwestern.edu<\/a>/), "should have an href " + linked);
+
+            text = "This is some text with www.google.com in it";
+            var linked = TL.Util.linkify(text);
+            assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
+            assert.ok(linked.match(/href=['"]http:\/\/www.google.com['"]/), "should have an href");
+            assert.ok(linked.match(/>www.google.com<\/a>/), "should have the right link text");
+
+            text = "This is some text with support@knightlab.zendesk.com in it";
+            var linked = TL.Util.linkify(text);
+            assert.ok(linked.startsWith('This is some text with <a'), "should start the same and then have a link " + linked);
+            assert.ok(linked.match(/href=['"]mailto:support@knightlab.zendesk.com['"]/), "should have an href " + linked);
+            assert.ok(linked.match(/>support@knightlab.zendesk.com<\/a>/), "should have the right link text " + linked);
+
+            text = "This is text which already has <a href='http://google.com'>a link</a> in it."
+            var not_linked = TL.Util.linkify(text);
+            assert.equal(not_linked, text, 'linkify should not have changed anything.')
+
+            text = 'This is text which already has <a href="http://google.com">a link</a> in it.'
+            var not_linked = TL.Util.linkify(text);
+            assert.equal(not_linked, text, 'linkify should not have changed anything.')
+
+            text = 'This is text which already has <a href=http://google.com>a link</a> in it.'
+            var not_linked = TL.Util.linkify(text);
+            assert.equal(not_linked, text, 'linkify should not have changed anything.')
+
+        })
+
+        QUnit.test("TL.Util.findNextGreater", function(assert) {
+            var l = [1, 5, 10, 20, 35];
+            assert.equal(TL.Util.findNextGreater(l, 1), 5, "5 is next greatest after 1");
+            assert.equal(TL.Util.findNextGreater(l, 5), 10, "10 is next greatest after 5");
+            assert.equal(TL.Util.findNextGreater(l, 10), 20, "20 is next greatest after 10");
+            assert.equal(TL.Util.findNextGreater(l, 15), 20, "correctly handle a curr val which isn't in the list");
+            assert.equal(TL.Util.findNextGreater(l, 35), 35, "handle value at end of list");
+            assert.equal(TL.Util.findNextGreater(l, 40), 40, "handle value greater than max in list");
+            assert.equal(TL.Util.findNextGreater(l, 40, 35), 35, "handle greater than max in list with default");
+
+            assert.equal(TL.Util.findNextLesser(l, 1), 1, "1 is least");
+            assert.equal(TL.Util.findNextLesser(l, 5), 1, "1 is least after 5");
+            assert.equal(TL.Util.findNextLesser(l, 10), 5, "20 is next greatest after 10");
+            assert.equal(TL.Util.findNextLesser(l, 15), 10, "10 is less than 15 (which isn't in list)");
+            assert.equal(TL.Util.findNextLesser(l, 35), 20, "20 less than 35");
+            assert.equal(TL.Util.findNextLesser(l, 40), 35, "35 is less than 40");
+            assert.equal(TL.Util.findNextLesser(l, 0, 0), 0, "handle less than min in list without default");
+            assert.equal(TL.Util.findNextLesser(l, 0, -10), -10, "handle less than min in list with default");
+        })
+
+        QUnit.test("TL.Util.isEmptyObject", function(assert) {
+            o = {}
+            assert.ok(TL.Util.isEmptyObject(o), "no keys should be empty");
+            o.foo = "  ";
+            assert.ok(TL.Util.isEmptyObject(o), "empty string should be empty");
+            o.bar = "";
+            assert.ok(TL.Util.isEmptyObject(o), "2 empty strings should be empty");
+            o.baz = null;
+            assert.ok(TL.Util.isEmptyObject(o), "add null, still should be empty");
+            o.foo = "  not empty  ";
+            assert.equal(TL.Util.isEmptyObject(o), false, "adding a string ")
+        })
+
+        QUnit.test("TL.Util.parseYouTubeTime", function(assert) {
+            assert.equal(TL.Util.parseYouTubeTime('5s'), 5, "parse seconds only")
+            assert.equal(TL.Util.parseYouTubeTime('1m5s'), 65, "parse m/s")
+            assert.equal(TL.Util.parseYouTubeTime('2h4m5s'), 7445, "parse h/m/s")
+            assert.equal(TL.Util.parseYouTubeTime('5m'), 300, "parse minutes only")
+            assert.equal(TL.Util.parseYouTubeTime('1h'), 3600, "parse hours only")
+            assert.equal(TL.Util.parseYouTubeTime(''), 0, "handle empty string")
+            assert.equal(TL.Util.parseYouTubeTime(null), 0, "handle empty string")
+            assert.equal(TL.Util.parseYouTubeTime('4:55'), 0, "handle malformed string")
+            assert.equal(TL.Util.parseYouTubeTime(5), 5, "handle number")
+        });
+
+        QUnit.test("TL.Util.ensureUniqueKey", function(assert) {
+            var o = {
+                foo: 1,
+                bar: 2
+            }
+            assert.ok(!(TL.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
+            assert.equal(TL.Util.ensureUniqueKey(o, 'baz'), 'baz', "not in there, give it back");
+            assert.equal(TL.Util.ensureUniqueKey(o, 'foo'), 'foo-2', "treat existing as 1-based");
+            o['foo-2'] = 3;
+            assert.ok(!(TL.Util.ensureUniqueKey(o, 'foo') in o), "should be unique");
+            var random = TL.Util.ensureUniqueKey(o, '');
+            assert.ok(TL.Util.trim(random), "Should get a non-empty string");
+            assert.ok(!(random in o), "empty string should get non-empty unique");
+        });
+
+
+        QUnit.module("TL.Date tests", {});
+
+        QUnit.test("TL.Date", function(assert) {
+            var refdate = TL.Date.makeDate({
+                year: 2000,
+                month: 6,
+                day: 21
+            });
+            var jsdate = new Date();
+            throws(function(assert) {
+                refdate.isBefore(jsdate)
+            }, "Don't allow comparison with JS Dates");
+            jsdate = TL.Date.makeDate(new Date());
+            assert.ok(refdate.isBefore(jsdate), "refdate should be before any new date");
+            assert.ok(jsdate.isAfter(refdate), "any new date should be after refdate");
+
+            var smalldate = TL.Date.makeDate({
+                year: 2015
+            });
+            assert.ok(!isNaN(smalldate.getTime()), "small dates are human");
+
+            var bigdate = TL.Date.makeDate({
+                year: 1000000
+            });
+            assert.ok(!isNaN(bigdate.getTime()), "big dates are cosmological");
+
+            var cdate = TL.Date.makeDate({
+                year: 2014,
+                display_date: "hello"
+            });
+            assert.equal(cdate.getDisplayDate(), 'hello', 'display_text overrides other formatting')
+
+            var date = TL.Date.makeDate({
+                year: 75
+            });
+            assert.equal(date.getDisplayDate(), "75", "handle years in the first century CE correctly")
+
+        });
+
+        QUnit.test("TL.Date.parseDate", function(assert) {
+            var d = TL.Date.parseDate('2014-08-20');
+            assert.equal(d.year, '2014', 'three part date gets year 2014');
+            assert.equal(d.month, '08', 'three part date gets month 08');
+            assert.equal(d.day, '20', 'three part date gets day 20');
+
+            var d = TL.Date.parseDate('2014-08');
+            assert.equal(d.year, '2014', 'two part date gets year 2014');
+            assert.equal(d.month, '08', 'two part date gets month 08');
+            assert.ok(!(d.day), 'two-part date has no day');
+
+            var d = TL.Date.parseDate('2014');
+            assert.equal(d.year, '2014', 'year-only date gets 2014');
+            assert.ok(!(d.month), 'year only date has no month');
+            assert.ok(!(d.day), 'year only date has no day');
+
+            var d = TL.Date.parseDate('-6');
+            assert.equal(d.year, '-6', 'year-only date gets -6 (BC ok)');
+            assert.ok(!(d.month), 'year only date has no month');
+            assert.ok(!(d.day), 'year only date has no day');
+
+
+        });
+
+        QUnit.test("TL.Date.findBestFormat", function(assert) {
+            var date = new TL.Date({
+                'year': 1975,
+                month: 7
+            })
+            assert.equal(date.findBestFormat(), "month", "Expect a format key")
+            assert.equal(date.findBestFormat(true), "month_short", "Expect a different format key for short (legacy)")
+            assert.equal(date.findBestFormat('short'), "month_short", "Expect a different format key for short (explicit)")
+
+        });
+
+        QUnit.test("TL.Date.floor", function(assert) {
+            throws(function(assert) {
+                TL.Date.makeDate(new Date()).floor('foobar');
+            }, new RegExp(/invalid_scale_err/), "bad scale throws invalid_scale_err error.")
+
+
+            var d = TL.Date.makeDate(new Date(1407440158306)); // Thu Aug 07 2014 14:35:58 GMT-0500 (CDT)
+            var floored = d.floor('millisecond');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year', 'month', 'date', 'hours', 'minutes', 'seconds', 'milliseconds']), 'millisecond rounding doesnt change others')
+            assert.equal(date_obj.getTime(), d.getTime(), 'rounds to millisecond')
+
+            var floored = d.floor('second');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year', 'month', 'date', 'hours', 'minutes', 'seconds']), 'second rounding doesnt change others')
+            assert.equal(date_obj.getMilliseconds(), 0, 'seconds round to 0 millis ' + floored)
+
+            var floored = d.floor('minute');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year', 'month', 'date', 'hours', 'minutes']), 'minute rounding doesnt change others')
+            assert.equal(date_obj.getMilliseconds(), 0, 'minutes round to 0 millis ' + floored)
+            assert.equal(date_obj.getSeconds(), 0, 'minutes round to 0 seconds ' + floored)
+
+            var floored = d.floor('hour');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year', 'month', 'date', 'hours']), 'hour rounding doesnt change others')
+            assert.equal(date_obj.getMilliseconds(), 0, 'hours round to 0 millis ' + floored)
+            assert.equal(date_obj.getSeconds(), 0, 'hours round to 0 seconds ' + floored)
+            assert.equal(date_obj.getMinutes(), 0, 'hours round to 0 minutes ' + floored)
+
+            var floored = d.floor('day');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year', 'month', 'date']), 'day rounding doesnt change others')
+            assert.equal(date_obj.getMilliseconds(), 0, 'days round to 0 millis ' + floored)
+            assert.equal(date_obj.getSeconds(), 0, 'days round to 0 seconds ' + floored)
+            assert.equal(date_obj.getMinutes(), 0, 'days round to 0 minutes ' + floored)
+            assert.equal(date_obj.getHours(), 0, 'days round to 0 hours ' + floored)
+
+            var floored = d.floor('month');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year', 'month']), 'month rounding doesnt change others')
+            assert.equal(date_obj.getMilliseconds(), 0, 'months round to 0 millis ' + floored)
+            assert.equal(date_obj.getSeconds(), 0, 'months round to 0 seconds ' + floored)
+            assert.equal(date_obj.getMinutes(), 0, 'months round to 0 minutes ' + floored)
+            assert.equal(date_obj.getHours(), 0, 'months round to 0 hours ' + floored)
+            assert.equal(date_obj.getDate(), 1, 'months round to day 1 ' + floored)
+
+            var floored = d.floor('year');
+            var date_obj = floored.data.date_obj;
+            assert.ok(date_parts_match(d, floored, ['year']), 'year rounding doesnt change others')
+            assert.equal(date_obj.getMilliseconds(), 0, 'years round to 0 millis ' + floored)
+            assert.equal(date_obj.getSeconds(), 0, 'years round to 0 seconds ' + floored)
+            assert.equal(date_obj.getMinutes(), 0, 'years round to 0 minutes ' + floored)
+            assert.equal(date_obj.getHours(), 0, 'years round to 0 hours ' + floored)
+            assert.equal(date_obj.getDate(), 1, 'years round to day 1 ' + floored)
+            assert.equal(date_obj.getMonth(), 0, 'years round to month 0 ' + floored)
+
+            var floored = d.floor('decade');
+            var date_obj = floored.data.date_obj;
+            assert.equal(date_obj.getYear(), 110, "decade should round to 2010 " + floored)
+
+            var floored = d.floor('century');
+            var date_obj = floored.data.date_obj;
+            assert.equal(date_obj.getYear(), 100, "century should round to 2000 " + floored)
+
+            var floored = d.floor('millennium');
+            var date_obj = floored.data.date_obj;
+            assert.equal(date_obj.getYear(), 100, "Should round to 2000 " + floored)
+
+            var early_ce = TL.Date.makeDate(-59149708181438); // 8/14/95 (90 not 1995)
+            var floored = early_ce.floor('decade');
+            assert.equal(floored.getTime(), -59326970400000, 'Early floored dates should not go into the 20th Century')
+
+            var age_scale = TL.Date.makeDate({
+                year: 1500000
+            });
+            throws(function(assert) {
+                age_scale.floor('month');
+            }, /invalid_scale_err/, 'month not valid scale for cosmo');
+            assert.equal(age_scale.floor('age').getTime(), 1000000, 'Should floor to 1M years');
+
+            var cosmo_year = new TL.BigDate({
+                'year': 1945
+            });
+            assert.equal(cosmo_year.floor('decade').getTime(), 1940, 'decade should floor 1945 to 1940')
+
+        });
+
+        QUnit.test("TL.Date date formatting", function(assert) {
+            var msgs = TL.Language.default;
+            var d = TL.Date.makeDate({
+                year: '2014',
+                month: '1',
+                day: '1'
+            })
+            assert.equal(d.getDisplayDate(msgs), "January 1, 2014")
+            var d = TL.Date.makeDate({
+                year: '2014'
+            })
+            assert.equal(d.getDisplayDate(msgs), "2014")
+        });
+
+        QUnit.test("TL.Util.isTrue", function(assert) {
+            assert.ok(TL.Util.isTrue(true));
+            assert.notOk(TL.Util.isTrue(false));
+            assert.notOk(TL.Util.isTrue());
+            assert.notOk(TL.Util.isTrue(null));
+            assert.ok(TL.Util.isTrue('true'));
+            assert.ok(TL.Util.isTrue(1));
+        })
+
+        QUnit.module("TL.DateUtil tests", {});
+        QUnit.test("TL.DateUtil", function(assert) {
+            var a = {
+                    start_date: TL.Date.makeDate({
+                        year: 1999
+                    })
+                } // will break when we have start dates
+            var b = {
+                start_date: TL.Date.makeDate({
+                    year: 2000
+                })
+            }
+            var c = {
+                start_date: TL.Date.makeDate({
+                    year: 2001
+                })
+            }
+
+            var ary = [c, b, a]
+            TL.DateUtil.sortByDate(ary);
+            assert.equal(ary[0], a, "A should sort first")
+            assert.equal(ary[1], b, "B should sort second")
+            assert.equal(ary[2], c, "C should sort third")
+
+            ary = [b, a, c];
+            TL.DateUtil.sortByDate(ary);
+            assert.equal(ary[0], a, "A should sort first")
+            assert.equal(ary[1], b, "B should sort second")
+            assert.equal(ary[2], c, "C should sort third")
+
+            ary = [b, c, a]
+            TL.DateUtil.sortByDate(ary);
+            assert.equal(ary[0], a, "A should sort first")
+            assert.equal(ary[1], b, "B should sort second")
+            assert.equal(ary[2], c, "C should sort third")
+
+
+        })
+
+        QUnit.test("TL.DateUtil.parseTime", function(assert) {
+
+            var test_date = function(time_str, expected_hour, expected_minute, expected_second, expected_milli) {
+                try {
+                    var parsed = TL.DateUtil.parseTime(time_str);
+                    assert.equal(parsed.hour, expected_hour, time_str + " expected hour " + expected_hour);
+                    assert.equal(parsed.minute, expected_minute, time_str + " expected minute " + expected_minute);
+                    assert.equal(parsed.second, expected_second, time_str + " expected second " + expected_second);
+                    assert.equal(parsed.millisecond, expected_milli, time_str + " expected milli " + expected_milli);
+                } catch (e) {
+                    assert.ok(false, "Failure testing " + time_str + " got " + e);
+                }
+
+
+            }
+            test_date('11:30:40.5', 11, 30, 40, 500);
+
+
+            test_date('11:30', 11, 30, null, null);
+            test_date('11.30', 11, 30, null, null);
+            test_date('1130', 11, 30, null, null);
+            test_date('11.30pm', 23, 30, null, null);
+            test_date('11:30 pm', 23, 30, null, null);
+            test_date('1130 pm', 23, 30, null, null);
+            test_date('11:30:40', 11, 30, 40, null);
+            test_date('23:30:40', 23, 30, 40, null);
+            test_date('11:30:40 pm', 23, 30, 40, null);
+            test_date('11:30:40pm', 23, 30, 40, null);
+            test_date("12:33 PM", 12, 33, null, null);
+            test_date("1233", 12, 33, null, null);
+            test_date("12:33 a.m.", 0, 33, null, null);
+            test_date("0033", 0, 33, null, null);
+            throws(function(assert) {
+                TL.DateUtil.parseTime('24:30')
+            }, /invalid_hour_err/i, "hour 24 throws invalid_hour_err error");
+            throws(function(assert) {
+                TL.DateUtil.parseTime('23:30pm')
+            }, /invalid_hour_err/i, 'hour 23 with pm throws invalid_hour_err error');
+
+
+
+        });
+
+        QUnit.module("TL.Language tests", {});
+        QUnit.test("TL.Language", function(assert) {
+            var msgs = new TL.Language();
+            assert.equal(msgs.name, "English", "English is default");
+            assert.equal(msgs.lang, "en", "en is default");
+            assert.equal(msgs._('loading'), "Loading", "get a message");
+            assert.equal(msgs._('foobar'), "foobar", "invalid keys should pass through");
+
+            var msgs = TL.Language.fallback;
+            assert.equal(msgs.name, "English", "English is default");
+            assert.equal(msgs.lang, "en", "en is default");
+            assert.equal(msgs._('loading'), "Loading", "get a message");
+            assert.equal(msgs._('foobar'), "foobar", "invalid keys should pass through");
+
+            assert.equal(TL.Language.formatNumber(18.54, '%.1f and some other stuff'), "18.5 and some other stuff", "check rounding and replacement")
+
+            assert.equal(TL.Language.formatNumber(18.54, 'a literal display year'), 'a literal display year', "pass through literals as display dates")
+
+            assert.equal(msgs.formatBigYear({
+                'year': 20000
+            }, 'foobar'), '20.0 thousand years ago', "use fallback bigdateformat")
+        })
+
+        QUnit.test("TL.Language test non-english", function(assert) {
+            var msgs = new TL.Language({
+                language: 'pl'
+            });
+            assert.equal(msgs.name, "English", "English is default and polish doesn't have one");
+            assert.equal(msgs.lang, "pl", "should have gotten 'pl'");
+            assert.equal(msgs._('loading'), "\u0141adowanie", "get a message for loading");
+            assert.equal(msgs._('foobar'), "foobar", "invalid keys should pass through");
+        });
+
+
+        QUnit.test("TL.Language date formatting", function(assert) {
+            var msgs = TL.Language.fallback;
+            var d = new Date(2014, 7, 7, 4, 5, 0);
+            assert.equal(msgs.formatDate(d, 'd'), '7', 'short day');
+            assert.equal(msgs.formatDate(d, 'dd'), '07', 'padded day');
+            assert.equal(msgs.formatDate(d, 'ddd'), 'Thurs.', 'short day of week');
+            assert.equal(msgs.formatDate(d, 'dddd'), 'Thursday', 'full day of week');
+            assert.equal(msgs.formatDate(d, 'm'), '8', 'month number');
+            assert.equal(msgs.formatDate(d, 'mm'), '08', 'padded month number');
+            assert.equal(msgs.formatDate(d, 'mmm'), 'Aug.', 'short month name');
+            assert.equal(msgs.formatDate(d, 'mmmm'), 'August', 'long month name');
+            assert.equal(msgs.formatDate(d, 'yy'), '14', 'short year');
+            assert.equal(msgs.formatDate(d, 'yyyy'), '2014', 'long year');
+            assert.equal(msgs.formatDate(d, 'h'), '4', 'hour');
+            assert.equal(msgs.formatDate(d, 'hh'), '04', 'padded hour');
+            assert.equal(msgs.formatDate(d, 'H'), '4', 'hour (24HR)');
+            assert.equal(msgs.formatDate(d, 'HH'), '04', 'padded hour (24HR)');
+            assert.equal(msgs.formatDate(d, 'M'), '5', 'minute');
+            assert.equal(msgs.formatDate(d, 'MM'), '05', 'padded minute');
+            var d2 = new Date(d.getTime() + (1000 * 60 * 60 * 12));
+            assert.equal(msgs.formatDate(d2, 'H'), '16', 'hour (24HR after noon)');
+            assert.equal(msgs.formatDate(d2, 'HH'), '16', 'padded hour (24HR after noon)');
+            assert.equal(msgs.formatDate(d, 's'), '0', 'second');
+            assert.equal(msgs.formatDate(d, 'ss'), '00', 'padded second');
+
+            var d = new Date(2014, 7, 7, 4, 5, 0);
+            d.setFullYear(-500);
+            assert.equal(msgs.formatDate(d, 'yyyy'), '500 <span>BCE</span>', 'BCE date');
+
+
+        });
+
+        // QUnit.test("TimeScale._assessGroups", function(assert){
+        //   var slides = [{group: 'alice'}, { group: 'bob'}, {group: 'alice'}, {group: 'carol'}];
+        //   var groups = TL.TimeScale._assessGroups(slides);
+        //   assert.equal(groups.length,3);
+        // });
+
+
+        function asyncJSON(url) {
+            var data = TL.ajax({
+                url: url,
+                async: false
+            });
+            return JSON.parse(data.responseText);
+        }
+
+        QUnit.module("TL.ConfigFactory tests", {});
+
+        QUnit.test("TL.ConfigFactory", function(assert) {
+            var data = TL.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedLegacyFormat.json'));
+            assert.equal(7, data.events.length, "7 entries in GoogleSpreadsheetFeedLegacyFormat");
+            assert.ok(data.title, "There should be a title.")
+            var data = TL.ConfigFactory.googleFeedJSONtoTimelineJSON(asyncJSON('test/GoogleSpreadsheetFeedTJS3Format.json'));
+            assert.equal(7, data.events.length, "7 events in GoogleSpreadsheetFeedTJS3Format (one title)");
+            assert.ok(data.title, "There should be a title.")
+            assert.equal(2012, data.events[0].start_date.year, "first non-title event is year 2012");
+            assert.equal(2011, data.events[6].start_date.year, "last non-title event is year 2011");
+        });
+
+        QUnit.test("TL.ConfigFactory.parseGoogleSpreadsheetURL", function(assert) {
+            var key = '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI';
+            var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(key);
+            assert.equal(key, parts.key, "Bare sheet ID should come back in key")
+
+            var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml'
+            var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
+            var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(url);
+            assert.equal(key, parts.key, "new-ish url format should get the right key")
+
+            var url = 'https://docs.google.com/spreadsheets/d/1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI/pubhtml?gid=2066744085'
+            var key = '1a8jYcSMWGXupicLJhtNAhkQfta8Fc5qKinDIJtroOAI';
+            var worksheet = '2066744085';
+            var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(url);
+            assert.equal(key, parts.key, "new-ish url format should get the right key")
+            assert.equal(worksheet, parts.worksheet, "new-ish url format should get the right worksheet")
+
+            var url = 'https://docs.google.com/spreadsheets/d/1_7l1RsxQIodkOuKguCPMVQWgmQLGoPr7nBQa9l1k5_4/pubhtml'
+            var key = '1_7l1RsxQIodkOuKguCPMVQWgmQLGoPr7nBQa9l1k5_4';
+            var parts = TL.ConfigFactory.parseGoogleSpreadsheetURL(url);
+            assert.equal(key, parts.key, "new-ish url format should get the right key")
+        });
+
+        QUnit.module("TimelineConfig ajax tests", {});
+
+        QUnit.test("Handling CDN 'preview' URLs", function(assert) {
+            assert.expect(2);
+            var bad_url = 'https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&font=Default&lang=en&initial_zoom=2&height=650';
+            var done = assert.async();
+            var config = TL.ConfigFactory.makeConfig(bad_url, function(config) {
+                assert.notOk(config.isValid(), "Bad URL should result in invalid timeline config.");
+                var tl_error = config.messages.errors[0];
+                assert.equal(tl_error.message_key, 'invalid_url_err', "Expect 'invalid_url_err' in message key.");
+                done();
+            })
+        })
+
+        QUnit.module("user-interface JSON tests", {});
+
+        QUnit.test("TimelineConfig for user-interface", function(assert) {
+
+            var done = assert.async();
+            TL.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json', function(config) {
+                assert.ok((typeof(config) != undefined), "config loaded")
+                console.log(config, " is null? ")
+                window.stash = config;
+                assert.ok((typeof(config.events) != undefined), "config has events")
+                var slides = config.events;
+                var sorted = true;
+                for (var i = 0; i < slides.length - 1; i++) {
+                    var earlier = slides[i];
+                    var later = slides[i + 1];
+                    sorted = sorted && (earlier.start_date.data.date_obj <= later.start_date.data.date_obj);
+                };
+                assert.ok(sorted, "dates are sorted");
+                done();
+            });
+
+        });
+
+
+
+        QUnit.test("TimeScale", function(assert) {
+            var done = assert.async();
+            TL.ConfigFactory.makeConfig('/examples/user-interface/timeline3.json', function(config) {
+                assert.ok(config, "test data loaded");
+                var timescale = new TL.TimeScale(config, {
+                    display_width: 2200,
+                    screen_multiplier: 3
+                });
+                assert.equal(timescale.getMinorScale(), 'year', "timescale should be years");
+                assert.ok(timescale.getTicks().major.ticks.length > 0, "should be some major ticks")
+                assert.ok(timescale.getTicks().minor.ticks.length > 0, "should be some minor ticks")
+                assert.equal(timescale.getNumberOfRows(), 3, "Expecting 3 rows") // this will change if someone monkeys around with the config file!
+                assert.equal(timescale.getScale(), 'human', 'test case uses human dates')
+                done();
+            });
+
+
+        });
+
+
+        QUnit.module("marktwain.json tests", {});
+
+        QUnit.test("TimeScale", function(assert) {
+            var done = assert.async();
+            TL.ConfigFactory.makeConfig('/examples/twain/marktwain.json', function(config) {
+                var timescale = new TL.TimeScale(config);
+                assert.equal(timescale.getNumberOfRows(), 5, "expect 5 rows");
+                assert.equal(timescale._positions.length, config.events.length, "There should be the same number of positions (" + timescale._positions.length + ") as slides (" + config.events.length + ")")
+                var row_check = new Array(timescale.getNumberOfRows());
+                for (var i = 0; i < row_check.length; i++) {
+                    row_check[i] = [];
+                };
+                var all_posinfos_defined = true;
+
+                for (var i = 0; i < config.events.length; i++) {
+                    var pos_info = timescale.getPositionInfo(i);
+                    all_posinfos_defined = all_posinfos_defined && (typeof(pos_info) != "undefined")
+                    row_check[pos_info.row].push(pos_info);
+                };
+                assert.ok(all_posinfos_defined, "There should be a pos_info for every idx");
+                var slides_in_rows = 0;
+                for (var i = 0; i < timescale.getNumberOfRows(); i++) {
+                    slides_in_rows += row_check[i].length;
+                    var no_overlaps = true;
+                    for (var j = 1; j < row_check[i].length; j++) {
+                        no_overlaps = no_overlaps && (row_check[i][j - 1].end < row_check[i][j].start);
+                    };
+                    assert.ok(no_overlaps, "No overlaps in row " + i)
+                };
+                assert.equal(slides_in_rows, config.events.length, "In checking rows we should have seen all slides")
+                done();
+            });
+        })
+
+        QUnit.test("TimeScale max rows", function(assert) {
+            var config = new TL.TimelineConfig({
+                scale: 'cosmological',
+                events: [{
+                    start_date: {
+                        year: 1
+                    },
+                    end_date: {
+                        year: 1000
+                    }
+                }, {
+                    start_date: {
+                        year: 100
+                    },
+                    end_date: {
+                        year: 1500
+                    }
+                }, {
+                    start_date: {
+                        year: 200
+                    },
+                    end_date: {
+                        year: 2000
+                    }
+                }, {
+                    start_date: {
+                        year: 300
+                    },
+                    end_date: {
+                        year: 2500
+                    }
+                }, {
+                    start_date: {
+                        year: 400
+                    },
+                    end_date: {
+                        year: 2600
+                    }
+                }, {
+                    start_date: {
+                        year: 500
+                    },
+                    end_date: {
+                        year: 4000
+                    }
+                }, ]
+            })
+            var timescale = new TL.TimeScale(config, {
+                display_width: 600,
+                screen_multiplier: 3,
+                max_rows: 4
+            });
+            assert.equal(timescale.getNumberOfRows(), 4, "Max rows 4 should be honored.")
+            var timescale = new TL.TimeScale(config, {
+                display_width: 600,
+                screen_multiplier: 3,
+                max_rows: 3
+            });
+            assert.equal(timescale.getNumberOfRows(), 3, "Max rows 3 should be honored.")
+        });
+    </script>
+</head>
+
+<body>
+    <div id="qunit"></div>
+</body>
+
+</html>

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline</title>
+<meta name="keywords" content="">
+<meta name="description" content="Timeline JS is a free, easy-to-use tool for telling stories in a timeline format.">
+<link rel="stylesheet" href="https://cloud.typenetwork.com/projects/5433/fontface.css" />
+<link rel="stylesheet" href="https://cdn.knightlab.com/libs/orangeline/latest/css/orangeline.min.css" />
+<link rel="stylesheet" href="/static/css/site.css" />
+
+<!-- favicons -->
+<link rel="apple-touch-icon" sizes="180x180" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/manifest.json">
+<link rel="mask-icon" href="https://cdn.knightlab.com/libs/orangeline/latest/assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<!-- /favicons -->
+
+<!-- Open Graph -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Timeline JS" />
+<meta property="og:description" content="Easy-to-make, beautiful timelines." />
+<meta property="og:image" content="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-timeline.png" />
+<meta property="og:url" content="https://timeline.knightlab.com/" />
+<meta property="og:site_name" content="Timeline JS" />
+<!-- /Open Graph -->
+
+<!-- Twitter Card -->
+<meta name="twitter:title" content="Timeline JS">
+<meta name="twitter:description" content="Easy-to-make, beautiful timelines.">
+<meta name="twitter:image" content="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-timeline.png">
+<meta name="twitter:site" content="@knightlab">
+<meta name="twitter:creator" content="@TimelineJS">
+<!-- /Twitter Card -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<link rel="stylesheet" href="/static/css/desert.css" /> 
+</head>
+
+<body>
+
+    <nav id="navbar-product-top" class="navbar navbar-dark">
+        <ul>
+            <li class="logo">
+                <a href="http://knightlab.com">
+                    <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/knightlab-dark.png">
+                </a>
+            </li>
+        </ul>
+        <ul class="nav-right column-hide-phone">
+            <li><a class="button-active button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/projects/">Projects</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://studio.knightlab.com">Class</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://devicelab.knightlab.com">Device Lab</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/posts/">Posts</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://openlab.knightlab.com">Community</a></li>
+            <li><a class="button button-dark button-small-tablet" href="https://knightlab.northwestern.edu/about/">About</a></li>
+        </ul>
+    </nav>
+
+    
+<header class="header-product">
+    <h1 class="product-logo product-logo-large">Timeline <span>JS</span></h1>
+    <h2 class="product-tagline">Easy-to-make, beautiful timelines.</h2>
+    <a class="button button-secondary button-large button-small-phone" href="#make">Make a Timeline</a>
+    <nav id="navbar-secondary" class="navbar navbar-subnav column-hide-phone">
+        <ul>
+            <li class="logo">
+                <h2 class="product-logo product-logo-smallest">Timeline <span>JS</span></h2>
+            </li>
+        </ul>
+        <ul>
+                <li><a class="button" href="#overview">Overview</a></li>
+                <li><a class="button" href="#examples">Examples</a></li>
+                <li><a class="button" href="#make">Make a Timeline</a></li>
+                <li><a class="button" href="#help">Help</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<article id="product-body">
+    <section id="demo" class="container-fluid">
+    <div class="product-demo">
+        <iframe frameborder="0" src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=100%" width="100%"></iframe>
+    </div>
+</section>
+
+        <section id="overview" class="container">
+            <div class="grid-size-2 grid-size-1-phone">
+                <div class="grid-item">
+                    <p>
+                        TimelineJS is an open-source tool that enables anyone to build visually rich, interactive timelines. Beginners can create a timeline using nothing more than a Google spreadsheet, <a href="https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pubhtml">like the one we used for the Timeline above</a>. Experts can use their JSON skills to create custom installations, while keeping TimelineJS's core functionality.
+                    </p>
+                    <figure>
+                        <div class="embed embed-16by9">
+                            <iframe class="embed-item" src="https://player.vimeo.com/video/143407878"></iframe>
+                        </div>
+                        <figcaption class="credit">Knight Lab</figcaption>
+                        <figcaption>
+                            Watch this brief video for an overview of how to make a timeline.
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="grid-item">
+                    <h3 style="margin-top:0;">Tips &amp; tricks</h3>
+                    <ol>
+                        <li>Keep it short. We recommend not having more than 20 slides for a reader to click through.</li>
+                        <li>Pick stories that have a strong chronological narrative. It does not work well for stories that need to jump around in the timeline.</li>
+                        <li>Write each event as a part of a larger narrative.</li>
+                        <li>Include events that build up to major occurrences — not just the major events.</li>
+                    </ol>
+                    <h3>Media sources</h3>
+                    <p>
+                        TimelineJS can pull in media from a variety of sources.
+                        Twitter, Flickr, YouTube, Vimeo, Vine, Dailymotion, Google Maps, Wikipedia, SoundCloud, Document Cloud and more!
+                    </p>
+                </div>
+            </div>
+    </section>
+
+        <section class="section-color fill-color-grey--lightest" id="examples">
+        <div class="container">
+        <h2>Examples</h2>
+        <div class="example-grid">
+        
+        
+        <div class="grid-item">
+            <a href="http://world.time.com/2013/12/05/nelson-mandelas-extraordinary-life-an-interactive-timeline/" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_mandela.jpg" alt="Mandela: A Life of Purpose">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_time.png" alt="Time Magazine" class="logo-inline">
+                <h4>Mandela: A Life of Purpose</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://www.lemonde.fr/election-presidentielle-2012/visuel/2012/04/21/chronologie-une-si-longue-campagne-presidentielle_1681661_1471069.html#meter_toaster" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_lemonde.jpg" alt="Chronology of the French Presidential Race">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_lemonde.png" alt="Le Monde" class="logo-inline">
+                <h4>Chronology of the French Presidential Race</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://www.themaneater.com/special-sections/mu-fall-2015/" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_univofmissouri.jpg" alt="Historic Fall at University of Missouri">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_maneater.png" alt="The Maneater" class="logo-inline">
+                <h4>Historic Fall at University of Missouri</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://www.cnn.com/2016/04/20/asia/north-korea-restaurant-defectors/index.html" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_northkorea.jpg" alt="North Korea&#39;s Nuclear Ambitions">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_cnn.png" alt="CNN" class="logo-inline">
+                <h4>North Korea&#39;s Nuclear Ambitions</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://bulger.wbur.org/story/1977/?location&amp;#x3D;44444" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_bulger.jpg" alt="Bulger on Trial">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_wbur.png" alt="WBUR" class="logo-inline">
+                <h4>Bulger on Trial</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="https://www.publicintegrity.org/2014/07/15/15037/decades-making-decline-irs-nonprofit-regulation" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_supremecourt.jpg" alt="The Decline of IRS Nonprofit Regulation">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_centerforpublicintegrity.png" alt="Center for Public Integrity" class="logo-inline">
+                <h4>The Decline of IRS Nonprofit Regulation</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://www.denverpost.com/breakingnews/ci_21119904" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_denver_shooting.jpg" alt="Aurora, Colorado Movie Theater Shooting">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_denverpost.png" alt="Denver Post" class="logo-inline">
+                <h4>Aurora, Colorado Movie Theater Shooting</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="https://www.engadget.com/2016/04/22/microsoft-mobile-timeline/" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_mobile_device.jpg" alt="The Collapse of Microsoft and Nokia&#39;s Mobile Business">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_engadget.png" alt="Engadget" class="logo-inline">
+                <h4>The Collapse of Microsoft and Nokia&#39;s Mobile Business</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://www.ibtimes.com/islamic-state-timeline-shows-how-isis-expanded-one-year-two-countries-ten-1959705" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_isis.jpg" alt="How ISIS Spread to 10 Countries">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_ibt.png" alt="International Business Times" class="logo-inline">
+                <h4>How ISIS Spread to 10 Countries</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://www.ksat.com/news/texas/middle-school-teacher-had-sexual-relationship-with-student-authorities-say_" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_perpwalk.jpg" alt="Reported Sexual Assault Cases by Texas Educators">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_ksat.png" alt="KSAT" class="logo-inline">
+                <h4>Reported Sexual Assault Cases by Texas Educators</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://vinepair.com/wine-colonized-world-wine-history/#1" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_wine.jpg" alt="A History of Wine Around the World">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_vinepair.png" alt="VinePair" class="logo-inline">
+                <h4>A History of Wine Around the World</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://mashable.com/2014/03/13/timeline-malaysia-airlines-flight-370/?utm_cid&amp;#x3D;mash-com-Tw-main-link#hzbp7TyJREqX" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_malaysia-airlines.jpg" alt="The Mystery of Malaysia Airlines Flight 370">
+                </figure>
+                <img src="https://timeline.knightlab.com/static/img/examples/logos/logo_mashable.png" alt="Mashable" class="logo-inline">
+                <h4>The Mystery of Malaysia Airlines Flight 370</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="https://timeline.knightlab.com/examples/user-interface/index.html" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_userinterface.png" alt="Revolutionary User Interfaces">
+                </figure>
+                <img src="/static/img/examples/logos/logo_knightlab.png" alt="Knight Lab" class="logo-inline">
+                <h4>Revolutionary User Interfaces</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="http://beyondtheseal.com/chapter3/slide-3/" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_banana.png" alt="A Brief History of the Banana Business">
+                </figure>
+                <img src="/static/img/examples/logos/logo_beyondtheseal.png" alt="Beyond the Seal" class="logo-inline">
+                <h4>A Brief History of the Banana Business</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="https://timeline.knightlab.com/examples/republican/index.html" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_republican.jpg" alt="The Republican Run-Up">
+                </figure>
+                <img src="/static/img/examples/logos/logo_knightlab.png" alt="Knight Lab" class="logo-inline">
+                <h4>The Republican Run-Up</h4>
+            </a>
+        </div>
+        
+        
+        <div class="grid-item">
+            <a href="https://timeline.knightlab.com/examples/houston/index.html" class="button button-light" target="_blank">
+                <figure class="examples">
+                    <img src="https://timeline.knightlab.com/static/img/examples/thumbs/thumb_houston.jpg" alt="Whitney Houston: 1963-2012">
+                </figure>
+                <img src="/static/img/examples/logos/logo_knightlab.png" alt="Knight Lab" class="logo-inline">
+                <h4>Whitney Houston: 1963-2012</h4>
+            </a>
+        </div>
+        
+    </section>
+
+
+
+    <section class="section-color section-color-complement" id="make">
+    <div class="container">
+        <h2>Make a Timeline</h2>
+        <p>
+            TimelineJS works on any site or blog. Make your own in four easy steps. <br> <em>Having trouble? Watch our <a href="https://vimeo.com/143407878">video</a>, or see the <a href="#help">help section below</a>.</em>
+        </p>
+        <ol class="instructional-steps">
+            <li class="step grid">
+                <div class="step-number column-2">
+                    <h6>Create your spreadsheet</h6>
+                </div>
+                <div class="step-details column-10">
+                    <p>Build a new Google Spreadsheet using our template. You'll need to copy the template to your own Google Drive account by clicking the "Make a Copy" button.</p>
+                    <p>Drop dates, text and links to media into the appropriate columns. For more about working with our template, see <a href="/docs/using-spreadsheets.html">Making a timeline from a Google Spreadsheet</a></p>
+                    <a class="button button-complement" href="https://docs.google.com/spreadsheets/d/1pHBvXN7nmGkiG8uQSUB82eNlnL8xHu6kydzH_-eguHQ/copy" target="_blank">Get the Spreadsheet Template &nbsp;<span class="icon-new-tab"></span></a>
+                    <p class="note">Don't change the column headers, don't remove any columns, and don't leave any blank rows in your spreadsheet.</p>
+                </div>
+            </li>
+            <li class="step grid" id="make-step-2">
+                <div class="step-number column-2">
+                    <h6>Publish to the web</h6>
+                </div>
+                <div class="step-details column-10">
+                    <div class="grid">
+                        <div class="grid-item">
+                            <p>
+                                <img class="img-shadow make-step-2" src="static/img/make/publish_to_web_small.png" alt="Screenshot of Google Sheets showing location of 'Publish to web' menu option" /> Under the <em>File</em> menu, Share submenu, select “Publish to the Web.” </p>
+                            <p class="note">
+                                <strong>Don't set your Timeline Google Sheet to "anyone with the link can edit."</strong> It isn't necessary, and could lead to someone changing your timeline without your consent.
+                            </p>
+
+
+                            <p style="clear: both;">
+                                <img class="img-shadow make-step-2" src="static/img/make/publish_to_web_button_small.png" alt="Screenshot of Google Sheets 'Publish to the Web' dialog window" /> In the next window, click the green "Publish" button. When asked,
+                                "Are you sure…?" click OK. <em>Ignore the URL that appears in the center of the window.</em> Just close the window using the <em>X</em> in the top right corner.
+
+                            </p>
+                            <p style="clear: both;">
+                                <img class="img-shadow" src="static/img/make/publish_to_web_browser_url.png" /> After you close the window, copy the URL in your browser's address bar. You'll use this in the next step.
+                            </p>
+                            <p class="note">If you get an error message referencing an "Invalid Google URL," please review the above instructions. You must use the Google Sheets URL from your browser's address bar, not the one from the "publish to the web" popup.</p>
+                        </div>
+                    </div>
+            </li>
+
+            <li class="step grid" id="make-step-3">
+                <div class="step-number column-2">
+                    <h6>Generate your timeline</h6>
+                </div>
+                <div class="step-details column-10">
+                    <p>Copy/paste spreadsheet URL into the box below to generate your timeline. (Make sure you've published the spreadsheet.)</p>
+                    <form>
+
+                        <div class="grid grid-left ">
+                            <div class="input-group-label column-12">
+                                <label class="input-group-addon" for="inlinelabel">Google Spreadsheet URL</label>
+                                <input type="text" id="embed-source-url" placeholder="1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI" name="inlinelabel">
+                                <p id="embed-source-url-message" class="note note-alert note-error"></p>
+                            </div>
+                            <div class="input-group-label column-3">
+                                <label class="input-group-addon" for="inlinelabel">Width</label>
+                                <input type="text" value="100%" placeholder="100%" id="embed-width" class="input-mini">
+                            </div>
+                            <div class="input-group-label column-3">
+                                <label class="input-group-addon" for="inlinelabel">Height</label>
+                                <input type="text" value="650" placeholder="650" id="embed-height" class="input-mini">
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="panel">
+                        <form>
+                            <fieldset>
+                                <h5 style="margin-top:0;">Optional settings
+                                    <a id="show-options">(show)<span class="caret"></span></a>
+                                    <a id="hide-options">(hide)<span class="caret"></span></a>
+                                </h5>
+                                <p class="small"><em>Set language, fonts, starting slide and more.</em></p>
+                                <div class="more-options">
+                                    <div class="grid">
+                                        <!-- Language-->
+                                        <div class="grid-item">
+                                            <h6>Language</h6>
+                                            <select id="embed-language">
+                                                        <option value="en" data-lang="English">English</option>
+                                                        <option value="ar" data-lang="Arabic">العربية</option>
+                                                        <option value="af" data-lang="Afrikaans">Afrikaans</option>
+                                                        <option value="id" data-lang="Indonesian">Bahasa Indonesia</option>
+                                                        <option value="ms" data-lang="Malay">Bahasa Melayu</option>
+                                                        <option value="be" data-lang="Belarusian">Беларуская мова</option>
+                                                        <option value="bg" data-lang="Bulgarian">български език</option>
+                                                        <option value="ca" data-lang="Catalan">Català</option>
+                                                        <option value="cz" data-lang="Czech">Čeština</option>
+                                                        <option value="da" data-lang="Danish">Dansk</option>
+                                                        <option value="hi" data-lang="Hindi">हिन्दी</option>
+                                                        <option value="de" data-lang="German">Deutsch</option>
+                                                        <option value="et" data-lang="Estonian">Eesti keel</option>
+                                                        <option value="el" data-lang="Greek">ελληνικά</option>
+                                                        <option value="en-24hr" data-lang="English (24-hour time)">English (24-hour time)</option>
+                                                        <option value="en-gb" data-lang="English (Great Britain)">English (Great Britain)</option>
+                                                        <option value="es" data-lang="Spanish">Español</option>
+                                                        <option value="eo" data-lang="Esperanto">Esperanto</option>
+                                                        <option value="eu" data-lang="Basque">Euskara</option>
+                                                        <option value="fo" data-lang="Faroese">Føroyskt</option>
+                                                        <option value="fr" data-lang="French">Français</option>
+                                                        <option value="fy" data-lang="Frisian">Frysk</option>
+                                                        <option value="ga" data-lang="Irish">Gaeilge</option>
+                                                        <option value="gl" data-lang="Galician">Galego</option>
+                                                        <option value="ko" data-lang="Korean">한국어</option>
+                                                        <option value="hr" data-lang="Croatian">Hrvatski</option>
+                                                        <option value="hy" data-lang="Armenian">Հայերէն</option>
+                                                        <option value="is" data-lang="Icelandic">Íslenska</option>
+                                                        <option value="it" data-lang="Italian">Italiano</option>
+                                                        <option value="he" data-lang="Hebrew">עברית</option>
+                                                        <option value="ka" data-lang="Georgian">ქართული</option>
+                                                        <option value="lv" data-lang="Latvian">Latviešu valoda</option>
+                                                        <option value="lb" data-lang="Luxembourgish">Lëtzebuergesch</option>
+                                                        <option value="lt" data-lang="Lithuanian">Lietuvių kalba</option>
+                                                        <option value="ro" data-lang="Romanian">Limba română</option>
+                                                        <option value="hu" data-lang="Hungarian">Magyar</option>
+                                                        <option value="my" data-lang="Myanmar"> မြန်မာ</option>
+                                                        <option value="nl" data-lang="Dutch">Nederlands</option>
+                                                        <option value="ne" data-lang="Nepali">नेपाली</option>
+                                                        <option value="ja" data-lang="Japanese">日本語</option>
+                                                        <option value="nb" data-lang="Norwegian - Bokmal">Norsk (bokmål)</option>
+                                                        <option value="nn" data-lang="Norwegian - Nynorsk">Norsk (nynorsk)</option>
+                                                        <option value="th" data-lang="Thai">ภาษาไทย</option>
+                                                        <option value="pl" data-lang="Polish">Polski</option>
+                                                        <option value="pt" data-lang="Portuguese">Português</option>
+                                                        <option value="pt-br" data-lang="Portuguese - Brazilian">Português (Brasil)</option>
+                                                        <option value="rm" data-lang="Romansh">Rumantsch</option>
+                                                        <option value="ru" data-lang="Russian">Русский язык</option>
+                                                        <option value="si" data-lang="Sinhalese">සිංහල</option>
+                                                        <option value="sl" data-lang="Slovenian">Slovenščina</option>
+                                                        <option value="sk" data-lang="Slovak">Slovenčina</option>
+                                                        <option value="sr" data-lang="Serbian - Latin">Srpski</option>
+                                                        <option value="sr-cy" data-lang="Serbian - Cyrillic">српски</option>
+                                                        <option value="fi" data-lang="Finnish">Suomi</option>
+                                                        <option value="sv" data-lang="Swedish">Svenska</option>
+                                                        <option value="zh-tw" data-lang="Taiwanese">Taiwanese</option>
+                                                        <option value="tl" data-lang="Tagalog">Tagalog</option>
+                                                        <option value="ta" data-lang="Tamil">தமிழ்</option>
+                                                        <option value="te" data-lang="Telugu">తెలుగు</option>
+                                                        <option value="tr" data-lang="Turkish">Türkçe</option>
+                                                        <option value="uk" data-lang="Ukrainian">Українська</option>
+                                                        <option value="ur" data-lang="Urdu">اُردُو</option>
+                                                        <option value="vi" data-lang="Vietnamese">Tiếng Việt</option>
+                                                        <option value="fa" data-lang="Farsi">فارسی</option>
+                                                        <option value="zh-cn" data-lang="Chinese">中文</option>
+                                                    </select>
+                                        </div>
+
+                                        <!-- Fonts-->
+                                        <div class="grid-item" style="position: relative">
+                                            <h6>Fonts</h6>
+                                            <div id="embed-font-dropdown">
+                                                <p style="padding-top:4px;"><img id="font-pair-preview" src="static/img/make/default.png"></p>
+                                                <ul id="embed-font">
+                                                    <li data-value="Default" id="embed-font-active" style="padding-top: 1rem"><img src="static/img/make/default.png" alt="PT Narrow and PT Serif"></li>
+                                                    <li data-value="Abril-DroidSans"><img src="static/img/make/abril-droidsans.png" alt="Abril and Droid Sans"></li>
+                                                    <li data-value="Amatic-Andika" checked=""><img src="static/img/make/amatic-andika.png" alt="Amatic and Andika"></li>
+                                                    <li data-value="Bevan-PontanoSans"><img src="static/img/make/bevan-pontanosans.png" alt="Bevan and Pontano Sans"></li>
+                                                    <li data-value="Bitter-Raleway"><img src="static/img/make/bitter-raleway.png" alt="Bitter and Raleway"></li>
+                                                    <li data-value="Clicker-Garamond"><img src="static/img/make/clicker-garamond.png" alt="Clicker and Garamond"></li>
+                                                    <li data-value="Dancing-Ledger"><img src="static/img/make/dancing-ledger.png" alt="Dancing and Ledger"></li>
+                                                    <li data-value="Fjalla-Average"><img src="static/img/make/fjalla-average.png" alt="Fjalla and Average"></li>
+                                                    <li data-value="Georgia-Helvetica"><img src="static/img/make/georgia-helvetica.png" alt="Georgia and Helvetica"></li>
+                                                    <li data-value="Lustria-Lato"><img src="static/img/make/lustria-lato.png" alt="Lustria and Lato"></li>
+                                                    <li data-value="Medula-Lato"><img src="static/img/make/medula-lato.png" alt="Medula One and Lato"></li>
+                                                    <li data-value="OldStandard"><img src="static/img/make/oldstandard.png" alt="Old Standard"></li>
+                                                    <li data-value="OpenSans-GentiumBook"><img src="static/img/make/opensans-gentiumbook.png" alt="Open Sans and Gentium Book"></li>
+                                                    <li data-value="Playfair-FaunaOne"><img src="static/img/make/playfair-faunaone.png" alt="Playfair and Fauna One"></li>
+                                                    <li data-value="Playfair"><img src="static/img/make/playfair.png" alt="Playfair SC and Playfair"></li>
+                                                    <li data-value="PT"><img src="static/img/make/pt.png" alt="PT Sans, PT Sans Narrow, and PT Serif"></li>
+                                                    <li data-value="Roboto-Megrim"><img src="static/img/make/roboto-megrim.png" alt="Roboto and Megrim"></li>
+                                                    <li data-value="Rufina-Sintony"><img src="static/img/make/rufina-sintony.png" alt="Rufina and Sintony"></li>
+                                                    <li data-value="UnicaOne-Vollkorn"><img src="static/img/make/unicaone-vollkorn.png" alt="Unica One and Vollkorn"></li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                        <div class="grid-item">
+                                            <h6>Map Type</h6>
+                                            <div id="embed-maptype">
+                                                <p class="small">Currently all Google's base maps are supported. When creating a Google map, style it the way you would like it to appear, and then paste the resulting link into your Google Spreadsheet.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-size-3 grid-left">
+                                        <div class="grid-item">
+                                            <h6>Default start slide</h6>
+                                            <div class="input-group-label">
+                                                <label class="input-group-addon" for="inlinelabel">Slide</label>
+                                                <input type="text" value="0" placeholder="0" id="embed-startatslide" class="input-mini">
+                                            </div>
+                                            <p class="small"><em>You can tell TimelineJS to start at a specific slide number.</em></p>
+                                        </div>
+                                        <div class="grid-item">
+                                            <h6>Initial zoom level</h6>
+                                            <div class="input-group-label">
+                                                <label class="input-group-addon" for="inlinelabel">Zoom Level</label>
+                                                <input type="text" value="2" placeholder="2" id="embed-initialzoom" class="input-mini">
+                                            </div>
+                                            <p class="small"><em>The zoom level at which the timeline portion of TimelineJS will display on load. Specify a value from 0-10 (default is 2). Smaller numbers show a greater span of time.</em></p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="grid grid-no-gutters">
+                                        <div class="column-12">
+                                            <h6>Misc</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-size-3 grid-left">
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                        <input id="embed-startatend" type="checkbox" value="option1">Start at the end <br/><small style="display:block;margin-left:1.4rem;"><em>Begins the timeline on the last slide.</em></small>
+                                                    </label>
+                                        </div>
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                        <input id="embed-timenavtop" type="checkbox" value="option1">Show nav on top
+                                                        <br/><small style="display:block;margin-left:1.4rem;"><em>Switches the vertical order of the timeline navigation and the media.</em></small>
+                                                    </label>
+                                        </div>
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                        <input id="embed-debug" type="checkbox" value="option1">Debug
+                                                        <br/><small style="display:block;margin-left:1.4rem;"><em>In debug mode, the JavaScript console will display logging messages.</em></small>
+                                                    </label>
+                                        </div>
+                                        <div class="grid-item">
+                                            <label class="checkbox">
+                                                         <input id="embed-hash-bookmark" type="checkbox" value="option1">Use hash bookmarks
+                                                        <br/><small style="display:block;margin-left:1.4rem;"><em>Assigns a hash bookmark to each slide's URL, allowing deep linking to slides. (For directly linked Timelines only -- does not work for iframe embeds)</em></small>
+                                                    </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step grid">
+                <div class="step-number column-2">
+                    <h6>Share your timeline</h6>
+                </div>
+                <div class="step-details column-10">
+                    <h6>Share Link</h6>
+                    <p class="small">Use this to link directly to your timeline. </p>
+                    <p class="small"><em>If you're embedding on Medium.com or other oembed-aware services, just paste this link on a line by itself where you want your timeline to appear.</em></p>
+
+                    <!-- <ul class="list--social">
+                                <li>
+                                    <a class="link--no-style" href="#" ><span class="icon-twitter text-color-complement"></span></a>
+                                </li>
+                                <li>
+                                    <a class="link--no-style" href="#"><span class="icon-facebook text-color-complement"></span></a>
+                                </li>
+                            </ul> -->
+                    <form>
+                        <textarea id="sharable-url" rows="3" type="text" "readonly" name="textplaceholder" value="" style="height:4rem;">
+https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=100%
+                                </textarea>
+                    </form>
+                    <h6>Embed</h6>
+                    <p class="small">Copy this embed code and paste it on your site where you want your timeline to appear (just like a YouTube video). </p>
+                    <form>
+                        <textarea id="embed_code" rows="3" readonly="readonly" type="text" name="textplaceholder" value="" style="height:5rem;">
+&lt;iframe src=&quot;https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=650&quot; width=&quot;100%&quot; height=&quot;650&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+                                </textarea>
+                    </form>
+                    <a class="button button-complement" href="#preview-embed" id="iframe-preview-button">Preview</a>&nbsp;
+                    <a class="button button-light" href="#" id="preview-embed-link" target="_blank">Open Preview in a new window  &nbsp;<span class="icon-new-tab"></span></a>
+                </div>
+            </li>
+        </ol>
+        </div>
+        <div id="preview-embed">
+            <div class="container">
+                <h3>Preview Embed</h3>
+            </div>
+            <section id="demo" class="container-fluid">
+                <div id="preview-embed-iframe" class="product-demo">
+                    <iframe src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.njk?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=650" width="100%" height="650" frameborder="0"></iframe>
+                </div>
+            </section>
+        </div>
+</section>
+
+        <section class="section container" id="help">
+    <div class="grid">
+        <div class="column-8">
+            <h2>Help</h2>
+            <p>
+                Need help? First, please be sure to look at our list of <a href="#faq">frequently asked questions</a> below. If you're brand new to Timeline JS, you may also want to watch our <a href="https://vimeo.com/143407878" target="_blank">introductory video</a>.
+            </p>
+            <p>
+                If you don't find an answer there, try our <a href="https://knightlab.zendesk.com/hc/en-us/categories/201567526-TimelineJS">support forums</a> or use our <a href="https://knightlab.zendesk.com/anonymous_requests/new">tech support web form.</a> <strong>Please be clear</strong> with your question, <strong>include a link to your spreadsheet</strong>, and if appropriate, a link to a page which shows the issue with which you need help. <strong>We can only answer support questions in English.</strong> We try to be prompt, but please understand that we do not have a dedicated tech support staff.
+            </p>
+            <p class="note">
+                <strong>Find a bug?</strong> If you are confident you have found a bug, please report it as <a href="https://github.com/NUKnightLab/TimelineJS3/issues">a GitHub issue</a>. Be sure to include detailed instructions on how to reproduce the bug. If you're not sure, please start with <a href="https://knightlab.zendesk.com/hc/en-us/requests/new">the tech support system</a>.
+            </p>
+        </div>
+        <div class="column-4">
+            <h3>Technical documentation</h3>
+            <p>Go further with Timeline:</p>
+            <ul>
+                    <li><a href="/docs/using-spreadsheets.html">Use our spreadsheet template</a></li>
+                    <li><a href="/docs/media-types.html">Supported Media Types</a></li>
+                    <li><a href="/docs/json-format.html">JSON data format reference</a></li>
+                    <li><a href="/docs/overriding-styles.html">Changing the Appearance of your Timeline</a></li>
+                    <li><a href="/docs/options.html">Timeline Configuration Options</a></li>
+                    <li><a href="/docs/instantiate-a-timeline.html">Using TimelineJS in Javascript</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="grid" id="faq">
+        
+        <div class="grid-item">
+            <h3>Frequently asked questions</h3>
+            <ul class="accordion">
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="how-do-i-edit-my-timeline">How do I edit my timeline?</h3>
+                    <div class="accordion-content">
+                        Once you&#39;ve created a timeline, you can make changes by going back to your Google spreadsheet. Changes you make to the spreadsheet are automatically available to your Timeline—you don&#39;t need to repeat the &#39;publish to the web&#39; step (step #2). If you want to make changes to the optional settings, you will need to update your embed code, but if you are only changing content in the spreadsheet, then there&#39;s nothing else to do. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="what-web-browsers-does-timelinejs-work-with">What web browsers does TimelineJS work with?</h3>
+                    <div class="accordion-content">
+                        Our primary development and testing browser is Google Chrome. We adhere closely to web standards, so we believe that TimelineJS should work effectively in all modern web browsers. TimelineJS is known to not work with Internet Explorer versions before IE10. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="missing-slides">Some of my slides aren&#39;t showing up. Where are they?</h3>
+                    <div class="accordion-content">
+                        If the slides which aren&#39;t appearing are at the end of your timeline, look for a blank spreadsheet row right after the last slide which is appearing. When TimelineJS asks Google for your data, Google only sends up to the first blank row, so TimelineJS is actually showing everything that it can. Don&#39;t forget to look for hidden spreadsheet rows or rows with a very small height. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="what-are-my-options-for-changing-how-my-timeline-works">What are my options for changing how my Timeline looks?</h3>
+                    <div class="accordion-content">
+                        First, make sure you know everything you can do in the spreadsheet configuration, like background colors and images. Also, check out the optional settings part of &#39;step 3&#39; of the authoring tool. You can change the fonts, the position of the timeline navigation, and the initial zoom level. If you still want to do more, there are some configuration options available. Most of those are for fine tuning, but some of them may be helpful. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="can-i-change-things-using-css">There aren&#39;t enough options. I want more control over the [font size/color/etc]. Can I change things using CSS?</h3>
+                    <div class="accordion-content">
+                        Because there are so many details to the styling, this is not exactly simple, but, if you have some technical capacity, you can override TimelineJS&#39;s &lt;abbr title=&#39;Cascading Style Sheets&#39;&gt;CSS&lt;/abbr&gt; rules and have complete control over the look of the timeline. For details, see &lt;a href=&#39;/docs/overriding-styles.html&#39;&gt;Overriding Timeline&#39;s Styles&lt;/a&gt;. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="how-can-i-categorize-or-group-my-events">How can I categorize or group my events?</h3>
+                    <div class="accordion-content">
+                        Every event in a timeline can have a group property. Events with the same group are shown in the same row or adjacent rows, and the common value of their group property is used as a label at the left edge of the timeline. Groups can be set using the &#39;group&#39; column in the Google Spreadsheet or the &#39;group&#39; property of a JSON slide object. TimelineJS does not support any other special styling for events in the same group. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="why-did-this-happen">The first slide in my timeline isn&#39;t the first chronologically. Why did this happen?</h3>
+                    <div class="accordion-content">
+                        When using the Google Spreadsheet to configure your timeline, if you put the word &lt;code&gt;title&lt;/code&gt; in the &lt;code&gt;type&lt;/code&gt; column, that slide will be put at the front, regardless of the values in the date columns. See the &lt;a href=&#39;/docs/using-spreadsheets.html#title_slides&#39;&gt;Google Spreadsheet documentation&lt;/a&gt; for more information. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="can-i-make-media-images-clickable">Can I make media images clickable?</h3>
+                    <div class="accordion-content">
+                        No. Many of TimelineJS&#39;s media types are interactive, and so would not be able to handle a link, and other of TimelineJS&#39;s media types have terms of service which require a link back to the source of the media. As an alternative, consider using HTML to add links in the caption, credit, or text for the slide. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="how-can-i-format-text">How can I format text (add line breaks, bold, italics)?</h3>
+                    <div class="accordion-content">
+                        TimelineJS&#39;s text fields (headline, text, caption, and credit) all accept HTML markup. A full tutorial on HTML is outside the scope of this FAQ, but here are a few basics:&lt;br&gt;&lt;ul&gt;&lt;li&gt;Wrap paragraphs in &lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;&lt;/code&gt; tags to create line breaks.&lt;/li&gt;&lt;li&gt;Wrap text in &lt;code&gt;&amp;lt;b&amp;gt;&amp;lt;/b&amp;gt;&lt;/code&gt; tags for &lt;b&gt;bold&lt;/b&gt; text and &lt;code&gt;&amp;lt;i&amp;gt;&amp;lt;/i&amp;gt;&lt;/code&gt; for &lt;em&gt;italics&lt;/em&gt;&lt;/li&gt;&lt;/ul&gt; 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="how-do-i-enter-bce-dates">How do I enter BCE dates?</h3>
+                    <div class="accordion-content">
+                        To enter dates before the &lt;a href=&#39;https://en.wikipedia.org/wiki/Common_Era&#39;&gt;common era&lt;/a&gt;, just use a negative value for the year. Of course, you can also enter month and date if you need them. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="how-do-i-create-very-ancient-dates">How do I create very ancient dates?</h3>
+                    <div class="accordion-content">
+                        Generally, you don&#39;t have to think about it -- just enter the dates you want. Timeline can handle dates literally to the beginning of time. For dates more than about 250,000 years ago, only the year is usable. Support for those older dates is still relatively new, so if anything seems off, visit our &lt;a href=&#39;http://knightlab.zendesk.com&#39;&gt;tech support site.&lt;/a&gt; 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="who-can-access-the-data-in-my-google-spreadsheet">Who can access the data in my Google spreadsheet?</h3>
+                    <div class="accordion-content">
+                        You must make the data public to the web to use TimelineJS with a Google Spreadsheet as the data source. Normally, the data is still only visible to people who know the link, so if you publish a timeline privately, outsiders are unlikely to see the data. However, it is still public, so you must decide if that is acceptable. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="how-should-i-use-timelinejs">Privacy is very important to me. How should I use TimelineJS?</h3>
+                    <div class="accordion-content">
+                        If you want complete control over who can see the information in your timeline, you cannot use Google Spreadsheets, and you cannot use our standard &lt;code&gt;iframe&lt;/code&gt; embed code. Instead, you must use &lt;a href=&#39;/docs/json-format.html&#39;&gt;JSON format&lt;/a&gt; for the data and &lt;a href=&#39;/docs/instantiate-a-timeline.html&#39;&gt;instantiate the timeline&lt;/a&gt; directly using javascript. You can then use standard web server security measures to control who has access to your timeline and the data used to create it. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="will-my-spreadsheet-get-picked-up-by-search-engines">Will my spreadsheet get picked up by search engines?</h3>
+                    <div class="accordion-content">
+                        Under normal circumstances, Google tells search engines not to index spreadsheets which are published to the web. Of course, if the page is public on the web, it is possible that a search engine will disregard those instructions. 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="can-i-use-timelinejs-with-wordpress">Can I use TimelineJS with Wordpress?</h3>
+                    <div class="accordion-content">
+                        &lt;strong&gt;It depends.&lt;/strong&gt; TimelineJS does not work with Wordpress.com sites. We are researching ways to address this.&lt;br&gt;If you are able to install plugins to your Wordpress installation, we have a &lt;a href=&#39;https://wordpress.org/plugins/knight-lab-timelinejs/&#39;&#39;&gt;Wordpress plugin for Timeline&lt;/a&gt;. It supports embedding Timelines with Wordpress &quot;shortcode&quot;, and as of version 3.3.14.0, it also has experimental &quot;oembed&quot; support. That means that you can take a direct URL to a timeline (like you get with the &quot;get link to preview&quot; button) and put it in a post on a line by itself, and it should be embedded. (Make sure you&#39;ve updated the plugin before you try it.) 
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <input type="checkbox" checked>
+                    <i></i>
+                    <h3 id="is-timelinejs-free-for-commercial-use">Is TimelineJS free for commercial use?</h3>
+                    <div class="accordion-content">
+                        TimelineJS is released under the &lt;a href=&#39;https://www.mozilla.org/en-US/MPL/2.0/&#39;&gt;Mozilla Public License (MPL), version 2.0&lt;/a&gt;. That means that TimelineJS is free to &quot;use, reproduce, make available, modify, display, perform, distribute&quot; or otherwise employ. You don&#39;t need our permission to publish stories with TimelineJS and you don&#39;t need to pay us any fees or arrange any further license beyond the MPL. To read more about what you can do with TimelineJS, read our &lt;a href=&#39;/docs/license.html&#39;&gt;license page&lt;/a&gt;. 
+                    </div>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+    </section>
+
+</article>
+
+<section class="moth--product">
+    <h3>Storytelling Tools</h3>
+    <p class="product-tagline">We build easy-to-use tools that can help you tell better stories.</p>
+    <div class="grid grid-size-4 grid-size-2-tablet grid-size-1-phone">
+        <div class="grid-item">
+            <a href="http://timeline.knightlab.com/" class="button button-dark">
+                <img class="img-rounded" src="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-timeline.png">
+                <h4 class="product-logo product-logo-small">Timeline <span>JS</span></h4>
+                <p class="product-tagline">Easy-to-make, beautiful timelines.</p>
+            </a>
+        </div>
+        <div class="grid-item">
+            <a href="http://storymap.knightlab.com/" class="button button-dark">
+                <img class="img-rounded" src="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-storymap.png">
+                <h4 class="product-logo product-logo-small">StoryMap <span>JS</span></h4>
+                <p class="product-tagline">Maps that tell stories.</p>
+            </a>
+        </div>
+        <div class="grid-item">
+            <a href="http://juxtapose.knightlab.com/" class="button button-dark">
+                <img class="img-rounded" src="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-juxtapose.jpg">
+                <h4 class="product-logo product-logo-small">Juxtapose <span>JS</span></h4>
+                <p class="product-tagline">Easy-to-make frame comparisons.</p>
+            </a>
+        </div>
+        <div class="grid-item">
+            <a href="http://soundcite.knightlab.com/" class="button button-dark">
+                <img class="img-rounded" src="https://cdn.knightlab.com/libs/orangeline/latest/assets/screenshot-soundcite.png">
+                <h4 class="product-logo product-logo-small">Soundcite <span>JS</span></h4>
+                <p class="product-tagline">Seamless inline audio.</p>
+            </a>
+        </div>
+    </div>
+    <a href="http://knightlab.northwestern.edu/projects/" class="button button-dark" style="margin-top:1rem;z-index:22;">View More</a>
+</section>
+
+
+  <footer class="footer-knightlab--dark">
+    <div class="container">
+        <div class='grid grid-center'>
+            <div class='column-2 column-4-phone column-4-tablet'>
+                <a href="http://knightlab.northwestern.edu" target="_blank">
+                    <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/logo-knightlab-stacked-dark-small.png" style="margin-left:auto;">
+                </a>
+                <ul class="list--social text-align-center">
+                    <li><a class="link--no-style" href="http://www.twitter.com/knightlab" target="_blank" title="Knight Lab on Twitter"><span class="icon-twitter"></span></a></li>
+                    <li><a class="link--no-style" href="https://www.facebook.com/knightlab" target="_blank" title="Knight Lab on Facebook"><span class="icon-facebook"></span></a></li>
+                    <li><a class="link--no-style" href="https://github.com/NUKnightLab/" target="_blank" title="Knight Lab on GitHub"><span class="icon-github"></span></a></li>
+                </ul>
+            </div>
+            <div class='column-4 column-5-tablet column-6-phone footer-description'>
+                <p>
+                    The <a title="Northwestern University" href="http://www.northwestern.edu/" target="_blank">Northwestern University</a> Knight Lab is a team of technologists and journalists working at advancing news media innovation through exploration and experimentation.
+                </p>
+                <div class="grid-size-2 grid-size-2-phone">
+                    <div class="grid-item">
+                        <a title="Medill School of Journalism, Media, Integrated Marketing Communications" href="http://www.medill.northwestern.edu/" target="_blank">
+                            <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/logo-medill-dark.png" alt="Medill School of Journalism, Media, Integrated Marketing Communications website">
+                        </a>
+                    </div>
+                    <div class="grid-item">
+                        <a title="McCormick School of Engineering" href="http://www.mccormick.northwestern.edu/" target="_blank">
+                            <img src="https://cdn.knightlab.com/libs/orangeline/latest/assets/logo-mccormick-dark.png"  alt="McCormick School of Engineering website">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-center">
+            <div class="grid-item">
+            <address itemscope="" itemtype="http://data-vocabulary.org/Organization">
+                <span style="display:none;" itemprop="name" title="Knight Lab | Advancing news media innovation through exploration and experimentation." class="address-name">Knight Lab</span>
+                <span itemprop="tel" class="tel">(847) 467-4971</span>
+                <span itemprop="address" itemscope="" itemtype="http://data-vocabulary.org/Address" class="address">
+                    <span itemprop="street-address" class="street-address">1845 Sheridan Road</span>
+                    <span class="room-num">Fisk #109 &amp; #111</span>
+                    <div class="address-group">
+                        <span itemprop="locality">Evanston,</span> <span itemprop="region">IL</span> <span itemprop="postal-code">60208 </span>
+                        <span style="display:none;" itemprop="geo" itemscope="" itemtype="http://www.data-vocabulary.org/Geo/" class="geo">
+                            Latitude: <span itemprop="latitude">42.056893</span><br>Longitude:
+                            <span itemprop="longitude">-87.676735</span>
+                        </span>
+                        <a style="display:none;" href="http://knightlab.northwestern.edu" itemprop="url" class="url">Northwesten University Knight Lab | Advancing media innovation through exploration and experimentation.</a>
+                    </div>
+                </span>
+            </address>
+            <span class="copyright">© Copyright <script type="text/javascript"> document.write(new Date().getFullYear());</script> Northwestern University</span>
+            </div>
+        </div>
+    </div>
+</footer>
+  
+    <!-- build:js https://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
+    <script src="/dist/js/timeline.js"></script>
+    <!-- endbuild -->
+    <script src="/static/js/main.js"></script>
+    <script src="https://cdn.knightlab.com/libs/orangeline/latest/js/main.js"></script>
+    
+</body>
+
+</html>
