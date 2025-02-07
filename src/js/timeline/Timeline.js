@@ -44,6 +44,22 @@ function make_keydown_handler(timeline) {
     }
 }
 
+if (typeof makeHash !== 'function') {
+    function makeHash(id) {
+        var hash = "#" + "event-" + id.toString();
+        return hash;
+    }
+}
+
+if (typeof idFromHash !== 'function') {
+    function idFromHash(hash) {
+        if (!hash.startsWith("#event")) {
+            return null;
+        }
+        return hash.replace("#event-", "");
+    }
+}
+
 /**
  * Primary entry point for using TimelineJS.
  * @constructor
@@ -797,15 +813,17 @@ class Timeline {
                 this.goTo(this.options.start_at_slide);
             }
             if (this.options.hash_bookmark) {
-                if (window.location.hash != "") {
-                    this.goToId(window.location.hash.replace("#event-", ""));
+                let hash = window.location.hash;
+                if (hash != "") {
+                    this.goToId(idFromHash(hash));
                 } else {
                     this._updateHashBookmark(this.current_id);
                 }
                 let the_timeline = this;
                 window.addEventListener('hashchange', function() {
-                    if (window.location.hash.indexOf('#event-') == 0) {
-                        the_timeline.goToId(window.location.hash.replace("#event-", ""));
+                    let id = idFromHash(hash);
+                    if (id !== null) {
+                        the_timeline.goToId(id);
                     }
                 }, false);
             }
@@ -816,9 +834,9 @@ class Timeline {
     // Update hashbookmark in the url bar
     _updateHashBookmark(id) {
         if (id) { // TODO: validate the id...
-            var hash = "#" + "event-" + id.toString();
+            var hash = makeHash(id);
             window.history.replaceState(null, "Browsing TimelineJS", hash);
-            this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
+            this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: hash }, this);
         }
     }
 
