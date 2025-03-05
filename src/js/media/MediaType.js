@@ -34,6 +34,7 @@ import PDF from "./types/PDF"
 import Audio from "./types/Audio"
 import Video from "./types/Video"
 import Wistia from "./types/Wistia"
+import Base64 from "./types/Base64"
 
 /**
  * Given a JavaScript Object for an event from a TimelineConfig,
@@ -217,7 +218,14 @@ export function lookupMediaType(m, image_only) {
                 name: "Imageblank",
                 match_str: "",
                 cls: Image
-            }
+            },
+            {
+                type: "base64",
+                name: "Base64",
+                match_str: /data:(image\/(?:apng|avif|gif|jpeg|png|webp));base64,[a-zA-Z0-9+\/]+/i
+                /i,
+                cls: Image
+            },
         ]
 
     if (image_only) {
