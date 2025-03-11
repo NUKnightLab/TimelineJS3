@@ -1,4 +1,4 @@
-3.9.7 (2025-03-10)
+3.9.7 (2025-03-11)
 -------------------------
 * #834 Improved timegroup-message element contrast
 * #890 Fixes to support modern Google Sheets publish-to-web URL format
