@@ -30,6 +30,19 @@ test("new-ish url format should get the right key", () => {
     expect(parts.key).toBe(key)
 })
 
+test("new new url format should get a viable key", () => {
+    var url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTwrxBim-ruoMlLP9CnZIevWdP8rIatkV7XjNGXRSaMI94sNd-VbRF--W7A2kj6wfZhKUHWv1ur0Tb3/pubhtml'
+    var key = 'v2:2PACX-1vTwrxBim-ruoMlLP9CnZIevWdP8rIatkV7XjNGXRSaMI94sNd-VbRF--W7A2kj6wfZhKUHWv1ur0Tb3';
+    var parts = parseGoogleSpreadsheetURL(url);
+    expect(parts.key).toBe(key);
+})
+
+test("encoded key part of new new url format should come back untouched", () => {
+    var url = 'v2:2PACX-1vTwrxBim-ruoMlLP9CnZIevWdP8rIatkV7XjNGXRSaMI94sNd-VbRF--W7A2kj6wfZhKUHWv1ur0Tb3'
+    var parts = parseGoogleSpreadsheetURL(url);
+    expect(parts.key).toBe(url);
+})
+
 describe("test making CSV URL from various inputs", () => {
     test("A 'd/' URL that's already right should work", () => {
         let test_url = 'https://docs.google.com/spreadsheets/u/1/d/1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk/pub?output=csv'

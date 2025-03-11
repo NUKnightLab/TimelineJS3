@@ -1,3 +1,8 @@
+3.9.7 (2025-03-10)
+-------------------------
+* #834 Improved timegroup-message element contrast
+* #890 Fixes to support modern Google Sheets publish-to-web URL format
+
 3.9.6 (2025-01-10)
 -------------------------
 * Change initial computation of component heights to address axis labels overflowing 

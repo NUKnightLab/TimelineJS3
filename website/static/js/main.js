@@ -55,10 +55,6 @@ function getLinkAndIframe() {
     /* SOURCE KEY
     ================================================== */
     if (e_source.value.match("docs.google.com")) {
-        if (e_source.value.match(new RegExp('/spreadsheets/d/e'))) {
-            theobj.warning = "Invalid Google URL. Please see the note above about how a recent change with Google Spreadsheets affects creating timelines.";
-            return theobj;
-        }
         var obj = TL.parseGoogleSpreadsheetURL(e_source.value);
         source_key = obj.key;
     } else {
