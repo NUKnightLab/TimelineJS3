@@ -1,0 +1,81 @@
+[{
+        "slug": "how-do-i-edit-my-timeline",
+        "question": "How do I edit my timeline?",
+        "answer": "Once you've created a timeline, you can make changes by going back to your Google spreadsheet. Changes you make to the spreadsheet are automatically available to your Timeline—you don't need to repeat the 'publish to the web' step (step #2). If you want to make changes to the optional settings, you will need to update your embed code, but if you are only changing content in the spreadsheet, then there's nothing else to do."
+    },
+    {
+        "slug": "what-web-browsers-does-timelinejs-work-with",
+        "question": "What web browsers does TimelineJS work with?",
+        "answer": "Our primary development and testing browser is Google Chrome. We adhere closely to web standards, so we believe that TimelineJS should work effectively in all modern web browsers. TimelineJS is known to not work with Internet Explorer versions before IE10."
+    },
+    {
+        "slug": "missing-slides",
+        "question": "Some of my slides aren't showing up. Where are they?",
+        "answer": "If the slides which aren't appearing are at the end of your timeline, look for a blank spreadsheet row right after the last slide which is appearing. When TimelineJS asks Google for your data, Google only sends up to the first blank row, so TimelineJS is actually showing everything that it can. Don't forget to look for hidden spreadsheet rows or rows with a very small height."
+    },
+    {
+        "slug": "what-are-my-options-for-changing-how-my-timeline-works",
+        "question": "What are my options for changing how my Timeline looks?",
+        "answer": "First, make sure you know everything you can do in the spreadsheet configuration, like background colors and images. Also, check out the optional settings part of 'step 3' of the authoring tool. You can change the fonts, the position of the timeline navigation, and the initial zoom level. If you still want to do more, there are some configuration options available. Most of those are for fine tuning, but some of them may be helpful."
+    },
+    {
+        "slug": "can-i-change-things-using-css",
+        "question": "There aren't enough options. I want more control over the [font size/color/etc]. Can I change things using CSS?",
+        "answer": "Because there are so many details to the styling, this is not exactly simple, but, if you have some technical capacity, you can override TimelineJS's <abbr title='Cascading Style Sheets'>CSS</abbr> rules and have complete control over the look of the timeline. For details, see <a href='/docs/overriding-styles.html'>Overriding Timeline's Styles</a>."
+    },
+    {
+        "slug": "how-can-i-categorize-or-group-my-events",
+        "question": "How can I categorize or group my events?",
+        "answer": "Every event in a timeline can have a group property. Events with the same group are shown in the same row or adjacent rows, and the common value of their group property is used as a label at the left edge of the timeline. Groups can be set using the 'group' column in the Google Spreadsheet or the 'group' property of a JSON slide object. TimelineJS does not support any other special styling for events in the same group."
+    },
+    {
+        "slug": "why-did-this-happen",
+        "question": "The first slide in my timeline isn't the first chronologically. Why did this happen?",
+        "answer": "When using the Google Spreadsheet to configure your timeline, if you put the word <code>title</code> in the <code>type</code> column, that slide will be put at the front, regardless of the values in the date columns. See the <a href='/docs/using-spreadsheets.html#title_slides'>Google Spreadsheet documentation</a> for more information."
+    },
+    {
+        "slug": "can-i-make-media-images-clickable",
+        "question": "Can I make media images clickable?",
+        "answer": "No. Many of TimelineJS's media types are interactive, and so would not be able to handle a link, and other of TimelineJS's media types have terms of service which require a link back to the source of the media. As an alternative, consider using HTML to add links in the caption, credit, or text for the slide."
+    },
+    {
+        "slug": "how-can-i-format-text",
+        "question": "How can I format text (add line breaks, bold, italics)?",
+        "answer": "TimelineJS's text fields (headline, text, caption, and credit) all accept HTML markup. A full tutorial on HTML is outside the scope of this FAQ, but here are a few basics:<br><ul><li>Wrap paragraphs in <code>&lt;p&gt;&lt;/p&gt;</code> tags to create line breaks.</li><li>Wrap text in <code>&lt;b&gt;&lt;/b&gt;</code> tags for <b>bold</b> text and <code>&lt;i&gt;&lt;/i&gt;</code> for <em>italics</em></li></ul>"
+    },
+    {
+        "slug": "how-do-i-enter-bce-dates",
+        "question": "How do I enter BCE dates?",
+        "answer": "To enter dates before the <a href='https://en.wikipedia.org/wiki/Common_Era'>common era</a>, just use a negative value for the year. Of course, you can also enter month and date if you need them."
+    },
+    {
+        "slug": "how-do-i-create-very-ancient-dates",
+        "question": "How do I create very ancient dates?",
+        "answer": "Generally, you don't have to think about it -- just enter the dates you want. Timeline can handle dates literally to the beginning of time. For dates more than about 250,000 years ago, only the year is usable. Support for those older dates is still relatively new, so if anything seems off, visit our <a href='http://knightlab.zendesk.com'>tech support site.</a>"
+    },
+    {
+        "slug": "who-can-access-the-data-in-my-google-spreadsheet",
+        "question": "Who can access the data in my Google spreadsheet?",
+        "answer": "You must make the data public to the web to use TimelineJS with a Google Spreadsheet as the data source. Normally, the data is still only visible to people who know the link, so if you publish a timeline privately, outsiders are unlikely to see the data. However, it is still public, so you must decide if that is acceptable."
+    },
+    {
+        "slug": "how-should-i-use-timelinejs",
+        "question": "Privacy is very important to me. How should I use TimelineJS?",
+        "answer": "If you want complete control over who can see the information in your timeline, you cannot use Google Spreadsheets, and you cannot use our standard <code>iframe</code> embed code. Instead, you must use <a href='/docs/json-format.html'>JSON format</a> for the data and <a href='/docs/instantiate-a-timeline.html'>instantiate the timeline</a> directly using javascript. You can then use standard web server security measures to control who has access to your timeline and the data used to create it."
+    },
+    {
+        "slug": "will-my-spreadsheet-get-picked-up-by-search-engines",
+        "question": "Will my spreadsheet get picked up by search engines?",
+        "answer": "Under normal circumstances, Google tells search engines not to index spreadsheets which are published to the web. Of course, if the page is public on the web, it is possible that a search engine will disregard those instructions."
+    },
+    {
+        "slug": "can-i-use-timelinejs-with-wordpress",
+        "question": "Can I use TimelineJS with Wordpress?",
+        "answer": "<strong>It depends.</strong> TimelineJS does not work with Wordpress.com sites. We are researching ways to address this.<br>If you are able to install plugins to your Wordpress installation, we have a <a href='https://wordpress.org/plugins/knight-lab-timelinejs/''>Wordpress plugin for Timeline</a>. It supports embedding Timelines with Wordpress \"shortcode\", and as of version 3.3.14.0, it also has experimental \"oembed\" support. That means that you can take a direct URL to a timeline (like you get with the \"get link to preview\" button) and put it in a post on a line by itself, and it should be embedded. (Make sure you've updated the plugin before you try it.)"
+    },
+    {
+        "slug": "is-timelinejs-free-for-commercial-use",
+        "question": "Is TimelineJS free for commercial use?",
+        "answer": "TimelineJS is released under the <a href='https://www.mozilla.org/en-US/MPL/2.0/'>Mozilla Public License (MPL), version 2.0</a>. That means that TimelineJS is free to \"use, reproduce, make available, modify, display, perform, distribute\" or otherwise employ. You don't need our permission to publish stories with TimelineJS and you don't need to pay us any fees or arrange any further license beyond the MPL. To read more about what you can do with TimelineJS, read our <a href='/docs/license.html'>license page</a>."
+    }
+]
