@@ -160,6 +160,10 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
     }).catch(error_json => {
         if (error_json.proxy_err_code == 'response_not_csv') {
             throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
+        } else if (error_json.status_code == 401) {
+            throw new TLError('Configuration unreadable. Please make sure your Google Sheets document is published to the web and review step 2 of the timeline setup instructions to make sure you have the correct URL, as this has changed.')
+        } else if (error_json.status_code == 410) {
+            throw new TLError('Google reports that this configuration spreadsheet is gone. Check to see if it has been deleted from Google Drive. Timeline configuration spreadsheets must not be deleted.')
         }
         let msg = "undefined error"
         if (Array.isArray(error_json.message)) {
