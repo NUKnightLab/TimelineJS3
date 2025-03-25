@@ -141,7 +141,7 @@ export class TimelineConfig {
      */
     validate() {
         if (typeof(this.events) == "undefined" || typeof(this.events.length) == "undefined" || this.events.length == 0) {
-            this.logError("Timeline configuration has no events.")
+            this.logError("Timeline configuration has no events. Common causes for this: changing/erasing 'Year' from the A1 cell, or having 'era' in all non-title 'type' cells.")
         }
 
         // make sure all eras have start and end dates
