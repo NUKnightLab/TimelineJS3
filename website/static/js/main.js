@@ -121,11 +121,11 @@ function getLinkAndIframe() {
         params.start_at_slide = parseInt(e_startatslide.value, 10);
     }
 
-    if (e_width.value > 0) {
-        params.width = e_width.value;
+    if (e_width.value.trim().match(/^\d+%?$/)) {
+        params.width = e_width.value.trim();
     }
-    if (e_height.value > 0) {
-        params.height = e_height.value;
+    if (e_height.value.trim().match(/^\d+%?$/)) {
+        params.height = e_height.value.trim();
     }
 
     let source_url = urlBase + "embed/index.html";
@@ -143,7 +143,7 @@ function getLinkAndIframe() {
     iframe += " webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>";
 
     theobj.iframe = iframe;
-    theobj.link = vars;
+    theobj.link = source_url;
     theobj.copybox = iframe;
     return theobj;
 };
