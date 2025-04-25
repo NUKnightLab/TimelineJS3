@@ -94,40 +94,45 @@ function getLinkAndIframe() {
         urlBase = "https://cdn.knightlab.com/libs/timeline3/latest/";
     }
 
-    vars = urlBase + "embed/index.html?source=" + source_key;
-
-    vars += "&font=" + e_font.getAttribute("data-value");
-    vars += "&lang=" + e_language.value;
+    let params = {
+        source: source_key,
+        font: e_font.getAttribute("data-value"),
+        lang: e_language ? e_language.value : "en"
+    }
 
     if (start_at_end) {
-        vars += "&start_at_end=" + start_at_end;
+        params.start_at_end = start_at_end;
     }
 
     if (timenav_position == "top") {
-        vars += "&timenav_position=" + timenav_position;
+        params.timenav_position = timenav_position;
     }
     if (is_debug) {
-        vars += "&debug=" + is_debug;
+        params.debug = is_debug;
     }
     if (hash_bookmark) {
-        vars += "&hash_bookmark=" + hash_bookmark;
+        params.hash_bookmark = hash_bookmark;
     }
     if (initial_zoom) {
-        vars += "&initial_zoom=" + initial_zoom.value;
+        params.initial_zoom = initial_zoom.value;
     }
     // TODO: Make this start at end if startatslide > # of slides
     if (parseInt(e_startatslide.value, 10) > 0) {
-        vars += "&start_at_slide=" + parseInt(e_startatslide.value, 10);
+        params.start_at_slide = parseInt(e_startatslide.value, 10);
     }
 
     if (e_width.value > 0) {
-        vars += "&width=" + e_width.value;
+        params.width = e_width.value;
     }
     if (e_height.value > 0) {
-        vars += "&height=" + e_height.value;
+        params.height = e_height.value;
     }
 
-    iframe = "<iframe src='" + vars + "'";
+    let source_url = urlBase + "embed/index.html";
+    source_url += "?" + Object.keys(params).map(function(key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+    }).join('&');   
+    iframe = "<iframe src='" + source_url + "'";
 
     if (e_width.value > 0 || e_width.value.match("%")) {
         iframe += " width='" + e_width.value + "'";

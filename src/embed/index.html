@@ -136,7 +136,7 @@
 
             for (var i = 0; i < param_str.length; i++) {
                 var uv = param_str[i].split('=');
-                url_vars[uv[0]] = uv[1];
+                url_vars[uv[0]] = decodeURIComponent(uv[1]);
             }
 
             return url_vars;
