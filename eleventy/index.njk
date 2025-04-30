@@ -1,0 +1,17 @@
+{% extends "base.njk" %}
+
+{% block content %}
+{% include "_header.njk" %}
+
+<article id="product-body">
+    {% include "_demo.njk" %}
+    {% include "_overview.njk" %}
+    {% include "_examples.njk" %}
+    {% include "_make.njk" %}
+    {% include "_help.njk" %}
+</article>
+
+{% include "_storytelling_tools.njk" %}
+
+{% endblock content %}
+

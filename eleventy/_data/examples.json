@@ -1,0 +1,114 @@
+[
+  {
+      "link": "http://world.time.com/2013/12/05/nelson-mandelas-extraordinary-life-an-interactive-timeline/",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_mandela.jpg",
+      "source": "Time Magazine",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_time.png",
+      "title": "Mandela: A Life of Purpose"
+  },
+  {
+      "link": "http://www.lemonde.fr/election-presidentielle-2012/visuel/2012/04/21/chronologie-une-si-longue-campagne-presidentielle_1681661_1471069.html#meter_toaster",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_lemonde.jpg",
+      "source": "Le Monde",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_lemonde.png",
+      "title": "Chronology of the French Presidential Race"
+  },
+  {
+      "link": "http://www.themaneater.com/special-sections/mu-fall-2015/",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_univofmissouri.jpg",
+      "source": "The Maneater",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_maneater.png",
+      "title": "Historic Fall at University of Missouri"
+  },
+  {
+      "link": "http://www.cnn.com/2016/04/20/asia/north-korea-restaurant-defectors/index.html",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_northkorea.jpg",
+      "source": "CNN",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_cnn.png",
+      "title": "North Korea's Nuclear Ambitions"
+  },
+  {
+      "link": "http://bulger.wbur.org/story/1977/?location&#x3D;44444",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_bulger.jpg",
+      "source": "WBUR",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_wbur.png",
+      "title": "Bulger on Trial"
+  },
+  {
+      "link": "https://www.publicintegrity.org/2014/07/15/15037/decades-making-decline-irs-nonprofit-regulation",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_supremecourt.jpg",
+      "source": "Center for Public Integrity",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_centerforpublicintegrity.png",
+      "title": "The Decline of IRS Nonprofit Regulation"
+  },
+  {
+      "link": "http://www.denverpost.com/breakingnews/ci_21119904",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_denver_shooting.jpg",
+      "source": "Denver Post",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_denverpost.png",
+      "title": "Aurora, Colorado Movie Theater Shooting"
+  },
+  {
+      "link": "https://www.engadget.com/2016/04/22/microsoft-mobile-timeline/",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_mobile_device.jpg",
+      "source": "Engadget",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_engadget.png",
+      "title": "The Collapse of Microsoft and Nokia's Mobile Business"
+  },
+  {
+      "link": "http://www.ibtimes.com/islamic-state-timeline-shows-how-isis-expanded-one-year-two-countries-ten-1959705",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_isis.jpg",
+      "source": "International Business Times",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_ibt.png",
+      "title": "How ISIS Spread to 10 Countries"
+  },
+  {
+      "link": "http://www.ksat.com/news/texas/middle-school-teacher-had-sexual-relationship-with-student-authorities-say_",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_perpwalk.jpg",
+      "source": "KSAT",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_ksat.png",
+      "title": "Reported Sexual Assault Cases by Texas Educators"
+  },
+  {
+      "link": "http://vinepair.com/wine-colonized-world-wine-history/#1",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_wine.jpg",
+      "source": "VinePair",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_vinepair.png",
+      "title": "A History of Wine Around the World"
+  },
+  {
+      "link": "http://mashable.com/2014/03/13/timeline-malaysia-airlines-flight-370/?utm_cid&#x3D;mash-com-Tw-main-link#hzbp7TyJREqX",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_malaysia-airlines.jpg",
+      "source": "Mashable",
+      "source_logo": "https://timeline.knightlab.com/static/img/examples/logos/logo_mashable.png",
+      "title": "The Mystery of Malaysia Airlines Flight 370"
+  },
+  {
+      "link": "https://timeline.knightlab.com/examples/user-interface/index.html",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_userinterface.png",
+      "source": "Knight Lab",
+      "source_logo": "/static/img/examples/logos/logo_knightlab.png",
+      "title": "Revolutionary User Interfaces"
+  },
+  {
+      "link": "http://beyondtheseal.com/chapter3/slide-3/",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_banana.png",
+      "source": "Beyond the Seal",
+      "source_logo": "/static/img/examples/logos/logo_beyondtheseal.png",
+      "title": "A Brief History of the Banana Business"
+  },
+  {
+      "link": "https://timeline.knightlab.com/examples/republican/index.html",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_republican.jpg",
+      "source": "Knight Lab",
+      "source_logo": "/static/img/examples/logos/logo_knightlab.png",
+      "title": "The Republican Run-Up"
+  },
+  {
+      "link": "https://timeline.knightlab.com/examples/houston/index.html",
+      "thumbnail": "https://timeline.knightlab.com/static/img/examples/thumbs/thumb_houston.jpg",
+      "source": "Knight Lab",
+      "source_logo": "/static/img/examples/logos/logo_knightlab.png",
+      "title": "Whitney Houston: 1963-2012"
+  }
+]
