@@ -20,7 +20,6 @@
 
     .tl-slidenav-content-container {
 		width:@width-slide-nav;
-		position:absolute;
 	}
 	.tl-slidenav-title, .tl-slidenav-description {
 		//width:100%;
@@ -103,7 +102,7 @@
 .tl-slidenav-next {
 	text-align: right;
 	margin-right:@margin-slide-nav;
-    right: @width-slide-nav;
+    right: 0;
 	.tl-slidenav-title, .tl-slidenav-description {
 		margin-left:20px;
 	}
@@ -116,6 +115,7 @@
 }
 .tl-slidenav-previous {
 	text-align: left;
+    left: 0;
 	margin-left:@margin-slide-nav;
 	.tl-slidenav-icon {
 		margin-left: 0px;
@@ -128,13 +128,9 @@
 // Fixes usage of browsers default setting of `direction: rtl`
 [dir="rtl"] {
 	.tl-slidenav-previous {
-		left: @width-slide-nav;
-		// due to the &nbsp, we need to tweak this margin
-		margin-left: -(@margin-slide-nav/2);
+		direction: ltr;
 	}
 	.tl-slidenav-next {
-		right: @margin-slide-nav;
-		margin-right: 0;
 		&:hover .tl-slidenav-icon {
 			margin-right: -4px;
 		}
@@ -178,7 +174,6 @@
 } 
 .tl-skinny {
 	.tl-slidenav-next {
-	    right: 32px;
 		.tl-slidenav-icon {
 			margin-left:32 - 24px;
 		}

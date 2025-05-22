@@ -114,7 +114,7 @@ export class SlideNav {
 		this._el.title = DOM.create("div", "tl-slidenav-title", this._el.content_container);
 		this._el.description = DOM.create("div", "tl-slidenav-description", this._el.content_container);
 		
-		this._el.icon.innerHTML				= "&nbsp;"
+		// this._el.icon.innerHTML				= "&nbsp;"
 		
 		this._update();
 	}
