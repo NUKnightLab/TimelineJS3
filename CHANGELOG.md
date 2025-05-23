@@ -1,3 +1,7 @@
+3.9.8 (2025-05-23)
+-------------------------
+#894 Fixes previous/next button positioning when a timeline is a child of an element with dir="rtl"
+
 3.9.7 (2025-03-11)
 -------------------------
 * #834 Improved timegroup-message element contrast
