@@ -1,3 +1,7 @@
+3.9.9 (not released)
+-------------------------
+#895 Fixes for pt-BT locale
+
 3.9.8 (2025-05-23)
 -------------------------
 #894 Fixes previous/next button positioning when a timeline is a child of an element with dir="rtl"

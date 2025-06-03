@@ -48,6 +48,16 @@
             "Dezembro"
         ]
     },
+    "era_labels": {
+        "positive_year": {
+            "prefix": "",
+            "suffix": ""
+        },
+        "negative_year": {
+            "prefix": "",
+            "suffix": "a.C"
+        }
+    },
     "api": {
         "wikipedia": "pt"
     },
@@ -56,7 +66,8 @@
         "return_to_title": "Voltar para o título",
         "wikipedia": "Wikipédia, A enciclopédia livre",
         "loading_content": "Carregando Conteúdo",
-        "loading_timeline": "Carregando Timeline... "
+        "loading_timeline": "Carregando Timeline... ",
+        "swipe_to_navigate": "Arraste para navegar<br><span class='tl-button'>OK</span>"
     },
     "dateformats": {
         "time": "H:MM:ss' 'd mmmm',' yyyy''",
