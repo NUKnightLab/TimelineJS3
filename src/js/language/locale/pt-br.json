@@ -48,6 +48,16 @@
             "Dezembro"
         ]
     },
+    "era_labels": {
+        "positive_year": {
+            "prefix": "",
+            "suffix": ""
+        },
+        "negative_year": {
+            "prefix": "",
+            "suffix": "a.C"
+        }
+    },
     "api": {
         "wikipedia": "pt"
     },
