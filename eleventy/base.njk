@@ -6,7 +6,6 @@
 </head>
 
 <body>
-
     <nav id="navbar-product-top" class="navbar navbar-dark">
         <ul>
             <li class="logo">
@@ -26,9 +25,7 @@
     </nav>
 
     {% block content %} {% endblock content %} {% block footer %} {% include "_footer.njk" %} {% endblock footer %} {% block scripts %}
-    <!-- build:js https://cdn.knightlab.com/libs/timeline3/%(cdn)s/js/timeline-min.js -->
-    <script src="/dist/js/timeline.js"></script>
-    <!-- endbuild -->
+    <script src="{{ 'js/timeline.js' | dist_url }}"></script>
     <script src="/static/js/main.js"></script>
     <script src="https://cdn.knightlab.com/libs/orangeline/latest/js/main.js"></script>
     {% endblock scripts %}

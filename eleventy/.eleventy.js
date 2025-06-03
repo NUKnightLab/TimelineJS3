@@ -6,14 +6,23 @@
 // };
 
 module.exports = function (eleventyConfig) {
-    eleventyConfig.addPassthroughCopy("static");
+    eleventyConfig.addPassthroughCopy("static/**/*");
     // eleventyConfig.addPassthroughCopy("**/*.js");
     eleventyConfig.addPassthroughCopy("js");
-     // add custom Liquid filter named "safe"
+    // add custom Liquid filter named "safe"
     eleventyConfig.addFilter("safe", function(content){
         return content; 
     });
-    
+
+    eleventyConfig.addFilter("dist_url", function(content){
+        const PREFIXES = {
+            'stg': 'https://cdn.knightlab.com/libs/timeline3/dev/',
+            'prd': 'https://cdn.knightlab.com/libs/timeline3/latest/',
+        }
+        let prefix = PREFIXES[process.env.DEPLOY_TARGET] || '/';
+        return `${prefix}${content}`;
+    });    
+
     return eleventyConfig;
    
   };
