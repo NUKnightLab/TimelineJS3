@@ -28,7 +28,7 @@ Timeline uses `webpack` for bundling, and uses the `webpack-dev-server` as part 
 
 ### Building
 
-In order to "compile" TimelineJS for use in other contexts, after following the instructions above, run the command `npm run dist`. This will populate a directory, `dist/` in the rool of your checked-out repository, with the javascript and CSS necessary to self-host TimelineJS.
+In order to "compile" TimelineJS for use in other contexts, after following the instructions above, run the command `npm run dist`. This will populate a directory, `dist/` in the root of your checked-out repository, with the javascript and CSS necessary to self-host TimelineJS.
 
 
 ### Testing

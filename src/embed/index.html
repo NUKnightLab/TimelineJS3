@@ -136,7 +136,14 @@
 
             for (var i = 0; i < param_str.length; i++) {
                 var uv = param_str[i].split('=');
-                url_vars[uv[0]] = uv[1];
+                let k = uv[0], v = uv[1];
+                try {
+                    k = decodeURIComponent(k);
+                } catch (e) {} // some legacy values are not properly encoded
+                try {
+                    v = decodeURIComponent(v);
+                } catch (e) {} // some legacy values are not properly encoded esp width=100%
+                url_vars[k] = v;
             }
 
             return url_vars;

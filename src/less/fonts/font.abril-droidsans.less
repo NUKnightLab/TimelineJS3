@@ -1,17 +1,19 @@
 /*	Font Abril Fatface & Droid Sans
 
-https://www.google.com/fonts/specimen/Abril+Fatface
-https://www.google.com/fonts/specimen/Droid+Sans
+https://fonts.google.com/specimen/Abril+Fatface
+https://fonts.google.com/noto/specimen/Noto+Sans
 ----------------------------------------------------- */
 
 // Main Variables 
 @import "../Variables.less"; 
 
 // Font Import
-@import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Abril+Fatface);
+// as of 2022, Droid Sans was replaced with Noto Sans 
+// https: //github.com/google/fonts/issues/4469
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Noto+Sans:ital@0;1&display=swap');
 
 // Font Variables
-@font-main:						'Droid Sans', sans-serif;
+@font-main:						'Noto Sans', sans-serif;
 @font-secondary:				'Abril Fatface', cursive;
 @font-navigation:				@font-main;
 @font-marker: 					@font-main;

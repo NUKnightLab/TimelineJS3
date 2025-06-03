@@ -19,8 +19,7 @@
     font-weight: inherit;
 
     .tl-slidenav-content-container {
-		width:100px;
-		position:absolute;
+		width:@width-slide-nav;
 	}
 	.tl-slidenav-title, .tl-slidenav-description {
 		//width:100%;
@@ -102,8 +101,8 @@
 
 .tl-slidenav-next {
 	text-align: right;
-	margin-right:10px;
-    right: 100px;
+	margin-right:@margin-slide-nav;
+    right: 0;
 	.tl-slidenav-title, .tl-slidenav-description {
 		margin-left:20px;
 	}
@@ -116,12 +115,25 @@
 }
 .tl-slidenav-previous {
 	text-align: left;
-	margin-left:10px;
+    left: 0;
+	margin-left:@margin-slide-nav;
 	.tl-slidenav-icon {
 		margin-left: 0px;
 	}
 	.tl-slidenav-icon:before {
 		content: "\e650";
+	}
+}
+
+// Fixes usage of browsers default setting of `direction: rtl`
+[dir="rtl"] {
+	.tl-slidenav-previous {
+		direction: ltr;
+	}
+	.tl-slidenav-next {
+		&:hover .tl-slidenav-icon {
+			margin-right: -4px;
+		}
 	}
 }
 
@@ -162,7 +174,6 @@
 } 
 .tl-skinny {
 	.tl-slidenav-next {
-	    right: 32px;
 		.tl-slidenav-icon {
 			margin-left:32 - 24px;
 		}

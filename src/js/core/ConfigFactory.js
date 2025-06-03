@@ -19,11 +19,17 @@ export function parseGoogleSpreadsheetURL(url) {
         }
         // key as url parameter (old-fashioned)
     var key_pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
+    // https://docs.google.com/spreadsheets/d/e/2PACX-1vTwrxBim-ruoMlLP9CnZIevWdP8rIatkV7XjNGXRSaMI94sNd-VbRF--W7A2kj6wfZhKUHWv1ur0Tb3/pubhtml
+    var v2_url_pat = /docs.google.com\/spreadsheets.*?\/d\/e\/([^\/]+)\/.+/; // Google prefers pubhtml links with this format
     var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d
 
     if (url.match(key_pat)) {
         parts.key = url.match(key_pat)[1];
         // can we get a worksheet from this form?
+    } else if (url.match(v2_url_pat)) {
+        let v2_key = url.match(v2_url_pat)[1]
+        parts.key = `v2:${v2_key}`
+        // to do: get worksheet from this form?
     } else if (url.match(url_pat)) {
         var pos = url.search(url_pat) + url.match(url_pat)[0].length;
         var tail = url.substr(pos);
@@ -31,7 +37,7 @@ export function parseGoogleSpreadsheetURL(url) {
         if (url.match(/\?gid=(\d+)/)) {
             parts.worksheet = url.match(/\?gid=(\d+)/)[1];
         }
-    } else if (url.match(/^\b[-_A-Za-z0-9]+$/)) {
+    } else if (url.match(/^\b(v2:)?[-_A-Za-z0-9]+$/)) {
         parts.key = url;
     }
 
@@ -154,6 +160,10 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
     }).catch(error_json => {
         if (error_json.proxy_err_code == 'response_not_csv') {
             throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
+        } else if (error_json.status_code == 401) {
+            throw new TLError('Configuration unreadable. Please make sure your Google Sheets document is published to the web and review step 2 of the timeline setup instructions to make sure you have the correct URL, as this has changed.')
+        } else if (error_json.status_code == 410) {
+            throw new TLError('Google reports that this configuration spreadsheet is gone. Check to see if it has been deleted from Google Drive. Timeline configuration spreadsheets must not be deleted.')
         }
         let msg = "undefined error"
         if (Array.isArray(error_json.message)) {
@@ -195,7 +205,19 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
  */
 export function makeGoogleCSVURL(url_or_key) {
     url_or_key = url_or_key.trim()
-    if (url_or_key.match(/^[a-zA-Z0-9-_]+$/)) {
+    if (url_or_key.match(/^v2:[a-zA-Z0-9-_]+$/)) {
+        console.log(`it's a newbie: ${url_or_key}`)
+        try {
+            let key = url_or_key.substring(3)
+            console.log(`key is ${key}`)
+            let url = `https://docs.google.com/spreadsheets/d/e/${key}/pub?output=csv`
+            console.log(`url is ${url}`)
+            return url
+        } catch (e) {
+            debugger;
+            throw new TLError('invalid_url_err', url_or_key);
+        }
+    } else if (url_or_key.match(/^[a-zA-Z0-9-_]+$/)) {
         // key pattern from https://developers.google.com/sheets/api/guides/concepts#spreadsheet_id
         return `https://docs.google.com/spreadsheets/d/${url_or_key}/pub?output=csv`
     }
@@ -270,6 +292,7 @@ export async function makeConfig(url, callback_or_options) {
 
     if (key) {
         try {
+            console.log(`reading url ${url}`);
             json = await jsonFromGoogleURL(url, options);
         } catch (e) {
             // even with an error, we make 

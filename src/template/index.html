@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <!-- this is normally done by embed page -->
     <script>
+        const ALL_FONT_OPTIONS = [ // 21 right now
+            'default', 'abril-droidsans', 'amatic-andika', 'bevan-pontanosans', 'bitter-raleway', 'clicker-garamond', 'dancing-ledger',  'fjalla-average', 'georgia-helvetica', 'knightlab', 'lustria-lato', 'medula-lato', 'oldstandard', 'opensans-gentiumbook', 'playfair-faunaone', 'playfair', 'pt', 'roboto-megrim', 'rufina-sintony', 'ubuntu', 'unicaone-vollkorn', 
+        ]
         var options = {
             lang: 'es',
             debug: true,
@@ -14,7 +17,8 @@
             start_at_end: false,
             autolink: false,
             ga_measurement_id: 'G-LVEFKMG087',
-            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/'
+            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
+            font: ALL_FONT_OPTIONS[3]
         }
 
 
