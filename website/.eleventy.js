@@ -19,7 +19,7 @@ module.exports = function (eleventyConfig) {
             'stg': 'https://cdn.knightlab.com/libs/timeline3/dev/',
             'prd': 'https://cdn.knightlab.com/libs/timeline3/latest/',
         }
-        let prefix = PREFIXES[process.env.DEPLOY_TARGET] || '/';
+        let prefix = PREFIXES[process.env.DEPLOY_TARGET] || '/dist/';
         return `${prefix}${content}`;
     });    
 

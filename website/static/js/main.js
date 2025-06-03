@@ -55,10 +55,6 @@ function getLinkAndIframe() {
     /* SOURCE KEY
     ================================================== */
     if (e_source.value.match("docs.google.com")) {
-        if (e_source.value.match(new RegExp('/spreadsheets/d/e'))) {
-            theobj.warning = "Invalid Google URL. Please see the note above about how a recent change with Google Spreadsheets affects creating timelines.";
-            return theobj;
-        }
         var obj = TL.parseGoogleSpreadsheetURL(e_source.value);
         source_key = obj.key;
     } else {
@@ -90,48 +86,46 @@ function getLinkAndIframe() {
     /* IFRAME AND LINK
     ================================================== */
 
-    if ((window.location.host).includes("localhost:") || (window.location.host).includes("0.0.0.0:")) {
-        urlBase = "http://" + window.location.host + "/dist/";
-    } else if ((window.location.host).includes("timeline.knilab.com")) {
-        urlBase = "https://cdn.knightlab.com/libs/timeline3/dev/";
-    } else {
-        urlBase = "https://cdn.knightlab.com/libs/timeline3/latest/";
+    let source_url = document.getElementById('preview-embed-iframe').dataset['embedUrl']
+
+    let params = {
+        source: source_key,
+        font: e_font.getAttribute("data-value"),
+        lang: e_language ? e_language.value : "en"
     }
 
-    vars = urlBase + "embed/index.html?source=" + source_key;
-
-    vars += "&font=" + e_font.getAttribute("data-value");
-    vars += "&lang=" + e_language.value;
-
     if (start_at_end) {
-        vars += "&start_at_end=" + start_at_end;
+        params.start_at_end = start_at_end;
     }
 
     if (timenav_position == "top") {
-        vars += "&timenav_position=" + timenav_position;
+        params.timenav_position = timenav_position;
     }
     if (is_debug) {
-        vars += "&debug=" + is_debug;
+        params.debug = is_debug;
     }
     if (hash_bookmark) {
-        vars += "&hash_bookmark=" + hash_bookmark;
+        params.hash_bookmark = hash_bookmark;
     }
     if (initial_zoom) {
-        vars += "&initial_zoom=" + initial_zoom.value;
+        params.initial_zoom = initial_zoom.value;
     }
     // TODO: Make this start at end if startatslide > # of slides
     if (parseInt(e_startatslide.value, 10) > 0) {
-        vars += "&start_at_slide=" + parseInt(e_startatslide.value, 10);
+        params.start_at_slide = parseInt(e_startatslide.value, 10);
     }
 
-    if (e_width.value > 0) {
-        vars += "&width=" + e_width.value;
+    if (e_width.value.trim().match(/^\d+%?$/)) {
+        params.width = e_width.value.trim();
     }
-    if (e_height.value > 0) {
-        vars += "&height=" + e_height.value;
+    if (e_height.value.trim().match(/^\d+%?$/)) {
+        params.height = e_height.value.trim();
     }
 
-    iframe = "<iframe src='" + vars + "'";
+    source_url += "?" + Object.keys(params).map(function (key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+    }).join('&');
+    iframe = "<iframe src='" + source_url + "'";
 
     if (e_width.value > 0 || e_width.value.match("%")) {
         iframe += " width='" + e_width.value + "'";
@@ -142,7 +136,7 @@ function getLinkAndIframe() {
     iframe += " webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>";
 
     theobj.iframe = iframe;
-    theobj.link = vars;
+    theobj.link = source_url;
     theobj.copybox = iframe;
     return theobj;
 };
@@ -170,17 +164,17 @@ function updateEmbedCode(element, options) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     // More Options
-    $("#show-options").click(function(e) {
+    $("#show-options").click(function (e) {
         $(this).hide();
         $("#hide-options").show();
         $(".more-options").slideDown();
         return false;
     });
 
-    $("#hide-options").click(function(e) {
+    $("#hide-options").click(function (e) {
         $(this).hide();
         $("#show-options").show();
         $(".more-options").slideUp();
@@ -188,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Preview
-    document.getElementById("iframe-preview-button").addEventListener("click", function() {
+    document.getElementById("iframe-preview-button").addEventListener("click", function () {
         updateEmbedCode();
         var $embed = $("#preview-embed-iframe");
 
@@ -201,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Device preview
-    $('#device-preview-mode span').on("click", function() {
+    $('#device-preview-mode span').on("click", function () {
         $("#preview-embed-iframe").removeClass();
         $("#preview-embed-iframe").addClass($(this).data("size"));
         $(this).siblings().removeClass("active");
@@ -209,26 +203,26 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Embed Generator
-    $("#embed_code").click(function() { $(this).select(); });
-    $('#make-step-3 input').change(function(evt) { updateEmbedCode(evt); });
-    $('#make-step-3 select').change(function(evt) { updateEmbedCode(evt); });
-    $("#embed-font li").click(function(evt) {
+    $("#embed_code").click(function () { $(this).select(); });
+    $('#make-step-3 input').change(function (evt) { updateEmbedCode(evt); });
+    $('#make-step-3 select').change(function (evt) { updateEmbedCode(evt); });
+    $("#embed-font li").click(function (evt) {
         var currentFont = document.getElementById("embed-font-active");
         //  currentFont.removeChild(currentFont.firstChild);
         currentFont.removeAttribute("id");
         $(this).attr("id", "embed-font-active")
-            //         .prepend('<span class="icon-github"></span>');
+        //         .prepend('<span class="icon-github"></span>');
         var fontPair = $(this).data("value");
         $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
             .attr("alt", fontPair);
         $("ul#embed-font").hide();
         //    updateEmbedCode(evt);
     });
-    $("#embed-font-dropdown a, #font-pair-preview").on("click", function(evt) {
+    $("#embed-font-dropdown a, #font-pair-preview").on("click", function (evt) {
         evt.preventDefault();
         $("ul#embed-font").toggle();
     });
-    $('.collapse').on('show', function(e) {
+    $('.collapse').on('show', function (e) {
         window.location.hash = "show-" + $(this).attr('id');
     })
 

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "start": "cp -r ../dist _site/ && npx @11ty/eleventy --serve",
+        "start": "mkdir -p _site && cp -r ../dist _site/ && npx @11ty/eleventy --serve",
         "build": "rm -r _site && DEPLOY_TARGET=prd npx @11ty/eleventy",
         "build_dev": "rm -r _site && DEPLOY_TARGET=stg npx @11ty/eleventy"
     },

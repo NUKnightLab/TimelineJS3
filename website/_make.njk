@@ -285,8 +285,10 @@ https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1xuY4upI
                 <h3>Preview Embed</h3>
             </div>
             <section id="demo" class="container-fluid">
-                <div id="preview-embed-iframe" class="product-demo">
-                    <iframe src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=650" width="100%" height="650" frameborder="0"></iframe>
+                <div id="preview-embed-iframe" class="product-demo"
+                     data-embed-url="{{ 'embed/index.html' | dist_url }}">
+
+                    <iframe src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.njk?source=1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI&amp;font=Default&amp;lang=en&amp;initial_zoom=2&amp;height=650" width="100%" height="650" frameborder="0"></iframe>
                 </div>
             </section>
         </div>

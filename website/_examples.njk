@@ -1,19 +1,23 @@
     <section class="section-color fill-color-grey--lightest" id="examples">
         <div class="container">
         <h2>Examples</h2>
-        <div class="example-grid">
+        <div class="cards cards--link">
         {% for example in examples %}
         {#
             Add/edit examples in the examples.json file.
             Depends upon inject_index_data in app.py for these to be available to render.
         #}
-        <div class="grid-item">
-            <a href="{{ example.link }}" class="button button-light" target="_blank">
-                <figure class="examples">
-                    <img src="{{ example.thumbnail }}" alt="{{ example.title }}">
-                </figure>
-                <img src="{{ example.source_logo }}" alt="{{ example.source }}" class="logo-inline">
-                <h4>{{ example.title }}</h4>
+        <div class="card">
+            <a href="{{ example.link }}" target="_blank">
+                <header class="header-image">
+                    <div class="header-image-background bw" style="background-image: url({{ example.thumbnail }});" title="{{ example.title }}"></div>
+                </header>
+                <article class="card-content-overflow">
+                    <h3>{{ example.title }}</h3>
+                </article>
+                <footer>
+                    <img src="{{ example.source_logo }}" alt="{{ example.source }}" class="logo-inline"> 
+                </footer>
             </a>
         </div>
         {% endfor %}
