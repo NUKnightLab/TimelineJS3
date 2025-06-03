@@ -86,13 +86,7 @@ function getLinkAndIframe() {
     /* IFRAME AND LINK
     ================================================== */
 
-    if ((window.location.host).includes("localhost:") || (window.location.host).includes("0.0.0.0:")) {
-        urlBase = "http://" + window.location.host + "/dist/";
-    } else if ((window.location.host).includes("timeline.knilab.com")) {
-        urlBase = "https://cdn.knightlab.com/libs/timeline3/dev/";
-    } else {
-        urlBase = "https://cdn.knightlab.com/libs/timeline3/latest/";
-    }
+    let source_url = document.getElementById('preview-embed-iframe').dataset['embedUrl']
 
     let params = {
         source: source_key,
@@ -128,10 +122,9 @@ function getLinkAndIframe() {
         params.height = e_height.value.trim();
     }
 
-    let source_url = urlBase + "embed/index.html";
     source_url += "?" + Object.keys(params).map(function(key) {
         return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-    }).join('&');   
+    }).join('&');
     iframe = "<iframe src='" + source_url + "'";
 
     if (e_width.value > 0 || e_width.value.match("%")) {
@@ -218,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //  currentFont.removeChild(currentFont.firstChild);
         currentFont.removeAttribute("id");
         $(this).attr("id", "embed-font-active")
-            //         .prepend('<span class="icon-github"></span>');
+        //         .prepend('<span class="icon-github"></span>');
         var fontPair = $(this).data("value");
         $("#font-pair-preview").attr("src", "static/img/make/" + fontPair.toLowerCase() + ".png")
             .attr("alt", fontPair);

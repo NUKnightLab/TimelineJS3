@@ -1,0 +1,17 @@
+{
+    "name": "eleventy",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "mkdir -p _site && cp -r ../dist _site/ && npx @11ty/eleventy --serve",
+        "build": "rm -r _site && DEPLOY_TARGET=prd npx @11ty/eleventy",
+        "build_dev": "rm -r _site && DEPLOY_TARGET=stg npx @11ty/eleventy"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@11ty/eleventy": "^3.1.0"
+    }
+}
