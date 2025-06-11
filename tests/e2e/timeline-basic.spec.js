@@ -2,9 +2,9 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('TimelineJS Basic Functionality', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the development page
-    await page.goto('/');
-    
+    // Navigate to the template page (which has local test data)
+    await page.goto('/src/template/index.html');
+
     // Wait for the timeline to load
     await page.waitForSelector('#timeline-embed .tl-timeline', { timeout: 30000 });
   });
