@@ -18,3 +18,8 @@ build
 *.log
 dist
 .vscode
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
