@@ -1,5 +1,5 @@
 import { mergeData, pad, trace } from "../core/Util"
-import { fetchJSON } from "../net/Net"
+import { fetchJSON } from "../net/ModernNet"
 import { BigYear } from "../date/TLDate"
 import TLError from "../core/TLError";
 

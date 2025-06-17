@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { getJSON } from "../../net/Net";
+import { getJSON } from "../../net/ModernNet";
 import { loadJS } from "../../core/Load";
 
 export default class SoundCloud extends Media {
