@@ -144,7 +144,7 @@ const css_named_colors = {
     "yellowgreen": "#9acd32"
 }
 
-function intToHexString(i) {
+const intToHexString = (i) => {
     return pad(parseInt(i, 10).toString(16));
 }
 
@@ -153,12 +153,12 @@ export function hexToRgb(hex) {
     if (css_named_colors[hex.toLowerCase()]) {
         hex = css_named_colors[hex.toLowerCase()];
     }
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
         return r + r + g + g + b + b;
     });
 
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
@@ -167,13 +167,13 @@ export function hexToRgb(hex) {
 }
 // given an object with r, g, and b keys, or a string of the form 'rgb(mm,nn,ll)', return a CSS hex string including the leading '#' character
 export function rgbToHex(rgb) {
-    var r, g, b;
-    if (typeof(rgb) == 'object') {
+    let r, g, b;
+    if (typeof(rgb) === 'object') {
         r = rgb.r;
         g = rgb.g;
         b = rgb.b;
-    } else if (typeof(rgb.match) == 'function') {
-        var parts = rgb.match(/^rgb\((\d+),(\d+),(\d+)\)$/);
+    } else if (typeof(rgb.match) === 'function') {
+        const parts = rgb.match(/^rgb\((\d+),(\d+),(\d+)\)$/);
         if (parts) {
             r = parts[1];
             g = parts[2];
@@ -183,12 +183,11 @@ export function rgbToHex(rgb) {
     if (isNaN(r) || isNaN(b) || isNaN(g)) {
         throw new TLError("invalid_rgb_err");
     }
-    return "#" + intToHexString(r) + intToHexString(g) + intToHexString(b);
+    return `#${intToHexString(r)}${intToHexString(g)}${intToHexString(b)}`;
 }
 
 export function mergeData(data_main, data_to_merge) {
-    var x;
-    for (x in data_to_merge) {
+    for (const x in data_to_merge) {
         if (Object.prototype.hasOwnProperty.call(data_to_merge, x)) {
             data_main[x] = data_to_merge[x];
         }
@@ -197,16 +196,16 @@ export function mergeData(data_main, data_to_merge) {
 }
 
 export function isTrue(s) {
-    if (s == null) return false;
-    return s == true || String(s).toLowerCase() == 'true' || Number(s) == 1;
+    if (s === null || s === undefined) return false;
+    return s === true || String(s).toLowerCase() === 'true' || Number(s) === 1;
 }
 
 // like mergeData but takes an arbitrarily long list of sources to merge.
-export function extend( /*Object*/ dest) /*-> Object*/ { // merge src properties into dest
-    var sources = Array.prototype.slice.call(arguments, 1);
-    for (var j = 0, len = sources.length, src; j < len; j++) {
-        src = sources[j] || {};
-        mergeData(dest, src);
+export function extend(dest, ...sources) { // merge src properties into dest
+    for (const src of sources) {
+        if (src) {
+            mergeData(dest, src);
+        }
     }
     return dest;
 }
@@ -228,15 +227,15 @@ export function addTraceHandler(cb) {
  * Pass the given `msg` to each registered trace handler.
  * This is a crude adaptation of the original Timeline trace
  * function which assumed access to a global `debug` flag.
- * 
- * @param {string} msg 
+ *
+ * @param {string} msg
  */
 export function trace(msg) {
     TRACE_HANDLERS.forEach((cb) => {
         try {
             cb(msg)
         } catch (e) {
-            if (console && console.log) {
+            if (console?.log) {
                 console.log("Error handling trace", e)
             }
         }
@@ -244,22 +243,21 @@ export function trace(msg) {
 }
 
 
-export function pad(val, len) {
+export function pad(val, len = 2) {
     val = String(val);
-    len = len || 2;
     while (val.length < len) val = "0" + val;
     return val;
 }
 
-export const stamp = (function() {
-    var lastId = 0,
-        key = '_tl_id';
+export const stamp = (() => {
+    let lastId = 0;
+    const key = '_tl_id';
 
-    return function( /*Object*/ obj) {
+    return (obj) => {
         obj[key] = obj[key] || ++lastId;
         return obj[key];
     };
-}())
+})()
 
 /**
  * Remove any leading or trailing whitespace from the given string.
@@ -267,7 +265,7 @@ export const stamp = (function() {
  * an empty string.
  */
 export function trim(str) {
-    if (str && typeof(str.replace) == 'function') {
+    if (str && typeof(str.replace) === 'function') {
         return str.replace(/^\s+|\s+$/g, '');
     }
     return "";
@@ -277,19 +275,19 @@ export function maxDepth(ary) {
     // given a sorted array of 2-tuples of numbers, count how many "deep" the items are.
     // that is, what is the maximum number of tuples that occupy any one moment
     // each tuple should also be sorted
-    var stack = [];
-    var max_depth = 0;
-    for (var i = 0; i < ary.length; i++) {
+    let stack = [];
+    let max_depth = 0;
+    for (let i = 0; i < ary.length; i++) {
 
         stack.push(ary[i]);
         if (stack.length > 1) {
-            var top = stack[stack.length - 1]
-            var bottom_idx = -1;
-            for (var j = 0; j < stack.length - 1; j++) {
+            const top = stack[stack.length - 1]
+            let bottom_idx = -1;
+            for (let j = 0; j < stack.length - 1; j++) {
                 if (stack[j][1] < top[0]) {
                     bottom_idx = j;
                 }
-            };
+            }
             if (bottom_idx >= 0) {
                 stack = stack.slice(bottom_idx + 1);
             }
@@ -299,7 +297,7 @@ export function maxDepth(ary) {
         if (stack.length > max_depth) {
             max_depth = stack.length;
         }
-    };
+    }
     return max_depth;
 }
 
@@ -322,35 +320,28 @@ export function ensureUniqueKey(obj, candidate) {
 
     if (!(candidate in obj)) { return candidate; }
 
-    var root = candidate.match(/^(.+)(-\d+)?$/)[1];
-    var similar_ids = [];
+    const root = candidate.match(/^(.+)(-\d+)?$/)[1];
+    const similar_ids = [];
     // get an alternative
-    for (let key in obj) {
-        if (key.match(/^(.+?)(-\d+)?$/)[1] == root) {
+    for (const key in obj) {
+        if (key.match(/^(.+?)(-\d+)?$/)[1] === root) {
             similar_ids.push(key);
         }
     }
-    candidate = root + "-" + (similar_ids.length + 1);
+    candidate = `${root}-${similar_ids.length + 1}`;
 
-    for (var counter = similar_ids.length; similar_ids.indexOf(candidate) != -1; counter++) {
-        candidate = root + '-' + counter;
+    for (let counter = similar_ids.length; similar_ids.indexOf(candidate) !== -1; counter++) {
+        candidate = `${root}-${counter}`;
     }
 
     return candidate;
 }
 
 export function isEmptyObject(o) {
-    var properties = []
-    if (Object.keys) {
-        properties = Object.keys(o);
-    } else { // all this to support IE 8
-        for (var p in o)
-            if (Object.prototype.hasOwnProperty.call(o, p)) properties.push(p);
-    }
-    for (var i = 0; i < properties.length; i++) {
-        var k = properties[i];
-        if (o[k] != null && typeof o[k] != "string") return false;
-        if (trim(o[k]).length != 0) return false;
+    const properties = Object.keys(o);
+    for (const k of properties) {
+        if (o[k] !== null && typeof o[k] !== "string") return false;
+        if (trim(o[k]).length !== 0) return false;
     }
     return true;
 }
@@ -361,9 +352,9 @@ export function slugify(str) {
     str = str.toLowerCase();
 
     // remove accents, swap ñ for n, etc
-    var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-    var to = "aaaaaeeeeeiiiiooooouuuunc------";
-    for (var i = 0, l = from.length; i < l; i++) {
+    const from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+    const to = "aaaaaeeeeeiiiiooooouuuunc------";
+    for (let i = 0, l = from.length; i < l; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
@@ -377,27 +368,27 @@ export function slugify(str) {
 
 export function unique_ID(size, prefix) {
 
-    var getRandomNumber = function(range) {
+    const getRandomNumber = (range) => {
         return Math.floor(Math.random() * range);
     };
 
-    var getRandomChar = function() {
-        var chars = "abcdefghijklmnopqurstuvwxyz";
-        return chars.substr(getRandomNumber(32), 1);
+    const getRandomChar = () => {
+        const chars = "abcdefghijklmnopqurstuvwxyz";
+        return chars.substr(getRandomNumber(26), 1); // Fixed: was 32, now 26 to match chars.length
     };
 
-    var randomID = function(size) {
-        var str = "";
-        for (var i = 0; i < size; i++) {
+    const randomID = (size) => {
+        let str = "";
+        for (let i = 0; i < size; i++) {
             str += getRandomChar();
         }
         return str;
     };
 
     if (prefix) {
-        return prefix + "-" + randomID(size);
+        return `${prefix}-${randomID(size)}`;
     } else {
-        return "tl-" + randomID(size);
+        return `tl-${randomID(size)}`;
     }
 }
 
@@ -405,30 +396,30 @@ export function findNextGreater(list, current, default_value) {
     // given a sorted list and a current value which *might* be in the list,
     // return the next greatest value if the current value is >= the last item in the list, return default,
     // or if default is undefined, return input value
-    for (var i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
         if (current < list[i]) {
             return list[i];
         }
     }
 
-    return (default_value) ? default_value : current;
+    return default_value || current;
 }
 
 export function findNextLesser(list, current, default_value) {
     // given a sorted list and a current value which *might* be in the list,
     // return the next lesser value if the current value is <= the last item in the list, return default,
     // or if default is undefined, return input value
-    for (var i = list.length - 1; i >= 0; i--) {
+    for (let i = list.length - 1; i >= 0; i--) {
         if (current > list[i]) {
             return list[i];
         }
     }
 
-    return (default_value) ? default_value : current;
+    return default_value || current;
 }
 
 export function isEven(n) {
-    return n == parseFloat(n) ? !(n % 2) : void 0;
+    return n === parseFloat(n) ? !(n % 2) : undefined;
 }
 
 export function findArrayNumberByUniqueID(id, array, prop, defaultVal) {
@@ -460,10 +451,9 @@ export function setData(obj, data) {
 export function htmlify(str) {
     //if (str.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)) {
     if (str.match(/<p>[\s\S]*?<\/p>/)) {
-
         return str;
     } else {
-        return "<p>" + str + "</p>";
+        return `<p>${str}</p>`;
     }
 }
 
@@ -476,43 +466,41 @@ export function unhtmlify(str) {
 ================================================== */
 export function linkify(text, targets, is_touch) {
 
-    var make_link = function(url, link_text, prefix) {
-            if (!prefix) {
-                prefix = "";
-            }
-            var MAX_LINK_TEXT_LENGTH = 30;
-            if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
-                link_text = link_text.substring(0, MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
-            }
-            return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
+    const make_link = (url, link_text, prefix = "") => {
+        const MAX_LINK_TEXT_LENGTH = 30;
+        if (link_text && link_text.length > MAX_LINK_TEXT_LENGTH) {
+            link_text = link_text.substring(0, MAX_LINK_TEXT_LENGTH) + "\u2026"; // unicode ellipsis
         }
-        // http://, https://, ftp://
-    var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
+        return `${prefix}<a class='tl-makelink' href='${url}' onclick='void(0)'>${link_text}</a>`;
+    }
+
+    // http://, https://, ftp://
+    const urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
 
     // www. sans http:// or https://
-    var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
+    const pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
 
     // Email addresses
-    var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
+    const emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
 
 
     return text
-        .replace(urlPattern, function(match, url_sans_protocol, offset, string) {
+        .replace(urlPattern, (match, url_sans_protocol, offset, string) => {
             // Javascript doesn't support negative lookbehind assertions, so
             // we need to handle risk of matching URLs in legit hrefs
             if (offset > 0) {
-                var prechar = string[offset - 1];
-                if (prechar == '"' || prechar == "'" || prechar == "=") {
+                const prechar = string[offset - 1];
+                if (prechar === '"' || prechar === "'" || prechar === "=") {
                     return match;
                 }
             }
             return make_link(match, url_sans_protocol);
         })
-        .replace(pseudoUrlPattern, function(match, beforePseudo, pseudoUrl, offset, string) {
-            return make_link('http://' + pseudoUrl, pseudoUrl, beforePseudo);
+        .replace(pseudoUrlPattern, (match, beforePseudo, pseudoUrl, offset, string) => {
+            return make_link(`http://${pseudoUrl}`, pseudoUrl, beforePseudo);
         })
-        .replace(emailAddressPattern, function(match, email, offset, string) {
-            return make_link('mailto:' + email, email);
+        .replace(emailAddressPattern, (match, email, offset, string) => {
+            return make_link(`mailto:${email}`, email);
         });
 }
 
@@ -527,7 +515,7 @@ export function transformMediaURL(url) {
 
 export const ratio = {
     square: (size) => {
-        var s = {
+        const s = {
             w: 0,
             h: 0
         }
@@ -541,30 +529,28 @@ export const ratio = {
         return s;
     },
     r16_9: (size) => {
-        if (size.w !== null && size.w !== "") {
+        if (size.w !== null && size.w !== "" && size.w !== undefined) {
             return Math.round((size.w / 16) * 9);
-        } else if (size.h !== null && size.h !== "") {
+        } else if (size.h !== null && size.h !== "" && size.h !== undefined) {
             return Math.round((size.h / 9) * 16);
         } else {
-            return 0;
+            return 0; // Fixed: return 0 instead of NaN when both are invalid
         }
     },
     r4_3: (size) => {
-        if (size.w !== null && size.w !== "") {
+        if (size.w !== null && size.w !== "" && size.w !== undefined) {
             return Math.round((size.w / 4) * 3);
-        } else if (size.h !== null && size.h !== "") {
+        } else if (size.h !== null && size.h !== "" && size.h !== undefined) {
             return Math.round((size.h / 3) * 4);
+        } else {
+            return 0; // Fixed: return 0 instead of undefined/NaN when both are invalid
         }
     }
 }
 
 export function getUrlVars(string) {
-    var str,
-        vars = [],
-        hash,
-        hashes;
-
-    str = string.toString();
+    let str = string.toString();
+    const vars = [];
 
     if (str.match('&#038;')) {
         str = str.replace("&#038;", "&");
@@ -574,32 +560,31 @@ export function getUrlVars(string) {
         str = str.replace("&amp;", "&");
     }
 
-    hashes = str.slice(str.indexOf('?') + 1).split('&');
+    const hashes = str.slice(str.indexOf('?') + 1).split('&');
 
-    for (var i = 0; i < hashes.length; i++) {
-        hash = hashes[i].split('=');
+    for (let i = 0; i < hashes.length; i++) {
+        const hash = hashes[i].split('=');
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
     }
-
 
     return vars;
 }
 
 export function getParamString(obj) {
-    var params = [];
-    for (var i in obj) {
+    const params = [];
+    for (const i in obj) {
         if (obj.hasOwnProperty(i)) {
-            params.push(i + '=' + obj[i]);
+            params.push(`${i}=${obj[i]}`);
         }
     }
-    return '?' + params.join('&');
+    return `?${params.join('&')}`;
 }
 
 export function getObjectAttributeByIndex(obj, index) {
-    if (typeof obj != 'undefined') {
-        var i = 0;
-        for (var attr in obj) {
+    if (typeof obj !== 'undefined') {
+        let i = 0;
+        for (const attr in obj) {
             if (index === i) {
                 return obj[attr];
             }
@@ -609,33 +594,32 @@ export function getObjectAttributeByIndex(obj, index) {
     } else {
         return "";
     }
-
 }
 
-let base58 = (function(alpha) {
-    var alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
-        base = alphabet.length;
+const base58 = ((alpha) => {
+    const alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+    const base = alphabet.length;
     return {
-        encode: function(enc) {
+        encode: (enc) => {
             if (typeof enc !== 'number' || enc !== parseInt(enc))
                 throw '"encode" only accepts integers.';
-            var encoded = '';
+            let encoded = '';
             while (enc) {
-                var remainder = enc % base;
+                const remainder = enc % base;
                 enc = Math.floor(enc / base);
                 encoded = alphabet[remainder].toString() + encoded;
             }
             return encoded;
         },
-        decode: function(dec) {
+        decode: (dec) => {
             if (typeof dec !== 'string')
                 throw '"decode" only accepts strings.';
-            var decoded = 0;
+            let decoded = 0;
             while (dec) {
-                var alphabetPosition = alphabet.indexOf(dec[0]);
+                const alphabetPosition = alphabet.indexOf(dec[0]);
                 if (alphabetPosition < 0)
-                    throw '"decode" can\'t find "' + dec[0] + '" in the alphabet: "' + alphabet + '"';
-                var powerOf = dec.length - 1;
+                    throw `"decode" can't find "${dec[0]}" in the alphabet: "${alphabet}"`;
+                const powerOf = dec.length - 1;
                 decoded += alphabetPosition * (Math.pow(base, powerOf));
                 dec = dec.substring(1);
             }
@@ -649,21 +633,21 @@ export { base58 }
 
 export function parseYouTubeTime(s) {
     // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
-    if (typeof(s) == 'string') {
-        let parts = s.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i);
+    if (typeof(s) === 'string') {
+        const parts = s.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i);
         if (parts) {
-            var hours = parseInt(parts[1]) || 0;
-            var minutes = parseInt(parts[2]) || 0;
-            var seconds = parseInt(parts[3]) || 0;
+            const hours = parseInt(parts[1]) || 0;
+            const minutes = parseInt(parts[2]) || 0;
+            const seconds = parseInt(parts[3]) || 0;
             return seconds + (minutes * 60) + (hours * 60 * 60);
         }
-    } else if (typeof(s) == 'number') {
+    } else if (typeof(s) === 'number') {
         return s;
     }
     return 0;
 }
 
 export function stripMarkup(txt) {
-    var doc = new DOMParser().parseFromString(txt, 'text/html');
+    const doc = new DOMParser().parseFromString(txt, 'text/html');
     return doc.body.textContent || "";
 }

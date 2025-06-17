@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { ajax } from "../../net/Net"
+import { ajax } from "../../net/ModernNet"
 import { getObjectAttributeByIndex } from "../../core/Util"
 
 export default class Wikipedia extends Media {

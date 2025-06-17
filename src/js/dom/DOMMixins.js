@@ -39,14 +39,14 @@ export class DOMMixins {
     /*	Animate to Position
 	================================================== */
     animatePosition(pos, el) {
-        var ani = {
+        const ani = {
             duration: this.options.duration,
             easing: this.options.ease
         };
-        for (var name in pos) {
-            if (pos.hasOwnProperty(name)) {
-                ani[name] = pos[name] + "px";
-            }
+
+        // Use Object.entries for cleaner iteration
+        for (const [name, value] of Object.entries(pos)) {
+            ani[name] = `${value}px`;
         }
 
         if (this.animator) {
@@ -73,14 +73,11 @@ export class DOMMixins {
     /*	Set the Position
 	================================================== */
     setPosition(pos, el) {
-        for (var name in pos) {
-            if (pos.hasOwnProperty(name)) {
-                if (el) {
-                    el.style[name] = pos[name] + "px";
-                } else {
-                    this._el.container.style[name] = pos[name] + "px";
-                }
-            }
+        const targetElement = el || this._el.container;
+
+        // Use Object.entries for cleaner iteration
+        for (const [name, value] of Object.entries(pos)) {
+            targetElement.style[name] = `${value}px`;
         }
     }
 

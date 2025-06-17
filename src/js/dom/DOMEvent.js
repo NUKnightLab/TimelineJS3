@@ -6,50 +6,51 @@ import { Draggable } from "../ui/Draggable"
 import { touch as BROWSER_TOUCH } from "../core/Browser";
 import { stamp } from "../core/Util"
 
-var DOMEvent = {
-	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
-		var id = stamp(fn),
-            key = "_tl_" + type + id;
+const DOMEvent = {
+	/* Modern event handling - simplified for modern browsers */
+	addListener(obj, type, fn, context) {
+		const id = stamp(fn);
+		const key = `_tl_${type}${id}`;
 
 		if (obj[key]) {
 			return;
 		}
 
-		var handler = function (e) {
-			return fn.call(context || obj, e || DOMEvent._getEvent());
+		const handler = (e) => {
+			return fn.call(context || obj, e);
 		};
 
 		if (BROWSER_TOUCH && type === "dblclick" && this.addDoubleTapListener) {
             this.addDoubleTapListener(obj, handler, id);
-        } else if ("addEventListener" in obj) {
+        } else {
             if (type === "mousewheel") {
+                // Modern browsers support 'wheel' event
+                obj.addEventListener("wheel", handler, false);
+                // Fallback for older browsers
                 obj.addEventListener("DOMMouseScroll", handler, false);
                 obj.addEventListener(type, handler, false);
             } else if (type === "mouseenter" || type === "mouseleave") {
-                var originalHandler = handler,
-                    newType = type === "mouseenter" ? "mouseover" : "mouseout";
-                handler = function(e) {
+                const originalHandler = handler;
+                const newType = type === "mouseenter" ? "mouseover" : "mouseout";
+                const mouseHandler = (e) => {
                     if (!DOMEvent._checkMouse(obj, e)) {
                         return;
                     }
                     return originalHandler(e);
                 };
-                obj.addEventListener(newType, handler, false);
+                obj.addEventListener(newType, mouseHandler, false);
             } else {
                 obj.addEventListener(type, handler, false);
             }
-        } else if ("attachEvent" in obj) {
-            obj.attachEvent("on" + type, handler);
         }
 
 		obj[key] = handler;
 	},
 
-	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
-		var id = stamp(fn),
-            key = "_tl_" + type + id,
-            handler = obj[key];
+	removeListener(obj, type, fn) {
+		const id = stamp(fn);
+		const key = `_tl_${type}${id}`;
+		const handler = obj[key];
 
 		if (!handler) {
 			return;
@@ -57,8 +58,9 @@ var DOMEvent = {
 
 		if (BROWSER_TOUCH && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
-		} else if ('removeEventListener' in obj) {
+		} else {
 			if (type === 'mousewheel') {
+				obj.removeEventListener('wheel', handler, false);
 				obj.removeEventListener('DOMMouseScroll', handler, false);
 				obj.removeEventListener(type, handler, false);
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
@@ -66,8 +68,6 @@ var DOMEvent = {
 			} else {
 				obj.removeEventListener(type, handler, false);
 			}
-		} else if ('detachEvent' in obj) {
-			obj.detachEvent("on" + type, handler);
 		}
 		obj[key] = null;
 	},
@@ -90,29 +90,15 @@ var DOMEvent = {
 		return (related !== el);
 	},
 
-	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function () {
-		var e = window.event;
-		if (!e) {
-			var caller = arguments.callee.caller;
-			while (caller) {
-				e = caller['arguments'][0];
-				if (e && window.Event === e.constructor) {
-					break;
-				}
-				caller = caller.caller;
-			}
-		}
-		return e;
+	// Modern browsers always pass event as parameter, no need for IE compatibility
+	_getEvent() {
+		// This method is kept for compatibility but is no longer needed
+		// Modern event handlers always receive the event as a parameter
+		return null;
 	},
-	/*jshint noarg:false */
 
-	stopPropagation: function (/*Event*/ e) {
-		if (e.stopPropagation) {
-			e.stopPropagation();
-		} else {
-			e.cancelBubble = true;
-		}
+	stopPropagation(e) {
+		e.stopPropagation();
 	},
 	
 	disableClickPropagation: function (/*HTMLElement*/ el) {
@@ -121,12 +107,8 @@ var DOMEvent = {
 		DOMEvent.addListener(el, "dblclick", DOMEvent.stopPropagation);
 	},
 
-	preventDefault: function (/*Event*/ e) {
-		if (e.preventDefault) {
-			e.preventDefault();
-		} else {
-			e.returnValue = false;
-		}
+	preventDefault(e) {
+		e.preventDefault();
 	},
 
 	stop: function (e) {
@@ -134,16 +116,19 @@ var DOMEvent = {
 		DOMEvent.stopPropagation(e);
 	},
 
-
-	getWheelDelta: function (e) {
-		var delta = 0;
+	getWheelDelta(e) {
+		// Modern browsers use deltaY from wheel events
+		if (e.deltaY !== undefined) {
+			return -e.deltaY / 100; // Normalize to similar scale as old wheelDelta
+		}
+		// Fallback for older browsers
 		if (e.wheelDelta) {
-			delta = e.wheelDelta / 120;
+			return e.wheelDelta / 120;
 		}
 		if (e.detail) {
-			delta = -e.detail / 3;
+			return -e.detail / 3;
 		}
-		return delta;
+		return 0;
 	}
 };
 

@@ -1,5 +1,5 @@
 import { unhtmlify, trace } from "../../core/Util";
-import { ajax, fetchJSON } from "../../net/Net";
+import { ajax, fetchJSON } from "../../net/ModernNet";
 import { Media } from "../Media";
 
 const CLIENT_TOKEN = '830b21071290df4f81a35c56abbea096'

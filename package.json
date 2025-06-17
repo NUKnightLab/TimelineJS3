@@ -52,6 +52,7 @@
   },
   "homepage": "https://timeline.knightlab.com",
   "scripts": {
+    "test": "npm run test:all",
     "test:unit": "jest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",

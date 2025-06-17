@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { ajax } from "../../net/Net";
+import { ajax } from "../../net/ModernNet";
 import { loadJS } from "../../core/Load";
 
 export default class Twitter extends Media {

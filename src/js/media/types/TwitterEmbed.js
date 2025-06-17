@@ -1,6 +1,5 @@
 import { Media } from "../Media";
-import { ajax } from "../../net/Net";
-
+import { ajax } from "../../net/ModernNet";
 export default class TwitterEmbed extends Media {
     _loadMedia() {
         var api_url,

@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { getJSON, fetchJSON } from "../../net/Net";
+import { getJSON, fetchJSON } from "../../net/ModernNet";
 import TLError from "../../core/TLError";
 import { unhtmlify } from "../../core/Util";
 

@@ -1,6 +1,6 @@
 import { Media } from "../Media";
 import { loadJS } from "../../core/Load";
-import { ajax } from "../../net/Net";
+import { ajax } from "../../net/ModernNet";
 import { ratio, trace } from "../../core/Util";
 import TLError from "../../core/TLError";
 
