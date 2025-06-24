@@ -1,5 +1,5 @@
 import { Media } from "../Media";
-import { ratio, getParamString } from "../../core/Util"
+import { ratio } from "../../core/Util"
 
 
 export default class GoogleMap extends Media {
@@ -97,7 +97,7 @@ export default class GoogleMap extends Media {
                 if (Streetview == true) {
                     mapmode = "streetview";
                 } else {}
-                return (url_root + "/embed/v1/" + mapmode + getParamString(param_string));
+                return `${url_root}/embed/v1/${mapmode}?${new URLSearchParams(param_string).toString()}`;
             }
 
 

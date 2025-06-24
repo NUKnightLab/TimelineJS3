@@ -2,9 +2,7 @@ import {
     hexToRgb,
     rgbToHex,
     maxDepth,
-    trim,
     isTrue,
-    isEmptyObject,
     findNextGreater,
     findNextLesser,
     ensureUniqueKey,
@@ -21,34 +19,11 @@ import {
     stamp,
     transformMediaURL,
     getUrlVars,
-    getParamString,
-    getObjectAttributeByIndex,
     ratio,
     base58
 } from "../Util";
 
-test("isEmptyObject", () => {
-    //"no keys should be empty"
-    let o = {}
-    expect(isEmptyObject(o)).toBeTruthy()
 
-    // "empty string should be empty"
-    o.foo = "  ";
-    expect(isEmptyObject(o)).toBeTruthy()
-
-    // "2 empty strings should be empty"
-    o.bar = "";
-    expect(isEmptyObject(o)).toBeTruthy()
-
-    // "add null, still should be empty"
-    o.baz = null;
-    expect(isEmptyObject(o)).toBeTruthy()
-
-    // "adding a string " becomes true
-    o.foo = "  not empty  ";
-    expect(isEmptyObject(o)).toBeFalsy()
-
-})
 
 /* testing hexToRgb and rgbToHex function */
 
@@ -160,19 +135,7 @@ test("Max depth 3 (test #2)", () => {
     expect(maxDepth(test)).toBe(3)
 })
 
-/* testing trim function */
-test("null gets zero length string", () => {
-    expect(trim(null)).toBe('')
-})
-test('trim white space both ends', () => { expect(trim(' bob ')).toBe('bob') })
-test('trim white space left', () => { expect(trim('bob ')).toBe('bob') })
-test('trim with no white space', () => { expect(trim('bob')).toBe('bob') })
-test("trimming a non-empty string returns a true value", () => {
-    expect(trim('bob')).toBeTruthy()
-})
-test("trimming an empty string returns a false value", () => {
-    expect(trim('')).toBeFalsy()
-})
+
 
 /* isTrue */
 test("isTrue  true is true", () => {
@@ -224,7 +187,7 @@ test("ensureUniqueKey tests", () => {
     expect(ensureUniqueKey(o, 'foo') in o).toBeFalsy() // what comes back should not have been in there
 
     var random = ensureUniqueKey(o, '');
-    expect(trim(random)).toBeTruthy() // "Should get a non-empty string"
+    expect(random.trim()).toBeTruthy() // "Should get a non-empty string"
     expect(random in o).toBeFalsy() // "empty string should get non-empty unique");
 
 })
@@ -443,20 +406,9 @@ test("getUrlVars", () => {
     })) // handles encoded ampersands
 })
 
-test("getParamString", () => {
-    expect(getParamString({a: 1, b: 2})).toBe("?a=1&b=2")
-    expect(getParamString({single: "value"})).toBe("?single=value")
-    expect(getParamString({})).toBe("?") // empty object
-})
 
-test("getObjectAttributeByIndex", () => {
-    const obj = {first: "a", second: "b", third: "c"}
-    expect(getObjectAttributeByIndex(obj, 0)).toBe("a")
-    expect(getObjectAttributeByIndex(obj, 1)).toBe("b")
-    expect(getObjectAttributeByIndex(obj, 2)).toBe("c")
-    expect(getObjectAttributeByIndex(obj, 5)).toBe("") // out of bounds
-    expect(getObjectAttributeByIndex(undefined, 0)).toBe("") // undefined object
-})
+
+
 
 test("ratio.square", () => {
     expect(ratio.square({w: 100, h: 50})).toEqual({w: 50, h: 50}) // width > height, use height

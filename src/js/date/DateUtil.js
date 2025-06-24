@@ -3,6 +3,7 @@ import TLError from "../core/TLError"
 import { TLDate, BigDate } from "../date/TLDate"
 import { trim } from "../core/Util"
 
+
 export function sortByDate(array, prop_name = 'start_date') { // only for use with slide data objects
     array.sort((a, b) => {
         if (a[prop_name].isBefore(b[prop_name])) return -1;

@@ -263,6 +263,8 @@ export const stamp = (() => {
  * Remove any leading or trailing whitespace from the given string.
  * If `str` is undefined or does not have a `replace` function, return
  * an empty string.
+ * Be careful trying to replace calls to this with native String.trim() 
+ * because of the null-handling in here.
  */
 export function trim(str) {
     if (str && typeof(str.replace) === 'function') {
@@ -571,30 +573,23 @@ export function getUrlVars(string) {
     return vars;
 }
 
-export function getParamString(obj) {
-    const params = [];
-    for (const i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            params.push(`${i}=${obj[i]}`);
-        }
-    }
-    return `?${params.join('&')}`;
-}
+
 
 export function getObjectAttributeByIndex(obj, index) {
     if (typeof obj !== 'undefined') {
-        let i = 0;
-        for (const attr in obj) {
-            if (index === i) {
-                return obj[attr];
-            }
-            i++;
+            let i = 0;
+            for (const attr in obj) {
+                    if (index === i) {
+                            return obj[attr];
+                        }
+                    i++;
+                }
+            return "";
+        } else {
+            return "";
         }
-        return "";
-    } else {
-        return "";
-    }
 }
+
 
 const base58 = ((alpha) => {
     const alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';

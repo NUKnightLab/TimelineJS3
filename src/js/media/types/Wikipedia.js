@@ -18,8 +18,8 @@ export default class Wikipedia extends Media {
         this.media_id = this.media_id.replace(" ", "%20");
         api_language = this.data.url.split("//")[1].split(".wikipedia")[0];
 
-        // API URL
-        api_url = "https://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts|pageimages&redirects=&titles=" + this.media_id + "&exintro=1&format=json&callback=?";
+        // API URL - using CORS instead of JSONP
+        api_url = "https://" + api_language + ".wikipedia.org/w/api.php?action=query&prop=extracts|pageimages&redirects=&titles=" + this.media_id + "&exintro=1&format=json&origin=*";
 
         // API Call
         ajax({
