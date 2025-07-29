@@ -55,12 +55,11 @@
         }
 
         function setPageLanguage() {
-            var lang = window.location.href.match(/&lang=([a-zA-Z]*?)&?/);
-
-            if (lang) {
-                document.getElementsByTagName('html')[0].setAttribute('lang', lang[1]);
+            var opts = optionsFromUrlParams()
+            let lang = opts['lang'] || opts['language'] || null;
+            if (lang && lang.length > 0) {
+                document.getElementsByTagName('html')[0].setAttribute('lang', lang);
             }
-
         }
 
         function computeEmbedPath() {
