@@ -1,0 +1,421 @@
+{
+    "title": {
+        "media": {
+          "url": "http://www.germuska.com/salzburg-album/full/2QVB_022.jpg",
+          "caption": "The secret passage at Schloss Leopoldskron, Salzburg, Austria",
+          "credit": "Joe Germuska"
+        },
+        "text": {
+          "headline": "TimelineJS Media Types",
+          "text": "<p>TimelineJS supports many media types. This provides a simple way to test them all. This page tests a simple image on a remote server.</p>"
+        }
+    },
+    "events": [
+      {
+        "media": {
+          "url": "https://www.youtube.com/watch?v=pi2v1m6gmD8&t=5m21s",
+          "caption": "the Monkey section of David Van Tieghem's <em>Ear Drums</em>"
+        },
+        "start_date": {
+          "year": "1901"
+        },
+        "text": {
+          "headline": "YouTube Videos",
+          "text": "<p>if Timeline finds a URL that starts with 'youtube.com' or 'youtu.be', it will try to use it to embed a YouTube video. The <em>protocol</em> part of the URL (e.g. <em>https://</em>) is technically optional.</p><p>You can start at a specific point in the video using the <code>t=#m#s</code> parameter: see <a href='http://youtubetime.com/'>http://youtubetime.com/</a></p>"
+        }
+      },
+      {
+        "media": {
+          "url": "http://vimeo.com/20839673",
+          "caption": "<em>Phat Tai</em>, a story of Vietnamese fishermen on the Gulf Coast.",
+          "credit": "Joe York/Southern Foodways Alliance"
+        },
+        "start_date": {
+          "year": "1902"
+        },
+        "text": {
+          "headline": "Vimeo",
+          "text": "To embed a Vimeo video, just copy the URL of the Vimeo.com page which shows the video."
+        }
+      },
+      {
+        "media": {
+          "url": "http://www.dailymotion.com/video/x2fo0e8_the-history-of-advertising-in-60-seconds_lifestyle",
+          "caption": "The History of Advertising in 60 Seconds",
+          "credit": "Mashable"
+        },
+        "start_date": {
+          "year": "1903"
+        },
+        "text": {
+          "headline": "DailyMotion",
+          "text": "To embed a DailyMotion video, just copy the URL of the page which shows the video."
+        }
+     },
+     {
+        "media": {
+          "url": "https://vine.co/v/Og5Ai71WHdD",
+          "caption": "'Banana Moon'",
+          "credit": "Simple Sylvio"
+        },
+        "start_date": {
+          "year": "1904"
+        },
+        "text": {
+          "headline": "Vine",
+          "text": "To embed a Vine, just copy the URL of the page which shows the vine."
+        }
+     },
+     {
+        "media": {
+          "url": "https://soundcloud.com/usher-raymond-music/usher-i-dont-mind-feat-juicy-j",
+          "caption": "I Don't Mind feat. Juicy J",
+          "credit": "Usher Raymond Music"
+        },
+        "start_date": {
+          "year": "1905"
+        },
+        "text": {
+          "headline": "SoundCloud",
+          "text": "To embed a SoundCloud clip, just copy the URL of the clip's page."
+        }
+     },
+     {
+        "media": {
+          "url": "https://twitter.com/NASASpaceflight/status/562327074384654336",
+          "caption": "State of NASA Adress",
+          "credit": "NASASpaceFlight"
+        },
+        "start_date": {
+          "year": "1906"
+        },
+        "text": {
+          "headline": "Twitter",
+          "text": "To display a Tweet, just copy the URL in the embed code."
+        }
+     },
+     {
+        "media": {
+          "url": "https://www.google.com/maps/@42.032147,-87.6689625,15z",
+          "caption": "Google Maps with coordinates",
+          "credit": "Google Maps"
+        },
+        "start_date": {
+          "year": "1907"
+        },
+        "text": {
+          "headline": "Google Maps, Coordinates",
+          "text": "To embed a Google Map with coordinates, just copy the URL of the map's page."
+        }
+     },
+     {
+        "media": {
+          "url": "https://www.google.com/maps/search/target/@41.8747339,-87.6481257,13z?hl=en-US",
+          "caption": "Google Maps with search results",
+          "credit": "Google Maps"
+        },
+        "start_date": {
+          "year": "1908"
+        },
+        "text": {
+          "headline": "Google Maps, Search",
+          "text": "To embed a Google Maps search result, just copy the URL of the map's page."
+        }
+     },
+     {
+        "media": {
+          "url": "https://www.google.com/maps/place/Northwestern+University/@42.056459,-87.675267,17z/data=!3m1!4b1!4m2!3m1!1s0x880fd00b703e4c39:0x2c37b567fad56106",
+          "caption": "Google Maps with place marker",
+          "credit": "Google Maps"
+        },
+        "start_date": {
+          "year": "1909"
+        },
+        "text": {
+          "headline": "Google Maps, Place Marker",
+          "text": "To embed a Google Map with a place marker, just copy the URL of the map's page."
+        }
+     },
+     {
+        "media": {
+          "url": "https://www.google.com/maps/dir/W+Adams+St+%26+S+Clark+St,+Chicago,+IL/Northwestern+University,+633+Clark+Street,+Evanston,+IL+60208/@41.9672743,-87.7225481,12z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x880e2cbc8bcec53b:0x72d2c7372d97283d!2m2!1d-87.6308023!2d41.8794067!1m5!1m1!1s0x880fd00b703e4c39:0x2c37b567fad56106!2m2!1d-87.675267!2d42.056459",
+          "caption": "Google Maps with directions",
+          "credit": "Google Maps"
+        },
+        "start_date": {
+          "year": "1910"
+        },
+        "text": {
+          "headline": "Google Maps, Directions",
+          "text": "To embed a Google Maps with directions, just copy the URL of the map's page."
+        }
+     },
+     {
+        "media": {
+          "url": "https://lh4.googleusercontent.com/-QO1O34U4z7k/Ui4OnAkgWjI/AAAAAAAAQv4/eDSXlUlwcKs/w622-h415-no/IMG_7898.JPG",
+          "caption": "Million Dollar Highway",
+          "credit": "Luke Rague"
+        },
+        "start_date": {
+          "year": "1911"
+        },
+        "text": {
+          "headline": "Google Plus",
+          "text": "To embed a Google Plus photo, just copy image URL."
+        }
+     },
+     {
+        "media": {
+          "url": "http://instagram.com/p/ymwL5JAsw5/",
+          "caption": "Snow and Water",
+          "credit": "Luke Rague"
+        },
+        "start_date": {
+          "year": "1912"
+        },
+        "text": {
+          "headline": "Instagram",
+          "text": "To embed an Instagram, just copy the URL of the photo's page."
+        }
+     },
+     {
+        "media": {
+          "url": "http://instagram.com/lukerague/",
+          "caption": "Luke Rague's Instagram Account",
+          "credit": "Instagram/Luke Rague"
+        },
+        "start_date": {
+          "year": "1912"
+        },
+        "text": {
+          "headline": "Instagram, Profile",
+          "text": "To embed an Instagram profile, just copy the URL."
+        }
+     },
+     {
+        "media": {
+          "url": "https://www.flickr.com/photos/critterseeker/16420145375",
+          "caption": "Mountains of the Alaska Range in Denali National Park, Alaska. (Long link URL)",
+          "credit": "Daniel Leifhelt"
+        },
+        "start_date": {
+          "year": "1913"
+        },
+        "text": {
+          "headline": "Flickr",
+          "text": "To embed a Flickr photo, just copy the URL in the embed code."
+        }
+     },
+     {
+        "media": {
+          "url": "https://www.documentcloud.org/documents/1377371-folketinget.html",
+          "caption": "I don't know, it's not in English",
+          "credit": "Nil Mulvad"
+        },
+        "start_date": {
+          "year": "1914"
+        },
+        "text": {
+          "headline": "Document Cloud",
+          "text": "To embed from Document CLoud, just copy the document's URL."
+        }
+     },
+     {
+        "media": {
+          "url": "http://www.kidzone.ws/images-changed/sharks/head.jpg",
+          "caption": "Sharks!",
+          "credit": "Kid Zone"
+        },
+        "start_date": {
+          "year": "1915"
+        },
+        "text": {
+          "headline": "Image, JPG",
+          "text": "To embed a JPG, just copy the URL endig in '.jpg'."
+        }
+     },
+     {
+        "media": {
+          "url": "http://usatlife.files.wordpress.com/2014/06/groundhog-day-bill-murray-winter-never-going-to-end.gif",
+          "caption": "Groundhog Day clip",
+          "credit": "USA Today"
+        },
+        "start_date": {
+          "year": "1916"
+        },
+        "text": {
+          "headline": "Image, GIF",
+          "text": "To embed a GIF, just copy the URL endig in '.gif'."
+        }
+     },
+     {
+        "media": {
+          "url": "http://pngimg.com/upload/banana_PNG842.png",
+          "caption": "A Banana",
+          "credit": "pngimg.com"
+        },
+        "start_date": {
+          "year": "1917"
+        },
+        "text": {
+          "headline": "Image, PNG",
+          "text": "To embed a PNG, just copy the URL endig in '.png'."
+        }
+     },
+     {
+        "media": {
+          "url": "http://upload.wikimedia.org/wikipedia/commons/c/c2/Rocky_Mountains.jpeg",
+          "caption": "Rocky Mountains",
+          "credit": "Wikipedia Commons"
+        },
+        "start_date": {
+          "year": "1918"
+        },
+        "text": {
+          "headline": "Image, JPEG",
+          "text": "To embed a JPEG, just copy the URL endig in '.jpeg'."
+        }
+     },
+     {
+        "media": {
+          "url": "https://docs.google.com/document/d/1RvKYxHuwweIP8zRrnjad-0exVoZOUsSVgDYPp0J1mzY/view",
+          "caption": "Quotes that Luke likes.",
+          "credit": "Luke Rague"
+        },
+        "start_date": {
+          "year": "1919"
+        },
+        "text": {
+          "headline": "Google Doc, text document",
+          "text": "To embed a Google Doc, just copy the Shareable link."
+        }
+     },
+     {
+        "media": {
+          "url": "https://en.wikipedia.org/wiki/1997_International_Tennis_Championships_%E2%80%93_Doubles",
+          "caption": "1997 Inrternational Tennis Championships - Doubles",
+          "credit": "Wikipedia"
+        },
+        "start_date": {
+          "year": "1920"
+        },
+        "text": {
+          "headline": "Wikipedia",
+          "text": "To embed from Wikipedia, just copy the URL of the article's page."
+        }
+     },
+     {
+        "media": {
+          "url": "https://play.spotify.com/artist/2iE18Oxc8YSumAU232n4rW",
+          "caption": "Jackson 5",
+          "credit": "Jackson 5"
+        },
+        "start_date": {
+          "year": "1921"
+        },
+        "text": {
+          "headline": "Spotify, Artist",
+          "text": "To embed an artist on Spotify, just copy the 'Spotify URL'."
+        }
+     },
+     {
+        "media": {
+          "url": "https://play.spotify.com/user/edvard_m/playlist/4xFSdiuP4gpR4wq2OghlOs",
+          "caption": "Funk Soul Disco",
+          "credit": "Edvard Brudeli Moen"
+        },
+        "start_date": {
+          "year": "1921"
+        },
+        "text": {
+          "headline": "Spotify, Playlist",
+          "text": "To embed a Spotify playlist, just copy the 'Spotify URL'."
+        }
+     },
+     {
+        "media": {
+          "url": "https://play.spotify.com/track/5SdB3onMcO9ZBoKrdvCqhR",
+          "caption": "ABC",
+          "credit": "Jackson 5"
+        },
+        "start_date": {
+          "year": "1922"
+        },
+        "text": {
+          "headline": "Spotify, Track",
+          "text": "To embed a Spotify track, just copy the 'Spotify URL'."
+        }
+     },
+     {
+        "media": {
+          "url": "<iframe src='https://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=10fFZXg4kioMz8uTVDZfawiJkgrWZxfJuziK1i1AaCrs&font=Bevan-PotanoSans&maptype=toner&lang=en&height=650' width='100%' height='650' frameborder='0'></iframe>", 
+          "caption": "Test Timeline",
+          "credit": "Luke Rague"
+        },
+        "start_date": {
+          "year": "1923"
+        },
+        "text": {
+          "headline": "iFrame",
+          "text": "To embed an iFrame, just copy the iFrame code."
+        }
+     },
+     {
+        "media": {
+          "url": "https://storify.com/IllinoisStateU/best-campus-photos-january-2015",
+          "caption": "Best campus photos: January 2015",
+          "credit": "Illinois State"
+        },
+        "start_date": {
+          "year": "1924"
+        },
+        "text": {
+          "headline": "Storify",
+          "text": "To embed a Storify, just copy URL."
+        }
+     },
+     {
+        "media": {
+          "url": "<iframe src=\"http://www.theonion.com/articles/measles-epidemic-2015-a-timeline-of-the-outbreak,37870/\"></iframe>",
+          "caption": "Measles Epidemic 2015: A Timeline of the Outbreak",
+          "credit": "The Onion"
+        },
+        "start_date": {
+          "year": "1925"
+        },
+        "text": {
+          "headline": "Website, in iFrame",
+          "text": "To embed a website, just copy the URL."
+        }
+     },
+     {
+        "media": {
+          "url": "http://www.theonion.com/articles/measles-epidemic-2015-a-timeline-of-the-outbreak,37870/",
+          "caption": "Measles Epidemic 2015: A Timeline of the Outbreak",
+          "credit": "The Onion"
+        },
+        "start_date": {
+          "year": "1925"
+        },
+        "text": {
+          "headline": "Website, no iFrame",
+          "text": "To embed a website, just copy the URL."
+        }
+     },
+     {
+        "media": {
+          "url": "<blockquote>This is a block quote.</blockquote>",
+          "caption": "That is a block quote.",
+          "credit": "Galactic"
+        },
+        "start_date": {
+          "year": "1926"
+        },
+        "text": {
+          "headline": "Blockquote",
+          "text": "To display a block quote, input text in HTML blockquote tags."
+        }
+     }
+
+    ]
+}

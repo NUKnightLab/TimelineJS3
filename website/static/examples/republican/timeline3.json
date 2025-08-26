@@ -1,0 +1,238 @@
+{
+    "scale": "human",
+    "title": {
+        "media": {
+          "caption": "",
+          "credit": "",
+          "url": "",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "The Republican Run-Up",
+          "text": "Follow the presidential caucuses and primaries as members of the Republican Party race to become the GOP's next presidential nominee."
+        }
+      },
+    "events": [
+      {
+        "media": {
+          "caption": "Rick Santorum at the Iowa State Fair before the Ages Straw Poll.",
+          "credit": "<a href=\"http://www.flickr.com/photos/gageskidmore/6057989217/\">Gage Skidmore</a>/Flickr",
+          "url": "https://farm7.staticflickr.com/6200/6057989217_3bd755477b.jpg",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Iowa",
+          "text": "At the first caucus of the season, former Penn. senator Rick Santorum gained an early lead, beating out Mass. Gov. Mitt Romney in Iowa after <a href=\"http://www.foxnews.com/politics/2012/01/21/iowa-republican-party-reaffirms-santorum-as-winner-caucuses/\">much debate</a> about the results. Santorum, Romney and Texas Rep. Ron Paul emerged as pack leaders moving forward into the New Hampshire primaries."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "3",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "From Romney's victory speech, directed at Newt Gingrich, former House speaker",
+          "credit": "Romney Wins In New Hampshire Republican Primary/New York Times",
+          "url": "<blockquote>“In the last few days, we have seen some desperate Republicans join forces with him,” Romney said. “This is such a mistake for our party and for our nation. This country already has a leader who divides us with the bitter politics of envy.”</blockquote>",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "New Hampshire",
+          "text": "Romney <a href=\"http://www.nytimes.com/2012/01/11/us/politics/mitt-romney-wins-in-new-hampshire-republican-primary.html?_r=1\" target=\"new\">swept New Hampshire</a> from the other candidates, winning by a double-digit margin over Santorum and former Utah governor Jon M. Huntsman Jr."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "10",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "Gingrich addresses supporters after South Carolina victory.",
+          "credit": "YouTube.com",
+          "url": "https://youtu.be/2n5yakw5jgo",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "South Carolina",
+          "text": "In a surprising <a href=\"http://www.washingtonpost.com/blogs/election-2012/post/south-carolina-republican-primary-live-updates-photos-video/2012/01/21/gIQADpwbGQ_blog.html\" target=\"new\">turn of events</a>, former House speaker Newt Gingrich came from behind to win South Carolina over Romney - who was looking like the one to beat. Romney and Gingrich become the main contenders in the race."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "21",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "<a href=\"http://www.flickr.com/photos/mittromney/6812048183/\" title=\"Untitled by Mitt Romney, on Flickr\">Mitt Romney</a>/Flickr",
+          "url": "//farm8.staticflickr.com/7001/6812048183_316d424f2f.jpg",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Florida",
+          "text": "Romney makes a <a href=\"http://www.foxnews.com/politics/2012/01/31/romney-leading-among-seniors-hispanics-in-florida-exit-polls/\" target=\"new\">strong comeback</a>, snatching Florida from Gingrich. But the former House speaker wasn't giving up, vowing to keep nipping at Romney's heels with his \"46 States To Go\" campaign. <p>The GOP race, particularly Romney's campaign, begins to emerge as the <a href=\"http://www.newsmax.com/InsideCover/Florida-Republican-primary-results/2012/01/31/id/426195\" target=\"new\">most negative</a> yet."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "31",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "Twitter.com",
+          "url": "https://twitter.com/#!/MittRomney/status/165994713806155776",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Nevada",
+          "text": "Continuing to push forward, <a href=\"http://www.thedailybeast.com/articles/2012/02/04/daily-beast-writers-on-romney-s-nevada-win.html\" target=\"new\">Romney wins</a> the Nevada caucuses after entrance polls showed him ahead in most all of the state's voter groups.<p>Ron Paul was rumored to emerge victorious over Gingrich who seemed to be fading. Despite murmurings he would drop out, Gingrich vowed to continue on."
+        },
+        "start_date": {
+          "month": "2",
+          "day": "4",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "<a href=\"http://www.flickr.com/photos/20325042@N05/6857070403/\" title=\"_MG_4530 by ernie_tacsik, on Flickr\">ernie_tacsik</a>/Flickr",
+          "url": "//farm8.staticflickr.com/7180/6857070403_03901a5026.jpg",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Missouri, Minnesota, Colorado",
+          "text": "Once again dethroning Romney as the front-runner, Santorum exploded in the polls <a href=\"http://abcnews.go.com/Politics/OTUS/santorum-wins-colorado-missouri-minnesota-romney-lowers-expectations/story?id=15533165#.T0MjinJSTFk\" target=\"new\">winning all three</a> Republican voting contests."
+        },
+        "start_date": {
+          "month": "2",
+          "day": "7",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "Twitter.com",
+          "url": "https://twitter.com/#!/MattWilliams06/status/171385782936932353",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Maine",
+          "text": "Romney <a href=\"http://www.cbsnews.com/8301-503544_162-57375990-503544/mitt-romney-wins-maine-gop-caucuses/\" target=\"new\">wins again</a> in Maine with 39 percent of the vote, squeaking by Paul who came in second. Romney also won the straw poll held by <a href=\"http://www.foxnews.com/politics/2012/02/11/romney-wins-cpac-presidential-straw-poll/\" target=\"new\">Conservative Political Action Committee</a>, breaking Paul's two-year streak.<p> Controversy still remains about who should be victorious, as the <a href=\"http://www.pressherald.com/Recount-doesnt-change-vote-totals-Maine-GOP-says.html\" target=\"new\">Maine GOP</a> incorrectly counted the votes, leaving several counties out. Even after the recount, Romney stayed ahead."
+        },
+        "start_date": {
+          "month": "2",
+          "day": "11",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "YouTube",
+          "url": "https://youtu.be/IoFfUg8YtC0",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Arizona debates",
+          "text": "The big four in the GOP race gathered in Mesa, Ariz. to debate before the primaries in Michigan and Arizona.<p> The debate didn't do much for any of the candidates but the spotlight was on <a href=\"http://www.foxnews.com/politics/2012/02/22/gop-candidates-clash-ahead-high-stakes-debate-in-arizona/\" target=\"new\">Romney and Santorum</a> who were going head-to-head for the two states' delegates."
+        },
+        "start_date": {
+          "month": "2",
+          "day": "22",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "YouTube",
+          "url": "https://youtu.be/8-fU-knxT0U",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Gingrich refuses to get personal during South Carolina debate",
+          "text": "The GOP primary debates picked up steam as the four major contenders for the nomination gathered in Charleston, S.C. before the primary. The main event was when CNN's John King asked Gingrich about <a href=\"http://www.washingtonpost.com/politics/marianne-gingrich-newts-ex-wife-says-he-wanted-open-marriage/2012/01/19/gIQAJzgwAQ_print.html\" target=\"new\">allegations leveled by his ex-wife</a>, that he wanted an open marriage. Gingrich cried media bias, telling off King and CNN for addressing the topic in a Presidential debate. <p>Today, Texas Gov. Rick Perry ended his campaign for president and endorsed Gingrich."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "19",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "YouTube",
+          "url": "https://youtu.be/9sj5HcoGK2w",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Debates at University of South Florida",
+          "text": "In Tampa, <a href=\"http://www.usatoday.com/news/politics/story/2012-01-23/gop-florida-debate/52759538/1\" target=\"new\">Romney attacked Gingrich</a>, briefly rendering him speechless and sullying his near-perfect debate performance this season. The event focused on the two men as they fought to gain ground over each other. <p>Santorum and Paul also participated but were overshadowed by Romney and Gingrich."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "23",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "<a href=\"http://www.foxnews.com/politics/2012/01/15/huntsman-to-withdraw-from-race-for-republican-presidential-nomination/#ixzz1mzZGCa5Q\" target=\"new\">Huntsman withdraws from race for Republican presidential nomination</a>/FoxNews.com",
+          "url": "<blockquote>\"Today, I am suspending my campaign for the presidency. I believe it is now time for our party to unite around the candidate best equipped to defeat Barack Obama. Despite our differences and the space between us on some of the issues, I believe that candidate is Gov. Mitt Romney.\"</blockquote>",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Huntsman drops out",
+          "text": "After placing all his eggs in the New Hampshire basket and placing third, Huntsman <a href=\"http://www.foxnews.com/politics/2012/01/15/huntsman-to-withdraw-from-race-for-republican-presidential-nomination/\" target=\"new\">ends his presidential bid</a>, escaping what he called a \"toxic\" environment."
+        },
+        "start_date": {
+          "month": "1",
+          "day": "16",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "<a href=\"http://www.flickr.com/photos/mittromney/6795923698/\" title=\"Untitled by Mitt Romney, on Flickr\">Mitt Romney</a>/Flickr",
+          "url": "//farm8.staticflickr.com/7176/6795923698_d11ecca6bc.jpg",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Michigan and Arizona",
+          "text": "Romney won in both states, leaving Santorum in second place.<p>Winning these states, particularly his home state of Michigan, was important to keep Romney's momentum toward the nomination for the general election."
+        },
+        "start_date": {
+          "month": "2",
+          "day": "28",
+          "year": "2012"
+        }
+      },
+      {
+        "media": {
+          "caption": "",
+          "credit": "",
+          "url": "",
+          "thumbnail": ""
+        },
+        "text": {
+          "headline": "Super Tuesday",
+          "text": "Today, 10 states hold their caucuses and primaries. Tune in for results."
+        },
+        "start_date": {
+          "month": "3",
+          "day": "6",
+          "year": "2012"
+        }
+      }
+    ]
+}

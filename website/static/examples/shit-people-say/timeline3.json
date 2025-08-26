@@ -1,0 +1,336 @@
+{
+    "title": 
+      {
+        "media": {
+          "url": "https://youtu.be/u-yLGIH7W9Y", 
+          "caption": "Writers & Creators: Kyle Humphrey & Graydon Sheppard", 
+          "credit": ""
+        }, 
+        "text": {
+          "headline": "Sh*t People Say", 
+          "text": "When &quot;Shit Girls Say&quot; was uploaded to YouTube it was picked up by Reddit, the Huffington Post, Mashable etc. In a month, it racked up over 12 million views and has spawned a meme of Sh*t People Say."
+        }
+      }, 
+    "events": [ 
+      {
+        "media": {
+          "url": "https://youtu.be/u4XpeU9erbg", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "26", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Politicians Say", 
+          "text": "<p>Sh*t Politicians Say landed just hours before Thursday night\u2019s Republican presidential debate and stars actor Joe Leon. In true political fashion, his character rattles off common jargon heard from people running for office.</p><p>Do these ring a bell? Moral fiber, family values, trust me, three-point plan, earmarks, tough question, children are our future, Washington outsider, jobs, my opponent \u2014 all sound familiar.</p>"
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/f-x8t0JOnVw", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "10", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Nobody Says", 
+          "text": "<p>Have you ever heard someone say \u201ccan I burn a copy of your Nickelback CD?\u201d or \u201cmy Bazooka gum still has flavor!\u201d Nobody says that.</p>"
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/Ofy5gNkKGOo", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "26", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Chicagoans Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/zyyalkHjSjo", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "4", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Broke People Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/BR8zFANeBGQ", 
+          "caption": "written, filmed, and edited by Kate Imbach & Tom Conrad", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "4", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Silicon Valley Says", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/OmWFnd-p0Lw", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "12", 
+          "day": "25", 
+          "year": "2011"
+        }, 
+        "text": {
+          "headline": "Sh*t Vegans Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/KsT3QTmsN5Q", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "23", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Graphic Designers Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/vJpBCzzcSgA", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "12", 
+          "day": "30", 
+          "year": "2011"
+        }, 
+        "text": {
+          "headline": "Sh*t Wookiees Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/c9ehQ7vO7c0", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "17", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t People Say About Sh*t People Say Videos", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/eRQe-BT9g_U", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "20", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Social Media Pros Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/HRmc5uuoUzA", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "11", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Old People Say About Computers", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/rwozXzo0MZk", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "11", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t College Freshmen Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/kbovd-e-hRg", 
+          "caption": "Writers & Creators: Kyle Humphrey & Graydon Sheppard", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "12", 
+          "day": "16", 
+          "year": "2011"
+        }, 
+        "text": {
+          "headline": "Sh*t Girls Say - Episode 2", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/bDHUhT71JN8", 
+          "caption": "Writers & Creators: Kyle Humphrey & Graydon Sheppard", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "12", 
+          "day": "24", 
+          "year": "2011"
+        }, 
+        "text": {
+          "headline": "Sh*t Girls Say - Episode 3 Featuring Juliette Lewis", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/MEOb_meSHhQ", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "27", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Web Designers Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/FUhrSVyu0Kw", 
+          "caption": "Written, Directed, Conceptualized and Performed by Carrie Valentine and Jessica Katz", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "12", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Hipsters Say", 
+          "text": "No meme is complete without a bit of hipster-bashing."
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/MUX58Vi-YLg", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "6", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Cats Say", 
+          "text": "No meme is complete without cats. This had to happen, obviously."
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/GMCkuqL9IcM", 
+          "caption": "Video script, production, and editing by Allen Krughoff of Hardcastle Photography", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "21", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t Cyclists Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/IMC1_RH_b3k", 
+          "caption": "", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "12", 
+          "day": "30", 
+          "year": "2011"
+        }, 
+        "text": {
+          "headline": "Sh*t Yogis Say", 
+          "text": ""
+        }
+      }, 
+      {
+        "media": {
+          "url": "https://youtu.be/yRvJylbSg7o", 
+          "caption": "Directed and Edited by Matt Mayer, Produced by Seth Keim, Written by Eliot Glazer. Featuring Eliot and Ilana Glazer, who are siblings, not married.", 
+          "credit": ""
+        }, 
+        "start_date": {
+          "month": "1", 
+          "day": "18", 
+          "year": "2012"
+        }, 
+        "text": {
+          "headline": "Sh*t New Yorkers Say", 
+          "text": ""
+        }
+      }
+    ]
+}
