@@ -190,7 +190,7 @@
                                             <h6>Default start slide</h6>
                                             <div class="input-group-label">
                                                 <label class="input-group-addon" for="inlinelabel">Slide</label>
-                                                <input type="text" value="0" placeholder="0" id="embed-startatslide" class="input-mini">
+                                                <input type="text" value="0" placeholder="0" id="embed-startatslide" style="width: 50px; max-width: 50px;">
                                             </div>
                                             <p class="small"><em>You can tell TimelineJS to start at a specific slide number.</em></p>
                                         </div>
@@ -198,12 +198,26 @@
                                             <h6>Initial zoom level</h6>
                                             <div class="input-group-label">
                                                 <label class="input-group-addon" for="inlinelabel">Zoom Level</label>
-                                                <input type="text" value="2" placeholder="2" id="embed-initialzoom" class="input-mini">
+                                                <input type="text" value="2" placeholder="2" id="embed-initialzoom" style="width: 50px; max-width: 50px;">
                                             </div>
                                             <p class="small"><em>The zoom level at which the timeline portion of TimelineJS will display on load. Specify a value from 0-10 (default is 2). Smaller numbers show a greater span of time.</em></p>
                                         </div>
+                                        <div class="grid-item">
+                                            <h6>Theme</h6>
+                                            <div style="margin-bottom: 2px">
+                                            <label class="radio">
+                                                <input id="embed-theme-default" name="embed-theme" type="radio" value="" checked> default
+                                            </label>
+                                            {# <label class="radio">
+                                                <input id="embed-theme-dark" name="embed-theme" type="radio" value="dark"> dark
+                                            </label> #}
+                                            <label class="radio">
+                                                <input id="embed-theme-contrast" name="embed-theme" type="radio" value="contrast"> higher contrast
+                                            </label>
+                                            </div>
+                                            <p class="small"><em>Selecting "higher contrast" may improve readability.</em></p>
+                                        </div>
                                     </div>
-
 
                                     <div class="grid grid-no-gutters">
                                         <div class="column-12">
