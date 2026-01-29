@@ -19,7 +19,6 @@
             ga_measurement_id: 'G-LVEFKMG087',
             sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
             font: ALL_FONT_OPTIONS[3],
-            theme: 'dark'
         }
 
 
@@ -35,6 +34,23 @@
             document.getElementById('timeline-embed').innerHTML = ''
             var dataUrl = document.getElementById('timeline-src').value
             window.timeline = new TL.Timeline('timeline-embed', dataUrl, options)
+        }
+
+        function checkMediaType() {
+            var url = document.getElementById('media-url').value
+            if (!url) {
+                document.getElementById('media-result').innerHTML = '<span style="color: red;">Please enter a URL</span>'
+                return
+            }
+
+            var result = TL.lookupMediaType({url: url}, false)
+            if (result) {
+                document.getElementById('media-result').innerHTML =
+                    '<strong>Type:</strong> ' + result.type + '<br>' +
+                    '<strong>Name:</strong> ' + result.name
+            } else {
+                document.getElementById('media-result').innerHTML = '<span style="color: orange;">No matching media type found</span>'
+            }
         }
 
         ready(function() {
@@ -60,6 +76,13 @@
                 e.preventDefault();
                 if (e.keyCode === 13) {
                     timelineFromInput()
+                }
+            })
+
+            document.getElementById('media-url').addEventListener('keyup', (e) => {
+                e.preventDefault();
+                if (e.keyCode === 13) {
+                    checkMediaType()
                 }
             })
 
@@ -96,11 +119,48 @@
         nav a {
             margin: 5px;
         }
+
+        .tool-section {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tool-section h3 {
+            margin-top: 0;
+        }
+
+        .tool-input {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .tool-input input {
+            flex: 1;
+        }
+
+        .tool-input button {
+            padding: 5px 15px;
+            font-size: 12pt;
+            cursor: pointer;
+        }
+
+        #media-result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 3px;
+            min-height: 20px;
+        }
     </style>
 </head>
 
 <body>
     <h1>Timeline Development</h1>
+
     <div>
         <label for="timeline-src">data source URL:</label><input type="text" size="120" name="timeline-src" id="timeline-src" />
     </div>
@@ -110,6 +170,17 @@
         <a href="eras.json">Eras</a>
     </nav>
     <div id='timeline-embed'></div>
-</body>
+
+    <div class="tool-section">
+        <h3>Media Type Checker</h3>
+        <div class="tool-input">
+            <input type="text" id="media-url" placeholder="Enter a URL to check its media type..." />
+            <button onclick="checkMediaType()">Check</button>
+        </div>
+        <div id="media-result"></div>
+    </div>
+
+
+    </body>
 
 </html>
