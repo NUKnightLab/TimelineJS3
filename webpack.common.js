@@ -17,13 +17,11 @@ module.exports = {
         new CopyPlugin({
             patterns: [{
                     from: "./src/js/language/locale/*.json",
-                    to: path.join(output_path, "js/locale"),
-                    flatten: true
+                    to: path.join(output_path, "js/locale/[name][ext]")
                 },
                 {
                     from: './src/embed/*',
-                    to: path.join(output_path, "embed"),
-                    flatten: true
+                    to: path.join(output_path, "embed/[name][ext]")
                 }
             ]
         }),
