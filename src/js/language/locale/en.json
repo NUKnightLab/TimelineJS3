@@ -36,6 +36,7 @@
         "imgur_invalidurl_err": "Invalid Imgur URL",
         "twitter_load_err": "Unable to load Tweet",
         "twitterembed_invalidurl_err": "Invalid Twitter Embed url",
+        "tiktok_invalidurl_err": "Invalid TikTok URL",
         "wikipedia_load_err": "Unable to load Wikipedia entry",
         "spotify_invalid_url": "Invalid Spotify URL",
         "invalid_rgb_err": "Invalid RGB argument",

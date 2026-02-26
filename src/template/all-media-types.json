@@ -86,6 +86,25 @@
         },
         {
             "media": {
+                "url": "https://www.tiktok.com/@colbertlateshow/video/7611014647642098958?is_from_webapp=1&sender_device=pc",
+                "caption": "Bradley Whitford is more than okay!",
+                "credit": "@colbertlateshow"
+            },
+            "start_date": {
+                "year": "1904",
+                "month": "6"
+            },
+            "text": {
+                "headline": "TikTok",
+                "text": "To embed a TikTok video, just copy the URL of the video's page."
+            },
+            "background": {
+                "color": "#000000"
+            },
+            "group": "Video"
+        },
+        {
+            "media": {
                 "url": "https://soundcloud.com/usher-raymond-music/usher-i-dont-mind-feat-juicy-j",
                 "caption": "I Don't Mind feat. Juicy J",
                 "credit": "Usher Raymond Music"

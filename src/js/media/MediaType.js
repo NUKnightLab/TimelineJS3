@@ -34,6 +34,7 @@ import PDF from "./types/PDF"
 import Audio from "./types/Audio"
 import Video from "./types/Video"
 import Wistia from "./types/Wistia"
+import TikTok from "./types/TikTok"
 
 /**
  * Given a JavaScript Object for an event from a TimelineConfig,
@@ -79,6 +80,12 @@ export function lookupMediaType(m, image_only) {
                 name: "Vine",
                 match_str: "^(https?:)?\/*(www.)?vine\.co",
                 cls: Vine
+            },
+            {
+                type: "tiktok",
+                name: "TikTok",
+                match_str: "^(https?:)?\/*(www.)?tiktok\.com\/@[^\/]+\/video\/\\d+",
+                cls: TikTok
             },
             {
                 type: "soundcloud",

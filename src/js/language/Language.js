@@ -317,6 +317,7 @@ var LANGUAGES = {
             imgur_invalidurl_err: "Invalid Imgur URL",
             twitter_load_err: "Unable to load Tweet",
             twitterembed_invalidurl_err: "Invalid Twitter Embed url",
+            tiktok_invalidurl_err: "Invalid TikTok URL",
             wikipedia_load_err: "Unable to load Wikipedia entry",
             wikipedia_image_load_err: "Unable to load Wikipedia image data",
             spotify_invalid_url: "Invalid Spotify URL",
