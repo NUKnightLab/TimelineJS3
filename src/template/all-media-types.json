@@ -13,7 +13,8 @@
             "color": "papayawhip"
         }
     },
-    "events": [{
+    "events": [
+        {
             "media": {
                 "url": "https://m.youtube.com/watch?v=pi2v1m6gmD8&t=5m21s",
                 "caption": "the Monkey section of David Van Tieghem's <em>Ear Drums</em>"
@@ -68,24 +69,6 @@
         },
         {
             "media": {
-                "url": "https://vine.co/v/Og5Ai71WHdD",
-                "caption": "'Banana Moon'",
-                "credit": "Simple Sylvio"
-            },
-            "start_date": {
-                "year": "1904"
-            },
-            "text": {
-                "headline": "Vine",
-                "text": "To embed a Vine, just copy the URL of the page which shows the vine."
-            },
-            "background": {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Crescent_Moon_-_Valencia%2C_CA_%2850727236562%29.jpg/1280px-Crescent_Moon_-_Valencia%2C_CA_%2850727236562%29.jpg"
-            },
-            "group": "Video"
-        },
-        {
-            "media": {
                 "url": "https://www.tiktok.com/@colbertlateshow/video/7611014647642098958?is_from_webapp=1&sender_device=pc",
                 "caption": "Bradley Whitford is more than okay!",
                 "credit": "@colbertlateshow"
@@ -102,6 +85,44 @@
                 "color": "#000000"
             },
             "group": "Video"
+        },
+        {
+            "media": {
+                "url": "https://bsky.app/profile/weratedogs.com/post/3mfpmuusv2k2t",
+                "caption": "We only rate dogs. This is a really cool rock. We can understand why you would want to share, but please only send dogs. Thank you… 12/10 (TT: xansinthebong)",
+                "credit": "WeRateDogs"
+            },
+            "start_date": {
+                "year": "1904",
+                "month": "7"
+            },
+            "text": {
+                "headline": "Bluesky",
+                "text": "To embed a Bluesky post, just copy the URL of the post's page."
+            },
+            "background": {
+                "color": "#1185FE"
+            },
+            "group": "Social Media"
+        },
+        {
+            "media": {
+                "url": "https://bsky.app/profile/damon.kiesow.net/post/3mfrtmy75ao24",
+                "caption": "Bluesky quote post",
+                "credit": "Damon Kiesow"
+            },
+            "start_date": {
+                "year": "1904",
+                "month": "8"
+            },
+            "text": {
+                "headline": "Bluesky",
+                "text": "Bluesky quote posts should work too."
+            },
+            "background": {
+                "color": "#1185FE"
+            },
+            "group": "Social Media"
         },
         {
             "media": {

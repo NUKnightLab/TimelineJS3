@@ -2,6 +2,7 @@
 -------------------------
 * #895 Fixes for pt-BR locale
 * a11y: add empty alt attribute to thumbnail images
+* New embeds for TikTok and Bluesky
 
 3.9.8 (2025-05-23)
 -------------------------
