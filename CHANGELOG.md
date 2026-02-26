@@ -1,10 +1,11 @@
 3.9.9 (not released)
 -------------------------
-#895 Fixes for pt-BT locale
+* #895 Fixes for pt-BR locale
+* a11y: add empty alt attribute to thumbnail images
 
 3.9.8 (2025-05-23)
 -------------------------
-#894 Fixes previous/next button positioning when a timeline is a child of an element with dir="rtl"
+* #894 Fixes previous/next button positioning when a timeline is a child of an element with dir="rtl"
 
 3.9.7 (2025-03-11)
 -------------------------
