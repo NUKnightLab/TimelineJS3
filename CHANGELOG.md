@@ -1,4 +1,4 @@
-3.9.9 (not released)
+3.9.9 (2026-03-03)
 -------------------------
 * #895 Fixes for pt-BR locale
 * a11y: add empty alt attribute to thumbnail images

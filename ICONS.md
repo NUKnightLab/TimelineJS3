@@ -2,6 +2,8 @@
 
 TimelineJS uses [IcoMoon](https://icomoon.io/app) to manage its icon font. This document explains how to update the icon font when you've made changes on the IcoMoon website.
 
+Generally, you would begin at icomoon.io by either restoring an old project from local storage or importing `selection.json` (in `src/css/icons`) to get a baseline. You can then add new icons and download the generated font as a ZIP file.
+
 ## Overview
 
 **Icon Font Name:** `tl-icons`
