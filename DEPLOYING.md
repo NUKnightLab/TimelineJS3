@@ -7,8 +7,6 @@ TimelineJS3 has two independent products which can be "deployed". The deployment
 
 To deploy updates to the javascript, you must have a local copy of the [cdn.knightlab.com](https://github.com/NUKnightLab/cdn.knightlab.com) repository checked out on your filesystem, "next to" your TimelineJS3 repository.
 
-To deploy the website, or updates to the Wordpress plugin, you must have local copies of the [fablib](https://github.com/NUKnightLab/fablib) and, for the plugin, [TimelineJS-Wordpress-Plugin](https://github.com/NUKnightLab/TimelineJS-Wordpress-Plugin) repositories checked out on your filesystem, "next to" your TimelineJS3 repository.
-
 "Next to" means that the TimelineJS3 repository and the other repositories should have the same parent directory. Of course, you must also have authorization to write to the appropriate S3 buckets, or, for the Wordpress plugin, to the Wordpress SVN server.
 
 ## Deploying changes to the JavaScript
@@ -29,19 +27,15 @@ When a new version is deployed to the CDN, it should also be published to the np
 
 ### Updating the Wordpress plugin
 
-The TimelineJS plugin for Wordpress is distributed with a copy of the TimelineJS code. For now, use `fab stage_wp` to copy the relevant contents of `dist` to the Wordpress plugin. It's up to you to make sure the version in `dist` is what you want to copy. More details on deploying that change are in the plugin repository.
+We no longer actively maintain the Wordpress plugin, because recent versions of Wordpress (since the "Gutenberg" redesign) support "Custom HTML" blocks into which TimelineJS embed code can be pasted.
 
 
 ## Deploying changes to the website
 
-To deploy changes to the website which explains TimelineJS3 and hosts the "authoring tool," use the command
+To deploy changes to the website which explains TimelineJS3 and hosts the "authoring tool":
 ```
-fab deploy:prd
+cd website/
+./deploy.sh prd
 ```
 
-This will compile the website templates and push them to the S3 buckets. It is unrelated to the javascript, so can be done independently. Or, contrariwise, if you are intending to change both, be sure to follow both processes.
-
-There is a variant for deploying a version of the site which can be reached on the open internet but which is not yet ready for regular public consumption:
-```
-fab deploy:stg
-```
+This will build the website and copy the files to the timeline.knightlab.com server.
