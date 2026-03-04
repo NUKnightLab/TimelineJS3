@@ -15,8 +15,8 @@ Before beginning to deploy, make sure all changes are thoroughly tested. Update 
 
 Deploying the JavaScript library uses `npm` scripts defined in `package.json`. To deploy to the Knight Lab CDN, use the following scripts:
 
+* npm run stage_latest (most common)
 * npm run stage
-* npm run stage_latest
 * npm run stage_dev
 
 To stage a new release of TimelineJS, use `npm run stage_latest`. This will ask you for a version number (tag), build the code, and copy it to the appropriate versioned subdirectory of the `cdn.knightlab.com` repository, as well as copying it to the `/latest/` directory.  In the rare case when you want to tag a version, but not change `latest`, use `npm run stage` although then copying that to `/latest/` is outside the scope of these tools. 
