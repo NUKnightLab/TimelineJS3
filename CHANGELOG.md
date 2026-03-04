@@ -1,3 +1,7 @@
+3.9.10 (2026-03-04)
+-------------------------
+* Fix mapping bug introduced with updated icon fonts.
+
 3.9.9 (2026-03-03)
 -------------------------
 * #895 Fixes for pt-BR locale
