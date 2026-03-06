@@ -260,90 +260,75 @@ export async function jsonFromGoogleURL(google_url, options) {
 }
 
 /**
- * Using the given URL, fetch or create a JS Object suitable for configuring a timeline. Use 
- * that to create a TimelineConfig, and invoke the callback with that object as its argument. 
- * If the second argument is an object instead of a callback function, it must have a 
- * 'callback' property which will be invoked with the config.
- * Even in error cases, a minimal TimelineConfig object will be created and passed to the callback
- * so that error messages can be displayed in the host page.
- * 
- * @param {String} url the URL or Google Spreadsheet key which can be used to get configuration information
- * @param {function|object} callback_or_options either a callback function or an object with a 'callback' property and other configuration properties
+ * Using the given URL, fetch or create a JS Object suitable for configuring a timeline.
+ * Returns a Promise that resolves to a TimelineConfig.
+ * Even in error cases, a minimal TimelineConfig object will be created with logged errors.
+ *
+ * @param {String} url - The URL or Google Spreadsheet key to fetch configuration from
+ * @param {Object|function} [optionsOrCallback] - Options object or legacy callback function
+ * @param {string} [optionsOrCallback.sheets_proxy] - Proxy URL for Google Sheets
+ * @param {function} [optionsOrCallback.callback] - Legacy callback (deprecated, use Promise instead)
+ * @returns {Promise<TimelineConfig>} Promise that resolves to a TimelineConfig
  */
-export async function makeConfig(url, callback_or_options) {
+export async function makeConfig(url, optionsOrCallback) {
+    // Support legacy callback pattern for backward compatibility
+    let callback = null;
+    let options = {};
 
-    let callback = null,
-        options = {};
-    if (typeof(callback_or_options) == 'function') {
-        callback = callback_or_options
-    } else if (typeof(callback_or_options) == 'object') {
-        options = callback_or_options
-        callback = callback_or_options['callback']
-        if (typeof(options['callback']) == 'function') callback = options['callback']
+    if (typeof optionsOrCallback === 'function') {
+        callback = optionsOrCallback;
+        console.warn('makeConfig: callback parameter is deprecated, use the returned Promise instead');
+    } else if (typeof optionsOrCallback === 'object') {
+        options = optionsOrCallback;
+        if (typeof options.callback === 'function') {
+            callback = options.callback;
+            console.warn('makeConfig: callback parameter is deprecated, use the returned Promise instead');
+        }
     }
 
-    if (!callback) {
-        throw new TLError("Second argument to makeConfig must be either a function or an object which includes a 'callback' property with a 'function' type value")
-    }
+    let tc;
+    const key = parseGoogleSpreadsheetURL(url);
 
-    var tc,
-        json,
-        key = parseGoogleSpreadsheetURL(url);
-
-    if (key) {
-        try {
+    try {
+        if (key) {
+            // Handle Google Sheets URL
             console.log(`reading url ${url}`);
-            json = await jsonFromGoogleURL(url, options);
-        } catch (e) {
-            // even with an error, we make 
-            // a TimelineConfig because it's 
-            // the most straightforward way to display messages
-            // in the DOM
-            tc = new TimelineConfig();
-            if (e.name == 'NetworkError') {
-                tc.logError(new TLError("network_err"));
-            } else if (e.name == 'TLError') {
-                tc.logError(e);
-            } else {
-                tc.logError(new TLError("unknown_read_err", e.name));
-            }
-            callback(tc);
-            return; // don't process further if there were errors
-        }
-
-        tc = new TimelineConfig(json);
-        if (json.errors) {
-            for (var i = 0; i < json.errors.length; i++) {
-                tc.logError(json.errors[i]);
-            };
-        }
-        callback(tc);
-    } else {
-        ajax({
-            url: url,
-            dataType: 'json',
-            success: function(data) {
-                try {
-                    tc = new TimelineConfig(data);
-                } catch (e) {
-                    tc = new TimelineConfig();
-                    tc.logError(e);
+            const json = await jsonFromGoogleURL(url, options);
+            tc = new TimelineConfig(json);
+            if (json.errors) {
+                for (let i = 0; i < json.errors.length; i++) {
+                    tc.logError(json.errors[i]);
                 }
-                callback(tc);
-            },
-            error: function(xhr, errorType, error) {
-                tc = new TimelineConfig();
-                if (errorType == 'parsererror') {
-                    var error = new TLError("invalid_url_err");
-                } else {
-                    var error = new TLError("unknown_read_err", errorType)
-                }
-                tc.logError(error);
-                callback(tc);
             }
-        });
-
+        } else {
+            // Handle regular JSON URL using fetch
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            tc = new TimelineConfig(data);
+        }
+    } catch (e) {
+        // Even with an error, create a TimelineConfig to display messages in DOM
+        tc = new TimelineConfig();
+        if (e.name === 'NetworkError' || e.message.includes('HTTP error')) {
+            tc.logError(new TLError("network_err"));
+        } else if (e.name === 'TLError') {
+            tc.logError(e);
+        } else if (e.name === 'SyntaxError') {
+            tc.logError(new TLError("invalid_url_err"));
+        } else {
+            tc.logError(new TLError("unknown_read_err", e.message || e.name));
+        }
     }
+
+    // Call legacy callback if provided
+    if (callback) {
+        callback(tc);
+    }
+
+    return tc;
 }
 
 function handleRow(event, timeline_config) {

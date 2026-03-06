@@ -1,9 +1,20 @@
 /*  I18NMixins
-    assumes that its class has an attribute `language` with a Language instance    
+    Base class providing internationalization support
 ================================================== */
 import { trace } from "../core/Util"
 import { fallback } from "../language/Language"
-class I18NMixins {
+import Events from "../core/Events"
+
+/**
+ * Base class that combines Events with I18N functionality.
+ * Classes can extend this to get both event handling and internationalization.
+ */
+class I18NMixins extends Events {
+    constructor(...args) {
+        super(...args);
+        this.language = null;
+    }
+
     setLanguage(language) {
         this.language = language;
     }
@@ -27,10 +38,10 @@ class I18NMixins {
     /**
      * Look up a localized version of a standard message using the Language instance
      * that was previously set with {@link setLanguage}.
-     * 
+     *
      * @see {@link Language#_}
-     * @param {string} msg - a message key 
-     * @param {Object} [context] - a dictionary with string keys appropriate to message `k` 
+     * @param {string} msg - a message key
+     * @param {Object} [context] - a dictionary with string keys appropriate to message `k`
      *      and string values which will be interpolated into the message.
      * @returns {string} - a localized string appropriate to the message key
      */

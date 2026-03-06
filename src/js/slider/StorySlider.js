@@ -1,7 +1,6 @@
 import { I18NMixins } from "../language/I18NMixins";
-import Events from "../core/Events";
 import { easeInOutQuint } from "../animation/Ease"
-import { classMixin, mergeData, unique_ID, findArrayNumberByUniqueID, hexToRgb, trace } from "../core/Util"
+import { mergeData, unique_ID, findArrayNumberByUniqueID, hexToRgb, trace } from "../core/Util"
 import { Animate } from "../animation/Animate"
 import * as DOM from "../dom/DOM"
 import { DOMEvent } from "../dom/DOMEvent"
@@ -11,8 +10,9 @@ import Message from "../ui/Message"
 import { Slide } from "./Slide"
 import { SlideNav } from "./SlideNav"
 
-export class StorySlider {
+export class StorySlider extends I18NMixins {
     constructor(elem, data, options, language) {
+        super();
 
         if (language) {
             this.setLanguage(language)
@@ -532,5 +532,3 @@ export class StorySlider {
 
 
 }
-
-classMixin(StorySlider, I18NMixins, Events)

@@ -1,5 +1,4 @@
-import { classMixin, mergeData, findNextGreater, findNextLesser, isEven, findArrayNumberByUniqueID, trace } from "../core/Util"
-import Events from "../core/Events"
+import { mergeData, findNextGreater, findNextLesser, isEven, findArrayNumberByUniqueID, trace } from "../core/Util"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
 import * as DOM from "../dom/DOM"
@@ -11,13 +10,14 @@ import { TimeAxis } from "./TimeAxis"
 import { TimeMarker } from "./TimeMarker"
 import Swipable from "../ui/Swipable"
 import { Animate } from "../animation/Animate"
-import { I18NMixins } from "../language/I18NMixins"
 
 
 
-export class TimeNav {
+export class TimeNav extends DOMMixins {
 
     constructor(elem, timeline_config, options, language) {
+        super();
+
         this.language = language
             // DOM ELEMENTS
         this._el = {
@@ -814,5 +814,3 @@ export class TimeNav {
 
     }
 }
-
-classMixin(TimeNav, Events, DOMMixins, I18NMixins)

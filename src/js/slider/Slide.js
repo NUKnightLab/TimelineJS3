@@ -1,9 +1,7 @@
 import "wicg-inert";
 
-import { I18NMixins } from "../language/I18NMixins";
-import Events from "../core/Events";
 import { DOMMixins } from "../dom/DOMMixins";
-import { classMixin, mergeData, trim } from "../core/Util"
+import { mergeData, trim } from "../core/Util"
 import * as DOM from "../dom/DOM"
 import { Animate } from "../animation/Animate"
 import { easeInSpline } from "../animation/Ease"
@@ -11,9 +9,11 @@ import * as Browser from "../core/Browser"
 import { lookupMediaType } from "../media/MediaType";
 import { Text } from "../media/Media"
 
-export class Slide {
+export class Slide extends DOMMixins {
 
     constructor(data, options, title_slide, language) {
+        super();
+
         if (language) {
             this.setLanguage(language)
         }
@@ -357,4 +357,3 @@ export class Slide {
         }
     }
 }
-classMixin(Slide, I18NMixins, Events, DOMMixins)
