@@ -1,3 +1,7 @@
+3.9.11 (not yet released)
+-------------------------
+* #668 Directly support CSV configuration
+
 3.9.10 (2026-03-04)
 -------------------------
 * Fix mapping bug introduced with updated icon fonts.

@@ -141,39 +141,13 @@ function extractEventFromCSVObject(orig_row) {
 }
 
 /**
- * Given a Google Sheets URL (or mere document ID), read the data and return
- * a Timeline JSON file suitable for instantiating a timeline.
- * 
- * @param {string} url 
+ * Process an array of CSV row objects into a timeline configuration.
+ * This is the common logic used by both Google Sheets and direct CSV file reading.
+ *
+ * @param {Array} rows - Array of row objects from CSV parsing
+ * @returns {Object} timeline configuration object with events, errors, warnings, and eras
  */
-export async function readGoogleAsCSV(url, sheets_proxy) {
-
-    let rows = []
-
-    url = makeGoogleCSVURL(url)
-    let error = null;
-
-    await fetchCSV({
-        url: `${sheets_proxy}${url}`,
-    }).then(d => {
-        rows = d;
-    }).catch(error_json => {
-        if (error_json.proxy_err_code == 'response_not_csv') {
-            throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
-        } else if (error_json.status_code == 401) {
-            throw new TLError('Configuration unreadable. Please make sure your Google Sheets document is published to the web and review step 2 of the timeline setup instructions to make sure you have the correct URL, as this has changed.')
-        } else if (error_json.status_code == 410) {
-            throw new TLError('Google reports that this configuration spreadsheet is gone. Check to see if it has been deleted from Google Drive. Timeline configuration spreadsheets must not be deleted.')
-        }
-        let msg = "undefined error"
-        if (Array.isArray(error_json.message)) {
-            msg = error_json.message.join('<br>')
-        } else {
-            msg = String(error_json.message)
-        }
-        throw new TLError(msg)
-    })
-
+function processCSVRows(rows) {
     let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
 
     rows.forEach((row, i) => {
@@ -197,11 +171,87 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
 
     return timeline_config
 }
+
+/**
+ * Given a Google Sheets URL (or mere document ID), read the data and return
+ * a Timeline JSON file suitable for instantiating a timeline.
+ *
+ * @param {string} url
+ */
+export async function readGoogleAsCSV(url, sheets_proxy) {
+
+    let rows = []
+
+    url = makeGoogleCSVURL(url)
+
+    await fetchCSV({
+        url: `${sheets_proxy}${url}`,
+    }).then(d => {
+        rows = d;
+    }).catch(error_json => {
+        if (error_json.proxy_err_code == 'response_not_csv') {
+            throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
+        } else if (error_json.status_code == 401) {
+            throw new TLError('Configuration unreadable. Please make sure your Google Sheets document is published to the web and review step 2 of the timeline setup instructions to make sure you have the correct URL, as this has changed.')
+        } else if (error_json.status_code == 410) {
+            throw new TLError('Google reports that this configuration spreadsheet is gone. Check to see if it has been deleted from Google Drive. Timeline configuration spreadsheets must not be deleted.')
+        }
+        let msg = "undefined error"
+        if (Array.isArray(error_json.message)) {
+            msg = error_json.message.join('<br>')
+        } else {
+            msg = String(error_json.message)
+        }
+        throw new TLError(msg)
+    })
+
+    return processCSVRows(rows)
+}
+
+/**
+ * Given a URL to a CSV file, read the data and return
+ * a Timeline JSON file suitable for instantiating a timeline.
+ *
+ * @param {string} url - URL to a CSV file
+ */
+export async function readCSVFromURL(url) {
+
+    let rows = []
+
+    await fetchCSV({
+        url: url,
+    }).then(d => {
+        rows = d;
+    }).catch(error_json => {
+        let msg = "undefined error"
+        if (Array.isArray(error_json.message)) {
+            msg = error_json.message.join('<br>')
+        } else {
+            msg = String(error_json.message)
+        }
+        throw new TLError(msg)
+    })
+
+    return processCSVRows(rows)
+}
+
+/**
+ * Determines if a URL appears to be a CSV file based on its extension or content type.
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isCSVURL(url) {
+    // Check if the URL ends with .csv (case-insensitive)
+    // This is a simple heuristic but should work for most cases
+    return /\.csv(\?.*)?$/i.test(url);
+}
+
 /**
  * Given a Google Sheets URL or a bare spreadsheet key, return a URL expected
  * to retrieve a CSV file, assuming the Sheets doc has been "published to the web".
  * No checking for the actual availability is done.
- * @param {string} url_or_key 
+ * @param {string} url_or_key
  */
 export function makeGoogleCSVURL(url_or_key) {
     url_or_key = url_or_key.trim()
@@ -260,13 +310,49 @@ export async function jsonFromGoogleURL(google_url, options) {
 }
 
 /**
- * Using the given URL, fetch or create a JS Object suitable for configuring a timeline. Use 
- * that to create a TimelineConfig, and invoke the callback with that object as its argument. 
- * If the second argument is an object instead of a callback function, it must have a 
+ * Helper function to handle errors when fetching timeline configuration.
+ * Creates a minimal TimelineConfig with the appropriate error logged.
+ *
+ * @param {Error} error - The error that occurred
+ * @param {function} callback - Callback to invoke with the error TimelineConfig
+ */
+function handleConfigError(error, callback) {
+    const tc = new TimelineConfig();
+    if (error.name == 'NetworkError') {
+        tc.logError(new TLError("network_err"));
+    } else if (error.name == 'TLError') {
+        tc.logError(error);
+    } else {
+        tc.logError(new TLError("unknown_read_err", error.name || error));
+    }
+    callback(tc);
+}
+
+/**
+ * Helper function to create a TimelineConfig from JSON data.
+ * Logs any errors present in the JSON data itself.
+ *
+ * @param {Object} json - Timeline configuration in JSON format
+ * @param {function} callback - Callback to invoke with the created TimelineConfig
+ */
+function finalizeConfig(json, callback) {
+    const tc = new TimelineConfig(json);
+    if (json.errors) {
+        for (let i = 0; i < json.errors.length; i++) {
+            tc.logError(json.errors[i]);
+        }
+    }
+    callback(tc);
+}
+
+/**
+ * Using the given URL, fetch or create a JS Object suitable for configuring a timeline. Use
+ * that to create a TimelineConfig, and invoke the callback with that object as its argument.
+ * If the second argument is an object instead of a callback function, it must have a
  * 'callback' property which will be invoked with the config.
  * Even in error cases, a minimal TimelineConfig object will be created and passed to the callback
  * so that error messages can be displayed in the host page.
- * 
+ *
  * @param {String} url the URL or Google Spreadsheet key which can be used to get configuration information
  * @param {function|object} callback_or_options either a callback function or an object with a 'callback' property and other configuration properties
  */
@@ -286,63 +372,47 @@ export async function makeConfig(url, callback_or_options) {
         throw new TLError("Second argument to makeConfig must be either a function or an object which includes a 'callback' property with a 'function' type value")
     }
 
-    var tc,
-        json,
-        key = parseGoogleSpreadsheetURL(url);
+    // Determine the source type and fetch the JSON configuration
+    const key = parseGoogleSpreadsheetURL(url);
 
     if (key) {
+        // Google Sheets: convert to CSV, then to JSON config format
         try {
             console.log(`reading url ${url}`);
-            json = await jsonFromGoogleURL(url, options);
+            const json = await jsonFromGoogleURL(url, options);
+            finalizeConfig(json, callback);
         } catch (e) {
-            // even with an error, we make 
-            // a TimelineConfig because it's 
-            // the most straightforward way to display messages
-            // in the DOM
-            tc = new TimelineConfig();
-            if (e.name == 'NetworkError') {
-                tc.logError(new TLError("network_err"));
-            } else if (e.name == 'TLError') {
-                tc.logError(e);
-            } else {
-                tc.logError(new TLError("unknown_read_err", e.name));
-            }
-            callback(tc);
-            return; // don't process further if there were errors
+            handleConfigError(e, callback);
         }
-
-        tc = new TimelineConfig(json);
-        if (json.errors) {
-            for (var i = 0; i < json.errors.length; i++) {
-                tc.logError(json.errors[i]);
-            };
+    } else if (isCSVURL(url)) {
+        // CSV file: parse and convert to JSON config format
+        try {
+            console.log(`reading CSV from url ${url}`);
+            const json = await readCSVFromURL(url);
+            finalizeConfig(json, callback);
+        } catch (e) {
+            handleConfigError(e, callback);
         }
-        callback(tc);
     } else {
+        // Direct JSON: fetch and use as-is
         ajax({
             url: url,
             dataType: 'json',
             success: function(data) {
                 try {
-                    tc = new TimelineConfig(data);
+                    finalizeConfig(data, callback);
                 } catch (e) {
-                    tc = new TimelineConfig();
-                    tc.logError(e);
+                    handleConfigError(e, callback);
                 }
-                callback(tc);
             },
-            error: function(xhr, errorType, error) {
-                tc = new TimelineConfig();
-                if (errorType == 'parsererror') {
-                    var error = new TLError("invalid_url_err");
-                } else {
-                    var error = new TLError("unknown_read_err", errorType)
-                }
-                tc.logError(error);
-                callback(tc);
+            error: function(xhr, errorType) {
+                // Convert ajax error types to appropriate TLError
+                const tlError = errorType == 'parsererror'
+                    ? new TLError("invalid_url_err")
+                    : new TLError("unknown_read_err", errorType);
+                handleConfigError(tlError, callback);
             }
         });
-
     }
 }
 
