@@ -1,68 +1,44 @@
 /*
-	Based on Leaflet Browser
+	Browser and device detection utilities
+	Modernized to remove IE-specific detection
 */
 
 export const ua = navigator ? navigator.userAgent.toLowerCase() : 'no-user-agent-specified';
 
-const doc = document ? document.documentElement : null;
-const phantomjs = ua ? ua.indexOf("phantom") !== -1 : false;
-
-
-export const ie = window && 'ActiveXObject' in window
-
-export const ie9 = Boolean(ie && ua.match(/MSIE 9/i))
-export const ielt9 = ie && document && !document.addEventListener
-
 export const webkit = ua.indexOf('webkit') !== -1
 export const android = ua.indexOf('android') !== -1
+export const mobile = window ? /mobile|tablet|ip(ad|hone|od)|android/i.test(ua) || 'ontouchstart' in window : false
 
-export const android23 = ua.search('android [23]') !== -1
-export const mobile = (window) ? typeof window.orientation !== 'undefined' : false
-export const msPointer = (navigator && window) ? navigator.msPointerEnabled && navigator.msMaxTouchPoints && !window.PointerEvent : false
-export const pointer = (navigator && window) ? (window.PointerEvent && navigator.pointerEnabled && navigator.maxTouchPoints) : msPointer
+export const gecko = ua.indexOf("gecko") !== -1 && !webkit
+export const firefox = gecko && ua.indexOf("firefox") !== -1
+export const chrome = ua.indexOf("chrome") !== -1
+export const edge = ua.indexOf("edge/") !== -1 || ua.indexOf("edg/") !== -1
+export const safari = webkit && ua.indexOf("safari") !== -1 && !chrome && !edge
 
-export const opera = window ? window.opera : false;
-
-export const gecko = ua.indexOf("gecko") !== -1 && !webkit && !opera && !ie;
-export const firefox = ua.indexOf("gecko") !== -1 && !webkit && !opera && !ie;
-export const chrome = ua.indexOf("chrome") !== -1;
-export const edge = ua.indexOf("edge/") !== -1;
-
-export const ie3d = (doc) ? ie && 'transition' in doc.style : false
-export const webkit3d = (window) ? ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23 : false
-export const gecko3d = (doc) ? 'MozPerspective' in doc.style : false
-export const opera3d = (doc) ? 'OTransition' in doc.style : false
-
-export const any3d = window && !window.L_DISABLE_3D &&
-    (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs
+// Modern browsers all support 3D transforms
+export const webkit3d = window ? ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) : false
+export const any3d = window && !window.L_DISABLE_3D
 
 export const mobileWebkit = mobile && webkit
-export const mobileWebkit3d = mobile && webkit3d
-export const mobileOpera = mobile && window.opera
 
-export let retina = (window) ? 'devicePixelRatio' in window && window.devicePixelRatio > 1 : false
+// Retina display detection
+export let retina = window ? 'devicePixelRatio' in window && window.devicePixelRatio > 1 : false
 
 if (!retina && window && 'matchMedia' in window) {
-    let media_matches = window.matchMedia('(min-resolution:144dpi)');
+    const media_matches = window.matchMedia('(min-resolution:144dpi), (-webkit-min-device-pixel-ratio: 1.5)');
     retina = media_matches && media_matches.matches;
 }
 
-export const touch = window &&
-    !window.L_NO_TOUCH &&
-    !phantomjs &&
-    (pointer || 'ontouchstart' in window || (window.DocumentTouch && document instanceof window.DocumentTouch))
+// Touch support - using modern pointer events when available
+export const pointer = window && window.PointerEvent && navigator.maxTouchPoints > 0
+export const touch = window && (pointer || 'ontouchstart' in window || (window.DocumentTouch && document instanceof window.DocumentTouch))
 
-
+/**
+ * Determine device orientation based on viewport dimensions
+ * @returns {string} "portrait" or "landscape"
+ */
 export function orientation() {
-    var w = window.innerWidth,
-        h = window.innerHeight,
-        _orientation = "portrait";
-
-    if (w > h) {
-        _orientation = "landscape";
-    }
-    if (Math.abs(window.orientation) == 90) {
-        //_orientation = "landscape";
-    }
-    return _orientation;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    return w > h ? "landscape" : "portrait";
 }

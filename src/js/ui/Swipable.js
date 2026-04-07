@@ -1,14 +1,15 @@
-import { classMixin, mergeData } from "../core/Util"
+import { mergeData } from "../core/Util"
 import Events from "../core/Events"
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import { Animate } from "../animation/Animate"
 import { touch as BROWSER_TOUCH } from "../core/Browser";
 import { DOMEvent } from "../dom/DOMEvent"
 
-export default class Swipable {
+export default class Swipable extends Events {
 
 	constructor(drag_elem, move_elem, options) {
-		
+		super();
+
 		// DOM ELements 
 		this._el = {
 			drag: drag_elem,
@@ -388,5 +389,3 @@ export default class Swipable {
 		this.fire("momentum", this.data);
 	}
 }
-
-classMixin(Swipable, Events)

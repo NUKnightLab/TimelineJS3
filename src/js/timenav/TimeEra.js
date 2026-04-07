@@ -1,17 +1,16 @@
-import { classMixin, unlinkify, mergeData } from "../core/Util"
-import Events from "../core/Events"
+import { unlinkify, mergeData } from "../core/Util"
 import { DOMMixins } from "../dom/DOMMixins"
 import * as Browser from "../core/Browser"
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
 
 /**
- * A TimeEra represents a span of time marked along the edge of the time 
- * slider. It must have a 
+ * A TimeEra represents a span of time marked along the edge of the time
+ * slider. It must have a
  */
-export class TimeEra {
+export class TimeEra extends DOMMixins {
     constructor(start_date, end_date, headline, options) {
-
+        super();
 
         this.start_date = start_date
         this.end_date = end_date
@@ -218,5 +217,3 @@ export class TimeEra {
     }
 
 }
-
-classMixin(TimeEra, Events, DOMMixins)

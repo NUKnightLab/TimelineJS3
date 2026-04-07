@@ -1,26 +1,24 @@
 /*	Message
-	
+
 ================================================== */
-import { TLClass } from "../core/TLClass"
-import { mergeData, classMixin } from "../core/Util"
+import { mergeData } from "../core/Util"
 import * as DOM from "../dom/DOM"
-import Events from "../core/Events"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
-import { I18NMixins } from "../language/I18NMixins"
 
 /**
  * A class for displaying messages to users.
  */
-export default class Message{
+export default class Message extends DOMMixins {
 
     /**
-     * Initialize a Message object with the container where it appears and, 
+     * Initialize a Message object with the container where it appears and,
      *     optionally, a JS object of options.
-     * @param {HTMLElement} container 
-     * @param {object} [options] 
+     * @param {HTMLElement} container
+     * @param {object} [options]
      */
     constructor(container, options, language) {
+        super();
 
         if (language) {
             this.setLanguage(language)
@@ -120,5 +118,4 @@ export default class Message{
         DOMEvent.addListener(this, 'removed', this._onRemove, this);
     }
 
-}
-classMixin(Message, I18NMixins, Events, DOMMixins); 
+} 

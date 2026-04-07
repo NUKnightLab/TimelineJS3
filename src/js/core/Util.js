@@ -303,20 +303,6 @@ export function maxDepth(ary) {
     return max_depth;
 }
 
-/**
- * Implement mixin behavior. Based on 
- *     https://blog.bitsrc.io/understanding-mixins-in-javascript-de5d3e02b466
- * @param {class} cls 
- * @param  {...class} src 
- */
-export function classMixin(cls, ...src) {
-    for (let _cl of src) {
-        for (var key of Object.getOwnPropertyNames(_cl.prototype)) {
-            cls.prototype[key] = _cl.prototype[key]
-        }
-    }
-}
-
 export function ensureUniqueKey(obj, candidate) {
     if (!candidate) { candidate = unique_ID(6); }
 

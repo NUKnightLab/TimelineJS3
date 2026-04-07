@@ -1,12 +1,12 @@
-import { classMixin, mergeData } from "../core/Util"
-import Events from "../core/Events"
+import { mergeData } from "../core/Util"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
 import * as DOM from "../dom/DOM"
 
-export class TimeGroup {
+export class TimeGroup extends DOMMixins {
 	constructor(data) {
-		
+		super();
+
 		// DOM ELEMENTS
 		this._el = {
 			parent: {},
@@ -97,7 +97,5 @@ export class TimeGroup {
 	_updateDisplay(width, height, animate) {
 		
 	}
-	
-}
 
-classMixin(TimeGroup, Events, DOMMixins)
+}

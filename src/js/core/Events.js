@@ -1,85 +1,85 @@
 /*	Events
-	adds custom events functionality to TL classes
+	Base class using native EventTarget for event handling
 ================================================== */
 
-import { mergeData, trace } from "../core/Util"
 import TLError from "../core/TLError"
 
-export default class Events {
+/**
+ * Modern Events base class using native EventTarget.
+ * Classes extending this get native browser event capabilities with backward-compatible API.
+ */
+export default class Events extends EventTarget {
+
+    constructor(...args) {
+        super();
+        // Store context-bound listeners for removal
+        this._tl_bound_listeners = new Map();
+    }
 
     /**
      * Add an event listener callback for the given type.
-     * @param {string} type 
-     * @param {function} fn 
-     * @param {object} [context] 
+     * @param {string} type
+     * @param {function} fn
+     * @param {object} [context] - context to bind the callback to
      * @returns { Events } this (the instance upon which the method was called)
      */
     on(type, fn, context) {
         if (!fn) {
             throw new TLError("No callback function provided")
         }
-        var events = this._tl_events = this._tl_events || {};
-        events[type] = events[type] || [];
-        events[type].push({
-            action: fn,
-            context: context || this
-        });
+
+        // Create a wrapper that calls fn with the right context and event format
+        const wrapper = (event) => {
+            // Extract detail from CustomEvent, maintain backward compatibility
+            const eventData = event.detail || event;
+            fn.call(context || this, eventData);
+        };
+
+        // Store the mapping so we can remove it later
+        const key = `${type}:${fn}:${context || 'default'}`;
+        if (!this._tl_bound_listeners.has(key)) {
+            this._tl_bound_listeners.set(key, wrapper);
+        }
+
+        super.addEventListener(type, this._tl_bound_listeners.get(key));
         return this;
     }
 
     /**
-     * Synonym for on(type, fn, context). It would be great to determine 
-     *     that this is obsolete, but that wasn't clear.
+     * Synonym for on(type, fn, context).
      * @param {string} type
      * @param {function} fn
      * @param {object} [context]
      * @returns { Events } this (the instance upon which the method was called)
      */
-    addEventListener( /*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+    addEventListener(type, fn, context) {
         return this.on(type, fn, context)
     }
 
     /**
-     * Return true if this object has any listeners of the given type.
-     * @param {string} type 
-     * @returns {boolean}
-     */
-    hasEventListeners(type) {
-        var k = '_tl_events';
-        return (k in this) && (type in this[k]) && (this[k][type].length > 0);
-    }
-
-    /**
-     * Remove any event listeners for the given type that use the given 
-     *     callback and have the given context.
-     * @param {string} type 
-     * @param {function} fn 
-     * @param {object} context 
+     * Remove event listeners for the given type with the given callback and context.
+     * @param {string} type
+     * @param {function} fn
+     * @param {object} [context]
      * @returns { Events } this (the instance upon which the method was called)
      */
-    removeEventListener( /*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-        if (!this.hasEventListeners(type)) {
-            return this;
+    removeEventListener(type, fn, context) {
+        const key = `${type}:${fn}:${context || 'default'}`;
+        const wrapper = this._tl_bound_listeners.get(key);
+
+        if (wrapper) {
+            super.removeEventListener(type, wrapper);
+            this._tl_bound_listeners.delete(key);
         }
 
-        for (var i = 0, events = this._tl_events, len = events[type].length; i < len; i++) {
-            if (
-                (events[type][i].action === fn) &&
-                (!context || (events[type][i].context === context))
-            ) {
-                events[type].splice(i, 1);
-                return this;
-            }
-        }
         return this;
     }
 
     /**
-     * Synonym for removeEventListener. Is this really needed? While 'off' is opposite of 'on',
-     *     it doesn't actually read as 'remove' unless you know that.
+     * Synonym for removeEventListener.
      * @param {string} type
      * @param {function} fn
-     * @param {object} context
+     * @param {object} [context]
      * @returns { Events } this (the instance upon which the method was called)
      */
     off(type, fn, context) {
@@ -87,32 +87,21 @@ export default class Events {
     }
 
     /**
-     * Activate (execute) all registered callback functions for the given
-     *     type, passing the given data, if any.
-     * @param {string} type 
-     * @param {object} [data] 
+     * Dispatch an event with the given data.
+     * @param {string} type
+     * @param {object} [data]
      * @returns { Events } this (the instance upon which the method was called)
      */
     fire(type, data) {
-        if (!this.hasEventListeners(type)) {
-            return this;
-        }
-
-        var event = mergeData({
-            type: type,
-            target: this
-        }, data);
-
-        var listeners = this._tl_events[type].slice();
-
-        for (var i = 0, len = listeners.length; i < len; i++) {
-            if (listeners[i].action) {
-                listeners[i].action.call(listeners[i].context || this, event);
-            } else {
-                trace(`no action defined for ${type} listener`)
+        const event = new CustomEvent(type, {
+            detail: {
+                type: type,
+                target: this,
+                ...data
             }
-        }
+        });
 
+        this.dispatchEvent(event);
         return this;
     }
 

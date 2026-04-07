@@ -2,7 +2,6 @@
 	Date object
 	MONTHS are 1-BASED, not 0-BASED (different from Javascript date objects)
 ================================================== */
-import { TLClass } from "../core/TLClass"
 import { Language } from "../language/Language"
 import TLError from "../core/TLError"
 
@@ -160,9 +159,9 @@ const BEST_DATEFORMATS = {
     }
 };
 
-export const TLDate = TLClass.extend({
+export class TLDate {
     // @data = ms, JS Date object, or JS dictionary with date properties
-    initialize: function(data, format, format_short) {
+    constructor(data, format, format_short) {
         if (typeof data == "number") {
             this.data = {
                 format: "yyyy mmmm",
@@ -182,11 +181,12 @@ export const TLDate = TLClass.extend({
             format = data.format
         }
         this._setFormat(format, format_short);
-    },
+    }
 
-    setDateFormat: function(format) {
+    setDateFormat(format) {
         this.data.format = format;
-    },
+    }
+
     /**
      * Return a string representation of this date. If this date has been created with a `display_date` property,
      * that value is always returned, regardless of arguments to the method invocation. Otherwise,
@@ -196,7 +196,7 @@ export const TLDate = TLClass.extend({
      * @param {String} format
      * @returns {String} formattedDate
      */
-    getDisplayDate: function(language, format) {
+    getDisplayDate(language, format) {
         if (this.data.display_date) {
             return this.data.display_date;
         }
@@ -210,19 +210,19 @@ export const TLDate = TLClass.extend({
             language = Language.fallback;
         }
 
-        var format_key = format || this.data.format;
+        const format_key = format || this.data.format;
         return language.formatDate(this.data.date_obj, format_key);
-    },
+    }
 
-    getMillisecond: function() {
+    getMillisecond() {
         return this.getTime();
-    },
+    }
 
-    getTime: function() {
+    getTime() {
         return this.data.date_obj.getTime();
-    },
+    }
 
-    isBefore: function(other_date) {
+    isBefore(other_date) {
         if (!this.data.date_obj.constructor ==
             other_date.data.date_obj.constructor
         ) {
@@ -234,9 +234,9 @@ export const TLDate = TLClass.extend({
             );
         }
         return this.data.date_obj < other_date.data.date_obj;
-    },
+    }
 
-    isAfter: function(other_date) {
+    isAfter(other_date) {
         if (!this.data.date_obj.constructor ==
             other_date.data.date_obj.constructor
         ) {
@@ -248,26 +248,26 @@ export const TLDate = TLClass.extend({
             );
         }
         return this.data.date_obj > other_date.data.date_obj;
-    },
+    }
 
     // Return a new TLDate which has been 'floored' at the given scale.
     // @scale = string value from SCALES
-    floor: function(scale) {
-        var d = new Date(this.data.date_obj.getTime());
-        for (var i = 0; i < SCALES.length; i++) {
+    floor(scale) {
+        const d = new Date(this.data.date_obj.getTime());
+        for (let i = 0; i < SCALES.length; i++) {
             // for JS dates, we iteratively apply flooring functions
             SCALES[i][2](d);
             if (SCALES[i][0] == scale) return new TLDate(d);
         }
 
         throw new TLError("invalid_scale_err", scale);
-    },
+    }
 
     /*	Private Methods
 	================================================== */
 
-    _getDateData: function() {
-        var _date = {
+    _getDateData() {
+        const _date = {
             year: 0,
             month: 1, // stupid JS dates
             day: 1,
@@ -281,8 +281,8 @@ export const TLDate = TLClass.extend({
         mergeData(_date, this.data);
 
         // Make strings into numbers
-        for (var ix in DATE_PARTS) {
-            var x = trim(_date[DATE_PARTS[ix]]);
+        for (const ix in DATE_PARTS) {
+            const x = trim(_date[DATE_PARTS[ix]]);
             if (!x.match(/^-?\d*$/)) {
                 throw new TLError(
                     "invalid_date_err",
@@ -290,7 +290,7 @@ export const TLDate = TLClass.extend({
                 );
             }
 
-            var parsed = parseInt(_date[DATE_PARTS[ix]]);
+            let parsed = parseInt(_date[DATE_PARTS[ix]]);
             if (isNaN(parsed)) {
                 parsed = ix == 4 || ix == 5 ? 1 : 0; // month and day have diff baselines
             }
@@ -303,10 +303,10 @@ export const TLDate = TLClass.extend({
         }
 
         return _date;
-    },
+    }
 
-    _createDateObj: function() {
-        var _date = this._getDateData();
+    _createDateObj() {
+        const _date = this._getDateData();
         this.data.date_obj = new Date(
             _date.year,
             _date.month,
@@ -320,17 +320,16 @@ export const TLDate = TLClass.extend({
             // Javascript has stupid defaults for two-digit years
             this.data.date_obj.setFullYear(_date.year);
         }
-    },
+    }
 
     /*  Find Best Format
      * this may not work with 'cosmologic' dates, or with TLDate if we
      * support constructing them based on JS Date and time
     ================================================== */
-    findBestFormat: function(variant) {
-        var eval_array = DATE_PARTS,
-            format = "";
+    findBestFormat(variant) {
+        const eval_array = DATE_PARTS;
 
-        for (var i = 0; i < eval_array.length; i++) {
+        for (let i = 0; i < eval_array.length; i++) {
             if (this.data[eval_array[i]]) {
                 if (variant) {
                     if (!(variant in BEST_DATEFORMATS)) {
@@ -343,8 +342,9 @@ export const TLDate = TLClass.extend({
             }
         }
         return "";
-    },
-    _setFormat: function(format, format_short) {
+    }
+
+    _setFormat(format, format_short) {
         if (format) {
             this.data.format = format;
         } else if (!this.data.format) {
@@ -356,16 +356,17 @@ export const TLDate = TLClass.extend({
         } else if (!this.data.format_short) {
             this.data.format_short = this.findBestFormat(true);
         }
-    },
+    }
+
     /**
      * Get the year-only representation of this date. Ticks need this to layout
-     * the time axis, and this needs to work isomorphically for TLDate and BigDate 
+     * the time axis, and this needs to work isomorphically for TLDate and BigDate
      * @returns {Number}
      */
-    getFullYear: function() {
+    getFullYear() {
         return this.data.date_obj.getFullYear()
     }
-});
+}
 
 // offer something that can figure out the right date class to return
 export function makeDate(data) {
@@ -432,26 +433,26 @@ export function parseDate(str) {
     return parsed;
 };
 
-export const BigYear = TLClass.extend({
-    initialize: function(year) {
+export class BigYear {
+    constructor(year) {
         this.year = parseInt(year);
         if (isNaN(this.year)) {
             throw new TLError("invalid_year_err", year);
         }
-    },
+    }
 
-    isBefore: function(that) {
+    isBefore(that) {
         return this.year < that.year;
-    },
+    }
 
-    isAfter: function(that) {
+    isAfter(that) {
         return this.year > that.year;
-    },
+    }
 
-    getTime: function() {
+    getTime() {
         return this.year;
     }
-});
+}
 
 
 //
@@ -484,14 +485,17 @@ export const BIG_DATE_SCALES = [ // ( name, units_per_tick, flooring function )
 ];
 
 
-export const BigDate = TLDate.extend({
+export class BigDate extends TLDate {
     // @data = BigYear object or JS dictionary with date properties
-    initialize: function(data, format, format_short) {
+    constructor(data, format, format_short) {
+        // Don't call super() with data for BigYear objects
         if (BigYear == data.constructor) {
+            super({}); // Call super with empty object
             this.data = {
                 date_obj: data
             };
         } else {
+            super({}); // Call super with empty object
             this.data = JSON.parse(JSON.stringify(data));
             this._createDateObj();
         }
@@ -501,32 +505,33 @@ export const BigDate = TLDate.extend({
         }
 
         this._setFormat(format, format_short);
-    },
+    }
 
     // Create date_obj
-    _createDateObj: function() {
-        var _date = this._getDateData();
+    _createDateObj() {
+        const _date = this._getDateData();
         this.data.date_obj = new BigYear(_date.year);
-    },
+    }
 
     // Return a new BigDate which has been 'floored' at the given scale.
     // @scale = string value from BIG_DATE_SCALES
-    floor: function(scale) {
-        for (var i = 0; i < BIG_DATE_SCALES.length; i++) {
+    floor(scale) {
+        for (let i = 0; i < BIG_DATE_SCALES.length; i++) {
             if (BIG_DATE_SCALES[i][0] == scale) {
-                var floored = BIG_DATE_SCALES[i][2](this.data.date_obj);
+                const floored = BIG_DATE_SCALES[i][2](this.data.date_obj);
                 return new BigDate(floored);
             }
         }
 
         throw new TLError("invalid_scale_err", scale);
-    },
+    }
+
     /**
      * Get the year-only representation of this date. Ticks need this to layout
-     * the time axis, and this needs to work isomorphically for TLDate and BigDate 
+     * the time axis, and this needs to work isomorphically for TLDate and BigDate
      * @returns {Number}
      */
-    getFullYear: function() {
+    getFullYear() {
         return this.data.date_obj.getTime()
     }
-});
+}

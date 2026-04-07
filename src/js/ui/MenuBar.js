@@ -1,14 +1,13 @@
 import * as DOM from "../dom/DOM"
 import * as Browser from "../core/Browser"
-import Events from "../core/Events";
 import { DOMMixins } from "../dom/DOMMixins"
 import { easeInOutQuint } from "../animation/Ease"
-import { classMixin, mergeData } from "../core/Util"
+import { mergeData } from "../core/Util"
 import { DOMEvent } from "../dom/DOMEvent"
-import { I18NMixins } from "../language/I18NMixins";
 
-export class MenuBar {
+export class MenuBar extends DOMMixins {
     constructor(elem, parent_elem, options, language) {
+        super();
         // DOM ELEMENTS
         this._el = {
             parent: {},
@@ -209,5 +208,3 @@ export class MenuBar {
         }
     }
 }
-
-classMixin(MenuBar, DOMMixins, Events, I18NMixins)

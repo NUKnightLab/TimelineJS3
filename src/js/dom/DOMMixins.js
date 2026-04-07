@@ -1,11 +1,16 @@
-/*	
+/*
 	DOM methods used regularly
 	Assumes there is a _el.container and animator
 ================================================== */
 import { getPosition } from "../dom/DOM"
 import { Animate } from "../animation/Animate"
+import { I18NMixins } from "../language/I18NMixins"
 
-export class DOMMixins {
+/**
+ * Base class providing DOM utilities, Events, and I18N support.
+ * Extends I18NMixins which extends Events which extends EventTarget.
+ */
+export class DOMMixins extends I18NMixins {
     /*	Adding, Hiding, Showing etc
 	================================================== */
     show(animate) {

@@ -1,9 +1,10 @@
-import { classMixin, setData, mergeData, htmlify, linkify, trace } from "../../core/Util"
+import { setData, mergeData, htmlify, linkify, trace } from "../../core/Util"
 import Events from "../../core/Events"
 import * as DOM from "../../dom/DOM"
 
-export class Text {
+export class Text extends Events {
 	constructor(data, options, add_to_container) {
+		super();
 
 		this._el = { // defaults
 			container: { },
@@ -116,5 +117,3 @@ export class Text {
 	}
 
 }
-
-classMixin(Text, Events)
