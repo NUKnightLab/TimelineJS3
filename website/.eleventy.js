@@ -9,6 +9,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("static/**/*");
     // eleventyConfig.addPassthroughCopy("**/*.js");
     eleventyConfig.addPassthroughCopy("js");
+    eleventyConfig.addPassthroughCopy("examples");
     // add custom Liquid filter named "safe"
     eleventyConfig.addFilter("safe", function(content){
         return content; 

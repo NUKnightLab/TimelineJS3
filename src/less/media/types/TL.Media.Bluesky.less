@@ -1,0 +1,164 @@
+/* Bluesky Media Styles
+================================================== */
+
+.tl-media {
+	.tl-media-bluesky {
+		.bluesky-post {
+			padding: 12px;
+			max-width: 550px;
+			max-height: 450px;
+			margin: 0 auto;
+			overflow-y: auto;
+		}
+
+		.tl-icon-bluesky {
+			color: #1185FE;
+		}
+
+		.bluesky-author {
+			display: flex;
+			align-items: center;
+			margin-bottom: 8px;
+		}
+
+		.bluesky-author-link {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			color: inherit;
+
+			&:hover {
+				.bluesky-display-name {
+					text-decoration: underline;
+				}
+			}
+		}
+
+		.bluesky-avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			margin-right: 10px;
+		}
+
+		.bluesky-display-name {
+			font-weight: 600;
+		}
+
+		.bluesky-handle {
+			opacity: 0.6;
+			margin-left: 4px;
+			font-size: 0.9em;
+		}
+
+		.bluesky-text {
+			margin: 8px 0;
+			line-height: 1.4;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		.bluesky-images {
+			margin: 8px 0;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px;
+		}
+
+		.bluesky-image {
+			max-width: 100%;
+			max-height: 300px;
+			height: auto;
+			width: auto;
+			border-radius: 6px;
+			display: block;
+		}
+
+		.bluesky-link {
+			margin-top: 8px;
+			padding-top: 8px;
+			border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+			a {
+				color: inherit;
+				text-decoration: none;
+				font-size: 13px;
+				opacity: 0.8;
+
+				&:hover {
+					text-decoration: underline;
+					opacity: 1;
+				}
+			}
+		}
+
+		.bluesky-quote {
+			margin-top: 8px;
+			padding: 8px;
+			border: 1px solid rgba(0, 0, 0, 0.15);
+			border-radius: 6px;
+			background: rgba(0, 0, 0, 0.03);
+		}
+
+		.bluesky-quote-author {
+			display: flex;
+			align-items: center;
+			margin-bottom: 6px;
+			font-size: 0.9em;
+		}
+
+		.bluesky-avatar-small {
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			margin-right: 6px;
+		}
+
+		.bluesky-quote-text {
+			margin: 6px 0;
+			line-height: 1.3;
+			font-size: 0.9em;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		.bluesky-quote-images {
+			margin: 6px 0;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 4px;
+		}
+
+		.bluesky-image-small {
+			max-width: 100%;
+			max-height: 150px;
+			height: auto;
+			width: auto;
+			border-radius: 4px;
+			display: block;
+		}
+	}
+}
+
+/* Mobile and Skinny adjustments
+================================================== */
+.tl-mobile.tl-skinny {
+	.tl-media {
+		.tl-media-bluesky {
+			.bluesky-post {
+				padding: 10px;
+				max-height: 350px;
+			}
+
+			.bluesky-avatar {
+				width: 32px;
+				height: 32px;
+				margin-right: 8px;
+			}
+
+			.bluesky-image {
+				max-height: 250px;
+			}
+		}
+	}
+}

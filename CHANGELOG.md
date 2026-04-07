@@ -1,10 +1,20 @@
-3.9.9 (not released)
+3.9.11 (not yet released)
 -------------------------
-#895 Fixes for pt-BT locale
+* #668 Directly support CSV configuration
+
+3.9.10 (2026-03-04)
+-------------------------
+* Fix mapping bug introduced with updated icon fonts.
+
+3.9.9 (2026-03-03)
+-------------------------
+* #895 Fixes for pt-BR locale
+* a11y: add empty alt attribute to thumbnail images
+* New embeds for TikTok and Bluesky
 
 3.9.8 (2025-05-23)
 -------------------------
-#894 Fixes previous/next button positioning when a timeline is a child of an element with dir="rtl"
+* #894 Fixes previous/next button positioning when a timeline is a child of an element with dir="rtl"
 
 3.9.7 (2025-03-11)
 -------------------------

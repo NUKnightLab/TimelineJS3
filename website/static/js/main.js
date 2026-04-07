@@ -41,6 +41,7 @@ function getLinkAndIframe() {
         e_startatslide = document.getElementById('embed-startatslide'),
         e_hashbookmark = document.getElementById('embed-hash-bookmark'),
         e_debug = document.getElementById('embed-debug'),
+        e_theme = document.querySelector('input[name="embed-theme"]:checked'),
         initial_zoom = document.getElementById('embed-initialzoom'),
         timenav_position = "bottom",
         start_at_end = false,
@@ -109,6 +110,9 @@ function getLinkAndIframe() {
     }
     if (initial_zoom) {
         params.initial_zoom = initial_zoom.value;
+    }
+    if (e_theme && e_theme.value) {
+        params.theme = e_theme.value;
     }
     // TODO: Make this start at end if startatslide > # of slides
     if (parseInt(e_startatslide.value, 10) > 0) {

@@ -17,13 +17,11 @@ module.exports = {
         new CopyPlugin({
             patterns: [{
                     from: "./src/js/language/locale/*.json",
-                    to: path.join(output_path, "js/locale"),
-                    flatten: true
+                    to: path.join(output_path, "js/locale/[name][ext]")
                 },
                 {
                     from: './src/embed/*',
-                    to: path.join(output_path, "embed"),
-                    flatten: true
+                    to: path.join(output_path, "embed/[name][ext]")
                 }
             ]
         }),
@@ -38,6 +36,7 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true,
+                            url: true,
                         }
                     },
                     {
@@ -50,13 +49,10 @@ module.exports = {
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: '../css/icons'
-                    }
-                }]
+                type: 'asset/resource',
+                generator: {
+                    filename: '../css/icons/[name][ext]'
+                }
             }
         ]
     }

@@ -141,39 +141,13 @@ function extractEventFromCSVObject(orig_row) {
 }
 
 /**
- * Given a Google Sheets URL (or mere document ID), read the data and return
- * a Timeline JSON file suitable for instantiating a timeline.
- * 
- * @param {string} url 
+ * Process an array of CSV row objects into a timeline configuration.
+ * This is the common logic used by both Google Sheets and direct CSV file reading.
+ *
+ * @param {Array} rows - Array of row objects from CSV parsing
+ * @returns {Object} timeline configuration object with events, errors, warnings, and eras
  */
-export async function readGoogleAsCSV(url, sheets_proxy) {
-
-    let rows = []
-
-    url = makeGoogleCSVURL(url)
-    let error = null;
-
-    await fetchCSV({
-        url: `${sheets_proxy}${url}`,
-    }).then(d => {
-        rows = d;
-    }).catch(error_json => {
-        if (error_json.proxy_err_code == 'response_not_csv') {
-            throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
-        } else if (error_json.status_code == 401) {
-            throw new TLError('Configuration unreadable. Please make sure your Google Sheets document is published to the web and review step 2 of the timeline setup instructions to make sure you have the correct URL, as this has changed.')
-        } else if (error_json.status_code == 410) {
-            throw new TLError('Google reports that this configuration spreadsheet is gone. Check to see if it has been deleted from Google Drive. Timeline configuration spreadsheets must not be deleted.')
-        }
-        let msg = "undefined error"
-        if (Array.isArray(error_json.message)) {
-            msg = error_json.message.join('<br>')
-        } else {
-            msg = String(error_json.message)
-        }
-        throw new TLError(msg)
-    })
-
+function processCSVRows(rows) {
     let timeline_config = { 'events': [], 'errors': [], 'warnings': [], 'eras': [] }
 
     rows.forEach((row, i) => {
@@ -197,11 +171,87 @@ export async function readGoogleAsCSV(url, sheets_proxy) {
 
     return timeline_config
 }
+
+/**
+ * Given a Google Sheets URL (or mere document ID), read the data and return
+ * a Timeline JSON file suitable for instantiating a timeline.
+ *
+ * @param {string} url
+ */
+export async function readGoogleAsCSV(url, sheets_proxy) {
+
+    let rows = []
+
+    url = makeGoogleCSVURL(url)
+
+    await fetchCSV({
+        url: `${sheets_proxy}${url}`,
+    }).then(d => {
+        rows = d;
+    }).catch(error_json => {
+        if (error_json.proxy_err_code == 'response_not_csv') {
+            throw new TLError('Timeline could not read the data for your timeline. Make sure you have published it to the web.')
+        } else if (error_json.status_code == 401) {
+            throw new TLError('Configuration unreadable. Please make sure your Google Sheets document is published to the web and review step 2 of the timeline setup instructions to make sure you have the correct URL, as this has changed.')
+        } else if (error_json.status_code == 410) {
+            throw new TLError('Google reports that this configuration spreadsheet is gone. Check to see if it has been deleted from Google Drive. Timeline configuration spreadsheets must not be deleted.')
+        }
+        let msg = "undefined error"
+        if (Array.isArray(error_json.message)) {
+            msg = error_json.message.join('<br>')
+        } else {
+            msg = String(error_json.message)
+        }
+        throw new TLError(msg)
+    })
+
+    return processCSVRows(rows)
+}
+
+/**
+ * Given a URL to a CSV file, read the data and return
+ * a Timeline JSON file suitable for instantiating a timeline.
+ *
+ * @param {string} url - URL to a CSV file
+ */
+export async function readCSVFromURL(url) {
+
+    let rows = []
+
+    await fetchCSV({
+        url: url,
+    }).then(d => {
+        rows = d;
+    }).catch(error_json => {
+        let msg = "undefined error"
+        if (Array.isArray(error_json.message)) {
+            msg = error_json.message.join('<br>')
+        } else {
+            msg = String(error_json.message)
+        }
+        throw new TLError(msg)
+    })
+
+    return processCSVRows(rows)
+}
+
+/**
+ * Determines if a URL appears to be a CSV file based on its extension or content type.
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isCSVURL(url) {
+    // Check if the URL ends with .csv (case-insensitive)
+    // This is a simple heuristic but should work for most cases
+    return /\.csv(\?.*)?$/i.test(url);
+}
+
 /**
  * Given a Google Sheets URL or a bare spreadsheet key, return a URL expected
  * to retrieve a CSV file, assuming the Sheets doc has been "published to the web".
  * No checking for the actual availability is done.
- * @param {string} url_or_key 
+ * @param {string} url_or_key
  */
 export function makeGoogleCSVURL(url_or_key) {
     url_or_key = url_or_key.trim()
@@ -252,11 +302,7 @@ export async function jsonFromGoogleURL(google_url, options) {
         throw new TLError("Proxy option must be set to read data from Google")
     }
 
-    var timeline_json = await readGoogleAsCSV(google_url, options['sheets_proxy']);
-
-    if (timeline_json) {
-        return timeline_json;
-    }
+    return await readGoogleAsCSV(google_url, options['sheets_proxy']);
 }
 
 /**
@@ -294,6 +340,16 @@ export async function makeConfig(url, optionsOrCallback) {
             // Handle Google Sheets URL
             console.log(`reading url ${url}`);
             const json = await jsonFromGoogleURL(url, options);
+            tc = new TimelineConfig(json);
+            if (json.errors) {
+                for (let i = 0; i < json.errors.length; i++) {
+                    tc.logError(json.errors[i]);
+                }
+            }
+        } else if (isCSVURL(url)) {
+            // CSV file: parse and convert to JSON config format
+            console.log(`reading CSV from url ${url}`);
+            const json = await readCSVFromURL(url);
             tc = new TimelineConfig(json);
             if (json.errors) {
                 for (let i = 0; i < json.errors.length; i++) {

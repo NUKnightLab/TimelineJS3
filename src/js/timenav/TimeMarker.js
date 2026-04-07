@@ -296,6 +296,7 @@ export class TimeMarker extends DOMMixins {
 				thumbnail_media.on("loaded", function () {
 					this._el.media = DOM.create("img", "tl-timemarker-media", this._el.media_container);
 					this._el.media.src = thumbnail_media.getImageURL();
+					this._el.media.alt = "";
 				}.bind(this));
 				thumbnail_media.loadMedia();
 			} else {

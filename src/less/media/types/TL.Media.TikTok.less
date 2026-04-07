@@ -1,0 +1,86 @@
+/* TikTok Media Styles
+================================================== */
+
+.tl-media {
+	.tl-media-tiktok {
+		position: relative;
+
+		a {
+			position: relative;
+			display: inline-block;
+			max-height: 400px;
+			overflow: hidden;
+
+			&:hover {
+				.tl-media-tiktok-play-overlay {
+					background-color: rgba(0, 0, 0, 0.5);
+				}
+			}
+		}
+
+		img.tl-media-image {
+			max-height: 400px;
+			width: auto;
+			display: block;
+		}
+
+		.tl-media-tiktok-play-overlay {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 80px;
+			height: 80px;
+			background-color: rgba(0, 0, 0, 0.7);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background-color 0.2s ease;
+			pointer-events: none;
+			z-index: 10;
+
+			span {
+				color: #fff;
+				font-size: 32px;
+				margin-left: 4px;
+
+				&:before {
+					content: "▶";
+				}
+			}
+		}
+
+		// Fallback for embed HTML
+		blockquote.tiktok-embed {
+			max-height: 350px !important;
+			overflow: hidden;
+			margin: 0 auto;
+		}
+	}
+}
+
+/* Mobile and Skinny adjustments
+================================================== */
+.tl-mobile.tl-skinny {
+	.tl-media {
+		.tl-media-tiktok {
+			a {
+				max-height: 300px;
+			}
+
+			img.tl-media-image {
+				max-height: 300px;
+			}
+
+			.tl-media-tiktok-play-overlay {
+				width: 60px;
+				height: 60px;
+
+				span {
+					font-size: 24px;
+				}
+			}
+		}
+	}
+}

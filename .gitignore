@@ -18,6 +18,7 @@ build
 *.log
 dist
 .vscode
+.claude
 
 # Playwright
 /test-results/

@@ -1,11 +1,9 @@
 export default {
 	permalink: function (data) {
-        let foo = JSON.stringify(arguments)
-        console.log('---- start here ----')
-        console.log(arguments.length)
-        console.log(Object.keys(arguments[0]))
-        console.log('---- end here ----')
-        foo = foo.substring(0,50)
+		// Keep "index" as "index.html" instead of transforming it to "docs.html"
+		if (data.page.filePathStem === '/docs/index') {
+			return `/docs/index.html`;
+		}
 		return `/docs/${this.slugify(data.page.fileSlug)}.html`;
 	},
 };
