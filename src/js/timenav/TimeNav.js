@@ -1,24 +1,30 @@
-import { classMixin, mergeData, findNextGreater, findNextLesser, isEven, findArrayNumberByUniqueID, trace } from "../core/Util"
-import Events from "../core/Events"
-import { DOMMixins } from "../dom/DOMMixins"
-import { DOMEvent } from "../dom/DOMEvent"
-import * as DOM from "../dom/DOM"
+import {
+    classMixin,
+    mergeData,
+    findNextGreater,
+    findNextLesser,
+    isEven,
+    findArrayNumberByUniqueID,
+    trace,
+} from "../core/Util";
+import Events from "../core/Events";
+import { DOMMixins } from "../dom/DOMMixins";
+import { DOMEvent } from "../dom/DOMEvent";
+import * as DOM from "../dom/DOM";
 import { easeInOutQuint } from "../animation/Ease";
-import { TimeScale } from "./TimeScale"
-import { TimeGroup } from "./TimeGroup"
-import { TimeEra } from "./TimeEra"
-import { TimeAxis } from "./TimeAxis"
-import { TimeMarker } from "./TimeMarker"
-import Swipable from "../ui/Swipable"
-import { Animate } from "../animation/Animate"
-import { I18NMixins } from "../language/I18NMixins"
-
+import { TimeScale } from "./TimeScale";
+import { TimeGroup } from "./TimeGroup";
+import { TimeEra } from "./TimeEra";
+import { TimeAxis } from "./TimeAxis";
+import { TimeMarker } from "./TimeMarker";
+import Swipable from "../ui/Swipable";
+import { Animate } from "../animation/Animate";
+import { I18NMixins } from "../language/I18NMixins";
 
 export class TimeNav {
-
     constructor(elem, timeline_config, options, language) {
-        this.language = language
-            // DOM ELEMENTS
+        this.language = language;
+        // DOM ELEMENTS
         this._el = {
             parent: {},
             container: {},
@@ -29,22 +35,26 @@ export class TimeNav {
             marker_container: {},
             marker_item_container: {},
             timeaxis: {},
-            timeaxis_background: {}
+            timeaxis_background: {},
         };
 
         this.collapsed = false;
 
-        if (typeof elem === 'object') {
+        if (typeof elem === "object") {
             this._el.container = elem;
         } else {
             this._el.container = DOM.get(elem);
         }
-        this._el.container.setAttribute('tabindex', '0');
+        this._el.container.setAttribute("tabindex", "0");
 
         // 'application' role supports predictable control of keyboard input in a complex component
-        this._el.container.setAttribute('role', 'application');
-        this._el.container.setAttribute('aria-label', this._('aria_label_timeline_navigation'));
-        this._el.container.setAttribute('aria-description',
+        this._el.container.setAttribute("role", "application");
+        this._el.container.setAttribute(
+            "aria-label",
+            this._("aria_label_timeline_navigation")
+        );
+        this._el.container.setAttribute(
+            "aria-description",
             'Navigate between markers with arrow keys. Press "Home" for the first and "End" for the last markers'
         );
 
@@ -63,7 +73,7 @@ export class TimeNav {
             timenav_height_min: 150, // Minimum timenav height
             marker_height_min: 30, // Minimum Marker Height
             marker_width_min: 100, // Minimum Marker Width
-            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
+            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels http://www.maths.surrey.ac.uk/hosted-sites/R.Knott/Fibonacci/fibtable.html
         };
 
         // Animation
@@ -110,7 +120,6 @@ export class TimeNav {
 
         // Merge Data and Options
         mergeData(this.options, options);
-
     }
 
     init() {
@@ -135,7 +144,7 @@ export class TimeNav {
             }
             this._markers[i].setPosition({ left: pos.start });
             this._markers[i].setWidth(pos.width);
-        };
+        }
     }
 
     /*	Update Display
@@ -157,20 +166,28 @@ export class TimeNav {
         this._assignRowsToMarkers();
 
         // Size swipable area
-        this._el.slider_background.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
-        this._el.slider_background.style.left = -(this.options.width / 2) + "px";
-        this._el.slider.style.width = this.timescale.getPixelWidth() + this.options.width + "px";
+        this._el.slider_background.style.width =
+            this.timescale.getPixelWidth() + this.options.width + "px";
+        this._el.slider_background.style.left =
+            -(this.options.width / 2) + "px";
+        this._el.slider.style.width =
+            this.timescale.getPixelWidth() + this.options.width + "px";
 
         // Update Swipable constraint
-        this._swipable.updateConstraint({ top: false, bottom: false, left: (this.options.width / 2), right: -(this.timescale.getPixelWidth() - (this.options.width / 2)) });
+        this._swipable.updateConstraint({
+            top: false,
+            bottom: false,
+            left: this.options.width / 2,
+            right: -(this.timescale.getPixelWidth() - this.options.width / 2),
+        });
 
         if (reposition_markers) {
-            this._drawTimeline()
+            this._drawTimeline();
         }
         // Go to the current slide
         this.goToId(this.current_id, true);
-    }
 
+    }
 
     /*	TimeScale
     ================================================== */
@@ -186,18 +203,22 @@ export class TimeNav {
             marker_height_min = 30;
         }
         if (marker_height_min == 0) {
-            trace("marker_height_min option must not be zero.")
+            trace("marker_height_min option must not be zero.");
             marker_height_min = 30;
         }
-        this.max_rows = Math.round((this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding)) / marker_height_min);
+        this.max_rows = Math.round(
+            (this.options.height -
+                this._el.timeaxis_background.offsetHeight -
+                this.options.marker_padding) /
+                marker_height_min
+        );
         if (this.max_rows < 1) {
             this.max_rows = 1;
         }
         return new TimeScale(this.config, {
             display_width: this._el.container.offsetWidth,
             screen_multiplier: this.options.scale_factor,
-            max_rows: this.max_rows
-
+            max_rows: this.max_rows,
         });
     }
 
@@ -206,26 +227,37 @@ export class TimeNav {
         this._updateDrawTimeline();
     }
 
-    zoomIn() { // move the the next "higher" scale factor
-        var new_scale = findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
+    zoomIn() {
+        // move the the next "higher" scale factor
+        var new_scale = findNextGreater(
+            this.options.zoom_sequence,
+            this.options.scale_factor
+        );
         this.setZoomFactor(new_scale);
     }
 
-    zoomOut() { // move the the next "lower" scale factor
-        var new_scale = findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+    zoomOut() {
+        // move the the next "lower" scale factor
+        var new_scale = findNextLesser(
+            this.options.zoom_sequence,
+            this.options.scale_factor
+        );
         this.setZoomFactor(new_scale);
     }
 
     setZoom(level) {
         var zoom_factor = this.options.zoom_sequence[level];
 
-        if (typeof (zoom_factor) == 'number') {
+        if (typeof zoom_factor == "number") {
             if (this.options.scale_factor != zoom_factor) {
                 this._zoomAnim(zoom_factor);
             }
             this.setZoomFactor(zoom_factor);
         } else {
-            console.warn("Invalid zoom level. Please use an index number between 0 and " + (this.options.zoom_sequence.length - 1));
+            console.warn(
+                "Invalid zoom level. Please use an index number between 0 and " +
+                    (this.options.zoom_sequence.length - 1)
+            );
         }
     }
 
@@ -236,7 +268,10 @@ export class TimeNav {
             this.fire("zoomtoggle", { zoom: "out", show: true });
         }
 
-        if (factor >= this.options.zoom_sequence[this.options.zoom_sequence.length - 1]) {
+        if (
+            factor >=
+            this.options.zoom_sequence[this.options.zoom_sequence.length - 1]
+        ) {
             this.fire("zoomtoggle", { zoom: "in", show: false });
         } else {
             this.fire("zoomtoggle", { zoom: "in", show: true });
@@ -246,7 +281,6 @@ export class TimeNav {
             console.warn("Zoom factor must be greater than zero. Using 0.1");
             factor = 0.1;
         }
-
 
         this.options.scale_factor = factor;
         //this._updateDrawTimeline(true);
@@ -285,7 +319,6 @@ export class TimeNav {
                 this._createGroup(group_ordered[i]);
             }
         }
-
     }
 
     _reorderGroup(groups) {
@@ -308,22 +341,32 @@ export class TimeNav {
 
     _addGroup(group) {
         group.addTo(this._el.container);
-
     }
 
     _positionGroups() {
         if (this.options.has_groups) {
-            var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
-                group_height = Math.floor((available_height / this.timescale.getNumberOfRows()) - this.options.marker_padding),
+            var available_height =
+                    this.options.height -
+                    this._el.timeaxis_background.offsetHeight,
+                group_height = Math.floor(
+                    available_height / this.timescale.getNumberOfRows() -
+                        this.options.marker_padding
+                ),
                 group_labels = this.timescale.getGroupLabels();
             for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
-                var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
+                var group_y = Math.floor(
+                    group_rows * (group_height + this.options.marker_padding)
+                );
                 var group_hide = false;
-                if (group_y > (available_height - this.options.marker_padding)) {
+                if (group_y > available_height - this.options.marker_padding) {
                     group_hide = true;
                 }
 
-                this._groups[i].setRowPosition(group_y, this._calculated_row_height + this.options.marker_padding / 2);
+                this._groups[i].setRowPosition(
+                    group_y,
+                    this._calculated_row_height +
+                        this.options.marker_padding / 2
+                );
                 this._groups[i].setAlternateRowColor(isEven(i), group_hide);
 
                 group_rows += this._groups[i].data.rows; // account for groups spanning multiple rows
@@ -335,10 +378,15 @@ export class TimeNav {
     ================================================== */
     _addMarker(marker) {
         marker.addTo(this._el.marker_item_container);
-        marker.on('markerclick', this._onMarkerClick, this);
-        marker.on('added', this._onMarkerAdded, this);
-
+        marker.on("markerclick", this._onMarkerClick, this);
+        marker.on("added", this._onMarkerAdded, this);
+        marker.on("filter", this._onMarkerFilter, this);
     }
+
+    _onMarkerFilter(e) {
+        console.log(e);
+    }
+
     _createMarker(data, n) {
         var marker = new TimeMarker(data, this.options);
         this._addMarker(marker);
@@ -366,20 +414,29 @@ export class TimeNav {
     }
 
     _calculateMarkerHeight(h) {
-        return ((h / this.timescale.getNumberOfRows()) - this.options.marker_padding);
+        return (
+            h / this.timescale.getNumberOfRows() - this.options.marker_padding
+        );
     }
 
     _calculateRowHeight(h) {
-        return (h / this.timescale.getNumberOfRows());
+        return h / this.timescale.getNumberOfRows();
     }
 
     _calculateAvailableHeight() {
-        return (this.options.height - this._el.timeaxis_background.offsetHeight - (this.options.marker_padding));
+        return (
+            this.options.height -
+            this._el.timeaxis_background.offsetHeight -
+            this.options.marker_padding
+        );
     }
 
     _calculateMinimumTimeNavHeight() {
-        return (this.timescale.getNumberOfRows() * this.options.marker_height_min) + this._el.timeaxis_background.offsetHeight + (this.options.marker_padding);
-
+        return (
+            this.timescale.getNumberOfRows() * this.options.marker_height_min +
+            this._el.timeaxis_background.offsetHeight +
+            this.options.marker_padding
+        );
     }
 
     getMinimumHeight() {
@@ -390,25 +447,27 @@ export class TimeNav {
         var available_height = this._calculateAvailableHeight(),
             marker_height = this._calculateMarkerHeight(available_height);
 
-
         this._positionGroups();
 
-        this._calculated_row_height = this._calculateRowHeight(available_height);
+        this._calculated_row_height =
+            this._calculateRowHeight(available_height);
 
         for (var i = 0; i < this._markers.length; i++) {
-
             // Set Height
             this._markers[i].setHeight(marker_height);
 
             //Position by Row
             var row = this.timescale.getPositionInfo(i).row;
 
-            var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
+            var marker_y =
+                Math.floor(
+                    row * (marker_height + this.options.marker_padding)
+                ) + this.options.marker_padding;
 
-            var remainder_height = available_height - marker_y + this.options.marker_padding;
+            var remainder_height =
+                available_height - marker_y + this.options.marker_padding;
             this._markers[i].setRowPosition(marker_y, remainder_height);
-        };
-
+        }
     }
 
     _resetMarkersActive() {
@@ -419,13 +478,13 @@ export class TimeNav {
 
     _resetMarkersBlurListeners() {
         for (var i = 0; i < this._markers.length; i++) {
-            this._markers[i].off('markerblur', this._onMarkerBlur, this);
+            this._markers[i].off("markerblur", this._onMarkerBlur, this);
         }
     }
 
     _findMarkerIndex(n) {
         var _n = -1;
-        if (typeof n == 'string' || n instanceof String) {
+        if (typeof n == "string" || n instanceof String) {
             _n = findArrayNumberByUniqueID(n, this._markers, "unique_id", _n);
         }
         return _n;
@@ -436,29 +495,34 @@ export class TimeNav {
     _createEras(array) {
         for (var i = 0; i < array.length; i++) {
             var data = array[i];
-            var era = new TimeEra(data.start_date,
+            var era = new TimeEra(
+                data.start_date,
                 data.end_date,
                 data.headline,
-                this.options);
+                this.options
+            );
             this._eras.push(era);
             era.addTo(this._el.marker_item_container);
-            era.on('added', this._onEraAdded, this);
+            era.on("added", this._onEraAdded, this);
         }
     }
 
     _positionEras(fast) {
-
         var era_color = 0;
         // POSITION X
         for (var i = 0; i < this._eras.length; i++) {
             var pos = {
                 start: 0,
                 end: 0,
-                width: 0
+                width: 0,
             };
 
-            pos.start = this.timescale.getPosition(this._eras[i].start_date.getTime());
-            pos.end = this.timescale.getPosition(this._eras[i].end_date.getTime());
+            pos.start = this.timescale.getPosition(
+                this._eras[i].start_date.getTime()
+            );
+            pos.end = this.timescale.getPosition(
+                this._eras[i].end_date.getTime()
+            );
             pos.width = pos.end - pos.start;
 
             if (fast) {
@@ -474,8 +538,7 @@ export class TimeNav {
                 era_color = 0;
             }
             this._eras[i].setColor(era_color);
-        };
-
+        }
     }
 
     /*	Public
@@ -507,7 +570,7 @@ export class TimeNav {
         var self = this,
             _ease = this.options.ease,
             _duration = this.options.duration,
-            _n = (n < 0) ? 0 : n;
+            _n = n < 0 ? 0 : n;
 
         // Set Marker active state
         this._resetMarkersActive();
@@ -518,9 +581,10 @@ export class TimeNav {
         this.animateMovement(_n, fast, css_animation, _duration, _ease);
 
         if (n >= 0 && n < this._markers.length) {
-            this.current_id = this.current_focused_id = this._markers[n].data.unique_id;
+            this.current_id = this.current_focused_id =
+                this._markers[n].data.unique_id;
         } else {
-            this.current_id = this.current_focused_id = '';
+            this.current_id = this.current_focused_id = "";
         }
 
         this._setLabelWithCurrentMarker();
@@ -533,7 +597,7 @@ export class TimeNav {
     focusOn(n, fast, css_animation) {
         const _ease = this.options.ease,
             _duration = this.options.duration,
-            _n = (n < 0) ? 0 : n;
+            _n = n < 0 ? 0 : n;
 
         this.animateMovement(_n, fast, css_animation, _duration, _ease);
 
@@ -541,13 +605,13 @@ export class TimeNav {
         if (n >= 0 && n < this._markers.length) {
             this._markers[n].setFocus();
             this.current_focused_id = this._markers[n].data.unique_id;
-            this._markers[n].on('markerblur', this._onMarkerBlur, this);
+            this._markers[n].on("markerblur", this._onMarkerBlur, this);
         }
     }
 
     focusNext() {
         const n = this._findMarkerIndex(this.current_focused_id);
-        if ((n + 1) < this._markers.length) {
+        if (n + 1 < this._markers.length) {
             this.focusOn(n + 1);
         } else {
             this.focusOn(n);
@@ -571,21 +635,24 @@ export class TimeNav {
 
         if (fast) {
             this._el.slider.className = "tl-timenav-slider";
-            this._el.slider.style.left = -this._markers[n].getLeft() +
-                (this.options.width / 2) + "px";
+            this._el.slider.style.left =
+                -this._markers[n].getLeft() + this.options.width / 2 + "px";
         } else {
             if (css_animation) {
-                this._el.slider.className = "tl-timenav-slider tl-timenav-slider-animate";
+                this._el.slider.className =
+                    "tl-timenav-slider tl-timenav-slider-animate";
                 this.animate_css = true;
-                this._el.slider.style.left = -this._markers[n].getLeft() +
-                    (this.options.width / 2) + "px";
+                this._el.slider.style.left =
+                    -this._markers[n].getLeft() + this.options.width / 2 + "px";
             } else {
                 this._el.slider.className = "tl-timenav-slider";
                 this.animator = Animate(this._el.slider, {
-                    left: -this._markers[n].getLeft() +
-                        (this.options.width / 2) + "px",
+                    left:
+                        -this._markers[n].getLeft() +
+                        this.options.width / 2 +
+                        "px",
                     duration: duration,
-                    easing: ease
+                    easing: ease,
                 });
             }
         }
@@ -593,7 +660,7 @@ export class TimeNav {
         if (n >= 0 && n < this._markers.length) {
             this.current_id = this._markers[n].data.unique_id;
         } else {
-            this.current_id = '';
+            this.current_id = "";
         }
 
         this._dispatchVisibleTicksChange();
@@ -640,7 +707,7 @@ export class TimeNav {
     _removeBlankSpace(data) {
         let parents = [];
         for (var i = 0; i < data.length; i++) {
-            let parent = data[i].replace(/\s/g, '');
+            let parent = data[i].replace(/\s/g, "");
             parents.push(parent);
         }
         return parents;
@@ -651,19 +718,21 @@ export class TimeNav {
             let parents = this._removeBlankSpace(e.parent);
 
             for (var i = 0; i < parents.length; i++) {
-                let index = this._markers.findIndex(x => x.data.id == parents[i]);
-                if(index == -1){
+                let index = this._markers.findIndex(
+                    (x) => x.data.id == parents[i]
+                );
+                if (index == -1) {
                     //skip loop
                     continue;
                 }
-                    
+
                 let childs = this._markers[index].data.parentOf;
                 if (childs.length > 0) {
                     childs.map((child) => {
                         //clear space
-                        var str = child.replace(/\s/g, '');
-                        $('.' + str).addClass('highlighted');
-                    })
+                        var str = child.replace(/\s/g, "");
+                        $("." + str).addClass("highlighted");
+                    });
                 }
             }
         }
@@ -673,7 +742,6 @@ export class TimeNav {
         if (e.zoomLevel != "") {
             this.setZoom(e.zoomLevel);
         }
-
     }
 
     _onMarkerBlur(e) {
@@ -683,12 +751,14 @@ export class TimeNav {
     }
 
     _onMouseScroll(e) {
-
         var delta = 0,
             scroll_to = 0,
             constraint = {
-                right: -(this.timescale.getPixelWidth() - (this.options.width / 2)),
-                left: this.options.width / 2
+                right: -(
+                    this.timescale.getPixelWidth() -
+                    this.options.width / 2
+                ),
+                left: this.options.width / 2,
             };
         if (!e) {
             e = window.event;
@@ -698,7 +768,7 @@ export class TimeNav {
         }
 
         // Webkit and browsers able to differntiate between up/down and left/right scrolling
-        if (typeof e.wheelDeltaX != 'undefined') {
+        if (typeof e.wheelDeltaX != "undefined") {
             delta = e.wheelDeltaY / 6;
             if (Math.abs(e.wheelDeltaX) > Math.abs(e.wheelDeltaY)) {
                 delta = e.wheelDeltaX / 6;
@@ -714,8 +784,8 @@ export class TimeNav {
             e.returnValue = false;
         }
         // Stop from scrolling too far
-        scroll_to = parseInt(this._el.slider.style.left.replace("px", "")) + delta;
-
+        scroll_to =
+            parseInt(this._el.slider.style.left.replace("px", "")) + delta;
 
         if (scroll_to > constraint.left) {
             scroll_to = constraint.left;
@@ -729,7 +799,6 @@ export class TimeNav {
         }
 
         this._el.slider.style.left = scroll_to + "px";
-
     }
 
     _onDragMove(e) {
@@ -737,7 +806,6 @@ export class TimeNav {
             this._el.slider.className = "tl-timenav-slider";
             this.animate_css = false;
         }
-
     }
 
     _onKeydown(e) {
@@ -745,27 +813,23 @@ export class TimeNav {
 
         switch (e.key) {
             case "ArrowUp":
-            case "ArrowRight":
-                {
-                    this.focusNext();
-                    break;
-                }
+            case "ArrowRight": {
+                this.focusNext();
+                break;
+            }
             case "ArrowDown":
-            case "ArrowLeft":
-                {
-                    this.focusPrevious();
-                    break;
-                }
-            case "Home":
-                {
-                    this.focusOn(0);
-                    break;
-                }
-            case "End":
-                {
-                    this.focusOn(this._markers.length - 1);
-                    break;
-                }
+            case "ArrowLeft": {
+                this.focusPrevious();
+                break;
+            }
+            case "Home": {
+                this.focusOn(0);
+                break;
+            }
+            case "End": {
+                this.focusOn(this._markers.length - 1);
+                break;
+            }
         }
     }
 
@@ -774,14 +838,16 @@ export class TimeNav {
 
     _drawTimeline(fast) {
         this.timescale = this._getTimeScale();
-        this.timeaxis.drawTicks(this.timescale, this.options.optimal_tick_width);
+        this.timeaxis.drawTicks(
+            this.timescale,
+            this.options.optimal_tick_width
+        );
         this.positionMarkers(fast);
         this._assignRowsToMarkers();
         this._createGroups();
         this._positionGroups();
 
         if (this.has_eras) {
-
             this._positionEras(fast);
         }
     }
@@ -795,12 +861,14 @@ export class TimeNav {
             var temp_timescale = new TimeScale(this.config, {
                 display_width: this._el.container.offsetWidth,
                 screen_multiplier: this.options.scale_factor,
-                max_rows: this.max_rows
-
+                max_rows: this.max_rows,
             });
 
-            if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() &&
-                this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
+            if (
+                this.timescale.getMajorScale() ==
+                    temp_timescale.getMajorScale() &&
+                this.timescale.getMinorScale() == temp_timescale.getMinorScale()
+            ) {
                 do_update = true;
             }
         } else {
@@ -810,7 +878,10 @@ export class TimeNav {
         // Perform update or redraw
         if (do_update) {
             this.timescale = this._getTimeScale();
-            this.timeaxis.positionTicks(this.timescale, this.options.optimal_tick_width);
+            this.timeaxis.positionTicks(
+                this.timescale,
+                this.options.optimal_tick_width
+            );
             this.positionMarkers();
             this._assignRowsToMarkers();
             this._positionGroups();
@@ -823,51 +894,110 @@ export class TimeNav {
         }
 
         return do_update;
-
     }
 
     _setLabelWithCurrentMarker() {
-        const currentMarker = this._markers[this._findMarkerIndex(this.current_focused_id)];
-        const currentMarkerText = currentMarker && currentMarker.ariaLabel ?
-            `, ${currentMarker.ariaLabel}, shown` :
-            '';
-        this._el.container.setAttribute('aria-label', `Timeline navigation ${currentMarkerText}`);
+        const currentMarker =
+            this._markers[this._findMarkerIndex(this.current_focused_id)];
+        const currentMarkerText =
+            currentMarker && currentMarker.ariaLabel
+                ? `, ${currentMarker.ariaLabel}, shown`
+                : "";
+        this._el.container.setAttribute(
+            "aria-label",
+            `Timeline navigation ${currentMarkerText}`
+        );
     }
 
     /*	Init
     ================================================== */
     _initLayout() {
         // Create Layout
-        this._el.line = DOM.create('div', 'tl-timenav-line', this._el.container);
-        this._el.slider = DOM.create('div', 'tl-timenav-slider', this._el.container);
-        this._el.slider_background = DOM.create('div', 'tl-timenav-slider-background', this._el.slider);
-        this._el.marker_container_mask = DOM.create('div', 'tl-timenav-container-mask', this._el.slider);
-        this._el.marker_container = DOM.create('div', 'tl-timenav-container', this._el.marker_container_mask);
-        this._el.marker_item_container = DOM.create('div', 'tl-timenav-item-container', this._el.marker_container);
-        this._el.timeaxis = DOM.create('div', 'tl-timeaxis', this._el.slider);
-        this._el.timeaxis_background = DOM.create('div', 'tl-timeaxis-background', this._el.container);
+        this._el.line = DOM.create(
+            "div",
+            "tl-timenav-line",
+            this._el.container
+        );
+        this._el.slider = DOM.create(
+            "div",
+            "tl-timenav-slider",
+            this._el.container
+        );
+        this._el.slider_background = DOM.create(
+            "div",
+            "tl-timenav-slider-background",
+            this._el.slider
+        );
+        this._el.marker_container_mask = DOM.create(
+            "div",
+            "tl-timenav-container-mask",
+            this._el.slider
+        );
+        this._el.marker_container = DOM.create(
+            "div",
+            "tl-timenav-container",
+            this._el.marker_container_mask
+        );
+        this._el.marker_item_container = DOM.create(
+            "div",
+            "tl-timenav-item-container",
+            this._el.marker_container
+        );
+        this._el.timeaxis = DOM.create("div", "tl-timeaxis", this._el.slider);
+        this._el.timeaxis_background = DOM.create(
+            "div",
+            "tl-timeaxis-background",
+            this._el.container
+        );
 
         // Time Axis
-        this.timeaxis = new TimeAxis(this._el.timeaxis, this.options, this.language);
+        this.timeaxis = new TimeAxis(
+            this._el.timeaxis,
+            this.options,
+            this.language
+        );
 
         // Swipable
-        this._swipable = new Swipable(this._el.slider_background, this._el.slider, {
-            enable: { x: true, y: false },
-            constraint: { top: false, bottom: false, left: (this.options.width / 2), right: false },
-            snap: false
-        });
+        this._swipable = new Swipable(
+            this._el.slider_background,
+            this._el.slider,
+            {
+                enable: { x: true, y: false },
+                constraint: {
+                    top: false,
+                    bottom: false,
+                    left: this.options.width / 2,
+                    right: false,
+                },
+                snap: false,
+            }
+        );
         this._swipable.enable();
-
     }
 
     _initEvents() {
         // Drag Events
-        this._swipable.on('dragmove', this._onDragMove, this);
+        this._swipable.on("dragmove", this._onDragMove, this);
 
         // Scroll Events
-        DOMEvent.addListener(this._el.container, 'mousewheel', this._onMouseScroll, this);
-        DOMEvent.addListener(this._el.container, 'DOMMouseScroll', this._onMouseScroll, this);
-        DOMEvent.addListener(this._el.container, 'keydown', this._onKeydown, this);
+        DOMEvent.addListener(
+            this._el.container,
+            "mousewheel",
+            this._onMouseScroll,
+            this
+        );
+        DOMEvent.addListener(
+            this._el.container,
+            "DOMMouseScroll",
+            this._onMouseScroll,
+            this
+        );
+        DOMEvent.addListener(
+            this._el.container,
+            "keydown",
+            this._onKeydown,
+            this
+        );
     }
 
     _initData() {
@@ -880,8 +1010,24 @@ export class TimeNav {
         }
 
         this._drawTimeline();
+        var messages = this._el.container.getElementsByClassName(
+            "tl-timegroup-message"
+        );
 
+        let highest_width = 0;
+        for (var i = 0; i < messages.length; i++) {
+            const messageWidth = messages[i].clientWidth;
+            console.log("messageWidth", messageWidth);
+
+            if (messageWidth > highest_width) {
+                highest_width = messageWidth;
+            }
+        }
+        for (var i = 0; i < messages.length; i++) {
+            const size = highest_width;
+            messages[i].style.width = size + "px";
+        }
     }
 }
 
-classMixin(TimeNav, Events, DOMMixins, I18NMixins)
+classMixin(TimeNav, Events, DOMMixins, I18NMixins);

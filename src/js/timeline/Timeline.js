@@ -1,30 +1,46 @@
-import * as DOM from "../dom/DOM"
-import { addClass } from "../dom/DOMUtil"
-import { hexToRgb, mergeData, classMixin, isTrue, trace, addTraceHandler } from "../core/Util";
+import * as DOM from "../dom/DOM";
+import { addClass } from "../dom/DOMUtil";
+import {
+    hexToRgb,
+    mergeData,
+    classMixin,
+    isTrue,
+    trace,
+    addTraceHandler,
+} from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
-import Message from "../ui/Message"
-import { Language, fallback, loadLanguage } from "../language/Language"
+import Message from "../ui/Message";
+import { Language, fallback, loadLanguage } from "../language/Language";
 import { I18NMixins } from "../language/I18NMixins";
 import Events from "../core/Events";
-import { makeConfig } from "../core/ConfigFactory"
-import { TimelineConfig } from "../core/TimelineConfig"
-import { TimeNav } from "../timenav/TimeNav"
-import * as Browser from "../core/Browser"
-import { Animate } from "../animation/Animate"
-import { StorySlider } from "../slider/StorySlider"
-import { MenuBar } from "../ui/MenuBar"
+import { makeConfig } from "../core/ConfigFactory";
+import { TimelineConfig } from "../core/TimelineConfig";
+import { TimeNav } from "../timenav/TimeNav";
+import * as Browser from "../core/Browser";
+import { Animate } from "../animation/Animate";
+import { StorySlider } from "../slider/StorySlider";
+import { MenuBar } from "../ui/MenuBar";
 import { loadCSS, loadJS } from "../core/Load";
+import { sortByDate, SCALE_DATE_CLASSES } from "../date/DateUtil";
 
 let script_src_url = null;
 if (document) {
-    let script_tags = document.getElementsByTagName('script');
+    let script_tags = document.getElementsByTagName("script");
     if (script_tags && script_tags.length > 0) {
         script_src_url = script_tags[script_tags.length - 1].src;
     }
 }
+let inputFilter = {
+    keyword: "",
+    date: {
+        debut: "",
+        fin: "",
+    },
+    theme: "",
+};
 
 function make_keydown_handler(timeline) {
-    return function(event) {
+    return function (event) {
         if (timeline.config) {
             var keyName = event.key;
             var currentSlide = timeline._getSlideIndex(self.current_id);
@@ -32,45 +48,45 @@ function make_keydown_handler(timeline) {
             var lastSlide = timeline.config.title ? _n + 1 : _n;
             var firstSlide = 0;
 
-            if (keyName == 'ArrowLeft') {
+            if (keyName == "ArrowLeft") {
                 if (currentSlide != firstSlide) {
                     timeline.goToPrev();
                 }
-            } else if (keyName == 'ArrowRight') {
+            } else if (keyName == "ArrowRight") {
                 if (currentSlide != lastSlide) {
                     timeline.goToNext();
                 }
             }
         }
-    }
+    };
 }
 
 /**
  * Primary entry point for using TimelineJS.
  * @constructor
- * @param {HTMLElement|string} elem - the HTML element, or its ID, to which 
+ * @param {HTMLElement|string} elem - the HTML element, or its ID, to which
  *     the Timeline should be bound
  * @param {object|String} - a JavaScript object conforming to the TimelineJS
  *     configuration format, or a String which is the URL for a Google Sheets document
  *     or JSON configuration file which Timeline will retrieve and parse into a JavaScript object.
- *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a 
+ *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a
  *     JSON string from a URL string. If you have a JSON String literal, parse it using
  *     `JSON.parse` before passing it to the constructor.
  *
- * @param {object} [options] - a JavaScript object specifying 
+ * @param {object} [options] - a JavaScript object specifying
  *     presentation options
  */
 class Timeline {
     constructor(elem, data, options) {
         if (!options) {
-            options = {}
+            options = {};
         }
         this.ready = false;
         this._el = {
             container: DOM.get(elem),
             storyslider: {},
             timenav: {},
-            menubar: {}
+            menubar: {},
         };
 
         if (options.lang && !options.language) {
@@ -97,10 +113,11 @@ class Timeline {
 
         this.options = {
             script_path: "https://cdn.knightlab.com/libs/timeline3/latest/js/", // as good a default as any
+            url: data,
             height: this._el.container.offsetHeight,
             width: this._el.container.offsetWidth,
             debug: false,
-            font: 'default',
+            font: "default",
             is_embed: false,
             is_full_embed: false,
             hash_bookmark: false,
@@ -135,12 +152,18 @@ class Timeline {
             zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
             language: "en",
             ga_property_id: null,
-            track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
+            track_events: [
+                "back_to_start",
+                "nav_next",
+                "nav_previous",
+                "zoom_in",
+                "zoom_out",
+            ],
             theme: null,
             // sheets_proxy value should be suitable for simply postfixing with the Google Sheets CSV URL
             // as in include trailing slashes, or '?url=' or whatever. No support right now for anything but
             // postfixing. The default proxy should work in most cases, but only for TimelineJS sheets.
-            sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
+            sheets_proxy: "https://sheets-proxy.knightlab.com/proxy/",
             soundcite: false,
         };
 
@@ -150,62 +173,78 @@ class Timeline {
         this.animator_menubar = null;
 
         // Ideally we'd set the language here, but we're bootstrapping and may hit problems
-        // before we're able to load it. if it weren't a remote resource, we could probably 
+        // before we're able to load it. if it weren't a remote resource, we could probably
         // do it.
-        this.message = new Message(this._el.container, { message_class: "tl-message-full" });
+        this.message = new Message(this._el.container, {
+            message_class: "tl-message-full",
+        });
 
         // Merge Options
-        if (typeof(options.default_bg_color) == "string") {
+        if (typeof options.default_bg_color == "string") {
             var parsed = hexToRgb(options.default_bg_color); // will clear it out if its invalid
             if (parsed) {
                 options.default_bg_color = parsed;
             } else {
-                delete options.default_bg_color
+                delete options.default_bg_color;
                 trace("Invalid default background color. Ignoring.");
             }
         }
         mergeData(this.options, options);
 
-        if (!(this.options.script_path)) {
-            this.options.script_path = this.determineScriptPath()
+        if (!this.options.script_path) {
+            this.options.script_path = this.determineScriptPath();
         }
 
         if (options.soundcite) {
-            this.on('ready', () => {
-                trace("Loading Soundcite resources ")
-                loadCSS('https://cdn.knightlab.com/libs/soundcite/latest/css/player.css')
-                loadJS('https://cdn.knightlab.com/libs/soundcite/latest/js/soundcite.min.js')
-            })
+            this.on("ready", () => {
+                trace("Loading Soundcite resources ");
+                loadCSS(
+                    "https://cdn.knightlab.com/libs/soundcite/latest/css/player.css"
+                );
+                loadJS(
+                    "https://cdn.knightlab.com/libs/soundcite/latest/js/soundcite.min.js"
+                );
+            });
         }
 
         // load font, theme
-        this._loadStyles()
-
+        this._loadStyles();
 
         document.addEventListener("keydown", make_keydown_handler(this));
-        window.addEventListener("resize", function(e) {
-            this.updateDisplay();
-        }.bind(this));
+        window.addEventListener(
+            "resize",
+            function (e) {
+                this.updateDisplay();
+            }.bind(this)
+        );
 
         if (this.options.debug) {
-            addTraceHandler(console.log)
+            addTraceHandler(console.log);
         }
 
         // Apply base class to container
-        addClass(this._el.container, 'tl-timeline');
-        this._el.container.setAttribute('tabindex', '0');
-        this._el.container.setAttribute('role', 'region');
-        this._el.container.setAttribute('aria-label', this._('aria_label_timeline'));
+        addClass(this._el.container, "tl-timeline");
+        this._el.container.setAttribute("tabindex", "0");
+        this._el.container.setAttribute("role", "region");
+        this._el.container.setAttribute(
+            "aria-label",
+            this._("aria_label_timeline")
+        );
 
         if (this.options.is_embed) {
-            addClass(this._el.container, 'tl-timeline-embed');
+            addClass(this._el.container, "tl-timeline-embed");
         }
 
         if (this.options.is_full_embed) {
-            addClass(this._el.container, 'tl-timeline-full-embed');
+            addClass(this._el.container, "tl-timeline-full-embed");
         }
 
         this._loadLanguage(data);
+
+        var messages = this._el.container.getElementsByClassName(
+            "tl-timegroup-message"
+        );
+
 
     }
 
@@ -213,68 +252,79 @@ class Timeline {
         let font_css_url = null,
             theme_css_url = null;
 
-        if (this.options.font && (
-                this.options.font.indexOf('http') == 0 ||
-                this.options.font.match(/\.css$/))) {
-            font_css_url = this.options.font
+        if (
+            this.options.font &&
+            (this.options.font.indexOf("http") == 0 ||
+                this.options.font.match(/\.css$/))
+        ) {
+            font_css_url = this.options.font;
         } else if (this.options.font) {
-            let fragment = '../css/fonts/font.' + this.options.font.toLowerCase() + '.css'
-            font_css_url = new URL(fragment, this.options.script_path).toString()
+            let fragment =
+                "../css/fonts/font." + this.options.font.toLowerCase() + ".css";
+            font_css_url = new URL(
+                fragment,
+                this.options.script_path
+            ).toString();
         }
 
         if (font_css_url) {
-            loadCSS(font_css_url)
+            loadCSS(font_css_url);
         }
 
-        if (this.options.theme && (
-                this.options.theme.indexOf('http') == 0 ||
-                this.options.theme.match(/\.css$/))) {
-            theme_css_url = this.options.theme
+        if (
+            this.options.theme &&
+            (this.options.theme.indexOf("http") == 0 ||
+                this.options.theme.match(/\.css$/))
+        ) {
+            theme_css_url = this.options.theme;
         } else if (this.options.theme) {
-            let fragment = '../css/themes/timeline.theme.' + this.options.theme.toLowerCase() + '.css'
-            theme_css_url = new URL(fragment, this.options.script_path).toString()
+            let fragment =
+                "../css/themes/timeline.theme." +
+                this.options.theme.toLowerCase() +
+                ".css";
+            theme_css_url = new URL(
+                fragment,
+                this.options.script_path
+            ).toString();
         }
 
         if (theme_css_url) {
-            loadCSS(theme_css_url)
+            loadCSS(theme_css_url);
         }
-
-
     }
-
 
     _loadLanguage(data) {
         try {
-            var lang = this.options.language
-            var script_path = this.options.script_path
+            var lang = this.options.language;
+            var script_path = this.options.script_path;
             loadLanguage(lang, script_path).then((language) => {
                 if (language) {
-                    this.language = language
-                    this.message.setLanguage(this.language)
-                    this.showMessage(this._('loading_timeline'))
+                    this.language = language;
+                    this.message.setLanguage(this.language);
+                    this.showMessage(this._("loading_timeline"));
                 } else {
-                    this.showMessage(`Error loading ${lang}`) // but we will carry on using the fallback
+                    this.showMessage(`Error loading ${lang}`); // but we will carry on using the fallback
                 }
-                this._initData(data)
-            })
+                this._initData(data);
+            });
         } catch (e) {
-            this.showMessage(this._translateError(e))
+            this.showMessage(this._translateError(e));
         }
     }
 
     /**
      * Initialize the data for this timeline. If data is a URL, pass it to ConfigFactory
-     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise, 
+     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise,
      * assume it's a JSON object in the right format, and wrap it in a new TimelineConfig.
      * @param {string|TimelineConfig|object} data
      */
     _initData(data) {
-        if (typeof data == 'string') {
+        if (typeof data == "string") {
             makeConfig(data, {
-                callback: function(config) {
+                callback: function (config) {
                     this.setConfig(config);
                 }.bind(this),
-                sheets_proxy: this.options.sheets_proxy
+                sheets_proxy: this.options.sheets_proxy,
             });
         } else if (TimelineConfig == data.constructor) {
             this.setConfig(data);
@@ -283,70 +333,85 @@ class Timeline {
         }
     }
 
+    _initFilteredData(data, filter) {
+        if (typeof data === "string") {
+            makeConfig(data, {
+                callback: function (config) {
+                    this.setConfigFilter(config, filter);
+                }.bind(this),
+                sheets_proxy: this.options.sheets_proxy,
+            });
+        } else if (data instanceof TimelineConfig) {
+            this.setConfigFilter(data, filter);
+        } else {
+            this.setConfigFilter(new TimelineConfig(data), filter);
+        }
+    }
+
     /**
      * Given an input, if it is a Timeline Error object, look up the
-     * appropriate error in the current language and return it, optionally 
+     * appropriate error in the current language and return it, optionally
      * with detail that also comes in the object. Alternatively, pass back
      * the input, which is expected to be a string ready to display.
-     * @param {Error|string} e - an Error object which can be localized, 
+     * @param {Error|string} e - an Error object which can be localized,
      *     or a string message
      */
     _translateError(e) {
-
-        if (e.hasOwnProperty('stack')) {
+        if (e.hasOwnProperty("stack")) {
             trace(e.stack);
         }
         if (e.message_key) {
-            return this._(e.message_key) + (e.detail ? ' [' + e.detail + ']' : '')
+            return (
+                this._(e.message_key) + (e.detail ? " [" + e.detail + "]" : "")
+            );
         }
         return e;
-
     }
 
     /**
      * Display a message in the Timeline window.
-     * @param {string} msg 
+     * @param {string} msg
      */
     showMessage(msg) {
-            if (this.message) {
-                this.message.updateMessage(msg);
-            } else {
-                trace("No message display available.")
-                trace(msg);
-            }
+        if (this.message) {
+            this.message.updateMessage(msg);
+        } else {
+            trace("No message display available.");
+            trace(msg);
         }
-        /**
-         * Not ideal, but if users don't specify the script path, we try to figure it out.
-         * The script path is needed to load other languages
-         */
+    }
+    /**
+     * Not ideal, but if users don't specify the script path, we try to figure it out.
+     * The script path is needed to load other languages
+     */
     determineScriptPath() {
         let src = null;
-        if (script_src_url) { // did we get it when this loaded?
+        if (script_src_url) {
+            // did we get it when this loaded?
             src = script_src_url;
         } else {
-            let script_tag = document.getElementById('timeline-script-tag')
+            let script_tag = document.getElementById("timeline-script-tag");
             if (script_tag) {
-                src = script_tag.src
+                src = script_tag.src;
             }
         }
 
         if (!src) {
-            let script_tags = document.getElementsByTagName('script');
+            let script_tags = document.getElementsByTagName("script");
             for (let index = script_tags.length - 1; index >= 0; index--) {
                 if (script_tags[index].src) {
-                    src = script_tags[index].src
-                    break // if we haven't found anything else, use the latest loaded script
+                    src = script_tags[index].src;
+                    break; // if we haven't found anything else, use the latest loaded script
                 }
             }
         }
 
         if (src) {
             // +1 to include the trailing slash or concatting for dynamic CSS load won't work.
-            return src.substr(0, src.lastIndexOf('/') + 1);
+            return src.substr(0, src.lastIndexOf("/") + 1);
         }
-        return '';
+        return "";
     }
-
 
     setConfig(config) {
         this.config = config;
@@ -357,22 +422,131 @@ class Timeline {
         }
         if (this.config.isValid()) {
             try {
-                if (document.readyState === 'loading') { // Loading hasn't finished yet
-                    document.addEventListener('DOMContentLoaded', this._onDataLoaded.bind(this));
+                if (document.readyState === "loading") {
+                    // Loading hasn't finished yet
+                    document.addEventListener(
+                        "DOMContentLoaded",
+                        this._onDataLoaded.bind(this)
+                    );
                 } else {
                     this._onDataLoaded();
                 }
             } catch (e) {
-                this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
+                this.showMessage(
+                    "<strong>" +
+                        this._("error") +
+                        ":</strong> " +
+                        this._translateError(e)
+                );
             }
         } else {
             var translated_errs = [];
 
-            for (var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
+            for (
+                var i = 0, errs = this.config.getErrors();
+                i < errs.length;
+                i++
+            ) {
                 translated_errs.push(this._translateError(errs[i]));
             }
 
-            this.showMessage("<strong>" + this._('error') + ":</strong> " + translated_errs.join('<br>'));
+            this.showMessage(
+                "<strong>" +
+                    this._("error") +
+                    ":</strong> " +
+                    translated_errs.join("<br>")
+            );
+            // should we set 'self.ready'? if not, it won't resize,
+            // but most resizing would only work
+            // if more setup happens
+        }
+    }
+
+    setConfigFilter(config, filter) {
+        config.events = this.config.filtered_events;
+        const keyword = filter.keyword;
+
+        let filtered_events = config.events.filter((event) => {
+            // Always include timeline events
+            if (event.unique_id.startsWith("tl-")) {
+                return true;
+            }
+
+            let passes_keyword = true;
+            let passes_date_range = true;
+            let passes_theme = true;
+
+            // Keyword filter
+            if (keyword) {
+                let headline = event.text.headline.toLowerCase();
+                let text = event.text.text.toLowerCase();
+                passes_keyword =
+                    headline.includes(keyword.toLowerCase()) ||
+                    text.includes(keyword.toLowerCase());
+            }
+
+            // Theme filter
+            if (filter.theme) {
+                let theme = event.group.toLowerCase();
+                passes_theme = theme.includes(filter.theme.toLowerCase());
+            }
+
+            //Date Filter
+            if (filter.date.debut && filter.date.fin) {
+                let debut = new Date(filter.date.debut);
+                let fin = new Date(filter.date.fin);
+                let start_date = new Date(event.start_date.data.date_obj);
+                passes_date_range = start_date >= debut && start_date <= fin;
+            }
+
+            // Return true only if all active filters pass
+            return passes_keyword && passes_date_range && passes_theme;
+        });
+
+        config.events = filtered_events;
+
+        this.config = config;
+        if (this.config.isValid()) {
+            // don't validate if it's already problematic to avoid clutter
+            this.config.validate();
+            this._validateOptions();
+        }
+        if (this.config.isValid()) {
+            try {
+                if (document.readyState === "loading") {
+                    // Loading hasn't finished yet
+                    document.addEventListener(
+                        "DOMContentLoaded",
+                        this._onDataLoaded.bind(this)
+                    );
+                } else {
+                    this._onDataLoaded();
+                }
+            } catch (e) {
+                this.showMessage(
+                    "<strong>" +
+                        this._("error") +
+                        ":</strong> " +
+                        this._translateError(e)
+                );
+            }
+        } else {
+            var translated_errs = [];
+
+            for (
+                var i = 0, errs = this.config.getErrors();
+                i < errs.length;
+                i++
+            ) {
+                translated_errs.push(this._translateError(errs[i]));
+            }
+
+            this.showMessage(
+                "<strong>" +
+                    this._("error") +
+                    ":</strong> " +
+                    translated_errs.join("<br>")
+            );
             // should we set 'self.ready'? if not, it won't resize,
             // but most resizing would only work
             // if more setup happens
@@ -388,36 +562,125 @@ class Timeline {
             this.message.hide();
         }
         let callback = (entries, observer) => {
-            if (entries.reduce((accum, curr) => accum || curr.isIntersecting, false)) {
-                this.updateDisplay()
+            if (
+                entries.reduce(
+                    (accum, curr) => accum || curr.isIntersecting,
+                    false
+                )
+            ) {
+                this.updateDisplay();
             }
-        }
-        let observer = new IntersectionObserver(callback.bind(this))
-        observer.observe(this._el.container)
+        };
+        let observer = new IntersectionObserver(callback.bind(this));
+        observer.observe(this._el.container);
         this.ready = true;
-        this.fire("ready")
-
+        this.fire("ready");
     }
 
     _initLayout() {
-
-        this.message.removeFrom(this._el.container);
+        try {
+            this.message.removeFrom(this._el.container);
+        } catch (e) {
+            console.log("Error removing message", e);
+        }
         this._el.container.innerHTML = "";
 
         // Create Layout
         if (this.options.timenav_position == "top") {
-            this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
-            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
-            this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
+            this._el.timenav = DOM.create(
+                "div",
+                "tl-timenav",
+                this._el.container
+            );
+            // Filter bar with date range
+            this._el.filterbar = DOM.create(
+                "div",
+                "tl-filterbar",
+                this._el.container
+            );
+
+            this._el.menubar = DOM.create(
+                "div",
+                "tl-menubar",
+                this._el.container
+            );
+            this._el.storyslider = DOM.create(
+                "div",
+                "tl-storyslider",
+                this._el.container
+            );
         } else {
-            this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
-            this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
-            this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
+            this._el.storyslider = DOM.create(
+                "div",
+                "tl-storyslider",
+                this._el.container
+            );
+            this._el.filterbar = DOM.create(
+                "div",
+                "tl-filterbar",
+                this._el.container
+            );
+            this._el.filterbar.innerHTML = `
+                <div class="container">
+                    <div class="field-group" style="margin: 2px">
+                        <div class="field flex1">
+                            <input type='text' class="field-keyword" id='FilterKeyword' placeholder="Rechercher" name='FilterKeyword' value='${inputFilter.keyword}' >
+                        </div>
+                        <div class="field">
+                            <label for='FilterTheme'>Thème</label>
+                            <select id='FilterTheme' name='FilterTheme' value='${inputFilter.theme}'>
+                                <option value=''>Tous</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flexbox flexWrap" style="margin: 2px">
+                        <div class="flexbox flex">
+                            <div class="field">
+                                <label for='FilterDateDebut'>de</label>
+                                <input type='month' id='FilterDateDebut' name='FilterDateDebut' value='${inputFilter.date.debut}'>
+                            </div>
+                            <div class="field">
+                                <label for='FilterDateFin'>à</label>
+                                <input type='month' id='FilterDateFin' name='FilterDateFin' value='${inputFilter.date.fin}'>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn" id='filter-button'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14.999" height="15.002" viewBox="0 0 14.999 15.002">
+                                    <path d="M4.688-7.031A6.079,6.079,0,0,1,3.516-3.437L7.225.275A.938.938,0,0,1,5.9,1.6L2.188-2.109A6.059,6.059,0,0,1-1.406-.937,6.093,6.093,0,0,1-7.5-7.031a6.093,6.093,0,0,1,6.094-6.094A6.093,6.093,0,0,1,4.688-7.031ZM-1.406-2.812A4.219,4.219,0,0,0,2.247-4.922a4.219,4.219,0,0,0,0-4.219A4.219,4.219,0,0,0-1.406-11.25,4.219,4.219,0,0,0-5.06-9.141a4.219,4.219,0,0,0,0,4.219A4.219,4.219,0,0,0-1.406-2.812Z" transform="translate(7.5 13.125)" fill="#fff"/>
+                                </svg>
+                                <span>Chercher</span>
+                            </button>
+                            <button class="btn" id='filter-button-reset'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14.06" height="13.126" viewBox="0 0 14.06 13.126">
+                                    <path d="M-4.421-7.189A4.64,4.64,0,0,1-3.313-8.941a4.688,4.688,0,0,1,6.63,0l.5.5H2.344a.936.936,0,0,0-.937.938.936.936,0,0,0,.938.938H6.091A.936.936,0,0,0,7.028-7.5v-3.75a.936.936,0,0,0-.937-.937.936.936,0,0,0-.937.938v1.5l-.513-.516a6.562,6.562,0,0,0-9.281,0A6.525,6.525,0,0,0-6.187-7.811a.937.937,0,0,0,.571,1.2.938.938,0,0,0,1.2-.571Zm-1.937,2.54a.933.933,0,0,0-.4.24A.911.911,0,0,0-7-4c-.009.035-.018.073-.023.111a.856.856,0,0,0-.012.149V0a.936.936,0,0,0,.938.938A.936.936,0,0,0-5.156,0V-1.5l.516.513a6.564,6.564,0,0,0,9.278,0,6.545,6.545,0,0,0,1.55-2.452.937.937,0,0,0-.571-1.2.938.938,0,0,0-1.2.571A4.64,4.64,0,0,1,3.313-2.309a4.688,4.688,0,0,1-6.63,0l0,0-.5-.5h1.477a.936.936,0,0,0,.938-.937.936.936,0,0,0-.937-.937H-6.082a1.133,1.133,0,0,0-.141.009.69.69,0,0,0-.135.029Z" transform="translate(7.031 12.188)" fill="#fff"/>
+                                </svg>
+                                <span>Réinitialiser</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+
+            this._el.timenav = DOM.create(
+                "div",
+                "tl-timenav",
+                this._el.container
+            );
+            this._el.menubar = DOM.create(
+                "div",
+                "tl-menubar",
+                this._el.container
+            );
         }
 
         // Knight Lab Logo
-        this._el.attribution = DOM.create('div', 'tl-attribution', this._el.container);
-        this._el.attribution.innerHTML = "<a href='https://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
+        this._el.attribution = DOM.create(
+            "div",
+            "tl-attribution",
+            this._el.container
+        );
+        this._el.attribution.innerHTML =
+            "<a href='https://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>";
 
         // Initial Default Layout
         this.options.width = this._el.container.offsetWidth;
@@ -425,11 +688,18 @@ class Timeline {
         // this._el.storyslider.style.top  = "1px";
 
         // Set TimeNav Height
-        this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
+        this.options.timenav_height = this._calculateTimeNavHeight(
+            this.options.timenav_height
+        );
 
         // Create TimeNav
-        this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
-        this._timenav.on('loaded', this._onTimeNavLoaded, this);
+        this._timenav = new TimeNav(
+            this._el.timenav,
+            this.config,
+            this.options,
+            this.language
+        );
+        this._timenav.on("loaded", this._onTimeNavLoaded, this);
         this._timenav.options.height = this.options.timenav_height;
         this._timenav.init();
 
@@ -440,46 +710,167 @@ class Timeline {
         }
 
         // Create StorySlider
-        this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
-        this._el.storyslider.setAttribute('role', 'group');
-        this._el.storyslider.setAttribute('aria-label', this._('aria_label_timeline_content'));
-        this._storyslider.on('loaded', this._onStorySliderLoaded, this);
+        this._storyslider = new StorySlider(
+            this._el.storyslider,
+            this.config,
+            this.options,
+            this.language
+        );
+        this._el.storyslider.setAttribute("role", "group");
+        this._el.storyslider.setAttribute(
+            "aria-label",
+            this._("aria_label_timeline_content")
+        );
+        this._storyslider.on("loaded", this._onStorySliderLoaded, this);
         this._storyslider.init();
 
         // Create Menu Bar
-        this._menubar = new MenuBar(this._el.menubar, this._el.container, this.options, this.getLanguage());
+        this._menubar = new MenuBar(
+            this._el.menubar,
+            this._el.container,
+            this.options,
+            this.getLanguage()
+        );
 
         // LAYOUT
         if (this.options.layout == "portrait") {
-            this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
+            this.options.storyslider_height =
+                this.options.height - this.options.timenav_height - 1;
         } else {
-            this.options.storyslider_height = (this.options.height - 1);
+            this.options.storyslider_height = this.options.height - 1;
         }
 
+        // from this_timenav._group[0].data.label
+        // add to select theme filter all the group
+        let select = this._el.filterbar.querySelector("#FilterTheme");
+        let themes = this._timenav._groups.map((group) => group.data.label);
+        themes.forEach((theme) => {
+            let option = document.createElement("option");
+            option.text = theme;
+            option.value = theme;
+            if (inputFilter.theme === theme) {
+                option.selected = true;
+            }
+            select.add(option);
+        });
 
         // Update Display
         this._updateDisplay(this._timenav.options.height, true, 2000);
-
     }
 
     _initEvents() {
         // TimeNav Events
-        this._timenav.on('change', this._onTimeNavChange, this);
-        this._timenav.on('zoomtoggle', this._onZoomToggle, this);
-        this._timenav.on('visible_ticks_change', this._onVisibleTicksChange, this);
+        this._timenav.on("change", this._onTimeNavChange, this);
+        this._timenav.on("zoomtoggle", this._onZoomToggle, this);
+        this._timenav.on(
+            "visible_ticks_change",
+            this._onVisibleTicksChange,
+            this
+        );
 
         // StorySlider Events
-        this._storyslider.on('change', this._onSlideChange, this);
-        this._storyslider.on('colorchange', this._onColorChange, this);
-        this._storyslider.on('nav_next', this._onStorySliderNext, this);
-        this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
+        this._storyslider.on("change", this._onSlideChange, this);
+        this._storyslider.on("colorchange", this._onColorChange, this);
+        this._storyslider.on("nav_next", this._onStorySliderNext, this);
+        this._storyslider.on("nav_previous", this._onStorySliderPrevious, this);
 
         // Menubar Events
-        this._menubar.on('zoom_in', this._onZoomIn, this);
-        this._menubar.on('zoom_out', this._onZoomOut, this);
-        this._menubar.on('forward_to_end', this._onForwardToEnd, this);
-        this._menubar.on('back_to_start', this._onBackToStart, this);
+        this._menubar.on("zoom_in", this._onZoomIn, this);
+        this._menubar.on("zoom_out", this._onZoomOut, this);
+        this._menubar.on("forward_to_end", this._onForwardToEnd, this);
+        this._menubar.on("back_to_start", this._onBackToStart, this);
 
+        // Filter Events
+        this._el.filterbar
+            .querySelector("#filter-button")
+            .addEventListener("click", this._onFilter.bind(this));
+        this._el.filterbar
+            .querySelector("#filter-button-reset")
+            .addEventListener("click", this._onResetFilter.bind(this));
+        document
+            .getElementById("FilterKeyword")
+            .addEventListener("change", function () {
+                inputFilter.keyword = this.value;
+                console.log(inputFilter.keyword); // For debugging
+            });
+        document
+            .getElementById("FilterDateDebut")
+            .addEventListener("change", function () {
+                inputFilter.date.debut = this.value;
+                console.log(inputFilter.date.debut); // For debugging
+            });
+        document
+            .getElementById("FilterDateFin")
+            .addEventListener("change", function () {
+                inputFilter.date.fin = this.value;
+                console.log(inputFilter.date.fin); // For debugging
+            });
+        document
+            .getElementById("FilterTheme")
+            .addEventListener("change", function () {
+                inputFilter.theme = this.value;
+            });
+    }
+
+    _onFilter() {
+        const keyword = this._el.filterbar
+            .querySelector("#FilterKeyword")
+            .value.toLowerCase();
+        const date_debut = this._el.filterbar
+            .querySelector("#FilterDateDebut")
+            .value.toLowerCase();
+
+        const date_fin = this._el.filterbar
+            .querySelector("#FilterDateFin")
+            .value.toLowerCase();
+
+        const theme = this._el.filterbar
+            .querySelector("#FilterTheme")
+            .value.toLowerCase();
+
+        if (
+            keyword === "" &&
+            date_debut === "" &&
+            date_fin === "" &&
+            theme === ""
+        ) {
+            this._initData(this.options.url);
+            return;
+        }
+
+        this._initFilteredData(this.config, {
+            keyword: keyword,
+            date: {
+                debut: date_debut,
+                fin: date_fin,
+            },
+            theme: theme,
+        });
+
+        const events = this.config.events;
+        const firstIndex = events.findIndex(
+            (event) => !event.unique_id.startsWith("tl-")
+        );
+
+        if (firstIndex !== -1) {
+            this.goToId(events[firstIndex].unique_id);
+        }
+    }
+
+    _onResetFilter() {
+        // Clear filter
+        inputFilter = {
+            keyword: "",
+            theme: "",
+            date: {
+                debut: "",
+                fin: "",
+
+            },
+        };
+
+        this._initData(this.options.url);
+        return;
     }
 
     _onColorChange(e) {
@@ -508,10 +899,7 @@ class Timeline {
         } else if (e.zoom == "out") {
             this._menubar.toogleZoomOut(e.show);
         }
-
     }
-
-
 
     _onChange(e) {
         this.fire("change", { unique_id: this.current_id }, this);
@@ -536,12 +924,20 @@ class Timeline {
 
     _onZoomIn(e) {
         this._timenav.zoomIn();
-        this.fire("zoom_in", { zoom_level: this._timenav.options.scale_factor }, this);
+        this.fire(
+            "zoom_in",
+            { zoom_level: this._timenav.options.scale_factor },
+            this
+        );
     }
 
     _onZoomOut(e) {
         this._timenav.zoomOut();
-        this.fire("zoom_out", { zoom_level: this._timenav.options.scale_factor }, this);
+        this.fire(
+            "zoom_out",
+            { zoom_level: this._timenav.options.scale_factor },
+            this
+        );
     }
 
     _onTimeNavLoaded() {
@@ -561,7 +957,6 @@ class Timeline {
     _onStorySliderPrevious(e) {
         this.fire("nav_previous", e);
     }
-
 
     _updateDisplay(timenav_height, animate, d) {
         var duration = this.options.duration,
@@ -596,37 +991,48 @@ class Timeline {
         if (Browser.mobile) {
             display_class += " tl-mobile";
             // Set TimeNav Height
-            this.options.timenav_height = this._calculateTimeNavHeight(timenav_height, this.options.timenav_mobile_height_percentage);
+            this.options.timenav_height = this._calculateTimeNavHeight(
+                timenav_height,
+                this.options.timenav_mobile_height_percentage
+            );
         } else {
             // Set TimeNav Height
-            this.options.timenav_height = this._calculateTimeNavHeight(timenav_height);
+            this.options.timenav_height =
+                this._calculateTimeNavHeight(timenav_height);
         }
 
         // LAYOUT
         if (this.options.layout == "portrait") {
             // Portrait
             display_class += " tl-layout-portrait";
-
         } else {
             // Landscape
             display_class += " tl-layout-landscape";
-
         }
 
         // Set StorySlider Height
-        this.options.storyslider_height = (this.options.height - this.options.timenav_height);
+        this.options.storyslider_height =
+            this.options.height - this.options.timenav_height;
 
         // Positon Menu
         if (this.options.timenav_position == "top") {
-            menu_position = (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (39 / 2);
+            menu_position =
+                Math.ceil(this.options.timenav_height) / 2 -
+                this._el.menubar.offsetHeight / 2 -
+                39 / 2;
         } else {
-            menu_position = Math.round(this.options.storyslider_height + 1 + (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (35 / 2));
+            menu_position = Math.round(
+                this.options.storyslider_height +
+                    1 +
+                    Math.ceil(this.options.timenav_height) / 2 -
+                    this._el.menubar.offsetHeight / 2 -
+                    35 / 2
+            );
         }
 
-
         if (animate) {
-
-            this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
+            this._el.timenav.style.height =
+                Math.ceil(this.options.timenav_height) + "px";
 
             // Animate StorySlider
             if (this.animator_storyslider) {
@@ -635,7 +1041,7 @@ class Timeline {
             this.animator_storyslider = Animate(this._el.storyslider, {
                 height: this.options.storyslider_height + "px",
                 duration: duration / 2,
-                easing: easeOutStrong
+                easing: easeOutStrong,
             });
 
             // Animate Menubar
@@ -646,15 +1052,16 @@ class Timeline {
             this.animator_menubar = Animate(this._el.menubar, {
                 top: menu_position + "px",
                 duration: duration / 2,
-                easing: easeOutStrong
+                easing: easeOutStrong,
             });
-
         } else {
             // TimeNav
-            this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
+            this._el.timenav.style.height =
+                Math.ceil(this.options.timenav_height) + "px";
 
             // StorySlider
-            this._el.storyslider.style.height = this.options.storyslider_height + "px";
+            this._el.storyslider.style.height =
+                this.options.storyslider_height + "px";
 
             // Menubar
             this._el.menubar.style.top = menu_position + "px";
@@ -664,54 +1071,71 @@ class Timeline {
             this.message.updateDisplay(this.options.width, this.options.height);
         }
         // Update Component Displays
-        this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
-        this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
+        this._timenav.updateDisplay(
+            this.options.width,
+            this.options.timenav_height,
+            animate
+        );
+        this._storyslider.updateDisplay(
+            this.options.width,
+            this.options.storyslider_height,
+            animate,
+            this.options.layout
+        );
 
-        if (this.language.direction == 'rtl') {
-            display_class += ' tl-rtl';
+        if (this.language.direction == "rtl") {
+            display_class += " tl-rtl";
         }
-
 
         // Apply class
         this._el.container.className = display_class;
-
     }
 
     /**
-     * Compute the height of the navigation section of the Timeline, taking 
-     *     into account the possibility of an explicit height or height 
-     *     percentage, but also honoring the `timenav_height_min` option 
-     *     value. If `timenav_height` is specified it takes precedence over 
-     *     `timenav_height_percentage` but in either case, if the resultant 
-     *     pixel height is less than `options.timenav_height_min` then the 
-     *     value of `options.timenav_height_min` will be returned. (A minor 
-     *     adjustment is made to the returned value to account for marker 
+     * Compute the height of the navigation section of the Timeline, taking
+     *     into account the possibility of an explicit height or height
+     *     percentage, but also honoring the `timenav_height_min` option
+     *     value. If `timenav_height` is specified it takes precedence over
+     *     `timenav_height_percentage` but in either case, if the resultant
+     *     pixel height is less than `options.timenav_height_min` then the
+     *     value of `options.timenav_height_min` will be returned. (A minor
+     *     adjustment is made to the returned value to account for marker
      *     padding.)
-     * 
+     *
      * @param {number} [timenav_height] - an integer value for the desired height in pixels
      * @param {number} [timenav_height_percentage] - an integer between 1 and 100
      */
     _calculateTimeNavHeight(timenav_height, timenav_height_percentage) {
-
         var height = 0;
 
         if (timenav_height) {
             height = timenav_height;
         } else {
-            if (this.options.timenav_height_percentage || timenav_height_percentage) {
+            if (
+                this.options.timenav_height_percentage ||
+                timenav_height_percentage
+            ) {
                 if (timenav_height_percentage) {
-                    height = Math.round((this.options.height / 100) * timenav_height_percentage);
+                    height = Math.round(
+                        (this.options.height / 100) * timenav_height_percentage
+                    );
                 } else {
-                    height = Math.round((this.options.height / 100) * this.options.timenav_height_percentage);
+                    height = Math.round(
+                        (this.options.height / 100) *
+                            this.options.timenav_height_percentage
+                    );
                 }
-
             }
         }
 
         // Set new minimum based on how many rows needed
         if (this._timenav.ready) {
-            if (this.options.timenav_height_min < this._timenav.getMinimumHeight()) {
-                this.options.timenav_height_min = this._timenav.getMinimumHeight();
+            if (
+                this.options.timenav_height_min <
+                this._timenav.getMinimumHeight()
+            ) {
+                this.options.timenav_height_min =
+                    this._timenav.getMinimumHeight();
             }
         }
 
@@ -720,26 +1144,37 @@ class Timeline {
             height = this.options.timenav_height_min;
         }
 
-        height = height - (this.options.marker_padding * 2);
+        height = height - this.options.marker_padding * 2;
 
         return height;
     }
 
     _validateOptions() {
         // assumes that this.options and this.config have been set.
-        var INTEGER_PROPERTIES = ['timenav_height', 'timenav_height_min', 'marker_height_min', 'marker_width_min', 'marker_padding', 'start_at_slide', 'slide_padding_lr'];
+        var INTEGER_PROPERTIES = [
+            "timenav_height",
+            "timenav_height_min",
+            "marker_height_min",
+            "marker_width_min",
+            "marker_padding",
+            "start_at_slide",
+            "slide_padding_lr",
+        ];
 
         for (var i = 0; i < INTEGER_PROPERTIES.length; i++) {
             var opt = INTEGER_PROPERTIES[i];
             var value = this.options[opt];
             let valid = true;
-            if (typeof(value) == 'number') {
-                valid = (value == parseInt(value))
-            } else if (typeof(value) == "string") {
-                valid = (value.match(/^\s*(\-?\d+)?\s*$/));
+            if (typeof value == "number") {
+                valid = value == parseInt(value);
+            } else if (typeof value == "string") {
+                valid = value.match(/^\s*(\-?\d+)?\s*$/);
             }
             if (!valid) {
-                this.config.logError({ message_key: 'invalid_integer_option', detail: opt });
+                this.config.logError({
+                    message_key: "invalid_integer_option",
+                    detail: opt,
+                });
             }
         }
     }
@@ -747,9 +1182,9 @@ class Timeline {
     /**
      * Given a slide identifier, return the zero-based positional index of
      * that slide. If this timeline has a 'title' slide, it is at position 0
-     * and all other slides are numbered after that. If there is no 'title' 
+     * and all other slides are numbered after that. If there is no 'title'
      * slide, then the first event slide is at position 0.
-     * @param {String} id 
+     * @param {String} id
      */
     _getSlideIndex(id) {
         if (this.config) {
@@ -769,10 +1204,10 @@ class Timeline {
      * Given a slide identifier, return the zero-based positional index of that slide.
      * Does not take the existence of a 'title' slide into account, so if there is a title
      * slide, this value should be one less than calling `_getSlideIndex` with the same
-     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex` 
+     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex`
      * should return the same value.
      * TODO: does it really make sense to have both `_getSlideIndex` and `_getEventIndex`?
-     * @param {String} id 
+     * @param {String} id
      */
     _getEventIndex(id) {
         for (var i = 0; i < this.config.events.length; i++) {
@@ -787,7 +1222,10 @@ class Timeline {
         if (this._loaded.storyslider && this._loaded.timenav) {
             this.fire("loaded", this.config);
             // Go to proper slide
-            if (isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length) {
+            if (
+                isTrue(this.options.start_at_end) ||
+                this.options.start_at_slide > this.config.events.length
+            ) {
                 this.goToEnd();
             } else {
                 this.goTo(this.options.start_at_slide);
@@ -799,25 +1237,37 @@ class Timeline {
                     this._updateHashBookmark(this.current_id);
                 }
                 let the_timeline = this;
-                window.addEventListener('hashchange', function() {
-                    if (window.location.hash.indexOf('#event-') == 0) {
-                        the_timeline.goToId(window.location.hash.replace("#event-", ""));
-                    }
-                }, false);
+                window.addEventListener(
+                    "hashchange",
+                    function () {
+                        if (window.location.hash.indexOf("#event-") == 0) {
+                            the_timeline.goToId(
+                                window.location.hash.replace("#event-", "")
+                            );
+                        }
+                    },
+                    false
+                );
             }
-
         }
     }
 
     // Update hashbookmark in the url bar
     _updateHashBookmark(id) {
-        if (id) { // TODO: validate the id...
+        if (id) {
+            // TODO: validate the id...
             var hash = "#" + "event-" + id.toString();
             window.history.replaceState(null, "Browsing TimelineJS", hash);
-            this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
+            this.fire(
+                "hash_updated",
+                {
+                    unique_id: this.current_id,
+                    hashbookmark: "#" + "event-" + id.toString(),
+                },
+                this
+            );
         }
     }
-
 
     /*
         PUBLIC API
@@ -840,7 +1290,6 @@ class Timeline {
     // Goto slide with id
     goToId(id) {
         if (this.current_id != id) {
-
             this.current_id = id;
             this._timenav.goToId(this.current_id);
             this._storyslider.goToId(this.current_id, false, true);
@@ -865,10 +1314,10 @@ class Timeline {
                 this.goToId(this.config.events[n].unique_id);
             }
         } catch {
-            // because n is interpreted differently depending on 
+            // because n is interpreted differently depending on
             // whether there's a title slide, easier to use catch
             // to handle navigating beyond end instead of test before
-            return
+            return;
         }
     }
 
@@ -984,7 +1433,7 @@ class Timeline {
         if (this.ready) {
             this._updateDisplay();
         } else {
-            trace('updateDisplay called but timeline is not in ready state')
+            trace("updateDisplay called but timeline is not in ready state");
         }
     }
 
@@ -993,37 +1442,48 @@ class Timeline {
     }
 
     _initGoogleAnalytics() {
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        (function (i, s, o, g, r, a, m) {
+            i["GoogleAnalyticsObject"] = r;
+            (i[r] =
+                i[r] ||
+                function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }),
+                (i[r].l = 1 * new Date());
+            (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
             a.async = 1;
             a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            m.parentNode.insertBefore(a, m);
+        })(
+            window,
+            document,
+            "script",
+            "//www.google-analytics.com/analytics.js",
+            "ga"
+        );
 
-        ga('create', this.options.ga_property_id, 'auto');
-        ga('set', 'anonymizeIp', true);
+        ga("create", this.options.ga_property_id, "auto");
+        ga("set", "anonymizeIp", true);
     }
 
     _initAnalytics() {
-        if (this.options.ga_property_id === null) { return; }
+        if (this.options.ga_property_id === null) {
+            return;
+        }
         this._initGoogleAnalytics();
-        ga('send', 'pageview');
+        ga("send", "pageview");
         var events = this.options.track_events;
         for (let i = 0; i < events.length; i++) {
             var event_ = events[i];
-            this.addEventListener(event_, function(e) {
-                ga('send', 'event', e.type, 'clicked');
+            this.addEventListener(event_, function (e) {
+                ga("send", "event", e.type, "clicked");
             });
         }
-    }
 
+    }
 
 }
 
-classMixin(Timeline, I18NMixins, Events)
+classMixin(Timeline, I18NMixins, Events);
 
-export { Timeline }
+export { Timeline };

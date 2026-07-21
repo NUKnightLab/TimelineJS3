@@ -5,7 +5,7 @@
     <!-- this is normally done by embed page -->
     <script>
         var options = {
-            lang: 'fr',
+            language: 'fr',
             debug: true,
             height: 650,
             soundcite: true,
@@ -14,7 +14,9 @@
             autolink: false,
             start_at_slide:11,
             sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
-            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89,144, 233,377,610]
+            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89,144, 233,377,610],
+            max_range: "year",
+            // range : second,minute,hour, day, month, year, decade, century, millenium
         }
 
 
@@ -56,7 +58,7 @@
             margin: 0;
             padding: 0;
         }
-       
+
     </style>
 </head>
 
