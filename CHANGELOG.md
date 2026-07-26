@@ -1,4 +1,4 @@
-3.9.13 (not yet released)
+3.9.13 (2026-07-26)
 -------------------------
 * Update dompurify to 3.4.12 to address several XSS advisories
 * Address remaining npm audit findings in dev/build tooling
