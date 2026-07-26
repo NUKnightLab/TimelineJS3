@@ -3,10 +3,10 @@
 The primary action for "releasing" TimelineJS is pushing a new version to `cdn.knightlab.com` but as of mid-2020, we also publish new versions to the `npmjs` package registry.
 
 1. Before cutting a release, test thoroughly. Is this an opportunity to add new unit tests? Develop functional testing? If nothing else, `npm run compare` provides a way to see how some historical timelines would function with the new code. (Note that because of Google Sheets API changes, compare now compares back to the oldest release in the 3.8.x series instead of the pre-webpack version)
-1. Update `package.json` to have the correct version.
-1. Update `CHANGELOG` to indicate the release date. Hopefully you've been incrementally updating the file with relevant changes so that this is just editing the version "header"
-1. Push all changes to GitHub
-1. Execute `npm run stage_latest`, which creates both a versioned edition of the library and a copy of it in the `/latest/` directory of the CDN repository.
+1. Update `CHANGELOG` to indicate the release date under the "not yet released" version header. Hopefully you've been incrementally updating the file with relevant changes so that this is just editing the version "header". Stage this change (`git add CHANGELOG.md`) but don't commit it yet.
+1. Run `npm version <newversion>` (e.g. `npm version 3.9.13`, or `npm version major`/`minor`/`patch`). This bumps `package.json` and `package-lock.json`, commits that bump together with the staged `CHANGELOG` edit, and creates a matching git tag. The repo's `.npmrc` configures `npm version` to tag as `3.9.13` rather than the npm default `v3.9.13`, matching our existing tags.
+1. Push the commit and the tag to GitHub: `git push && git push --tags`
+1. Execute `npm run stage_latest`, which creates both a versioned edition of the library and a copy of it in the `/latest/` directory of the CDN repository. (`stage.js` reads the version to stage directly from `package.json`, so it must already be bumped and tagged by the previous step before you run this.)
 1. Execute `npm publish` (permissions required)
 1. Change directories to the local copy of the `cdn.knightlab.com` repository, to which files were copied by the previous step
 1. `git add app/libs/timeline3` to add the new version and updated `latest` to Git

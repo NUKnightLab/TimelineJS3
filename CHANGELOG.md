@@ -1,4 +1,9 @@
-3.9.12 (not yet released)
+3.9.13 (not yet released)
+-------------------------
+* Update dompurify to 3.4.12 to address several XSS advisories
+* Address remaining npm audit findings in dev/build tooling
+
+3.9.12 (2026-07-17)
 -------------------------
 * Modify handling of innerHTML to block potential malicious XSS
 * Fix bug: youtube URLs with `?t=\d+` (without `s`) should be treated as "start at N seconds"
