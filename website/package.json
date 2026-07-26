@@ -13,5 +13,8 @@
     "description": "",
     "dependencies": {
         "@11ty/eleventy": "^3.1.6"
+    },
+    "overrides": {
+        "@11ty/recursive-copy": "5.0.2"
     }
 }
