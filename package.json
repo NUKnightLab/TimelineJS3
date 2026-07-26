@@ -11,9 +11,8 @@
         "@babel/cli": "^7.28.6",
         "@babel/core": "^7.29.0",
         "@babel/preset-env": "^7.29.0",
-        "adm-zip": "^0.4.14",
+        "adm-zip": "^0.6.0",
         "babel-jest": "^29.7.0",
-        "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^14.0.0",
         "css-loader": "^7.1.2",
         "file-loader": "^6.0.0",
@@ -26,7 +25,6 @@
         "less-loader": "^6.1.1",
         "lodash": "^4.17.21",
         "mini-css-extract-plugin": "^2.6.0",
-        "npm-run-all": "^4.1.5",
         "prompt": "^1.0.0",
         "simple-git": "^3.36.0",
         "style-loader": "^1.2.1",
@@ -35,6 +33,17 @@
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^5.2.2",
         "webpack-merge": "^4.2.2"
+    },
+    "overrides": {
+        "body-parser": "1.20.6",
+        "fast-uri": "3.1.4",
+        "http-proxy-middleware": "2.0.10",
+        "js-yaml": "3.15.0",
+        "launch-editor": "2.14.1",
+        "postcss": "8.5.23",
+        "shell-quote": "1.10.0",
+        "uuid": "11.1.1",
+        "websocket-driver": "0.7.5"
     },
     "repository": {
         "type": "git",
@@ -48,7 +57,7 @@
     "homepage": "https://timeline.knightlab.com",
     "scripts": {
         "test": "jest",
-        "dist": "run-s clean build",
+        "dist": "npm run clean && npm run build",
         "disttest": "npm run dist && http-server dist -o '/embed/index.html?debug=true&language=es&script_path='",
         "compare": "npm run dist && http-server dist -o '/embed/compare.html'",
         "clean": "trash dist",

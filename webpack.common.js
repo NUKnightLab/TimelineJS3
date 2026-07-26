@@ -1,6 +1,5 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const output_path = path.resolve(__dirname, "dist");
 module.exports = {
@@ -11,7 +10,8 @@ module.exports = {
     output: {
         filename: "timeline.js",
         path: path.join(output_path, 'js'),
-        library: "TL" // https://webpack.js.org/configuration/output/#outputlibrary
+        library: "TL", // https://webpack.js.org/configuration/output/#outputlibrary
+        clean: true // https://webpack.js.org/configuration/output/#outputclean
     },
     plugins: [
         new CopyPlugin({
@@ -24,9 +24,6 @@ module.exports = {
                     to: path.join(output_path, "embed/[name][ext]")
                 }
             ]
-        }),
-        new CleanWebpackPlugin({
-            cleanStaleWebpackAssets: true
         }),
     ],
     module: {
