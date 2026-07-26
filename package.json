@@ -11,10 +11,10 @@
         "@babel/core": "^7.29.0",
         "@babel/preset-env": "^7.29.0",
         "adm-zip": "^0.6.0",
-        "babel-jest": "^29.7.0",
+        "babel-jest": "^30.4.1",
         "fs-extra": "^9.0.1",
         "http-server": "^14.1.0",
-        "jest": "^29.7.0",
+        "jest": "^30.4.2",
         "jest-environment-jsdom": "^30.2.0",
         "less": "^4.8.0",
         "trash-cli": "^7.2.0",
@@ -23,7 +23,9 @@
     },
     "overrides": {
         "js-yaml": "3.15.0",
-        "postcss": "8.5.23"
+        "postcss": "8.5.23",
+        "test-exclude": "8.0.0",
+        "glob": "13.0.6"
     },
     "repository": {
         "type": "git",
