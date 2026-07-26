@@ -24,7 +24,7 @@ The reference version of `node` used with these tools is `v13.9.0`, although we 
 
 Once you've cloned the repository, run `npm install`. Assuming there are no errors, you should be able to run `npm start` and, after a few moments, a window should open in your default browser with a timeline.  
 
-Timeline uses `webpack` for bundling, and uses the `webpack-dev-server` as part of the `start` script. This means that you should be able to make edits to the source javascript and less files and they will automatically compile, and the browser should reload.
+Timeline uses `vite` for bundling, and its dev server as part of the `start` script. This means that you should be able to make edits to the source javascript and less files and they will automatically compile, and the browser should hot-reload.
 
 ### Building
 

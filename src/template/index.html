@@ -3,6 +3,15 @@
 <head>
     <title>Bundled TimelineJS test page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- dev-server equivalent of the dist/js/timeline.js global TL bundle -
+         module scripts run before DOMContentLoaded, so TL is set before the
+         inline script below (which waits for DOMContentLoaded) needs it.
+         src/js/index.js's own `import "../less/TL.Timeline.less"` gives us
+         Vite's native LESS handling + HMR for free - no separate <link> needed. -->
+    <script type="module">
+        import * as TL from '../js/index.js';
+        window.TL = TL;
+    </script>
     <!-- this is normally done by embed page -->
     <script>
         const ALL_FONT_OPTIONS = [ // 21 right now

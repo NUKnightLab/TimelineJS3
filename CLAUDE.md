@@ -36,7 +36,7 @@ TimelineJS3 is a browser-side JavaScript library (no backend) that renders inter
 - `dist/js/locale/*.json` — i18n locale files
 - `dist/embed/*` — iframe embed templates
 
-**Webpack configs:** `webpack.common.js` (shared), `webpack.dev.js` (dev server + style-loader), `webpack.prod.js` (MiniCssExtractPlugin for CSS extraction).
+**Build tool:** `vite.config.js` bundles `src/js/index.js` into `dist/js/timeline.js` (library mode, global `TL`, IIFE format) and copies locale/embed files via `vite-plugin-static-copy`. The main/theme/font CSS is compiled separately by `tasks/compile_less.js` (plain `less.render()`, not through Vite) so icon font references stay unhashed and consistent across all three — see the comments in `vite.config.js` and `tasks/compile_less.js` for why. `npm run build` runs both steps.
 
 ### Key Source Modules (`src/js/`)
 
