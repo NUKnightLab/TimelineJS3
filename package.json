@@ -22,7 +22,8 @@
         "vite-plugin-static-copy": "^4.1.1"
     },
     "overrides": {
-        "js-yaml": "3.15.0",
+        "brace-expansion": "5.0.9",
+        "js-yaml": "3.15.1",
         "postcss": "8.5.23",
         "test-exclude": "8.0.0",
         "glob": "13.0.6"
