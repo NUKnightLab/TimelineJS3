@@ -25,3 +25,12 @@ if [ $? -ne 0 ]; then
 else
   echo "Deployment to s3://$BUCKET successful."
 fi
+
+if [[ -n "$CLOUDFLARE_ZONE_ID" && -n "$CLOUDFLARE_API_TOKEN" ]]; then
+  curl https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache \
+    -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+    -d '{"purge_everything": true}
+'
+  echo "\nCache cleared for zone ${CLOUDFLARE_ZONE_ID}\n"
+fi
