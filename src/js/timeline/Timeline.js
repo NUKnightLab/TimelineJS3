@@ -434,7 +434,7 @@ class Timeline {
         this._timenav.init();
 
         // intial_zoom cannot be applied before the timenav has been created
-        if (this.options.initial_zoom) {
+        if (this.options.initial_zoom !== undefined && this.options.initial_zoom !== null) {
             // at this point, this.options refers to the merged set of options
             this.setZoom(this.options.initial_zoom);
         }
