@@ -1,13 +1,14 @@
-import Events from "../core/Events";
 import { DOMMixins } from "../dom/DOMMixins";
-import { classMixin, mergeData, unlinkify } from "../core/Util"
+import { mergeData, unlinkify } from "../core/Util"
 import * as DOM from "../dom/DOM"
 import { DOMEvent } from "../dom/DOMEvent"
 import * as Browser from "../core/Browser"
 
-export class SlideNav {
-	
+export class SlideNav extends DOMMixins {
+
 	constructor(data, options, add_to_container) {
+		super();
+
 		// DOM ELEMENTS
 		this._el = {
 			container: {},
@@ -123,7 +124,5 @@ export class SlideNav {
 		DOMEvent.addListener(this._el.container, 'click', this._onMouseClick, this);
 	}
 	
-	
-}
 
-classMixin(SlideNav, DOMMixins, Events)
+}

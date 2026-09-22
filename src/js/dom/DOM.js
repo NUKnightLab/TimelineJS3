@@ -1,76 +1,111 @@
 import * as Browser from "../core/Browser"
 
-function get (id) {
+/**
+ * Get element by ID or return the element itself
+ * @param {string|HTMLElement} id - Element ID or element itself
+ * @returns {HTMLElement}
+ */
+function get(id) {
 	return (typeof id === 'string' ? document.getElementById(id) : id);
 }
 
-function getByClass(id) {
-	if (id) {
-		return document.getElementsByClassName(id);
-	}
+/**
+ * Get elements by class name (use querySelector/querySelectorAll for more complex queries)
+ * @param {string} className
+ * @returns {HTMLCollection}
+ */
+function getByClass(className) {
+	return className ? document.getElementsByClassName(className) : null;
 }
 
+/**
+ * Create an element with a class name and optionally append to a container
+ * @param {string} tagName - HTML tag name
+ * @param {string} className - CSS class name(s)
+ * @param {HTMLElement} [container] - Optional container to append to
+ * @returns {HTMLElement}
+ */
 function create(tagName, className, container) {
-	var el = document.createElement(tagName);
-	el.className = className;
+	const el = document.createElement(tagName);
+	if (className) {
+		el.className = className;
+	}
 	if (container) {
 		container.appendChild(el);
 	}
 	return el;
 }
 
+/**
+ * Create a button element
+ * @param {string} className - CSS class name(s)
+ * @param {HTMLElement} [container] - Optional container to append to
+ * @returns {HTMLButtonElement}
+ */
 function createButton(className, container) {
-	var el = create('button', className, container);
+	const el = create('button', className, container);
 	el.type = 'button';
 	return el;
 }
 
+/**
+ * Create a text node
+ * @param {string} content - Text content
+ * @param {HTMLElement} [container] - Optional container to append to
+ * @returns {Text}
+ */
 function createText(content, container) {
-	var el = document.createTextNode(content);
+	const el = document.createTextNode(content);
 	if (container) {
 		container.appendChild(el);
 	}
 	return el;
 }
 
+/**
+ * Get CSS translate string for transforms
+ * @param {Object} point - Point with x and y properties
+ * @returns {string}
+ */
 function getTranslateString(point) {
-	return TRANSLATE_OPEN +
-			point.x + 'px,' + point.y + 'px' +
-			TRANSLATE_CLOSE;
+	// Use translate3d for better performance on supporting browsers
+	return Browser.webkit3d ?
+		`translate3d(${point.x}px, ${point.y}px, 0)` :
+		`translate(${point.x}px, ${point.y}px)`;
 }
 
+/**
+ * Set element position using modern transform or fallback to left/top
+ * @param {HTMLElement} el - Element to position
+ * @param {Object} point - Point with x and y properties
+ */
 function setPosition(el, point) {
 	el._tl_pos = point;
-	if (Browser.webkit3d) {
-		el.style[TRANSFORM] =  getTranslateString(point);
-
-		if (Browser.android) {
-			el.style['-webkit-perspective'] = '1000';
-			el.style['-webkit-backface-visibility'] = 'hidden';
-		}
-	} else {
-		el.style.left = point.x + 'px';
-		el.style.top = point.y + 'px';
-	}
+	// Use CSS transforms for better performance
+	el.style.transform = getTranslateString(point);
 }
 
-function getPosition(el){
-	var pos = {
-		x: 0,
-		y: 0
-	}
-	while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-		pos.x += el.offsetLeft// - el.scrollLeft;
-		pos.y += el.offsetTop// - el.scrollTop;
-		el = el.offsetParent;
-	}
-	return pos;
+/**
+ * Get element position relative to document
+ * @param {HTMLElement} el - Element to get position of
+ * @returns {Object} Position with x and y properties
+ */
+function getPosition(el) {
+	const rect = el.getBoundingClientRect();
+	return {
+		x: rect.left + window.scrollX,
+		y: rect.top + window.scrollY
+	};
 }
 
+/**
+ * Test which CSS property is supported (all modern browsers support unprefixed versions)
+ * @param {string[]} props - Array of property names to test
+ * @returns {string|false} Supported property name or false
+ */
 function testProp(props) {
-	var style = document.documentElement.style;
-
-	for (var i = 0; i < props.length; i++) {
+	const style = document.documentElement.style;
+	for (let i = 0; i < props.length; i++) {
 		if (props[i] in style) {
 			return props[i];
 		}
@@ -78,10 +113,8 @@ function testProp(props) {
 	return false;
 }
 
-let TRANSITION = testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition'])
-let TRANSFORM = testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform'])
+// Modern browsers support unprefixed versions
+const TRANSITION = testProp(['transition', 'webkitTransition'])
+const TRANSFORM = testProp(['transform', 'WebkitTransform'])
 
-let TRANSLATE_OPEN = 'translate' + (Browser.webkit3d ? '3d(' : '(')
-let TRANSLATE_CLOSE = Browser.webkit3d ? ',0)' : ')'
-
-export { get, create, createButton, getPosition }
+export { get, create, createButton, getPosition, TRANSITION, TRANSFORM }

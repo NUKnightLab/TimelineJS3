@@ -1,10 +1,9 @@
 import * as DOM from "../dom/DOM"
-import { hexToRgb, mergeData, classMixin, isTrue, trace, addTraceHandler } from "../core/Util";
+import { hexToRgb, mergeData, isTrue, trace, addTraceHandler } from "../core/Util";
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease";
 import Message from "../ui/Message"
 import { Language, fallback, loadLanguage } from "../language/Language"
 import { I18NMixins } from "../language/I18NMixins";
-import Events from "../core/Events";
 import { makeConfig, jsonFromGoogleURL } from "../core/ConfigFactory"
 import { TimelineConfig } from "../core/TimelineConfig"
 import { TimeNav } from "../timenav/TimeNav"
@@ -47,20 +46,21 @@ function make_keydown_handler(timeline) {
 /**
  * Primary entry point for using TimelineJS.
  * @constructor
- * @param {HTMLElement|string} elem - the HTML element, or its ID, to which 
+ * @param {HTMLElement|string} elem - the HTML element, or its ID, to which
  *     the Timeline should be bound
  * @param {object|String} - a JavaScript object conforming to the TimelineJS
  *     configuration format, or a String which is the URL for a Google Sheets document
  *     or JSON configuration file which Timeline will retrieve and parse into a JavaScript object.
- *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a 
+ *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a
  *     JSON string from a URL string. If you have a JSON String literal, parse it using
  *     `JSON.parse` before passing it to the constructor.
  *
- * @param {object} [options] - a JavaScript object specifying 
+ * @param {object} [options] - a JavaScript object specifying
  *     presentation options
  */
-class Timeline {
+class Timeline extends I18NMixins {
     constructor(elem, data, options) {
+        super();
         if (!options) {
             options = {}
         }
@@ -264,18 +264,16 @@ class Timeline {
 
     /**
      * Initialize the data for this timeline. If data is a URL, pass it to ConfigFactory
-     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise, 
+     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise,
      * assume it's a JSON object in the right format, and wrap it in a new TimelineConfig.
      * @param {string|TimelineConfig|object} data
      */
-    _initData(data) {
+    async _initData(data) {
         if (typeof data == 'string') {
-            makeConfig(data, {
-                callback: function(config) {
-                    this.setConfig(config);
-                }.bind(this),
+            const config = await makeConfig(data, {
                 sheets_proxy: this.options.sheets_proxy
             });
+            this.setConfig(config);
         } else if (TimelineConfig == data.constructor) {
             this.setConfig(data);
         } else {
@@ -1019,8 +1017,6 @@ class Timeline {
 
 
 }
-
-classMixin(Timeline, I18NMixins, Events)
 
 async function exportJSON(url, proxy_url) {
 

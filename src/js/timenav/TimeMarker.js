@@ -1,5 +1,4 @@
-import { classMixin, mergeData, trim, unlinkify } from "../core/Util"
-import Events from "../core/Events"
+import { mergeData, trim, unlinkify } from "../core/Util"
 import { DOMMixins } from "../dom/DOMMixins"
 import { DOMEvent } from "../dom/DOMEvent"
 
@@ -8,10 +7,10 @@ import { webkit as BROWSER_WEBKIT } from "../core/Browser";
 import { easeInSpline } from "../animation/Ease";
 
 import { lookupMediaType } from "../media/MediaType"
-import { I18NMixins } from "../language/I18NMixins";
 
-export class TimeMarker {
+export class TimeMarker extends DOMMixins {
 	constructor(data, options) {
+		super();
 
 		// DOM Elements
 		this._el = {
@@ -347,6 +346,3 @@ export class TimeMarker {
 	}
 
 }
-
-
-classMixin(TimeMarker, I18NMixins, Events, DOMMixins)

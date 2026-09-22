@@ -1,7 +1,5 @@
-import { classMixin, mergeData } from "../core/Util"
-import Events from "../core/Events"
+import { mergeData } from "../core/Util"
 import { DOMMixins } from "../dom/DOMMixins"
-import { I18NMixins } from "../language/I18NMixins"
 import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
 
@@ -13,8 +11,9 @@ function isInHorizontalViewport(element) {
     );
 }
 
-export class TimeAxis {
+export class TimeAxis extends DOMMixins {
     constructor(elem, options, language) {
+        super();
 
         if (language) {
             this.setLanguage(language)
@@ -272,5 +271,3 @@ export class TimeAxis {
     }
 
 }
-
-classMixin(TimeAxis, Events, DOMMixins, I18NMixins)

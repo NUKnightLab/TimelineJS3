@@ -1,18 +1,17 @@
 import { Media } from "../Media";
 import { transformMediaURL } from "../../core/Util";
-import * as Browser from "../../core/Browser"
 
 export default class PDF extends Media {
 
     _loadMedia() {
-        var url = transformMediaURL(this.data.url),
-            self = this;
+        const url = transformMediaURL(this.data.url);
 
         // Create Dom element
         this._el.content_item = this.domCreate("div", "tl-media-item tl-media-iframe", this._el.content);
-        var markup = "";
-        // not assigning media_id attribute. Seems like a holdover which is no longer used.
-        if (Browser.ie || Browser.edge || url.match(/dl.dropboxusercontent.com/)) {
+
+        // Use Google Docs viewer for Dropbox URLs since they need special handling
+        let markup;
+        if (url.match(/dl.dropboxusercontent.com/)) {
             markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='//docs.google.com/viewer?url=" + url + "&amp;embedded=true'></iframe>";
         } else {
             markup = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>"

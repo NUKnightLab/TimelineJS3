@@ -1,18 +1,19 @@
 /*	Draggable
 	Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
 ================================================== */
-import { TLClass } from "../core/TLClass"
 import Events from "../core/Events"
 import { touch as BROWSER_TOUCH } from "../core/Browser"
-import { mergeData, classMixin } from "../core/Util"
+import { mergeData } from "../core/Util"
 import { getPosition } from "../dom/DOM"
 import { DOMEvent } from "../dom/DOMEvent"
 import { Animate } from "../animation/Animate"
 import { easeInOutQuint, easeOutStrong } from "../animation/Ease"
 
-export class Draggable{
+export class Draggable extends Events {
 
     constructor(drag_elem, options, move_elem) {
+        super();
+
         // DOM ELements
         this._el = {
             drag: drag_elem,
@@ -351,5 +352,3 @@ export class Draggable{
         this.fire("momentum", this.data);
     }
 }
-
-classMixin(Events)

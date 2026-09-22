@@ -1,14 +1,14 @@
-import { classMixin, mergeData, linkify, trace, } from "../core/Util"
+import { mergeData, linkify, trace, } from "../core/Util"
 import { I18NMixins } from "../language/I18NMixins";
-import Events from "../core/Events"
 import * as DOM from "../dom/DOM"
 import * as Browser from "../core/Browser"
 import { Text } from "./types/Text"
 import Message from "../ui/Message"
 
 
-class Media {
+class Media extends I18NMixins {
     constructor(data, options, language) { //add_to_container) {
+        super();
         if (language) {
             this.setLanguage(language)
         }
@@ -374,7 +374,5 @@ class Media {
     }
 
 }
-
-classMixin(Media, Events, I18NMixins)
 
 export { Media, Text }

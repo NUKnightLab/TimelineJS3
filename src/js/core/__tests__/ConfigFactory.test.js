@@ -1,4 +1,4 @@
-import { parseGoogleSpreadsheetURL, makeGoogleCSVURL } from "../ConfigFactory"
+import { parseGoogleSpreadsheetURL, makeGoogleCSVURL, makeConfig } from "../ConfigFactory"
 
 test("Bare sheet ID should come back in key", () => {
     var key = '1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI';
@@ -78,4 +78,31 @@ describe("test making CSV URL from various inputs", () => {
         makeGoogleCSVURL('1xuY4upIooEeszZ_lCmeNx24eSFWe0rHe9ZdqH2xqVNk')
     ).toMatch(/pub\?output=csv$/)
 
+})
+
+describe("makeConfig with a JSON URL", () => {
+    afterEach(() => {
+        delete global.fetch
+    })
+
+    test("logs errors included in the JSON", async () => {
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ events: [], errors: ["bad row"] })
+        }))
+        const tc = await makeConfig("https://example.com/timeline.json")
+        expect(tc.getErrors()).toContain("bad row")
+    })
+
+    test("still calls a legacy callback", async () => {
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ events: [] })
+        }))
+        const callback = jest.fn()
+        jest.spyOn(console, 'warn').mockImplementation(() => {})
+        const tc = await makeConfig("https://example.com/timeline.json", callback)
+        expect(callback).toHaveBeenCalledWith(tc)
+        console.warn.mockRestore()
+    })
 })
