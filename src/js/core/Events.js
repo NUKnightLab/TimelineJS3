@@ -12,8 +12,9 @@ export default class Events extends EventTarget {
 
     constructor(...args) {
         super();
-        // Store context-bound listeners for removal
-        this._tl_bound_listeners = new Map();
+        // Registered listeners as {type, fn, context, wrapper}, matched by
+        // identity so they can be found again for removal
+        this._tl_listeners = [];
     }
 
     /**
@@ -35,13 +36,8 @@ export default class Events extends EventTarget {
             fn.call(context || this, eventData);
         };
 
-        // Store the mapping so we can remove it later
-        const key = `${type}:${fn}:${context || 'default'}`;
-        if (!this._tl_bound_listeners.has(key)) {
-            this._tl_bound_listeners.set(key, wrapper);
-        }
-
-        super.addEventListener(type, this._tl_bound_listeners.get(key));
+        this._tl_listeners.push({ type, fn, context, wrapper });
+        super.addEventListener(type, wrapper);
         return this;
     }
 
@@ -57,19 +53,30 @@ export default class Events extends EventTarget {
     }
 
     /**
-     * Remove event listeners for the given type with the given callback and context.
+     * Return true if this object has any listeners of the given type.
+     * @param {string} type
+     * @returns {boolean}
+     */
+    hasEventListeners(type) {
+        return this._tl_listeners.some(l => l.type === type);
+    }
+
+    /**
+     * Remove an event listener for the given type that uses the given
+     *     callback and, if one is given, the given context.
      * @param {string} type
      * @param {function} fn
      * @param {object} [context]
      * @returns { Events } this (the instance upon which the method was called)
      */
     removeEventListener(type, fn, context) {
-        const key = `${type}:${fn}:${context || 'default'}`;
-        const wrapper = this._tl_bound_listeners.get(key);
+        const i = this._tl_listeners.findIndex(l =>
+            l.type === type && l.fn === fn && (!context || l.context === context)
+        );
 
-        if (wrapper) {
-            super.removeEventListener(type, wrapper);
-            this._tl_bound_listeners.delete(key);
+        if (i !== -1) {
+            super.removeEventListener(type, this._tl_listeners[i].wrapper);
+            this._tl_listeners.splice(i, 1);
         }
 
         return this;

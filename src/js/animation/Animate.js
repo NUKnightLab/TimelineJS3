@@ -53,11 +53,12 @@ function animate(elements, options) {
 				});
 
 				animation.onfinish = () => {
-					// Apply final styles
-					for (const prop in properties) {
-						if (properties.hasOwnProperty(prop)) {
-							el.style[prop] = properties[prop];
-						}
+					// Write final values inline, then drop the animation so its
+					// fill doesn't override later direct style changes
+					animation.commitStyles();
+					animation.cancel();
+					if (complete) {
+						complete();
 					}
 				};
 
@@ -83,6 +84,8 @@ function animate(elements, options) {
 					if (jump) {
 						anim.finish();
 					} else {
+						// Leave the element where it currently is, as Morpheus did
+						anim.commitStyles();
 						anim.cancel();
 					}
 				}
@@ -91,7 +94,8 @@ function animate(elements, options) {
 				// Don't call complete callback if stopped without jumping
 				return;
 			}
-			if (complete) {
+			// finish() triggers onfinish, which calls complete for WAAPI animations
+			if (complete && animations.length === 0) {
 				complete();
 			}
 		}

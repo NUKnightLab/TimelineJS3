@@ -306,6 +306,21 @@ export async function jsonFromGoogleURL(google_url, options) {
 }
 
 /**
+ * Create a TimelineConfig from JSON data, logging any errors present in the data itself.
+ * @param {Object} json - Timeline configuration in JSON format
+ * @returns {TimelineConfig}
+ */
+function configFromJSON(json) {
+    const tc = new TimelineConfig(json);
+    if (json.errors) {
+        for (let i = 0; i < json.errors.length; i++) {
+            tc.logError(json.errors[i]);
+        }
+    }
+    return tc;
+}
+
+/**
  * Using the given URL, fetch or create a JS Object suitable for configuring a timeline.
  * Returns a Promise that resolves to a TimelineConfig.
  * Even in error cases, a minimal TimelineConfig object will be created with logged errors.
@@ -340,22 +355,12 @@ export async function makeConfig(url, optionsOrCallback) {
             // Handle Google Sheets URL
             console.log(`reading url ${url}`);
             const json = await jsonFromGoogleURL(url, options);
-            tc = new TimelineConfig(json);
-            if (json.errors) {
-                for (let i = 0; i < json.errors.length; i++) {
-                    tc.logError(json.errors[i]);
-                }
-            }
+            tc = configFromJSON(json);
         } else if (isCSVURL(url)) {
             // CSV file: parse and convert to JSON config format
             console.log(`reading CSV from url ${url}`);
             const json = await readCSVFromURL(url);
-            tc = new TimelineConfig(json);
-            if (json.errors) {
-                for (let i = 0; i < json.errors.length; i++) {
-                    tc.logError(json.errors[i]);
-                }
-            }
+            tc = configFromJSON(json);
         } else {
             // Handle regular JSON URL using fetch
             const response = await fetch(url);
@@ -363,12 +368,12 @@ export async function makeConfig(url, optionsOrCallback) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            tc = new TimelineConfig(data);
+            tc = configFromJSON(data);
         }
     } catch (e) {
         // Even with an error, create a TimelineConfig to display messages in DOM
         tc = new TimelineConfig();
-        if (e.name === 'NetworkError' || e.message.includes('HTTP error')) {
+        if (e.name === 'NetworkError' || (e.message && e.message.includes('HTTP error'))) {
             tc.logError(new TLError("network_err"));
         } else if (e.name === 'TLError') {
             tc.logError(e);
