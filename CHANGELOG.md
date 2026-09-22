@@ -1,3 +1,9 @@
+3.10.0 (not yet released)
+-------------------------
+* #901 Modernize internal JavaScript: ES6 classes throughout, native `EventTarget`-based events, Web Animations API in place of Morpheus, `fetch` in place of XHR, and removal of IE-specific code. No visible changes are intended. `makeConfig` now returns a Promise; passing a callback still works but logs a deprecation warning.
+* #906 Fix mobile swipes sometimes panning the page instead of the timeline when zoomed in
+* Switch the build from webpack to Vite
+
 3.9.13 (2026-07-26)
 -------------------------
 * Update dompurify to 3.4.12 to address several XSS advisories
