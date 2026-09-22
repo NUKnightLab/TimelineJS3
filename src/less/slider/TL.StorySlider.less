@@ -42,6 +42,9 @@
 		//overflow: scroll;
 		position: relative;
 		z-index:5;
+		// Horizontal swipes are handled by Swipable; leave vertical
+		// scrolling and pinch-zoom to the browser
+		touch-action: pan-y pinch-zoom;
 		.tl-slider-container {
 			position: absolute;
 			top: 0px;
