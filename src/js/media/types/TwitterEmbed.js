@@ -57,7 +57,8 @@ export default class TwitterEmbed extends Media {
     }
 
     createMedia(d) {
-        var tweet = "",
+        var self = this,
+            tweet = "",
             tweet_text = "",
             tweetuser = "",
             tweet_status_temp = "",
@@ -77,20 +78,16 @@ export default class TwitterEmbed extends Media {
         if (tweet_text.includes("pic.twitter.com")) {
             twttr.ready(
                 function(evt) {
-                    tweet = document.getElementsByClassName("tl-media-twitter")[0];
                     var id = String(mediaID);
-                    twttr.widgets.createTweet(id, tweet, {
+                    twttr.widgets.createTweet(id, self._el.content_item, {
                             conversation: 'none', // or all
                             linkColor: '#cc0000', // default is blue
                             theme: 'light' // or dark
-                        })
-                        .then(function(evt) {
-                            this.onLoaded();
+                        }).then(function() {
+                            self.onLoaded();
                         });
                 }
             );
-            this._el.content_item.innerHTML = tweet;
-            this.onLoaded();
         } else {
             // 	TWEET CONTENT
             tweet += tweet_text;

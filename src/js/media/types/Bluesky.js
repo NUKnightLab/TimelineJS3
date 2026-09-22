@@ -87,7 +87,8 @@ export default class Bluesky extends Media {
         }
 
         var authorName = this.domCreate("strong", "bluesky-display-name", authorLink);
-        authorName.innerHTML = (author.displayName || author.handle) + " <span class='tl-icon-bluesky'></span>";
+        authorName.appendChild(document.createTextNode((author.displayName || author.handle) + " "));
+        this.domCreate("span", "tl-icon-bluesky", authorName);
 
         var authorHandle = this.domCreate("span", "bluesky-handle", authorDiv);
         authorHandle.textContent = ` @${author.handle}`;

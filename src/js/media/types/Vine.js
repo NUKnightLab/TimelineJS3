@@ -17,7 +17,18 @@ export default class Vine extends Media {
         api_url = "https://vine.co/v/" + this.media_id + "/embed/simple";
 
         // API Call
-        this._el.content_item.innerHTML = "<iframe frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe><script async src='https://platform.vine.co/static/scripts/embed.js' charset='utf-8'></script>"
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("width", "100%");
+        iframe.setAttribute("height", "100%");
+        iframe.setAttribute("src", api_url);
+        this._el.content_item.appendChild(iframe);
+
+        var script = document.createElement("script");
+        script.async = true;
+        script.src = "https://platform.vine.co/static/scripts/embed.js";
+        script.charset = "utf-8";
+        this._el.content_item.appendChild(script);
 
         // After Loaded
         this.onLoaded();

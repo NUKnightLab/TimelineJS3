@@ -25,7 +25,13 @@ export default class GoogleDoc extends Media {
         // this URL makes something suitable for an img src but what if it's not an image?
         // api_url = "http://www.googledrive.com/host/" + this.media_id + "/";
 
-        this._el.content_item.innerHTML = "<iframe class='doc' frameborder='0' width='100%' height='100%' src='" + url + "'></iframe>";
+        var iframe = document.createElement("iframe");
+        iframe.className = "doc";
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("width", "100%");
+        iframe.setAttribute("height", "100%");
+        iframe.setAttribute("src", url);
+        this._el.content_item.appendChild(iframe);
 
         // After Loaded
         this.onLoaded();

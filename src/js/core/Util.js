@@ -636,13 +636,16 @@ export { base58 }
 export function parseYouTubeTime(s) {
     // given a YouTube start time string in a reasonable format, reduce it to a number of seconds as an integer.
     if (typeof(s) == 'string') {
+        if (s.match(/^\d+$/)) { // unmarked all digits is seconds
+            return parseInt(s)
+        }        
         let parts = s.match(/^\s*(\d+h)?(\d+m)?(\d+s)?\s*/i);
         if (parts) {
             var hours = parseInt(parts[1]) || 0;
             var minutes = parseInt(parts[2]) || 0;
             var seconds = parseInt(parts[3]) || 0;
             return seconds + (minutes * 60) + (hours * 60 * 60);
-        }
+        } 
     } else if (typeof(s) == 'number') {
         return s;
     }

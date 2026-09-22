@@ -58,15 +58,10 @@ export default class Spotify extends Media {
         }
 
         this._el.content_item.style.maxHeight = "none";
-        trace(_height);
-        trace(this.options.width)
         if (_height > this.options.width) {
-            trace("height is greater")
             _player_height = this.options.width + 80 + "px";
             _player_width = this.options.width + "px";
         } else {
-            trace("width is greater")
-            trace(this.options.width)
             _player_height = _height + "px";
             _player_width = _height - 80 + "px";
         }

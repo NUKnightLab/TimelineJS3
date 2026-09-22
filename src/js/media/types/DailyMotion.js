@@ -28,7 +28,13 @@ export default class DailyMotion extends Media {
         api_url = "https://www.dailymotion.com/embed/video/" + this.media_id + "?api=postMessage";
 
         // API Call
-        this._el.content_item.innerHTML = "<iframe autostart='false' frameborder='0' width='100%' height='100%' src='" + api_url + "'></iframe>"
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("autostart", "false");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("width", "100%");
+        iframe.setAttribute("height", "100%");
+        iframe.setAttribute("src", api_url);
+        this._el.content_item.appendChild(iframe);
 
         // After Loaded
         this.onLoaded();

@@ -24,7 +24,7 @@
             },
             "text": {
                 "headline": "YouTube Videos",
-                "text": "<p>if Timeline finds a URL that starts with 'youtube.com' or 'youtu.be', it will try to use it to embed a YouTube video. The <em>protocol</em> part of the URL (e.g. <em>https://</em>) is technically optional.</p><p>You can start at a specific point in the video using the <code>t=#m#s</code> parameter: see <a href='http://youtubetime.com/'>http://youtubetime.com/</a></p>"
+                "text": "<p>if Timeline finds a URL that starts with 'youtube.com' or 'youtu.be', it will try to use it to embed a YouTube video. The <em>protocol</em> part of the URL (e.g. <em>https://</em>) is technically optional.</p><p>You can start at a specific point in the video using the <code>t=#m#s</code> parameter.</p>"
             },
             "background": {
                 "color": "#F45B69"
@@ -273,9 +273,9 @@
         },
         {
             "media": {
-                "url": "https://www.flickr.com/photos/critterseeker/16420145375",
-                "caption": "Mountains of the Alaska Range in Denali National Park, Alaska. (Long link URL)",
-                "credit": "Daniel Leifhelt"
+                "url": "https://www.flickr.com/photos/joegermuska/9348943377/",
+                "caption": "Street art in San Juan, Puerto Rico (Long link URL)",
+                "credit": "Joe Germuska"
             },
             "start_date": {
                 "year": "1913"
@@ -428,10 +428,10 @@
 
         {
             "media": {
-                "url": "https://fr.wikipedia.org/wiki/Bataille_de_Champigny#/media/Fichier:Champigny,_le_four_%C3%A0_chaux_(d%C3%A9tail).jpg",
-                "caption": "1997 International Tennis Championships - Doubles",
+                "url": "https://en.wikipedia.org/wiki/Mechanical_Turk",
+                "caption": "Mechanical Turk",
                 "credit": "Wikipedia",
-                "link": "https://fr.wikipedia.org/wiki/Bataille_de_Champigny#/media/Fichier:Champigny,_le_four_%C3%A0_chaux_(d%C3%A9tail).jpg"
+                "link": "https://en.wikipedia.org/wiki/Mechanical_Turk"
             },
             "start_date": {
                 "year": "1920"
@@ -532,7 +532,7 @@
         },
         {
             "media": {
-                "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                "url": "https://localnewsinitiative.northwestern.edu/assets/lna/shared_services/executive_leadership_development_academy.pdf",
                 "credit": "file-examples.com"
             },
             "start_date": {
@@ -605,7 +605,7 @@
         {
             "unique_id": "wikipedia-images",
             "media": {
-                "url": "https://de.wikipedia.org/wiki/Beryllium#/media/Datei:Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg",
+                "url": "https://commons.wikimedia.org/wiki/File:Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg",
                 "credit": "Wikipedia"
             },
             "start_date": {
@@ -629,6 +629,22 @@
             "text": {
                 "headline": "Wikimedia Commons Image links",
                 "text": "Given a link to a wikipedia page about an image, extract best the Wikimedia image URL and use it for the media."
+            },
+            "group": "Image"
+        },
+        {
+            "unique_id": "wikipedia-image-error",
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:This_file_does_not_exist_intentional_error_test.jpg",
+                "caption": "This image intentionally does not exist — used to test error handling.",
+                "credit": "Test"
+            },
+            "start_date": {
+                "year": "1940"
+            },
+            "text": {
+                "headline": "Wikimedia Commons Image (intentional error)",
+                "text": "This slide uses a Commons URL for a file that does not exist, to verify that the error state displays correctly."
             },
             "group": "Image"
         }

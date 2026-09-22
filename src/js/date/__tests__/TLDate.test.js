@@ -239,6 +239,60 @@ test("validDateConfig", () => {
 
 })
 
+test("BigDate within human scale range uses TLDate formatting", () => {
+    var lang = Language.fallback;
+
+    // Year-only: should format like a normal year, not "X thousand years ago"
+    var d = new BigDate({ year: '1969' });
+    expect(d.getDisplayDate(lang)).toBe("1969");
+
+    // Year + month: should produce month-style output
+    var d2 = new BigDate({ year: '1969', month: '7' });
+    expect(d2.getDisplayDate(lang)).toBe("July 1969");
+
+    // Year + month + day: full date
+    var d3 = new BigDate({ year: '1969', month: '7', day: '20' });
+    expect(d3.getDisplayDate(lang)).toBe("July 20, 1969");
+
+    // Negative year within range: should use BCE suffix
+    var d4 = new BigDate({ year: '-500' });
+    expect(d4.getDisplayDate(lang)).toContain("500");
+    expect(d4.getDisplayDate(lang)).toContain("BCE");
+
+    // Exactly at the threshold: -99999 should use human formatting
+    var d5 = new BigDate({ year: '-99999' });
+    expect(d5.getDisplayDate(lang)).toContain("99999");
+
+    // display_date override still takes precedence
+    var d6 = new BigDate({ year: '1969', display_date: 'The Moon Landing' });
+    expect(d6.getDisplayDate(lang)).toBe("The Moon Landing");
+})
+
+test("BigDate outside human scale range uses cosmological formatting", () => {
+    var lang = Language.fallback;
+
+    // Just below threshold: -100000 should use "years ago" format
+    var d = new BigDate({ year: '-100000' });
+    expect(d.getDisplayDate(lang)).toContain("years ago");
+
+    // Ancient date: billions of years ago
+    var d2 = new BigDate({ year: '-4500000000' });
+    expect(d2.getDisplayDate(lang)).toContain("billion years ago");
+})
+
+test("floored BigDate within human scale range uses TLDate formatting", () => {
+    var lang = Language.fallback;
+
+    // A cosmological-scale BigDate that gets floored to a human-scale year
+    var d = new BigDate({ year: '1969' });
+    var floored = d.floor('year');
+    expect(floored.getDisplayDate(lang)).toBe("1969");
+
+    var d2 = new BigDate({ year: '-500' });
+    var floored2 = d2.floor('decade');
+    expect(floored2.getDisplayDate(lang)).toContain("BCE");
+})
+
 test("validDateConfig field failures", () => {
     let d = {
         "year": "400",

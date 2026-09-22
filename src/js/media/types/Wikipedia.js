@@ -55,7 +55,7 @@ export default class Wikipedia extends Media {
                 };
 
             wiki.entry = getObjectAttributeByIndex(d.query.pages, 0);
-            wiki.extract = wiki.entry.extract;
+            wiki.extract = wiki.entry.extract || "";
             wiki.title = wiki.entry.title;
             wiki.page_image = wiki.entry.thumbnail;
 

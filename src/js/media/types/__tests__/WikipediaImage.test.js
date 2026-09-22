@@ -46,3 +46,22 @@ test("get image info data", () => {
     expect(response.url).toBe("https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg/100px-Beryl-Quartz-Emerald-Zambia-33mm_0885.jpg")
     expect(response.page_id).toBe("10450749")
 })
+
+test("missing file returns no url", () => {
+    // The Commons API returns a page object with no imageinfo when the file doesn't exist
+    const missing = {
+        "query": {
+            "pages": {
+                "-1": {
+                    "ns": 6,
+                    "title": "File:This_file_does_not_exist.jpg",
+                    "missing": "",
+                    "known": ""
+                }
+            }
+        }
+    }
+    let response = processImageInfoAPIJSON(missing)
+    expect(response.url).toBeUndefined()
+    expect(response.page_id).toBe("-1")
+})

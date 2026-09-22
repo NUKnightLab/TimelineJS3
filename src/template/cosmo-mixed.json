@@ -1,0 +1,158 @@
+{
+    "title": {
+        "media": {
+            "url": "https://commons.wikimedia.org/wiki/File:HST-SM4.jpeg",
+            "caption": "The Hubble Space Telescope photographed during its final servicing mission.",
+            "credit": "NASA"
+        },
+        "text": {
+            "headline": "A Brief History of Light",
+            "text": "From the first photons after the Big Bang to humanity's greatest telescopes. This timeline mixes cosmological-scale dates with ordinary human ones — a test case for the date-formatting fix."
+        }
+    },
+    "events": [
+        {
+            "start_date": { "year": "-13800000000" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:WMAP_2012.png",
+                "caption": "WMAP all-sky map of the cosmic microwave background — the afterglow of the Big Bang.",
+                "credit": "NASA / WMAP Science Team"
+            },
+            "text": {
+                "headline": "The Big Bang",
+                "text": "Around 380,000 years after the Big Bang, the universe cooled enough for the first photons to travel freely — the cosmos became transparent to light for the first time."
+            },
+            "background": { "color": "#1a1a2e" }
+        },
+        {
+            "start_date": { "year": "-4600000000" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:The_Mysterious_Case_of_the_Disappearing_Dust.jpg",
+                "caption": "An artist's impression of a protoplanetary disk.",
+                "credit": "NASA / JPL-Caltech"
+            },
+            "text": {
+                "headline": "The Sun Ignites",
+                "text": "Our Sun — a middling G-type star — begins nuclear fusion, flooding the inner solar system with light."
+            },
+            "background": { "color": "#ff6b35" }
+        },
+        {
+            "start_date": { "year": "-540000000" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:Trilobite_Heinrich_Harder.jpg",
+                "caption": "Trilobites were among the first creatures with complex eyes.",
+                "credit": "Heinrich Harder / Wikimedia Commons"
+            },
+            "text": {
+                "headline": "The Cambrian Explosion and the First Complex Eyes",
+                "text": "Complex, image-forming eyes appear in the fossil record almost simultaneously across dozens of animal lineages. Light becomes a sense."
+            },
+            "background": { "color": "#2d6a4f" }
+        },
+        {
+            "start_date": { "year": "-300000" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:Homo_erectus.jpg",
+                "caption": "A reconstruction of Homo erectus, close ancestor of modern humans.",
+                "credit": "Wikimedia Commons"
+            },
+            "text": {
+                "headline": "Homo sapiens Appear",
+                "text": "Anatomically modern humans emerge in Africa. With large brains and forward-facing eyes, we become the first species to contemplate the stars."
+            },
+            "background": { "color": "#8b4513" }
+        },
+        {
+            "start_date": { "year": "-3500" },
+            "media": {
+                "url": "https://en.wikipedia.org/wiki/History_of_glass",
+                "caption": "",
+                "credit": ""
+            },
+            "text": {
+                "headline": "First Manufactured Glass",
+                "text": "Egyptians and Mesopotamians produce the first manufactured glass and glazed faience — humanity begins to shape transparent materials and manipulate light deliberately."
+            },
+            "background": { "color": "#d4a017" }
+        },
+        {
+            "start_date": { "year": "-300" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:Euklid-von-Alexandria_1.jpg",
+                "caption": "Euclid of Alexandria.",
+                "credit": "Wikimedia Commons"
+            },
+            "text": {
+                "headline": "Euclid's <i>Optica</i>",
+                "text": "Euclid writes the first systematic treatment of optics, describing how vision works through straight lines (rays) traveling from the eye to objects — wrong direction, but the geometry was right."
+            },
+            "background": { "color": "#3d405b" }
+        },
+        {
+            "start_date": { "year": "1021" },
+            "media": {
+                "url": "https://en.wikipedia.org/wiki/Book_of_Optics",
+                "caption": "Ibn al-Haytham's <i>Kitāb al-Manāẓir</i> (Book of Optics).",
+                "credit": ""
+            },
+            "text": {
+                "headline": "Ibn al-Haytham's <i>Book of Optics</i>",
+                "text": "The polymath correctly explains that light travels <em>from</em> objects <em>to</em> the eye, describes the camera obscura, and lays the foundation for modern optics and the scientific method."
+            },
+            "background": { "color": "#2b4162" }
+        },
+        {
+            "start_date": { "year": "1609", "month": "11" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:Sidereus_Nuncius_Medicean_Stars.jpg",
+                "caption": "Galileo's observations of Jupiter's moons from <i>Sidereus Nuncius</i>, 1610.",
+                "credit": "Galileo Galilei / Wikimedia Commons"
+            },
+            "text": {
+                "headline": "Galileo Points a Telescope at the Moon",
+                "text": "In November 1609, Galileo turns his improved refracting telescope skyward. He sees mountains on the Moon, moons around Jupiter, and stars invisible to the naked eye — the universe suddenly grows."
+            },
+            "background": { "color": "#4a4e69" }
+        },
+        {
+            "start_date": { "year": "1826" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:View_from_the_Window_at_Le_Gras,_Joseph_Nic%C3%A9phore_Ni%C3%A9pce.jpg",
+                "caption": "<i>View from the Window at Le Gras</i> — the oldest surviving photograph.",
+                "credit": "Joseph Nicéphore Niépce / Wikimedia Commons"
+            },
+            "text": {
+                "headline": "The First Photograph",
+                "text": "Nicéphore Niépce captures the oldest surviving photograph using an 8-hour exposure. Light can now be permanently recorded."
+            },
+            "background": { "color": "#7b6f72" }
+        },
+        {
+            "start_date": { "year": "1969", "month": "7", "day": "20" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:Aldrin_Apollo_11_original.jpg",
+                "caption": "Buzz Aldrin on the Moon, July 20, 1969.",
+                "credit": "NASA"
+            },
+            "text": {
+                "headline": "Apollo 11: Humans Walk on the Moon",
+                "text": "Neil Armstrong and Buzz Aldrin land on the Sea of Tranquility. The mission's Hasselblad cameras produce some of history's most iconic photographs, taken in the light of a sun 150 million kilometers away."
+            },
+            "background": { "color": "#1c1c1c" }
+        },
+        {
+            "start_date": { "year": "1990", "month": "4", "day": "25" },
+            "media": {
+                "url": "https://commons.wikimedia.org/wiki/File:HST-SM4.jpeg",
+                "caption": "The Hubble Space Telescope — above Earth's blurring atmosphere, it collects ancient light from galaxies billions of light-years away.",
+                "credit": "NASA"
+            },
+            "text": {
+                "headline": "Hubble Space Telescope Deployed",
+                "text": "STS-31 deploys the Hubble Space Telescope on April 25, 1990. Above Earth's blurring atmosphere, it collects ancient light from galaxies billions of light-years away, closing the circle that began with the Big Bang."
+            },
+            "background": { "color": "#0d1b2a" }
+        }
+    ]
+}

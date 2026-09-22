@@ -72,3 +72,32 @@ img.make-step-2 {
   float: left;
   margin-right: 7px;
 }
+/* index.html: announcement of the next-generation Timeline */
+.new-version-banner {
+  /* .header-product leaves a 2rem gap below itself; the banner sits in it */
+  margin: -2rem 0 2rem;
+  padding: 0.5rem 1rem;
+  background-color: #e8f4ec;
+  border-bottom: 1px solid #c3e0cd;
+  color: #1d1f21;
+  text-align: center;
+}
+.new-version-banner p {
+  margin: 0;
+  font-family: "Apres RE", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+/* orangeline draws link underlines as a background gradient and hides the
+   descenders behind a white text-shadow halo; both misbehave over a tinted
+   background, so opt out and use a real underline. */
+.new-version-banner a {
+  color: #1a7a37;
+  font-weight: bold;
+  text-shadow: none;
+  background-image: none;
+  text-decoration: underline;
+}
+.new-version-banner a:hover {
+  color: #df4e13;
+}

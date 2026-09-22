@@ -32,11 +32,16 @@ export function processImageInfoAPIJSON(j) {
         let page_ids = Object.keys(j.query.pages)
         response['page_id'] = page_ids[0]
         let data = j.query.pages[response['page_id']]
-        response['url'] = data.imageinfo[0].thumburl
+        if (data.imageinfo && data.imageinfo[0]) {
+            response['url'] = data.imageinfo[0].thumburl
+        }
         if (data.entityterms && data.entityterms.label) {
             response['label'] = data.entityterms.label[0]
         }
     }
+    console.log(`processImageInfoAPIJSON`)
+    console.log(`JSON: `, j)
+    console.log(`response: `, response)
     return response
 }
 
@@ -134,20 +139,16 @@ export default class WikipediaImage extends Media {
             self.onMediaLoaded();
         });
 
+        this._el.content_item.addEventListener('error', function(e) {
+            self.loadErrorDisplay(self._("wikipedia_image_load_err"));
+        });
+
         // Set Image Source
         this._el.content_item.src = this.getImageURL(this.options.width, this.options.height);
     }
 
-    _getImageURL(w, h) {
-        if (w && this.base_image_url) {
-            let match = this.base_image_url.match(/(\/[\d\.]+px-)/)
-            if (match) {
-                w = Math.round(w) // WP image URLS 404 if floats are used so round it.
-                return this.base_image_url.replace(match[1], `/${w}px-`) // Wikipedia will autoscale the image for us
-            }
-        }
-        // they don't always have that pattern!
-        return this.base_image_url
+    _getImageURL() {
+        return this.base_image_url || "";
     }
 
 }
