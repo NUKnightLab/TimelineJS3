@@ -70,6 +70,9 @@
 			width:100%;
 			cursor:move;
 			z-index:6;
+			// Horizontal drags are handled by Swipable; leave vertical
+			// scrolling and pinch-zoom to the browser
+			touch-action: pan-y pinch-zoom;
 		}
 		.tl-timenav-container-mask {
 			position:absolute;
