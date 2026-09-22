@@ -10,7 +10,7 @@
     "devDependencies": {
         "@babel/core": "^7.29.0",
         "@babel/preset-env": "^7.29.0",
-        "adm-zip": "^0.5.8",
+        "adm-zip": "^0.6.1",
         "babel-jest": "^30.4.1",
         "fs-extra": "^9.0.1",
         "http-server": "^14.1.0",
