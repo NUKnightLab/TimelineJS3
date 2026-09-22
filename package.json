@@ -10,7 +10,7 @@
     "devDependencies": {
         "@babel/core": "^7.29.0",
         "@babel/preset-env": "^7.29.0",
-        "adm-zip": "^0.5.8",
+        "adm-zip": "^0.6.1",
         "babel-jest": "^30.4.1",
         "fs-extra": "^9.0.1",
         "http-server": "^14.1.0",
@@ -23,7 +23,7 @@
     },
     "overrides": {
         "brace-expansion": "5.0.9",
-        "js-yaml": "3.15.1",
+        "js-yaml": "3.15.2",
         "postcss": "8.5.23",
         "test-exclude": "8.0.0",
         "glob": "13.0.6"
