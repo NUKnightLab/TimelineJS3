@@ -22,11 +22,12 @@
         "vite-plugin-static-copy": "^4.1.1"
     },
     "overrides": {
-        "brace-expansion": "5.0.9",
+        "brace-expansion": "5.0.12",
         "js-yaml": "3.15.2",
         "postcss": "8.5.23",
         "test-exclude": "8.0.0",
-        "glob": "13.0.6"
+        "glob": "14.0.6",
+        "minimatch": "11.0.8"
     },
     "repository": {
         "type": "git",
